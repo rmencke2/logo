@@ -16,10 +16,17 @@ const app = express();
 
 // Security middleware
 const helmet = require('helmet');
+// Customize helmet to disable Cross-Origin-Opener-Policy and Origin-Agent-Cluster headers when serving over HTTP
+app.use(
+  helmet({
+    // Turn off COOP header since HTTP origins are not trustworthy
+    crossOriginOpenerPolicy: false,
+    // Turn off Origin-Agent-Cluster header
+    originAgentCluster: false
+  })
+);
 const rateLimit = require('express-rate-limit');
 
-app.use(helmet());
-// Rate limit: max 100 requests per 15 minutes per IP
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -83,6 +90,11 @@ const styles = {
 app.get('/', (req, res) => {
   console.log('🌐 Serving index.html');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Health check endpoint for service monitoring
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
 // Generate logo
