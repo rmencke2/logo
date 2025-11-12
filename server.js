@@ -16,12 +16,11 @@ const app = express();
 
 // Security middleware
 const helmet = require('helmet');
-// Customize helmet to disable Cross-Origin-Opener-Policy and Origin-Agent-Cluster headers when serving over HTTP
+// Use Helmet to disable CSP (including upgrade-insecure-requests), COOP and Origin-Agent-Cluster for HTTP origin
 app.use(
   helmet({
-    // Turn off COOP header since HTTP origins are not trustworthy
+    contentSecurityPolicy: false,
     crossOriginOpenerPolicy: false,
-    // Turn off Origin-Agent-Cluster header
     originAgentCluster: false
   })
 );
