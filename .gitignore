@@ -1,0 +1,21 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+
+# Build artifacts
+generated_img/
+
+# Editor files
+.DS_Store
+
+# Migration tool venv
+migration-tool/.venv/
+
+# Docker files
+Dockerfile*
+.env

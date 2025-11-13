@@ -12,123 +12,1850 @@
         padding: 0;
       }
       body {
-        font-family: 'Segoe UI', sans-serif;
-        background: #f0f2f5;
-        display: flex;
-        justify-content: center;
-        padding: 40px 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        background: #0d0d0d;
+        color: #ececec;
+        min-height: 100vh;
+      }
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+          padding: 20px;
+        }
+        .hero {
+          padding: 40px 20px 30px;
+        }
+        .hero h1 {
+          font-size: 28px;
+        }
+        .hero .subtitle {
+          font-size: 16px;
+        }
+        .sample-logos {
+          gap: 12px;
+        }
+        .sample-logo {
+          width: 110px;
+          height: 110px;
+          font-size: 12px;
+        }
+        .progress-steps {
+          padding: 16px;
+        }
+        .step-number {
+          width: 32px;
+          height: 32px;
+          font-size: 14px;
+        }
+        .step-label {
+          font-size: 11px;
+        }
       }
       .card {
-        background: #fff;
+        background: #171717;
+        border: 1px solid #2a2a2a;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        width: 420px;
-        padding: 24px;
+        padding: 32px;
+      }
+      .form-card {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .preview-card {
+        position: sticky;
+        top: 20px;
+        height: fit-content;
       }
       h1 {
-        text-align: center;
-        margin-bottom: 24px;
-        font-size: 24px;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #fff;
+      }
+      .subtitle {
+        color: #8e8e93;
+        font-size: 14px;
+        margin-bottom: 32px;
+      }
+      .section {
+        margin-bottom: 32px;
+      }
+      .section-title {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #8e8e93;
+        margin-bottom: 16px;
+      }
+      .form-group {
+        margin-bottom: 20px;
       }
       label {
         display: block;
-        margin-top: 16px;
-        font-weight: 600;
+        font-size: 14px;
+        font-weight: 500;
+        color: #ececec;
+        margin-bottom: 8px;
+      }
+      label.optional {
+        color: #8e8e93;
+      }
+      label.optional::after {
+        content: ' (optional)';
+        font-weight: 400;
       }
       input[type='text'],
       select {
         width: 100%;
-        padding: 10px;
-        margin-top: 6px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 16px;
+        padding: 12px 16px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        font-size: 15px;
+        color: #ececec;
+        transition: all 0.2s;
       }
-      /* Styled color pickers */
+      input[type='text']:focus,
+      select:focus {
+        outline: none;
+        border-color: #10a37f;
+        background: #252525;
+      }
+      input[type='text']::placeholder {
+        color: #6e6e73;
+      }
+      /* Color pickers */
+      .color-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .color-input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
       input[type='color'] {
         width: 100%;
-        height: 44px;
-        padding: 0;
-        margin-top: 6px;
-        border: none;
-        border-radius: 6px;
+        height: 48px;
+        padding: 4px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
         cursor: pointer;
       }
       /* Button */
       button {
         width: 100%;
-        padding: 14px;
-        margin-top: 24px;
-        background: #4caf50;
+        padding: 14px 24px;
+        background: #10a37f;
         color: #fff;
         border: none;
-        border-radius: 6px;
-        font-size: 18px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.2s;
+        margin-top: 8px;
       }
       button:disabled {
-        background: #a5d6a7;
+        background: #1a3a2e;
+        color: #6e6e73;
         cursor: wait;
       }
       button:hover:enabled {
-        background: #45a047;
+        background: #0d8a6a;
+      }
+      button:active:enabled {
+        transform: scale(0.98);
       }
       /* Preview */
       .preview {
-        margin-top: 32px;
         text-align: center;
+      }
+      .preview-placeholder {
+        background: #1f1f1f;
+        border: 2px dashed #2a2a2a;
+        border-radius: 12px;
+        padding: 60px 20px;
+        color: #6e6e73;
+        font-size: 14px;
       }
       .preview img {
         max-width: 100%;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        margin-top: 12px;
+        border-radius: 12px;
+        background: #1f1f1f;
+        padding: 20px;
       }
       .downloads {
-        margin-top: 12px;
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
       }
       .downloads a {
-        color: #1976d2;
+        padding: 10px 20px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        color: #ececec;
         text-decoration: none;
-        margin: 0 8px;
+        font-size: 14px;
         font-weight: 500;
+        transition: all 0.2s;
       }
       .downloads a:hover {
-        text-decoration: underline;
+        background: #252525;
+        border-color: #10a37f;
+        color: #10a37f;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .error {
+        color: #ff453a;
+        font-size: 14px;
+        margin-top: 8px;
+      }
+      .suggestions-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .suggestion-chip {
+        padding: 8px 12px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 6px;
+        color: #ececec;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .suggestion-chip:hover {
+        background: #252525;
+        border-color: #10a37f;
+        color: #10a37f;
+      }
+      .suggestions-label {
+        font-size: 12px;
+        color: #8e8e93;
+        margin-bottom: 8px;
+      }
+      #suggestBtn:hover {
+        background: #252525;
+        border-color: #10a37f;
+        color: #10a37f;
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 60px 20px 40px;
+        background: linear-gradient(135deg, #171717 0%, #1f1f1f 100%);
+        border-bottom: 1px solid #2a2a2a;
+      }
+      .hero h1 {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #10a37f 0%, #0d8a6a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero .subtitle {
+        font-size: 18px;
+        color: #8e8e93;
+        margin-bottom: 32px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-tagline {
+        font-size: 16px;
+        color: #ececec;
+        margin-bottom: 40px;
+      }
+      .sample-logos {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 32px;
+      }
+      .sample-logo {
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        padding: 20px;
+        width: 140px;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #ececec;
+        text-align: center;
+        font-weight: 600;
+        transition: transform 0.2s;
+      }
+      .sample-logo:hover {
+        transform: translateY(-4px);
+        border-color: #10a37f;
+      }
+      /* Progress Indicator */
+      .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 32px;
+        padding: 20px;
+        background: #1f1f1f;
+        border-radius: 8px;
+        border: 1px solid #2a2a2a;
+      }
+      .progress-step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+      }
+      .progress-step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        right: -50%;
+        width: 100%;
+        height: 2px;
+        background: #2a2a2a;
+        z-index: 0;
+      }
+      .progress-step.active:not(:last-child)::after {
+        background: #10a37f;
+      }
+      .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2a2a2a;
+        border: 2px solid #2a2a2a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        color: #8e8e93;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+      }
+      .progress-step.active .step-number {
+        background: #10a37f;
+        border-color: #10a37f;
+        color: #fff;
+      }
+      .progress-step.completed .step-number {
+        background: #0d8a6a;
+        border-color: #0d8a6a;
+        color: #fff;
+      }
+      .step-label {
+        font-size: 12px;
+        color: #8e8e93;
+      }
+      .progress-step.active .step-label {
+        color: #ececec;
+        font-weight: 500;
+      }
+      /* Tooltip */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        margin-left: 6px;
+        cursor: help;
+      }
+      .tooltip-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #2a2a2a;
+        color: #8e8e93;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background: #1f1f1f;
+        color: #ececec;
+        text-align: left;
+        border-radius: 6px;
+        padding: 8px 12px;
+        position: absolute;
+        z-index: 1000;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 12px;
+        line-height: 1.4;
+        border: 1px solid #2a2a2a;
+      }
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+      /* Trust Badge */
+      .trust-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #8e8e93;
+        margin-top: 12px;
+      }
+      .format-info {
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: #8e8e93;
+        line-height: 1.5;
+      }
+      /* Icon Picker */
+      .icon-picker-container {
+        position: relative;
+      }
+      .icon-picker-btn {
+        padding: 8px 12px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        color: #ececec;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+      .icon-picker-btn:hover {
+        background: #252525;
+        border-color: #10a37f;
+        color: #10a37f;
+      }
+      .icon-picker-modal {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 8px;
+        background: #171717;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 20px;
+        z-index: 1000;
+        width: 320px;
+        max-height: 400px;
+        overflow-y: auto;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      }
+      .icon-picker-modal.active {
+        display: block;
+      }
+      .icon-category {
+        margin-bottom: 20px;
+      }
+      .icon-category-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #8e8e93;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+      }
+      .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      }
+      .icon-option {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 20px;
+        transition: all 0.2s;
+      }
+      .icon-option:hover {
+        background: #252525;
+        border-color: #10a37f;
+        transform: scale(1.1);
+      }
+      .icon-option.selected {
+        background: #10a37f;
+        border-color: #10a37f;
+      }
+      .icon-input-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      /* Auth UI */
+      .auth-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #171717;
+        border-bottom: 1px solid #2a2a2a;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+      }
+      .auth-buttons {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .auth-btn {
+        padding: 8px 16px;
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 6px;
+        color: #ececec;
+        text-decoration: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .auth-btn:hover {
+        background: #252525;
+        border-color: #10a37f;
+        color: #10a37f;
+      }
+      .auth-btn.primary {
+        background: #10a37f;
+        border-color: #10a37f;
+        color: #fff;
+      }
+      .auth-btn.primary:hover {
+        background: #0d8a6a;
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #10a37f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .user-name {
+        font-size: 14px;
+        color: #ececec;
+      }
+      .usage-info {
+        font-size: 12px;
+        color: #8e8e93;
+        margin-left: 12px;
+      }
+      body {
+        padding-top: 60px;
+      }
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal.active {
+        display: flex;
+      }
+      .modal-content {
+        background: #171717;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 32px;
+        max-width: 400px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-header {
+        margin-bottom: 24px;
+      }
+      .modal-header h2 {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+      .modal-close {
+        float: right;
+        background: none;
+        border: none;
+        color: #8e8e93;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+      }
+      .oauth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .oauth-btn {
+        padding: 12px;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        background: #1f1f1f;
+        color: #ececec;
+        text-decoration: none;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s;
+      }
+      .oauth-btn:hover {
+        background: #252525;
+        border-color: #10a37f;
+      }
+      .divider {
+        text-align: center;
+        margin: 24px 0;
+        color: #8e8e93;
+        position: relative;
+      }
+      .divider::before,
+      .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 45%;
+        height: 1px;
+        background: #2a2a2a;
+      }
+      .divider::before {
+        left: 0;
+      }
+      .divider::after {
+        right: 0;
+      }
+      .error-message {
+        background: #2a1f1f;
+        border: 1px solid #ff453a;
+        color: #ff453a;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 14px;
+      }
+      .success-message {
+        background: #1f2a1f;
+        border: 1px solid #10a37f;
+        color: #10a37f;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 14px;
+      }
+      /* Ads */
+      .ad-container {
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 24px;
+        text-align: center;
+        min-height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .ad-label {
+        font-size: 11px;
+        color: #8e8e93;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>Logo Generator</h1>
-
-      <label for="name">Business Name</label>
-      <input id="name" type="text" placeholder="Enter your business name" />
-
-      <label for="style">Style</label>
-      <select id="style">
-        <option value="modern">Modern</option>
-        <option value="playful">Playful</option>
-        <option value="minimal">Minimal</option>
-        <option value="digital">Digital</option>
-        <option value="handwritten">Handwritten</option>
-      </select>
-
-      <label for="fontColor">Font Color</label>
-      <input id="fontColor" type="color" value="#000000" />
-
-      <label for="bgColor">Background Color</label>
-      <input id="bgColor" type="color" value="#ffffff" />
-
-      <button id="generateBtn">Generate Logo</button>
-
-      <div class="preview" id="preview">
-        <!-- Preview + downloads will appear here -->
+    <!-- Auth Header -->
+    <div class="auth-header">
+      <div style="font-weight: 600; color: #10a37f;">Logo Generator</div>
+      <div class="auth-buttons" id="authButtons">
+        <button class="auth-btn" onclick="openLoginModal()">Log In</button>
+        <button class="auth-btn primary" onclick="openSignupModal()">Sign Up</button>
+      </div>
+      <div class="user-info" id="userInfo" style="display: none;">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <div>
+          <div class="user-name" id="userName">User</div>
+          <div class="usage-info" id="usageInfo">Loading...</div>
+        </div>
+        <button class="auth-btn" onclick="logout()">Logout</button>
       </div>
     </div>
 
-    <!-- Load client-side logic from external script to comply with CSP -->
-    <script src="app.js"></script>
+    <div class="hero">
+      <h1>Create Your Professional Logo in Minutes</h1>
+      <p class="subtitle">No design skills needed — perfect for cafés, freelancers, artisans, and new small businesses</p>
+      <p class="hero-tagline">✓ Professional quality ✓ Full usage rights ✓ Multiple formats</p>
+      <div class="sample-logos">
+        <div class="sample-logo" style="background: #FFF8DC; color: #8B4513;">Sweet Dreams<br>Bakery</div>
+        <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A;">Flow Masters<br>Plumbing</div>
+        <div class="sample-logo" style="background: #EFEBE9; color: #5D4037;">Green Thumb<br>Landscaping</div>
+        <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD;">Fit Zone<br>Fitness</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card form-card">
+        <div class="progress-steps" id="progressSteps">
+          <div class="progress-step active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">Business Info</div>
+          </div>
+          <div class="progress-step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">Style & Design</div>
+          </div>
+          <div class="progress-step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">Preview & Download</div>
+          </div>
+        </div>
+
+        <div>
+          <h1 style="font-size: 24px; margin-bottom: 8px;">Small Business Service</h1>
+          <p class="subtitle" style="margin-bottom: 0;">Create your business logo and get started with a digital playbook</p>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Text Content</div>
+          <div class="form-group">
+            <label for="businessType" class="optional">
+              Business Type
+              <span class="tooltip">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-text">Select your business type to get tailored suggestions for icons, colors, and styles</span>
+              </span>
+            </label>
+            <select id="businessType">
+              <option value="">Select a business type...</option>
+              <option value="bakery">Bakery</option>
+              <option value="hairdresser">Hairdresser / Salon</option>
+              <option value="plumber">Plumber</option>
+              <option value="electrician">Electrician</option>
+              <option value="restaurant">Restaurant / Cafe</option>
+              <option value="fitness">Fitness / Gym</option>
+              <option value="photography">Photography</option>
+              <option value="consulting">Consulting</option>
+              <option value="retail">Retail / Shop</option>
+              <option value="cleaning">Cleaning Service</option>
+              <option value="landscaping">Landscaping</option>
+              <option value="automotive">Automotive</option>
+              <option value="real-estate">Real Estate</option>
+              <option value="tech">Technology</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="education">Education / Tutoring</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="name">Business Name</label>
+            <div style="display: flex; gap: 8px; align-items: flex-start;">
+              <input id="name" type="text" placeholder="Enter your business name" required style="flex: 1; min-width: 0;" />
+              <button type="button" id="suggestBtn" style="padding: 8px 10px; width: 70px; flex-shrink: 0; margin: 0; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Suggest</button>
+            </div>
+            <div id="suggestions" style="display: none; margin-top: 12px;"></div>
+          </div>
+          <div class="form-group">
+            <label for="tagline" class="optional">Tagline</label>
+            <div style="display: flex; gap: 8px; align-items: flex-start;">
+              <input id="tagline" type="text" placeholder="Enter a tagline" style="flex: 1; min-width: 0;" />
+              <button type="button" id="suggestTaglineBtn" style="padding: 8px 10px; width: 70px; flex-shrink: 0; margin: 0; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Suggest</button>
+            </div>
+            <div id="taglineSuggestions" style="display: none; margin-top: 12px;"></div>
+          </div>
+          <div class="form-group">
+            <label for="location" class="optional">Location</label>
+            <input id="location" type="text" placeholder="Detecting your location..." />
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Style & Typography</div>
+          <div class="form-group">
+            <label for="style">
+              Style
+              <span class="tooltip">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-text">Choose a style that matches your brand personality. Minimal = modern, Playful = fun, Corporate = professional</span>
+              </span>
+            </label>
+            <select id="style">
+              <option value="minimal">Minimal</option>
+              <option value="modern">Modern</option>
+              <option value="vintage">Vintage</option>
+              <option value="luxury">Luxury</option>
+              <option value="tech">Tech</option>
+              <option value="organic">Organic</option>
+              <option value="corporate">Corporate</option>
+              <option value="playful">Playful</option>
+              <option value="digital">Digital</option>
+              <option value="handwritten">Handwritten</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fontCategory">Font Category</label>
+            <select id="fontCategory">
+              <option value="modern">Modern</option>
+              <option value="serif">Serif</option>
+              <option value="handwritten">Handwritten</option>
+              <option value="bold">Bold / Strong</option>
+              <option value="elegant">Elegant</option>
+              <option value="retro">Retro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Icon & Layout</div>
+          <div class="form-group">
+            <label for="icon" class="optional">
+              Icon
+              <span class="tooltip">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-text">Choose an icon to add visual interest to your logo. Icons work great for branding!</span>
+              </span>
+            </label>
+            <div class="icon-input-row">
+              <input id="icon" type="text" placeholder="Select an icon below or type emoji" maxlength="2" style="flex: 1; min-width: 0;" />
+              <button type="button" id="iconPickerBtn" class="icon-picker-btn">Browse Icons</button>
+            </div>
+            <div class="icon-picker-container">
+              <div class="icon-picker-modal" id="iconPickerModal">
+                <div class="icon-category">
+                  <div class="icon-category-title">Food & Drink</div>
+                  <div class="icon-grid">
+                    <div class="icon-option" data-icon="☕">☕</div>
+                    <div class="icon-option" data-icon="🍕">🍕</div>
+                    <div class="icon-option" data-icon="🍰">🍰</div>
+                    <div class="icon-option" data-icon="🥐">🥐</div>
+                    <div class="icon-option" data-icon="🍔">🍔</div>
+                    <div class="icon-option" data-icon="🥗">🥗</div>
+                  </div>
+                </div>
+                <div class="icon-category">
+                  <div class="icon-category-title">Business & Services</div>
+                  <div class="icon-grid">
+                    <div class="icon-option" data-icon="💼">💼</div>
+                    <div class="icon-option" data-icon="🔧">🔧</div>
+                    <div class="icon-option" data-icon="⚡">⚡</div>
+                    <div class="icon-option" data-icon="🏠">🏠</div>
+                    <div class="icon-option" data-icon="🚗">🚗</div>
+                    <div class="icon-option" data-icon="💇">💇</div>
+                  </div>
+                </div>
+                <div class="icon-category">
+                  <div class="icon-category-title">Nature & Health</div>
+                  <div class="icon-grid">
+                    <div class="icon-option" data-icon="🌿">🌿</div>
+                    <div class="icon-option" data-icon="🌱">🌱</div>
+                    <div class="icon-option" data-icon="💚">💚</div>
+                    <div class="icon-option" data-icon="🏋️">🏋️</div>
+                    <div class="icon-option" data-icon="🧘">🧘</div>
+                    <div class="icon-option" data-icon="🌳">🌳</div>
+                  </div>
+                </div>
+                <div class="icon-category">
+                  <div class="icon-category-title">Creative & Tech</div>
+                  <div class="icon-grid">
+                    <div class="icon-option" data-icon="📸">📸</div>
+                    <div class="icon-option" data-icon="🎨">🎨</div>
+                    <div class="icon-option" data-icon="💻">💻</div>
+                    <div class="icon-option" data-icon="🚀">🚀</div>
+                    <div class="icon-option" data-icon="⭐">⭐</div>
+                    <div class="icon-option" data-icon="✨">✨</div>
+                  </div>
+                </div>
+                <div class="icon-category">
+                  <div class="icon-category-title">Symbols & Shapes</div>
+                  <div class="icon-grid">
+                    <div class="icon-option" data-icon="❤️">❤️</div>
+                    <div class="icon-option" data-icon="💎">💎</div>
+                    <div class="icon-option" data-icon="🔥">🔥</div>
+                    <div class="icon-option" data-icon="🌟">🌟</div>
+                    <div class="icon-option" data-icon="🎯">🎯</div>
+                    <div class="icon-option" data-icon="💫">💫</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="layout">Icon Position</label>
+            <select id="layout">
+              <option value="none">None</option>
+              <option value="left">Left</option>
+              <option value="top">Top</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Shape & Colors</div>
+          <div class="form-group">
+            <label for="shape">
+              Shape
+              <span class="tooltip">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-text">Choose a shape for your logo background. Circle and Square work great for social media profiles</span>
+              </span>
+            </label>
+            <select id="shape">
+              <option value="none">No Shape (Transparent)</option>
+              <option value="circle">Circle</option>
+              <option value="square">Square</option>
+              <option value="rounded">Rounded Rectangle</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="colorPalette">Color Palette</label>
+            <select id="colorPalette">
+              <option value="custom">Custom</option>
+              <option value="warm">Warm</option>
+              <option value="cold">Cold</option>
+              <option value="earthy">Earthy</option>
+              <option value="bold">Bold</option>
+              <option value="pastel">Pastel</option>
+              <option value="monochrome">Monochrome</option>
+            </select>
+          </div>
+          <div id="colorPickers" class="form-group">
+            <div class="color-group">
+              <div class="color-input-wrapper">
+                <label for="fontColor">Font Color</label>
+                <input id="fontColor" type="color" value="#000000" />
+              </div>
+              <div class="color-input-wrapper">
+                <label for="bgColor">Background</label>
+                <input id="bgColor" type="color" value="#ffffff" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="generateBtn">Generate Logo</button>
+
+        <div class="section" style="margin-top: 32px; padding-top: 32px; border-top: 1px solid #2a2a2a;">
+          <div class="section-title">What's Next?</div>
+          <div style="display: grid; gap: 12px;">
+            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px;">
+              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;">📋 Digital Playbook</h3>
+              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;">
+                Get a personalized business plan and digital strategy.
+              </p>
+              <button type="button" id="createPlaybookBtn" style="width: 100%; padding: 10px 16px; background: #10a37f; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+                Create Playbook
+              </button>
+            </div>
+            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px;">
+              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;">🌐 Website & Hosting</h3>
+              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;">
+                Get your business online with a professional website.
+              </p>
+              <button type="button" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Website builder coming soon!')">
+                Get Started
+              </button>
+            </div>
+            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px;">
+              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;">📱 Social Media Kit</h3>
+              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;">
+                Business cards, social profiles, and brand guidelines.
+              </p>
+              <button type="button" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Social media kit coming soon!')">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card preview-card">
+        <div class="section">
+          <div class="section-title">Preview</div>
+          <div class="preview" id="preview">
+            <div class="preview-placeholder">
+              Your logo will appear here
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ad Container (shown for free tier users) -->
+        <div id="adContainer" style="display: none;">
+          <div class="ad-label">Advertisement</div>
+          <div class="ad-container" id="adSenseContainer">
+            <!-- Google AdSense will be inserted here -->
+            <div style="color: #8e8e93; font-size: 12px;">
+              Ad space reserved for free tier users
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+          <h2>Log In</h2>
+          <p class="subtitle">Sign in to your account</p>
+        </div>
+        <div id="loginError"></div>
+        <div class="oauth-buttons">
+          <a href="/auth/google" class="oauth-btn">Continue with Google</a>
+          <a href="/auth/facebook" class="oauth-btn">Continue with Facebook</a>
+        </div>
+        <div class="divider">or</div>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required />
+          </div>
+          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;">Log In</button>
+        </form>
+        <div style="text-align: center; margin-top: 16px;">
+          <a href="#" onclick="openForgotPasswordModal(); closeLoginModal();" style="color: #10a37f; font-size: 14px;">Forgot password?</a>
+        </div>
+        <div style="text-align: center; margin-top: 16px; font-size: 14px; color: #8e8e93;">
+          Don't have an account? <a href="#" onclick="closeLoginModal(); openSignupModal();" style="color: #10a37f;">Sign up</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+          <h2>Sign Up</h2>
+          <p class="subtitle">Create your free account</p>
+        </div>
+        <div id="signupError"></div>
+        <div class="oauth-buttons">
+          <a href="/auth/google" class="oauth-btn">Continue with Google</a>
+          <a href="/auth/facebook" class="oauth-btn">Continue with Facebook</a>
+        </div>
+        <div class="divider">or</div>
+        <form id="signupForm" onsubmit="handleSignup(event)">
+          <div class="form-group">
+            <label for="signupName">Name</label>
+            <input type="text" id="signupName" />
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">Email</label>
+            <input type="email" id="signupEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" required minlength="8" />
+            <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">Must be at least 8 characters</div>
+          </div>
+          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;">Sign Up</button>
+        </form>
+        <div style="text-align: center; margin-top: 16px; font-size: 14px; color: #8e8e93;">
+          Already have an account? <a href="#" onclick="closeSignupModal(); openLoginModal();" style="color: #10a37f;">Log in</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgotPasswordModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+          <h2>Reset Password</h2>
+          <p class="subtitle">Enter your email to receive a reset link</p>
+        </div>
+        <div id="forgotPasswordError"></div>
+        <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
+          <div class="form-group">
+            <label for="forgotPasswordEmail">Email</label>
+            <input type="email" id="forgotPasswordEmail" required />
+          </div>
+          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;">Send Reset Link</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Inline JavaScript to avoid separate file request -->
+    <script>
+      const nameInput = document.getElementById('name');
+      const taglineInput = document.getElementById('tagline');
+      const locationInput = document.getElementById('location');
+      const businessTypeSelect = document.getElementById('businessType');
+      const suggestBtn = document.getElementById('suggestBtn');
+      const suggestTaglineBtn = document.getElementById('suggestTaglineBtn');
+      const suggestionsDiv = document.getElementById('suggestions');
+      const taglineSuggestionsDiv = document.getElementById('taglineSuggestions');
+      const createPlaybookBtn = document.getElementById('createPlaybookBtn');
+      const styleSelect = document.getElementById('style');
+      const fontCategorySelect = document.getElementById('fontCategory');
+      const iconInput = document.getElementById('icon');
+      const iconPickerBtn = document.getElementById('iconPickerBtn');
+      const iconPickerModal = document.getElementById('iconPickerModal');
+      const layoutSelect = document.getElementById('layout');
+      const shapeSelect = document.getElementById('shape');
+      const colorPaletteSelect = document.getElementById('colorPalette');
+      const fontColorInp = document.getElementById('fontColor');
+      const bgColorInp = document.getElementById('bgColor');
+      const colorPickersDiv = document.getElementById('colorPickers');
+      const btn = document.getElementById('generateBtn');
+      const previewDiv = document.getElementById('preview');
+
+      // Business name suggestions by type
+      const businessNameSuggestions = {
+        bakery: ['Sweet Dreams Bakery', 'Golden Crust', 'Artisan Loaf', 'Sugar & Spice', 'The Daily Bread', 'Flour Power', 'Crust & Crumb', 'Baked Bliss'],
+        hairdresser: ['Shear Elegance', 'Cut & Style', 'The Hair Studio', 'Locks & Layers', 'Style & Shine', 'Hair Haven', 'Chic Cuts', 'The Salon'],
+        plumber: ['Flow Masters', 'Pipe Pros', 'Aqua Fix', 'Drip Stop', 'Plumb Perfect', 'Water Works', 'Reliable Pipes', 'Fix It Fast'],
+        electrician: ['Bright Sparks', 'Current Solutions', 'Power Up', 'Wired Right', 'Electric Experts', 'Volt Pro', 'Circuit Masters', 'Shock Free'],
+        restaurant: ['The Corner Bistro', 'Flavor Fusion', 'Table & Taste', 'The Local Kitchen', 'Savory & Sweet', 'Dine & Delight', 'Culinary Craft', 'The Foodie'],
+        fitness: ['Fit Zone', 'Strength Studio', 'Power Gym', 'Active Life', 'Fit Force', 'Body Works', 'Muscle Up', 'The Fitness Hub'],
+        photography: ['Frame & Focus', 'Capture Moments', 'Lens & Light', 'Photo Art', 'Shutter Studio', 'Picture Perfect', 'Visual Story', 'The Lens'],
+        consulting: ['Strategic Edge', 'Business Boost', 'Consult Pro', 'Smart Solutions', 'Expert Advice', 'Growth Partners', 'The Advisor', 'Insight Consulting'],
+        retail: ['The Shop', 'Retail Realm', 'Market Place', 'Store & More', 'The Boutique', 'Retail Rendezvous', 'Shop Smart', 'The Storefront'],
+        cleaning: ['Sparkle Clean', 'Spotless Service', 'Clean & Shine', 'Fresh Start', 'Tidy Team', 'Pure Clean', 'Shine Bright', 'The Cleaners'],
+        landscaping: ['Green Thumb', 'Garden Masters', 'Lawn & Order', 'Nature\'s Best', 'Garden Design', 'Landscape Pro', 'Outdoor Art', 'The Gardeners'],
+        automotive: ['Auto Care', 'Drive Right', 'Car Care Pro', 'Motor Masters', 'Auto Fix', 'Wheel Works', 'Garage Pro', 'The Mechanic'],
+        'real-estate': ['Home Finders', 'Property Pro', 'Real Estate Plus', 'Home Base', 'Property Partners', 'The Realtors', 'Home Solutions', 'Estate Experts'],
+        tech: ['Tech Solutions', 'Code & Create', 'Digital Dynamics', 'Tech Pro', 'Innovate Now', 'Byte Works', 'Tech Hub', 'The Developers'],
+        healthcare: ['Health First', 'Care Plus', 'Wellness Center', 'Health Hub', 'Care Clinic', 'Wellness Pro', 'Health Care', 'The Clinic'],
+        education: ['Learn & Grow', 'Knowledge Hub', 'Study Smart', 'Edu Pro', 'Learning Lab', 'Teach & Learn', 'Education Plus', 'The Academy'],
+      };
+
+      // Generate business name suggestions
+      function generateSuggestions(businessType) {
+        if (!businessType || !businessNameSuggestions[businessType]) {
+          return [];
+        }
+
+        const baseSuggestions = businessNameSuggestions[businessType];
+        const suggestions = [...baseSuggestions];
+        
+        // Add some variations
+        const prefixes = ['Elite', 'Premium', 'Pro', 'Prime', 'Ultimate', 'Super'];
+        const suffixes = ['Co', 'Group', 'Services', 'Solutions', 'Plus', 'Pro'];
+        
+        // Add a few random variations
+        const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+        const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+        const baseName = baseSuggestions[0].split(' ')[0];
+        
+        suggestions.push(`${randomPrefix} ${baseName}`);
+        suggestions.push(`${baseName} ${randomSuffix}`);
+        
+        // Shuffle and return 8 suggestions
+        return suggestions.sort(() => Math.random() - 0.5).slice(0, 8);
+      }
+
+      // Display suggestions
+      function displaySuggestions(suggestions) {
+        if (suggestions.length === 0) {
+          suggestionsDiv.style.display = 'none';
+          return;
+        }
+
+        suggestionsDiv.innerHTML = `
+          <div class="suggestions-label">Click a suggestion to use it:</div>
+          <div class="suggestions-container">
+            ${suggestions.map(name => 
+              `<div class="suggestion-chip" data-name="${name}">${name}</div>`
+            ).join('')}
+          </div>
+        `;
+        suggestionsDiv.style.display = 'block';
+
+        // Add click handlers
+        suggestionsDiv.querySelectorAll('.suggestion-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            nameInput.value = chip.dataset.name;
+            suggestionsDiv.style.display = 'none';
+          });
+        });
+      }
+
+      // Tagline suggestions by business type
+      const taglineSuggestions = {
+        bakery: ['Fresh baked daily', 'Where tradition meets taste', 'Artisan breads & pastries', 'Sweet moments, every day', 'Baked with love', 'Your neighborhood bakery', 'Quality ingredients, quality taste', 'From our oven to your table'],
+        hairdresser: ['Your style, our passion', 'Where beauty begins', 'Cut, color, confidence', 'Styling your best look', 'Expert cuts, expert care', 'Your hair, our art', 'Transform your style', 'Beauty redefined'],
+        plumber: ['Reliable service, guaranteed', 'Your trusted plumbing experts', 'Fast, friendly, professional', '24/7 emergency service', 'Quality work, fair prices', 'We fix it right the first time', 'Your local plumbing pros', 'Drains, pipes, and more'],
+        electrician: ['Powering your home safely', 'Licensed & insured', 'Expert electrical solutions', 'Your trusted electricians', 'Safe, reliable, professional', 'Brightening your world', 'Electrical excellence', 'Wired for success'],
+        restaurant: ['Fresh ingredients, bold flavors', 'Where food meets passion', 'A taste of home', 'Locally sourced, globally inspired', 'Dining reimagined', 'Your neighborhood favorite', 'Culinary excellence', 'Flavors that bring people together'],
+        fitness: ['Transform your body, transform your life', 'Your fitness journey starts here', 'Stronger every day', 'Train hard, live strong', 'Where goals become reality', 'Your personal fitness partner', 'Empower your potential', 'Fitness that fits you'],
+        photography: ['Capturing life\'s precious moments', 'Your story, beautifully told', 'Memories that last forever', 'Professional photography services', 'Every picture tells a story', 'Preserving your special day', 'Artistic vision, timeless results', 'Where moments become memories'],
+        consulting: ['Strategic solutions for growth', 'Your business success partner', 'Expert advice, proven results', 'Transforming businesses', 'Strategic thinking, actionable results', 'Your competitive advantage', 'Growth through expertise', 'Business solutions that work'],
+        retail: ['Quality products, great prices', 'Your one-stop shop', 'Shop local, shop smart', 'Everything you need', 'Quality you can trust', 'Your favorite store', 'Shop with confidence', 'More than just a store'],
+        cleaning: ['Spotless results, every time', 'Your home, professionally cleaned', 'Cleaning you can trust', 'Fresh, clean, healthy', 'Professional cleaning services', 'Making your space shine', 'Clean homes, happy families', 'Your cleaning experts'],
+        landscaping: ['Transforming outdoor spaces', 'Your landscape design experts', 'Beautiful gardens, beautiful homes', 'Outdoor living reimagined', 'Creating your perfect outdoor space', 'Landscaping excellence', 'Nature meets design', 'Your outdoor oasis'],
+        automotive: ['Your trusted auto care experts', 'Quality service, fair prices', 'Keeping you on the road', 'Expert mechanics, honest service', 'Auto repair you can trust', 'Your car care specialists', 'Professional auto service', 'Drive with confidence'],
+        'real-estate': ['Finding your perfect home', 'Your real estate experts', 'Homes, dreams, reality', 'Expert guidance, proven results', 'Your property partners', 'Real estate made simple', 'Where dreams become addresses', 'Your home buying experts'],
+        tech: ['Innovative solutions for modern business', 'Technology that works for you', 'Digital transformation experts', 'Your tech partners', 'Building the future, today', 'Tech solutions that scale', 'Innovation meets execution', 'Your digital advantage'],
+        healthcare: ['Caring for your health', 'Your wellness partners', 'Quality healthcare, close to home', 'Health and wellness experts', 'Caring professionals, quality care', 'Your health, our priority', 'Wellness that works', 'Healthcare you can trust'],
+        education: ['Empowering minds, shaping futures', 'Learning made personal', 'Your educational partners', 'Knowledge that transforms', 'Expert tutoring, proven results', 'Unlocking potential', 'Education excellence', 'Your learning journey starts here'],
+      };
+
+      // Generate tagline suggestions
+      function generateTaglineSuggestions(businessType, businessName) {
+        if (!businessType || !taglineSuggestions[businessType]) {
+          return [];
+        }
+        const baseSuggestions = taglineSuggestions[businessType];
+        const suggestions = [...baseSuggestions];
+        
+        // Add personalized suggestions if business name is provided
+        if (businessName) {
+          const nameWords = businessName.split(' ')[0];
+          suggestions.push(`${nameWords} - Quality you can trust`);
+          suggestions.push(`Welcome to ${businessName}`);
+        }
+        
+        return suggestions.sort(() => Math.random() - 0.5).slice(0, 8);
+      }
+
+      // Display tagline suggestions
+      function displayTaglineSuggestions(suggestions) {
+        if (suggestions.length === 0) {
+          taglineSuggestionsDiv.style.display = 'none';
+          return;
+        }
+
+        taglineSuggestionsDiv.innerHTML = `
+          <div class="suggestions-label">Click a suggestion to use it:</div>
+          <div class="suggestions-container">
+            ${suggestions.map(tagline => 
+              `<div class="suggestion-chip" data-tagline="${tagline}">${tagline}</div>`
+            ).join('')}
+          </div>
+        `;
+        taglineSuggestionsDiv.style.display = 'block';
+
+        taglineSuggestionsDiv.querySelectorAll('.suggestion-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            taglineInput.value = chip.dataset.tagline;
+            taglineSuggestionsDiv.style.display = 'none';
+          });
+        });
+      }
+
+      // Suggest button handler
+      suggestBtn.addEventListener('click', () => {
+        const businessType = businessTypeSelect.value;
+        if (!businessType) {
+          alert('Please select a business type first.');
+          return;
+        }
+        const suggestions = generateSuggestions(businessType);
+        displaySuggestions(suggestions);
+      });
+
+      // Tagline suggest button handler
+      suggestTaglineBtn.addEventListener('click', () => {
+        const businessType = businessTypeSelect.value;
+        const businessName = nameInput.value.trim();
+        if (!businessType) {
+          alert('Please select a business type first.');
+          return;
+        }
+        const suggestions = generateTaglineSuggestions(businessType, businessName);
+        displayTaglineSuggestions(suggestions);
+      });
+
+      // Location detection from IP
+      async function detectLocation() {
+        try {
+          const response = await fetch('/api/location');
+          const data = await response.json();
+          if (data.location) {
+            locationInput.value = data.location;
+            locationInput.placeholder = 'Enter your location';
+          } else {
+            locationInput.placeholder = 'Enter your location';
+          }
+        } catch (err) {
+          console.error('Location detection failed:', err);
+          locationInput.placeholder = 'Enter your location';
+        }
+      }
+
+      // Playbook button handler
+      createPlaybookBtn.addEventListener('click', () => {
+        const businessName = nameInput.value.trim();
+        const businessType = businessTypeSelect.value;
+        const location = locationInput.value.trim();
+        
+        if (!businessName) {
+          alert('Please enter a business name first.');
+          return;
+        }
+
+        const playbookData = {
+          businessName,
+          businessType: businessType || 'general',
+          location: location || 'Unknown',
+          tagline: taglineInput.value.trim() || '',
+        };
+
+        // Store playbook data and show message
+        localStorage.setItem('playbookData', JSON.stringify(playbookData));
+        alert(`Digital playbook will be created for ${businessName}!\n\nThis feature will generate:\n- Business plan outline\n- Marketing strategy\n- Digital presence checklist\n- Local market insights\n\n(Feature coming soon!)`);
+      });
+
+      // Progress indicator management
+      function updateProgress(step) {
+        document.querySelectorAll('.progress-step').forEach((el, index) => {
+          const stepNum = index + 1;
+          el.classList.remove('active', 'completed');
+          if (stepNum < step) {
+            el.classList.add('completed');
+          } else if (stepNum === step) {
+            el.classList.add('active');
+          }
+        });
+      }
+
+      // Update progress based on form interaction
+      businessTypeSelect.addEventListener('change', () => {
+        if (businessTypeSelect.value && nameInput.value.trim()) {
+          updateProgress(2);
+        }
+      });
+
+      nameInput.addEventListener('input', () => {
+        if (nameInput.value.trim() && businessTypeSelect.value) {
+          updateProgress(2);
+        }
+      });
+
+      styleSelect.addEventListener('change', () => {
+        if (nameInput.value.trim()) {
+          updateProgress(2);
+        }
+      });
+
+      // Icon picker functionality
+      iconPickerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        iconPickerModal.classList.toggle('active');
+      });
+
+      // Close icon picker when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!iconPickerModal.contains(e.target) && e.target !== iconPickerBtn) {
+          iconPickerModal.classList.remove('active');
+        }
+      });
+
+      // Handle icon selection
+      iconPickerModal.querySelectorAll('.icon-option').forEach(option => {
+        option.addEventListener('click', () => {
+          const selectedIcon = option.dataset.icon;
+          iconInput.value = selectedIcon;
+          
+          // Update visual selection
+          iconPickerModal.querySelectorAll('.icon-option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          option.classList.add('selected');
+          
+          // Close modal after a short delay
+          setTimeout(() => {
+            iconPickerModal.classList.remove('active');
+          }, 300);
+        });
+      });
+
+      // Update selected icon visual when input changes
+      iconInput.addEventListener('input', () => {
+        const currentIcon = iconInput.value;
+        iconPickerModal.querySelectorAll('.icon-option').forEach(option => {
+          option.classList.remove('selected');
+          if (option.dataset.icon === currentIcon) {
+            option.classList.add('selected');
+          }
+        });
+      });
+
+      // Auto-suggest icons based on business type
+      businessTypeSelect.addEventListener('change', () => {
+        const businessType = businessTypeSelect.value;
+        const iconSuggestions = {
+          bakery: '🍰',
+          hairdresser: '💇',
+          plumber: '🔧',
+          electrician: '⚡',
+          restaurant: '☕',
+          fitness: '🏋️',
+          photography: '📸',
+          consulting: '💼',
+          retail: '🛍️',
+          cleaning: '✨',
+          landscaping: '🌿',
+          automotive: '🚗',
+          'real-estate': '🏠',
+          tech: '💻',
+          healthcare: '💚',
+          education: '📚',
+        };
+        
+        if (iconSuggestions[businessType] && !iconInput.value) {
+          iconInput.value = iconSuggestions[businessType];
+        }
+      });
+
+      // Detect location on page load
+      detectLocation();
+
+      // Color palette definitions
+      const colorPalettes = {
+        warm: { font: '#8B4513', bg: '#FFF8DC' },
+        cold: { font: '#1E3A8A', bg: '#E0F2FE' },
+        earthy: { font: '#5D4037', bg: '#EFEBE9' },
+        bold: { font: '#FFFFFF', bg: '#E91E63' },
+        pastel: { font: '#6A5ACD', bg: '#F8BBD0' },
+        monochrome: { font: '#212121', bg: '#FFFFFF' },
+      };
+
+      // Update colors when palette changes
+      colorPaletteSelect.addEventListener('change', () => {
+        const palette = colorPaletteSelect.value;
+        if (palette === 'custom') {
+          colorPickersDiv.style.display = 'block';
+        } else {
+          colorPickersDiv.style.display = 'block';
+          const colors = colorPalettes[palette];
+          if (colors) {
+            fontColorInp.value = colors.font;
+            bgColorInp.value = colors.bg;
+          }
+        }
+      });
+
+      async function generateLogo() {
+        const name = nameInput.value.trim();
+        const tagline = taglineInput.value.trim();
+        const style = styleSelect.value.toLowerCase();
+        const fontCategory = fontCategorySelect.value.toLowerCase();
+        const icon = iconInput.value.trim();
+        const layout = layoutSelect.value.toLowerCase();
+        const shape = shapeSelect.value.toLowerCase();
+        const colorPalette = colorPaletteSelect.value;
+        let fontColor = fontColorInp.value;
+        let bgColor = bgColorInp.value;
+
+        // Apply color palette if not custom
+        if (colorPalette !== 'custom' && colorPalettes[colorPalette]) {
+          fontColor = colorPalettes[colorPalette].font;
+          bgColor = colorPalettes[colorPalette].bg;
+        }
+
+        if (!name) {
+          alert('Please enter a business name.');
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Generating…';
+        previewDiv.innerHTML = '<div class="preview-placeholder">Generating your logo...</div>';
+
+        const payload = {
+          name,
+          tagline: tagline || undefined,
+          style,
+          fontCategory,
+          icon: icon || undefined,
+          layout,
+          shape,
+          fontColor,
+          bgColor,
+        };
+
+        console.log('🛰️ Sending generate-logo:', payload);
+
+        try {
+          const res = await fetch('/generate-logo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) throw new Error(await res.text());
+          const { svgPath, pngPath } = await res.json();
+
+          console.log('✅ Logo paths:', svgPath, pngPath);
+          
+          // Update progress to step 3
+          updateProgress(3);
+          
+          previewDiv.innerHTML = `
+            <img src="${pngPath}" alt="Logo Preview (PNG)" />
+            <div class="downloads">
+              <a href="${svgPath}" download>Download SVG</a>
+              <a href="${pngPath}" download>Download PNG</a>
+            </div>
+            <div class="format-info">
+              <strong>Format Guide:</strong><br>
+              <strong>SVG</strong> - Scalable vector format, perfect for print and large displays<br>
+              <strong>PNG</strong> - Raster format with transparent background, ideal for web and social media
+            </div>
+            <div class="trust-badge">
+              <span>✓</span> You own full usage rights to this logo
+            </div>
+          `;
+        } catch (err) {
+          console.error('❌ Generation error:', err);
+          previewDiv.innerHTML = '<div class="preview-placeholder error">Failed to generate logo. Please try again.</div>';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Generate Logo';
+        }
+      }
+
+      btn.addEventListener('click', () => {
+        console.log('🔘 Generate button clicked');
+        generateLogo();
+      });
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(location.search);
+        const n = params.get('name');
+        if (n) {
+          nameInput.value = n;
+          setTimeout(generateLogo, 100);
+        }
+        
+        // Check authentication status on load
+        checkAuthStatus();
+        
+        // Check for OAuth callback success
+        if (params.get('auth_success') === 'true') {
+          checkAuthStatus();
+          // Remove query param
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      });
+
+      // Authentication functions
+      let currentUser = null;
+
+      async function checkAuthStatus() {
+        try {
+          const response = await fetch('/auth/me');
+          if (response.ok) {
+            const data = await response.json();
+            currentUser = data.user;
+            updateAuthUI(data.user);
+            loadUsageLimits();
+            loadAds();
+          } else {
+            currentUser = null;
+            updateAuthUI(null);
+            hideAds();
+          }
+        } catch (err) {
+          console.error('Auth check error:', err);
+          currentUser = null;
+          updateAuthUI(null);
+        }
+      }
+
+      function updateAuthUI(user) {
+        const authButtons = document.getElementById('authButtons');
+        const userInfo = document.getElementById('userInfo');
+        
+        if (user) {
+          authButtons.style.display = 'none';
+          userInfo.style.display = 'flex';
+          document.getElementById('userName').textContent = user.name || user.email;
+          document.getElementById('userAvatar').textContent = (user.name || user.email || 'U')[0].toUpperCase();
+          if (user.avatarUrl) {
+            document.getElementById('userAvatar').style.backgroundImage = `url(${user.avatarUrl})`;
+            document.getElementById('userAvatar').style.backgroundSize = 'cover';
+          }
+        } else {
+          authButtons.style.display = 'flex';
+          userInfo.style.display = 'none';
+        }
+      }
+
+      async function loadUsageLimits() {
+        if (!currentUser) return;
+        
+        try {
+          const response = await fetch('/api/usage-limits');
+          if (response.ok) {
+            const limits = await response.json();
+            const remaining = limits.remaining;
+            document.getElementById('usageInfo').textContent = 
+              `${remaining.daily} daily, ${remaining.hourly} hourly remaining`;
+          }
+        } catch (err) {
+          console.error('Error loading usage limits:', err);
+        }
+      }
+
+      // Modal functions
+      function openLoginModal() {
+        document.getElementById('loginModal').classList.add('active');
+        document.getElementById('loginError').innerHTML = '';
+      }
+
+      function closeLoginModal() {
+        document.getElementById('loginModal').classList.remove('active');
+        document.getElementById('loginForm').reset();
+      }
+
+      function openSignupModal() {
+        document.getElementById('signupModal').classList.add('active');
+        document.getElementById('signupError').innerHTML = '';
+      }
+
+      function closeSignupModal() {
+        document.getElementById('signupModal').classList.remove('active');
+        document.getElementById('signupForm').reset();
+      }
+
+      function openForgotPasswordModal() {
+        document.getElementById('forgotPasswordModal').classList.add('active');
+        document.getElementById('forgotPasswordError').innerHTML = '';
+      }
+
+      function closeForgotPasswordModal() {
+        document.getElementById('forgotPasswordModal').classList.remove('active');
+        document.getElementById('forgotPasswordForm').reset();
+      }
+
+      // Close modals on outside click
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.classList.remove('active');
+          }
+        });
+      });
+
+      // Auth handlers
+      async function handleLogin(event) {
+        event.preventDefault();
+        const errorDiv = document.getElementById('loginError');
+        errorDiv.innerHTML = '';
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+          const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include',
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            if (data.needsVerification) {
+              errorDiv.innerHTML = '<div class="success-message">Please verify your email. Check your inbox for a verification link.</div>';
+            } else {
+              closeLoginModal();
+              await checkAuthStatus();
+            }
+          } else {
+            errorDiv.innerHTML = `<div class="error-message">${data.error || 'Login failed'}</div>`;
+          }
+        } catch (err) {
+          errorDiv.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+        }
+      }
+
+      async function handleSignup(event) {
+        event.preventDefault();
+        const errorDiv = document.getElementById('signupError');
+        errorDiv.innerHTML = '';
+
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+
+        try {
+          const response = await fetch('/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+            credentials: 'include',
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            errorDiv.innerHTML = '<div class="success-message">Registration successful! Please check your email to verify your account.</div>';
+            setTimeout(() => {
+              closeSignupModal();
+              openLoginModal();
+            }, 2000);
+          } else {
+            errorDiv.innerHTML = `<div class="error-message">${data.error || 'Registration failed'}</div>`;
+          }
+        } catch (err) {
+          errorDiv.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+        }
+      }
+
+      async function handleForgotPassword(event) {
+        event.preventDefault();
+        const errorDiv = document.getElementById('forgotPasswordError');
+        errorDiv.innerHTML = '';
+
+        const email = document.getElementById('forgotPasswordEmail').value;
+
+        try {
+          const response = await fetch('/auth/forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            errorDiv.innerHTML = '<div class="success-message">If the email exists, a password reset link has been sent.</div>';
+          } else {
+            errorDiv.innerHTML = `<div class="error-message">${data.error || 'Failed to send reset email'}</div>`;
+          }
+        } catch (err) {
+          errorDiv.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+        }
+      }
+
+      async function logout() {
+        try {
+          await fetch('/auth/logout', {
+            method: 'POST',
+            credentials: 'include',
+          });
+          currentUser = null;
+          updateAuthUI(null);
+          hideAds();
+        } catch (err) {
+          console.error('Logout error:', err);
+        }
+      }
+
+      // Ad integration
+      function loadAds() {
+        if (!currentUser || currentUser.subscriptionTier !== 'free') {
+          hideAds();
+          return;
+        }
+
+        const adContainer = document.getElementById('adContainer');
+        const adSenseContainer = document.getElementById('adSenseContainer');
+        
+        adContainer.style.display = 'block';
+        
+        // Google AdSense integration
+        // Replace with your actual AdSense client ID
+        const adsenseClientId = 'ca-pub-XXXXXXXXXXXXXXXX'; // Set this in your .env
+        
+        // Only load AdSense if not already loaded
+        if (!window.adsbygoogle) {
+          const script = document.createElement('script');
+          script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`;
+          script.async = true;
+          script.crossOrigin = 'anonymous';
+          document.head.appendChild(script);
+        }
+
+        // Create ad unit (you'll need to configure this in AdSense)
+        if (!adSenseContainer.querySelector('ins')) {
+          const adUnit = document.createElement('ins');
+          adUnit.className = 'adsbygoogle';
+          adUnit.style.display = 'block';
+          adUnit.setAttribute('data-ad-client', adsenseClientId);
+          adUnit.setAttribute('data-ad-slot', '1234567890'); // Replace with your ad slot
+          adUnit.setAttribute('data-ad-format', 'auto');
+          adUnit.setAttribute('data-full-width-responsive', 'true');
+          
+          adSenseContainer.innerHTML = '';
+          adSenseContainer.appendChild(adUnit);
+          
+          // Push ad to AdSense
+          if (window.adsbygoogle) {
+            try {
+              (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+              console.error('AdSense error:', e);
+            }
+          }
+        }
+      }
+
+      function hideAds() {
+        document.getElementById('adContainer').style.display = 'none';
+      }
+    </script>
   </body>
 </html>

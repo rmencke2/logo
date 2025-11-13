@@ -9,6 +9,11 @@ const fs = require('fs');
 const sharp = require('sharp');
 const TextToSVG = require('text-to-svg');
 const { body, validationResult } = require('express-validator');
+const session = require('express-session');
+const { getDatabase } = require('./database');
+const { initializeAuth, requireAuth, requireVerified } = require('./auth');
+const { abuseProtectionMiddleware, logUsage } = require('./abuseProtection');
+const authRoutes = require('./routes/auth');
 
 require('dotenv').config();
 
@@ -37,6 +42,40 @@ app.use(
 
 const PORT = process.env.PORT || 4000;
 
+// Initialize database
+let db;
+(async () => {
+  db = await getDatabase();
+  console.log('✅ Database initialized');
+})();
+
+// Session configuration
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET || (() => {
+    console.warn('⚠️  WARNING: Using default SESSION_SECRET. Set SESSION_SECRET in .env for production!');
+    return 'your-secret-key-change-in-production';
+  })(),
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // Requires HTTPS in production
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+  },
+  // Use SQLite store for sessions (simple file-based store for development)
+  // In production, consider using Redis or a proper session store
+  store: new (require('express-session').MemoryStore)(),
+};
+
+app.use(session(sessionConfig));
+
+// Initialize authentication
+(async () => {
+  await initializeAuth(app, session);
+  console.log('✅ Authentication initialized');
+})();
+
 // Structured JSON logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -55,35 +94,147 @@ app.use((req, res, next) => {
 
 // --- Middleware ---
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+
+// CORS configuration (if needed for OAuth callbacks)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  if (process.env.ALLOWED_ORIGINS) {
+    const origins = process.env.ALLOWED_ORIGINS.split(',');
+    const origin = req.headers.origin;
+    if (origins.includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
+  }
+  next();
+});
+
+// Authentication routes
+app.use('/auth', authRoutes);
+
+// --- Routes ---
+
+// Explicitly serve app.js FIRST to ensure it's accessible (before static middleware)
+app.get('/app.js', (req, res) => {
+  const appJsPath = path.join(__dirname, 'public', 'app.js');
+  console.log(`📦 Serving app.js from: ${appJsPath}`);
+  if (fs.existsSync(appJsPath)) {
+    res.type('application/javascript');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.sendFile(appJsPath, (err) => {
+      if (err) {
+        console.error(`❌ Error serving app.js: ${err.message}`);
+        if (!res.headersSent) {
+          res.status(500).send('Error serving app.js');
+        }
+      } else {
+        console.log(`✅ Successfully served app.js`);
+      }
+    });
+  } else {
+    console.error(`❌ app.js not found at: ${appJsPath}`);
+    res.status(404).send('app.js not found');
+  }
+});
+
+// Handle favicon requests to prevent 404 errors
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // No content, but successful
+});
+
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '1d',
+  etag: true,
+  lastModified: true,
+  index: false, // Don't serve index.html automatically, we have a route for it
+}));
+
+// Serve generated images
 app.use(
   '/generated_img',
-  express.static(path.join(__dirname, 'generated_img')),
+  express.static(path.join(__dirname, 'generated_img'), {
+    maxAge: '1d',
+    etag: true,
+    lastModified: true,
+  }),
 );
 
 // --- Ensure output folder exists ---
 const outputDir = path.join(__dirname, 'generated_img');
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
-// --- Font style mapping ---
-const styles = {
+// --- Font category mapping ---
+const fontCategories = {
   modern: {
-    font: 'Montserrat/static/Montserrat-Regular.ttf',
-    defaultColor: '#2e7d32',
+    regular: 'Montserrat/static/Montserrat-Regular.ttf',
+    bold: 'Montserrat/static/Montserrat-Bold.ttf',
   },
-  playful: { font: 'Pacifico/Pacifico-Regular.ttf', defaultColor: '#f57c00' },
-  minimal: { font: 'Poppins/Poppins-Regular.ttf', defaultColor: '#212121' },
-  digital: {
-    font: 'Bitcount_Prop_Single/static/BitcountPropSingle-Regular.ttf',
-    defaultColor: '#212121',
+  serif: {
+    regular: 'Roboto/static/Roboto-Regular.ttf',
+    bold: 'Roboto/static/Roboto-Bold.ttf',
   },
   handwritten: {
-    font: 'Caveat/static/Caveat-Regular.ttf',
-    defaultColor: '#5d4037',
+    regular: 'Caveat/static/Caveat-Regular.ttf',
+    bold: 'Caveat/static/Caveat-Bold.ttf',
+  },
+  bold: {
+    regular: 'Montserrat/static/Montserrat-Bold.ttf',
+    bold: 'Montserrat/static/Montserrat-ExtraBold.ttf',
+  },
+  elegant: {
+    regular: 'Poppins/static/Poppins-Regular.ttf',
+    bold: 'Poppins/static/Poppins-Medium.ttf',
+  },
+  retro: {
+    regular: 'Bitcount_Prop_Single/static/BitcountPropSingle-Regular.ttf',
+    bold: 'Bitcount_Prop_Single/static/BitcountPropSingle-Bold.ttf',
   },
 };
 
-// --- Routes ---
+// --- Style mapping (for default behavior) ---
+const styles = {
+  modern: {
+    fontCategory: 'modern',
+    defaultColor: '#2e7d32',
+  },
+  playful: {
+    fontCategory: 'handwritten',
+    defaultColor: '#f57c00',
+  },
+  minimal: {
+    fontCategory: 'modern',
+    defaultColor: '#212121',
+  },
+  digital: {
+    fontCategory: 'retro',
+    defaultColor: '#212121',
+  },
+  handwritten: {
+    fontCategory: 'handwritten',
+    defaultColor: '#5d4037',
+  },
+  vintage: {
+    fontCategory: 'serif',
+    defaultColor: '#8B4513',
+  },
+  luxury: {
+    fontCategory: 'elegant',
+    defaultColor: '#1a1a1a',
+  },
+  tech: {
+    fontCategory: 'modern',
+    defaultColor: '#0066cc',
+  },
+  organic: {
+    fontCategory: 'handwritten',
+    defaultColor: '#4a7c59',
+  },
+  corporate: {
+    fontCategory: 'modern',
+    defaultColor: '#1a1a1a',
+  },
+};
 
 // Serve index.html
 app.get('/', (req, res) => {
@@ -96,14 +247,70 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Generate logo
+// Get user location from IP address
+app.get('/api/location', async (req, res) => {
+  try {
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || 
+                     req.headers['x-real-ip'] || 
+                     req.connection.remoteAddress || 
+                     req.socket.remoteAddress ||
+                     '8.8.8.8'; // Fallback IP
+
+    // Use a free IP geolocation service
+    const geoResponse = await fetch(`http://ip-api.com/json/${clientIp}?fields=status,message,city,regionName,country`);
+    const geoData = await geoResponse.json();
+
+    if (geoData.status === 'success') {
+      const location = [geoData.city, geoData.regionName, geoData.country]
+        .filter(Boolean)
+        .join(', ');
+      res.json({ location });
+    } else {
+      res.json({ location: null });
+    }
+  } catch (err) {
+    console.error('Location detection error:', err);
+    res.json({ location: null });
+  }
+});
+
+// Helper function to get font path
+function getFontPath(fontCategory, useBold = false) {
+  const category = fontCategories[fontCategory] || fontCategories.modern;
+  const fontFile = useBold ? category.bold : category.regular;
+  return path.join(__dirname, 'fonts', fontFile);
+}
+
+// Helper function to generate shape SVG
+function generateShape(shape, width, height, bgColor) {
+  if (shape === 'none') return '';
+  
+  const size = Math.max(width, height);
+  const padding = 20;
+  switch (shape) {
+    case 'circle':
+      return `<circle cx="${width / 2}" cy="${height / 2}" r="${size / 2 - padding}" fill="${bgColor}" />`;
+    case 'square':
+      return `<rect x="${padding}" y="${padding}" width="${width - padding * 2}" height="${height - padding * 2}" fill="${bgColor}" />`;
+    case 'rounded':
+      return `<rect x="${padding}" y="${padding}" width="${width - padding * 2}" height="${height - padding * 2}" rx="30" fill="${bgColor}" />`;
+    default:
+      return '';
+  }
+}
+
+// Generate logo (protected with abuse protection)
 app.post(
   '/generate-logo',
+  abuseProtectionMiddleware,
   [
     body('name').isString().notEmpty(),
-    body('style').isString().notEmpty().isIn(Object.keys(styles)),
+    body('style').optional().isString().isIn(Object.keys(styles)),
+    body('fontCategory').optional().isString().isIn(Object.keys(fontCategories)),
     body('fontColor').matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/),
     body('bgColor').matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/),
+    body('shape').optional().isString().isIn(['none', 'circle', 'square', 'rounded']),
+    body('layout').optional().isString().isIn(['none', 'left', 'top']),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -111,17 +318,38 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const { name, style, fontColor, bgColor } = req.body;
+      const {
+        name,
+        tagline,
+        style = 'minimal',
+        fontCategory,
+        icon,
+        layout = 'none',
+        shape = 'none',
+        fontColor,
+        bgColor,
+      } = req.body;
+
       console.log(`🎯 Incoming Request:
-   ➡ Text: ${name}
+   ➡ Name: ${name}
+   ➡ Tagline: ${tagline || '(none)'}
    ➡ Style: ${style}
+   ➡ Font Category: ${fontCategory || '(default)'}
+   ➡ Icon: ${icon || '(none)'}
+   ➡ Layout: ${layout}
+   ➡ Shape: ${shape}
    ➡ Font Color: ${fontColor}
    ➡ Background Color: ${bgColor}`);
 
-      // --- Load font ---
-      const styleConfig = styles[style.toLowerCase()] || styles.modern;
-      const fontPath = path.join(__dirname, 'fonts', styleConfig.font);
+      // --- Determine font category ---
+      let finalFontCategory = fontCategory;
+      if (!finalFontCategory) {
+        const styleConfig = styles[style.toLowerCase()] || styles.minimal;
+        finalFontCategory = styleConfig.fontCategory || 'modern';
+      }
 
+      // --- Load font ---
+      const fontPath = getFontPath(finalFontCategory, false);
       if (!fs.existsSync(fontPath)) {
         console.error(`❌ Font not found at: ${fontPath}`);
         return res.status(400).json({ error: 'Font not found' });
@@ -131,53 +359,169 @@ app.post(
       const textToSVG = TextToSVG.loadSync(fontPath);
 
       // --- Calculate text metrics ---
-      const metrics = textToSVG.getMetrics(name, { fontSize: 120 });
-      const width = metrics.width + 100; // padding
-      const height = metrics.height + 100; // padding
+      const mainTextSize = 120;
+      const taglineSize = tagline ? 60 : 0;
+      const mainMetrics = textToSVG.getMetrics(name, { fontSize: mainTextSize });
+      const taglineMetrics = tagline
+        ? textToSVG.getMetrics(tagline, { fontSize: taglineSize })
+        : { width: 0, height: 0 };
 
-      console.log(
-        `📏 Metrics: width=${metrics.width}, height=${metrics.height}`,
-      );
+      // Icon dimensions
+      const iconSize = icon ? 80 : 0;
+      const iconSpacing = icon && layout !== 'none' ? 20 : 0;
 
-      // --- Generate text path ---
-      const svgText = textToSVG.getPath(name, {
-        x: width / 2,
-        y: height / 2,
-        fontSize: 120,
+      // Calculate dimensions based on layout
+      let width, height, textX, textY, taglineX, taglineY, iconX, iconY;
+
+      if (layout === 'left' && icon) {
+        // Icon on left, text on right
+        width = Math.max(mainMetrics.width, taglineMetrics.width) + iconSize + iconSpacing + 100;
+        height = Math.max(mainMetrics.height + (tagline ? taglineMetrics.height + 20 : 0), iconSize) + 100;
+        iconX = 50;
+        iconY = height / 2;
+        textX = iconSize + iconSpacing + 50;
+        textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
+        taglineX = textX;
+        taglineY = textY + mainMetrics.height + 20;
+      } else if (layout === 'top' && icon) {
+        // Icon on top, text below
+        width = Math.max(mainMetrics.width, taglineMetrics.width, iconSize) + 100;
+        height = mainMetrics.height + (tagline ? taglineMetrics.height + 20 : 0) + iconSize + iconSpacing + 100;
+        iconX = width / 2;
+        iconY = 50 + iconSize / 2;
+        textX = width / 2;
+        textY = iconSize + iconSpacing + 50 + mainMetrics.height / 2;
+        taglineX = width / 2;
+        taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
+      } else {
+        // No icon or layout = none
+        width = Math.max(mainMetrics.width, taglineMetrics.width) + 100;
+        height = mainMetrics.height + (tagline ? taglineMetrics.height + 20 : 0) + 100;
+        textX = width / 2;
+        textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
+        taglineX = width / 2;
+        taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
+        iconX = 0;
+        iconY = 0;
+      }
+
+      // Adjust for shape (ensure square dimensions for circle/square shapes)
+      if (shape === 'circle' || shape === 'square') {
+        const maxDim = Math.max(width, height);
+        width = maxDim;
+        height = maxDim;
+        
+        // Re-center all content for circular/square shapes
+        if (layout === 'left' && icon) {
+          // Icon on left, text on right - keep horizontal layout
+          iconY = height / 2;
+          textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
+          taglineY = textY + mainMetrics.height + 20;
+        } else if (layout === 'top' && icon) {
+          // Icon on top, text below - keep vertical layout
+          iconX = width / 2;
+          iconY = 50 + iconSize / 2;
+          textX = width / 2;
+          textY = iconSize + iconSpacing + 50 + mainMetrics.height / 2;
+          taglineX = width / 2;
+          taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
+        } else {
+          // No icon - center everything
+          textX = width / 2;
+          textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
+          taglineX = width / 2;
+          taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
+          iconX = width / 2;
+          iconY = height / 2;
+        }
+      }
+
+      console.log(`📏 Dimensions: width=${width}, height=${height}`);
+
+      // --- Generate text paths ---
+      const mainTextPath = textToSVG.getPath(name, {
+        x: textX,
+        y: textY,
+        fontSize: mainTextSize,
         anchor: 'center middle',
         attributes: { fill: fontColor },
       });
 
+      let taglinePath = '';
+      if (tagline) {
+        taglinePath = textToSVG.getPath(tagline, {
+          x: taglineX,
+          y: taglineY,
+          fontSize: taglineSize,
+          anchor: 'center middle',
+          attributes: { fill: fontColor, opacity: '0.8' },
+        });
+      }
+
+      // --- Generate icon (using emoji as text) ---
+      let iconPath = '';
+      if (icon && layout !== 'none') {
+        // For emoji/icons, we'll use a text element in SVG
+        iconPath = `<text x="${iconX}" y="${iconY}" font-size="${iconSize}" text-anchor="middle" dominant-baseline="middle" fill="${fontColor}">${icon}</text>`;
+      }
+
+      // --- Generate shape background ---
+      const shapeSvg = generateShape(shape, width, height, bgColor);
+
       // --- Build SVG ---
       const svg = `
       <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="${bgColor}" />
-        ${svgText}
+        ${shapeSvg}
+        ${iconPath}
+        ${mainTextPath}
+        ${taglinePath}
       </svg>
     `;
 
       // --- Save files ---
-      const safeName = `${name}-${style}-${Date.now()}`;
+      const safeName = `${name.replace(/[^a-zA-Z0-9]/g, '-')}-${style}-${Date.now()}`;
       const svgPathFile = path.join(outputDir, `${safeName}.svg`);
       const pngPathFile = path.join(outputDir, `${safeName}.png`);
 
       fs.writeFileSync(svgPathFile, svg);
       console.log(`💾 SVG saved: ${svgPathFile}`);
 
-      await sharp(Buffer.from(svg)).png().toFile(pngPathFile);
+      // Generate PNG - transparent background if no shape
+      const svgBuffer = Buffer.from(svg);
+      if (shape === 'none') {
+        await sharp(svgBuffer).png({ background: { r: 0, g: 0, b: 0, alpha: 0 } }).toFile(pngPathFile);
+      } else {
+        await sharp(svgBuffer).png().toFile(pngPathFile);
+      }
       console.log(`💾 PNG saved: ${pngPathFile}`);
+
+      // Log usage
+      await logUsage(req, '/generate-logo');
 
       // --- Return paths to client ---
       res.json({
         svgPath: `/generated_img/${safeName}.svg`,
         pngPath: `/generated_img/${safeName}.png`,
+        usageLimits: req.usageLimits,
       });
     } catch (err) {
       console.error('❌ Error generating logo:', err);
-      res.status(500).json({ error: 'Logo generation failed' });
+      res.status(500).json({ error: 'Logo generation failed', details: err.message });
     }
   },
 );
+
+// Get usage limits endpoint
+app.get('/api/usage-limits', requireAuth, async (req, res) => {
+  try {
+    const { checkUserLimits } = require('./abuseProtection');
+    const limits = await checkUserLimits(req.user.id, req.user.subscription_tier);
+    res.json(limits);
+  } catch (err) {
+    console.error('Error getting usage limits:', err);
+    res.status(500).json({ error: 'Failed to get usage limits' });
+  }
+});
 
 // Global error handling middleware
 /* eslint-disable-next-line no-unused-vars */
