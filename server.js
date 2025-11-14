@@ -4,6 +4,8 @@
 
 // --- Imports ---
 const express = require('express');
+const https = require('https');
+const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
@@ -531,6 +533,43 @@ app.use((err, req, res, _next) => {
 });
 
 // --- Start server ---
-app.listen(PORT, () => {
-  console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
-});
+const HTTPS_PORT = 443;
+const HTTP_PORT = 80;
+
+// Check if SSL certificates exist (for production HTTPS)
+const certPath = '/etc/letsencrypt/live/influzer.ai';
+const hasSSL = fs.existsSync(`${certPath}/fullchain.pem`) && fs.existsSync(`${certPath}/privkey.pem`);
+
+if (hasSSL && process.env.NODE_ENV === 'production') {
+  // Production: Use HTTPS on port 443
+  const httpsOptions = {
+    key: fs.readFileSync(`${certPath}/privkey.pem`),
+    cert: fs.readFileSync(`${certPath}/fullchain.pem`),
+  };
+
+  // Create HTTPS server
+  https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+    console.log(`🚀 Logo Generator HTTPS server running on port ${HTTPS_PORT}`);
+  });
+
+  // Create HTTP redirect server on port 80 (redirects to HTTPS)
+  http.createServer((req, res) => {
+    const host = req.headers.host || 'influzer.ai';
+    const url = req.url;
+    res.writeHead(301, { 
+      "Location": `https://${host}${url}`,
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+    });
+    res.end();
+  }).listen(HTTP_PORT, () => {
+    console.log(`🔄 HTTP redirect server running on port ${HTTP_PORT} (redirects to HTTPS)`);
+  });
+} else {
+  // Development: Use HTTP on configured PORT
+  app.listen(PORT, () => {
+    console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
+    if (process.env.NODE_ENV === 'production' && !hasSSL) {
+      console.warn('⚠️  WARNING: Running in production without SSL certificates!');
+    }
+  });
+}
