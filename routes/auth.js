@@ -409,16 +409,29 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/?auth_error=google_failed' }),
   async (req, res) => {
-    // Create session
-    const sessionId = crypto.randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const db = await getDatabase();
-    await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
-    
-    req.session.userId = req.user.id;
-    req.session.sessionId = sessionId;
-    
-    res.redirect('/?auth_success=true');
+    try {
+      // Check if user is authenticated
+      if (!req.user || !req.user.id) {
+        console.error('❌ Google OAuth callback: req.user is missing');
+        return res.redirect('/?auth_error=user_not_found');
+      }
+
+      // Create session
+      const sessionId = crypto.randomBytes(32).toString('hex');
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      const db = await getDatabase();
+      
+      await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
+      
+      req.session.userId = req.user.id;
+      req.session.sessionId = sessionId;
+      
+      console.log(`✅ Google OAuth success for user: ${req.user.id}`);
+      res.redirect('/?auth_success=true');
+    } catch (err) {
+      console.error('❌ Google OAuth callback error:', err);
+      res.redirect('/?auth_error=server_error');
+    }
   }
 );
 
@@ -428,15 +441,29 @@ router.get(
   '/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/?auth_error=facebook_failed' }),
   async (req, res) => {
-    const sessionId = crypto.randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const db = await getDatabase();
-    await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
-    
-    req.session.userId = req.user.id;
-    req.session.sessionId = sessionId;
-    
-    res.redirect('/?auth_success=true');
+    try {
+      // Check if user is authenticated
+      if (!req.user || !req.user.id) {
+        console.error('❌ Facebook OAuth callback: req.user is missing');
+        return res.redirect('/?auth_error=user_not_found');
+      }
+
+      // Create session
+      const sessionId = crypto.randomBytes(32).toString('hex');
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      const db = await getDatabase();
+      
+      await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
+      
+      req.session.userId = req.user.id;
+      req.session.sessionId = sessionId;
+      
+      console.log(`✅ Facebook OAuth success for user: ${req.user.id}`);
+      res.redirect('/?auth_success=true');
+    } catch (err) {
+      console.error('❌ Facebook OAuth callback error:', err);
+      res.redirect('/?auth_error=server_error');
+    }
   }
 );
 
