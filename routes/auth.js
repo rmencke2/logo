@@ -429,23 +429,35 @@ router.get(
         const db = await getDatabase();
         await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
         
-        // Use Passport's req.login() to establish the session properly
-        // This ensures the session cookie is set correctly
-        req.login(req.user, (loginErr) => {
-          if (loginErr) {
-            console.error('❌ Passport login error:', loginErr);
-            return res.redirect('/?auth_error=login_error');
+        // passport.authenticate() already calls req.login() internally
+        // So req.user is already set and session is established
+        // We just need to add our custom session data and ensure it's saved
+        
+        // Set our custom session data
+        req.session.userId = req.user.id;
+        req.session.sessionId = sessionId;
+        
+        console.log(`🔐 Setting session - userId: ${req.user.id}`);
+        console.log(`🔐 Express session ID: ${req.sessionID}`);
+        console.log(`🔐 Is authenticated: ${req.isAuthenticated()}`);
+        console.log(`🔐 Session cookie name: ${req.session.cookie.name}`);
+        console.log(`🔐 Session cookie secure: ${req.session.cookie.secure}`);
+        console.log(`🔐 Session cookie sameSite: ${req.session.cookie.sameSite}`);
+        
+        // Explicitly save the session and wait for it to complete
+        // This ensures the cookie is set before redirecting
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            console.error('❌ Session save error:', saveErr);
+            return res.redirect('/?auth_error=session_error');
           }
           
-          // After login, set our custom session data
-          req.session.userId = req.user.id;
-          req.session.sessionId = sessionId;
+          console.log(`✅ Session saved - Session ID: ${req.sessionID}`);
+          console.log(`✅ User ID in session: ${req.session.userId}`);
           
-          console.log(`✅ Passport login successful for user: ${req.user.id}`);
-          console.log(`🔐 Express session ID: ${req.sessionID}`);
-          console.log(`🔐 Is authenticated: ${req.isAuthenticated()}`);
-          
-          // Redirect - Passport and Express-session should handle the cookie
+          // Check if cookie header will be set
+          // Note: The cookie is set by Express-session middleware, not manually
+          // It should be set automatically when the response is sent
           res.redirect('/?auth_success=true');
         });
       } catch (err) {
