@@ -30,12 +30,23 @@ async function initializeAuth(app, sessionMiddleware) {
 
   // Google OAuth Strategy
   if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    // Always use BASE_URL in production, ensure it's HTTPS
+    let googleCallbackURL = '/auth/google/callback';
+    
+    if (process.env.BASE_URL) {
+      // Ensure BASE_URL uses HTTPS and construct callback URL
+      const baseUrl = process.env.BASE_URL.replace(/^http:\/\//, 'https://');
+      googleCallbackURL = `${baseUrl}/auth/google/callback`;
+    }
+    
+    console.log(`🔐 Google OAuth callback URL: ${googleCallbackURL}`);
+    
     passport.use(
       new GoogleStrategy(
         {
           clientID: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          callbackURL: '/auth/google/callback',
+          callbackURL: googleCallbackURL,
         },
         async (accessToken, refreshToken, profile, done) => {
           try {
@@ -71,12 +82,23 @@ async function initializeAuth(app, sessionMiddleware) {
 
   // Facebook OAuth Strategy
   if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
+    // Always use BASE_URL in production, ensure it's HTTPS
+    let facebookCallbackURL = '/auth/facebook/callback';
+    
+    if (process.env.BASE_URL) {
+      // Ensure BASE_URL uses HTTPS and construct callback URL
+      const baseUrl = process.env.BASE_URL.replace(/^http:\/\//, 'https://');
+      facebookCallbackURL = `${baseUrl}/auth/facebook/callback`;
+    }
+    
+    console.log(`🔐 Facebook OAuth callback URL: ${facebookCallbackURL}`);
+    
     passport.use(
       new FacebookStrategy(
         {
           clientID: process.env.FACEBOOK_APP_ID,
           clientSecret: process.env.FACEBOOK_APP_SECRET,
-          callbackURL: '/auth/facebook/callback',
+          callbackURL: facebookCallbackURL,
           profileFields: ['id', 'displayName', 'email', 'picture'],
         },
         async (accessToken, refreshToken, profile, done) => {
