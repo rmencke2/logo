@@ -426,8 +426,15 @@ router.get(
       req.session.userId = req.user.id;
       req.session.sessionId = sessionId;
       
-      console.log(`✅ Google OAuth success for user: ${req.user.id}`);
-      res.redirect('/?auth_success=true');
+      // Save session before redirecting
+      req.session.save((err) => {
+        if (err) {
+          console.error('❌ Session save error:', err);
+          return res.redirect('/?auth_error=session_error');
+        }
+        console.log(`✅ Google OAuth success for user: ${req.user.id}`);
+        res.redirect('/?auth_success=true');
+      });
     } catch (err) {
       console.error('❌ Google OAuth callback error:', err);
       res.redirect('/?auth_error=server_error');
@@ -458,8 +465,15 @@ router.get(
       req.session.userId = req.user.id;
       req.session.sessionId = sessionId;
       
-      console.log(`✅ Facebook OAuth success for user: ${req.user.id}`);
-      res.redirect('/?auth_success=true');
+      // Save session before redirecting
+      req.session.save((err) => {
+        if (err) {
+          console.error('❌ Session save error:', err);
+          return res.redirect('/?auth_error=session_error');
+        }
+        console.log(`✅ Facebook OAuth success for user: ${req.user.id}`);
+        res.redirect('/?auth_success=true');
+      });
     } catch (err) {
       console.error('❌ Facebook OAuth callback error:', err);
       res.redirect('/?auth_error=server_error');
