@@ -313,7 +313,7 @@ Add this line:
 
 This will check for renewal daily at 3 AM and restart your app if the certificate was renewed.
 
-## Step 9: Check Database (View Users)
+## Step 8: Set Up OAuth Providers & Google AdSense
 
 To check if users have been created in the database:
 
