@@ -23,6 +23,32 @@ function getClientIP(req) {
   );
 }
 
+// Helper to normalize email addresses for Gmail plus addressing
+// Gmail treats user+tag@gmail.com the same as user@gmail.com
+// This function normalizes Gmail addresses by removing the +tag part
+function normalizeEmailForLookup(email) {
+  if (!email) return email;
+  
+  const lowerEmail = email.toLowerCase().trim();
+  const [localPart, domain] = lowerEmail.split('@');
+  
+  if (!domain) return lowerEmail;
+  
+  // Handle Gmail and Googlemail domains
+  if (domain === 'gmail.com' || domain === 'googlemail.com') {
+    // Remove everything after + (plus addressing)
+    const normalizedLocal = localPart.split('+')[0];
+    // Remove dots (Gmail ignores dots)
+    const cleanedLocal = normalizedLocal.replace(/\./g, '');
+    // Use gmail.com as canonical domain
+    return `${cleanedLocal}@gmail.com`;
+  }
+  
+  // For other providers, just lowercase and trim
+  // Note: Some providers support plus addressing too, but we'll handle Gmail specifically
+  return lowerEmail;
+}
+
 // Register new user (email/password)
 router.post(
   '/register',
@@ -42,16 +68,17 @@ router.post(
       const { email, password, name } = req.body;
       const db = await getDatabase();
 
-      // Check if user already exists
-      const existingUser = await db.getUserByEmail(email);
+      // Check if user already exists (normalize for Gmail plus addressing)
+      const normalizedEmail = normalizeEmailForLookup(email);
+      const existingUser = await db.getUserByEmail(normalizedEmail);
       if (existingUser) {
         return res.status(400).json({ error: 'Email already registered' });
       }
 
-      // Create user
+      // Create user (store normalized email for Gmail plus addressing)
       const passwordHash = await hashPassword(password);
       const { id, emailVerificationToken } = await db.createUser({
-        email,
+        email: normalizedEmail, // Store normalized email to prevent duplicates
         passwordHash,
         provider: 'local',
         name: name || email.split('@')[0],
@@ -111,7 +138,9 @@ router.post(
       const { email, password } = req.body;
       const db = await getDatabase();
 
-      const user = await db.getUserByEmail(email);
+      // Normalize email for lookup (Gmail plus addressing)
+      const normalizedEmail = normalizeEmailForLookup(email);
+      const user = await db.getUserByEmail(normalizedEmail);
       if (!user || user.provider !== 'local') {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
@@ -270,7 +299,9 @@ router.post(
 
       const { email } = req.body;
       const db = await getDatabase();
-      const user = await db.getUserByEmail(email);
+      // Normalize email for lookup (Gmail plus addressing)
+      const normalizedEmail = normalizeEmailForLookup(email);
+      const user = await db.getUserByEmail(normalizedEmail);
 
       if (!user) {
         // Don't reveal if email exists
@@ -318,7 +349,9 @@ router.post(
 
       const { email } = req.body;
       const db = await getDatabase();
-      const user = await db.getUserByEmail(email);
+      // Normalize email for lookup (Gmail plus addressing)
+      const normalizedEmail = normalizeEmailForLookup(email);
+      const user = await db.getUserByEmail(normalizedEmail);
 
       if (!user || user.provider !== 'local') {
         // Don't reveal if email exists
