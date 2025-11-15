@@ -450,15 +450,7 @@ router.get(
         }
         console.log(`✅ Session saved successfully for user: ${req.user.id}`);
         console.log(`🔐 Cookie should be set with session ID: ${req.sessionID}`);
-        
-        // Set cookie manually as backup (Express should do this, but just in case)
-        res.cookie('connect.sid', req.sessionID, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 7 * 24 * 60 * 60 * 1000,
-          path: '/'
-        });
+        console.log(`🔐 Response headers being sent: ${JSON.stringify(res.getHeaders())}`);
         
         res.redirect('/?auth_success=true');
       });

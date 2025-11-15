@@ -53,6 +53,7 @@ let db;
 
 // Session configuration
 const sessionConfig = {
+  name: 'connect.sid', // Explicit cookie name
   secret: process.env.SESSION_SECRET || (() => {
     console.warn('⚠️  WARNING: Using default SESSION_SECRET. Set SESSION_SECRET in .env for production!');
     return 'your-secret-key-change-in-production';
