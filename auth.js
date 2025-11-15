@@ -53,17 +53,36 @@ async function initializeAuth(app, sessionMiddleware) {
             let user = await db.getUserByProvider('google', profile.id);
             
             if (!user) {
-              const { id, emailVerificationToken } = await db.createUser({
-                email: profile.emails?.[0]?.value,
-                provider: 'google',
-                providerId: profile.id,
-                name: profile.displayName,
-                avatarUrl: profile.photos?.[0]?.value,
-                emailVerified: true, // OAuth providers verify email
-              });
-              user = await db.getUserById(id);
-            } else {
-              // Update last login
+              try {
+                const { id, emailVerificationToken } = await db.createUser({
+                  email: profile.emails?.[0]?.value,
+                  provider: 'google',
+                  providerId: profile.id,
+                  name: profile.displayName,
+                  avatarUrl: profile.photos?.[0]?.value,
+                  emailVerified: true, // OAuth providers verify email
+                });
+                user = await db.getUserById(id);
+              } catch (createErr) {
+                // If user already exists (race condition or duplicate), try to fetch again
+                if (createErr.message && createErr.message.includes('already exists')) {
+                  console.log('⚠️  User creation failed (already exists), fetching existing user...');
+                  user = await db.getUserByProvider('google', profile.id);
+                  // If still not found, try by email as fallback
+                  if (!user && profile.emails?.[0]?.value) {
+                    user = await db.getUserByEmail(profile.emails[0].value);
+                  }
+                  if (!user) {
+                    throw createErr; // Re-throw if we still can't find the user
+                  }
+                } else {
+                  throw createErr; // Re-throw other errors
+                }
+              }
+            }
+            
+            // Update last login and avatar for existing users
+            if (user) {
               await db.updateUser(user.id, {
                 last_login: new Date().toISOString(),
                 avatar_url: profile.photos?.[0]?.value || user.avatar_url,
@@ -73,6 +92,7 @@ async function initializeAuth(app, sessionMiddleware) {
             
             return done(null, user);
           } catch (err) {
+            console.error('❌ Google OAuth strategy error:', err);
             return done(err, null);
           }
         }
@@ -106,16 +126,36 @@ async function initializeAuth(app, sessionMiddleware) {
             let user = await db.getUserByProvider('facebook', profile.id);
             
             if (!user) {
-              const { id } = await db.createUser({
-                email: profile.emails?.[0]?.value,
-                provider: 'facebook',
-                providerId: profile.id,
-                name: profile.displayName,
-                avatarUrl: profile.photos?.[0]?.value,
-                emailVerified: true,
-              });
-              user = await db.getUserById(id);
-            } else {
+              try {
+                const { id } = await db.createUser({
+                  email: profile.emails?.[0]?.value,
+                  provider: 'facebook',
+                  providerId: profile.id,
+                  name: profile.displayName,
+                  avatarUrl: profile.photos?.[0]?.value,
+                  emailVerified: true,
+                });
+                user = await db.getUserById(id);
+              } catch (createErr) {
+                // If user already exists (race condition or duplicate), try to fetch again
+                if (createErr.message && createErr.message.includes('already exists')) {
+                  console.log('⚠️  User creation failed (already exists), fetching existing user...');
+                  user = await db.getUserByProvider('facebook', profile.id);
+                  // If still not found, try by email as fallback
+                  if (!user && profile.emails?.[0]?.value) {
+                    user = await db.getUserByEmail(profile.emails[0].value);
+                  }
+                  if (!user) {
+                    throw createErr; // Re-throw if we still can't find the user
+                  }
+                } else {
+                  throw createErr; // Re-throw other errors
+                }
+              }
+            }
+            
+            // Update last login and avatar for existing users
+            if (user) {
               await db.updateUser(user.id, {
                 last_login: new Date().toISOString(),
                 avatar_url: profile.photos?.[0]?.value || user.avatar_url,
@@ -125,6 +165,7 @@ async function initializeAuth(app, sessionMiddleware) {
             
             return done(null, user);
           } catch (err) {
+            console.error('❌ Facebook OAuth strategy error:', err);
             return done(err, null);
           }
         }
