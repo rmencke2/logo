@@ -555,40 +555,33 @@ This is the most common error. The redirect URI must match EXACTLY in Google Clo
 
 To check if users have been created in the database:
 
-**On your server:**
+**Option 1: Use the Node.js script (Recommended - no SQLite installation needed):**
 
 ```bash
 cd ~/logo
+node check-db.js
+```
 
-# Check if the database file exists
-ls -lh logo_generator.db
+This will show all users and sessions in a readable format.
 
-# Use SQLite command line to view users
+**Option 2: Install SQLite and use command line:**
+
+```bash
+# Install SQLite (if not already installed)
+sudo apt-get update
+sudo apt-get install -y sqlite3
+
+# Then use it
+cd ~/logo
 sqlite3 logo_generator.db
 
-# Then run SQL queries:
-# View all users
-SELECT id, email, name, provider, provider_id, created_at, last_login FROM users;
-
-# View specific user by email
-SELECT * FROM users WHERE email = 'user@example.com';
-
-# View sessions
+# Run SQL queries:
+SELECT id, email, name, provider, created_at, last_login FROM users;
 SELECT * FROM sessions;
-
-# Count total users
-SELECT COUNT(*) FROM users;
-
-# Exit SQLite
 .quit
 ```
 
-**Or use a one-liner to view users:**
-```bash
-sqlite3 ~/logo/logo_generator.db "SELECT id, email, name, provider, created_at FROM users;"
-```
-
-**To view in a more readable format:**
+**Option 3: Quick one-liner (after installing SQLite):**
 ```bash
 sqlite3 -header -column ~/logo/logo_generator.db "SELECT id, email, name, provider, created_at, last_login FROM users;"
 ```

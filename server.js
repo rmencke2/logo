@@ -63,7 +63,8 @@ const sessionConfig = {
     secure: process.env.NODE_ENV === 'production', // Requires HTTPS in production
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    sameSite: 'lax', // Use 'lax' instead of 'strict' to allow OAuth redirects to work
+    // Don't set domain - let browser handle it automatically
   },
   // Use SQLite store for sessions (simple file-based store for development)
   // In production, consider using Redis or a proper session store
