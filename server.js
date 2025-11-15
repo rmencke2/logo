@@ -64,6 +64,7 @@ const sessionConfig = {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     sameSite: 'lax', // Use 'lax' instead of 'strict' to allow OAuth redirects to work
+    path: '/', // Ensure cookie is available for all paths
     // Don't set domain - let browser handle it automatically
   },
   // Use SQLite store for sessions (simple file-based store for development)

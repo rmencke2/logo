@@ -184,6 +184,11 @@ router.post('/logout', async (req, res) => {
 // Get current user
 router.get('/me', async (req, res) => {
   try {
+    // Debug session
+    console.log(`🔍 /auth/me - Session ID: ${req.sessionID}`);
+    console.log(`🔍 /auth/me - req.session.userId: ${req.session.userId}`);
+    console.log(`🔍 /auth/me - req.session keys: ${Object.keys(req.session).join(', ')}`);
+    
     if (!req.session.userId) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
@@ -426,13 +431,18 @@ router.get(
       req.session.userId = req.user.id;
       req.session.sessionId = sessionId;
       
+      // Log session details for debugging
+      console.log(`🔐 Setting session - userId: ${req.user.id}, sessionId: ${sessionId.substring(0, 20)}...`);
+      console.log(`🔐 Session cookie will be set: ${req.session.cookie ? 'Yes' : 'No'}`);
+      
       // Save session before redirecting
       req.session.save((err) => {
         if (err) {
           console.error('❌ Session save error:', err);
           return res.redirect('/?auth_error=session_error');
         }
-        console.log(`✅ Google OAuth success for user: ${req.user.id}`);
+        console.log(`✅ Session saved successfully for user: ${req.user.id}`);
+        console.log(`🔐 Session ID in cookie: ${req.sessionID}`);
         res.redirect('/?auth_success=true');
       });
     } catch (err) {
