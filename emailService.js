@@ -49,7 +49,7 @@ const transporter = createTransporter();
 
 // Send verification email
 async function sendVerificationEmail(email, token, name) {
-  const verificationUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/auth/verify-email?token=${token}`;
+  const verificationUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/verify-email?token=${token}`;
   
   // Use EMAIL_USER as "from" when using Gmail (Gmail requires this)
   // Otherwise use EMAIL_FROM or default
@@ -131,7 +131,7 @@ async function sendVerificationEmail(email, token, name) {
 
 // Send password reset email
 async function sendPasswordResetEmail(email, token, name) {
-  const resetUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/auth/reset-password?token=${token}`;
+  const resetUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/reset-password?token=${token}`;
   
   // Use EMAIL_USER as "from" when using Gmail (Gmail requires this)
   // Otherwise use EMAIL_FROM or default

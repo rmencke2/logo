@@ -92,11 +92,14 @@ router.post(
       });
 
       // Send verification email
+      // Note: Send to original email (not normalized) so user receives it at the address they provided
       try {
         await sendVerificationEmail(email, emailVerificationToken, name);
+        console.log(`📧 Verification email sent to: ${email}`);
       } catch (emailError) {
-        console.error('Failed to send verification email:', emailError);
-        // Don't fail registration if email fails
+        console.error('❌ Failed to send verification email:', emailError);
+        console.error('   Error details:', emailError.message);
+        // Don't fail registration if email fails, but log it
       }
 
       // Create session
