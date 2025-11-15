@@ -429,42 +429,24 @@ router.get(
         const db = await getDatabase();
         await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
         
-        // Set session data directly (don't regenerate - it creates a new session)
-        req.session.userId = req.user.id;
-        req.session.sessionId = sessionId;
-        
-        console.log(`🔐 Setting session - userId: ${req.user.id}`);
-        console.log(`🔐 Express session ID: ${req.sessionID}`);
-        console.log(`🔐 Session exists: ${req.session ? 'Yes' : 'No'}`);
-        
-        // Force save and wait for it to complete before redirecting
-        req.session.save((saveErr) => {
-          if (saveErr) {
-            console.error('❌ Session save error:', saveErr);
-            return res.redirect('/?auth_error=session_error');
+        // Use Passport's req.login() to establish the session properly
+        // This ensures the session cookie is set correctly
+        req.login(req.user, (loginErr) => {
+          if (loginErr) {
+            console.error('❌ Passport login error:', loginErr);
+            return res.redirect('/?auth_error=login_error');
           }
           
-          // Check if cookie header is set
-          const cookieHeader = res.getHeader('Set-Cookie');
-          console.log(`🔐 After save - Set-Cookie header: ${cookieHeader ? 'YES' : 'NO'}`);
+          // After login, set our custom session data
+          req.session.userId = req.user.id;
+          req.session.sessionId = sessionId;
           
-          if (!cookieHeader) {
-            // Cookie still not set - manually set it using the session store
-            console.log('⚠️  Cookie not set automatically, trying manual approach...');
-            const sessionStore = req.sessionStore;
-            if (sessionStore && sessionStore.generate) {
-              // The cookie should be set by Express-session middleware
-              // But if it's not, we have a deeper issue
-              console.log('⚠️  Session store type:', sessionStore.constructor.name);
-            }
-          }
+          console.log(`✅ Passport login successful for user: ${req.user.id}`);
+          console.log(`🔐 Express session ID: ${req.sessionID}`);
+          console.log(`🔐 Is authenticated: ${req.isAuthenticated()}`);
           
-          // Use a small delay to ensure cookie header is set
-          setTimeout(() => {
-            const finalCookie = res.getHeader('Set-Cookie');
-            console.log(`🔐 Final check - Set-Cookie: ${finalCookie ? 'YES' : 'NO'}`);
-            res.redirect('/?auth_success=true');
-          }, 50);
+          // Redirect - Passport and Express-session should handle the cookie
+          res.redirect('/?auth_success=true');
         });
       } catch (err) {
         console.error('❌ Database error:', err);
