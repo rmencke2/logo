@@ -421,38 +421,54 @@ router.get(
         return res.redirect('/?auth_error=user_not_found');
       }
 
-      // Create session
-      const sessionId = crypto.randomBytes(32).toString('hex');
-      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-      const db = await getDatabase();
-      
-      await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
-      
-      // Ensure session is initialized
-      if (!req.session) {
-        console.error('❌ Session not initialized!');
-        return res.redirect('/?auth_error=session_error');
-      }
-      
-      req.session.userId = req.user.id;
-      req.session.sessionId = sessionId;
-      
-      // Log session details for debugging
-      console.log(`🔐 Setting session - userId: ${req.user.id}, sessionId: ${sessionId.substring(0, 20)}...`);
-      console.log(`🔐 Express session ID: ${req.sessionID}`);
-      console.log(`🔐 Session cookie exists: ${req.session.cookie ? 'Yes' : 'No'}`);
-      
-      // Force session to be saved and cookie to be set
-      req.session.save((err) => {
+      // Regenerate session to ensure a fresh session ID
+      req.session.regenerate((err) => {
         if (err) {
-          console.error('❌ Session save error:', err);
+          console.error('❌ Session regenerate error:', err);
           return res.redirect('/?auth_error=session_error');
         }
-        console.log(`✅ Session saved successfully for user: ${req.user.id}`);
-        console.log(`🔐 Cookie should be set with session ID: ${req.sessionID}`);
-        console.log(`🔐 Response headers being sent: ${JSON.stringify(res.getHeaders())}`);
         
-        res.redirect('/?auth_success=true');
+        // Create database session
+        const sessionId = crypto.randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+        
+        (async () => {
+          try {
+            const db = await getDatabase();
+            await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
+            
+            // Set session data
+            req.session.userId = req.user.id;
+            req.session.sessionId = sessionId;
+            
+            console.log(`🔐 Setting session - userId: ${req.user.id}`);
+            console.log(`🔐 Express session ID: ${req.sessionID}`);
+            
+            // Save session and redirect
+            req.session.save((err) => {
+              if (err) {
+                console.error('❌ Session save error:', err);
+                return res.redirect('/?auth_error=session_error');
+              }
+              
+              console.log(`✅ Session saved - Session ID: ${req.sessionID}`);
+              console.log(`✅ User ID in session: ${req.session.userId}`);
+              
+              // Check headers before redirect
+              const headers = res.getHeaders();
+              const setCookie = headers['set-cookie'];
+              console.log(`🔐 Set-Cookie in headers: ${setCookie ? 'YES' : 'NO'}`);
+              if (setCookie) {
+                console.log(`🔐 Cookie: ${Array.isArray(setCookie) ? setCookie[0].substring(0, 80) : setCookie.substring(0, 80)}...`);
+              }
+              
+              res.redirect('/?auth_success=true');
+            });
+          } catch (err) {
+            console.error('❌ Database error:', err);
+            res.redirect('/?auth_error=server_error');
+          }
+        })();
       });
     } catch (err) {
       console.error('❌ Google OAuth callback error:', err);
