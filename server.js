@@ -139,9 +139,15 @@ app.get('/app.js', (req, res) => {
   }
 });
 
-// Handle favicon requests to prevent 404 errors
+// Serve favicon requests (static middleware will also handle /favicon.svg)
 app.get('/favicon.ico', (req, res) => {
-  res.status(204).end(); // No content, but successful
+  // Redirect to SVG favicon or return 204
+  const svgFavicon = path.join(__dirname, 'public', 'favicon.svg');
+  if (fs.existsSync(svgFavicon)) {
+    res.redirect('/favicon.svg');
+  } else {
+    res.status(204).end(); // No content if favicon doesn't exist
+  }
 });
 
 // Serve static files from public directory
@@ -533,43 +539,63 @@ app.use((err, req, res, _next) => {
 });
 
 // --- Start server ---
+// Note: If using Nginx as reverse proxy, keep Node.js on PORT (4000)
+// Nginx will handle HTTPS on ports 80/443 and proxy to this app
+// If NOT using Nginx, set USE_DIRECT_HTTPS=true in .env to have Node.js handle HTTPS directly
+
+const USE_DIRECT_HTTPS = process.env.USE_DIRECT_HTTPS === 'true';
 const HTTPS_PORT = 443;
 const HTTP_PORT = 80;
 
-// Check if SSL certificates exist (for production HTTPS)
-const certPath = '/etc/letsencrypt/live/influzer.ai';
-const hasSSL = fs.existsSync(`${certPath}/fullchain.pem`) && fs.existsSync(`${certPath}/privkey.pem`);
+if (USE_DIRECT_HTTPS && process.env.NODE_ENV === 'production') {
+  // Direct HTTPS mode: Node.js handles HTTPS (requires root privileges or setcap)
+  const certPath = '/etc/letsencrypt/live/influzer.ai';
+  const hasSSL = fs.existsSync(`${certPath}/fullchain.pem`) && fs.existsSync(`${certPath}/privkey.pem`);
 
-if (hasSSL && process.env.NODE_ENV === 'production') {
-  // Production: Use HTTPS on port 443
-  const httpsOptions = {
-    key: fs.readFileSync(`${certPath}/privkey.pem`),
-    cert: fs.readFileSync(`${certPath}/fullchain.pem`),
-  };
+  if (hasSSL) {
+    try {
+      const httpsOptions = {
+        key: fs.readFileSync(`${certPath}/privkey.pem`),
+        cert: fs.readFileSync(`${certPath}/fullchain.pem`),
+      };
 
-  // Create HTTPS server
-  https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
-    console.log(`🚀 Logo Generator HTTPS server running on port ${HTTPS_PORT}`);
-  });
+      // Create HTTPS server
+      https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+        console.log(`🚀 Logo Generator HTTPS server running on port ${HTTPS_PORT}`);
+      });
 
-  // Create HTTP redirect server on port 80 (redirects to HTTPS)
-  http.createServer((req, res) => {
-    const host = req.headers.host || 'influzer.ai';
-    const url = req.url;
-    res.writeHead(301, { 
-      "Location": `https://${host}${url}`,
-      "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+      // Create HTTP redirect server on port 80 (redirects to HTTPS)
+      http.createServer((req, res) => {
+        const host = req.headers.host || 'influzer.ai';
+        const url = req.url;
+        res.writeHead(301, { 
+          "Location": `https://${host}${url}`,
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+        });
+        res.end();
+      }).listen(HTTP_PORT, () => {
+        console.log(`🔄 HTTP redirect server running on port ${HTTP_PORT} (redirects to HTTPS)`);
+      });
+    } catch (err) {
+      console.error('❌ Error starting HTTPS server:', err.message);
+      console.error('💡 Tip: If you get EACCES error, you need root privileges or use Nginx instead');
+      console.error('💡 Falling back to HTTP on port', PORT);
+      app.listen(PORT, () => {
+        console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
+      });
+    }
+  } else {
+    console.warn('⚠️  SSL certificates not found, falling back to HTTP');
+    app.listen(PORT, () => {
+      console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
     });
-    res.end();
-  }).listen(HTTP_PORT, () => {
-    console.log(`🔄 HTTP redirect server running on port ${HTTP_PORT} (redirects to HTTPS)`);
-  });
+  }
 } else {
-  // Development: Use HTTP on configured PORT
+  // Standard mode: Use HTTP on configured PORT (Nginx handles HTTPS)
   app.listen(PORT, () => {
     console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
-    if (process.env.NODE_ENV === 'production' && !hasSSL) {
-      console.warn('⚠️  WARNING: Running in production without SSL certificates!');
+    if (process.env.NODE_ENV === 'production') {
+      console.log('💡 Using Nginx for HTTPS - make sure Nginx is configured to proxy to this port');
     }
   });
 }
