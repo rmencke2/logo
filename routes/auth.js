@@ -428,21 +428,38 @@ router.get(
       
       await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
       
+      // Ensure session is initialized
+      if (!req.session) {
+        console.error('❌ Session not initialized!');
+        return res.redirect('/?auth_error=session_error');
+      }
+      
       req.session.userId = req.user.id;
       req.session.sessionId = sessionId;
       
       // Log session details for debugging
       console.log(`🔐 Setting session - userId: ${req.user.id}, sessionId: ${sessionId.substring(0, 20)}...`);
-      console.log(`🔐 Session cookie will be set: ${req.session.cookie ? 'Yes' : 'No'}`);
+      console.log(`🔐 Express session ID: ${req.sessionID}`);
+      console.log(`🔐 Session cookie exists: ${req.session.cookie ? 'Yes' : 'No'}`);
       
-      // Save session before redirecting
+      // Force session to be saved and cookie to be set
       req.session.save((err) => {
         if (err) {
           console.error('❌ Session save error:', err);
           return res.redirect('/?auth_error=session_error');
         }
         console.log(`✅ Session saved successfully for user: ${req.user.id}`);
-        console.log(`🔐 Session ID in cookie: ${req.sessionID}`);
+        console.log(`🔐 Cookie should be set with session ID: ${req.sessionID}`);
+        
+        // Set cookie manually as backup (Express should do this, but just in case)
+        res.cookie('connect.sid', req.sessionID, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          path: '/'
+        });
+        
         res.redirect('/?auth_success=true');
       });
     } catch (err) {

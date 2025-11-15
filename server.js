@@ -57,8 +57,8 @@ const sessionConfig = {
     console.warn('⚠️  WARNING: Using default SESSION_SECRET. Set SESSION_SECRET in .env for production!');
     return 'your-secret-key-change-in-production';
   })(),
-  resave: false,
-  saveUninitialized: false,
+  resave: true, // Save session even if not modified (helps with OAuth redirects)
+  saveUninitialized: true, // Create session even if not modified (needed for OAuth)
   cookie: {
     secure: process.env.NODE_ENV === 'production', // Requires HTTPS in production
     httpOnly: true,
