@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 function createTransporter() {
   // Gmail example
   if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    console.log('✅ Email service: Gmail configured');
     return nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -19,6 +20,7 @@ function createTransporter() {
   
   // SMTP configuration
   if (process.env.SMTP_HOST) {
+    console.log('✅ Email service: SMTP configured');
     return nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
@@ -31,7 +33,11 @@ function createTransporter() {
   }
   
   // Development: console transporter (logs emails instead of sending)
-  console.log('⚠️  No email configuration found. Using console transporter for development.');
+  console.log('⚠️  WARNING: No email configuration found!');
+  console.log('⚠️  Email service requires one of:');
+  console.log('   - EMAIL_SERVICE=gmail + EMAIL_USER + EMAIL_PASS');
+  console.log('   - SMTP_HOST + SMTP_USER + SMTP_PASS');
+  console.log('⚠️  Using console transporter (emails will be logged, not sent)');
   return nodemailer.createTransport({
     streamTransport: true,
     newline: 'unix',
@@ -92,10 +98,23 @@ async function sendVerificationEmail(email, token, name) {
   
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Verification email sent:', info.messageId || 'logged to console');
+    if (info.messageId) {
+      console.log('✅ Verification email sent successfully');
+      console.log('   To:', email);
+      console.log('   Message ID:', info.messageId);
+    } else {
+      console.log('⚠️  Email logged to console (no email service configured)');
+      console.log('   To:', email);
+      console.log('   Verification URL:', verificationUrl);
+      console.log('   Token:', token);
+    }
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Error sending verification email:', error);
+    console.error('   Error details:', error.message);
+    if (error.response) {
+      console.error('   SMTP Response:', error.response);
+    }
     throw error;
   }
 }
