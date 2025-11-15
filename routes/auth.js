@@ -429,27 +429,42 @@ router.get(
         const db = await getDatabase();
         await db.createSession(req.user.id, sessionId, expiresAt.toISOString());
         
-        // Regenerate session to ensure a fresh session ID and cookie
-        req.session.regenerate((err) => {
-          if (err) {
-            console.error('❌ Session regenerate error:', err);
+        // Set session data directly (don't regenerate - it creates a new session)
+        req.session.userId = req.user.id;
+        req.session.sessionId = sessionId;
+        
+        console.log(`🔐 Setting session - userId: ${req.user.id}`);
+        console.log(`🔐 Express session ID: ${req.sessionID}`);
+        console.log(`🔐 Session exists: ${req.session ? 'Yes' : 'No'}`);
+        
+        // Force save and wait for it to complete before redirecting
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            console.error('❌ Session save error:', saveErr);
             return res.redirect('/?auth_error=session_error');
           }
           
-          // Set session data AFTER regeneration
-          req.session.userId = req.user.id;
-          req.session.sessionId = sessionId;
+          // Check if cookie header is set
+          const cookieHeader = res.getHeader('Set-Cookie');
+          console.log(`🔐 After save - Set-Cookie header: ${cookieHeader ? 'YES' : 'NO'}`);
           
-          console.log(`🔐 Setting session - userId: ${req.user.id}`);
-          console.log(`🔐 Express session ID: ${req.sessionID}`);
+          if (!cookieHeader) {
+            // Cookie still not set - manually set it using the session store
+            console.log('⚠️  Cookie not set automatically, trying manual approach...');
+            const sessionStore = req.sessionStore;
+            if (sessionStore && sessionStore.generate) {
+              // The cookie should be set by Express-session middleware
+              // But if it's not, we have a deeper issue
+              console.log('⚠️  Session store type:', sessionStore.constructor.name);
+            }
+          }
           
-          // Mark session as modified to ensure it's saved
-          req.session.touch();
-          
-          // Redirect - Express-session will automatically set the cookie
-          // Don't use save() callback as it can interfere with redirect
-          console.log(`✅ Session data set, redirecting...`);
-          res.redirect('/?auth_success=true');
+          // Use a small delay to ensure cookie header is set
+          setTimeout(() => {
+            const finalCookie = res.getHeader('Set-Cookie');
+            console.log(`🔐 Final check - Set-Cookie: ${finalCookie ? 'YES' : 'NO'}`);
+            res.redirect('/?auth_success=true');
+          }, 50);
         });
       } catch (err) {
         console.error('❌ Database error:', err);
