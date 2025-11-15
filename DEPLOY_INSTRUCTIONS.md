@@ -315,48 +315,6 @@ This will check for renewal daily at 3 AM and restart your app if the certificat
 
 ## Step 8: Set Up OAuth Providers & Google AdSense
 
-To check if users have been created in the database:
-
-**On your server:**
-
-```bash
-cd ~/logo
-
-# Check if the database file exists
-ls -lh logo_generator.db
-
-# Use SQLite command line to view users
-sqlite3 logo_generator.db
-
-# Then run SQL queries:
-# View all users
-SELECT id, email, name, provider, provider_id, created_at, last_login FROM users;
-
-# View specific user by email
-SELECT * FROM users WHERE email = 'user@example.com';
-
-# View sessions
-SELECT * FROM sessions;
-
-# Count total users
-SELECT COUNT(*) FROM users;
-
-# Exit SQLite
-.quit
-```
-
-**Or use a one-liner to view users:**
-```bash
-sqlite3 ~/logo/logo_generator.db "SELECT id, email, name, provider, created_at FROM users;"
-```
-
-**To view in a more readable format:**
-```bash
-sqlite3 -header -column ~/logo/logo_generator.db "SELECT id, email, name, provider, created_at, last_login FROM users;"
-```
-
-## Step 8: Set Up OAuth Providers & Google AdSense
-
 ### Google OAuth Setup
 
 1. **Go to Google Cloud Console**
@@ -592,4 +550,46 @@ This is the most common error. The redirect URI must match EXACTLY in Google Clo
 - Verify Ad Unit ID matches your AdSense dashboard
 - Check browser console for AdSense errors
 - Note: Ads may not show in development/localhost
+
+## Step 9: Check Database (View Users)
+
+To check if users have been created in the database:
+
+**On your server:**
+
+```bash
+cd ~/logo
+
+# Check if the database file exists
+ls -lh logo_generator.db
+
+# Use SQLite command line to view users
+sqlite3 logo_generator.db
+
+# Then run SQL queries:
+# View all users
+SELECT id, email, name, provider, provider_id, created_at, last_login FROM users;
+
+# View specific user by email
+SELECT * FROM users WHERE email = 'user@example.com';
+
+# View sessions
+SELECT * FROM sessions;
+
+# Count total users
+SELECT COUNT(*) FROM users;
+
+# Exit SQLite
+.quit
+```
+
+**Or use a one-liner to view users:**
+```bash
+sqlite3 ~/logo/logo_generator.db "SELECT id, email, name, provider, created_at FROM users;"
+```
+
+**To view in a more readable format:**
+```bash
+sqlite3 -header -column ~/logo/logo_generator.db "SELECT id, email, name, provider, created_at, last_login FROM users;"
+```
 
