@@ -21,6 +21,10 @@ require('dotenv').config();
 
 const app = express();
 
+// Trust proxy - required when behind Nginx to detect HTTPS correctly
+// This ensures secure cookies are set properly
+app.set('trust proxy', true);
+
 // Security middleware
 const helmet = require('helmet');
 // Use Helmet to disable CSP (including upgrade-insecure-requests), COOP and Origin-Agent-Cluster for HTTP origin
