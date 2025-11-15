@@ -26,8 +26,14 @@ function getClientIP(req) {
 // Helper to normalize email addresses for Gmail plus addressing
 // Gmail treats user+tag@gmail.com the same as user@gmail.com
 // This function normalizes Gmail addresses by removing the +tag part
+// Set ALLOW_PLUS_ADDRESSING=true in .env to disable normalization and allow multiple accounts
 function normalizeEmailForLookup(email) {
   if (!email) return email;
+  
+  // Allow plus addressing if explicitly enabled (for testing/multiple accounts)
+  if (process.env.ALLOW_PLUS_ADDRESSING === 'true') {
+    return email.toLowerCase().trim();
+  }
   
   const lowerEmail = email.toLowerCase().trim();
   const [localPart, domain] = lowerEmail.split('@');
