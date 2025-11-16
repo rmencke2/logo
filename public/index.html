@@ -1536,7 +1536,7 @@
     <div class="modal" id="loginModal">
       <div class="modal-content">
         <div class="modal-header">
-          <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+          <button class="modal-close" onclick="if(typeof window.closeLoginModal === 'function') { window.closeLoginModal(); }">&times;</button>
           <h2 data-i18n="auth.login">Log In</h2>
           <p class="subtitle" data-i18n="auth.signInToAccount">Sign in to your account</p>
         </div>
@@ -1558,10 +1558,10 @@
           <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;" data-i18n="auth.login">Log In</button>
         </form>
         <div style="text-align: center; margin-top: 16px;">
-          <a href="#" onclick="openForgotPasswordModal(); closeLoginModal();" style="color: #10a37f; font-size: 14px;" data-i18n="auth.forgotPassword">Forgot password?</a>
+          <a href="#" onclick="if(typeof window.openForgotPasswordModal === 'function' && typeof window.closeLoginModal === 'function') { window.openForgotPasswordModal(); window.closeLoginModal(); }" style="color: #10a37f; font-size: 14px;" data-i18n="auth.forgotPassword">Forgot password?</a>
         </div>
         <div style="text-align: center; margin-top: 16px; font-size: 14px; color: #8e8e93;">
-          <span data-i18n="auth.dontHaveAccount">Don't have an account?</span> <a href="#" onclick="closeLoginModal(); openSignupModal();" style="color: #10a37f;" data-i18n="auth.signup">Sign up</a>
+          <span data-i18n="auth.dontHaveAccount">Don't have an account?</span> <a href="#" onclick="if(typeof window.closeLoginModal === 'function' && typeof window.openSignupModal === 'function') { window.closeLoginModal(); window.openSignupModal(); }" style="color: #10a37f;" data-i18n="auth.signup">Sign up</a>
         </div>
       </div>
     </div>
@@ -1570,7 +1570,7 @@
     <div class="modal" id="signupModal">
       <div class="modal-content">
         <div class="modal-header">
-          <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+          <button class="modal-close" onclick="if(typeof window.closeSignupModal === 'function') { window.closeSignupModal(); }">&times;</button>
           <h2>Sign Up</h2>
           <p class="subtitle">Create your free account</p>
         </div>
