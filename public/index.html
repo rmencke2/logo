@@ -928,7 +928,7 @@
     </div>
 
     <!-- Homepage / Landing Page -->
-    <div id="homepage" class="homepage">
+    <div id="homepage" class="homepage" style="display: block;">
       <div class="hero hero-gradient">
         <div style="max-width: 1200px; margin: 0 auto; padding: 80px 20px 60px;">
           <h1 style="font-size: 48px; font-weight: 700; margin-bottom: 24px; background: linear-gradient(135deg, #fff 0%, #10a37f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2;" data-i18n="homepage.hero.title">Start Building Your Business Today</h1>
@@ -2413,17 +2413,11 @@
             updateAuthUI(data.user);
             loadUsageLimits();
             loadAds();
-        } else {
-          currentUser = null;
-          updateAuthUI(null);
-          hideAds();
-          
-          // Show homepage, hide logo generator
-          const homepage = document.getElementById('homepage');
-          const logoGenerator = document.getElementById('logoGenerator');
-          if (homepage) homepage.style.display = 'block';
-          if (logoGenerator) logoGenerator.style.display = 'none';
-        }
+          } else {
+            currentUser = null;
+            updateAuthUI(null);
+            hideAds();
+          }
         } catch (err) {
           console.error('Auth check error:', err);
           currentUser = null;
