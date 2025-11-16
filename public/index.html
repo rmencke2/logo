@@ -339,6 +339,115 @@
         transform: translateY(-4px);
         border-color: #10a37f;
       }
+      /* Homepage Styles */
+      .homepage {
+        min-height: 100vh;
+      }
+      .features-section {
+        background: #171717;
+        border-top: 1px solid #2a2a2a;
+        padding: 0;
+      }
+      .feature-card {
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+        transition: all 0.3s;
+      }
+      .feature-card:hover {
+        border-color: #10a37f;
+        transform: translateY(-4px);
+      }
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+      .feature-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #fff;
+      }
+      .feature-card p {
+        color: #8e8e93;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .cta-section {
+        background: linear-gradient(135deg, #10a37f 0%, #0d8a6a 100%);
+        border-radius: 16px;
+        padding: 48px 32px;
+        margin-top: 48px;
+      }
+      .cta-button {
+        padding: 14px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .cta-button.primary {
+        background: #fff;
+        color: #10a37f;
+      }
+      .cta-button.primary:hover {
+        background: #f0f0f0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .cta-button.secondary {
+        background: transparent;
+        color: #fff;
+        border: 2px solid #fff;
+      }
+      .cta-button.secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      /* Auth Gate Overlay */
+      .auth-gate {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(8px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+      }
+      .auth-gate.active {
+        display: flex;
+      }
+      .auth-gate-content {
+        background: #171717;
+        border: 1px solid #2a2a2a;
+        border-radius: 16px;
+        padding: 48px;
+        max-width: 500px;
+        text-align: center;
+      }
+      .auth-gate-content h2 {
+        font-size: 28px;
+        margin-bottom: 16px;
+        color: #fff;
+      }
+      .auth-gate-content p {
+        color: #8e8e93;
+        font-size: 16px;
+        margin-bottom: 32px;
+        line-height: 1.6;
+      }
+      .auth-gate-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
       /* Progress Indicator */
       .progress-steps {
         display: flex;
@@ -796,20 +905,89 @@
       </div>
     </div>
 
-    <div class="hero">
-      <h1 data-i18n="app.tagline">Create Your Professional Logo in Minutes</h1>
-      <p class="subtitle" data-i18n="app.subtitle">No design skills needed — perfect for cafés, freelancers, artisans, and new small businesses</p>
-      <p class="hero-tagline" data-i18n="app.features">✓ Professional quality ✓ Full usage rights ✓ Multiple formats</p>
-      <div class="sample-logos">
-        <div class="sample-logo" style="background: #FFF8DC; color: #8B4513;">Sweet Dreams<br>Bakery</div>
-        <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A;">Flow Masters<br>Plumbing</div>
-        <div class="sample-logo" style="background: #EFEBE9; color: #5D4037;">Green Thumb<br>Landscaping</div>
-        <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD;">Fit Zone<br>Fitness</div>
+    <!-- Homepage / Landing Page -->
+    <div id="homepage" class="homepage">
+      <div class="hero">
+        <h1 data-i18n="homepage.hero.title">Create Your Professional Logo in Minutes</h1>
+        <p class="subtitle" data-i18n="homepage.hero.subtitle">No design skills needed — perfect for cafés, freelancers, artisans, and new small businesses</p>
+        <p class="hero-tagline" data-i18n="homepage.hero.features">✓ Professional quality ✓ Full usage rights ✓ Multiple formats</p>
+        <div class="sample-logos">
+          <div class="sample-logo" style="background: #FFF8DC; color: #8B4513;">Sweet Dreams<br>Bakery</div>
+          <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A;">Flow Masters<br>Plumbing</div>
+          <div class="sample-logo" style="background: #EFEBE9; color: #5D4037;">Green Thumb<br>Landscaping</div>
+          <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD;">Fit Zone<br>Fitness</div>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div class="features-section">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 60px 20px;">
+          <h2 style="text-align: center; font-size: 32px; margin-bottom: 16px; color: #fff;" data-i18n="homepage.features.title">Everything You Need to Get Started</h2>
+          <p style="text-align: center; color: #8e8e93; margin-bottom: 48px; font-size: 16px;" data-i18n="homepage.features.subtitle">Professional logo design tools made simple</p>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 48px;">
+            <div class="feature-card">
+              <div class="feature-icon">🎨</div>
+              <h3 data-i18n="homepage.features.design.title">AI-Powered Design</h3>
+              <p data-i18n="homepage.features.design.description">Create professional logos in minutes with our intelligent design system</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📱</div>
+              <h3 data-i18n="homepage.features.formats.title">All Formats Included</h3>
+              <p data-i18n="homepage.features.formats.description">Get SVG and PNG files ready for web, print, and social media</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔒</div>
+              <h3 data-i18n="homepage.features.rights.title">Full Usage Rights</h3>
+              <p data-i18n="homepage.features.rights.description">You own your logo completely — use it anywhere, anytime</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3 data-i18n="homepage.features.favicon.title">Favicon Generator</h3>
+              <p data-i18n="homepage.features.favicon.description">Create matching favicons for your website in all standard sizes</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🌍</div>
+              <h3 data-i18n="homepage.features.multilang.title">8 Languages</h3>
+              <p data-i18n="homepage.features.multilang.description">Use our platform in your preferred language</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🚀</div>
+              <h3 data-i18n="homepage.features.fast.title">Lightning Fast</h3>
+              <p data-i18n="homepage.features.fast.description">Generate your logo instantly — no waiting, no delays</p>
+            </div>
+          </div>
+
+          <!-- CTA Section -->
+          <div class="cta-section">
+            <h2 style="text-align: center; font-size: 28px; margin-bottom: 16px; color: #fff;" data-i18n="homepage.cta.title">Ready to Create Your Logo?</h2>
+            <p style="text-align: center; color: #8e8e93; margin-bottom: 32px; font-size: 18px;" data-i18n="homepage.cta.subtitle">Sign up free to get started — no credit card required</p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+              <button class="cta-button primary" onclick="openSignupModal()" data-i18n="homepage.cta.signup">Get Started Free</button>
+              <button class="cta-button secondary" onclick="openLoginModal()" data-i18n="homepage.cta.login">Already have an account?</button>
+            </div>
+            <p style="text-align: center; color: #8e8e93; margin-top: 24px; font-size: 14px;" data-i18n="homepage.cta.trust">✓ Free forever plan available ✓ No credit card required ✓ Cancel anytime</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="container">
-      <div class="card form-card">
+    <!-- Logo Generator (Hidden until authenticated) -->
+    <div id="logoGenerator" class="logo-generator" style="display: none;">
+      <div class="hero">
+        <h1 data-i18n="app.tagline">Create Your Professional Logo in Minutes</h1>
+        <p class="subtitle" data-i18n="app.subtitle">No design skills needed — perfect for cafés, freelancers, artisans, and new small businesses</p>
+        <p class="hero-tagline" data-i18n="app.features">✓ Professional quality ✓ Full usage rights ✓ Multiple formats</p>
+        <div class="sample-logos">
+          <div class="sample-logo" style="background: #FFF8DC; color: #8B4513;">Sweet Dreams<br>Bakery</div>
+          <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A;">Flow Masters<br>Plumbing</div>
+          <div class="sample-logo" style="background: #EFEBE9; color: #5D4037;">Green Thumb<br>Landscaping</div>
+          <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD;">Fit Zone<br>Fitness</div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="card form-card">
         <div class="progress-steps" id="progressSteps">
           <div class="progress-step active" data-step="1">
             <div class="step-number">1</div>
@@ -1226,6 +1404,19 @@
             <button type="button" id="downloadAllFaviconsBtn" style="width: 100%; margin-top: 12px; padding: 10px; background: #10a37f; color: #fff; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: none;" data-i18n="favicon.downloadAll">Download All as ZIP</button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Auth Gate Overlay -->
+    <div id="authGate" class="auth-gate">
+      <div class="auth-gate-content">
+        <h2 data-i18n="authGate.title">Sign Up to Get Started</h2>
+        <p data-i18n="authGate.description">Create a free account to start generating professional logos and favicons for your business</p>
+        <div class="auth-gate-buttons">
+          <button class="cta-button primary" onclick="openSignupModal(); closeAuthGate();" data-i18n="authGate.signup">Sign Up Free</button>
+          <button class="cta-button secondary" onclick="openLoginModal(); closeAuthGate();" data-i18n="authGate.login">Log In</button>
+        </div>
+        <button onclick="closeAuthGate()" style="margin-top: 24px; background: none; border: none; color: #8e8e93; font-size: 14px; cursor: pointer; text-decoration: underline;" data-i18n="authGate.close">Maybe later</button>
       </div>
     </div>
 
@@ -1676,6 +1867,12 @@
       });
 
       async function generateLogo() {
+        // Check authentication first
+        if (!currentUser) {
+          showAuthGate();
+          return;
+        }
+
         const name = nameInput.value.trim();
         const tagline = taglineInput.value.trim();
         const style = styleSelect.value.toLowerCase();
@@ -1812,6 +2009,12 @@
 
       // Auto-generate favicon options based on business info
       function generateAutoFaviconOptions() {
+        // Check authentication first
+        if (!currentUser) {
+          showAuthGate();
+          return;
+        }
+
         const businessName = nameInput.value.trim();
         const businessType = businessTypeSelect.value;
         
@@ -1907,6 +2110,12 @@
 
       // Use logo for favicon
       async function useLogoForFavicon() {
+        // Check authentication first
+        if (!currentUser) {
+          showAuthGate();
+          return;
+        }
+
         if (!window.generatedLogoPaths || !window.generatedLogoPaths.pngPath) {
           alert('Please generate a logo first');
           return;
@@ -1994,6 +2203,12 @@
       }
 
       async function generateFavicon() {
+        // Check authentication first
+        if (!currentUser) {
+          showAuthGate();
+          return;
+        }
+
         const text = faviconTextInput.value.trim().toUpperCase();
         const fontCategory = faviconFontCategorySelect.value.toLowerCase();
         const shape = faviconShapeSelect.value.toLowerCase();
@@ -2079,6 +2294,29 @@
         });
       }
 
+      // Auth gate functions
+      function showAuthGate() {
+        const authGate = document.getElementById('authGate');
+        if (authGate) {
+          authGate.classList.add('active');
+        }
+      }
+
+      function closeAuthGate() {
+        const authGate = document.getElementById('authGate');
+        if (authGate) {
+          authGate.classList.remove('active');
+        }
+      }
+
+      // Close auth gate when clicking outside
+      document.addEventListener('click', (e) => {
+        const authGate = document.getElementById('authGate');
+        if (authGate && authGate.classList.contains('active') && e.target === authGate) {
+          closeAuthGate();
+        }
+      });
+
       window.addEventListener('DOMContentLoaded', async () => {
         // Initialize i18n first
         await window.i18n.init();
@@ -2127,11 +2365,17 @@
             updateAuthUI(data.user);
             loadUsageLimits();
             loadAds();
-          } else {
-            currentUser = null;
-            updateAuthUI(null);
-            hideAds();
-          }
+        } else {
+          currentUser = null;
+          updateAuthUI(null);
+          hideAds();
+          
+          // Show homepage, hide logo generator
+          const homepage = document.getElementById('homepage');
+          const logoGenerator = document.getElementById('logoGenerator');
+          if (homepage) homepage.style.display = 'block';
+          if (logoGenerator) logoGenerator.style.display = 'none';
+        }
         } catch (err) {
           console.error('Auth check error:', err);
           currentUser = null;
@@ -2160,6 +2404,12 @@
         } else {
           authButtons.style.display = 'flex';
           userInfo.style.display = 'none';
+          
+          // Show homepage, hide logo generator
+          const homepage = document.getElementById('homepage');
+          const logoGenerator = document.getElementById('logoGenerator');
+          if (homepage) homepage.style.display = 'block';
+          if (logoGenerator) logoGenerator.style.display = 'none';
         }
       }
 
@@ -2183,6 +2433,7 @@
       function openLoginModal() {
         document.getElementById('loginModal').classList.add('active');
         document.getElementById('loginError').innerHTML = '';
+        closeAuthGate();
       }
 
       function closeLoginModal() {
@@ -2193,6 +2444,7 @@
       function openSignupModal() {
         document.getElementById('signupModal').classList.add('active');
         document.getElementById('signupError').innerHTML = '';
+        closeAuthGate();
       }
 
       function closeSignupModal() {
@@ -2244,6 +2496,7 @@
             } else {
               closeLoginModal();
               await checkAuthStatus();
+              // After successful login, logo generator will be shown via updateAuthUI
             }
           } else {
             const errorMsg = data.error || window.i18n.t('error.loginFailed');
@@ -2275,9 +2528,14 @@
 
           if (response.ok) {
             errorDiv.innerHTML = `<div class="success-message">${window.i18n.t('success.registrationSuccessful')}</div>`;
-            setTimeout(() => {
+            // Check if user is now authenticated (OAuth users) or needs email verification
+            setTimeout(async () => {
+              await checkAuthStatus();
               closeSignupModal();
-              openLoginModal();
+              // If still not authenticated, show login modal
+              if (!currentUser) {
+                openLoginModal();
+              }
             }, 2000);
           } else {
             const errorMsg = data.error || window.i18n.t('error.registrationFailed');
@@ -2324,6 +2582,8 @@
           currentUser = null;
           updateAuthUI(null);
           hideAds();
+          // Scroll to top after logout
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) {
           console.error('Logout error:', err);
         }
