@@ -814,10 +814,14 @@
         align-items: center;
         justify-content: center;
         pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
       }
       .modal.active {
-        display: flex;
+        display: flex !important;
         pointer-events: auto;
+        opacity: 1;
+        visibility: visible;
       }
       .modal-content {
         background: #171717;
@@ -828,6 +832,8 @@
         width: 90%;
         max-height: 90vh;
         overflow-y: auto;
+        position: relative;
+        z-index: 20001;
       }
       .modal-header {
         margin-bottom: 24px;
@@ -1643,13 +1649,23 @@
         console.log('✅ Opening login modal');
         modal.classList.add('active');
         console.log('Modal classes:', modal.className);
-        console.log('Modal computed display:', window.getComputedStyle(modal).display);
-        console.log('Modal z-index:', window.getComputedStyle(modal).zIndex);
+        const computed = window.getComputedStyle(modal);
+        console.log('Modal computed display:', computed.display);
+        console.log('Modal z-index:', computed.zIndex);
+        console.log('Modal opacity:', computed.opacity);
+        console.log('Modal visibility:', computed.visibility);
+        console.log('Modal position:', computed.position);
+        console.log('Modal top:', computed.top);
+        console.log('Modal left:', computed.left);
+        console.log('Modal width:', computed.width);
+        console.log('Modal height:', computed.height);
         const errorDiv = document.getElementById('loginError');
         if (errorDiv) errorDiv.innerHTML = '';
         if (typeof window.closeAuthGate === 'function') {
           window.closeAuthGate();
         }
+        // Force a reflow to ensure styles are applied
+        void modal.offsetHeight;
       };
 
       window.closeLoginModal = function() {
@@ -1671,13 +1687,19 @@
         console.log('✅ Opening signup modal');
         modal.classList.add('active');
         console.log('Modal classes:', modal.className);
-        console.log('Modal computed display:', window.getComputedStyle(modal).display);
-        console.log('Modal z-index:', window.getComputedStyle(modal).zIndex);
+        const computed = window.getComputedStyle(modal);
+        console.log('Modal computed display:', computed.display);
+        console.log('Modal z-index:', computed.zIndex);
+        console.log('Modal opacity:', computed.opacity);
+        console.log('Modal visibility:', computed.visibility);
+        console.log('Modal position:', computed.position);
         const errorDiv = document.getElementById('signupError');
         if (errorDiv) errorDiv.innerHTML = '';
         if (typeof window.closeAuthGate === 'function') {
           window.closeAuthGate();
         }
+        // Force a reflow to ensure styles are applied
+        void modal.offsetHeight;
       };
 
       window.closeSignupModal = function() {
