@@ -421,10 +421,21 @@
           credentials: 'include',
         });
 
-        const data = await response.json();
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          // If not JSON, read as text to see what we got
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
 
         if (!response.ok) {
-          throw new Error(data.error || 'Conversion failed');
+          throw new Error(data.error || data.message || 'Conversion failed');
         }
 
         // Show success
