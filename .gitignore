@@ -19,3 +19,8 @@ migration-tool/.venv/
 # Docker files
 Dockerfile*
 .env
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
