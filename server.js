@@ -47,11 +47,13 @@ const globalRateLimiter = rateLimit({
   legacyHeaders: false,
   skip: async (req) => {
     // Skip rate limiting for user with email containing "rasmusmencke"
+    // Supports: rasmusmencke@yahoo.com, rasmusmencke@gmail.com, etc.
     try {
       // Check Passport authenticated user
       if (req.isAuthenticated && req.isAuthenticated() && req.user) {
-        const email = req.user.email || '';
-        if (email.toLowerCase().includes('rasmusmencke')) {
+        const email = (req.user.email || '').toLowerCase();
+        if (email.includes('rasmusmencke')) {
+          console.log(`✅ Rate limit bypassed for user: ${req.user.email}`);
           return true; // Skip rate limiting
         }
       }
@@ -60,8 +62,12 @@ const globalRateLimiter = rateLimit({
       if (req.session && req.session.userId) {
         const db = await getDatabase();
         const user = await db.getUserById(req.session.userId);
-        if (user && user.email && user.email.toLowerCase().includes('rasmusmencke')) {
-          return true; // Skip rate limiting
+        if (user && user.email) {
+          const email = user.email.toLowerCase();
+          if (email.includes('rasmusmencke')) {
+            console.log(`✅ Rate limit bypassed for user: ${user.email}`);
+            return true; // Skip rate limiting
+          }
         }
       }
     } catch (err) {
