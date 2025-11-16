@@ -27,6 +27,10 @@ const app = express();
 // This ensures secure cookies are set properly
 app.set('trust proxy', true);
 
+// Increase server timeout for long-running video processing tasks
+// Default is 2 minutes, we need at least 10 minutes for large video files
+app.timeout = 600000; // 10 minutes in milliseconds
+
 // Security middleware
 const helmet = require('helmet');
 // Use Helmet to disable CSP (including upgrade-insecure-requests), COOP and Origin-Agent-Cluster for HTTP origin
