@@ -2980,15 +2980,28 @@
         const errorDiv = document.getElementById('signupError');
         errorDiv.innerHTML = '';
 
-        const name = document.getElementById('signupName').value;
         const email = document.getElementById('signupEmail').value;
         const password = document.getElementById('signupPassword').value;
+        const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+        const termsAccepted = document.getElementById('signupTerms').checked;
+
+        // Validate password confirmation
+        if (password !== passwordConfirm) {
+          errorDiv.innerHTML = '<div class="error-message">Passwords do not match</div>';
+          return;
+        }
+
+        // Validate terms acceptance
+        if (!termsAccepted) {
+          errorDiv.innerHTML = '<div class="error-message">You must accept the Terms and Conditions</div>';
+          return;
+        }
 
         try {
           const response = await fetch('/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ email, password }),
             credentials: 'include',
           });
 
