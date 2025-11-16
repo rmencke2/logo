@@ -3153,13 +3153,15 @@
           .catch(err => console.error('Error loading footer:', err));
       }
       
-      // Load footer when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', loadFooter);
-      } else {
-        // DOM is already ready
-        loadFooter();
-      }
+      // Load footer when DOM is ready - use setTimeout to ensure it runs after all other scripts
+      setTimeout(() => {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', loadFooter);
+        } else {
+          // DOM is already ready
+          loadFooter();
+        }
+      }, 100);
     </script>
   </body>
 </html>
