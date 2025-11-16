@@ -12,6 +12,8 @@ const sharp = require('sharp');
 const TextToSVG = require('text-to-svg');
 const { body, validationResult } = require('express-validator');
 const session = require('express-session');
+const multer = require('multer');
+const ffmpeg = require('fluent-ffmpeg');
 const { getDatabase } = require('./database');
 const { initializeAuth, requireAuth, requireVerified } = require('./auth');
 const { abuseProtectionMiddleware, logUsage } = require('./abuseProtection');
@@ -178,6 +180,26 @@ app.use(
 // --- Ensure output folder exists ---
 const outputDir = path.join(__dirname, 'generated_img');
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+
+// --- Ensure video conversion folder exists ---
+const videoOutputDir = path.join(__dirname, 'generated_video');
+if (!fs.existsSync(videoOutputDir)) fs.mkdirSync(videoOutputDir, { recursive: true });
+
+// --- Configure multer for file uploads ---
+const upload = multer({
+  dest: videoOutputDir,
+  limits: {
+    fileSize: 500 * 1024 * 1024, // 500MB max file size
+  },
+  fileFilter: (req, file, cb) => {
+    // Accept AVI files
+    if (file.mimetype === 'video/x-msvideo' || file.originalname.toLowerCase().endsWith('.avi')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only AVI files are allowed'), false);
+    }
+  },
+});
 
 // --- Font category mapping ---
 const fontCategories = {
@@ -755,6 +777,94 @@ app.post(
   },
 );
 
+// Convert AVI to MP4 (protected with abuse protection and authentication)
+app.post(
+  '/convert-avi-to-mp4',
+  requireAuth,
+  abuseProtectionMiddleware,
+  upload.single('video'),
+  async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const inputPath = req.file.path;
+    const outputFileName = `${req.file.filename}-${Date.now()}.mp4`;
+    const outputPath = path.join(videoOutputDir, outputFileName);
+
+    console.log(`🎬 Converting AVI to MP4:
+   ➡ Input: ${inputPath}
+   ➡ Output: ${outputPath}
+   ➡ File size: ${(req.file.size / 1024 / 1024).toFixed(2)} MB`);
+
+    try {
+      // Convert using FFmpeg
+      await new Promise((resolve, reject) => {
+        ffmpeg(inputPath)
+          .output(outputPath)
+          .videoCodec('libx264')
+          .audioCodec('aac')
+          .format('mp4')
+          .on('start', (commandLine) => {
+            console.log('🔄 FFmpeg command:', commandLine);
+          })
+          .on('progress', (progress) => {
+            console.log(`⏳ Processing: ${Math.round(progress.percent || 0)}%`);
+          })
+          .on('end', () => {
+            console.log('✅ Conversion completed');
+            resolve();
+          })
+          .on('error', (err) => {
+            console.error('❌ FFmpeg error:', err);
+            reject(err);
+          })
+          .run();
+      });
+
+      // Clean up input file
+      try {
+        fs.unlinkSync(inputPath);
+        console.log('🗑️  Cleaned up input file');
+      } catch (cleanupErr) {
+        console.warn('⚠️  Could not delete input file:', cleanupErr);
+      }
+
+      // Log usage
+      await logUsage(req, '/convert-avi-to-mp4');
+
+      // Return download URL
+      res.json({
+        downloadUrl: `/generated_video/${outputFileName}`,
+        filename: outputFileName,
+        usageLimits: req.usageLimits,
+      });
+    } catch (err) {
+      console.error('❌ Error converting video:', err);
+      
+      // Clean up files on error
+      try {
+        if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
+      } catch (cleanupErr) {
+        console.warn('⚠️  Error during cleanup:', cleanupErr);
+      }
+
+      res.status(500).json({ 
+        error: 'Video conversion failed', 
+        details: err.message 
+      });
+    }
+  },
+);
+
+// Serve generated videos
+app.use('/generated_video', express.static(videoOutputDir, {
+  maxAge: '1d',
+  etag: true,
+  lastModified: true,
+}));
+
 // Get usage limits endpoint
 app.get('/api/usage-limits', requireAuth, async (req, res) => {
   try {
@@ -771,6 +881,20 @@ app.get('/api/usage-limits', requireAuth, async (req, res) => {
 /* eslint-disable-next-line no-unused-vars */
 app.use((err, req, res, _next) => {
   console.error(err);
+  
+  // Handle multer errors
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'File too large. Maximum size is 500MB.' });
+    }
+    return res.status(400).json({ error: err.message });
+  }
+  
+  // Handle other errors
+  if (err.message) {
+    return res.status(400).json({ error: err.message });
+  }
+  
   res.status(500).json({ error: 'Internal Server Error' });
 });
 

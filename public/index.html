@@ -1093,6 +1093,20 @@
               <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.fast.description">Generate your logo instantly — no waiting, no delays.</p>
             </div>
 
+            <!-- AVI to MP4 Converter Card -->
+            <div class="tool-card" id="aviToMp4Card" data-tool-card="true">
+              <div class="tool-card-image">
+                <div style="padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 16px;">🎬</div>
+                    <div style="font-size: 14px; color: #10a37f; font-weight: 600;">AVI → MP4</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;">AVI to MP4 Converter</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;">Convert your AVI videos to MP4 format quickly and easily.</p>
+            </div>
+
           </div>
 
           <!-- All Tools CTA Button -->
@@ -1413,6 +1427,55 @@
               Ad space reserved for free tier users
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AVI to MP4 Converter Section -->
+    <div class="container" id="aviToMp4Section" style="display: none; margin-top: 48px;">
+      <div class="card form-card">
+        <div>
+          <h1 style="font-size: 24px; margin-bottom: 8px;">AVI to MP4 Converter</h1>
+          <p class="subtitle" style="margin-bottom: 24px;">Convert your AVI videos to MP4 format quickly and easily</p>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Upload AVI File</div>
+          <p style="font-size: 13px; color: #8e8e93; margin-bottom: 16px;">Maximum file size: 500MB. Only AVI files are supported.</p>
+          
+          <div class="form-group">
+            <label for="aviFileInput" style="display: block; margin-bottom: 8px; font-size: 14px; color: #ececec;">Select AVI File</label>
+            <input type="file" id="aviFileInput" accept="video/x-msvideo,.avi" style="width: 100%; padding: 12px; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 14px; cursor: pointer;" />
+            <div class="field-hint" id="fileInfo" style="margin-top: 8px; font-size: 12px; color: #8e8e93;"></div>
+          </div>
+
+          <button type="button" id="convertVideoBtn" style="width: 100%; padding: 14px; background: #10a37f; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;" disabled>
+            Convert to MP4
+          </button>
+
+          <div id="conversionProgress" style="display: none; margin-top: 20px;">
+            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="width: 20px; height: 20px; border: 2px solid #10a37f; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <span style="color: #ececec; font-size: 14px;">Converting video...</span>
+              </div>
+              <div style="background: #0d0d0d; border-radius: 4px; height: 8px; overflow: hidden;">
+                <div id="progressBar" style="background: #10a37f; height: 100%; width: 0%; transition: width 0.3s;"></div>
+              </div>
+              <div id="progressText" style="margin-top: 8px; font-size: 12px; color: #8e8e93; text-align: center;">0%</div>
+            </div>
+          </div>
+
+          <div id="conversionResult" style="display: none; margin-top: 20px;">
+            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 20px;">
+              <div style="color: #10a37f; font-size: 14px; font-weight: 600; margin-bottom: 12px;">✅ Conversion Complete!</div>
+              <a id="downloadLink" href="#" download style="display: inline-block; padding: 12px 24px; background: #10a37f; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                Download MP4
+              </a>
+            </div>
+          </div>
+
+          <div id="conversionError" style="display: none; margin-top: 20px; padding: 16px; background: #2a1f1f; border: 1px solid #ff453a; border-radius: 8px; color: #ff453a; font-size: 14px;"></div>
         </div>
       </div>
     </div>
@@ -2615,6 +2678,110 @@
         });
       }
 
+      // AVI to MP4 Converter functionality
+      const aviFileInput = document.getElementById('aviFileInput');
+      const convertVideoBtn = document.getElementById('convertVideoBtn');
+      const fileInfo = document.getElementById('fileInfo');
+      const conversionProgress = document.getElementById('conversionProgress');
+      const conversionResult = document.getElementById('conversionResult');
+      const conversionError = document.getElementById('conversionError');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const downloadLink = document.getElementById('downloadLink');
+
+      if (aviFileInput) {
+        aviFileInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+            const maxSizeMB = 500;
+            
+            if (file.size > maxSizeMB * 1024 * 1024) {
+              fileInfo.textContent = `❌ File too large. Maximum size is ${maxSizeMB}MB.`;
+              fileInfo.style.color = '#ff453a';
+              convertVideoBtn.disabled = true;
+            } else if (!file.name.toLowerCase().endsWith('.avi')) {
+              fileInfo.textContent = '❌ Only AVI files are supported.';
+              fileInfo.style.color = '#ff453a';
+              convertVideoBtn.disabled = true;
+            } else {
+              fileInfo.textContent = `✅ Selected: ${file.name} (${fileSizeMB} MB)`;
+              fileInfo.style.color = '#10a37f';
+              convertVideoBtn.disabled = false;
+            }
+            
+            // Hide previous results/errors
+            conversionResult.style.display = 'none';
+            conversionError.style.display = 'none';
+          } else {
+            fileInfo.textContent = '';
+            convertVideoBtn.disabled = true;
+          }
+        });
+      }
+
+      async function convertVideo() {
+        const file = aviFileInput?.files[0];
+        if (!file) {
+          conversionError.textContent = 'Please select a file first.';
+          conversionError.style.display = 'block';
+          return;
+        }
+
+        // Check authentication
+        if (!currentUser) {
+          window.showAuthGate();
+          return;
+        }
+
+        // Reset UI
+        conversionProgress.style.display = 'block';
+        conversionResult.style.display = 'none';
+        conversionError.style.display = 'none';
+        convertVideoBtn.disabled = true;
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+
+        const formData = new FormData();
+        formData.append('video', file);
+
+        try {
+          const response = await fetch('/convert-avi-to-mp4', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Conversion failed');
+          }
+
+          // Show success
+          conversionProgress.style.display = 'none';
+          conversionResult.style.display = 'block';
+          downloadLink.href = data.downloadUrl;
+          downloadLink.download = data.filename || 'converted-video.mp4';
+
+          // Update usage limits if provided
+          if (data.usageLimits) {
+            updateUsageDisplay(data.usageLimits);
+          }
+        } catch (err) {
+          console.error('Conversion error:', err);
+          conversionProgress.style.display = 'none';
+          conversionError.textContent = err.message || 'An error occurred during conversion. Please try again.';
+          conversionError.style.display = 'block';
+        } finally {
+          convertVideoBtn.disabled = false;
+        }
+      }
+
+      if (convertVideoBtn) {
+        convertVideoBtn.addEventListener('click', convertVideo);
+      }
+
       // Close auth gate when clicking outside
       document.addEventListener('click', (e) => {
         const authGate = document.getElementById('authGate');
@@ -2760,6 +2927,29 @@
           card.style.cursor = 'pointer';
           card.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
+            
+            // Special handling for AVI to MP4 converter
+            if (card.id === 'aviToMp4Card') {
+              if (!currentUser) {
+                window.showAuthGate();
+                return;
+              }
+              // Hide homepage and logo generator, show converter
+              const homepage = document.getElementById('homepage');
+              const logoGenerator = document.getElementById('logoGenerator');
+              const aviToMp4Section = document.getElementById('aviToMp4Section');
+              if (homepage) homepage.style.display = 'none';
+              if (logoGenerator) logoGenerator.style.display = 'none';
+              if (aviToMp4Section) {
+                aviToMp4Section.style.display = 'block';
+                // Scroll to converter
+                aviToMp4Section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+              return;
+            }
+            
+            // Default behavior for other tool cards
             e.stopPropagation();
             console.log('🟡 Tool card clicked', card);
             if (typeof window.showAuthGate === 'function') {
