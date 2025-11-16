@@ -122,7 +122,7 @@ server {
         proxy_read_timeout 600s;
         proxy_connect_timeout 600s;
         proxy_send_timeout 600s;
-        proxy_buffering off; # Disable buffering for long-running requests
+        proxy_buffering off;
     }
 }
 ```
@@ -175,7 +175,7 @@ server {
         proxy_read_timeout 600s;
         proxy_connect_timeout 600s;
         proxy_send_timeout 600s;
-        proxy_buffering off; # Disable buffering for long-running requests
+        proxy_buffering off;
     }
 }
 ```
