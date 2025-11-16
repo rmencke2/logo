@@ -595,6 +595,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        flex-wrap: nowrap;
       }
       .user-avatar {
         width: 36px;
@@ -615,6 +616,7 @@
         flex-direction: column;
         gap: 2px;
         min-width: 0;
+        flex-shrink: 1;
       }
       .user-name {
         font-size: 14px;
@@ -628,6 +630,8 @@
         font-size: 11px;
         color: #8e8e93;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       body {
         padding-top: 60px;
@@ -764,25 +768,38 @@
   <body>
     <!-- Auth Header -->
     <div class="auth-header">
-      <div style="font-weight: 600; color: #10a37f;">Logo Generator</div>
-      <div class="auth-buttons" id="authButtons">
-        <button class="auth-btn" onclick="openLoginModal()">Log In</button>
-        <button class="auth-btn primary" onclick="openSignupModal()">Sign Up</button>
+      <div style="font-weight: 600; color: #10a37f;" data-i18n="app.title">Logo Generator</div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <!-- Language Selector -->
+        <select id="languageSelector" onchange="window.i18n.setLanguage(this.value)" style="padding: 6px 10px; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 6px; color: #ececec; font-size: 12px; cursor: pointer;">
+          <option value="en">🇬🇧 English</option>
+          <option value="da">🇩🇰 Dansk</option>
+          <option value="sv">🇸🇪 Svenska</option>
+          <option value="de">🇩🇪 Deutsch</option>
+          <option value="it">🇮🇹 Italiano</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="nl">🇳🇱 Nederlands</option>
+        </select>
+        <div class="auth-buttons" id="authButtons">
+          <button class="auth-btn" onclick="openLoginModal()" data-i18n="auth.login">Log In</button>
+          <button class="auth-btn primary" onclick="openSignupModal()" data-i18n="auth.signup">Sign Up</button>
+        </div>
       </div>
       <div class="user-info" id="userInfo" style="display: none;">
         <div class="user-avatar" id="userAvatar">U</div>
         <div class="user-details">
           <div class="user-name" id="userName">User</div>
-          <div class="usage-info" id="usageInfo">Loading...</div>
+          <div class="usage-info" id="usageInfo" data-i18n="usage.loading">Loading...</div>
         </div>
-        <button class="auth-btn" onclick="logout()" style="margin-left: 8px;">Logout</button>
+        <button class="auth-btn" onclick="logout()" style="margin-left: 8px;" data-i18n="auth.logout">Logout</button>
       </div>
     </div>
 
     <div class="hero">
-      <h1>Create Your Professional Logo in Minutes</h1>
-      <p class="subtitle">No design skills needed — perfect for cafés, freelancers, artisans, and new small businesses</p>
-      <p class="hero-tagline">✓ Professional quality ✓ Full usage rights ✓ Multiple formats</p>
+      <h1 data-i18n="app.tagline">Create Your Professional Logo in Minutes</h1>
+      <p class="subtitle" data-i18n="app.subtitle">No design skills needed — perfect for cafés, freelancers, artisans, and new small businesses</p>
+      <p class="hero-tagline" data-i18n="app.features">✓ Professional quality ✓ Full usage rights ✓ Multiple formats</p>
       <div class="sample-logos">
         <div class="sample-logo" style="background: #FFF8DC; color: #8B4513;">Sweet Dreams<br>Bakery</div>
         <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A;">Flow Masters<br>Plumbing</div>
@@ -1092,31 +1109,31 @@
       <div class="modal-content">
         <div class="modal-header">
           <button class="modal-close" onclick="closeLoginModal()">&times;</button>
-          <h2>Log In</h2>
-          <p class="subtitle">Sign in to your account</p>
+          <h2 data-i18n="auth.login">Log In</h2>
+          <p class="subtitle" data-i18n="auth.signInToAccount">Sign in to your account</p>
         </div>
         <div id="loginError"></div>
         <div class="oauth-buttons">
-          <a href="/auth/google" class="oauth-btn">Continue with Google</a>
-          <a href="/auth/facebook" class="oauth-btn">Continue with Facebook</a>
+          <a href="/auth/google" class="oauth-btn" data-i18n="auth.continueWithGoogle">Continue with Google</a>
+          <a href="/auth/facebook" class="oauth-btn" data-i18n="auth.continueWithFacebook">Continue with Facebook</a>
         </div>
-        <div class="divider">or</div>
+        <div class="divider" data-i18n="modal.or">or</div>
         <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="form-group">
-            <label for="loginEmail">Email</label>
-            <input type="email" id="loginEmail" required />
+            <label for="loginEmail" data-i18n="auth.email">Email</label>
+            <input type="email" id="loginEmail" data-i18n="auth.emailPlaceholder" placeholder="Enter your email" required />
           </div>
           <div class="form-group">
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" required />
+            <label for="loginPassword" data-i18n="auth.password">Password</label>
+            <input type="password" id="loginPassword" data-i18n="auth.passwordPlaceholder" placeholder="Enter your password" required />
           </div>
-          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;">Log In</button>
+          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;" data-i18n="auth.login">Log In</button>
         </form>
         <div style="text-align: center; margin-top: 16px;">
-          <a href="#" onclick="openForgotPasswordModal(); closeLoginModal();" style="color: #10a37f; font-size: 14px;">Forgot password?</a>
+          <a href="#" onclick="openForgotPasswordModal(); closeLoginModal();" style="color: #10a37f; font-size: 14px;" data-i18n="auth.forgotPassword">Forgot password?</a>
         </div>
         <div style="text-align: center; margin-top: 16px; font-size: 14px; color: #8e8e93;">
-          Don't have an account? <a href="#" onclick="closeLoginModal(); openSignupModal();" style="color: #10a37f;">Sign up</a>
+          <span data-i18n="auth.dontHaveAccount">Don't have an account?</span> <a href="#" onclick="closeLoginModal(); openSignupModal();" style="color: #10a37f;" data-i18n="auth.signup">Sign up</a>
         </div>
       </div>
     </div>
@@ -1176,6 +1193,9 @@
       </div>
     </div>
 
+    <!-- i18n System -->
+    <script src="/i18n.js"></script>
+    
     <!-- Inline JavaScript to avoid separate file request -->
     <script>
       const nameInput = document.getElementById('name');
@@ -1586,8 +1606,8 @@
           previewDiv.innerHTML = `
             <img src="${pngPath}" alt="Logo Preview (PNG)" />
             <div class="downloads">
-              <a href="${svgPath}" download>Download SVG</a>
-              <a href="${pngPath}" download>Download PNG</a>
+              <a href="${svgPath}" download data-i18n="preview.downloadSvg">Download SVG</a>
+              <a href="${pngPath}" download data-i18n="preview.downloadPng">Download PNG</a>
             </div>
             <div class="format-info">
               <strong>Format Guide:</strong><br>
@@ -1612,7 +1632,19 @@
         generateLogo();
       });
 
-      window.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener('DOMContentLoaded', async () => {
+        // Initialize i18n first
+        await window.i18n.init();
+        
+        // Update language selector to current language
+        const langSelector = document.getElementById('languageSelector');
+        if (langSelector) {
+          langSelector.value = window.i18n.getCurrentLanguage();
+          langSelector.addEventListener('change', async (e) => {
+            await window.i18n.setLanguage(e.target.value);
+          });
+        }
+        
         const params = new URLSearchParams(location.search);
         const n = params.get('name');
         if (n) {
@@ -1668,6 +1700,11 @@
             document.getElementById('userAvatar').style.backgroundImage = `url(${user.avatarUrl})`;
             document.getElementById('userAvatar').style.backgroundSize = 'cover';
           }
+          // Update language selector to current language
+          const langSelector = document.getElementById('languageSelector');
+          if (langSelector) {
+            langSelector.value = window.i18n.getCurrentLanguage();
+          }
         } else {
           authButtons.style.display = 'flex';
           userInfo.style.display = 'none';
@@ -1683,7 +1720,7 @@
             const limits = await response.json();
             const remaining = limits.remaining;
             document.getElementById('usageInfo').textContent = 
-              `${remaining.daily} daily, ${remaining.hourly} hourly remaining`;
+              window.i18n.t('usage.dailyRemaining', { daily: remaining.daily, hourly: remaining.hourly });
           }
         } catch (err) {
           console.error('Error loading usage limits:', err);
