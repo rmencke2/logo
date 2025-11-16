@@ -1730,6 +1730,18 @@
         showAuthGate: typeof window.showAuthGate,
         closeAuthGate: typeof window.closeAuthGate
       });
+      
+      // Test if functions can be called directly
+      console.log('🧪 Testing function accessibility...');
+      try {
+        if (typeof window.openLoginModal === 'function') {
+          console.log('✅ window.openLoginModal is accessible');
+        } else {
+          console.error('❌ window.openLoginModal is NOT accessible');
+        }
+      } catch (e) {
+        console.error('❌ Error testing functions:', e);
+      }
 
       const nameInput = document.getElementById('name');
       const taglineInput = document.getElementById('tagline');
