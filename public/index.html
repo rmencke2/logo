@@ -809,13 +809,16 @@
         left: 0;
         right: 0;
         bottom: 0;
+        width: 100%;
+        height: 100%;
         background: rgba(0, 0, 0, 0.7);
         z-index: 20000;
         align-items: center;
         justify-content: center;
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.2s;
+        visibility: hidden;
+        transition: opacity 0.2s, visibility 0.2s;
       }
       .modal.active {
         display: flex !important;
