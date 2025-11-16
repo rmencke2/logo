@@ -104,8 +104,11 @@ app.use((req, res, next) => {
 });
 
 // --- Middleware ---
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Increase body parser limits for large file uploads
+// Note: These limits don't affect multipart/form-data (handled by multer),
+// but they're needed for JSON/URL-encoded data in the same request
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // CORS configuration (if needed for OAuth callbacks)
 app.use((req, res, next) => {
@@ -1334,6 +1337,13 @@ app.use((err, req, res, _next) => {
       return res.status(400).json({ error: 'File too large. Maximum size is 500MB.' });
     }
     return res.status(400).json({ error: err.message });
+  }
+  
+  // Handle 413 Payload Too Large errors (usually from Nginx or body parser)
+  if (err.status === 413 || err.statusCode === 413) {
+    return res.status(413).json({ 
+      error: 'File too large. Maximum file size is 500MB. If using Nginx, ensure client_max_body_size is set to at least 500m.' 
+    });
   }
   
   // Handle other errors

@@ -103,6 +103,9 @@ server {
     listen 80;
     server_name www.influzer.ai influzer.ai;
     
+    # Allow large file uploads (500MB for video/GIF processing)
+    client_max_body_size 500m;
+    
     location / {
         proxy_pass http://localhost:4000;
         proxy_http_version 1.1;
@@ -113,6 +116,11 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
+        
+        # Increase timeouts for large file uploads
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 300s;
+        proxy_send_timeout 300s;
     }
 }
 ```
