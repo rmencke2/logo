@@ -1667,6 +1667,8 @@
         console.log('Modal left:', computed.left);
         console.log('Modal width:', computed.width);
         console.log('Modal height:', computed.height);
+        console.log('Modal parent:', modal.parentElement);
+        console.log('Modal parent display:', modal.parentElement ? window.getComputedStyle(modal.parentElement).display : 'N/A');
         const errorDiv = document.getElementById('loginError');
         if (errorDiv) errorDiv.innerHTML = '';
         if (typeof window.closeAuthGate === 'function') {
@@ -1674,6 +1676,16 @@
         }
         // Force a reflow to ensure styles are applied
         void modal.offsetHeight;
+        
+        // Check actual rendered dimensions
+        const rect = modal.getBoundingClientRect();
+        console.log('Modal bounding rect:', {
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          height: rect.height,
+          visible: rect.width > 0 && rect.height > 0
+        });
       };
 
       window.closeLoginModal = function() {
@@ -1701,6 +1713,12 @@
         console.log('Modal opacity:', computed.opacity);
         console.log('Modal visibility:', computed.visibility);
         console.log('Modal position:', computed.position);
+        console.log('Modal top:', computed.top);
+        console.log('Modal left:', computed.left);
+        console.log('Modal width:', computed.width);
+        console.log('Modal height:', computed.height);
+        console.log('Modal parent:', modal.parentElement);
+        console.log('Modal parent display:', modal.parentElement ? window.getComputedStyle(modal.parentElement).display : 'N/A');
         const errorDiv = document.getElementById('signupError');
         if (errorDiv) errorDiv.innerHTML = '';
         if (typeof window.closeAuthGate === 'function') {
