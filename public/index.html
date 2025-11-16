@@ -2361,6 +2361,12 @@
       });
 
       window.addEventListener('DOMContentLoaded', async () => {
+        // Ensure homepage is visible and logo generator is hidden by default
+        const homepage = document.getElementById('homepage');
+        const logoGenerator = document.getElementById('logoGenerator');
+        if (homepage) homepage.style.display = 'block';
+        if (logoGenerator) logoGenerator.style.display = 'none';
+        
         // Initialize i18n first
         await window.i18n.init();
         
