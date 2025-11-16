@@ -2619,6 +2619,35 @@
         }
       });
 
+      // Accessibility: Close modals and auth gate with Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          // Close any open modal
+          const loginModal = document.getElementById('loginModal');
+          const signupModal = document.getElementById('signupModal');
+          const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+          const authGate = document.getElementById('authGate');
+          
+          if (loginModal && loginModal.classList.contains('active')) {
+            window.closeLoginModal();
+            e.preventDefault();
+            e.stopPropagation();
+          } else if (signupModal && signupModal.classList.contains('active')) {
+            window.closeSignupModal();
+            e.preventDefault();
+            e.stopPropagation();
+          } else if (forgotPasswordModal && forgotPasswordModal.classList.contains('active')) {
+            window.closeForgotPasswordModal();
+            e.preventDefault();
+            e.stopPropagation();
+          } else if (authGate && authGate.classList.contains('active')) {
+            window.closeAuthGate();
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }
+      });
+
       window.addEventListener('DOMContentLoaded', async () => {
         console.log('📦 DOMContentLoaded fired!');
         
