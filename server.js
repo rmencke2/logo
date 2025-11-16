@@ -334,6 +334,114 @@ app.get('/video-to-gif', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'video-to-gif.html'));
 });
 
+// Extract video metadata (protected with abuse protection and authentication)
+app.post(
+  '/extract-video-metadata',
+  requireAuth,
+  abuseProtectionMiddleware,
+  uploadVideo.single('video'),
+  async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const inputPath = req.file.path;
+
+    console.log(`📊 Extracting Video Metadata:
+   ➡ Input: ${inputPath}
+   ➡ File size: ${(req.file.size / 1024 / 1024).toFixed(2)} MB`);
+
+    try {
+      // Extract metadata using FFprobe
+      const metadata = await new Promise((resolve, reject) => {
+        ffmpeg.ffprobe(inputPath, (err, metadata) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(metadata);
+          }
+        });
+      });
+
+      // Clean up input file
+      try {
+        fs.unlinkSync(inputPath);
+        console.log('🗑️  Cleaned up input file');
+      } catch (cleanupErr) {
+        console.warn('⚠️  Could not delete input file:', cleanupErr);
+      }
+
+      // Format metadata for display
+      const format = metadata.format || {};
+      const videoStream = metadata.streams?.find(s => s.codec_type === 'video') || {};
+      const audioStream = metadata.streams?.find(s => s.codec_type === 'audio') || {};
+
+      const formattedMetadata = {
+        // File info
+        filename: req.file.originalname,
+        fileSize: format.size ? `${(format.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown',
+        duration: format.duration ? `${parseFloat(format.duration).toFixed(2)} seconds` : 'Unknown',
+        bitrate: format.bit_rate ? `${(parseInt(format.bit_rate) / 1000).toFixed(0)} kbps` : 'Unknown',
+        format: format.format_name || 'Unknown',
+        formatLong: format.format_long_name || 'Unknown',
+        
+        // Video stream info
+        videoCodec: videoStream.codec_name || 'Unknown',
+        videoCodecLong: videoStream.codec_long_name || 'Unknown',
+        videoResolution: videoStream.width && videoStream.height 
+          ? `${videoStream.width}x${videoStream.height}` 
+          : 'Unknown',
+        videoAspectRatio: videoStream.display_aspect_ratio || videoStream.sample_aspect_ratio || 'Unknown',
+        videoFrameRate: videoStream.r_frame_rate || videoStream.avg_frame_rate || 'Unknown',
+        videoBitrate: videoStream.bit_rate ? `${(parseInt(videoStream.bit_rate) / 1000).toFixed(0)} kbps` : 'Unknown',
+        videoPixelFormat: videoStream.pix_fmt || 'Unknown',
+        
+        // Audio stream info
+        audioCodec: audioStream.codec_name || 'None',
+        audioCodecLong: audioStream.codec_long_name || 'None',
+        audioSampleRate: audioStream.sample_rate ? `${audioStream.sample_rate} Hz` : 'None',
+        audioChannels: audioStream.channels || audioStream.channel_layout || 'None',
+        audioBitrate: audioStream.bit_rate ? `${(parseInt(audioStream.bit_rate) / 1000).toFixed(0)} kbps` : 'None',
+        audioChannelLayout: audioStream.channel_layout || 'None',
+        
+        // Raw metadata (for advanced users)
+        raw: {
+          format: format,
+          streams: metadata.streams || [],
+        },
+      };
+
+      // Log usage
+      await logUsage(req, '/extract-video-metadata');
+
+      // Return formatted metadata
+      res.json({
+        metadata: formattedMetadata,
+        usageLimits: req.usageLimits,
+      });
+    } catch (err) {
+      console.error('❌ Error extracting metadata:', err);
+      
+      // Clean up file on error
+      try {
+        if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+      } catch (cleanupErr) {
+        console.warn('⚠️  Error during cleanup:', cleanupErr);
+      }
+
+      res.status(500).json({ 
+        error: 'Metadata extraction failed', 
+        details: err.message 
+      });
+    }
+  },
+);
+
+// Serve video metadata extractor page
+app.get('/video-metadata', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'video-metadata.html'));
+});
+
 // Health check endpoint for service monitoring
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
