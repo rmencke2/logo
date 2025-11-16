@@ -1628,11 +1628,13 @@
     <script>
       // Define global functions IMMEDIATELY so they're available for onclick handlers
       window.openLoginModal = function() {
+        console.log('🔵 openLoginModal called');
         const modal = document.getElementById('loginModal');
         if (!modal) {
-          console.error('Login modal not found');
+          console.error('❌ Login modal not found');
           return;
         }
+        console.log('✅ Opening login modal');
         modal.classList.add('active');
         const errorDiv = document.getElementById('loginError');
         if (errorDiv) errorDiv.innerHTML = '';
@@ -1651,11 +1653,13 @@
       };
 
       window.openSignupModal = function() {
+        console.log('🟢 openSignupModal called');
         const modal = document.getElementById('signupModal');
         if (!modal) {
-          console.error('Signup modal not found');
+          console.error('❌ Signup modal not found');
           return;
         }
+        console.log('✅ Opening signup modal');
         modal.classList.add('active');
         const errorDiv = document.getElementById('signupError');
         if (errorDiv) errorDiv.innerHTML = '';
@@ -1674,9 +1678,13 @@
       };
 
       window.showAuthGate = function() {
+        console.log('🟡 showAuthGate called');
         const authGate = document.getElementById('authGate');
         if (authGate) {
+          console.log('✅ Showing auth gate');
           authGate.classList.add('active');
+        } else {
+          console.error('❌ Auth gate not found');
         }
       };
 
