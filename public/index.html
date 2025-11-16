@@ -370,6 +370,38 @@
         border-top: 1px solid #2a2a2a;
         padding: 0;
       }
+      .tools-showcase-section {
+        background: #0d0d0d;
+        padding: 0;
+      }
+      .tool-card {
+        background: #171717;
+        border: 1px solid #2a2a2a;
+        border-radius: 16px;
+        padding: 0;
+        overflow: hidden;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+      .tool-card:hover {
+        border-color: #10a37f;
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(16, 163, 127, 0.2);
+      }
+      .tool-card-image {
+        width: 100%;
+        background: #1f1f1f;
+        padding: 24px;
+        border-bottom: 1px solid #2a2a2a;
+      }
+      .tool-card h3 {
+        padding: 0 24px;
+        margin-top: 24px;
+        margin-bottom: 12px;
+      }
+      .tool-card p {
+        padding: 0 24px 24px;
+      }
       .feature-card {
         background: #1f1f1f;
         border: 1px solid #2a2a2a;
@@ -929,87 +961,124 @@
 
     <!-- Homepage / Landing Page -->
     <div id="homepage" class="homepage" style="display: block;">
+      <!-- Hero Section -->
       <div class="hero hero-gradient">
-        <div style="max-width: 1200px; margin: 0 auto; padding: 80px 20px 60px;">
-          <h1 style="font-size: 48px; font-weight: 700; margin-bottom: 24px; background: linear-gradient(135deg, #fff 0%, #10a37f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2;" data-i18n="homepage.hero.title">Start Building Your Business Today</h1>
-          <p class="subtitle" style="font-size: 20px; max-width: 700px; margin: 0 auto 32px;" data-i18n="homepage.hero.subtitle">Create professional logos and brand assets in minutes. No design skills needed — perfect for launching your dream business.</p>
-          <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 48px; flex-wrap: wrap;">
-            <button class="cta-button primary hero-cta" onclick="openSignupModal()" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.signup">Get Started Free</button>
-            <button class="cta-button secondary hero-cta" onclick="document.getElementById('homepage').querySelector('.features-section').scrollIntoView({ behavior: 'smooth' });" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.hero.learnMore">See How It Works</button>
-          </div>
-          <p class="hero-tagline" style="font-size: 16px; margin-bottom: 40px;" data-i18n="homepage.hero.features">✓ Professional quality ✓ Full usage rights ✓ Multiple formats ✓ Free forever plan</p>
-          <div class="sample-logos" style="margin-top: 60px;">
-            <div class="sample-logo" style="background: #FFF8DC; color: #8B4513;">Sweet Dreams<br>Bakery</div>
-            <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A;">Flow Masters<br>Plumbing</div>
-            <div class="sample-logo" style="background: #EFEBE9; color: #5D4037;">Green Thumb<br>Landscaping</div>
-            <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD;">Fit Zone<br>Fitness</div>
-            <div class="sample-logo" style="background: #E8F5E9; color: #2E7D32;">Eco Clean<br>Services</div>
-            <div class="sample-logo" style="background: #FFF3E0; color: #E65100;">Artisan<br>Coffee</div>
+        <div style="max-width: 1200px; margin: 0 auto; padding: 100px 20px 80px; text-align: center;">
+          <h1 style="font-size: 56px; font-weight: 700; margin-bottom: 24px; color: #fff; line-height: 1.2;" data-i18n="homepage.hero.title">Logo Generator Online - AI-Powered Design Tools</h1>
+          <p class="subtitle" style="font-size: 20px; max-width: 800px; margin: 0 auto 48px; color: #b0b0b0; line-height: 1.6;" data-i18n="homepage.hero.subtitle">Create stunning logos and brand assets online for free. Boost your branding efficiency by 10x with advanced AI, powerful design tools, and seamless exports.</p>
+          <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap;">
+            <button class="cta-button primary hero-cta" onclick="openSignupModal()" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.signup">Start Free Account</button>
+            <button class="cta-button secondary hero-cta" onclick="openLoginModal()" style="font-size: 18px; padding: 16px 40px; background: transparent; border: 2px solid #fff; color: #fff;" data-i18n="auth.login">Sign In</button>
           </div>
         </div>
       </div>
 
-      <!-- Features Section -->
-      <div class="features-section">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 60px 20px;">
-          <h2 style="text-align: center; font-size: 32px; margin-bottom: 16px; color: #fff;" data-i18n="homepage.features.title">Everything You Need to Get Started</h2>
-          <p style="text-align: center; color: #8e8e93; margin-bottom: 48px; font-size: 16px;" data-i18n="homepage.features.subtitle">Professional logo design tools made simple</p>
-          
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 48px;">
-            <div class="feature-card">
-              <div class="feature-icon">🎨</div>
-              <h3 data-i18n="homepage.features.design.title">AI-Powered Design</h3>
-              <p data-i18n="homepage.features.design.description">Create professional logos in minutes with our intelligent design system</p>
+      <!-- Tools Showcase Section (ImgLarger Style) -->
+      <div class="tools-showcase-section">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 80px 20px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 32px; margin-bottom: 60px;">
+            
+            <!-- Logo Generator Card -->
+            <div class="tool-card">
+              <div class="tool-card-image">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 16px; background: #1f1f1f; border-radius: 8px; min-height: 200px;">
+                  <div class="sample-logo" style="background: #FFF8DC; color: #8B4513; width: 100%; height: 90px; font-size: 12px;">Sweet Dreams<br>Bakery</div>
+                  <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A; width: 100%; height: 90px; font-size: 12px;">Flow Masters<br>Plumbing</div>
+                  <div class="sample-logo" style="background: #EFEBE9; color: #5D4037; width: 100%; height: 90px; font-size: 12px;">Green Thumb<br>Landscaping</div>
+                  <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD; width: 100%; height: 90px; font-size: 12px;">Fit Zone<br>Fitness</div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;" data-i18n="homepage.tools.logo.title">AI Logo Generator</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.logo.description">Generate professional logos, brand identities, and business graphics instantly.</p>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">📱</div>
-              <h3 data-i18n="homepage.features.formats.title">All Formats Included</h3>
-              <p data-i18n="homepage.features.formats.description">Get SVG and PNG files ready for web, print, and social media</p>
+
+            <!-- Favicon Generator Card -->
+            <div class="tool-card">
+              <div class="tool-card-image">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px;">
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10a37f, #0d8a6a); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">AB</div>
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">C</div>
+                    <div style="width: 48px; height: 48px; background: #1a1a1a; border: 2px solid #10a37f; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #10a37f; font-weight: 700; font-size: 20px;">XY</div>
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">M</div>
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">Z</div>
+                    <div style="width: 48px; height: 48px; background: #0d0d0d; border: 2px solid #6366f1; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6366f1; font-weight: 700; font-size: 20px;">1</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;" data-i18n="homepage.tools.favicon.title">AI Favicon Generator</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.favicon.description">Create matching favicons for your website in all standard sizes instantly.</p>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">🔒</div>
-              <h3 data-i18n="homepage.features.rights.title">Full Usage Rights</h3>
-              <p data-i18n="homepage.features.rights.description">You own your logo completely — use it anywhere, anytime</p>
+
+            <!-- Brand Assets Card -->
+            <div class="tool-card">
+              <div class="tool-card-image">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px;">
+                  <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #2a2a2a; border: 2px dashed #10a37f; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                      <span style="color: #10a37f; font-size: 32px;">SVG</span>
+                    </div>
+                    <div style="font-size: 12px; color: #8e8e93;">Vector</div>
+                  </div>
+                  <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #2a2a2a; border: 2px dashed #10a37f; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                      <span style="color: #10a37f; font-size: 32px;">PNG</span>
+                    </div>
+                    <div style="font-size: 12px; color: #8e8e93;">Raster</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;" data-i18n="homepage.tools.formats.title">All Formats Included</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.formats.description">Get SVG and PNG files ready for web, print, and social media.</p>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">⚡</div>
-              <h3 data-i18n="homepage.features.favicon.title">Favicon Generator</h3>
-              <p data-i18n="homepage.features.favicon.description">Create matching favicons for your website in all standard sizes</p>
+
+            <!-- AI-Powered Design Card -->
+            <div class="tool-card">
+              <div class="tool-card-image">
+                <div style="padding: 24px; background: linear-gradient(135deg, rgba(16, 163, 127, 0.1), rgba(99, 102, 241, 0.1)); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 16px;">✨</div>
+                    <div style="font-size: 14px; color: #10a37f; font-weight: 600;">AI-Powered</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;" data-i18n="homepage.tools.ai.title">AI-Powered Design</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.ai.description">Create professional logos in minutes with our intelligent design system.</p>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">🌍</div>
-              <h3 data-i18n="homepage.features.multilang.title">8 Languages</h3>
-              <p data-i18n="homepage.features.multilang.description">Use our platform in your preferred language</p>
+
+            <!-- Full Rights Card -->
+            <div class="tool-card">
+              <div class="tool-card-image">
+                <div style="padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 16px;">🔒</div>
+                    <div style="font-size: 14px; color: #10a37f; font-weight: 600;">100% Ownership</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;" data-i18n="homepage.tools.rights.title">Full Usage Rights</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.rights.description">You own your logo completely — use it anywhere, anytime.</p>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">🚀</div>
-              <h3 data-i18n="homepage.features.fast.title">Lightning Fast</h3>
-              <p data-i18n="homepage.features.fast.description">Generate your logo instantly — no waiting, no delays</p>
+
+            <!-- Lightning Fast Card -->
+            <div class="tool-card">
+              <div class="tool-card-image">
+                <div style="padding: 24px; background: linear-gradient(135deg, rgba(16, 163, 127, 0.1), rgba(16, 163, 127, 0.05)); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 16px;">⚡</div>
+                    <div style="font-size: 14px; color: #10a37f; font-weight: 600;">Instant Generation</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;" data-i18n="homepage.tools.fast.title">Lightning Fast</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;" data-i18n="homepage.tools.fast.description">Generate your logo instantly — no waiting, no delays.</p>
             </div>
+
           </div>
 
-          <!-- Trust Signals -->
-          <div style="text-align: center; margin-bottom: 48px; padding: 40px 20px; background: #1f1f1f; border-radius: 12px; border: 1px solid #2a2a2a;">
-            <p style="color: #8e8e93; font-size: 14px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;" data-i18n="homepage.trust.title">Trusted by entrepreneurs worldwide</p>
-            <div style="display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; opacity: 0.7;">
-              <div style="color: #ececec; font-size: 24px; font-weight: 600;">10K+</div>
-              <div style="color: #ececec; font-size: 24px; font-weight: 600;" data-i18n="homepage.trust.logos">Logos Created</div>
-              <div style="color: #ececec; font-size: 24px; font-weight: 600;">50+</div>
-              <div style="color: #ececec; font-size: 24px; font-weight: 600;" data-i18n="homepage.trust.countries">Countries</div>
-              <div style="color: #ececec; font-size: 24px; font-weight: 600;">4.8★</div>
-              <div style="color: #ececec; font-size: 24px; font-weight: 600;" data-i18n="homepage.trust.rating">Rating</div>
-            </div>
-          </div>
-
-          <!-- CTA Section -->
-          <div class="cta-section">
-            <h2 style="text-align: center; font-size: 32px; margin-bottom: 16px; color: #fff; font-weight: 700;" data-i18n="homepage.cta.title">Ready to Build Your Brand?</h2>
-            <p style="text-align: center; color: rgba(255, 255, 255, 0.9); margin-bottom: 32px; font-size: 18px;" data-i18n="homepage.cta.subtitle">Join thousands of entrepreneurs creating professional brands — start free today</p>
-            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-              <button class="cta-button primary" onclick="openSignupModal()" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.signup">Get Started Free</button>
-              <button class="cta-button secondary" onclick="openLoginModal()" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.login">Already have an account?</button>
-            </div>
-            <p style="text-align: center; color: rgba(255, 255, 255, 0.8); margin-top: 24px; font-size: 14px;" data-i18n="homepage.cta.trust">✓ Free forever plan available ✓ No credit card required ✓ Cancel anytime</p>
+          <!-- All Tools CTA Button -->
+          <div style="text-align: center;">
+            <button class="cta-button primary" onclick="openSignupModal()" style="font-size: 18px; padding: 18px 48px; min-width: 300px;" data-i18n="homepage.tools.allTools">All Logo Design Tools</button>
           </div>
         </div>
       </div>
