@@ -436,13 +436,16 @@
         margin-top: 48px;
       }
       .cta-button {
-        padding: 14px 32px;
+        padding: 14px 24px;
         font-size: 16px;
         font-weight: 600;
         border: none;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.2s;
+        max-width: 300px;
+        width: auto;
+        display: inline-block;
       }
       .cta-button.primary {
         background: #fff;
@@ -2721,12 +2724,28 @@
         
         // Add event listeners to tool cards
         document.querySelectorAll('[data-tool-card="true"]').forEach(card => {
+          card.style.cursor = 'pointer';
           card.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('🟡 Tool card clicked');
+            console.log('🟡 Tool card clicked', card);
             if (typeof window.showAuthGate === 'function') {
               window.showAuthGate();
+            } else {
+              console.error('❌ window.showAuthGate is not a function!');
+            }
+          });
+          // Also make the card keyboard accessible
+          card.setAttribute('tabindex', '0');
+          card.setAttribute('role', 'button');
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('🟡 Tool card activated via keyboard');
+              if (typeof window.showAuthGate === 'function') {
+                window.showAuthGate();
+              }
             }
           });
         });
