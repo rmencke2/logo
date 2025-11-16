@@ -117,10 +117,12 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
         
-        # Increase timeouts for large file uploads
-        proxy_read_timeout 300s;
-        proxy_connect_timeout 300s;
-        proxy_send_timeout 300s;
+        # Increase timeouts for large file uploads and video processing
+        # Video/GIF processing can take 5-10 minutes for large files
+        proxy_read_timeout 600s;
+        proxy_connect_timeout 600s;
+        proxy_send_timeout 600s;
+        proxy_buffering off; # Disable buffering for long-running requests
     }
 }
 ```
@@ -168,10 +170,12 @@ server {
         proxy_set_header X-Forwarded-Host $host;
         proxy_cache_bypass $http_upgrade;
         
-        # Increase timeouts for large file uploads
-        proxy_read_timeout 300s;
-        proxy_connect_timeout 300s;
-        proxy_send_timeout 300s;
+        # Increase timeouts for large file uploads and video processing
+        # Video/GIF processing can take 5-10 minutes for large files
+        proxy_read_timeout 600s;
+        proxy_connect_timeout 600s;
+        proxy_send_timeout 600s;
+        proxy_buffering off; # Disable buffering for long-running requests
     }
 }
 ```
