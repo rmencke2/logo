@@ -2591,10 +2591,18 @@
       }
 
       function updateAuthUI(user) {
+        console.log('🔄 updateAuthUI called with user:', user ? 'authenticated' : 'not authenticated');
         const authButtons = document.getElementById('authButtons');
         const userInfo = document.getElementById('userInfo');
         const homepage = document.getElementById('homepage');
         const logoGenerator = document.getElementById('logoGenerator');
+        
+        console.log('📦 Elements found:', {
+          homepage: !!homepage,
+          logoGenerator: !!logoGenerator,
+          authButtons: !!authButtons,
+          userInfo: !!userInfo
+        });
         
         if (user) {
           authButtons.style.display = 'none';
@@ -2612,8 +2620,14 @@
           }
           
           // Show logo generator, hide homepage
-          if (homepage) homepage.style.display = 'none';
-          if (logoGenerator) logoGenerator.style.display = 'block';
+          if (homepage) {
+            homepage.style.display = 'none';
+            console.log('✅ Hiding homepage, showing logo generator');
+          }
+          if (logoGenerator) {
+            logoGenerator.style.display = 'block';
+            console.log('✅ Logo generator display set to block');
+          }
           
           // Update translations for logo generator after it's shown
           setTimeout(() => {
@@ -2624,8 +2638,14 @@
           userInfo.style.display = 'none';
           
           // Show homepage, hide logo generator
-          if (homepage) homepage.style.display = 'block';
-          if (logoGenerator) logoGenerator.style.display = 'none';
+          if (homepage) {
+            homepage.style.display = 'block';
+            console.log('✅ Homepage display set to block');
+          }
+          if (logoGenerator) {
+            logoGenerator.style.display = 'none';
+            console.log('✅ Logo generator display set to none');
+          }
           
           // Update translations for homepage after it's shown
           setTimeout(() => {
