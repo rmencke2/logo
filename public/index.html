@@ -949,8 +949,8 @@
           <option value="nl">🇳🇱 Nederlands</option>
         </select>
         <div class="auth-buttons" id="authButtons">
-          <button class="auth-btn" onclick="window.openLoginModal()" data-i18n="auth.login">Log In</button>
-          <button class="auth-btn primary" onclick="window.openSignupModal()" data-i18n="auth.signup">Sign Up</button>
+          <button class="auth-btn" id="loginBtn" data-i18n="auth.login">Log In</button>
+          <button class="auth-btn primary" id="signupBtn" data-i18n="auth.signup">Sign Up</button>
         </div>
       </div>
       <div class="user-info" id="userInfo" style="display: none;">
@@ -971,8 +971,8 @@
           <h1 style="font-size: 56px; font-weight: 700; margin-bottom: 24px; color: #fff; line-height: 1.2;" data-i18n="homepage.hero.title">Logo Generator Online - AI-Powered Design Tools</h1>
           <p class="subtitle" style="font-size: 20px; max-width: 800px; margin: 0 auto 48px; color: #b0b0b0; line-height: 1.6;" data-i18n="homepage.hero.subtitle">Create stunning logos and brand assets online for free. Boost your branding efficiency by 10x with advanced AI, powerful design tools, and seamless exports.</p>
           <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap;">
-            <button class="cta-button primary hero-cta" onclick="window.openSignupModal()" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.signup">Start Free Account</button>
-            <button class="cta-button secondary hero-cta" onclick="window.openLoginModal()" style="font-size: 18px; padding: 16px 40px; background: transparent; border: 2px solid #fff; color: #fff;" data-i18n="auth.login">Sign In</button>
+            <button class="cta-button primary hero-cta" id="heroSignupBtn" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.signup">Start Free Account</button>
+            <button class="cta-button secondary hero-cta" id="heroLoginBtn" style="font-size: 18px; padding: 16px 40px; background: transparent; border: 2px solid #fff; color: #fff;" data-i18n="auth.login">Sign In</button>
           </div>
         </div>
       </div>
@@ -983,7 +983,7 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 32px; margin-bottom: 60px;">
             
             <!-- Logo Generator Card -->
-            <div class="tool-card" onclick="window.showAuthGate()">
+            <div class="tool-card" data-tool-card="true">
               <div class="tool-card-image">
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 16px; background: #1f1f1f; border-radius: 8px; min-height: 200px;">
                   <div class="sample-logo" style="background: #FFF8DC; color: #8B4513; width: 100%; height: 90px; font-size: 12px;">Sweet Dreams<br>Bakery</div>
@@ -997,7 +997,7 @@
             </div>
 
             <!-- Favicon Generator Card -->
-            <div class="tool-card" onclick="window.showAuthGate()">
+            <div class="tool-card" data-tool-card="true">
               <div class="tool-card-image">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px;">
                   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
@@ -1015,7 +1015,7 @@
             </div>
 
             <!-- Brand Assets Card -->
-            <div class="tool-card" onclick="window.showAuthGate()">
+            <div class="tool-card" data-tool-card="true">
               <div class="tool-card-image">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px;">
                   <div style="text-align: center;">
@@ -1037,7 +1037,7 @@
             </div>
 
             <!-- AI-Powered Design Card -->
-            <div class="tool-card" onclick="window.showAuthGate()">
+            <div class="tool-card" data-tool-card="true">
               <div class="tool-card-image">
                 <div style="padding: 24px; background: linear-gradient(135deg, rgba(16, 163, 127, 0.1), rgba(99, 102, 241, 0.1)); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
                   <div style="text-align: center;">
@@ -1051,7 +1051,7 @@
             </div>
 
             <!-- Full Rights Card -->
-            <div class="tool-card" onclick="window.showAuthGate()">
+            <div class="tool-card" data-tool-card="true">
               <div class="tool-card-image">
                 <div style="padding: 24px; background: #1f1f1f; border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
                   <div style="text-align: center;">
@@ -1065,7 +1065,7 @@
             </div>
 
             <!-- Lightning Fast Card -->
-            <div class="tool-card" onclick="window.showAuthGate()">
+            <div class="tool-card" data-tool-card="true">
               <div class="tool-card-image">
                 <div style="padding: 24px; background: linear-gradient(135deg, rgba(16, 163, 127, 0.1), rgba(16, 163, 127, 0.05)); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
                   <div style="text-align: center;">
@@ -1082,7 +1082,7 @@
 
           <!-- All Tools CTA Button -->
           <div style="text-align: center;">
-            <button class="cta-button primary" onclick="window.openSignupModal()" style="font-size: 18px; padding: 18px 48px; min-width: 300px;" data-i18n="homepage.tools.allTools">All Logo Design Tools</button>
+            <button class="cta-button primary" id="allToolsBtn" style="font-size: 18px; padding: 18px 48px; min-width: 300px;" data-i18n="homepage.tools.allTools">All Logo Design Tools</button>
           </div>
         </div>
       </div>
