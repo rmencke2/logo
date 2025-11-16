@@ -813,129 +813,129 @@
         <div class="progress-steps" id="progressSteps">
           <div class="progress-step active" data-step="1">
             <div class="step-number">1</div>
-            <div class="step-label">Business Info</div>
+            <div class="step-label" data-i18n="progress.step1">Business Info</div>
           </div>
           <div class="progress-step" data-step="2">
             <div class="step-number">2</div>
-            <div class="step-label">Style & Design</div>
+            <div class="step-label" data-i18n="progress.step2">Style & Design</div>
           </div>
           <div class="progress-step" data-step="3">
             <div class="step-number">3</div>
-            <div class="step-label">Preview & Download</div>
+            <div class="step-label" data-i18n="progress.step3">Preview & Download</div>
           </div>
         </div>
 
         <div>
-          <h1 style="font-size: 24px; margin-bottom: 8px;">Small Business Service</h1>
-          <p class="subtitle" style="margin-bottom: 0;">Create your business logo and get started with a digital playbook</p>
+          <h1 style="font-size: 24px; margin-bottom: 8px;" data-i18n="service.title">Small Business Service</h1>
+          <p class="subtitle" style="margin-bottom: 0;" data-i18n="service.subtitle">Create your business logo and get started with a digital playbook</p>
         </div>
 
         <div class="section">
-          <div class="section-title">Text Content</div>
+          <div class="section-title" data-i18n="section.textContent">Text Content</div>
           <div class="form-group">
-            <label for="businessType" class="optional">
+            <label for="businessType" class="optional" data-i18n="form.businessType">
               Business Type
               <span class="tooltip">
                 <span class="tooltip-icon">?</span>
-                <span class="tooltip-text">Select your business type to get tailored suggestions for icons, colors, and styles</span>
+                <span class="tooltip-text" data-i18n="form.businessTypeTooltip">Select your business type to get tailored suggestions for icons, colors, and styles</span>
               </span>
             </label>
             <select id="businessType">
-              <option value="">Select a business type...</option>
-              <option value="bakery">Bakery</option>
-              <option value="hairdresser">Hairdresser / Salon</option>
-              <option value="plumber">Plumber</option>
-              <option value="electrician">Electrician</option>
-              <option value="restaurant">Restaurant / Cafe</option>
-              <option value="fitness">Fitness / Gym</option>
-              <option value="photography">Photography</option>
-              <option value="consulting">Consulting</option>
-              <option value="retail">Retail / Shop</option>
-              <option value="cleaning">Cleaning Service</option>
-              <option value="landscaping">Landscaping</option>
-              <option value="automotive">Automotive</option>
-              <option value="real-estate">Real Estate</option>
-              <option value="tech">Technology</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="education">Education / Tutoring</option>
+              <option value="" data-i18n="option.businessType.select">Select a business type...</option>
+              <option value="bakery" data-i18n="option.businessType.bakery">Bakery</option>
+              <option value="hairdresser" data-i18n="option.businessType.hairdresser">Hairdresser / Salon</option>
+              <option value="plumber" data-i18n="option.businessType.plumber">Plumber</option>
+              <option value="electrician" data-i18n="option.businessType.electrician">Electrician</option>
+              <option value="restaurant" data-i18n="option.businessType.restaurant">Restaurant / Cafe</option>
+              <option value="fitness" data-i18n="option.businessType.fitness">Fitness / Gym</option>
+              <option value="photography" data-i18n="option.businessType.photography">Photography</option>
+              <option value="consulting" data-i18n="option.businessType.consulting">Consulting</option>
+              <option value="retail" data-i18n="option.businessType.retail">Retail / Shop</option>
+              <option value="cleaning" data-i18n="option.businessType.cleaning">Cleaning Service</option>
+              <option value="landscaping" data-i18n="option.businessType.landscaping">Landscaping</option>
+              <option value="automotive" data-i18n="option.businessType.automotive">Automotive</option>
+              <option value="real-estate" data-i18n="option.businessType.realEstate">Real Estate</option>
+              <option value="tech" data-i18n="option.businessType.tech">Technology</option>
+              <option value="healthcare" data-i18n="option.businessType.healthcare">Healthcare</option>
+              <option value="education" data-i18n="option.businessType.education">Education / Tutoring</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="name">Business Name</label>
+            <label for="name" data-i18n="form.businessName">Business Name</label>
             <div style="display: flex; gap: 8px; align-items: flex-start;">
-              <input id="name" type="text" placeholder="Enter your business name" required style="flex: 1; min-width: 0;" />
-              <button type="button" id="suggestBtn" style="padding: 8px 10px; width: 70px; flex-shrink: 0; margin: 0; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Suggest</button>
+              <input id="name" type="text" data-i18n="form.businessNamePlaceholder" placeholder="Enter your business name" required style="flex: 1; min-width: 0;" />
+              <button type="button" id="suggestBtn" data-i18n="form.suggest" style="padding: 8px 10px; width: 70px; flex-shrink: 0; margin: 0; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Suggest</button>
             </div>
             <div id="suggestions" style="display: none; margin-top: 12px;"></div>
           </div>
           <div class="form-group">
-            <label for="tagline" class="optional">Tagline</label>
+            <label for="tagline" class="optional" data-i18n="form.tagline">Tagline</label>
             <div style="display: flex; gap: 8px; align-items: flex-start;">
-              <input id="tagline" type="text" placeholder="Enter a tagline" style="flex: 1; min-width: 0;" />
-              <button type="button" id="suggestTaglineBtn" style="padding: 8px 10px; width: 70px; flex-shrink: 0; margin: 0; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Suggest</button>
+              <input id="tagline" type="text" data-i18n="form.taglinePlaceholder" placeholder="Enter a tagline" style="flex: 1; min-width: 0;" />
+              <button type="button" id="suggestTaglineBtn" data-i18n="form.suggest" style="padding: 8px 10px; width: 70px; flex-shrink: 0; margin: 0; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; color: #ececec; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Suggest</button>
             </div>
             <div id="taglineSuggestions" style="display: none; margin-top: 12px;"></div>
           </div>
           <div class="form-group">
-            <label for="location" class="optional">Location</label>
-            <input id="location" type="text" placeholder="Detecting your location..." />
+            <label for="location" class="optional" data-i18n="form.location">Location</label>
+            <input id="location" type="text" data-i18n="form.locationPlaceholder" placeholder="Detecting your location..." />
           </div>
         </div>
 
         <div class="section">
-          <div class="section-title">Style & Typography</div>
+          <div class="section-title" data-i18n="section.styleTypography">Style & Typography</div>
           <div class="form-group">
-            <label for="style">
+            <label for="style" data-i18n="form.style">
               Style
               <span class="tooltip">
                 <span class="tooltip-icon">?</span>
-                <span class="tooltip-text">Choose a style that matches your brand personality. Minimal = modern, Playful = fun, Corporate = professional</span>
+                <span class="tooltip-text" data-i18n="form.styleTooltip">Choose a style that matches your brand personality. Minimal = modern, Playful = fun, Corporate = professional</span>
               </span>
             </label>
             <select id="style">
-              <option value="minimal">Minimal</option>
-              <option value="modern">Modern</option>
-              <option value="vintage">Vintage</option>
-              <option value="luxury">Luxury</option>
-              <option value="tech">Tech</option>
-              <option value="organic">Organic</option>
-              <option value="corporate">Corporate</option>
-              <option value="playful">Playful</option>
-              <option value="digital">Digital</option>
-              <option value="handwritten">Handwritten</option>
+              <option value="minimal" data-i18n="option.style.minimal">Minimal</option>
+              <option value="modern" data-i18n="option.style.modern">Modern</option>
+              <option value="vintage" data-i18n="option.style.vintage">Vintage</option>
+              <option value="luxury" data-i18n="option.style.luxury">Luxury</option>
+              <option value="tech" data-i18n="option.style.tech">Tech</option>
+              <option value="organic" data-i18n="option.style.organic">Organic</option>
+              <option value="corporate" data-i18n="option.style.corporate">Corporate</option>
+              <option value="playful" data-i18n="option.style.playful">Playful</option>
+              <option value="digital" data-i18n="option.style.digital">Digital</option>
+              <option value="handwritten" data-i18n="option.style.handwritten">Handwritten</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="fontCategory">Font Category</label>
+            <label for="fontCategory" data-i18n="form.fontCategory">Font Category</label>
             <select id="fontCategory">
-              <option value="modern">Modern</option>
-              <option value="serif">Serif</option>
-              <option value="handwritten">Handwritten</option>
-              <option value="bold">Bold / Strong</option>
-              <option value="elegant">Elegant</option>
-              <option value="retro">Retro</option>
+              <option value="modern" data-i18n="option.fontCategory.modern">Modern</option>
+              <option value="serif" data-i18n="option.fontCategory.serif">Serif</option>
+              <option value="handwritten" data-i18n="option.fontCategory.handwritten">Handwritten</option>
+              <option value="bold" data-i18n="option.fontCategory.bold">Bold / Strong</option>
+              <option value="elegant" data-i18n="option.fontCategory.elegant">Elegant</option>
+              <option value="retro" data-i18n="option.fontCategory.retro">Retro</option>
             </select>
           </div>
         </div>
 
         <div class="section">
-          <div class="section-title">Icon & Layout</div>
+          <div class="section-title" data-i18n="section.iconLayout">Icon & Layout</div>
           <div class="form-group">
-            <label for="icon" class="optional">
+            <label for="icon" class="optional" data-i18n="form.icon">
               Icon
               <span class="tooltip">
                 <span class="tooltip-icon">?</span>
-                <span class="tooltip-text">Choose an icon to add visual interest to your logo. Icons work great for branding!</span>
+                <span class="tooltip-text" data-i18n="form.iconTooltip">Choose an icon to add visual interest to your logo. Icons work great for branding!</span>
               </span>
             </label>
             <div class="icon-input-row">
-              <input id="icon" type="text" placeholder="Select an icon below or type emoji" maxlength="2" style="flex: 1; min-width: 0;" />
-              <button type="button" id="iconPickerBtn" class="icon-picker-btn">Browse Icons</button>
+              <input id="icon" type="text" data-i18n="form.iconPlaceholder" placeholder="Select an icon below or type emoji" maxlength="2" style="flex: 1; min-width: 0;" />
+              <button type="button" id="iconPickerBtn" class="icon-picker-btn" data-i18n="form.browseIcons">Browse Icons</button>
             </div>
             <div class="icon-picker-container">
               <div class="icon-picker-modal" id="iconPickerModal">
                 <div class="icon-category">
-                  <div class="icon-category-title">Food & Drink</div>
+                  <div class="icon-category-title" data-i18n="iconCategory.foodDrink">Food & Drink</div>
                   <div class="icon-grid">
                     <div class="icon-option" data-icon="☕">☕</div>
                     <div class="icon-option" data-icon="🍕">🍕</div>
@@ -946,7 +946,7 @@
                   </div>
                 </div>
                 <div class="icon-category">
-                  <div class="icon-category-title">Business & Services</div>
+                  <div class="icon-category-title" data-i18n="iconCategory.businessServices">Business & Services</div>
                   <div class="icon-grid">
                     <div class="icon-option" data-icon="💼">💼</div>
                     <div class="icon-option" data-icon="🔧">🔧</div>
@@ -957,7 +957,7 @@
                   </div>
                 </div>
                 <div class="icon-category">
-                  <div class="icon-category-title">Nature & Health</div>
+                  <div class="icon-category-title" data-i18n="iconCategory.natureHealth">Nature & Health</div>
                   <div class="icon-grid">
                     <div class="icon-option" data-icon="🌿">🌿</div>
                     <div class="icon-option" data-icon="🌱">🌱</div>
@@ -968,7 +968,7 @@
                   </div>
                 </div>
                 <div class="icon-category">
-                  <div class="icon-category-title">Creative & Tech</div>
+                  <div class="icon-category-title" data-i18n="iconCategory.creativeTech">Creative & Tech</div>
                   <div class="icon-grid">
                     <div class="icon-option" data-icon="📸">📸</div>
                     <div class="icon-option" data-icon="🎨">🎨</div>
@@ -979,7 +979,7 @@
                   </div>
                 </div>
                 <div class="icon-category">
-                  <div class="icon-category-title">Symbols & Shapes</div>
+                  <div class="icon-category-title" data-i18n="iconCategory.symbolsShapes">Symbols & Shapes</div>
                   <div class="icon-grid">
                     <div class="icon-option" data-icon="❤️">❤️</div>
                     <div class="icon-option" data-icon="💎">💎</div>
@@ -993,87 +993,87 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="layout">Icon Position</label>
+            <label for="layout" data-i18n="form.iconPosition">Icon Position</label>
             <select id="layout">
-              <option value="none">None</option>
-              <option value="left">Left</option>
-              <option value="top">Top</option>
+              <option value="none" data-i18n="option.layout.none">None</option>
+              <option value="left" data-i18n="option.layout.left">Left</option>
+              <option value="top" data-i18n="option.layout.top">Top</option>
             </select>
           </div>
         </div>
 
         <div class="section">
-          <div class="section-title">Shape & Colors</div>
+          <div class="section-title" data-i18n="section.shapeColors">Shape & Colors</div>
           <div class="form-group">
-            <label for="shape">
+            <label for="shape" data-i18n="form.shape">
               Shape
               <span class="tooltip">
                 <span class="tooltip-icon">?</span>
-                <span class="tooltip-text">Choose a shape for your logo background. Circle and Square work great for social media profiles</span>
+                <span class="tooltip-text" data-i18n="form.shapeTooltip">Choose a shape for your logo background. Circle and Square work great for social media profiles</span>
               </span>
             </label>
             <select id="shape">
-              <option value="none">No Shape (Transparent)</option>
-              <option value="circle">Circle</option>
-              <option value="square">Square</option>
-              <option value="rounded">Rounded Rectangle</option>
+              <option value="none" data-i18n="option.shape.none">No Shape (Transparent)</option>
+              <option value="circle" data-i18n="option.shape.circle">Circle</option>
+              <option value="square" data-i18n="option.shape.square">Square</option>
+              <option value="rounded" data-i18n="option.shape.rounded">Rounded Rectangle</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="colorPalette">Color Palette</label>
+            <label for="colorPalette" data-i18n="form.colorPalette">Color Palette</label>
             <select id="colorPalette">
-              <option value="custom">Custom</option>
-              <option value="warm">Warm</option>
-              <option value="cold">Cold</option>
-              <option value="earthy">Earthy</option>
-              <option value="bold">Bold</option>
-              <option value="pastel">Pastel</option>
-              <option value="monochrome">Monochrome</option>
+              <option value="custom" data-i18n="option.colorPalette.custom">Custom</option>
+              <option value="warm" data-i18n="option.colorPalette.warm">Warm</option>
+              <option value="cold" data-i18n="option.colorPalette.cold">Cold</option>
+              <option value="earthy" data-i18n="option.colorPalette.earthy">Earthy</option>
+              <option value="bold" data-i18n="option.colorPalette.bold">Bold</option>
+              <option value="pastel" data-i18n="option.colorPalette.pastel">Pastel</option>
+              <option value="monochrome" data-i18n="option.colorPalette.monochrome">Monochrome</option>
             </select>
           </div>
           <div id="colorPickers" class="form-group">
             <div class="color-group">
               <div class="color-input-wrapper">
-                <label for="fontColor">Font Color</label>
+                <label for="fontColor" data-i18n="form.fontColor">Font Color</label>
                 <input id="fontColor" type="color" value="#000000" />
               </div>
               <div class="color-input-wrapper">
-                <label for="bgColor">Background</label>
+                <label for="bgColor" data-i18n="form.background">Background</label>
                 <input id="bgColor" type="color" value="#ffffff" />
               </div>
             </div>
           </div>
         </div>
 
-        <button id="generateBtn">Generate Logo</button>
+        <button id="generateBtn" data-i18n="form.generateLogo">Generate Logo</button>
 
         <div class="section" style="margin-top: 32px; padding-top: 32px; border-top: 1px solid #2a2a2a;">
-          <div class="section-title">What's Next?</div>
+          <div class="section-title" data-i18n="nextSteps.title">What's Next?</div>
           <div style="display: grid; gap: 12px;">
             <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px;">
-              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;">📋 Digital Playbook</h3>
-              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;">
+              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;" data-i18n="nextSteps.digitalPlaybook">📋 Digital Playbook</h3>
+              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;" data-i18n="nextSteps.digitalPlaybookDesc">
                 Get a personalized business plan and digital strategy.
               </p>
-              <button type="button" id="createPlaybookBtn" style="width: 100%; padding: 10px 16px; background: #10a37f; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+              <button type="button" id="createPlaybookBtn" data-i18n="nextSteps.createPlaybook" style="width: 100%; padding: 10px 16px; background: #10a37f; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
                 Create Playbook
               </button>
             </div>
             <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px;">
-              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;">🌐 Website & Hosting</h3>
-              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;">
+              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;" data-i18n="nextSteps.websiteHosting">🌐 Website & Hosting</h3>
+              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;" data-i18n="nextSteps.websiteHostingDesc">
                 Get your business online with a professional website.
               </p>
-              <button type="button" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Website builder coming soon!')">
+              <button type="button" data-i18n="nextSteps.getStarted" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Website builder coming soon!')">
                 Get Started
               </button>
             </div>
             <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px;">
-              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;">📱 Social Media Kit</h3>
-              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;">
+              <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #ececec;" data-i18n="nextSteps.socialMediaKit">📱 Social Media Kit</h3>
+              <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;" data-i18n="nextSteps.socialMediaKitDesc">
                 Business cards, social profiles, and brand guidelines.
               </p>
-              <button type="button" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Social media kit coming soon!')">
+              <button type="button" data-i18n="nextSteps.learnMore" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Social media kit coming soon!')">
                 Learn More
               </button>
             </div>
@@ -1083,9 +1083,9 @@
 
       <div class="card preview-card">
         <div class="section">
-          <div class="section-title">Preview</div>
+          <div class="section-title" data-i18n="section.preview">Preview</div>
           <div class="preview" id="preview">
-            <div class="preview-placeholder">
+            <div class="preview-placeholder" data-i18n="preview.placeholder">
               Your logo will appear here
             </div>
           </div>
@@ -1093,10 +1093,10 @@
         
         <!-- Ad Container (shown for free tier users) -->
         <div id="adContainer" style="display: none;">
-          <div class="ad-label">Advertisement</div>
+          <div class="ad-label" data-i18n="advertisement.label">Advertisement</div>
           <div class="ad-container" id="adSenseContainer">
             <!-- Google AdSense will be inserted here -->
-            <div style="color: #8e8e93; font-size: 12px;">
+            <div style="color: #8e8e93; font-size: 12px;" data-i18n="advertisement.placeholder">
               Ad space reserved for free tier users
             </div>
           </div>
@@ -1179,16 +1179,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
-          <h2>Reset Password</h2>
-          <p class="subtitle">Enter your email to receive a reset link</p>
+          <h2 data-i18n="auth.resetPassword">Reset Password</h2>
+          <p class="subtitle" data-i18n="auth.resetPasswordSubtitle">Enter your email to receive a reset link</p>
         </div>
         <div id="forgotPasswordError"></div>
         <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
           <div class="form-group">
-            <label for="forgotPasswordEmail">Email</label>
-            <input type="email" id="forgotPasswordEmail" required />
+            <label for="forgotPasswordEmail" data-i18n="auth.email">Email</label>
+            <input type="email" id="forgotPasswordEmail" data-i18n="auth.emailPlaceholder" placeholder="Enter your email" required />
           </div>
-          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;">Send Reset Link</button>
+          <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;" data-i18n="auth.sendResetLink">Send Reset Link</button>
         </form>
       </div>
     </div>
@@ -1338,13 +1338,15 @@
         }
 
         taglineSuggestionsDiv.innerHTML = `
-          <div class="suggestions-label">Click a suggestion to use it:</div>
+          <div class="suggestions-label" data-i18n="form.suggestionsLabel">Click a suggestion to use it:</div>
           <div class="suggestions-container">
             ${suggestions.map(tagline => 
               `<div class="suggestion-chip" data-tagline="${tagline}">${tagline}</div>`
             ).join('')}
           </div>
         `;
+        // Update translations for dynamically added content
+        window.i18n.updateTranslations();
         taglineSuggestionsDiv.style.display = 'block';
 
         taglineSuggestionsDiv.querySelectorAll('.suggestion-chip').forEach(chip => {
@@ -1359,7 +1361,7 @@
       suggestBtn.addEventListener('click', () => {
         const businessType = businessTypeSelect.value;
         if (!businessType) {
-          alert('Please select a business type first.');
+          alert(window.i18n.t('error.pleaseSelectBusinessType'));
           return;
         }
         const suggestions = generateSuggestions(businessType);
@@ -1371,7 +1373,7 @@
         const businessType = businessTypeSelect.value;
         const businessName = nameInput.value.trim();
         if (!businessType) {
-          alert('Please select a business type first.');
+          alert(window.i18n.t('error.pleaseSelectBusinessType'));
           return;
         }
         const suggestions = generateTaglineSuggestions(businessType, businessName);
@@ -1385,13 +1387,13 @@
           const data = await response.json();
           if (data.location) {
             locationInput.value = data.location;
-            locationInput.placeholder = 'Enter your location';
+            locationInput.placeholder = window.i18n.t('form.locationPlaceholderAlt');
           } else {
-            locationInput.placeholder = 'Enter your location';
+            locationInput.placeholder = window.i18n.t('form.locationPlaceholderAlt');
           }
         } catch (err) {
           console.error('Location detection failed:', err);
-          locationInput.placeholder = 'Enter your location';
+          locationInput.placeholder = window.i18n.t('form.locationPlaceholderAlt');
         }
       }
 
@@ -1567,13 +1569,13 @@
         }
 
         if (!name) {
-          alert('Please enter a business name.');
+          alert(window.i18n.t('error.pleaseEnterBusinessName'));
           return;
         }
 
         btn.disabled = true;
-        btn.textContent = 'Generating…';
-        previewDiv.innerHTML = '<div class="preview-placeholder">Generating your logo...</div>';
+        btn.textContent = window.i18n.t('form.generating');
+        previewDiv.innerHTML = `<div class="preview-placeholder" data-i18n="preview.generating">${window.i18n.t('preview.generating')}</div>`;
 
         const payload = {
           name,
@@ -1606,24 +1608,26 @@
           previewDiv.innerHTML = `
             <img src="${pngPath}" alt="Logo Preview (PNG)" />
             <div class="downloads">
-              <a href="${svgPath}" download data-i18n="preview.downloadSvg">Download SVG</a>
-              <a href="${pngPath}" download data-i18n="preview.downloadPng">Download PNG</a>
+              <a href="${svgPath}" download data-i18n="preview.downloadSvg">${window.i18n.t('preview.downloadSvg')}</a>
+              <a href="${pngPath}" download data-i18n="preview.downloadPng">${window.i18n.t('preview.downloadPng')}</a>
             </div>
             <div class="format-info">
-              <strong>Format Guide:</strong><br>
-              <strong>SVG</strong> - Scalable vector format, perfect for print and large displays<br>
-              <strong>PNG</strong> - Raster format with transparent background, ideal for web and social media
+              <strong data-i18n="preview.formatGuide">${window.i18n.t('preview.formatGuide')}</strong><br>
+              <strong>SVG</strong> - <span data-i18n="preview.svgDescription">${window.i18n.t('preview.svgDescription')}</span><br>
+              <strong>PNG</strong> - <span data-i18n="preview.pngDescription">${window.i18n.t('preview.pngDescription')}</span>
             </div>
             <div class="trust-badge">
-              <span>✓</span> You own full usage rights to this logo
+              <span>✓</span> <span data-i18n="preview.usageRights">${window.i18n.t('preview.usageRights')}</span>
             </div>
           `;
+          // Update translations for dynamically added content
+          window.i18n.updateTranslations();
         } catch (err) {
           console.error('❌ Generation error:', err);
-          previewDiv.innerHTML = '<div class="preview-placeholder error">Failed to generate logo. Please try again.</div>';
+          previewDiv.innerHTML = `<div class="preview-placeholder error" data-i18n="preview.error">${window.i18n.t('preview.error')}</div>`;
         } finally {
           btn.disabled = false;
-          btn.textContent = 'Generate Logo';
+          btn.textContent = window.i18n.t('form.generateLogo');
         }
       }
 
@@ -1788,16 +1792,17 @@
 
           if (response.ok) {
             if (data.needsVerification) {
-              errorDiv.innerHTML = '<div class="success-message">Please verify your email. Check your inbox for a verification link.</div>';
+              errorDiv.innerHTML = `<div class="success-message">${window.i18n.t('success.emailVerified')}. ${window.i18n.t('auth.forgotPassword')}</div>`;
             } else {
               closeLoginModal();
               await checkAuthStatus();
             }
           } else {
-            errorDiv.innerHTML = `<div class="error-message">${data.error || 'Login failed'}</div>`;
+            const errorMsg = data.error || window.i18n.t('error.loginFailed');
+            errorDiv.innerHTML = `<div class="error-message">${errorMsg}</div>`;
           }
         } catch (err) {
-          errorDiv.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+          errorDiv.innerHTML = `<div class="error-message">${window.i18n.t('error.networkError')}</div>`;
         }
       }
 
@@ -1821,16 +1826,17 @@
           const data = await response.json();
 
           if (response.ok) {
-            errorDiv.innerHTML = '<div class="success-message">Registration successful! Please check your email to verify your account.</div>';
+            errorDiv.innerHTML = `<div class="success-message">${window.i18n.t('success.registrationSuccessful')}</div>`;
             setTimeout(() => {
               closeSignupModal();
               openLoginModal();
             }, 2000);
           } else {
-            errorDiv.innerHTML = `<div class="error-message">${data.error || 'Registration failed'}</div>`;
+            const errorMsg = data.error || window.i18n.t('error.registrationFailed');
+            errorDiv.innerHTML = `<div class="error-message">${errorMsg}</div>`;
           }
         } catch (err) {
-          errorDiv.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+          errorDiv.innerHTML = `<div class="error-message">${window.i18n.t('error.networkError')}</div>`;
         }
       }
 
@@ -1851,12 +1857,13 @@
           const data = await response.json();
 
           if (response.ok) {
-            errorDiv.innerHTML = '<div class="success-message">If the email exists, a password reset link has been sent.</div>';
+            errorDiv.innerHTML = `<div class="success-message">${window.i18n.t('success.passwordResetSent')}</div>`;
           } else {
-            errorDiv.innerHTML = `<div class="error-message">${data.error || 'Failed to send reset email'}</div>`;
+            const errorMsg = data.error || window.i18n.t('error.networkError');
+            errorDiv.innerHTML = `<div class="error-message">${errorMsg}</div>`;
           }
         } catch (err) {
-          errorDiv.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+          errorDiv.innerHTML = `<div class="error-message">${window.i18n.t('error.networkError')}</div>`;
         }
       }
 

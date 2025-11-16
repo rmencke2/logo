@@ -118,6 +118,20 @@ function updateTranslations() {
       element.placeholder = translation;
     } else if (element.tagName === 'INPUT' && (element.type === 'submit' || element.type === 'button')) {
       element.value = translation;
+    } else if (element.tagName === 'LABEL') {
+      // For labels, update text but preserve structure (like tooltips)
+      const tooltip = element.querySelector('.tooltip');
+      if (tooltip) {
+        const labelText = element.cloneNode(true);
+        labelText.querySelector('.tooltip').remove();
+        labelText.textContent = translation;
+        element.replaceChild(labelText.firstChild, element.firstChild);
+        element.insertBefore(tooltip, element.firstChild);
+      } else {
+        element.textContent = translation;
+      }
+    } else if (element.tagName === 'OPTION') {
+      element.textContent = translation;
     } else {
       element.textContent = translation;
     }
@@ -127,6 +141,19 @@ function updateTranslations() {
   document.querySelectorAll('[data-i18n-html]').forEach(element => {
     const key = element.getAttribute('data-i18n-html');
     element.innerHTML = t(key);
+  });
+
+  // Update select options with data-i18n-option attribute
+  document.querySelectorAll('select').forEach(select => {
+    Array.from(select.options).forEach(option => {
+      if (option.value) {
+        const optionKey = `option.${select.id}.${option.value}`;
+        const translation = t(optionKey);
+        if (translation !== optionKey) {
+          option.textContent = translation;
+        }
+      }
+    });
   });
 
   // Update title
@@ -158,5 +185,6 @@ window.i18n = {
   getCurrentLanguage: () => currentLanguage,
   getSupportedLanguages: () => SUPPORTED_LANGUAGES,
   init: initI18n,
+  updateTranslations,
 };
 
