@@ -3114,5 +3114,32 @@
         document.getElementById('adContainer').style.display = 'none';
       }
     </script>
+    
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    <script>
+      // Load footer
+      fetch('/footer.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('footer-container').innerHTML = html;
+          // Sync footer language selector
+          const mainSelector = document.getElementById('languageSelector');
+          const footerSelector = document.getElementById('footerLanguageSelector');
+          if (mainSelector && footerSelector) {
+            footerSelector.value = mainSelector.value || window.i18n?.getCurrentLanguage() || 'en';
+            mainSelector.addEventListener('change', () => {
+              footerSelector.value = mainSelector.value;
+            });
+            footerSelector.addEventListener('change', () => {
+              mainSelector.value = footerSelector.value;
+              if (typeof window.i18n !== 'undefined') {
+                window.i18n.setLanguage(footerSelector.value);
+              }
+            });
+          }
+        })
+        .catch(err => console.error('Error loading footer:', err));
+    </script>
   </body>
 </html>

@@ -196,6 +196,28 @@
         <p>If you have any questions, concerns, or requests regarding these Terms or our services, please contact us through our website contact form.</p>
         <p><strong>Website:</strong> <a href="https://influzer.ai">https://influzer.ai</a></p>
       </div>
+      
+      <!-- Footer -->
+      <div id="footer-container"></div>
+      <script>
+        // Load footer
+        fetch('/footer.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+            // Sync footer language selector
+            const footerSelector = document.getElementById('footerLanguageSelector');
+            if (footerSelector) {
+              const urlParams = new URLSearchParams(window.location.search);
+              const lang = urlParams.get('lang') || localStorage.getItem('language') || 'en';
+              footerSelector.value = lang;
+              footerSelector.addEventListener('change', () => {
+                window.location.href = '/terms?lang=' + footerSelector.value;
+              });
+            }
+          })
+          .catch(err => console.error('Error loading footer:', err));
+      </script>
     </div>
   </body>
 </html>

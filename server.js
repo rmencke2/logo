@@ -268,6 +268,16 @@ app.get('/terms', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'terms.html'));
 });
 
+// Serve privacy policy page
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+
+// Serve cookie policy page
+app.get('/cookie', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'cookie.html'));
+});
+
 // Health check endpoint for service monitoring
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
