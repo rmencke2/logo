@@ -208,19 +208,20 @@ const uploadVideo = multer({
     fileSize: 500 * 1024 * 1024, // 500MB max file size
   },
   fileFilter: (req, file, cb) => {
-    // Accept common video formats
+    // Accept common video formats and GIFs
     const videoMimeTypes = [
       'video/mp4', 'video/x-msvideo', 'video/quicktime', 'video/x-ms-wmv',
-      'video/webm', 'video/x-matroska', 'video/3gpp', 'video/x-flv'
+      'video/webm', 'video/x-matroska', 'video/3gpp', 'video/x-flv',
+      'image/gif' // Also accept GIFs for meme generation
     ];
-    const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.webm', '.mkv', '.3gp', '.flv'];
+    const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.webm', '.mkv', '.3gp', '.flv', '.gif'];
     const hasValidMimeType = videoMimeTypes.includes(file.mimetype);
     const hasValidExtension = videoExtensions.some(ext => file.originalname.toLowerCase().endsWith(ext));
     
     if (hasValidMimeType || hasValidExtension) {
       cb(null, true);
     } else {
-      cb(new Error('Only video files are allowed (MP4, AVI, MOV, WebM, etc.)'), false);
+      cb(new Error('Only video files and GIFs are allowed (MP4, AVI, MOV, WebM, GIF, etc.)'), false);
     }
   },
 });
@@ -440,6 +441,207 @@ app.post(
 // Serve video metadata extractor page
 app.get('/video-metadata', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'video-metadata.html'));
+});
+
+// Convert video/GIF to meme (protected with abuse protection and authentication)
+app.post(
+  '/convert-to-meme',
+  requireAuth,
+  abuseProtectionMiddleware,
+  uploadVideo.single('video'),
+  async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const { memeStyle, topText, bottomText, zoomSpeed, speedMultiplier, freezeDuration } = req.body;
+    
+    if (!memeStyle) {
+      return res.status(400).json({ error: 'Meme style is required' });
+    }
+
+    const inputPath = req.file.path;
+    const outputFileName = `meme-${req.file.filename}-${Date.now()}.gif`;
+    const outputPath = path.join(videoOutputDir, outputFileName);
+
+    console.log(`🎭 Converting to Meme:
+   ➡ Input: ${inputPath}
+   ➡ Output: ${outputPath}
+   ➡ Style: ${memeStyle}
+   ➡ File size: ${(req.file.size / 1024 / 1024).toFixed(2)} MB`);
+
+    try {
+      let ffmpegCommand = ffmpeg(inputPath);
+      const filters = [];
+
+      switch (memeStyle) {
+        case 'text':
+          // Add top and bottom text
+          if (topText) {
+            filters.push(`drawtext=text='${topText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=20:borderw=3:bordercolor=black`);
+          }
+          if (bottomText) {
+            filters.push(`drawtext=text='${bottomText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=h-th-20:borderw=3:bordercolor=black`);
+          }
+          break;
+
+        case 'zoom':
+          // Zoom reaction effect
+          const zoomAmount = parseFloat(zoomSpeed) || 1.5;
+          filters.push(`zoompan=z='min(zoom+0.0015,${zoomAmount})':s=500x500:d=250`);
+          break;
+
+        case 'mirror':
+          // Mirror/double-mirror effect
+          filters.push('hflip,split[left][right];[left][right]hstack');
+          break;
+
+        case 'glitch':
+          // AI-style glitch effects
+          filters.push('tblend=all_mode=lighten,hue=s=2,eq=contrast=1.5');
+          break;
+
+        case 'pixelate':
+          // Retro pixelate effect
+          filters.push('scale=80:-1:flags=neighbor,scale=400:-1:flags=neighbor');
+          break;
+
+        case 'rewind':
+          // Reverse video
+          filters.push('reverse');
+          ffmpegCommand = ffmpegCommand.audioFilters('areverse');
+          break;
+
+        case 'speed':
+          // Speed up or slow down
+          const speed = parseFloat(speedMultiplier) || 1.0;
+          if (speed > 1) {
+            filters.push(`setpts=${1/speed}*PTS`);
+            ffmpegCommand = ffmpegCommand.audioFilters(`atempo=${speed}`);
+          } else if (speed < 1) {
+            filters.push(`setpts=${1/speed}*PTS`);
+            // For slow motion, we need to duplicate audio frames
+            ffmpegCommand = ffmpegCommand.audioFilters(`atempo=${speed}`);
+          }
+          break;
+
+        case 'freeze':
+          // Freeze frame effect
+          const freeze = parseFloat(freezeDuration) || 2.0;
+          filters.push(`tpad=stop_mode=clone:stop_duration=${freeze}`);
+          break;
+
+        case 'cinematic':
+          // Cinematic black bars
+          filters.push('drawbox=0:0:iw:60:black@0.8:t=max,drawbox=0:ih-60:iw:60:black@0.8:t=max');
+          break;
+
+        case 'outline':
+          // Sticker-style border outline
+          filters.push('edgedetect=mode=colormix');
+          break;
+
+        case 'text_zoom':
+          // Combined: text + zoom
+          if (topText) {
+            filters.push(`drawtext=text='${topText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=20:borderw=3:bordercolor=black`);
+          }
+          if (bottomText) {
+            filters.push(`drawtext=text='${bottomText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=h-th-20:borderw=3:bordercolor=black`);
+          }
+          const zoom = parseFloat(zoomSpeed) || 1.5;
+          filters.push(`zoompan=z='min(zoom+0.0015,${zoom})':s=500x500:d=250`);
+          break;
+
+        case 'text_speed':
+          // Combined: text + speed
+          if (topText) {
+            filters.push(`drawtext=text='${topText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=20:borderw=3:bordercolor=black`);
+          }
+          if (bottomText) {
+            filters.push(`drawtext=text='${bottomText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=h-th-20:borderw=3:bordercolor=black`);
+          }
+          const speed2 = parseFloat(speedMultiplier) || 1.0;
+          if (speed2 !== 1) {
+            filters.push(`setpts=${1/speed2}*PTS`);
+            ffmpegCommand = ffmpegCommand.audioFilters(`atempo=${speed2}`);
+          }
+          break;
+
+        default:
+          return res.status(400).json({ error: 'Invalid meme style' });
+      }
+
+      // Apply filters
+      if (filters.length > 0) {
+        ffmpegCommand = ffmpegCommand.videoFilters(filters);
+      }
+
+      // Convert to GIF with optimization
+      await new Promise((resolve, reject) => {
+        ffmpegCommand
+          .output(outputPath)
+          .outputOptions([
+            '-vf', 'fps=10,scale=800:-1:flags=lanczos',
+            '-loop', '0',
+          ])
+          .format('gif')
+          .on('start', (commandLine) => {
+            console.log('🔄 FFmpeg command:', commandLine);
+          })
+          .on('progress', (progress) => {
+            console.log(`⏳ Processing: ${Math.round(progress.percent || 0)}%`);
+          })
+          .on('end', () => {
+            console.log('✅ Meme conversion completed');
+            resolve();
+          })
+          .on('error', (err) => {
+            console.error('❌ FFmpeg error:', err);
+            reject(err);
+          })
+          .run();
+      });
+
+      // Clean up input file
+      try {
+        fs.unlinkSync(inputPath);
+        console.log('🗑️  Cleaned up input file');
+      } catch (cleanupErr) {
+        console.warn('⚠️  Could not delete input file:', cleanupErr);
+      }
+
+      // Log usage
+      await logUsage(req, '/convert-to-meme');
+
+      // Return download URL
+      res.json({
+        downloadUrl: `/generated_video/${outputFileName}`,
+        filename: outputFileName,
+        usageLimits: req.usageLimits,
+      });
+    } catch (err) {
+      console.error('❌ Error converting to meme:', err);
+      
+      // Clean up files on error
+      try {
+        if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
+      } catch (cleanupErr) {
+        console.warn('⚠️  Error during cleanup:', cleanupErr);
+      }
+
+      res.status(500).json({ 
+        error: 'Meme conversion failed', 
+        details: err.message 
+      });
+    }
+  },
+);
+
+// Serve meme generator page
+app.get('/meme-generator', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'meme-generator.html'));
 });
 
 // Health check endpoint for service monitoring
