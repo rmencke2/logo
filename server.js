@@ -654,6 +654,86 @@ app.post(
   },
 );
 
+// Generate favicon from logo
+app.post(
+  '/generate-favicon-from-logo',
+  requireAuth,
+  abuseProtectionMiddleware,
+  [
+    body('logoPath').isString().notEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { logoPath } = req.body;
+
+      console.log(`🎯 Favicon from Logo Request: ${logoPath}`);
+
+      // Read the logo file - logoPath should be like /generated_img/filename.png
+      const logoFilePath = path.join(__dirname, logoPath.replace(/^\//, ''));
+      if (!fs.existsSync(logoFilePath)) {
+        console.error(`❌ Logo file not found at: ${logoFilePath}`);
+        return res.status(404).json({ error: 'Logo file not found' });
+      }
+
+      // Favicon sizes
+      const sizes = [
+        { size: 16, name: 'favicon-16x16' },
+        { size: 32, name: 'favicon-32x32' },
+        { size: 48, name: 'favicon-48x48' },
+        { size: 180, name: 'apple-touch-icon' },
+        { size: 192, name: 'android-chrome-192x192' },
+        { size: 512, name: 'android-chrome-512x512' },
+      ];
+
+      const safeName = `favicon-from-logo-${Date.now()}`;
+      const generatedFiles = {};
+
+      // Generate each size from the logo
+      for (const { size, name } of sizes) {
+        const pngPathFile = path.join(outputDir, `${safeName}-${name}.png`);
+        
+        // Resize logo to favicon size
+        await sharp(logoFilePath)
+          .resize(size, size, {
+            fit: 'contain',
+            background: { r: 0, g: 0, b: 0, alpha: 0 }
+          })
+          .png()
+          .toFile(pngPathFile);
+        
+        console.log(`💾 PNG saved: ${pngPathFile}`);
+
+        // Also create SVG version (simplified - just reference the PNG for now)
+        const svgPathFile = path.join(outputDir, `${safeName}-${name}.svg`);
+        const svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+          <image href="/generated_img/${safeName}-${name}.png" width="${size}" height="${size}"/>
+        </svg>`;
+        fs.writeFileSync(svgPathFile, svg);
+
+        generatedFiles[name] = {
+          svg: `/generated_img/${safeName}-${name}.svg`,
+          png: `/generated_img/${safeName}-${name}.png`,
+        };
+      }
+
+      // Log usage
+      await logUsage(req, '/generate-favicon-from-logo');
+
+      res.json({
+        files: generatedFiles,
+        usageLimits: req.usageLimits,
+      });
+    } catch (err) {
+      console.error('❌ Error generating favicon from logo:', err);
+      res.status(500).json({ error: 'Favicon generation failed', details: err.message });
+    }
+  },
+);
+
 // Get usage limits endpoint
 app.get('/api/usage-limits', requireAuth, async (req, res) => {
   try {

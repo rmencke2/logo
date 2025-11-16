@@ -823,6 +823,10 @@
             <div class="step-number">3</div>
             <div class="step-label" data-i18n="progress.step3">Preview & Download</div>
           </div>
+          <div class="progress-step" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-label" data-i18n="progress.step4">Favicon</div>
+          </div>
         </div>
 
         <div>
@@ -1104,21 +1108,62 @@
       </div>
     </div>
 
-    <!-- Favicon Generator Section -->
-    <div class="container" style="margin-top: 48px;">
+    <!-- Favicon Generator Section (Step 4) -->
+    <div class="container" id="faviconSection" style="display: none; margin-top: 48px;">
       <div class="card form-card">
         <div>
-          <h1 style="font-size: 24px; margin-bottom: 8px;" data-i18n="favicon.title">Favicon Generator</h1>
-          <p class="subtitle" style="margin-bottom: 24px;" data-i18n="favicon.subtitle">Create a professional favicon for your website in seconds</p>
+          <h1 style="font-size: 24px; margin-bottom: 8px;" data-i18n="favicon.title">Create Your Favicon</h1>
+          <p class="subtitle" style="margin-bottom: 24px;" data-i18n="favicon.subtitle">Generate a professional favicon for your website</p>
         </div>
 
+        <!-- Option to use logo -->
+        <div class="section" id="faviconUseLogoSection" style="display: none;">
+          <div class="section-title" data-i18n="favicon.useLogo.title">Use Your Logo</div>
+          <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+              <div id="faviconLogoPreview" style="width: 64px; height: 64px; border: 1px solid #2a2a2a; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #0d0d0d; flex-shrink: 0;">
+                <span style="color: #8e8e93; font-size: 12px;" data-i18n="favicon.useLogo.preview">Logo</span>
+              </div>
+              <div style="flex: 1;">
+                <p style="font-size: 14px; color: #ececec; margin-bottom: 4px;" data-i18n="favicon.useLogo.description">Create a favicon from your generated logo</p>
+                <p style="font-size: 12px; color: #8e8e93;" data-i18n="favicon.useLogo.hint">We'll automatically resize and optimize your logo for all favicon sizes</p>
+              </div>
+            </div>
+            <button type="button" id="useLogoForFaviconBtn" style="width: 100%; padding: 10px; background: #10a37f; color: #fff; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer;" data-i18n="favicon.useLogo.button">Use Logo for Favicon</button>
+          </div>
+        </div>
+
+        <!-- Auto-generate options -->
         <div class="section">
-          <div class="section-title" data-i18n="favicon.section.design">Design</div>
+          <div class="section-title" data-i18n="favicon.autoGenerate.title">Or Create Automatically</div>
+          <p style="font-size: 13px; color: #8e8e93; margin-bottom: 16px;" data-i18n="favicon.autoGenerate.description">We'll create creative favicon options based on your business name and type</p>
+          <div id="faviconAutoOptions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <!-- Auto-generated options will appear here -->
+          </div>
+          <button type="button" id="generateAutoFaviconBtn" style="width: 100%; padding: 10px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer;" data-i18n="favicon.autoGenerate.button">Generate Auto Options</button>
+        </div>
+
+        <!-- Manual creation -->
+        <div class="section" id="faviconManualSection" style="display: none;">
+          <div class="section-title" data-i18n="favicon.manual.title">Or Create Manually</div>
+          
           <div class="form-group">
             <label for="faviconText" data-i18n="favicon.text">Text (1-2 characters)</label>
-            <input id="faviconText" type="text" maxlength="2" placeholder="AB" style="text-transform: uppercase;" data-i18n="favicon.textPlaceholder" />
+            <input id="faviconText" type="text" maxlength="2" placeholder="AB" style="text-transform: uppercase;" />
             <div class="field-hint" data-i18n="favicon.textHint">Enter 1-2 letters or characters for your favicon</div>
           </div>
+
+          <div class="form-group">
+            <label for="faviconStyle" data-i18n="favicon.style">Style</label>
+            <select id="faviconStyle">
+              <option value="minimal" data-i18n="favicon.style.minimal">Minimalistic</option>
+              <option value="flat" data-i18n="favicon.style.flat">Flat</option>
+              <option value="gradient" data-i18n="favicon.style.gradient">Gradient</option>
+              <option value="outline" data-i18n="favicon.style.outline">Outline</option>
+              <option value="material" data-i18n="favicon.style.material">Material Design</option>
+            </select>
+          </div>
+
           <div class="form-group">
             <label for="faviconFontCategory" data-i18n="form.fontCategory">Font Category</label>
             <select id="faviconFontCategory">
@@ -1130,35 +1175,43 @@
               <option value="retro" data-i18n="option.fontCategory.retro">Retro</option>
             </select>
           </div>
+
           <div class="form-group">
             <label for="faviconShape" data-i18n="form.shape">Shape</label>
             <select id="faviconShape">
               <option value="square" data-i18n="option.shape.square">Square</option>
+              <option value="rounded" data-i18n="option.shape.rounded">Rounded Square</option>
               <option value="circle" data-i18n="option.shape.circle">Circle</option>
-              <option value="rounded" data-i18n="option.shape.rounded">Rounded Rectangle</option>
-              <option value="none" data-i18n="option.shape.none">No Shape (Transparent)</option>
+              <option value="squircle" data-i18n="favicon.shape.squircle">Squircle</option>
+              <option value="none" data-i18n="option.shape.none">Transparent</option>
             </select>
           </div>
-        </div>
 
-        <div class="section">
-          <div class="section-title" data-i18n="section.shapeColors">Colors</div>
-          <div id="faviconColorPickers" class="form-group">
-            <div class="color-group">
-              <div class="color-input-wrapper">
-                <label for="faviconFontColor" data-i18n="form.fontColor">Font Color</label>
-                <input id="faviconFontColor" type="color" value="#ffffff" />
-              </div>
-              <div class="color-input-wrapper">
-                <label for="faviconBgColor" data-i18n="form.background">Background</label>
-                <input id="faviconBgColor" type="color" value="#10a37f" />
+          <div class="section">
+            <div class="section-title" data-i18n="section.shapeColors">Colors</div>
+            <div id="faviconColorPickers" class="form-group">
+              <div class="color-group">
+                <div class="color-input-wrapper">
+                  <label for="faviconFontColor" data-i18n="form.fontColor">Font Color</label>
+                  <input id="faviconFontColor" type="color" value="#ffffff" />
+                </div>
+                <div class="color-input-wrapper">
+                  <label for="faviconBgColor" data-i18n="form.background">Background</label>
+                  <input id="faviconBgColor" type="color" value="#10a37f" />
+                </div>
               </div>
             </div>
           </div>
+
+          <button id="generateFaviconBtn" data-i18n="favicon.generate">Generate Favicon</button>
         </div>
 
-        <button id="generateFaviconBtn" data-i18n="favicon.generate">Generate Favicon</button>
+        <!-- Show manual option toggle -->
+        <div style="text-align: center; margin-top: 16px;">
+          <button type="button" id="toggleManualFaviconBtn" style="background: none; border: none; color: #10a37f; font-size: 13px; cursor: pointer; text-decoration: underline;" data-i18n="favicon.manual.toggle">Create manually instead</button>
+        </div>
 
+        <!-- Preview section -->
         <div class="section" id="faviconPreviewSection" style="display: none; margin-top: 32px; padding-top: 32px; border-top: 1px solid #2a2a2a;">
           <div class="section-title" data-i18n="favicon.preview.title">Your Favicons</div>
           <div id="faviconPreview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
@@ -1170,6 +1223,7 @@
               Add these files to your website's root directory and include the following code in your HTML &lt;head&gt; section:
             </p>
             <pre id="faviconHtmlCode" style="background: #0d0d0d; padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 12px; color: #10a37f; font-family: 'Courier New', monospace; margin: 0;"></pre>
+            <button type="button" id="downloadAllFaviconsBtn" style="width: 100%; margin-top: 12px; padding: 10px; background: #10a37f; color: #fff; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: none;" data-i18n="favicon.downloadAll">Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -1676,6 +1730,9 @@
           // Update progress to step 3
           updateProgress(3);
           
+          // Store logo paths for favicon generation
+          window.generatedLogoPaths = { svgPath, pngPath };
+          
           previewDiv.innerHTML = `
             <img src="${pngPath}" alt="Logo Preview (PNG)" />
             <div class="downloads">
@@ -1693,6 +1750,11 @@
           `;
           // Update translations for dynamically added content
           window.i18n.updateTranslations();
+          
+          // Show favicon section after logo is generated
+          setTimeout(() => {
+            showFaviconSection();
+          }, 500);
         } catch (err) {
           console.error('❌ Generation error:', err);
           previewDiv.innerHTML = `<div class="preview-placeholder error" data-i18n="preview.error">${window.i18n.t('preview.error')}</div>`;
@@ -1708,7 +1770,16 @@
       });
 
       // Favicon generation
+      const faviconSection = document.getElementById('faviconSection');
+      const faviconUseLogoSection = document.getElementById('faviconUseLogoSection');
+      const faviconLogoPreview = document.getElementById('faviconLogoPreview');
+      const useLogoForFaviconBtn = document.getElementById('useLogoForFaviconBtn');
+      const faviconAutoOptions = document.getElementById('faviconAutoOptions');
+      const generateAutoFaviconBtn = document.getElementById('generateAutoFaviconBtn');
+      const faviconManualSection = document.getElementById('faviconManualSection');
+      const toggleManualFaviconBtn = document.getElementById('toggleManualFaviconBtn');
       const faviconTextInput = document.getElementById('faviconText');
+      const faviconStyleSelect = document.getElementById('faviconStyle');
       const faviconFontCategorySelect = document.getElementById('faviconFontCategory');
       const faviconShapeSelect = document.getElementById('faviconShape');
       const faviconFontColorInput = document.getElementById('faviconFontColor');
@@ -1717,6 +1788,210 @@
       const faviconPreviewSection = document.getElementById('faviconPreviewSection');
       const faviconPreview = document.getElementById('faviconPreview');
       const faviconHtmlCode = document.getElementById('faviconHtmlCode');
+      const downloadAllFaviconsBtn = document.getElementById('downloadAllFaviconsBtn');
+
+      // Show favicon section after logo is generated
+      function showFaviconSection() {
+        if (!faviconSection) return;
+        faviconSection.style.display = 'block';
+        updateProgress(4);
+        
+        // Scroll to favicon section
+        setTimeout(() => {
+          faviconSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        
+        // Show "use logo" option if logo was generated
+        if (window.generatedLogoPaths && window.generatedLogoPaths.pngPath && faviconUseLogoSection) {
+          faviconUseLogoSection.style.display = 'block';
+          if (faviconLogoPreview) {
+            faviconLogoPreview.innerHTML = `<img src="${window.generatedLogoPaths.pngPath}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;" />`;
+          }
+        }
+      }
+
+      // Auto-generate favicon options based on business info
+      function generateAutoFaviconOptions() {
+        const businessName = nameInput.value.trim();
+        const businessType = businessTypeSelect.value;
+        
+        if (!businessName) {
+          alert(window.i18n.t('error.pleaseEnterBusinessName'));
+          return;
+        }
+
+        // Get first 1-2 letters of business name
+        const initials = businessName.substring(0, 2).toUpperCase();
+        const firstLetter = businessName.substring(0, 1).toUpperCase();
+        
+        // Generate creative options
+        const options = [
+          {
+            text: firstLetter,
+            style: 'minimal',
+            shape: 'circle',
+            fontCategory: 'bold',
+            fontColor: '#ffffff',
+            bgColor: '#10a37f',
+            name: 'Minimal Circle'
+          },
+          {
+            text: initials,
+            style: 'flat',
+            shape: 'square',
+            fontCategory: 'modern',
+            fontColor: '#ffffff',
+            bgColor: '#1a1a1a',
+            name: 'Modern Square'
+          },
+          {
+            text: firstLetter,
+            style: 'gradient',
+            shape: 'rounded',
+            fontCategory: 'elegant',
+            fontColor: '#ffffff',
+            bgColor: '#6366f1',
+            name: 'Elegant Gradient'
+          },
+          {
+            text: initials,
+            style: 'outline',
+            shape: 'circle',
+            fontCategory: 'bold',
+            fontColor: '#10a37f',
+            bgColor: 'transparent',
+            name: 'Bold Outline'
+          }
+        ];
+
+        // Display options
+        if (faviconAutoOptions) {
+          faviconAutoOptions.innerHTML = options.map((option, index) => `
+            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s;" 
+                 class="favicon-option" 
+                 data-option-index="${index}"
+                 onmouseover="this.style.borderColor='#10a37f'" 
+                 onmouseout="this.style.borderColor='#2a2a2a'">
+              <div style="width: 64px; height: 64px; margin: 0 auto 12px; border-radius: ${option.shape === 'circle' ? '50%' : option.shape === 'rounded' ? '12px' : '4px'}; background: ${option.bgColor === 'transparent' ? '#0d0d0d' : option.bgColor}; display: flex; align-items: center; justify-content: center; border: ${option.bgColor === 'transparent' ? '2px solid ' + option.fontColor : 'none'};">
+                <span style="color: ${option.fontColor}; font-size: 32px; font-weight: 600;">${option.text}</span>
+              </div>
+              <div style="font-size: 12px; color: #ececec; font-weight: 500;">${option.name}</div>
+            </div>
+          `).join('');
+
+          // Store options for later use
+          window.faviconAutoOptions = options;
+
+          // Add click handlers
+          faviconAutoOptions.querySelectorAll('.favicon-option').forEach((el, index) => {
+            el.addEventListener('click', () => {
+              const option = options[index];
+              generateFaviconFromOption(option);
+            });
+          });
+        }
+      }
+
+      // Generate favicon from auto option
+      async function generateFaviconFromOption(option) {
+        if (faviconTextInput) faviconTextInput.value = option.text;
+        if (faviconStyleSelect) faviconStyleSelect.value = option.style;
+        if (faviconShapeSelect) faviconShapeSelect.value = option.shape;
+        if (faviconFontCategorySelect) faviconFontCategorySelect.value = option.fontCategory;
+        if (faviconFontColorInput) faviconFontColorInput.value = option.fontColor;
+        if (faviconBgColorInput) faviconBgColorInput.value = option.bgColor === 'transparent' ? '#000000' : option.bgColor;
+        
+        // Generate the favicon
+        await generateFavicon();
+      }
+
+      // Use logo for favicon
+      async function useLogoForFavicon() {
+        if (!window.generatedLogoPaths || !window.generatedLogoPaths.pngPath) {
+          alert('Please generate a logo first');
+          return;
+        }
+
+        if (useLogoForFaviconBtn) {
+          useLogoForFaviconBtn.disabled = true;
+          useLogoForFaviconBtn.textContent = window.i18n.t('form.generating');
+        }
+        if (faviconPreviewSection) faviconPreviewSection.style.display = 'none';
+
+        try {
+          const res = await fetch('/generate-favicon-from-logo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              logoPath: window.generatedLogoPaths.pngPath
+            }),
+            credentials: 'include',
+          });
+
+          if (!res.ok) {
+            throw new Error(await res.text());
+          }
+
+          const { files } = await res.json();
+          displayFaviconResults(files);
+        } catch (err) {
+          console.error('❌ Error generating favicon from logo:', err);
+          alert(window.i18n.t('favicon.error.generationFailed'));
+        } finally {
+          if (useLogoForFaviconBtn) {
+            useLogoForFaviconBtn.disabled = false;
+            useLogoForFaviconBtn.textContent = window.i18n.t('favicon.useLogo.button');
+          }
+        }
+      }
+
+      // Display favicon results
+      function displayFaviconResults(files) {
+        if (!faviconPreview) return;
+        
+        const faviconSizes = [
+          { key: 'favicon-16x16', label: '16×16', desc: 'Standard favicon' },
+          { key: 'favicon-32x32', label: '32×32', desc: 'Standard favicon' },
+          { key: 'favicon-48x48', label: '48×48', desc: 'Standard favicon' },
+          { key: 'apple-touch-icon', label: '180×180', desc: 'Apple touch icon' },
+          { key: 'android-chrome-192x192', label: '192×192', desc: 'Android Chrome' },
+          { key: 'android-chrome-512x512', label: '512×512', desc: 'Android Chrome' },
+        ];
+
+        faviconPreview.innerHTML = faviconSizes
+          .filter(size => files[size.key])
+          .map(size => {
+            const file = files[size.key];
+            return `
+              <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; text-align: center;">
+                <div style="margin-bottom: 12px;">
+                  <img src="${file.png}" alt="${size.label}" style="width: 64px; height: 64px; image-rendering: pixelated; border: 1px solid #2a2a2a; border-radius: 4px;" />
+                </div>
+                <div style="font-size: 13px; font-weight: 600; color: #ececec; margin-bottom: 4px;">${size.label}</div>
+                <div style="font-size: 11px; color: #8e8e93; margin-bottom: 12px;">${size.desc}</div>
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                  <a href="${file.png}" download="${size.key}.png" style="padding: 6px 12px; background: #10a37f; color: #fff; border-radius: 4px; font-size: 12px; text-decoration: none;">PNG</a>
+                  <a href="${file.svg}" download="${size.key}.svg" style="padding: 6px 12px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 4px; font-size: 12px; text-decoration: none;">SVG</a>
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+
+        // Generate HTML code
+        const baseUrl = window.location.origin;
+        const htmlCode = `<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="16x16" href="${baseUrl}${files['favicon-16x16']?.png || ''}">
+<link rel="icon" type="image/png" sizes="32x32" href="${baseUrl}${files['favicon-32x32']?.png || ''}">
+<link rel="icon" type="image/png" sizes="48x48" href="${baseUrl}${files['favicon-48x48']?.png || ''}">
+<link rel="apple-touch-icon" sizes="180x180" href="${baseUrl}${files['apple-touch-icon']?.png || ''}">
+<link rel="icon" type="image/png" sizes="192x192" href="${baseUrl}${files['android-chrome-192x192']?.png || ''}">
+<link rel="icon" type="image/png" sizes="512x512" href="${baseUrl}${files['android-chrome-512x512']?.png || ''}">`;
+
+        if (faviconHtmlCode) faviconHtmlCode.textContent = htmlCode;
+        if (faviconPreviewSection) faviconPreviewSection.style.display = 'block';
+        window.i18n.updateTranslations();
+      }
 
       async function generateFavicon() {
         const text = faviconTextInput.value.trim().toUpperCase();
@@ -1735,9 +2010,11 @@
           return;
         }
 
-        generateFaviconBtn.disabled = true;
-        generateFaviconBtn.textContent = window.i18n.t('form.generating');
-        faviconPreviewSection.style.display = 'none';
+        if (generateFaviconBtn) {
+          generateFaviconBtn.disabled = true;
+          generateFaviconBtn.textContent = window.i18n.t('form.generating');
+        }
+        if (faviconPreviewSection) faviconPreviewSection.style.display = 'none';
 
         const payload = {
           text,
@@ -1745,6 +2022,7 @@
           shape,
           fontColor,
           bgColor,
+          style,
         };
 
         console.log('🛰️ Sending generate-favicon:', payload);
@@ -1763,62 +2041,43 @@
           const { files } = await res.json();
 
           console.log('✅ Favicon files:', files);
-
-          // Display all favicon sizes
-          const faviconSizes = [
-            { key: 'favicon-16x16', label: '16×16', desc: 'Standard favicon' },
-            { key: 'favicon-32x32', label: '32×32', desc: 'Standard favicon' },
-            { key: 'favicon-48x48', label: '48×48', desc: 'Standard favicon' },
-            { key: 'apple-touch-icon', label: '180×180', desc: 'Apple touch icon' },
-            { key: 'android-chrome-192x192', label: '192×192', desc: 'Android Chrome' },
-            { key: 'android-chrome-512x512', label: '512×512', desc: 'Android Chrome' },
-          ];
-
-          faviconPreview.innerHTML = faviconSizes
-            .filter(size => files[size.key])
-            .map(size => {
-              const file = files[size.key];
-              return `
-                <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; text-align: center;">
-                  <div style="margin-bottom: 12px;">
-                    <img src="${file.png}" alt="${size.label}" style="width: 64px; height: 64px; image-rendering: pixelated; border: 1px solid #2a2a2a; border-radius: 4px;" />
-                  </div>
-                  <div style="font-size: 13px; font-weight: 600; color: #ececec; margin-bottom: 4px;">${size.label}</div>
-                  <div style="font-size: 11px; color: #8e8e93; margin-bottom: 12px;">${size.desc}</div>
-                  <div style="display: flex; gap: 8px; justify-content: center;">
-                    <a href="${file.png}" download="${size.key}.png" style="padding: 6px 12px; background: #10a37f; color: #fff; border-radius: 4px; font-size: 12px; text-decoration: none;">PNG</a>
-                    <a href="${file.svg}" download="${size.key}.svg" style="padding: 6px 12px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 4px; font-size: 12px; text-decoration: none;">SVG</a>
-                  </div>
-                </div>
-              `;
-            })
-            .join('');
-
-          // Generate HTML code for favicon implementation
-          const baseUrl = window.location.origin;
-          const htmlCode = `<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="16x16" href="${baseUrl}${files['favicon-16x16']?.png || ''}">
-<link rel="icon" type="image/png" sizes="32x32" href="${baseUrl}${files['favicon-32x32']?.png || ''}">
-<link rel="icon" type="image/png" sizes="48x48" href="${baseUrl}${files['favicon-48x48']?.png || ''}">
-<link rel="apple-touch-icon" sizes="180x180" href="${baseUrl}${files['apple-touch-icon']?.png || ''}">
-<link rel="icon" type="image/png" sizes="192x192" href="${baseUrl}${files['android-chrome-192x192']?.png || ''}">
-<link rel="icon" type="image/png" sizes="512x512" href="${baseUrl}${files['android-chrome-512x512']?.png || ''}">`;
-
-          faviconHtmlCode.textContent = htmlCode;
-          faviconPreviewSection.style.display = 'block';
+          displayFaviconResults(files);
+          
+          // Show favicon section and scroll to it
+          showFaviconSection();
         } catch (err) {
           console.error('❌ Favicon generation error:', err);
           alert(window.i18n.t('favicon.error.generationFailed'));
         } finally {
-          generateFaviconBtn.disabled = false;
-          generateFaviconBtn.textContent = window.i18n.t('favicon.generate');
+          if (generateFaviconBtn) {
+            generateFaviconBtn.disabled = false;
+            generateFaviconBtn.textContent = window.i18n.t('favicon.generate');
+          }
         }
       }
 
-      generateFaviconBtn.addEventListener('click', () => {
-        console.log('🔘 Generate favicon button clicked');
-        generateFavicon();
-      });
+      if (generateFaviconBtn) {
+        generateFaviconBtn.addEventListener('click', () => {
+          console.log('🔘 Generate favicon button clicked');
+          generateFavicon();
+        });
+      }
+
+      // Event handlers for new favicon features
+      if (useLogoForFaviconBtn) {
+        useLogoForFaviconBtn.addEventListener('click', useLogoForFavicon);
+      }
+      if (generateAutoFaviconBtn) {
+        generateAutoFaviconBtn.addEventListener('click', generateAutoFaviconOptions);
+      }
+      if (toggleManualFaviconBtn && faviconManualSection) {
+        toggleManualFaviconBtn.addEventListener('click', () => {
+          faviconManualSection.style.display = faviconManualSection.style.display === 'none' ? 'block' : 'none';
+          toggleManualFaviconBtn.textContent = faviconManualSection.style.display === 'none' 
+            ? window.i18n.t('favicon.manual.toggle') 
+            : window.i18n.t('favicon.manual.hide');
+        });
+      }
 
       window.addEventListener('DOMContentLoaded', async () => {
         // Initialize i18n first
