@@ -285,8 +285,6 @@ function initializeChristmasVideoService(app) {
             console.log(`🎄 Video: ${width}x${height}, Garland strip height: ${garlandHeight}`);
             
             // Process garlands for all 4 sides
-            (function processGarlands() {
-            
             // Scale frame to match video width, but keep it narrow
             // We need to extract horizontal strips for top/bottom placement
             // IMPORTANT: Final strip must be horizontal (width > height) for top/bottom placement
@@ -390,8 +388,7 @@ function initializeChristmasVideoService(app) {
                 reject(err);
               })
               .run();
-            }
-          })(); // Call processGarlands immediately
+          }); // End of ffprobe callback
         } else {
           // Fallback to simple colored border if garland image not found
           console.log('⚠️  Christmas garland frame not found, using fallback border');
