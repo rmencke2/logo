@@ -332,9 +332,10 @@ function initializeChristmasVideoService(app) {
             // Split the horizontal strip into 4 copies using split=4
             filters.push(`[garland_strip]split=4[garland_h1][garland_h2][garland_h3][garland_h4]`);
             
-            // Top and bottom: use horizontal strips as-is
+            // Top and bottom: use horizontal strips
             filters.push(`[garland_h1]copy[garland_top]`);
-            filters.push(`[garland_h2]vflip[garland_bottom]`);
+            // Bottom: rotate 180 degrees (upside down) using hflip and vflip
+            filters.push(`[garland_h2]hflip,vflip[garland_bottom]`);
             
             // Left and right: rotate horizontal strip 90° to make vertical strips
             // transpose=2 rotates 90° counter-clockwise (makes vertical strip for sides)
