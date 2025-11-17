@@ -292,15 +292,19 @@ function initializeChristmasVideoService(app) {
             ];
             
             if (isGarlandVertical) {
-              // If garland is vertical (tall), we need to rotate it 90 degrees to make it horizontal
-              // Then scale to video width and crop a horizontal strip
-              filters.push(`[1:v]transpose=1[garland_rotated]`); // Rotate 90 degrees clockwise
+              // If garland is vertical (tall), rotate it 90 degrees clockwise to make it horizontal
+              // transpose=1 = 90 degrees clockwise
+              filters.push(`[1:v]transpose=1[garland_rotated]`);
+              // Now scale the rotated (now horizontal) garland to video width
               filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
+              // Crop a horizontal strip: width (wide) x garlandHeight (short) = horizontal strip
+              // crop=w:h:x:y where w=width, h=height, x=left offset, y=top offset
               filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             } else {
-              // If garland is horizontal (wide), scale to video width and crop a horizontal strip from top
+              // If garland is horizontal (wide), scale to video width first
               filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
-              // Crop a horizontal strip: width x garlandHeight, starting at x=0, y=0 (top of image)
+              // Crop a horizontal strip from the top: width (wide) x garlandHeight (short)
+              // This ensures we get a horizontal strip, not a vertical one
               filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             }
             
