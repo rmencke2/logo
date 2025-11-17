@@ -348,11 +348,12 @@ function initializeChristmasVideoService(app) {
             // - Top: horizontal strip at (0, 0)
             // - Left: vertical strip at (0, 0) - will span full height
             // - Right: vertical strip at (width-garlandHeight, 0) - will span full height
-            // NO BOTTOM OVERLAY - skip the bottom overlay that was: v1 + bottom -> v2
+            // ABSOLUTELY NO BOTTOM OVERLAY
             filters.push(`[v0][garland_top]overlay=0:0[v1]`);
-            // Skip bottom: filters.push(`[v1][garland_bottom]overlay=0:${height - garlandHeight}[v2]`);
             filters.push(`[v1][garland_left]overlay=0:0[v2]`);
             filters.push(`[v2][garland_right]overlay=${width - garlandHeight}:0[v]`);
+            
+            console.log(`🎄 Overlay chain: v0 + top -> v1, v1 + left -> v2, v2 + right -> v (NO BOTTOM)`);
             
             console.log(`🎄 Creating 3 garlands: top (h1), left (h3), right (h4) - NO BOTTOM (h2 removed)`);
             
