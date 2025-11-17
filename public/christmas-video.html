@@ -374,7 +374,7 @@
     <div class="upload-area" id="uploadArea">
       <div class="upload-icon">📹</div>
       <div class="upload-text">Drop your video here or click to upload</div>
-      <div class="upload-hint">Supports MP4, AVI, MOV, WebM, and more (max 500MB)</div>
+      <div class="upload-hint">Supports MP4, AVI, MOV, WebM, and more (max 20 seconds or 500MB)</div>
       <input type="file" id="videoInput" accept="video/*" />
     </div>
 
@@ -551,12 +551,38 @@
         return;
       }
 
-      selectedFile = file;
-      document.getElementById('fileName').textContent = file.name;
-      document.getElementById('fileSize').textContent = `Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
-      fileInfo.classList.add('show');
-      processBtn.disabled = false;
-      hideError();
+      // Check video duration (client-side validation)
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        const duration = video.duration;
+        
+        if (duration > 20) {
+          showError(`Video duration must be 20 seconds or less. Your video is ${duration.toFixed(1)} seconds.`);
+          return;
+        }
+
+        selectedFile = file;
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileSize').textContent = `Size: ${(file.size / 1024 / 1024).toFixed(2)} MB | Duration: ${duration.toFixed(1)}s`;
+        fileInfo.classList.add('show');
+        processBtn.disabled = false;
+        hideError();
+      };
+
+      video.onerror = () => {
+        // If we can't read metadata, still allow upload (server will validate)
+        selectedFile = file;
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileSize').textContent = `Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+        fileInfo.classList.add('show');
+        processBtn.disabled = false;
+        hideError();
+      };
+
+      video.src = URL.createObjectURL(file);
     }
 
     // Process video
@@ -588,7 +614,11 @@
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.error || 'Processing failed');
+          const errorMsg = data.error || 'Processing failed';
+          if (data.duration) {
+            throw new Error(`${errorMsg} (Video is ${data.duration} seconds)`);
+          }
+          throw new Error(errorMsg);
         }
 
         // Show result

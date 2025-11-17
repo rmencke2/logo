@@ -222,24 +222,58 @@ function initializeChristmasVideoService(app) {
     });
   }
 
-  // Preset 3: Holiday Frame - Add Christmas border frame
+  // Preset 3: Holiday Frame - Add Christmas garland border frame
   async function applyHolidayFrame(inputPath, outputPath, includeMusic = false) {
     return new Promise((resolve, reject) => {
-      // Create a simple frame using FFmpeg drawbox
-      ffmpeg(inputPath)
-        .videoFilters([
-          // Draw Christmas-colored border
-          'drawbox=x=0:y=0:w=iw:h=20:color=red@0.8:t=fill',
-          'drawbox=x=0:y=ih-20:w=iw:h=20:color=green@0.8:t=fill',
-          'drawbox=x=0:y=0:w=20:h=ih:color=red@0.8:t=fill',
-          'drawbox=x=iw-20:y=0:w=20:h=ih:color=green@0.8:t=fill',
-          // Add warm glow
-          'eq=brightness=0.03:saturation=1.2',
-        ])
-        .output(outputPath)
-        .on('end', () => resolve(outputPath))
-        .on('error', reject)
-        .run();
+      // Get video dimensions
+      ffmpeg.ffprobe(inputPath, (err, metadata) => {
+        if (err) return reject(err);
+        
+        const width = metadata.streams[0].width;
+        const height = metadata.streams[0].height;
+        
+        // Path to Christmas garland frame image
+        const framePath = path.join(assetsDir, 'christmas-garland-frame.png');
+        
+        if (fs.existsSync(framePath)) {
+          // Use garland image as overlay frame
+          const command = ffmpeg(inputPath);
+          
+          // Scale frame to match video dimensions and overlay
+          command.complexFilter([
+            // Scale garland frame to video size
+            `[1:v]scale=${width}:${height}[frame]`,
+            // Overlay frame on video with warm color grading
+            `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
+            '[v0][frame]overlay=0:0:format=auto[v]'
+          ]);
+          
+          command
+            .input(framePath)
+            .outputOptions(['-map', '[v]', '-map', '0:a'])
+            .output(outputPath)
+            .on('end', () => resolve(outputPath))
+            .on('error', reject)
+            .run();
+        } else {
+          // Fallback to simple colored border if garland image not found
+          console.log('⚠️  Christmas garland frame not found, using fallback border');
+          ffmpeg(inputPath)
+            .videoFilters([
+              // Draw Christmas-colored border
+              'drawbox=x=0:y=0:w=iw:h=30:color=red@0.8:t=fill',
+              'drawbox=x=0:y=ih-30:w=iw:h=30:color=green@0.8:t=fill',
+              'drawbox=x=0:y=0:w=30:h=ih:color=red@0.8:t=fill',
+              'drawbox=x=iw-30:y=0:w=30:h=ih:color=green@0.8:t=fill',
+              // Add warm glow
+              'eq=brightness=0.03:saturation=1.2',
+            ])
+            .output(outputPath)
+            .on('end', () => resolve(outputPath))
+            .on('error', reject)
+            .run();
+        }
+      });
     });
   }
 
@@ -267,6 +301,38 @@ function initializeChristmasVideoService(app) {
     async (req, res) => {
       if (!req.file) {
         return res.status(400).json({ error: 'No video file uploaded' });
+      }
+
+      // Validate file size (500MB max)
+      if (req.file.size > 500 * 1024 * 1024) {
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (e) {}
+        return res.status(400).json({ error: 'File size must be less than 500MB' });
+      }
+
+      // Validate video duration (20 seconds max)
+      try {
+        const metadata = await new Promise((resolve, reject) => {
+          ffmpeg.ffprobe(req.file.path, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+          });
+        });
+
+        const duration = metadata.format.duration;
+        if (duration > 20) {
+          try {
+            fs.unlinkSync(req.file.path);
+          } catch (e) {}
+          return res.status(400).json({ 
+            error: 'Video duration must be 20 seconds or less',
+            duration: duration.toFixed(2)
+          });
+        }
+      } catch (err) {
+        console.error('Error checking video duration:', err);
+        // Continue processing if we can't check duration
       }
 
       const { preset = 'snow_magic', includeMusic = false } = req.body;
