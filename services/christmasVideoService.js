@@ -278,36 +278,39 @@ function initializeChristmasVideoService(app) {
             
             // Scale garland to video width, but keep it narrow (about 8% of video height for top/bottom)
             // You can adjust this percentage to make the garland narrower or wider
-            const garlandHeightPercent = 0.08; // 8% of video height (adjust this value: 0.05 = 5%, 0.15 = 15%)
+            const garlandHeightPercent = 0.20; // 8% of video height (adjust this value: 0.05 = 5%, 0.15 = 15%)
             const garlandHeight = Math.floor(height * garlandHeightPercent);
             
             console.log(`🎄 Garland image: ${garlandWidth}x${garlandHeight_img} (${isGarlandVertical ? 'vertical' : 'horizontal'})`);
             console.log(`🎄 Video: ${width}x${height}, Garland strip height: ${garlandHeight}`);
             
             // Scale frame to match video width, but keep it narrow
-            // If garland is vertical, we need to rotate it or extract horizontal strips differently
+            // We need to extract horizontal strips for top/bottom placement
             const filters = [
               // Apply color grading to main video and preserve rotation
               `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
             ];
             
             if (isGarlandVertical) {
-              // If garland is vertical (tall), rotate it 90 degrees to make it horizontal
-              filters.push(`[1:v]scale=-1:${garlandHeight}[garland_rotated]`);
-              filters.push(`[garland_rotated]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
+              // If garland is vertical (tall), we need to rotate it 90 degrees to make it horizontal
+              // Then scale to video width and crop a horizontal strip
+              filters.push(`[1:v]transpose=1[garland_rotated]`); // Rotate 90 degrees clockwise
+              filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
+              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             } else {
-              // If garland is horizontal (wide), scale to video width and crop a horizontal strip
+              // If garland is horizontal (wide), scale to video width and crop a horizontal strip from top
               filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
+              // Crop a horizontal strip: width x garlandHeight, starting at x=0, y=0 (top of image)
               filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             }
             
-            // Create top and bottom garlands
+            // Create top and bottom garlands from the horizontal strip
             filters.push(`[garland_strip]split[garland_top][garland_bottom_raw]`);
             filters.push(`[garland_bottom_raw]vflip[garland_bottom]`);
             
-            // Overlay top garland at y=0 (top of video)
+            // Overlay top garland at x=0, y=0 (top-left corner of video)
             filters.push(`[v0][garland_top]overlay=0:0[v1]`);
-            // Overlay bottom garland at y=height-garlandHeight (bottom of video)
+            // Overlay bottom garland at x=0, y=height-garlandHeight (bottom of video)
             filters.push(`[v1][garland_bottom]overlay=0:${height - garlandHeight}[v]`);
             
             command.complexFilter(filters);
