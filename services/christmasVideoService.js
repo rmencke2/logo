@@ -293,10 +293,10 @@ function initializeChristmasVideoService(app) {
             ];
             
             // ALWAYS create horizontal strips (wide x short) for top/bottom placement
-            // Strategy: Scale garland to video WIDTH while maintaining aspect ratio, then crop height
+            // Strategy: Scale garland to video WIDTH while maintaining aspect ratio, then crop height from center
             // This GUARANTEES width > height (horizontal strip) and prevents ugly stretching
             
-            // Step 1: Rotate if needed, then scale to video WIDTH (maintains aspect ratio)
+            // Step 1: Rotate if needed, then scale to video WIDTH (maintains aspect ratio, no stretching)
             if (isGarlandVertical) {
               // Garland is vertical (tall): rotate 90° clockwise to make it horizontal
               // transpose=1 rotates 90° clockwise: tall becomes wide
@@ -305,16 +305,17 @@ function initializeChristmasVideoService(app) {
               filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
             } else {
               // Garland is already horizontal (wide): scale to video WIDTH (maintains aspect ratio)
+              // This preserves the garland's natural proportions - no ugly stretching!
               filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
             }
             
-            // Step 2: Crop a horizontal strip from the CENTER to avoid cutting branches
-            // The scaled garland now has width=${width}, height will be calculated automatically
-            // Crop from center vertically: y = (input_height - output_height) / 2
+            // Step 2: Crop a horizontal strip from the CENTER vertically to avoid cutting branches
+            // After scaling to width, garland_scaled has width=${width}, height is calculated
+            // For 6193x2612 garland scaled to 1920 width: height becomes ~810 pixels
+            // Crop from center: y = (input_height - output_height) / 2
             // This creates a horizontal strip: width=${width} > height=${garlandHeight}
-            // CRITICAL: crop=WIDTH:HEIGHT where WIDTH (${width}) MUST be > HEIGHT (${garlandHeight}) for horizontal strip
-            // crop syntax: crop=w:h:x:y or crop=WIDTH:HEIGHT:x:y
-            // We want: crop=${width}:${garlandHeight}:0:center_y = horizontal strip (wide x short)
+            // CRITICAL: crop=WIDTH:HEIGHT where WIDTH (${width}) MUST be > HEIGHT (${garlandHeight})
+            // Result: ${width}x${garlandHeight} = horizontal strip (WIDE x SHORT) for top/bottom
             filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[garland_strip]`);
             
             // Verify strip dimensions are correct (this is just for logging, FFmpeg will process it)
