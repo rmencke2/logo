@@ -342,17 +342,17 @@ function initializeChristmasVideoService(app) {
             filters.push(`[garland_h4]transpose=2,vflip[garland_right]`);
             
             // Calculate vertical strip width (same as horizontal strip height)
-            const garlandWidth = garlandHeight;
+            // Use garlandHeight as the width for vertical strips
             
             // Overlay all 4 sides:
             // - Top: horizontal strip at (0, 0)
             // - Bottom: horizontal strip at (0, height-garlandHeight)
             // - Left: vertical strip at (0, 0) - will span full height
-            // - Right: vertical strip at (width-garlandWidth, 0) - will span full height
+            // - Right: vertical strip at (width-garlandHeight, 0) - will span full height
             filters.push(`[v0][garland_top]overlay=0:0[v1]`);
             filters.push(`[v1][garland_bottom]overlay=0:${height - garlandHeight}[v2]`);
             filters.push(`[v2][garland_left]overlay=0:0[v3]`);
-            filters.push(`[v3][garland_right]overlay=${width - garlandWidth}:0[v]`);
+            filters.push(`[v3][garland_right]overlay=${width - garlandHeight}:0[v]`);
             
             console.log(`🎄 Expected garland strip: ${width}x${garlandHeight} (horizontal: WIDE x SHORT)`);
             console.log(`🎄 Overlay: top at (x=0, y=0), bottom at (x=0, y=${height - garlandHeight})`);
