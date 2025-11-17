@@ -307,14 +307,22 @@ function initializeChristmasVideoService(app) {
             }
             
             // CRITICAL: Crop must create HORIZONTAL strip (width > height) for top/bottom
-            // crop=WIDTH:HEIGHT:x:y
-            // We want: crop=1920:216:0:0 (horizontal: wide x short) ✓
-            // NOT: crop=216:1920:0:0 (vertical: narrow x tall) ✗
-            // Crop from the CENTER of the scaled garland to avoid cutting off branches
-            // First, get the scaled garland height to calculate center
-            // We'll crop from y=0 (top) but ensure we don't cut off branches
-            // For now, crop from top - if branches are cut, we can adjust the y offset
-            filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
+            // crop=WIDTH:HEIGHT:x:y where WIDTH=output width, HEIGHT=output height
+            // We want: crop=1920:216:0:0 (horizontal: WIDE x SHORT) ✓
+            // NOT: crop=216:1920:0:0 (vertical: NARROW x TALL) ✗
+            // 
+            // To avoid cutting branches: crop from center of garland height
+            // We need to calculate: y = (scaled_garland_height - garlandHeight) / 2
+            // But we can't easily get scaled height in filter chain, so we'll use a workaround:
+            // Scale garland to exact height first, then crop full width
+            // OR: use crop with center positioning (crop=w:h:x:'(in_h-out_h)/2')
+            // Let's try: scale to exact height, then crop full width
+            // Actually simpler: scale to width, then crop from center using expression
+            // For now, let's ensure correct orientation first, then fix branch cutoff
+            // 
+            // IMPORTANT: The crop MUST produce width > height (horizontal strip)
+            // If garland appears on sides, the crop is producing height > width (vertical strip)
+            filters.push(`[garland_scaled]crop=w=${width}:h=${garlandHeight}:x=0:y='(in_h-${garlandHeight})/2'[garland_strip]`);
             
             // Verify: garland_strip should be ${width}x${garlandHeight} (horizontal: wide and short)
             // If it's appearing on sides, the strip is vertical (tall and narrow) - that's the bug
