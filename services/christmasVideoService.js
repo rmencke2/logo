@@ -265,56 +265,82 @@ function initializeChristmasVideoService(app) {
           // Add garland image as input FIRST
           command.input(framePath);
           
-          // Get garland image dimensions (assume it's horizontal, we'll scale to video width)
-          // Scale garland to video width, but keep it narrow (about 8% of video height for top/bottom)
-          // You can adjust this percentage to make the garland narrower or wider
-          const garlandHeightPercent = 0.08; // 8% of video height (adjust this value: 0.05 = 5%, 0.15 = 15%)
-          const garlandHeight = Math.floor(height * garlandHeightPercent);
-          
-          // Scale frame to match video width, but keep it narrow
-          command.complexFilter([
-            // Apply color grading to main video and preserve rotation
-            `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
-            // Scale garland to video width, maintain aspect ratio, then crop to desired height
-            `[1:v]scale=${width}:-1[garland_scaled]`,
-            // Create top garland (crop from top of scaled garland)
-            `[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_top]`,
-            // Create bottom garland (flip vertically and crop)
-            `[garland_scaled]crop=${width}:${garlandHeight}:0:0, vflip[garland_bottom]`,
-            // Overlay top garland
-            `[v0][garland_top]overlay=0:0[v1]`,
-            // Overlay bottom garland
-            `[v1][garland_bottom]overlay=0:${height - garlandHeight}[v]`
-          ]);
-          
-          command
-            .outputOptions([
-              '-map', '[v]',
-              '-map', '0:a:0',
-              '-c:v', 'libx264',
-              '-preset', 'medium',
-              '-crf', '23',
-              '-c:a', 'aac',
-              '-b:a', '128k',
-              '-ignore_unknown'
-            ])
-            .output(outputPath)
-            .on('start', (cmd) => console.log('🎄 FFmpeg command:', cmd))
-            .on('progress', (progress) => {
-              if (progress.percent) {
-                console.log(`⏳ Processing: ${Math.round(progress.percent)}%`);
-              }
-            })
-            .on('end', () => {
-              console.log('✅ Holiday frame processing complete');
-              resolve(outputPath);
-            })
-            .on('error', (err, stdout, stderr) => {
-              console.error('❌ FFmpeg error:', err);
-              if (stderr) console.error('❌ FFmpeg stderr:', stderr);
-              reject(err);
-            })
-            .run();
+          // Get garland image dimensions to determine orientation
+          ffmpeg.ffprobe(framePath, (err, garlandMetadata) => {
+            if (err) {
+              console.error('Error reading garland image:', err);
+              return reject(err);
+            }
+            
+            const garlandWidth = garlandMetadata.streams[0].width;
+            const garlandHeight_img = garlandMetadata.streams[0].height;
+            const isGarlandVertical = garlandHeight_img > garlandWidth;
+            
+            // Scale garland to video width, but keep it narrow (about 8% of video height for top/bottom)
+            // You can adjust this percentage to make the garland narrower or wider
+            const garlandHeightPercent = 0.08; // 8% of video height (adjust this value: 0.05 = 5%, 0.15 = 15%)
+            const garlandHeight = Math.floor(height * garlandHeightPercent);
+            
+            console.log(`🎄 Garland image: ${garlandWidth}x${garlandHeight_img} (${isGarlandVertical ? 'vertical' : 'horizontal'})`);
+            console.log(`🎄 Video: ${width}x${height}, Garland strip height: ${garlandHeight}`);
+            
+            // Scale frame to match video width, but keep it narrow
+            // If garland is vertical, we need to rotate it or extract horizontal strips differently
+            const filters = [
+              // Apply color grading to main video and preserve rotation
+              `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
+            ];
+            
+            if (isGarlandVertical) {
+              // If garland is vertical (tall), rotate it 90 degrees to make it horizontal
+              filters.push(`[1:v]scale=-1:${garlandHeight}[garland_rotated]`);
+              filters.push(`[garland_rotated]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
+            } else {
+              // If garland is horizontal (wide), scale to video width and crop a horizontal strip
+              filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
+              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
+            }
+            
+            // Create top and bottom garlands
+            filters.push(`[garland_strip]split[garland_top][garland_bottom_raw]`);
+            filters.push(`[garland_bottom_raw]vflip[garland_bottom]`);
+            
+            // Overlay top garland at y=0 (top of video)
+            filters.push(`[v0][garland_top]overlay=0:0[v1]`);
+            // Overlay bottom garland at y=height-garlandHeight (bottom of video)
+            filters.push(`[v1][garland_bottom]overlay=0:${height - garlandHeight}[v]`);
+            
+            command.complexFilter(filters);
+            
+            command
+              .outputOptions([
+                '-map', '[v]',
+                '-map', '0:a:0',
+                '-c:v', 'libx264',
+                '-preset', 'medium',
+                '-crf', '23',
+                '-c:a', 'aac',
+                '-b:a', '128k',
+                '-ignore_unknown'
+              ])
+              .output(outputPath)
+              .on('start', (cmd) => console.log('🎄 FFmpeg command:', cmd))
+              .on('progress', (progress) => {
+                if (progress.percent) {
+                  console.log(`⏳ Processing: ${Math.round(progress.percent)}%`);
+                }
+              })
+              .on('end', () => {
+                console.log('✅ Holiday frame processing complete');
+                resolve(outputPath);
+              })
+              .on('error', (err, stdout, stderr) => {
+                console.error('❌ FFmpeg error:', err);
+                if (stderr) console.error('❌ FFmpeg stderr:', stderr);
+                reject(err);
+              })
+              .run();
+          });
         } else {
           // Fallback to simple colored border if garland image not found
           console.log('⚠️  Christmas garland frame not found, using fallback border');
