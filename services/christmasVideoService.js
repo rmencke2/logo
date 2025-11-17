@@ -1,0 +1,341 @@
+// ================================
+//  Christmas Video Service - Add Christmas Effects to Videos
+// ================================
+
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
+const ffmpeg = require('fluent-ffmpeg');
+const { requireAuth } = require('../auth');
+const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
+
+/**
+ * Initialize Christmas video service
+ * @param {express.Application} app - Express application instance
+ */
+function initializeChristmasVideoService(app) {
+  // Ensure output folder exists
+  const videoOutputDir = path.join(__dirname, '..', 'generated_video');
+  if (!fs.existsSync(videoOutputDir)) fs.mkdirSync(videoOutputDir, { recursive: true });
+
+  // Ensure assets folder exists for Christmas overlays/music
+  const assetsDir = path.join(__dirname, '..', 'assets', 'christmas');
+  if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
+
+  // Configure multer for video uploads
+  const upload = multer({
+    dest: videoOutputDir,
+    limits: {
+      fileSize: 500 * 1024 * 1024, // 500MB max file size
+    },
+    fileFilter: (req, file, cb) => {
+      const videoMimeTypes = [
+        'video/mp4', 'video/x-msvideo', 'video/quicktime', 'video/x-ms-wmv',
+        'video/webm', 'video/x-matroska', 'video/3gpp', 'video/x-flv',
+      ];
+      const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.webm', '.mkv', '.3gp', '.flv'];
+      const hasValidMimeType = videoMimeTypes.includes(file.mimetype);
+      const hasValidExtension = videoExtensions.some(ext => file.originalname.toLowerCase().endsWith(ext));
+      
+      if (hasValidMimeType || hasValidExtension) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only video files are allowed (MP4, AVI, MOV, WebM, etc.)'), false);
+      }
+    },
+  });
+
+  // Helper function to generate snow overlay using FFmpeg
+  // Uses a simpler approach: animated noise filter with transparency
+  function generateSnowOverlay(width, height, duration) {
+    const snowPath = path.join(videoOutputDir, `snow_${width}x${height}_${Date.now()}.mp4`);
+    
+    return new Promise((resolve, reject) => {
+      // Use noise filter to create snow effect
+      ffmpeg()
+        .input(`color=c=white:s=${width}x${height}:d=${duration}`)
+        .inputFormat('lavfi')
+        .videoFilters([
+          // Create random white dots that look like snow
+          `geq=lum='if(lt(random(1),0.03),255,0)':a='if(lt(random(1),0.03),180,0)'`,
+          'fps=30',
+        ])
+        .outputOptions([
+          '-t', duration.toString(),
+          '-pix_fmt', 'rgba',
+          '-shortest',
+        ])
+        .output(snowPath)
+        .on('start', (cmd) => console.log('❄️  Generating snow overlay...'))
+        .on('end', () => {
+          console.log('✅ Snow overlay generated');
+          resolve(snowPath);
+        })
+        .on('error', (err) => {
+          console.error('❌ Snow overlay generation error:', err);
+          // If snow generation fails, continue without it
+          console.log('⚠️  Continuing without snow overlay');
+          resolve(null);
+        })
+        .run();
+    });
+  }
+
+  // Helper function to apply Christmas color grading
+  function applyChristmasColorGrading(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+      ffmpeg(inputPath)
+        .videoFilters([
+          // Warm tones with red/green enhancement
+          'eq=brightness=0.05:saturation=1.3:contrast=1.1',
+          // Add warm glow
+          'curves=preset=lighter',
+          // Slight vignette
+          'vignette=angle=PI/4:x=0.5:y=0.5',
+        ])
+        .output(outputPath)
+        .on('end', () => resolve(outputPath))
+        .on('error', reject)
+        .run();
+    });
+  }
+
+  // Preset 1: Snow Magic - Snow overlay + warm colors + optional music
+  async function applySnowMagic(inputPath, outputPath, includeMusic = false) {
+    return new Promise((resolve, reject) => {
+      // Get video dimensions
+      ffmpeg.ffprobe(inputPath, (err, metadata) => {
+        if (err) return reject(err);
+        
+        const width = metadata.streams[0].width;
+        const height = metadata.streams[0].height;
+        const duration = metadata.format.duration || 10; // Default to 10 seconds if not available
+
+        // Generate snow overlay
+        generateSnowOverlay(width, height, duration)
+          .then(snowPath => {
+            const command = ffmpeg(inputPath);
+            
+            if (snowPath) {
+              // Apply warm color grading and overlay snow
+              command.complexFilter([
+                // Color grade main video
+                `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
+                // Scale snow overlay
+                `[1:v]scale=${width}:${height}[snow]`,
+                // Overlay snow on video
+                '[v0][snow]overlay=format=auto[v]'
+              ]);
+              command.input(snowPath);
+            } else {
+              // Just apply color grading if snow generation failed
+              command.videoFilters([
+                'eq=brightness=0.05:saturation=1.3:contrast=1.1',
+                'curves=preset=lighter',
+              ]);
+            }
+
+            // Handle audio
+            if (includeMusic) {
+              const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
+              if (fs.existsSync(musicPath)) {
+                command.input(musicPath);
+                if (snowPath) {
+                  command.complexFilter([
+                    `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
+                    `[1:v]scale=${width}:${height}[snow]`,
+                    '[v0][snow]overlay=format=auto[v]',
+                    '[0:a]volume=0.7[a0]',
+                    '[2:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
+                    '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
+                  ]);
+                  command.outputOptions(['-map', '[v]', '-map', '[a]']);
+                } else {
+                  command.complexFilter([
+                    '[0:a]volume=0.7[a0]',
+                    '[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
+                    '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
+                  ]);
+                  command.outputOptions(['-map', '0:v', '-map', '[a]']);
+                }
+              } else {
+                if (snowPath) {
+                  command.outputOptions(['-map', '[v]', '-map', '0:a']);
+                } else {
+                  command.outputOptions(['-map', '0:v', '-map', '0:a']);
+                }
+              }
+            } else {
+              if (snowPath) {
+                command.outputOptions(['-map', '[v]', '-map', '0:a']);
+              } else {
+                command.outputOptions(['-map', '0:v', '-map', '0:a']);
+              }
+            }
+
+            command
+              .output(outputPath)
+              .on('start', (commandLine) => {
+                console.log('🎄 FFmpeg command:', commandLine);
+              })
+              .on('progress', (progress) => {
+                console.log(`⏳ Processing: ${Math.round(progress.percent || 0)}%`);
+              })
+              .on('end', () => {
+                // Clean up snow overlay
+                if (snowPath) {
+                  try { fs.unlinkSync(snowPath); } catch (e) {}
+                }
+                resolve(outputPath);
+              })
+              .on('error', (err) => {
+                if (snowPath) {
+                  try { fs.unlinkSync(snowPath); } catch (e) {}
+                }
+                reject(err);
+              })
+              .run();
+          })
+          .catch(reject);
+      });
+    });
+  }
+
+  // Preset 2: North Pole Cinematic - LUT + vignette + sparkles
+  async function applyNorthPole(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+      ffmpeg(inputPath)
+        .videoFilters([
+          // Warm cinematic look
+          'eq=brightness=0.08:saturation=1.4:contrast=1.15',
+          'curves=preset=strong_contrast',
+          // Vignette with warm colors
+          'vignette=angle=PI/4:x=0.5:y=0.5',
+          // Add sparkle effect (simulated with noise)
+          'noise=alls=20:allf=t+u',
+        ])
+        .output(outputPath)
+        .on('end', () => resolve(outputPath))
+        .on('error', reject)
+        .run();
+    });
+  }
+
+  // Preset 3: Holiday Frame - Add Christmas border frame
+  async function applyHolidayFrame(inputPath, outputPath, includeMusic = false) {
+    return new Promise((resolve, reject) => {
+      // Create a simple frame using FFmpeg drawbox
+      ffmpeg(inputPath)
+        .videoFilters([
+          // Draw Christmas-colored border
+          'drawbox=x=0:y=0:w=iw:h=20:color=red@0.8:t=fill',
+          'drawbox=x=0:y=ih-20:w=iw:h=20:color=green@0.8:t=fill',
+          'drawbox=x=0:y=0:w=20:h=ih:color=red@0.8:t=fill',
+          'drawbox=x=iw-20:y=0:w=20:h=ih:color=green@0.8:t=fill',
+          // Add warm glow
+          'eq=brightness=0.03:saturation=1.2',
+        ])
+        .output(outputPath)
+        .on('end', () => resolve(outputPath))
+        .on('error', reject)
+        .run();
+    });
+  }
+
+  // Preset 4: Warm Glow - Simple warm color grading
+  async function applyWarmGlow(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+      ffmpeg(inputPath)
+        .videoFilters([
+          'eq=brightness=0.05:saturation=1.3:contrast=1.1',
+          'curves=preset=lighter',
+        ])
+        .output(outputPath)
+        .on('end', () => resolve(outputPath))
+        .on('error', reject)
+        .run();
+    });
+  }
+
+  // Main endpoint: Convert video to Christmas version
+  app.post(
+    '/convert-to-christmas',
+    requireAuth,
+    abuseProtectionMiddleware,
+    upload.single('video'),
+    async (req, res) => {
+      if (!req.file) {
+        return res.status(400).json({ error: 'No video file uploaded' });
+      }
+
+      const { preset = 'snow_magic', includeMusic = false } = req.body;
+      const inputPath = req.file.path;
+      const outputFileName = `christmas-${req.file.filename}-${Date.now()}.mp4`;
+      const outputPath = path.join(videoOutputDir, outputFileName);
+
+      try {
+        console.log(`🎄 Processing video with preset: ${preset}`);
+
+        let processedPath;
+        switch (preset) {
+          case 'snow_magic':
+            processedPath = await applySnowMagic(inputPath, outputPath, includeMusic === 'true');
+            break;
+          case 'north_pole':
+            processedPath = await applyNorthPole(inputPath, outputPath);
+            break;
+          case 'holiday_frame':
+            processedPath = await applyHolidayFrame(inputPath, outputPath, includeMusic === 'true');
+            break;
+          case 'warm_glow':
+            processedPath = await applyWarmGlow(inputPath, outputPath);
+            break;
+          default:
+            processedPath = await applySnowMagic(inputPath, outputPath, false);
+        }
+
+        // Clean up input file
+        try {
+          fs.unlinkSync(inputPath);
+          console.log('🗑️  Cleaned up input file');
+        } catch (cleanupErr) {
+          console.warn('⚠️  Could not delete input file:', cleanupErr);
+        }
+
+        await logUsage(req, '/convert-to-christmas');
+
+        res.json({
+          success: true,
+          downloadUrl: `/generated_video/${outputFileName}`,
+          filename: outputFileName,
+          preset: preset,
+        });
+      } catch (err) {
+        console.error('❌ Error processing Christmas video:', err);
+        
+        try {
+          if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+          if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
+        } catch (cleanupErr) {
+          console.warn('⚠️  Error during cleanup:', cleanupErr);
+        }
+
+        res.status(500).json({ 
+          error: 'Christmas video processing failed', 
+          details: err.message 
+        });
+      }
+    },
+  );
+
+  // Serve generated videos (already handled by videoService, but ensure it's available)
+  app.use('/generated_video', express.static(videoOutputDir, {
+    maxAge: '1d',
+    etag: true,
+    lastModified: true,
+  }));
+}
+
+module.exports = { initializeChristmasVideoService };
+

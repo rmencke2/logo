@@ -15,6 +15,7 @@ const { initializeStaticService } = require('./services/staticService');
 const { initializeLogoService } = require('./services/logoService');
 const { initializeFaviconService } = require('./services/faviconService');
 const { initializeVideoService } = require('./services/videoService');
+const { initializeChristmasVideoService } = require('./services/christmasVideoService');
 const { initializeUtilityService } = require('./services/utilityService');
 const { initializeAdminService } = require('./services/adminService');
 
@@ -40,6 +41,9 @@ const PORT = process.env.PORT || 4000;
     
     // 5. Video processing service
     initializeVideoService(app);
+    
+    // 5b. Christmas video service
+    initializeChristmasVideoService(app);
     
     // 6. Utility service (health, location, usage limits)
     initializeUtilityService(app);

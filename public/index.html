@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>Influzer.ai – AI-Powered Logo Generator, Favicon Creator & Brand Design Tools</title>
     <meta name="description" content="Influzer.ai helps small businesses create professional logos, favicons, and brand assets instantly using AI. Free logo generator with full usage rights. Generate logos, favicons, convert videos, and more." />
     <meta name="keywords" content="logo generator, AI logo maker, favicon generator, brand design tools, small business logo, free logo creator, video converter, meme generator" />
@@ -110,20 +110,131 @@
         grid-template-columns: 1fr 1fr;
         gap: 24px;
       }
+      /* Mobile Responsive Styles */
       @media (max-width: 768px) {
+        /* Container and Layout */
         .container {
           grid-template-columns: 1fr;
+          padding: 20px 16px;
+          gap: 16px;
+        }
+        
+        /* Header - Mobile */
+        .auth-header {
+          padding: 12px 16px;
+          flex-wrap: wrap;
+        }
+        .auth-buttons {
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .auth-btn {
+          padding: 10px 16px;
+          font-size: 14px;
+          min-height: 44px; /* Touch-friendly */
+        }
+        .user-info {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .user-name {
+          font-size: 13px;
+        }
+        .usage-info {
+          font-size: 10px;
+        }
+        body {
+          padding-top: 70px; /* More space for mobile header */
+        }
+        
+        /* Hero Section - Mobile */
+        .hero {
+          padding: 60px 20px 40px !important;
+        }
+        .hero-cta {
+          font-size: 16px !important;
+          padding: 14px 32px !important;
+          min-height: 48px; /* Touch-friendly */
+          width: 100%;
+          max-width: 100%;
+        }
+        .hero-content {
+          padding: 60px 16px 40px !important;
+        }
+        .hero-title {
+          font-size: 32px !important;
+          line-height: 1.3 !important;
+          margin-bottom: 16px !important;
+        }
+        .hero-subtitle {
+          font-size: 16px !important;
+          margin-bottom: 32px !important;
+          padding: 0 10px;
+        }
+        .hero-buttons {
+          flex-direction: column !important;
+          gap: 12px !important;
+        }
+        .hero-buttons > button {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        
+        /* Tools Showcase - Mobile */
+        .tools-showcase-section > div {
+          padding: 40px 16px !important;
+        }
+        .tools-showcase-section > div > div {
+          grid-template-columns: 1fr !important;
+          gap: 24px !important;
+        }
+        .tool-card {
+          margin: 0;
           padding: 20px;
         }
-        .hero {
-          padding: 40px 20px 30px;
+        .tool-card h3 {
+          font-size: 20px !important;
+          margin: 20px 0 10px !important;
         }
-        .hero h1 {
-          font-size: 28px;
+        .tool-card p {
+          font-size: 14px !important;
         }
-        .hero .subtitle {
+        .tool-card-image {
+          min-height: 180px;
+        }
+        
+        /* Forms - Mobile */
+        .form-group {
+          margin-bottom: 20px;
+        }
+        input[type='text'],
+        input[type='email'],
+        input[type='password'],
+        select {
+          font-size: 16px; /* Prevents zoom on iOS */
+          padding: 14px 16px;
+          min-height: 48px; /* Touch-friendly */
+        }
+        button {
+          min-height: 48px; /* Touch-friendly */
           font-size: 16px;
+          padding: 14px 24px;
         }
+        
+        /* Modals - Mobile */
+        .modal-content {
+          width: 95% !important;
+          max-width: 95% !important;
+          margin: 20px !important;
+          padding: 24px 20px !important;
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+        .modal-header h2 {
+          font-size: 20px !important;
+        }
+        
+        /* Logo Generator - Mobile */
         .sample-logos {
           gap: 12px;
         }
@@ -134,6 +245,8 @@
         }
         .progress-steps {
           padding: 16px;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
         }
         .step-number {
           width: 32px;
@@ -142,6 +255,95 @@
         }
         .step-label {
           font-size: 11px;
+        }
+        
+        /* Color pickers - Mobile */
+        .color-group {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        input[type='color'] {
+          height: 56px; /* Larger for touch */
+        }
+        
+        /* Preview - Mobile */
+        .preview-card {
+          position: relative;
+          top: 0;
+        }
+        .preview {
+          margin-top: 24px;
+        }
+        
+        /* Footer - Mobile */
+        #footer-container,
+        #footer-container-logo {
+          padding: 0 16px;
+        }
+      }
+      
+      /* Small Mobile (phones in portrait) */
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 28px !important;
+        }
+        .hero-subtitle {
+          font-size: 15px !important;
+        }
+        .tool-card {
+          padding: 16px;
+        }
+        .tool-card h3 {
+          font-size: 18px !important;
+        }
+        .modal-content {
+          width: 100% !important;
+          max-width: 100% !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+          max-height: 100vh;
+        }
+        .auth-header {
+          padding: 10px 12px;
+        }
+        .auth-btn {
+          padding: 8px 12px;
+          font-size: 13px;
+        }
+      }
+      
+      /* Tablet adjustments */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .tools-showcase-section > div > div {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+        .hero-title {
+          font-size: 42px !important;
+        }
+      }
+      
+      /* Additional Mobile Optimizations */
+      @media (max-width: 768px) {
+        /* Prevent horizontal scroll */
+        body {
+          overflow-x: hidden;
+        }
+        
+        /* Better touch targets */
+        a, button, .tool-card {
+          -webkit-tap-highlight-color: rgba(16, 163, 127, 0.2);
+          touch-action: manipulation;
+        }
+        
+        /* Smooth scrolling */
+        html {
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Better text rendering on mobile */
+        body {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
       }
       .card {
@@ -1071,10 +1273,10 @@
     <div id="homepage" class="homepage" style="display: block;">
       <!-- Hero Section -->
       <div class="hero hero-gradient">
-        <div style="max-width: 1200px; margin: 0 auto; padding: 100px 20px 80px; text-align: center;">
-          <h1 style="font-size: 56px; font-weight: 700; margin-bottom: 24px; color: #fff; line-height: 1.2;">AI-Powered Logo Generator & Brand Design Tools for Small Businesses</h1>
-          <p class="subtitle" style="font-size: 20px; max-width: 800px; margin: 0 auto 48px; color: #b0b0b0; line-height: 1.6;" data-i18n="homepage.hero.subtitle">Create professional logos, favicons, and brand assets instantly using advanced AI. Generate logos in minutes with full usage rights. Perfect for cafés, freelancers, artisans, and new businesses.</p>
-          <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap;">
+        <div class="hero-content" style="max-width: 1200px; margin: 0 auto; padding: 100px 20px 80px; text-align: center;">
+          <h1 class="hero-title" style="font-size: 56px; font-weight: 700; margin-bottom: 24px; color: #fff; line-height: 1.2;">AI-Powered Logo Generator & Brand Design Tools for Small Businesses</h1>
+          <p class="subtitle hero-subtitle" style="font-size: 20px; max-width: 800px; margin: 0 auto 48px; color: #b0b0b0; line-height: 1.6;" data-i18n="homepage.hero.subtitle">Create professional logos, favicons, and brand assets instantly using advanced AI. Generate logos in minutes with full usage rights. Perfect for cafés, freelancers, artisans, and new businesses.</p>
+          <div class="hero-buttons" style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap;">
             <button class="cta-button primary hero-cta" id="heroSignupBtn" style="font-size: 18px; padding: 16px 40px;" data-i18n="homepage.cta.signup">Start Free Account</button>
             <button class="cta-button secondary hero-cta" id="heroLoginBtn" style="font-size: 18px; padding: 16px 40px; background: transparent; border: 2px solid #fff; color: #fff;" data-i18n="auth.login">Sign In</button>
           </div>
@@ -1194,6 +1396,20 @@
               </div>
               <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;">AVI to MP4 Converter</h3>
               <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;">Convert your AVI videos to MP4 format quickly and easily.</p>
+            </a>
+
+            <!-- Christmas Video Maker Card -->
+            <a href="/christmas-video" class="tool-card" id="christmasVideoCard" data-tool-card="true" style="text-decoration: none; color: inherit;">
+              <div class="tool-card-image">
+                <div style="padding: 24px; background: linear-gradient(135deg, rgba(220, 20, 60, 0.1), rgba(34, 139, 34, 0.1)); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 16px;">🎄</div>
+                    <div style="font-size: 14px; color: #10a37f; font-weight: 600;">Christmas Magic</div>
+                  </div>
+                </div>
+              </div>
+              <h3 style="font-size: 22px; font-weight: 600; margin: 24px 0 12px; color: #fff;">Christmas Video Maker</h3>
+              <p style="color: #8e8e93; font-size: 15px; line-height: 1.6;">Transform any video into a magical Christmas story with snow, music, and festive effects.</p>
             </a>
 
             <!-- Video to GIF Converter Card -->

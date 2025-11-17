@@ -91,6 +91,11 @@ function initializeStaticService(app) {
     res.sendFile(path.join(__dirname, '..', 'public', 'cookie.html'));
   });
 
+  // Serve Christmas video page
+  app.get('/christmas-video', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'christmas-video.html'));
+  });
+
   // Serve robots.txt
   app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
