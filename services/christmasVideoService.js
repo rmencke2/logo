@@ -207,6 +207,7 @@ function initializeChristmasVideoService(app) {
   async function applyNorthPole(inputPath, outputPath) {
     return new Promise((resolve, reject) => {
       ffmpeg(inputPath)
+        .inputOptions(['-noautorotate']) // Preserve original orientation
         .videoFilters([
           // Warm cinematic look
           'eq=brightness=0.08:saturation=1.4:contrast=1.15',
@@ -220,7 +221,6 @@ function initializeChristmasVideoService(app) {
           '-map', '0:v',
           '-map', '0:a:0',
           '-ignore_unknown',
-          '-noautorotate', // Preserve original orientation
           '-c:v', 'libx264',
           '-preset', 'medium',
           '-crf', '23',
@@ -256,6 +256,9 @@ function initializeChristmasVideoService(app) {
           // Use garland image as overlay - only top and bottom
           const command = ffmpeg(inputPath);
           
+          // Preserve original orientation - apply to input
+          command.inputOptions(['-noautorotate']);
+          
           // Add garland image as input FIRST
           command.input(framePath);
           
@@ -290,8 +293,7 @@ function initializeChristmasVideoService(app) {
               '-crf', '23',
               '-c:a', 'aac',
               '-b:a', '128k',
-              '-ignore_unknown',
-              '-noautorotate' // Preserve original orientation
+              '-ignore_unknown'
             ])
             .output(outputPath)
             .on('start', (cmd) => console.log('🎄 FFmpeg command:', cmd))
@@ -314,6 +316,7 @@ function initializeChristmasVideoService(app) {
           // Fallback to simple colored border if garland image not found
           console.log('⚠️  Christmas garland frame not found, using fallback border');
           ffmpeg(inputPath)
+            .inputOptions(['-noautorotate']) // Preserve original orientation
             .videoFilters([
               // Draw Christmas-colored border (top and bottom only)
               'drawbox=x=0:y=0:w=iw:h=40:color=red@0.8:t=fill',
@@ -325,7 +328,6 @@ function initializeChristmasVideoService(app) {
               '-map', '0:v',
               '-map', '0:a:0',
               '-ignore_unknown',
-              '-noautorotate', // Preserve original orientation
               '-c:v', 'libx264',
               '-preset', 'medium',
               '-crf', '23',
@@ -345,6 +347,7 @@ function initializeChristmasVideoService(app) {
   async function applyWarmGlow(inputPath, outputPath) {
     return new Promise((resolve, reject) => {
       ffmpeg(inputPath)
+        .inputOptions(['-noautorotate']) // Preserve original orientation
         .videoFilters([
           'eq=brightness=0.05:saturation=1.3:contrast=1.1',
           'curves=preset=lighter',
@@ -353,7 +356,6 @@ function initializeChristmasVideoService(app) {
           '-map', '0:v',
           '-map', '0:a:0',
           '-ignore_unknown',
-          '-noautorotate', // Preserve original orientation
           '-c:v', 'libx264',
           '-preset', 'medium',
           '-crf', '23',
