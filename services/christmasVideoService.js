@@ -317,10 +317,16 @@ function initializeChristmasVideoService(app) {
             filters.push(`[garland_strip]split[garland_top][garland_bottom_raw]`);
             filters.push(`[garland_bottom_raw]vflip[garland_bottom]`);
             
-            // Overlay top garland at x=0, y=0 (top-left corner of video)
+            // Overlay positioning:
+            // - Top garland: x=0 (left edge), y=0 (top edge) - creates horizontal border at top
+            // - Bottom garland: x=0 (left edge), y=height-garlandHeight (bottom edge) - creates horizontal border at bottom
+            // If garland appears on LEFT/RIGHT sides, the strip is VERTICAL (wrong orientation)
+            // If garland appears on TOP/BOTTOM, the strip is HORIZONTAL (correct orientation)
             filters.push(`[v0][garland_top]overlay=0:0[v1]`);
-            // Overlay bottom garland at x=0, y=height-garlandHeight (bottom of video)
             filters.push(`[v1][garland_bottom]overlay=0:${height - garlandHeight}[v]`);
+            
+            console.log(`🎄 Expected garland strip dimensions: ${width}x${garlandHeight} (horizontal: wide x short)`);
+            console.log(`🎄 Overlay positions: top at (0, 0), bottom at (0, ${height - garlandHeight})`);
             
             command.complexFilter(filters);
             
