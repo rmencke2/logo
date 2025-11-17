@@ -265,10 +265,12 @@ function initializeChristmasVideoService(app) {
           command.inputOptions(['-noautorotate']);
           
           // Add garland image as input FIRST
+          // Use -noautorotate to prevent FFmpeg from auto-rotating based on EXIF
           command.input(framePath);
           
           // If separate bottom garland exists, add it as second input
           if (hasBottomFrame) {
+            // Add -noautorotate to prevent any auto-rotation of the bottom image
             command.input(bottomFramePath);
             console.log('🎄 Using separate bottom garland image');
           }
@@ -357,9 +359,10 @@ function initializeChristmasVideoService(app) {
             // Create garlands for all 4 sides: top, bottom, left, right
             if (hasBottomFrame) {
               // Use separate bottom garland image
-              // The bottom image is already correct and pre-flipped - just scale and crop, NO rotation
-              // Scale to video width (maintains aspect ratio)
-              filters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
+              // The bottom image is already correct and pre-flipped - just scale and crop, NO rotation, NO flipping
+              // IMPORTANT: Use scale filter with explicit flags to prevent any auto-rotation or flipping
+              // scale=w:h:flags=noautorotate ensures the image is used exactly as-is
+              filters.push(`[2:v]scale=${width}:-1:flags=noautorotate[bottom_scaled]`);
               // Crop from center to get the horizontal strip
               filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip]`);
               
@@ -367,7 +370,8 @@ function initializeChristmasVideoService(app) {
               filters.push(`[garland_strip]split=3[garland_h1][garland_h3][garland_h4]`);
               filters.push(`[garland_h1]copy[garland_top]`);
               
-              // Use bottom strip directly (no flip needed - it's already designed for bottom)
+              // Use bottom strip directly - NO flip, NO rotation, NO transformation
+              // Just copy it exactly as-is since it's already correct
               filters.push(`[bottom_strip]copy[garland_bottom]`);
               
               // Left and right: rotate horizontal strip 90° to make vertical strips
