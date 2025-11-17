@@ -8,8 +8,21 @@ __pycache__/
 node_modules/
 
 # Build artifacts - generated output files (user-generated content, not source code)
+# Exclude all generated directories and their contents
+generated_*/
 generated_img/
 generated_video/
+
+# Exclude all large media files that might be generated
+*.gif
+*.mp4
+*.avi
+*.mov
+*.webm
+*.mkv
+*.flv
+*.3gp
+*.wmv
 
 # Editor files
 .DS_Store
