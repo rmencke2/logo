@@ -292,23 +292,24 @@ function initializeChristmasVideoService(app) {
               `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
             ];
             
+            // ALWAYS create horizontal strips (wide x short) for top/bottom placement
+            // If garland appears on sides, it means we're creating vertical strips (wrong!)
             if (isGarlandVertical) {
-              // If garland is vertical (tall), rotate it 90 degrees clockwise to make it horizontal
-              // transpose=1 = 90 degrees clockwise (turns tall into wide)
+              // Garland is vertical (tall): rotate 90° clockwise to make it horizontal
+              // transpose=1 rotates 90° clockwise: tall becomes wide
               filters.push(`[1:v]transpose=1[garland_rotated]`);
-              // Now the rotated garland is horizontal (wide), scale to video width
+              // Scale rotated (now horizontal) garland to match video width
               filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
-              // Crop a horizontal strip: width=${width} (wide) x height=${garlandHeight} (short)
-              // This creates a horizontal strip for top/bottom placement
-              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             } else {
-              // If garland is already horizontal (wide), scale to video width
+              // Garland is already horizontal (wide): scale to video width
               filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
-              // Crop a horizontal strip from the top
-              // crop=w:h:x:y where w=width (wide), h=height (short), x=0, y=0
-              // This MUST create a horizontal strip (width > height) for top/bottom
-              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             }
+            
+            // CRITICAL: Crop must create HORIZONTAL strip (width > height)
+            // crop=WIDTH:HEIGHT:x:y where WIDTH should be large, HEIGHT should be small
+            // For 1920x1080 video with 20% height: crop=1920:216:0:0 = horizontal strip ✓
+            // If we get crop=216:1920:0:0 = vertical strip ✗ (this causes sides placement)
+            filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             
             // Verify: garland_strip should be ${width}x${garlandHeight} (horizontal: wide and short)
             // If it's appearing on sides, the strip is vertical (tall and narrow) - that's the bug
