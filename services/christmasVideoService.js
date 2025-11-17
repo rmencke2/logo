@@ -367,9 +367,9 @@ function initializeChristmasVideoService(app) {
                 // Bottom image is already horizontal: scale to video width
                 bottomFilters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
               }
-              // Crop from the BOTTOM edge (not center) to preserve the bottom part of the pre-flipped image
-              // This ensures we get the part that's designed to be at the bottom
-              bottomFilters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:in_h-${garlandHeight}[bottom_strip]`);
+              // Crop from the TOP edge (y=0) since the image is already pre-flipped for bottom placement
+              // The pre-flipped image is designed to be at the bottom, so we want the top part of that image
+              bottomFilters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:0[bottom_strip]`);
               
               // Add bottom processing filters
               filters.push(...bottomFilters);
@@ -382,8 +382,12 @@ function initializeChristmasVideoService(app) {
               filters.push(`[bottom_strip]copy[garland_bottom]`);
               
               // Left and right: rotate horizontal strip 90° to make vertical strips
-              filters.push(`[garland_h3]transpose=2[garland_left]`);
-              filters.push(`[garland_h4]transpose=2,vflip[garland_right]`);
+              // transpose=1 rotates 90° clockwise (top of horizontal becomes right of vertical)
+              // transpose=2 rotates 90° counter-clockwise (top of horizontal becomes left of vertical)
+              // For left side: use transpose=1 so the "start" of the garland is at the top
+              filters.push(`[garland_h3]transpose=1[garland_left]`);
+              // For right side: use transpose=1 and flip vertically so it mirrors the left
+              filters.push(`[garland_h4]transpose=1,vflip[garland_right]`);
             } else {
               // Use same garland for all sides, flip bottom
               filters.push(`[garland_strip]split=4[garland_h1][garland_h2][garland_h3][garland_h4]`);
