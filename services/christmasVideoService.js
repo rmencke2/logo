@@ -293,36 +293,31 @@ function initializeChristmasVideoService(app) {
             ];
             
             // ALWAYS create horizontal strips (wide x short) for top/bottom placement
-            // The garland image should be used as-is if horizontal, or rotated if vertical
+            // Strategy: Scale garland to video WIDTH first, then crop a horizontal strip
+            // This ensures we always get width > height (horizontal strip)
+            
+            // Step 1: Scale garland to match video WIDTH (this makes it horizontal)
             if (isGarlandVertical) {
-              // Garland is vertical (tall): rotate 90° clockwise to make it horizontal
+              // Garland is vertical (tall): rotate 90° clockwise first
               // transpose=1 rotates 90° clockwise: tall becomes wide
               filters.push(`[1:v]transpose=1[garland_rotated]`);
-              // Scale rotated (now horizontal) garland to match video width
-              // Use scale to fit width, maintain aspect ratio
+              // Now scale to video width (rotated garland is now horizontal)
               filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
             } else {
-              // Garland is already horizontal (wide): scale to video width, maintain aspect ratio
+              // Garland is already horizontal (wide): scale to video width
               filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
             }
             
-            // CRITICAL: Crop must create HORIZONTAL strip (width > height) for top/bottom
-            // crop=WIDTH:HEIGHT:x:y where WIDTH=output width, HEIGHT=output height
-            // We want: crop=1920:216:0:0 (horizontal: WIDE x SHORT) ✓
-            // NOT: crop=216:1920:0:0 (vertical: NARROW x TALL) ✗
-            // 
-            // To avoid cutting branches: crop from center of garland height
-            // We need to calculate: y = (scaled_garland_height - garlandHeight) / 2
-            // But we can't easily get scaled height in filter chain, so we'll use a workaround:
-            // Scale garland to exact height first, then crop full width
-            // OR: use crop with center positioning (crop=w:h:x:'(in_h-out_h)/2')
-            // Let's try: scale to exact height, then crop full width
-            // Actually simpler: scale to width, then crop from center using expression
-            // For now, let's ensure correct orientation first, then fix branch cutoff
-            // 
-            // IMPORTANT: The crop MUST produce width > height (horizontal strip)
-            // If garland appears on sides, the crop is producing height > width (vertical strip)
+            // Step 2: Crop a HORIZONTAL strip (width > height) from center to avoid cutting branches
+            // crop=WIDTH:HEIGHT:x:y
+            // We MUST have: WIDTH (${width}) > HEIGHT (${garlandHeight}) for horizontal strip
+            // Crop from center: y = (input_height - output_height) / 2
+            // This prevents cutting branches at the edges
             filters.push(`[garland_scaled]crop=w=${width}:h=${garlandHeight}:x=0:y='(in_h-${garlandHeight})/2'[garland_strip]`);
+            
+            // DEBUG: Log expected dimensions
+            console.log(`🎄 CRITICAL: garland_strip MUST be ${width}x${garlandHeight} (WIDE x SHORT)`);
+            console.log(`🎄 If strip is ${garlandHeight}x${width} (SHORT x WIDE), it will appear on SIDES (WRONG!)`);
             
             // Verify: garland_strip should be ${width}x${garlandHeight} (horizontal: wide and short)
             // If it's appearing on sides, the strip is vertical (tall and narrow) - that's the bug
