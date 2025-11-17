@@ -286,6 +286,7 @@ function initializeChristmasVideoService(app) {
             
             // Scale frame to match video width, but keep it narrow
             // We need to extract horizontal strips for top/bottom placement
+            // IMPORTANT: Final strip must be horizontal (width > height) for top/bottom placement
             const filters = [
               // Apply color grading to main video and preserve rotation
               `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
@@ -293,20 +294,24 @@ function initializeChristmasVideoService(app) {
             
             if (isGarlandVertical) {
               // If garland is vertical (tall), rotate it 90 degrees clockwise to make it horizontal
-              // transpose=1 = 90 degrees clockwise
+              // transpose=1 = 90 degrees clockwise (turns tall into wide)
               filters.push(`[1:v]transpose=1[garland_rotated]`);
-              // Now scale the rotated (now horizontal) garland to video width
+              // Now the rotated garland is horizontal (wide), scale to video width
               filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
-              // Crop a horizontal strip: width (wide) x garlandHeight (short) = horizontal strip
-              // crop=w:h:x:y where w=width, h=height, x=left offset, y=top offset
+              // Crop a horizontal strip: width=${width} (wide) x height=${garlandHeight} (short)
+              // This creates a horizontal strip for top/bottom placement
               filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             } else {
-              // If garland is horizontal (wide), scale to video width first
+              // If garland is already horizontal (wide), scale to video width
               filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
-              // Crop a horizontal strip from the top: width (wide) x garlandHeight (short)
-              // This ensures we get a horizontal strip, not a vertical one
+              // Crop a horizontal strip from the top
+              // crop=w:h:x:y where w=width (wide), h=height (short), x=0, y=0
+              // This MUST create a horizontal strip (width > height) for top/bottom
               filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:0[garland_strip]`);
             }
+            
+            // Verify: garland_strip should be ${width}x${garlandHeight} (horizontal: wide and short)
+            // If it's appearing on sides, the strip is vertical (tall and narrow) - that's the bug
             
             // Create top and bottom garlands from the horizontal strip
             filters.push(`[garland_strip]split[garland_top][garland_bottom_raw]`);
