@@ -252,8 +252,10 @@ function initializeChristmasVideoService(app) {
                         metadata.streams[0].side_data?.find(sd => sd.rotation)?.rotation || 
                         null;
         
-        // Path to Christmas garland frame image
+        // Path to Christmas garland frame images
         const framePath = path.join(assetsDir, 'christmas-garland-frame.png');
+        const bottomFramePath = path.join(assetsDir, 'christmas-garland-frame-bottom.png');
+        const hasBottomFrame = fs.existsSync(bottomFramePath);
         
         if (fs.existsSync(framePath)) {
           // Use garland image as overlay - only top and bottom
@@ -264,6 +266,12 @@ function initializeChristmasVideoService(app) {
           
           // Add garland image as input FIRST
           command.input(framePath);
+          
+          // If separate bottom garland exists, add it as second input
+          if (hasBottomFrame) {
+            command.input(bottomFramePath);
+            console.log('🎄 Using separate bottom garland image');
+          }
           
           // Get garland image dimensions to determine orientation
           ffmpeg.ffprobe(framePath, (err, garlandMetadata) => {
@@ -329,18 +337,42 @@ function initializeChristmasVideoService(app) {
             // If it's appearing on sides, the strip is vertical (tall and narrow) - that's the bug
             
             // Create garlands for all 4 sides: top, bottom, left, right
-            // Split the horizontal strip into 4 copies using split=4
-            filters.push(`[garland_strip]split=4[garland_h1][garland_h2][garland_h3][garland_h4]`);
-            
-            // Top and bottom: use horizontal strips
-            filters.push(`[garland_h1]copy[garland_top]`);
-            // Bottom: rotate 180 degrees (upside down) using hflip and vflip
-            filters.push(`[garland_h2]hflip,vflip[garland_bottom]`);
-            
-            // Left and right: rotate horizontal strip 90° to make vertical strips
-            // transpose=2 rotates 90° counter-clockwise (makes vertical strip for sides)
-            filters.push(`[garland_h3]transpose=2[garland_left]`);
-            filters.push(`[garland_h4]transpose=2,vflip[garland_right]`);
+            if (hasBottomFrame) {
+              // Use separate bottom garland image
+              // Process bottom garland image (input 2) the same way as top
+              let bottomFilters = [];
+              if (isGarlandVertical) {
+                bottomFilters.push(`[2:v]transpose=1[bottom_rotated]`);
+                bottomFilters.push(`[bottom_rotated]scale=${width}:-1[bottom_scaled]`);
+              } else {
+                bottomFilters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
+              }
+              bottomFilters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip]`);
+              
+              // Add bottom processing filters
+              filters.push(...bottomFilters);
+              
+              // Split top garland strip for top, left, right
+              filters.push(`[garland_strip]split=3[garland_h1][garland_h3][garland_h4]`);
+              filters.push(`[garland_h1]copy[garland_top]`);
+              
+              // Use bottom strip directly (no flip needed - it's already designed for bottom)
+              filters.push(`[bottom_strip]copy[garland_bottom]`);
+              
+              // Left and right: rotate horizontal strip 90° to make vertical strips
+              filters.push(`[garland_h3]transpose=2[garland_left]`);
+              filters.push(`[garland_h4]transpose=2,vflip[garland_right]`);
+            } else {
+              // Use same garland for all sides, flip bottom
+              filters.push(`[garland_strip]split=4[garland_h1][garland_h2][garland_h3][garland_h4]`);
+              filters.push(`[garland_h1]copy[garland_top]`);
+              // Bottom: rotate 180 degrees (upside down) using hflip and vflip
+              filters.push(`[garland_h2]hflip,vflip[garland_bottom]`);
+              
+              // Left and right: rotate horizontal strip 90° to make vertical strips
+              filters.push(`[garland_h3]transpose=2[garland_left]`);
+              filters.push(`[garland_h4]transpose=2,vflip[garland_right]`);
+            }
             
             // Calculate vertical strip width (same as horizontal strip height)
             // Use garlandHeight as the width for vertical strips
