@@ -308,17 +308,11 @@ function initializeChristmasVideoService(app) {
               filters.push(`[1:v]scale=-1:${garlandHeight}[garland_scaled]`);
             }
             
-            // Step 2: Crop full width from center to avoid cutting branches
-            // Now garland_scaled has height=${garlandHeight}, width will be calculated
-            // Crop full width: crop from center horizontally, full height
-            // This ensures we get width > height (horizontal strip)
-            // Crop from center: x = (input_width - output_width) / 2, but we want full width
-            // Actually, we want to crop the full width, so x=0 and w=in_w (full width)
-            // But we need to ensure it's at least video width - if smaller, we'll pad or repeat
-            // For now, let's crop full width and then scale to video width if needed
-            filters.push(`[garland_scaled]crop=w='min(in_w,${width})':h=${garlandHeight}:x='(in_w-min(in_w,${width}))/2':y=0[garland_cropped]`);
-            // If cropped width is less than video width, pad or scale to video width
-            filters.push(`[garland_cropped]scale=${width}:${garlandHeight}[garland_strip]`);
+            // Step 2: Scale to video width (guarantees width > height = horizontal strip)
+            // After scaling to height, the width will be calculated automatically
+            // Then scale to video width to ensure it spans the full width
+            // This creates a horizontal strip: width=${width} > height=${garlandHeight}
+            filters.push(`[garland_scaled]scale=${width}:${garlandHeight}[garland_strip]`);
             
             // DEBUG: Log expected dimensions
             console.log(`🎄 CRITICAL: garland_strip MUST be ${width}x${garlandHeight} (WIDE x SHORT)`);
@@ -332,13 +326,13 @@ function initializeChristmasVideoService(app) {
             filters.push(`[garland_bottom_raw]vflip[garland_bottom]`);
             
             // Overlay positioning for TOP and BOTTOM placement:
-            // overlay=x:y where x=horizontal position, y=vertical position
-            // - Top garland: x=0 (left edge), y=0 (top edge) - horizontal border at TOP
-            // - Bottom garland: x=0 (left edge), y=H-h (bottom edge) - horizontal border at BOTTOM
-            // If garland appears on LEFT/RIGHT, the strip dimensions are wrong (vertical instead of horizontal)
-            // Ensure garland_strip is ${width}x${garlandHeight} (wide x short, not tall x narrow)
-            filters.push(`[v0][garland_top]overlay=x=0:y=0[v1]`);
-            filters.push(`[v1][garland_bottom]overlay=x=0:y=${height - garlandHeight}[v]`);
+            // overlay filter syntax: overlay=x:y where x=horizontal, y=vertical
+            // - Top: x=0 (left), y=0 (top) = horizontal border at TOP
+            // - Bottom: x=0 (left), y=H-h (bottom) = horizontal border at BOTTOM
+            // CRITICAL: If garland appears on SIDES, the strip is VERTICAL (216x1920) instead of HORIZONTAL (1920x216)
+            // Use standard overlay syntax (not x= and y= separately)
+            filters.push(`[v0][garland_top]overlay=0:0[v1]`);
+            filters.push(`[v1][garland_bottom]overlay=0:${height - garlandHeight}[v]`);
             
             console.log(`🎄 Expected garland strip: ${width}x${garlandHeight} (horizontal: WIDE x SHORT)`);
             console.log(`🎄 Overlay: top at (x=0, y=0), bottom at (x=0, y=${height - garlandHeight})`);
