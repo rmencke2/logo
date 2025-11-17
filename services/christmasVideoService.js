@@ -357,17 +357,10 @@ function initializeChristmasVideoService(app) {
             // Create garlands for all 4 sides: top, bottom, left, right
             if (hasBottomFrame) {
               // Use separate bottom garland image
-              // Process bottom garland image (input 2) EXACTLY like the top garland
-              // Since it's already pre-flipped, we use the same logic
-              if (bottomIsVertical) {
-                // Bottom image is vertical: rotate 90° clockwise to make it horizontal (same as top)
-                filters.push(`[2:v]transpose=1[bottom_rotated]`);
-                filters.push(`[bottom_rotated]scale=${width}:-1[bottom_scaled]`);
-              } else {
-                // Bottom image is already horizontal: scale to video width (same as top)
-                filters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
-              }
-              // Crop from center (same as top garland)
+              // The bottom image is already correct and pre-flipped - just scale and crop, NO rotation
+              // Scale to video width (maintains aspect ratio)
+              filters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
+              // Crop from center to get the horizontal strip
               filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip]`);
               
               // Split top garland strip for top, left, right
