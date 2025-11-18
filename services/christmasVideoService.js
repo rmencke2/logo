@@ -89,7 +89,9 @@ function initializeChristmasVideoService(app) {
         
         // Detect video orientation
         const isVertical = height > width;
-        console.log(`❄️  Video orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} (${width}x${height})`);
+        console.log(`\n❄️  ========== VIDEO ORIENTATION: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} ==========`);
+        console.log(`❄️  Dimensions: ${width}x${height}`);
+        console.log(`❄️  ============================================\n`);
 
         // Get snowflake image path
         const snowflakePath = getSnowflakePath();
@@ -383,7 +385,9 @@ function initializeChristmasVideoService(app) {
         
         // Detect video orientation
         const isVertical = height > width;
-        console.log(`🎄 Video orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} (${width}x${height})`);
+        console.log(`\n🎄 ========== VIDEO ORIENTATION: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} ==========`);
+        console.log(`🎄 Dimensions: ${width}x${height}`);
+        console.log(`🎄 ============================================\n`);
         
         // Check for rotation metadata and preserve it
         const rotation = metadata.streams[0].tags?.rotate || 
