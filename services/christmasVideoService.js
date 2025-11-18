@@ -440,13 +440,107 @@ function initializeChristmasVideoService(app) {
             console.log(`🎄 Video: ${width}x${height} (${isVertical ? 'VERTICAL' : 'HORIZONTAL'})`);
             console.log(`🎄 Scale target: ${scaleTarget}, Garland strip height: ${garlandHeight}`);
             
-            // Process garlands for all 4 sides
-            // For horizontal videos: create horizontal strips for top/bottom
-            // For vertical videos: create horizontal strips for top/bottom (same approach)
-            const filters = [
-              // Apply color grading to main video - NO ROTATION, preserve original orientation
-              `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
-            ];
+            // For horizontal videos: transpose 90° clockwise, process like vertical, transpose back
+            // For vertical videos: use current logic (which works)
+            const filters = [];
+            
+            if (!isVertical) {
+              // For horizontal videos: transpose video 90° clockwise to process like vertical
+              filters.push(`[0:v]transpose=1[video_rotated]`);
+              // After transpose: width and height are swapped
+              const rotatedWidth = height; // Original height becomes width
+              const rotatedHeight = width; // Original width becomes height
+              
+              // Apply color grading to rotated video
+              filters.push(`[video_rotated]eq=brightness=0.03:saturation=1.2[v0]`);
+              
+              // Now process like vertical video using rotated dimensions
+              // Scale garland based on rotated (vertical) dimensions
+              const rotatedGarlandHeightPercent = 0.20;
+              const rotatedReferenceDimension = rotatedWidth; // For "vertical" (rotated), use width as reference
+              const rotatedGarlandHeight = Math.floor(rotatedReferenceDimension * rotatedGarlandHeightPercent);
+              const rotatedScaleTarget = rotatedHeight; // Scale to height (larger dimension in rotated space)
+              
+              // Process garland
+              if (isGarlandVertical) {
+                filters.push(`[1:v]transpose=1[garland_rotated]`);
+                filters.push(`[garland_rotated]scale=-1:${rotatedScaleTarget}[garland_scaled]`);
+              } else {
+                filters.push(`[1:v]scale=-1:${rotatedScaleTarget}[garland_scaled]`);
+              }
+              
+              // Crop to rotated dimensions
+              filters.push(`[garland_scaled]crop=${rotatedWidth}:${rotatedGarlandHeight}:'(in_w-${rotatedWidth})/2':'(in_h-${rotatedGarlandHeight})/2'[garland_strip]`);
+              
+              // Process bottom garland if available
+              if (hasBottomFrame) {
+                if (isGarlandVertical) {
+                  filters.push(`[2:v]transpose=1[bottom_rotated]`);
+                  filters.push(`[bottom_rotated]scale=-1:${rotatedScaleTarget}[bottom_scaled]`);
+                } else {
+                  filters.push(`[2:v]scale=-1:${rotatedScaleTarget}[bottom_scaled]`);
+                }
+                filters.push(`[bottom_scaled]crop=${rotatedWidth}:${rotatedGarlandHeight}:'(in_w-${rotatedWidth})/2':'(in_h-${rotatedGarlandHeight})/2'[bottom_strip_raw]`);
+                filters.push(`[bottom_strip_raw]hflip[bottom_strip]`);
+              }
+              
+              // Split and create garlands for all 4 sides (using rotated dimensions)
+              filters.push(`[garland_strip]split=2[garland_h1][garland_h2]`);
+              filters.push(`[garland_h1]copy[garland_top]`);
+              filters.push(`[garland_h2]copy[garland_left_raw]`);
+              // Rotate left garland 90° counter-clockwise to make it vertical
+              filters.push(`[garland_left_raw]transpose=2[garland_left]`);
+              
+              // Overlay garlands on rotated video
+              filters.push(`[v0][garland_top]overlay=0:0[v1]`);
+              filters.push(`[v1][garland_left]overlay=0:0[v2]`);
+              if (hasBottomFrame) {
+                filters.push(`[v2][bottom_strip]overlay=0:${rotatedHeight}-${rotatedGarlandHeight}[v3]`);
+                // Transpose final output 90° counter-clockwise to restore original orientation
+                filters.push(`[v3]transpose=2[video_final]`);
+              } else {
+                filters.push(`[v2]transpose=2[video_final]`);
+              }
+              
+              const actualFinalLabel = 'video_final';
+              
+              const command = ffmpeg(inputPath);
+              command.inputOptions(['-noautorotate']);
+              command.input(framePath);
+              if (hasBottomFrame) {
+                command.input(bottomFramePath);
+              }
+              
+              command.complexFilter(filters);
+              
+              // Handle audio
+              if (includeMusic) {
+                const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
+                if (fs.existsSync(musicPath)) {
+                  command.input(musicPath);
+                  filters.push(`[0:a:0]volume=0.7[a0]`);
+                  filters.push(`[${hasBottomFrame ? 3 : 2}:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]`);
+                  filters.push(`[a0][a1]amix=inputs=2:duration=first:normalize=1[a]`);
+                  command.complexFilter(filters);
+                  command.outputOptions(['-map', `[${actualFinalLabel}]`, '-map', '[a]', '-ignore_unknown']);
+                } else {
+                  command.outputOptions(['-map', `[${actualFinalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
+                }
+              } else {
+                command.outputOptions(['-map', `[${actualFinalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
+              }
+              
+              command
+                .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
+                .output(outputPath)
+                .on('end', () => resolve(outputPath))
+                .on('error', reject)
+                .run();
+              return;
+            }
+            
+            // For vertical videos: use existing logic (which works)
+            filters.push(`[0:v]eq=brightness=0.03:saturation=1.2[v0]`);
             
             // ALWAYS create horizontal strips (wide x short) for top/bottom placement
             // Strategy: Scale garland to target dimension while maintaining aspect ratio, then crop height from center
@@ -455,36 +549,17 @@ function initializeChristmasVideoService(app) {
             if (isGarlandVertical) {
               // Garland is vertical (tall): rotate 90° clockwise to make it horizontal
               filters.push(`[1:v]transpose=1[garland_rotated]`);
-              // Scale rotated garland to target dimension
-              if (isVertical) {
-                // For vertical video: scale to height (larger dimension)
-                filters.push(`[garland_rotated]scale=-1:${scaleTarget}[garland_scaled]`);
-              } else {
-                // For horizontal video: scale to width (larger dimension)
-                filters.push(`[garland_rotated]scale=${scaleTarget}:-1[garland_scaled]`);
-              }
+              // For vertical video: scale to height (larger dimension)
+              filters.push(`[garland_rotated]scale=-1:${scaleTarget}[garland_scaled]`);
             } else {
               // Garland is already horizontal (wide): scale to target dimension
-              if (isVertical) {
-                // For vertical video: scale to height
-                filters.push(`[1:v]scale=-1:${scaleTarget}[garland_scaled]`);
-              } else {
-                // For horizontal video: scale to width
-                filters.push(`[1:v]scale=${scaleTarget}:-1[garland_scaled]`);
-              }
+              // For vertical video: scale to height
+              filters.push(`[1:v]scale=-1:${scaleTarget}[garland_scaled]`);
             }
             
             // Step 2: Crop a horizontal strip from the center
-            // For horizontal video: crop width x garlandHeight (horizontal strip)
-            // For vertical video: crop width x garlandHeight (horizontal strip for top/bottom)
-            if (isVertical) {
-              // Vertical video: after scaling to height, we need to crop width x garlandHeight
-              // The scaled garland will be wider than video width, so crop to video width
-              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:'(in_w-${width})/2':'(in_h-${garlandHeight})/2'[garland_strip]`);
-            } else {
-              // Horizontal video: crop width x garlandHeight (standard approach)
-              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[garland_strip]`);
-            }
+            // Vertical video: after scaling to height, we need to crop width x garlandHeight
+            filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:'(in_w-${width})/2':'(in_h-${garlandHeight})/2'[garland_strip]`);
             
             // Verify strip dimensions are correct (this is just for logging, FFmpeg will process it)
             // After this filter, garland_strip should be ${width}x${garlandHeight} (horizontal)
