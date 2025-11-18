@@ -197,22 +197,22 @@ function initializeChristmasVideoService(app) {
             let xPos, yPos, xExpr, yExpr;
             
             if (isVertical) {
-              // For vertical videos: rotate snowflake 90° counter-clockwise (transpose=2)
-              // This converts right-to-left movement to top-to-bottom movement
-              // X position: distribute across width (horizontal position - static)
-              xPos = Math.floor((width / numSnowflakes) * i + (Math.random() * (width / numSnowflakes)));
-              // Y position: animate from top to bottom
+              // For vertical videos: swap x and y - animate x (right to left) which appears as top to bottom
+              // Y position: distribute across height (static vertical position)
+              const yPos = Math.floor((height / numSnowflakes) * i + (Math.random() * (height / numSnowflakes)));
+              // X position: animate from right to left (appears as top to bottom in portrait orientation)
               const baseSpeed = 20;
               const speed = Math.floor(baseSpeed + (Math.random() * 40)); // 20-60 pixels per second
-              const startY = Math.floor(-scaledHeight - (Math.random() * height));
-              const offset = height + scaledHeight;
-              const positiveStartY = startY + offset;
-              yExpr = `mod(${positiveStartY}+${speed}*t,${offset})-${scaledHeight}`;
-              // Rotate snowflake 90° clockwise (transpose=1) to convert right-to-left to top-to-bottom
+              const startX = Math.floor(width + scaledWidth + (Math.random() * width)); // Start to the right
+              const offset = width + scaledWidth;
+              const positiveStartX = startX;
+              xExpr = `mod(${positiveStartX}-${speed}*t,${offset})-${scaledWidth}`; // Move left (negative direction)
+              // Rotate snowflake 90° clockwise (transpose=1) for correct orientation
               filters.push(`[${i + 1}:v]transpose=1[snow_rotated${i}]`);
               filters.push(`[snow_rotated${i}]scale=${scaledWidth}:${scaledHeight}[snow${i}]`);
               const prevLabel = i === 0 ? 'v0' : `v${i}`;
-              filters.push(`[${prevLabel}][snow${i}]overlay=${xPos}:y='${yExpr}':eval=frame:format=auto[v${i + 1}]`);
+              // X animates (right to left), Y is static
+              filters.push(`[${prevLabel}][snow${i}]overlay=x='${xExpr}':${yPos}:eval=frame:format=auto[v${i + 1}]`);
             } else {
               // For horizontal videos: snowflakes fall from top to bottom (y changes)
               // X position: distribute across width
