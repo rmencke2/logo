@@ -93,15 +93,16 @@ function initializeChristmasVideoService(app) {
             // Preserve original orientation - apply to input
             command.inputOptions(['-noautorotate']);
             
-            // Always add snow directly in the filter chain using geq
+            // Always add snow directly in the filter chain
             // Apply warm color grading and add snowflakes
             command.complexFilter([
               // Color grade main video first
               `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
-              // Add white snowflakes using geq - add white pixels where random value is low
-              `[v0]geq=lum='if(lt(random(1),0.02),255,p(X,Y))':a='A(X,Y)'[v]`
+              // Add animated noise that looks like snow
+              // noise filter creates animated white dots
+              `[v0]noise=alls=20:allf=t+u[v]`
             ]);
-            console.log(`❄️  Adding snow directly to video using geq filter`);
+            console.log(`❄️  Adding snow directly to video using noise filter`);
 
             // Handle audio
             if (includeMusic) {
@@ -110,7 +111,7 @@ function initializeChristmasVideoService(app) {
                 command.input(musicPath);
                 command.complexFilter([
                   `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
-                  `[v0]geq=lum='if(lt(random(1),0.02),255,p(X,Y))':a='A(X,Y)'[v]`,
+                  `[v0]noise=alls=20:allf=t+u[v]`,
                   '[0:a:0]volume=0.7[a0]',
                   '[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
                   '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
