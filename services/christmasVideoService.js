@@ -47,18 +47,25 @@ function initializeChristmasVideoService(app) {
   });
 
   // Helper function to generate snow overlay using FFmpeg
-  // Uses a simpler approach: animated noise filter with transparency
+  // Creates animated falling snowflakes using time-based animation
   function generateSnowOverlay(width, height, duration) {
     const snowPath = path.join(videoOutputDir, `snow_${width}x${height}_${Date.now()}.mp4`);
     
     return new Promise((resolve, reject) => {
-      // Use noise filter to create snow effect
+      // Use a simpler, more reliable approach
+      // Create noise and use geq to make it look like snow, then animate it falling
+      const fps = 30;
+      
+      // Create animated falling snow using geq with time-based Y offset
+      // This creates snowflakes that fall from top to bottom continuously
       ffmpeg()
-        .input(`color=c=white:s=${width}x${height}:d=${duration}`)
+        .input(`color=c=black:s=${width}x${height}:d=${duration}`)
         .inputFormat('lavfi')
         .videoFilters([
-          // Create random white dots that look like snow
-          `geq=lum='if(lt(random(1),0.03),255,0)':a='if(lt(random(1),0.03),180,0)'`,
+          // Create snowflakes using geq with time-based animation
+          // mod(Y + speed*T*fps, height) makes snow fall continuously
+          // Use random with time-based seed to create varying snowflakes
+          `geq=lum='if(lt(random(X*Y*T*1000),0.006),255,0)':a='if(lt(random(X*Y*T*1000),0.006),if(lt(mod(Y+${Math.floor(height*0.4)}*T*${fps},${height*2}),${height}),200,0),0)'`,
           'fps=30',
         ])
         .outputOptions([
@@ -67,16 +74,39 @@ function initializeChristmasVideoService(app) {
           '-shortest',
         ])
         .output(snowPath)
-        .on('start', (cmd) => console.log('❄️  Generating snow overlay...'))
+        .on('start', (cmd) => console.log('❄️  Generating falling snow overlay...'))
         .on('end', () => {
           console.log('✅ Snow overlay generated');
           resolve(snowPath);
         })
         .on('error', (err) => {
           console.error('❌ Snow overlay generation error:', err);
-          // If snow generation fails, continue without it
-          console.log('⚠️  Continuing without snow overlay');
-          resolve(null);
+          console.log('⚠️  Trying alternative snow effect...');
+          // Alternative: use multiple geq filters in complex filter
+          ffmpeg()
+            .input(`color=c=black:s=${width}x${height}:d=${duration}`)
+            .inputFormat('lavfi')
+            .complexFilter([
+              // Create base snow pattern
+              `[0:v]geq=lum='if(lt(random(1),0.008),255,0)':a='if(lt(random(1),0.008),180,0)'[snow]`,
+            ])
+            .outputOptions([
+              '-map', '[snow]',
+              '-t', duration.toString(),
+              '-pix_fmt', 'rgba',
+              '-r', '30',
+              '-shortest',
+            ])
+            .output(snowPath)
+            .on('end', () => {
+              console.log('✅ Alternative snow overlay generated');
+              resolve(snowPath);
+            })
+            .on('error', (fallbackErr) => {
+              console.error('❌ All snow generation methods failed:', fallbackErr);
+              resolve(null);
+            })
+            .run();
         })
         .run();
     });
@@ -346,44 +376,42 @@ function initializeChristmasVideoService(app) {
             
             // Create garlands for all 4 sides
             if (hasBottomFrame) {
-              // Use main garland for top, left, bottom
-              // Use bottom garland image for right side (discovered: right garland is actually the bottom image)
+              // Use main garland for top, left
+              // Use bottom garland image for bottom
+              // Right garland disabled for testing
               
-              console.log(`🎄 Processing bottom garland image (input 2) for RIGHT side`);
+              console.log(`🎄 Processing bottom garland image (input 2)`);
               
-              // Process bottom garland image (input 2) for RIGHT side - scale and crop to vertical strip
-              // Scale to video height (maintains aspect ratio)
-              filters.push(`[2:v]scale=-1:${height}[right_scaled]`);
-              // Crop from center to get vertical strip
-              filters.push(`[right_scaled]crop=${garlandHeight}:${height}:'(in_w-${garlandHeight})/2':0[right_strip_raw]`);
-              // Flip horizontally for right side
-              filters.push(`[right_strip_raw]hflip[right_strip]`);
+              // Process bottom garland image (input 2) - scale and crop to horizontal strip
+              // Scale to video width (maintains aspect ratio)
+              filters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
+              // Crop from center to get horizontal strip
+              filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip_raw]`);
+              // Try horizontal flip instead of vertical flip for bottom
+              filters.push(`[bottom_strip_raw]hflip[bottom_strip]`);
               
-              console.log(`🎄 Right strip: ${garlandHeight}x${height} (vertical strip for right side)`);
+              console.log(`🎄 Bottom strip: ${width}x${garlandHeight} (horizontal strip for bottom, hflipped)`);
               
-              // Split main garland strip into 3: top, left, bottom
-              filters.push(`[garland_strip]split=3[garland_h1][garland_h2][garland_h3]`);
+              // Split main garland strip into 2: top, left (right disabled)
+              filters.push(`[garland_strip]split=2[garland_h1][garland_h2]`);
               filters.push(`[garland_h1]copy[garland_top]`);
               
               // Left: rotate horizontal strip 90° to make vertical strip
+              // After transpose=2, strip becomes garlandHeight x width (e.g., 216 x 1920)
+              // We need to crop it to garlandHeight x height (e.g., 216 x 1080) to match video height
+              // Crop from center vertically to get the middle portion
               filters.push(`[garland_h2]transpose=2[garland_left_rotated]`);
               filters.push(`[garland_left_rotated]crop=${garlandHeight}:${height}:0:'(in_h-${height})/2'[garland_left]`);
               
-              // Bottom: use main garland (no flip needed)
-              filters.push(`[garland_h3]copy[garland_bottom]`);
-              
-              // Overlay all 4 sides:
+              // Overlay top, left, bottom (right disabled for testing):
               // - Top: horizontal strip at (0, 0)
               // - Left: vertical strip at (0, 0) - full height
-              // - Right: vertical strip from bottom image at (width-garlandHeight, 0)
-              // - Bottom: horizontal strip from main garland at (0, height-garlandHeight)
+              // - Bottom: horizontal strip from bottom image at (0, height-garlandHeight)
               filters.push(`[v0][garland_top]overlay=0:0[v1]`);
               filters.push(`[v1][garland_left]overlay=0:0[v2]`);
-              filters.push(`[v2][right_strip]overlay=${width - garlandHeight}:0[v3]`);
-              filters.push(`[v3][garland_bottom]overlay=0:${height - garlandHeight}[v]`);
+              filters.push(`[v2][bottom_strip]overlay=0:${height - garlandHeight}[v]`);
               
-              console.log(`🎄 ✅ Overlay chain: top -> left -> right -> bottom`);
-              console.log(`🎄 Right overlay position: (${width - garlandHeight}, 0)`);
+              console.log(`🎄 ✅ Overlay chain: top -> left -> bottom (right DISABLED for testing)`);
               console.log(`🎄 Bottom overlay position: (0, ${height - garlandHeight})`);
             } else {
               // Use main garland for all 4 sides (fallback if no bottom image)
