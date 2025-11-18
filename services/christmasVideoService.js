@@ -47,43 +47,14 @@ function initializeChristmasVideoService(app) {
     },
   });
 
-  // Helper function to generate snow overlay image using sharp
-  // Creates a PNG image with white dots (snowflakes) on transparent background
-  function generateSnowOverlay(width, height, duration) {
-    const snowPath = path.join(videoOutputDir, `snow_${width}x${height}_${Date.now()}.png`);
-    
-    return new Promise((resolve, reject) => {
-      // Create SVG with white dots (snowflakes) scattered across the image
-      // We'll create multiple dots at random positions
-      const numSnowflakes = Math.floor((width * height) * 0.0002); // ~0.02% density
-      const dots = [];
-      
-      for (let i = 0; i < numSnowflakes; i++) {
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        const size = 1 + Math.random() * 2; // 1-3 pixels
-        dots.push(`<circle cx="${x}" cy="${y}" r="${size}" fill="white" opacity="0.8"/>`);
-      }
-      
-      const svg = `
-        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-          ${dots.join('\n')}
-        </svg>
-      `;
-      
-      // Convert SVG to PNG with transparent background
-      sharp(Buffer.from(svg))
-        .png({ background: { r: 0, g: 0, b: 0, alpha: 0 } })
-        .toFile(snowPath)
-        .then(() => {
-          console.log(`✅ Snow overlay image generated: ${snowPath}`);
-          resolve(snowPath);
-        })
-        .catch((err) => {
-          console.error('❌ Error generating snow overlay:', err);
-          resolve(null);
-        });
-    });
+  // Helper function to get snowflake image path
+  // Returns the path to the snowflake.png asset
+  function getSnowflakePath() {
+    const snowflakePath = path.join(assetsDir, 'snowflake.png');
+    if (fs.existsSync(snowflakePath)) {
+      return snowflakePath;
+    }
+    return null;
   }
 
   // Helper function to apply Christmas color grading
@@ -116,105 +87,168 @@ function initializeChristmasVideoService(app) {
         const height = metadata.streams[0].height;
         const duration = metadata.format.duration || 10; // Default to 10 seconds if not available
 
-        // Generate snow overlay image
-        generateSnowOverlay(width, height, duration)
-          .then(snowPath => {
-            const command = ffmpeg(inputPath);
-            
-            // Preserve original orientation - apply to input
-            command.inputOptions(['-noautorotate']);
-            
-            if (snowPath && fs.existsSync(snowPath)) {
-              // Apply warm color grading and overlay snow image
+        // Get snowflake image path
+        const snowflakePath = getSnowflakePath();
+        
+        if (!snowflakePath) {
+          // Fallback: just apply color grading if snowflake image not found
+          console.log(`⚠️  Snowflake image not found, using color grading only`);
+          const command = ffmpeg(inputPath);
+          command.inputOptions(['-noautorotate']);
+          command.complexFilter([
+            `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v]`
+          ]);
+          
+          // Handle audio
+          if (includeMusic) {
+            const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
+            if (fs.existsSync(musicPath)) {
+              command.input(musicPath);
               command.complexFilter([
-                // Color grade main video first
-                `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
-                // Scale snow overlay to match video dimensions
-                `[1:v]scale=${width}:${height},format=rgba[snow]`,
-                // Overlay snow on video
-                '[v0][snow]overlay=0:0:format=auto[v]'
+                `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v]`,
+                '[0:a:0]volume=0.7[a0]',
+                '[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
+                '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
               ]);
-              command.input(snowPath);
-              console.log(`❄️  Using snow overlay image: ${snowPath}`);
+              command.outputOptions(['-map', '[v]', '-map', '[a]', '-ignore_unknown']);
             } else {
-              // Just apply color grading if snow generation failed
-              command.complexFilter([
-                `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v]`
-              ]);
-              console.log(`⚠️  Snow overlay not available, using color grading only`);
+              command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
             }
-
+          } else {
+            command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
+          }
+          
+          command
+            .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
+            .output(outputPath)
+            .on('end', () => resolve(outputPath))
+            .on('error', reject)
+            .run();
+          return;
+        }
+        
+        // Get snowflake image dimensions
+        ffmpeg.ffprobe(snowflakePath, (err, snowflakeMetadata) => {
+          if (err) {
+            console.error('❌ Error reading snowflake image:', err);
+            // Fallback to color grading only
+            const command = ffmpeg(inputPath);
+            command.inputOptions(['-noautorotate']);
+            command.complexFilter([
+              `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v]`
+            ]);
+            
             // Handle audio
             if (includeMusic) {
               const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
               if (fs.existsSync(musicPath)) {
                 command.input(musicPath);
-                if (snowPath && fs.existsSync(snowPath)) {
-                  command.complexFilter([
-                    `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
-                    `[1:v]scale=${width}:${height},format=rgba[snow]`,
-                    '[v0][snow]overlay=0:0:format=auto[v]',
-                    '[0:a:0]volume=0.7[a0]',
-                    '[2:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
-                    '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
-                  ]);
-                  command.outputOptions(['-map', '[v]', '-map', '[a]', '-ignore_unknown']);
-                } else {
-                  command.complexFilter([
-                    `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v]`,
-                    '[0:a:0]volume=0.7[a0]',
-                    '[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
-                    '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
-                  ]);
-                  command.outputOptions(['-map', '[v]', '-map', '[a]', '-ignore_unknown']);
-                }
-                console.log(`❄️  Processing with music`);
+                command.complexFilter([
+                  `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v]`,
+                  '[0:a:0]volume=0.7[a0]',
+                  '[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]',
+                  '[a0][a1]amix=inputs=2:duration=first:normalize=1[a]'
+                ]);
+                command.outputOptions(['-map', '[v]', '-map', '[a]', '-ignore_unknown']);
               } else {
-                if (snowPath && fs.existsSync(snowPath)) {
-                  command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
-                } else {
-                  command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
-                }
+                command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
               }
             } else {
-              if (snowPath && fs.existsSync(snowPath)) {
-                command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
-              } else {
-                command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
-              }
+              command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
             }
-
+            
             command
               .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
               .output(outputPath)
-              .on('start', (commandLine) => {
-                console.log('🎄 FFmpeg command:', commandLine);
-              })
-              .on('progress', (progress) => {
-                console.log(`⏳ Processing: ${Math.round(progress.percent || 0)}%`);
-              })
-              .on('end', () => {
-                // Clean up snow overlay file
-                if (snowPath && fs.existsSync(snowPath)) {
-                  try {
-                    fs.unlinkSync(snowPath);
-                    console.log('🗑️  Cleaned up snow overlay file');
-                  } catch (e) {
-                    console.warn('⚠️  Could not delete snow overlay:', e);
-                  }
-                }
-                resolve(outputPath);
-              })
-              .on('error', (err) => {
-                // Clean up snow overlay file on error
-                if (snowPath && fs.existsSync(snowPath)) {
-                  try { fs.unlinkSync(snowPath); } catch (e) {}
-                }
-                reject(err);
-              })
+              .on('end', () => resolve(outputPath))
+              .on('error', reject)
               .run();
-          })
-          .catch(reject);
+            return;
+          }
+          
+          const snowflakeWidth = snowflakeMetadata.streams[0].width;
+          const snowflakeHeight = snowflakeMetadata.streams[0].height;
+          
+          // Scale snowflake to be smaller (about 2-3% of video height)
+          const snowflakeSize = Math.floor(height * 0.025); // 2.5% of video height
+          const scaledWidth = Math.floor(snowflakeSize * (snowflakeWidth / snowflakeHeight));
+          const scaledHeight = snowflakeSize;
+          
+          // Create multiple snowflakes at different x positions with different speeds
+          const numSnowflakes = 15; // Number of snowflakes
+          const snowflakes = [];
+          const filters = [];
+          
+          // Color grade main video first
+          filters.push(`[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`);
+          
+          // Add each snowflake with different x position and speed
+          for (let i = 0; i < numSnowflakes; i++) {
+            const xPos = Math.floor((width / numSnowflakes) * i + (Math.random() * (width / numSnowflakes)));
+            const speed = 30 + (Math.random() * 50); // 30-80 pixels per second
+            const startY = -scaledHeight - (Math.random() * height); // Start above screen
+            
+            // Scale snowflake
+            filters.push(`[${i + 1}:v]scale=${scaledWidth}:${scaledHeight}[snow${i}]`);
+            
+            // Overlay with time-based animation (falling)
+            // y position = mod(startY + speed * t, height + scaledHeight) - scaledHeight
+            // This makes snowflakes fall continuously from top to bottom
+            const prevLabel = i === 0 ? 'v0' : `v${i}`;
+            const yExpr = `mod(${startY}+${speed}*t,${height + scaledHeight})-${scaledHeight}`;
+            filters.push(`[${prevLabel}][snow${i}]overlay=${xPos}:y=${yExpr}:format=auto[v${i + 1}]`);
+          }
+          
+          const command = ffmpeg(inputPath);
+          command.inputOptions(['-noautorotate']);
+          
+          // Add snowflake image multiple times (one for each snowflake)
+          for (let i = 0; i < numSnowflakes; i++) {
+            command.input(snowflakePath);
+          }
+          
+          command.complexFilter(filters);
+          console.log(`❄️  Using snowflake image: ${snowflakePath} (${numSnowflakes} animated snowflakes)`);
+          
+          // Final video label
+          const finalVideoLabel = `v${numSnowflakes}`;
+          
+          // Handle audio
+          if (includeMusic) {
+            const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
+            if (fs.existsSync(musicPath)) {
+              command.input(musicPath);
+              // Music is input after all snowflakes, so it's input number: numSnowflakes + 1
+              filters.push(`[0:a:0]volume=0.7[a0]`);
+              filters.push(`[${numSnowflakes + 1}:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]`);
+              filters.push(`[a0][a1]amix=inputs=2:duration=first:normalize=1[a]`);
+              command.complexFilter(filters);
+              command.outputOptions(['-map', `[${finalVideoLabel}]`, '-map', '[a]', '-ignore_unknown']);
+              console.log(`❄️  Processing with music`);
+            } else {
+              command.outputOptions(['-map', `[${finalVideoLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
+            }
+          } else {
+            command.outputOptions(['-map', `[${finalVideoLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
+          }
+
+          command
+            .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
+            .output(outputPath)
+            .on('start', (commandLine) => {
+              console.log('🎄 FFmpeg command:', commandLine);
+            })
+            .on('progress', (progress) => {
+              console.log(`⏳ Processing: ${Math.round(progress.percent || 0)}%`);
+            })
+            .on('end', () => {
+              resolve(outputPath);
+            })
+            .on('error', (err) => {
+              reject(err);
+            })
+            .run();
+        });
       });
     });
   }
