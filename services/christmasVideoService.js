@@ -87,10 +87,45 @@ function initializeChristmasVideoService(app) {
         const height = metadata.streams[0].height;
         const duration = metadata.format.duration || 10; // Default to 10 seconds if not available
         
-        // Detect video orientation
-        const isVertical = height > width;
+        // Check for rotation metadata
+        const rotationTag = metadata.streams[0].tags?.rotate;
+        const sideData = metadata.streams[0].side_data || [];
+        const rotationSideData = sideData.find(sd => sd.rotation !== undefined);
+        const displayMatrix = sideData.find(sd => sd.displaymatrix);
+        
+        // Get rotation angle (can be from tags.rotate or side_data.rotation)
+        let rotationAngle = 0;
+        if (rotationTag) {
+          rotationAngle = parseInt(rotationTag);
+        } else if (rotationSideData && rotationSideData.rotation !== undefined) {
+          rotationAngle = rotationSideData.rotation;
+        } else if (displayMatrix && displayMatrix.displaymatrix) {
+          // Parse display matrix to get rotation
+          // Display matrix format: "rotation of -90.00 degrees" or similar
+          const matrixStr = displayMatrix.displaymatrix;
+          const match = matrixStr.match(/rotation of ([-+]?\d+\.?\d*) degrees/);
+          if (match) {
+            rotationAngle = Math.round(parseFloat(match[1]));
+          }
+        }
+        
+        // Adjust orientation detection based on rotation
+        // If rotated 90° or 270°, swap width and height for orientation detection
+        let effectiveWidth = width;
+        let effectiveHeight = height;
+        if (rotationAngle === 90 || rotationAngle === -90 || rotationAngle === 270 || rotationAngle === -270) {
+          // Swapped: what looks vertical is stored as horizontal
+          effectiveWidth = height;
+          effectiveHeight = width;
+        }
+        
+        // Detect video orientation based on effective dimensions
+        const isVertical = effectiveHeight > effectiveWidth;
+        
         console.log(`\n❄️  ========== VIDEO ORIENTATION: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} ==========`);
-        console.log(`❄️  Dimensions: ${width}x${height}`);
+        console.log(`❄️  Stored dimensions: ${width}x${height}`);
+        console.log(`❄️  Rotation metadata: ${rotationAngle}°`);
+        console.log(`❄️  Effective dimensions: ${effectiveWidth}x${effectiveHeight}`);
         console.log(`❄️  ============================================\n`);
 
         // Get snowflake image path
@@ -383,16 +418,49 @@ function initializeChristmasVideoService(app) {
         const width = metadata.streams[0].width;
         const height = metadata.streams[0].height;
         
-        // Detect video orientation
-        const isVertical = height > width;
+        // Check for rotation metadata
+        const rotationTag = metadata.streams[0].tags?.rotate;
+        const sideData = metadata.streams[0].side_data || [];
+        const rotationSideData = sideData.find(sd => sd.rotation !== undefined);
+        const displayMatrix = sideData.find(sd => sd.displaymatrix);
+        
+        // Get rotation angle (can be from tags.rotate or side_data.rotation)
+        let rotationAngle = 0;
+        if (rotationTag) {
+          rotationAngle = parseInt(rotationTag);
+        } else if (rotationSideData && rotationSideData.rotation !== undefined) {
+          rotationAngle = rotationSideData.rotation;
+        } else if (displayMatrix && displayMatrix.displaymatrix) {
+          // Parse display matrix to get rotation
+          // Display matrix format: "rotation of -90.00 degrees" or similar
+          const matrixStr = displayMatrix.displaymatrix;
+          const match = matrixStr.match(/rotation of ([-+]?\d+\.?\d*) degrees/);
+          if (match) {
+            rotationAngle = Math.round(parseFloat(match[1]));
+          }
+        }
+        
+        // Adjust orientation detection based on rotation
+        // If rotated 90° or 270°, swap width and height for orientation detection
+        let effectiveWidth = width;
+        let effectiveHeight = height;
+        if (rotationAngle === 90 || rotationAngle === -90 || rotationAngle === 270 || rotationAngle === -270) {
+          // Swapped: what looks vertical is stored as horizontal
+          effectiveWidth = height;
+          effectiveHeight = width;
+        }
+        
+        // Detect video orientation based on effective dimensions
+        const isVertical = effectiveHeight > effectiveWidth;
+        
         console.log(`\n🎄 ========== VIDEO ORIENTATION: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} ==========`);
-        console.log(`🎄 Dimensions: ${width}x${height}`);
+        console.log(`🎄 Stored dimensions: ${width}x${height}`);
+        console.log(`🎄 Rotation metadata: ${rotationAngle}°`);
+        console.log(`🎄 Effective dimensions: ${effectiveWidth}x${effectiveHeight}`);
         console.log(`🎄 ============================================\n`);
         
-        // Check for rotation metadata and preserve it
-        const rotation = metadata.streams[0].tags?.rotate || 
-                        metadata.streams[0].side_data?.find(sd => sd.rotation)?.rotation || 
-                        null;
+        // Preserve rotation for reference
+        const rotation = rotationAngle;
         
         // Path to Christmas garland frame images
         const framePath = path.join(assetsDir, 'christmas-garland-frame.png');
