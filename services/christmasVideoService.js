@@ -354,11 +354,10 @@ function initializeChristmasVideoService(app) {
               // Process bottom garland image (input 2) - scale and crop to horizontal strip
               // Scale to video width (maintains aspect ratio)
               filters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
-              // Crop from TOP edge (y=0) - if image is designed for bottom, top part is what we want
-              // This ensures we get the correct part of the pre-flipped image
-              filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:0[bottom_strip]`);
+              // Crop from center to get horizontal strip
+              filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip]`);
               
-              console.log(`🎄 Bottom strip: ${width}x${garlandHeight} (cropped from top edge, horizontal strip for bottom)`);
+              console.log(`🎄 Bottom strip: ${width}x${garlandHeight} (horizontal strip for bottom)`);
               
               // Split main garland strip into 3: top, left, right
               filters.push(`[garland_strip]split=3[garland_h1][garland_h2][garland_h3]`);
