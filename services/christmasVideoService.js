@@ -192,28 +192,43 @@ function initializeChristmasVideoService(app) {
           // Color grade main video first
           filters.push(`[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`);
           
-          // Add each snowflake with different x position and speed
+          // Add each snowflake with different position and speed
           for (let i = 0; i < numSnowflakes; i++) {
-            // X position: distribute across width (works for both orientations)
-            const xPos = Math.floor((width / numSnowflakes) * i + (Math.random() * (width / numSnowflakes)));
-            // Speed: adjust based on video height (falling distance)
-            const baseSpeed = isVertical ? 20 : 30; // Slower for vertical (narrower)
-            const speed = Math.floor(baseSpeed + (Math.random() * 40)); // 20-60 for vertical, 30-70 for horizontal
-            const startY = Math.floor(-scaledHeight - (Math.random() * height)); // Start above screen (rounded)
+            let xPos, yPos, xExpr, yExpr;
             
-            // Scale snowflake
-            filters.push(`[${i + 1}:v]scale=${scaledWidth}:${scaledHeight}[snow${i}]`);
-            
-            // Overlay with time-based animation (falling)
-            // Use a simpler expression: y = mod(startY + speed * t, height + scaledHeight) - scaledHeight
-            const prevLabel = i === 0 ? 'v0' : `v${i}`;
-            // Make startY positive by adding offset to avoid negative mod() issues
-            const offset = height + scaledHeight;
-            const positiveStartY = startY + offset;
-            // Round all values to avoid floating point issues
-            const yExpr = `mod(${positiveStartY}+${speed}*t,${offset})-${scaledHeight}`;
-            // FFmpeg overlay: use eval=frame to enable expression evaluation, quote the y expression
-            filters.push(`[${prevLabel}][snow${i}]overlay=${xPos}:y='${yExpr}':eval=frame:format=auto[v${i + 1}]`);
+            if (isVertical) {
+              // For vertical videos: rotate snowflake 90° counter-clockwise (transpose=2)
+              // This converts right-to-left movement to top-to-bottom movement
+              // X position: distribute across width (horizontal position - static)
+              xPos = Math.floor((width / numSnowflakes) * i + (Math.random() * (width / numSnowflakes)));
+              // Y position: animate from top to bottom
+              const baseSpeed = 20;
+              const speed = Math.floor(baseSpeed + (Math.random() * 40)); // 20-60 pixels per second
+              const startY = Math.floor(-scaledHeight - (Math.random() * height));
+              const offset = height + scaledHeight;
+              const positiveStartY = startY + offset;
+              yExpr = `mod(${positiveStartY}+${speed}*t,${offset})-${scaledHeight}`;
+              // Rotate snowflake 90° clockwise (transpose=1) to convert right-to-left to top-to-bottom
+              filters.push(`[${i + 1}:v]transpose=1[snow_rotated${i}]`);
+              filters.push(`[snow_rotated${i}]scale=${scaledWidth}:${scaledHeight}[snow${i}]`);
+              const prevLabel = i === 0 ? 'v0' : `v${i}`;
+              filters.push(`[${prevLabel}][snow${i}]overlay=${xPos}:y='${yExpr}':eval=frame:format=auto[v${i + 1}]`);
+            } else {
+              // For horizontal videos: snowflakes fall from top to bottom (y changes)
+              // X position: distribute across width
+              xPos = Math.floor((width / numSnowflakes) * i + (Math.random() * (width / numSnowflakes)));
+              // Y position: animate from top to bottom
+              const baseSpeed = 30;
+              const speed = Math.floor(baseSpeed + (Math.random() * 40)); // 30-70 pixels per second
+              const startY = Math.floor(-scaledHeight - (Math.random() * height));
+              const offset = height + scaledHeight;
+              const positiveStartY = startY + offset;
+              yExpr = `mod(${positiveStartY}+${speed}*t,${offset})-${scaledHeight}`;
+              // X is static, Y animates
+              filters.push(`[${i + 1}:v]scale=${scaledWidth}:${scaledHeight}[snow${i}]`);
+              const prevLabel = i === 0 ? 'v0' : `v${i}`;
+              filters.push(`[${prevLabel}][snow${i}]overlay=${xPos}:y='${yExpr}':eval=frame:format=auto[v${i + 1}]`);
+            }
           }
           
           const command = ffmpeg(inputPath);
