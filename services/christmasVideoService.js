@@ -331,23 +331,22 @@ function initializeChristmasVideoService(app) {
             
             // Create garlands for 3 sides: top, left, right (NO BOTTOM)
             // Use same garland for all sides
-            // Split into 3 copies: h1=top, h3=left, h4=right (SKIP h2 which was bottom)
-            filters.push(`[garland_strip]split=3[garland_h1][garland_h3][garland_h4]`);
+            // Split into 3 copies with sequential labels: h1=top, h2=left, h3=right
+            filters.push(`[garland_strip]split=3[garland_h1][garland_h2][garland_h3]`);
             filters.push(`[garland_h1]copy[garland_top]`);
             
             // Left and right: rotate horizontal strip 90° to make vertical strips
-            // h3 becomes left (vertical), h4 becomes right (vertical, flipped)
-            // NO h2 (bottom was removed)
-            filters.push(`[garland_h3]transpose=2[garland_left]`);
-            filters.push(`[garland_h4]transpose=2,vflip[garland_right]`);
+            // h2 becomes left (vertical), h3 becomes right (vertical, flipped)
+            filters.push(`[garland_h2]transpose=2[garland_left]`);
+            filters.push(`[garland_h3]transpose=2,vflip[garland_right]`);
             
             // Calculate vertical strip width (same as horizontal strip height)
             // Use garlandHeight as the width for vertical strips
             
             // Overlay 3 sides ONLY (NO BOTTOM):
-            // - Top: horizontal strip at (0, 0)
-            // - Left: vertical strip at (0, 0) - will span full height
-            // - Right: vertical strip at (width-garlandHeight, 0) - will span full height
+            // - Top: horizontal strip at (0, 0) - top edge
+            // - Left: vertical strip at (0, 0) - left edge, spans full height
+            // - Right: vertical strip at (width-garlandHeight, 0) - right edge, spans full height
             // ABSOLUTELY NO BOTTOM OVERLAY
             filters.push(`[v0][garland_top]overlay=0:0[v1]`);
             filters.push(`[v1][garland_left]overlay=0:0[v2]`);
