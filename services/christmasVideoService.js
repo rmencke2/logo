@@ -86,6 +86,10 @@ function initializeChristmasVideoService(app) {
         const width = metadata.streams[0].width;
         const height = metadata.streams[0].height;
         const duration = metadata.format.duration || 10; // Default to 10 seconds if not available
+        
+        // Detect video orientation
+        const isVertical = height > width;
+        console.log(`❄️  Video orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} (${width}x${height})`);
 
         // Get snowflake image path
         const snowflakePath = getSnowflakePath();
@@ -169,13 +173,19 @@ function initializeChristmasVideoService(app) {
           const snowflakeWidth = snowflakeMetadata.streams[0].width;
           const snowflakeHeight = snowflakeMetadata.streams[0].height;
           
-          // Scale snowflake to be smaller (about 2-3% of video height)
-          const snowflakeSize = Math.floor(height * 0.025); // 2.5% of video height
+          // Scale snowflake based on video orientation
+          // For horizontal: use height as reference
+          // For vertical: use width as reference (since width is smaller)
+          const referenceSize = isVertical ? width : height;
+          const snowflakeSize = Math.floor(referenceSize * 0.025); // 2.5% of reference size
           const scaledWidth = Math.floor(snowflakeSize * (snowflakeWidth / snowflakeHeight));
           const scaledHeight = snowflakeSize;
           
+          console.log(`❄️  Snowflake size: ${scaledWidth}x${scaledHeight} (reference: ${referenceSize})`);
+          
           // Create multiple snowflakes at different x positions with different speeds
-          const numSnowflakes = 8; // Number of snowflakes (reduced for testing)
+          // Adjust number based on orientation
+          const numSnowflakes = isVertical ? 6 : 8; // Fewer for vertical videos
           const snowflakes = [];
           const filters = [];
           
@@ -184,8 +194,11 @@ function initializeChristmasVideoService(app) {
           
           // Add each snowflake with different x position and speed
           for (let i = 0; i < numSnowflakes; i++) {
+            // X position: distribute across width (works for both orientations)
             const xPos = Math.floor((width / numSnowflakes) * i + (Math.random() * (width / numSnowflakes)));
-            const speed = Math.floor(30 + (Math.random() * 50)); // 30-80 pixels per second (rounded)
+            // Speed: adjust based on video height (falling distance)
+            const baseSpeed = isVertical ? 20 : 30; // Slower for vertical (narrower)
+            const speed = Math.floor(baseSpeed + (Math.random() * 40)); // 20-60 for vertical, 30-70 for horizontal
             const startY = Math.floor(-scaledHeight - (Math.random() * height)); // Start above screen (rounded)
             
             // Scale snowflake
@@ -298,6 +311,10 @@ function initializeChristmasVideoService(app) {
         const width = metadata.streams[0].width;
         const height = metadata.streams[0].height;
         
+        // Detect video orientation
+        const isVertical = height > width;
+        console.log(`🎄 Video orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} (${width}x${height})`);
+        
         // Check for rotation metadata and preserve it
         const rotation = metadata.streams[0].tags?.rotate || 
                         metadata.streams[0].side_data?.find(sd => sd.rotation)?.rotation || 
@@ -341,49 +358,63 @@ function initializeChristmasVideoService(app) {
             const garlandHeight_img = garlandMetadata.streams[0].height;
             const isGarlandVertical = garlandHeight_img > garlandWidth;
             
-            // Scale garland to video width, but keep it narrow (about 8% of video height for top/bottom)
-            // You can adjust this percentage to make the garland narrower or wider
-            const garlandHeightPercent = 0.20; // 8% of video height (adjust this value: 0.05 = 5%, 0.15 = 15%)
-            const garlandHeight = Math.floor(height * garlandHeightPercent);
+            // Scale garland based on video orientation
+            // For horizontal videos: scale to width, garland height is % of video height
+            // For vertical videos: scale to height, garland height is % of video width (since width is smaller)
+            const garlandHeightPercent = 0.20; // 20% of reference dimension
+            const referenceDimension = isVertical ? width : height;
+            const garlandHeight = Math.floor(referenceDimension * garlandHeightPercent);
+            const scaleTarget = isVertical ? height : width; // Scale to larger dimension
             
             console.log(`🎄 Garland image: ${garlandWidth}x${garlandHeight_img} (${isGarlandVertical ? 'vertical' : 'horizontal'})`);
-            console.log(`🎄 Video: ${width}x${height}, Garland strip height: ${garlandHeight}`);
+            console.log(`🎄 Video: ${width}x${height} (${isVertical ? 'VERTICAL' : 'HORIZONTAL'})`);
+            console.log(`🎄 Scale target: ${scaleTarget}, Garland strip height: ${garlandHeight}`);
             
             // Process garlands for all 4 sides
-            // Scale frame to match video width, but keep it narrow
-            // We need to extract horizontal strips for top/bottom placement
-            // IMPORTANT: Final strip must be horizontal (width > height) for top/bottom placement
+            // For horizontal videos: create horizontal strips for top/bottom
+            // For vertical videos: create horizontal strips for top/bottom (same approach)
             const filters = [
               // Apply color grading to main video - NO ROTATION, preserve original orientation
-              // v0 is the video with color grading, dimensions unchanged (width x height)
               `[0:v]eq=brightness=0.03:saturation=1.2[v0]`,
             ];
             
             // ALWAYS create horizontal strips (wide x short) for top/bottom placement
-            // Strategy: Scale garland to video WIDTH while maintaining aspect ratio, then crop height from center
-            // This GUARANTEES width > height (horizontal strip) and prevents ugly stretching
+            // Strategy: Scale garland to target dimension while maintaining aspect ratio, then crop height from center
             
-            // Step 1: Rotate if needed, then scale to video WIDTH (maintains aspect ratio, no stretching)
+            // Step 1: Rotate if needed, then scale to target dimension
             if (isGarlandVertical) {
               // Garland is vertical (tall): rotate 90° clockwise to make it horizontal
-              // transpose=1 rotates 90° clockwise: tall becomes wide
               filters.push(`[1:v]transpose=1[garland_rotated]`);
-              // Scale rotated garland to video WIDTH (maintains aspect ratio, height calculated automatically)
-              filters.push(`[garland_rotated]scale=${width}:-1[garland_scaled]`);
+              // Scale rotated garland to target dimension
+              if (isVertical) {
+                // For vertical video: scale to height (larger dimension)
+                filters.push(`[garland_rotated]scale=-1:${scaleTarget}[garland_scaled]`);
+              } else {
+                // For horizontal video: scale to width (larger dimension)
+                filters.push(`[garland_rotated]scale=${scaleTarget}:-1[garland_scaled]`);
+              }
             } else {
-              // Garland is already horizontal (wide): scale to video WIDTH (maintains aspect ratio)
-              // This preserves the garland's natural proportions - no ugly stretching!
-              filters.push(`[1:v]scale=${width}:-1[garland_scaled]`);
+              // Garland is already horizontal (wide): scale to target dimension
+              if (isVertical) {
+                // For vertical video: scale to height
+                filters.push(`[1:v]scale=-1:${scaleTarget}[garland_scaled]`);
+              } else {
+                // For horizontal video: scale to width
+                filters.push(`[1:v]scale=${scaleTarget}:-1[garland_scaled]`);
+              }
             }
             
-            // Step 2: Crop a horizontal strip from the CENTER vertically to avoid cutting branches
-            // After scaling to width, garland_scaled has width=${width}, height is calculated
-            // For 6193x2612 garland scaled to 1920 width: height becomes ~810 pixels
-            // Crop from center: y = (input_height - output_height) / 2
-            // This creates a horizontal strip: width=${width} > height=${garlandHeight}
-            // CRITICAL: crop=WIDTH:HEIGHT where WIDTH (${width}) MUST be > HEIGHT (${garlandHeight})
-            // Result: ${width}x${garlandHeight} = horizontal strip (WIDE x SHORT) for top/bottom
-            filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[garland_strip]`);
+            // Step 2: Crop a horizontal strip from the center
+            // For horizontal video: crop width x garlandHeight (horizontal strip)
+            // For vertical video: crop width x garlandHeight (horizontal strip for top/bottom)
+            if (isVertical) {
+              // Vertical video: after scaling to height, we need to crop width x garlandHeight
+              // The scaled garland will be wider than video width, so crop to video width
+              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:'(in_w-${width})/2':'(in_h-${garlandHeight})/2'[garland_strip]`);
+            } else {
+              // Horizontal video: crop width x garlandHeight (standard approach)
+              filters.push(`[garland_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[garland_strip]`);
+            }
             
             // Verify strip dimensions are correct (this is just for logging, FFmpeg will process it)
             // After this filter, garland_strip should be ${width}x${garlandHeight} (horizontal)
@@ -403,11 +434,16 @@ function initializeChristmasVideoService(app) {
               
               console.log(`🎄 Processing bottom garland image (input 2)`);
               
-              // Process bottom garland image (input 2) - scale and crop to horizontal strip
-              // Scale to video width (maintains aspect ratio)
-              filters.push(`[2:v]scale=${width}:-1[bottom_scaled]`);
-              // Crop from center to get horizontal strip
-              filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip_raw]`);
+              // Process bottom garland image (input 2) - scale and crop based on orientation
+              if (isVertical) {
+                // For vertical video: scale to height, then crop to width x garlandHeight
+                filters.push(`[2:v]scale=-1:${scaleTarget}[bottom_scaled]`);
+                filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:'(in_w-${width})/2':'(in_h-${garlandHeight})/2'[bottom_strip_raw]`);
+              } else {
+                // For horizontal video: scale to width, then crop to width x garlandHeight
+                filters.push(`[2:v]scale=${scaleTarget}:-1[bottom_scaled]`);
+                filters.push(`[bottom_scaled]crop=${width}:${garlandHeight}:0:'(in_h-${garlandHeight})/2'[bottom_strip_raw]`);
+              }
               // Try horizontal flip instead of vertical flip for bottom
               filters.push(`[bottom_strip_raw]hflip[bottom_strip]`);
               
