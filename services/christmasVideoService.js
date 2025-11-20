@@ -57,11 +57,21 @@ function initializeChristmasVideoService(app) {
 
   // Helper: get garland frame image path
   function getGarlandPath() {
-    const garlandPath = path.join(assetsDir, 'christmas-garland-frame.png');
+    // Try underscore version first (christmas_garland_frame.png)
+    let garlandPath = path.join(assetsDir, 'christmas_garland_frame.png');
     if (fs.existsSync(garlandPath)) {
+      console.log(`✅ Found garland: ${garlandPath}`);
       return garlandPath;
     }
-    console.log(`⚠️  Garland frame not found at: ${garlandPath}`);
+    // Fallback to hyphen version (christmas-garland-frame.png)
+    garlandPath = path.join(assetsDir, 'christmas-garland-frame.png');
+    if (fs.existsSync(garlandPath)) {
+      console.log(`✅ Found garland: ${garlandPath}`);
+      return garlandPath;
+    }
+    console.log(`⚠️  Garland frame not found. Tried:`);
+    console.log(`   - ${path.join(assetsDir, 'christmas_garland_frame.png')}`);
+    console.log(`   - ${path.join(assetsDir, 'christmas-garland-frame.png')}`);
     return null;
   }
 
@@ -560,40 +570,56 @@ function initializeChristmasVideoService(app) {
               const workWidth = effectiveWidth;   // Width after rotation (if rotated)
               const workHeight = effectiveHeight; // Height after rotation (if rotated)
 
-              // Process garland1 and garland2 for top/bottom (horizontal strips)
-              // For top/bottom: need horizontal strips (workWidth x garlandThickness)
-              // Scale to be wider than effective width to ensure we have enough to crop from center
-              const horizontalScaleWidth = workWidth * 1.5; // Scale wider to crop from center
+              // Process garland1 for TOP (position 1) - FIXED PLACEMENT
+              // Scale garland to exactly match video width, then crop top strip
+              console.log(`🎄 Processing Position 1 (TOP): scaling to width ${workWidth}`);
               
               if (isGarlandVertical) {
                 // Garland is tall, rotate it to make it wide
                 filters.push('[garland1]transpose=1[garland_h1_rotated]');
+                // Scale to exact video width
                 filters.push(
-                  `[garland_h1_rotated]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h1_scaled]`,
-                );
-                filters.push('[garland2]transpose=1[garland_h2_rotated]');
-                filters.push(
-                  `[garland_h2_rotated]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h2_scaled]`,
+                  `[garland_h1_rotated]scale=${workWidth}:-1,format=rgba[garland_h1_scaled]`,
                 );
               } else {
-                // Garland is already wide
+                // Garland is already wide, scale to exact video width
                 filters.push(
-                  `[garland1]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h1_scaled]`,
-                );
-                filters.push(
-                  `[garland2]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h2_scaled]`,
+                  `[garland1]scale=${workWidth}:-1,format=rgba[garland_h1_scaled]`,
                 );
               }
               
-              // Crop horizontal strips from center of scaled garland
-              // Side 1: Top strip - crop from top center
+              // Crop top strip from the top of the scaled garland
+              // Side 1: Top strip - crop from top (y=0), full width
               filters.push(
-                `[garland_h1_scaled]crop=w=${workWidth}:h=${garlandThickness}:x='(iw-${workWidth})/2':y=0[garland_top_raw]`,
+                `[garland_h1_scaled]crop=w=${workWidth}:h=${garlandThickness}:x=0:y=0[garland_top_raw]`,
               );
               // Add label "1" to top strip
               const fontSize = Math.max(24, Math.floor(garlandThickness * 0.6));
               filters.push(
                 `[garland_top_raw]drawtext=text='1':fontcolor=white:fontsize=${fontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_top]`,
+              );
+              
+              // Process garland2 for BOTTOM (position 2)
+              // Scale to match video width
+              if (isGarlandVertical) {
+                filters.push('[garland2]transpose=1[garland_h2_rotated]');
+                filters.push(
+                  `[garland_h2_rotated]scale=${workWidth}:-1,format=rgba[garland_h2_scaled]`,
+                );
+              } else {
+                filters.push(
+                  `[garland2]scale=${workWidth}:-1,format=rgba[garland_h2_scaled]`,
+                );
+              }
+              
+              // Crop bottom strip from the bottom of the scaled garland
+              // Side 2: Bottom strip - crop from bottom
+              filters.push(
+                `[garland_h2_scaled]crop=w=${workWidth}:h=${garlandThickness}:x=0:y=ih-${garlandThickness}[garland_bottom_raw]`,
+              );
+              // Add label "2" to bottom strip
+              filters.push(
+                `[garland_bottom_raw]drawtext=text='2':fontcolor=white:fontsize=${fontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_bottom]`,
               );
               
               // Side 2: Bottom strip - crop from bottom center
@@ -736,13 +762,17 @@ function initializeChristmasVideoService(app) {
   // Test endpoint to verify service is loaded
   app.get('/convert-to-christmas-test', (req, res) => {
     console.log('✅ Christmas video service test endpoint hit');
+    const garlandUnderscore = path.join(assetsDir, 'christmas_garland_frame.png');
+    const garlandHyphen = path.join(assetsDir, 'christmas-garland-frame.png');
     res.json({ 
       success: true, 
       message: 'Christmas video service is loaded',
       videoOutputDir,
       assetsDir,
       snowflakeExists: fs.existsSync(path.join(assetsDir, 'snowflake.png')),
-      garlandExists: fs.existsSync(path.join(assetsDir, 'christmas-garland-frame.png'))
+      garlandExistsUnderscore: fs.existsSync(garlandUnderscore),
+      garlandExistsHyphen: fs.existsSync(garlandHyphen),
+      garlandPath: getGarlandPath()
     });
   });
 
