@@ -57,19 +57,31 @@ function initializeChristmasVideoService(app) {
 
   // Helper: get garland frame image path
   function getGarlandPath() {
-    const garlandPath = path.join(assetsDir, 'garland_frame.png');
+    const garlandPath = path.join(assetsDir, 'christmas-garland-frame.png');
     if (fs.existsSync(garlandPath)) {
       return garlandPath;
     }
+    console.log(`⚠️  Garland frame not found at: ${garlandPath}`);
     return null;
   }
 
   // Preset 1: Snow Magic - Snow overlay + warm colors + optional music
   async function applySnowMagic(inputPath, outputPath, includeMusic = false) {
     return new Promise((resolve, reject) => {
+      console.log(`🎬 Starting SnowMagic preset processing...`);
+      console.log(`📥 Input: ${inputPath}`);
+      console.log(`📤 Output: ${outputPath}`);
+      console.log(`🎵 Include music: ${includeMusic}`);
+      
       // Get video dimensions
+      console.log(`🔍 Probing video metadata...`);
       ffmpeg.ffprobe(inputPath, (err, metadata) => {
-        if (err) return reject(err);
+        if (err) {
+          console.error('❌ Error probing video:', err);
+          return reject(err);
+        }
+        
+        console.log(`✅ Video metadata retrieved successfully`);
 
         const width = metadata.streams[0].width;
         const height = metadata.streams[0].height;
@@ -116,11 +128,13 @@ function initializeChristmasVideoService(app) {
         console.log('❄️  ============================================\n');
 
         // Get snowflake image path
+        console.log(`🔍 Looking for snowflake image...`);
         const snowflakePath = getSnowflakePath();
 
         if (!snowflakePath) {
           // Fallback: just apply color grading if snowflake image not found
           console.log('⚠️  Snowflake image not found, using color grading only');
+          console.log(`📁 Assets directory: ${assetsDir}`);
           const command = ffmpeg(inputPath);
           command.inputOptions(['-noautorotate']);
           command.complexFilter([
@@ -156,9 +170,12 @@ function initializeChristmasVideoService(app) {
         }
 
         // Get snowflake image dimensions
+        console.log(`✅ Snowflake image found: ${snowflakePath}`);
+        console.log(`🔍 Probing snowflake image dimensions...`);
         ffmpeg.ffprobe(snowflakePath, (err2, snowflakeMetadata) => {
           if (err2) {
             console.error('❌ Error reading snowflake image:', err2);
+            console.log('⚠️  Falling back to color grading only');
             const command = ffmpeg(inputPath);
             command.inputOptions(['-noautorotate']);
             command.complexFilter([
@@ -247,25 +264,52 @@ function initializeChristmasVideoService(app) {
           if (includeMusic) {
             const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
             if (fs.existsSync(musicPath)) {
+              console.log(`🎵 Adding music: ${musicPath}`);
               command.input(musicPath);
+              // Music input index = numSnowflakes + 1 (0=video, 1..numSnowflakes=snowflakes, numSnowflakes+1=music)
+              const musicInputIndex = numSnowflakes + 1;
               filters.push('[0:a:0]volume=0.7[a0]');
-              filters.push('[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]');
+              filters.push(`[${musicInputIndex}:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]`);
               filters.push('[a0][a1]amix=inputs=2:duration=first:normalize=1[a]');
               command.complexFilter(filters);
               command.outputOptions(['-map', `[${actualFinalLabel}]`, '-map', '[a]', '-ignore_unknown']);
+              console.log(`🎵 Music mixing configured (input index: ${musicInputIndex})`);
             } else {
+              console.log(`⚠️  Music file not found: ${musicPath}`);
               command.outputOptions(['-map', `[${actualFinalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
             }
           } else {
             command.outputOptions(['-map', `[${actualFinalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
           }
 
+          console.log(`🎬 Starting FFmpeg processing for SnowMagic...`);
+          console.log(`📤 Output path: ${outputPath}`);
+          
           command
             .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
             .output(outputPath)
-            .on('end', () => resolve(outputPath))
-            .on('error', (ffErr) => {
-              console.error('❌ FFmpeg error in SnowMagic:', ffErr);
+            .on('start', (cmdLine) => {
+              console.log('🎬 FFmpeg command started:');
+              console.log(cmdLine);
+            })
+            .on('progress', (progress) => {
+              if (progress.percent !== undefined) {
+                console.log(`⏳ SnowMagic progress: ${Math.round(progress.percent)}%`);
+              }
+            })
+            .on('end', () => {
+              console.log(`✅ SnowMagic processing complete: ${outputPath}`);
+              if (fs.existsSync(outputPath)) {
+                const stats = fs.statSync(outputPath);
+                console.log(`📊 Output file size: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+              }
+              resolve(outputPath);
+            })
+            .on('error', (ffErr, stdout, stderr) => {
+              console.error('❌ FFmpeg error in SnowMagic:');
+              console.error('Error object:', ffErr);
+              if (stdout) console.error('FFmpeg stdout:', stdout);
+              if (stderr) console.error('FFmpeg stderr:', stderr);
               reject(ffErr);
             })
             .run();
@@ -277,6 +321,10 @@ function initializeChristmasVideoService(app) {
   // Preset 2: North Pole (simple warm color grading + vignette)
   async function applyNorthPole(inputPath, outputPath, includeMusic = false) {
     return new Promise((resolve, reject) => {
+      console.log(`🎬 Starting NorthPole preset processing...`);
+      console.log(`📥 Input: ${inputPath}`);
+      console.log(`📤 Output: ${outputPath}`);
+      
       const command = ffmpeg(inputPath);
       command.inputOptions(['-noautorotate']);
 
@@ -290,6 +338,7 @@ function initializeChristmasVideoService(app) {
       if (includeMusic) {
         const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
         if (fs.existsSync(musicPath)) {
+          console.log(`🎵 Adding music: ${musicPath}`);
           command.input(musicPath);
           command.complexFilter([
             ...filters,
@@ -299,6 +348,7 @@ function initializeChristmasVideoService(app) {
           ]);
           command.outputOptions(['-map', '[v]', '-map', '[a]', '-ignore_unknown']);
         } else {
+          console.log(`⚠️  Music file not found: ${musicPath}`);
           command.outputOptions(['-map', '[v]', '-map', '0:a:0', '-ignore_unknown']);
         }
       } else {
@@ -308,8 +358,30 @@ function initializeChristmasVideoService(app) {
       command
         .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
         .output(outputPath)
-        .on('end', () => resolve(outputPath))
-        .on('error', reject)
+        .on('start', (cmdLine) => {
+          console.log('🎬 FFmpeg command started:');
+          console.log(cmdLine);
+        })
+        .on('progress', (progress) => {
+          if (progress.percent !== undefined) {
+            console.log(`⏳ NorthPole progress: ${Math.round(progress.percent)}%`);
+          }
+        })
+        .on('end', () => {
+          console.log(`✅ NorthPole processing complete: ${outputPath}`);
+          if (fs.existsSync(outputPath)) {
+            const stats = fs.statSync(outputPath);
+            console.log(`📊 Output file size: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+          }
+          resolve(outputPath);
+        })
+        .on('error', (ffErr, stdout, stderr) => {
+          console.error('❌ FFmpeg error in NorthPole:');
+          console.error('Error object:', ffErr);
+          if (stdout) console.error('FFmpeg stdout:', stdout);
+          if (stderr) console.error('FFmpeg stderr:', stderr);
+          reject(ffErr);
+        })
         .run();
     });
   }
@@ -494,10 +566,16 @@ function initializeChristmasVideoService(app) {
         // Continue processing if we can't check duration
       }
 
-      const { preset = 'snow_magic', includeMusic = false } = req.body;
+      const { preset = 'snow_magic', includeMusic: includeMusicRaw = false } = req.body;
+      // Convert includeMusic to boolean (handles string "true"/"false" from form data)
+      const includeMusic = includeMusicRaw === true || includeMusicRaw === 'true' || includeMusicRaw === '1';
+      
       const inputPath = req.file.path;
 
+      console.log(`🎄 Preset: ${preset}, Include Music: ${includeMusic} (raw: ${includeMusicRaw})`);
+
       if (!fs.existsSync(videoOutputDir)) {
+        console.log(`📁 Creating output directory: ${videoOutputDir}`);
         fs.mkdirSync(videoOutputDir, { recursive: true });
       }
 
@@ -509,21 +587,41 @@ function initializeChristmasVideoService(app) {
       console.log(`📁 Input: ${inputPath}`);
       console.log(`📁 Output: ${outputPath}`);
       console.log(`🎄 Processing video with preset: ${preset}`);
+      console.log(`🎵 Music enabled: ${includeMusic}`);
 
       try {
+        const startTime = Date.now();
         let processedPath;
+        
+        console.log(`🚀 Starting video processing...`);
         switch (preset) {
           case 'north_pole':
+            console.log(`🎬 Applying NorthPole preset`);
             processedPath = await applyNorthPole(inputPath, outputPath, includeMusic);
             break;
           case 'holiday_frame':
+            console.log(`🎬 Applying HolidayFrame preset`);
             processedPath = await applyHolidayFrame(inputPath, outputPath, includeMusic);
             break;
           case 'snow_magic':
           default:
+            console.log(`🎬 Applying SnowMagic preset`);
             processedPath = await applySnowMagic(inputPath, outputPath, includeMusic);
             break;
         }
+        
+        const processingTime = Date.now() - startTime;
+        console.log(`⏱️  Processing completed in ${(processingTime / 1000).toFixed(2)} seconds`);
+
+        // Verify output file exists
+        if (!fs.existsSync(processedPath)) {
+          console.error(`❌ Output file does not exist: ${processedPath}`);
+          throw new Error('Output file was not created');
+        }
+        
+        const outputStats = fs.statSync(processedPath);
+        console.log(`✅ Output file created: ${processedPath}`);
+        console.log(`📊 Output file size: ${(outputStats.size / 1024 / 1024).toFixed(2)} MB`);
 
         // Clean up input file
         try {
@@ -536,14 +634,37 @@ function initializeChristmasVideoService(app) {
         await logUsage(req, '/convert-to-christmas');
 
         const publicUrl = `/generated_video/${path.basename(processedPath)}`;
+        console.log(`✅ Success! Returning URL: ${publicUrl}`);
         return res.json({ success: true, url: publicUrl });
       } catch (processErr) {
-        console.error('❌ Error processing Christmas video:', processErr);
+        console.error('❌ Error processing Christmas video:');
+        console.error('Error message:', processErr.message);
+        console.error('Error stack:', processErr.stack);
+        if (processErr.code) {
+          console.error('Error code:', processErr.code);
+        }
+        if (processErr.signal) {
+          console.error('Error signal:', processErr.signal);
+        }
+        
         try {
-          fs.unlinkSync(inputPath);
+          if (fs.existsSync(inputPath)) {
+            fs.unlinkSync(inputPath);
+            console.log('🗑️  Cleaned up input file after error');
+          }
         } catch (cleanupErr) {
           console.warn('⚠️  Could not delete input file after error:', cleanupErr);
         }
+        
+        try {
+          if (fs.existsSync(outputPath)) {
+            fs.unlinkSync(outputPath);
+            console.log('🗑️  Cleaned up partial output file');
+          }
+        } catch (cleanupErr) {
+          console.warn('⚠️  Could not delete output file after error:', cleanupErr);
+        }
+        
         return res
           .status(500)
           .json({ error: 'Failed to process Christmas video', details: processErr.message });
