@@ -715,8 +715,14 @@ function initializeChristmasVideoService(app) {
         await logUsage(req, '/convert-to-christmas');
 
         const publicUrl = `/generated_video/${path.basename(processedPath)}`;
-        console.log(`✅ Success! Returning URL: ${publicUrl}`);
-        return res.json({ success: true, url: publicUrl });
+        const filename = path.basename(processedPath);
+        console.log(`✅ Success! Returning URL: ${publicUrl}, filename: ${filename}`);
+        return res.json({ 
+          success: true, 
+          downloadUrl: publicUrl,
+          url: publicUrl, // Keep for backwards compatibility
+          filename: filename
+        });
       } catch (processErr) {
         console.error('❌ Error processing Christmas video:');
         console.error('Error message:', processErr.message);
