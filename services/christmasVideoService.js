@@ -15,7 +15,7 @@ const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
  * Initialize Christmas video service
  * @param {express.Application} app - Express application instance
  */
-function initChristmasVideoService(app) {
+function initializeChristmasVideoService(app) {
   // Ensure generated_video directory exists
   const generatedDir = path.join(__dirname, '..', 'generated_video');
   if (!fs.existsSync(generatedDir)) fs.mkdirSync(generatedDir, { recursive: true });
@@ -539,5 +539,5 @@ function initChristmasVideoService(app) {
 }
 
 module.exports = {
-  initChristmasVideoService,
+  initializeChristmasVideoService,
 };
