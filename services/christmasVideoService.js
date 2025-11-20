@@ -521,13 +521,23 @@ function initializeChristmasVideoService(app) {
               }
               
               // Crop horizontal strips from center of scaled garland
-              // Top strip: crop from top center
+              // Side 1: Top strip - crop from top center
               filters.push(
-                `[garland_h1_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=0[garland_top]`,
+                `[garland_h1_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=0[garland_top_raw]`,
               );
-              // Bottom strip: crop from bottom center
+              // Add label "1" to top strip
+              const fontSize = Math.max(24, Math.floor(garlandThickness * 0.6));
               filters.push(
-                `[garland_h2_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=ih-${garlandThickness}[garland_bottom]`,
+                `[garland_top_raw]drawtext=text='1':fontcolor=white:fontsize=${fontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_top]`,
+              );
+              
+              // Side 2: Bottom strip - crop from bottom center
+              filters.push(
+                `[garland_h2_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=ih-${garlandThickness}[garland_bottom_raw]`,
+              );
+              // Add label "2" to bottom strip
+              filters.push(
+                `[garland_bottom_raw]drawtext=text='2':fontcolor=white:fontsize=${fontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_bottom]`,
               );
 
               // Process garland3 and garland4 for left/right (vertical strips)
@@ -556,21 +566,32 @@ function initializeChristmasVideoService(app) {
               }
               
               // Crop vertical strips from center of scaled garland
-              // Left strip: crop from left center
+              // Side 3: Left strip - crop from left center
               filters.push(
-                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${height}:x=0:y='(ih-${height})/2'[garland_left]`,
+                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${height}:x=0:y='(ih-${height})/2'[garland_left_raw]`,
               );
-              // Right strip: crop from right center
+              // Add label "3" to left strip
+              const verticalFontSize = Math.max(24, Math.floor(garlandThickness * 0.6));
               filters.push(
-                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${height}:x=iw-${garlandThickness}:y='(ih-${height})/2'[garland_right]`,
+                `[garland_left_raw]drawtext=text='3':fontcolor=white:fontsize=${verticalFontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_left]`,
+              );
+              
+              // Side 4: Right strip - crop from right center
+              filters.push(
+                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${height}:x=iw-${garlandThickness}:y='(ih-${height})/2'[garland_right_raw]`,
+              );
+              // Add label "4" to right strip
+              filters.push(
+                `[garland_right_raw]drawtext=text='4':fontcolor=white:fontsize=${verticalFontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_right]`,
               );
 
-              // Overlay all 4 sides: top, bottom, left, right
+              // Overlay all 4 sides in order: 1=top, 2=bottom, 3=left, 4=right
               // Use precise coordinates to ensure proper alignment
-              filters.push('[v0][garland_top]overlay=x=0:y=0:format=auto[v1]');
-              filters.push(`[v1][garland_bottom]overlay=x=0:y=H-h:format=auto[v2]`);
-              filters.push(`[v2][garland_left]overlay=x=0:y=0:format=auto[v3]`);
-              filters.push(`[v3][garland_right]overlay=x=W-w:y=0:format=auto[v]`);
+              console.log(`🎄 Overlay order: 1=Top, 2=Bottom, 3=Left, 4=Right`);
+              filters.push('[v0][garland_top]overlay=x=0:y=0:format=auto[v1]'); // Side 1: Top
+              filters.push(`[v1][garland_bottom]overlay=x=0:y=H-h:format=auto[v2]`); // Side 2: Bottom
+              filters.push(`[v2][garland_left]overlay=x=0:y=0:format=auto[v3]`); // Side 3: Left
+              filters.push(`[v3][garland_right]overlay=x=W-w:y=0:format=auto[v]`); // Side 4: Right
 
               const finalLabel = 'v';
               const command = ffmpeg(inputPath);
