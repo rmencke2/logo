@@ -106,25 +106,30 @@ function initializeChristmasVideoService(app) {
           }
         }
 
-        // Adjust orientation detection based on rotation
+        // Determine if video needs rotation based on metadata
+        // If rotation is 90° or 270°, the video is stored horizontally but should be displayed vertically
+        const needsRotation = 
+          rotationAngle === 90 || 
+          rotationAngle === -90 || 
+          rotationAngle === 270 || 
+          rotationAngle === -270;
+        
+        // Determine effective dimensions (what the video should look like)
         let effectiveWidth = width;
         let effectiveHeight = height;
-        if (
-          rotationAngle === 90 ||
-          rotationAngle === -90 ||
-          rotationAngle === 270 ||
-          rotationAngle === -270
-        ) {
-          effectiveWidth = height;
+        if (needsRotation) {
+          effectiveWidth = height;  // Swap dimensions
           effectiveHeight = width;
         }
 
         const isVertical = effectiveHeight > effectiveWidth;
 
-        console.log(`\n❄️  ========== VIDEO ORIENTATION: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'} ==========`);
+        console.log(`\n❄️  ========== VIDEO ORIENTATION DETECTION ==========`);
         console.log(`❄️  Stored dimensions: ${width}x${height}`);
         console.log(`❄️  Rotation metadata: ${rotationAngle}°`);
+        console.log(`❄️  Needs rotation: ${needsRotation}`);
         console.log(`❄️  Effective dimensions: ${effectiveWidth}x${effectiveHeight}`);
+        console.log(`❄️  Orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'}`);
         console.log('❄️  ============================================\n');
 
         // Get snowflake image path
@@ -193,36 +198,60 @@ function initializeChristmasVideoService(app) {
           const snowflakeWidth = snowflakeMetadata.streams[0].width || 64;
           const snowflakeHeight = snowflakeMetadata.streams[0].height || 64;
 
-          // Snowflake size: base it on smaller dimension (for vertical: width; for horizontal: height)
-          const referenceSize = isVertical ? width : height;
+          // Snowflake size: base it on smaller dimension of EFFECTIVE (display) dimensions
+          const referenceSize = isVertical ? effectiveWidth : effectiveHeight;
           const snowflakeSize = Math.floor(referenceSize * 0.025); // 2.5% of reference
           const scaledWidth = Math.floor(snowflakeSize * (snowflakeWidth / snowflakeHeight));
           const scaledHeight = snowflakeSize;
 
           console.log(`❄️  Snowflake size: ${scaledWidth}x${scaledHeight} (reference: ${referenceSize})`);
 
-          // ---------- NEW: unified snow logic (no transpose, works for both orientations) ----------
           // Create multiple snowflakes at different x positions with different speeds
-          // Adjust number based on orientation
+          // Adjust number based on effective orientation
           const numSnowflakes = isVertical ? 10 : 14; // More flakes on horizontal, slightly fewer on vertical
           const filters = [];
 
-          // Color grade main video first (no rotation; we keep original orientation)
+          // Step 1: If video needs rotation, transpose it first so overlays work correctly
+          let videoInputLabel = '0:v';
+          let transposeIn = null;
+          let transposeOut = null;
+          
+          if (needsRotation) {
+            // Determine transpose direction
+            // 90° or -270° clockwise = transpose=1 (rotate 90° clockwise)
+            // 270° or -90° counter-clockwise = transpose=2 (rotate 90° counter-clockwise)
+            if (rotationAngle === 90 || rotationAngle === -270) {
+              transposeIn = 1;  // Rotate 90° clockwise
+              transposeOut = 2;  // Rotate back 90° counter-clockwise
+            } else {
+              transposeIn = 2;  // Rotate 90° counter-clockwise
+              transposeOut = 1;  // Rotate back 90° clockwise
+            }
+            console.log(`🔄 Transposing video: ${transposeIn} (in), will transpose back: ${transposeOut} (out)`);
+            filters.push(`[${videoInputLabel}]transpose=${transposeIn}[video_rotated]`);
+            videoInputLabel = 'video_rotated';
+          }
+
+          // Step 2: Color grade the (possibly rotated) video
           filters.push(
-            `[0:v]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
+            `[${videoInputLabel}]eq=brightness=0.05:saturation=1.3:contrast=1.1,curves=preset=lighter[v0]`,
           );
 
-          // Add each snowflake with different position, sway, and speed
+          // Step 3: Add snowflakes using EFFECTIVE dimensions (what the video looks like)
+          // After rotation, dimensions are swapped, so use effective dimensions
+          const workWidth = effectiveWidth;   // Width after rotation (if rotated)
+          const workHeight = effectiveHeight; // Height after rotation (if rotated)
+          
           for (let i = 0; i < numSnowflakes; i++) {
-            const sliceWidth = width / numSnowflakes;
+            const sliceWidth = workWidth / numSnowflakes;
             const xPosBase = sliceWidth * i + Math.random() * sliceWidth;
 
             // Slightly faster snow on vertical videos so it doesn't feel too sparse
             const baseSpeed = isVertical ? 40 : 30;
             const speed = Math.floor(baseSpeed + Math.random() * 40);
 
-            const startY = Math.floor(-scaledHeight - Math.random() * height);
-            const offset = height + scaledHeight;
+            const startY = Math.floor(-scaledHeight - Math.random() * workHeight);
+            const offset = workHeight + scaledHeight;
             const positiveStartY = startY + offset;
             const yExpr = `mod(${positiveStartY}+${speed}*t,${offset})-${scaledHeight}`;
 
@@ -242,7 +271,14 @@ function initializeChristmasVideoService(app) {
             );
           }
 
-          const finalVideoLabel = `v${numSnowflakes}`;
+          // Step 4: If we rotated the video, rotate it back
+          let finalVideoLabel = `v${numSnowflakes}`;
+          if (needsRotation && transposeOut) {
+            console.log(`🔄 Rotating video back: transpose=${transposeOut}`);
+            filters.push(`[${finalVideoLabel}]transpose=${transposeOut}[video_final]`);
+            finalVideoLabel = 'video_final';
+          }
+          
           const actualFinalLabel = finalVideoLabel;
 
           const command = ffmpeg(inputPath);
@@ -421,16 +457,18 @@ function initializeChristmasVideoService(app) {
           }
         }
 
-        // Adjust orientation detection based on rotation
+        // Determine if video needs rotation based on metadata
+        const needsRotation = 
+          rotationAngle === 90 || 
+          rotationAngle === -90 || 
+          rotationAngle === 270 || 
+          rotationAngle === -270;
+        
+        // Determine effective dimensions (what the video should look like)
         let effectiveWidth = width;
         let effectiveHeight = height;
-        if (
-          rotationAngle === 90 ||
-          rotationAngle === -90 ||
-          rotationAngle === 270 ||
-          rotationAngle === -270
-        ) {
-          effectiveWidth = height;
+        if (needsRotation) {
+          effectiveWidth = height;  // Swap dimensions
           effectiveHeight = width;
         }
 
@@ -439,6 +477,7 @@ function initializeChristmasVideoService(app) {
         console.log(`🎄 ========== HOLIDAY FRAME VIDEO ORIENTATION ==========`);
         console.log(`🎄 Stored dimensions: ${width}x${height}`);
         console.log(`🎄 Rotation metadata: ${rotationAngle}°`);
+        console.log(`🎄 Needs rotation: ${needsRotation}`);
         console.log(`🎄 Effective dimensions: ${effectiveWidth}x${effectiveHeight}`);
         console.log(`🎄 Orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'}`);
         console.log(`🎄 =====================================================`);
@@ -472,22 +511,44 @@ function initializeChristmasVideoService(app) {
               const garlandHeight = garlandMeta.height || 1080;
               const isGarlandVertical = garlandHeight > garlandWidth;
 
-              // Garland strip thickness: 10% of the smaller video dimension (more reasonable size)
+              // Garland strip thickness: 10% of the smaller EFFECTIVE dimension
               const garlandThicknessPercent = 0.10;
               const garlandThickness = Math.max(
                 40, // Minimum 40px
-                Math.floor(Math.min(width, height) * garlandThicknessPercent)
+                Math.floor(Math.min(effectiveWidth, effectiveHeight) * garlandThicknessPercent)
               );
 
               console.log(
                 `🎄 Garland image: ${garlandWidth}x${garlandHeight} (${isGarlandVertical ? 'vertical' : 'horizontal'})`,
               );
-              console.log(`🎄 Video: ${width}x${height} (${isVertical ? 'VERTICAL' : 'HORIZONTAL'})`);
+              console.log(`🎄 Video stored: ${width}x${height}, effective: ${effectiveWidth}x${effectiveHeight}`);
               console.log(`🎄 Garland thickness: ${garlandThickness}px`);
 
-              const filters = [
-                '[0:v]eq=brightness=0.03:saturation=1.2[v0]',
-              ];
+              const filters = [];
+
+              // Step 1: If video needs rotation, transpose it first
+              let videoInputLabel = '0:v';
+              let transposeIn = null;
+              let transposeOut = null;
+              
+              if (needsRotation) {
+                // Determine transpose direction
+                if (rotationAngle === 90 || rotationAngle === -270) {
+                  transposeIn = 1;  // Rotate 90° clockwise
+                  transposeOut = 2;  // Rotate back 90° counter-clockwise
+                } else {
+                  transposeIn = 2;  // Rotate 90° counter-clockwise
+                  transposeOut = 1;  // Rotate back 90° clockwise
+                }
+                console.log(`🔄 Transposing video: ${transposeIn} (in), will transpose back: ${transposeOut} (out)`);
+                filters.push(`[${videoInputLabel}]transpose=${transposeIn}[video_rotated]`);
+                videoInputLabel = 'video_rotated';
+              }
+
+              // Step 2: Color grade the (possibly rotated) video
+              filters.push(
+                `[${videoInputLabel}]eq=brightness=0.03:saturation=1.2[v0]`,
+              );
 
               // Create garland strips for all 4 sides
               // Strategy: Split garland input into 4 copies, process each for different sides
@@ -495,10 +556,14 @@ function initializeChristmasVideoService(app) {
               // Split garland into 4 copies
               filters.push('[1:v]split=4[garland1][garland2][garland3][garland4]');
               
+              // Use EFFECTIVE dimensions for garland strips (what the video looks like after rotation)
+              const workWidth = effectiveWidth;   // Width after rotation (if rotated)
+              const workHeight = effectiveHeight; // Height after rotation (if rotated)
+
               // Process garland1 and garland2 for top/bottom (horizontal strips)
-              // For top/bottom: need horizontal strips (width x garlandThickness)
-              // Scale to be wider than video width to ensure we have enough to crop from center
-              const horizontalScaleWidth = width * 1.5; // Scale wider to crop from center
+              // For top/bottom: need horizontal strips (workWidth x garlandThickness)
+              // Scale to be wider than effective width to ensure we have enough to crop from center
+              const horizontalScaleWidth = workWidth * 1.5; // Scale wider to crop from center
               
               if (isGarlandVertical) {
                 // Garland is tall, rotate it to make it wide
@@ -523,7 +588,7 @@ function initializeChristmasVideoService(app) {
               // Crop horizontal strips from center of scaled garland
               // Side 1: Top strip - crop from top center
               filters.push(
-                `[garland_h1_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=0[garland_top_raw]`,
+                `[garland_h1_scaled]crop=w=${workWidth}:h=${garlandThickness}:x='(iw-${workWidth})/2':y=0[garland_top_raw]`,
               );
               // Add label "1" to top strip
               const fontSize = Math.max(24, Math.floor(garlandThickness * 0.6));
@@ -533,7 +598,7 @@ function initializeChristmasVideoService(app) {
               
               // Side 2: Bottom strip - crop from bottom center
               filters.push(
-                `[garland_h2_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=ih-${garlandThickness}[garland_bottom_raw]`,
+                `[garland_h2_scaled]crop=w=${workWidth}:h=${garlandThickness}:x='(iw-${workWidth})/2':y=ih-${garlandThickness}[garland_bottom_raw]`,
               );
               // Add label "2" to bottom strip
               filters.push(
@@ -541,9 +606,9 @@ function initializeChristmasVideoService(app) {
               );
 
               // Process garland3 and garland4 for left/right (vertical strips)
-              // For left/right: need vertical strips (garlandThickness x height)
-              // Scale to be taller than video height to ensure we have enough to crop from center
-              const verticalScaleHeight = height * 1.5; // Scale taller to crop from center
+              // For left/right: need vertical strips (garlandThickness x workHeight)
+              // Scale to be taller than effective height to ensure we have enough to crop from center
+              const verticalScaleHeight = workHeight * 1.5; // Scale taller to crop from center
               
               if (isGarlandVertical) {
                 // Garland is tall, use it directly
@@ -568,7 +633,7 @@ function initializeChristmasVideoService(app) {
               // Crop vertical strips from center of scaled garland
               // Side 3: Left strip - crop from left center
               filters.push(
-                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${height}:x=0:y='(ih-${height})/2'[garland_left_raw]`,
+                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${workHeight}:x=0:y='(ih-${workHeight})/2'[garland_left_raw]`,
               );
               // Add label "3" to left strip
               const verticalFontSize = Math.max(24, Math.floor(garlandThickness * 0.6));
@@ -578,7 +643,7 @@ function initializeChristmasVideoService(app) {
               
               // Side 4: Right strip - crop from right center
               filters.push(
-                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${height}:x=iw-${garlandThickness}:y='(ih-${height})/2'[garland_right_raw]`,
+                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${workHeight}:x=iw-${garlandThickness}:y='(ih-${workHeight})/2'[garland_right_raw]`,
               );
               // Add label "4" to right strip
               filters.push(
@@ -591,9 +656,18 @@ function initializeChristmasVideoService(app) {
               filters.push('[v0][garland_top]overlay=x=0:y=0:format=auto[v1]'); // Side 1: Top
               filters.push(`[v1][garland_bottom]overlay=x=0:y=H-h:format=auto[v2]`); // Side 2: Bottom
               filters.push(`[v2][garland_left]overlay=x=0:y=0:format=auto[v3]`); // Side 3: Left
-              filters.push(`[v3][garland_right]overlay=x=W-w:y=0:format=auto[v]`); // Side 4: Right
-
-              const finalLabel = 'v';
+              
+              // Step 3: If we rotated the video, rotate it back after all overlays
+              let finalLabel = 'v3';
+              if (needsRotation && transposeOut) {
+                console.log(`🔄 Rotating video back: transpose=${transposeOut}`);
+                filters.push(`[v3][garland_right]overlay=x=W-w:y=0:format=auto[v4]`); // Side 4: Right
+                filters.push(`[v4]transpose=${transposeOut}[v]`); // Rotate back
+                finalLabel = 'v';
+              } else {
+                filters.push(`[v3][garland_right]overlay=x=W-w:y=0:format=auto[v]`); // Side 4: Right
+                finalLabel = 'v';
+              }
               const command = ffmpeg(inputPath);
               command.inputOptions(['-noautorotate']);
               command.input(garlandPath);
