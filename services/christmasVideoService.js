@@ -472,10 +472,11 @@ function initializeChristmasVideoService(app) {
               const garlandHeight = garlandMeta.height || 1080;
               const isGarlandVertical = garlandHeight > garlandWidth;
 
-              // Garland strip thickness: 15% of the smaller video dimension
-              const garlandThicknessPercent = 0.15;
-              const garlandThickness = Math.floor(
-                Math.min(width, height) * garlandThicknessPercent
+              // Garland strip thickness: 10% of the smaller video dimension (more reasonable size)
+              const garlandThicknessPercent = 0.10;
+              const garlandThickness = Math.max(
+                40, // Minimum 40px
+                Math.floor(Math.min(width, height) * garlandThicknessPercent)
               );
 
               console.log(
@@ -496,69 +497,80 @@ function initializeChristmasVideoService(app) {
               
               // Process garland1 and garland2 for top/bottom (horizontal strips)
               // For top/bottom: need horizontal strips (width x garlandThickness)
+              // Scale to be wider than video width to ensure we have enough to crop from center
+              const horizontalScaleWidth = width * 1.5; // Scale wider to crop from center
+              
               if (isGarlandVertical) {
                 // Garland is tall, rotate it to make it wide
                 filters.push('[garland1]transpose=1[garland_h1_rotated]');
                 filters.push(
-                  `[garland_h1_rotated]scale=${width}:-1,format=rgba[garland_h1_scaled]`,
+                  `[garland_h1_rotated]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h1_scaled]`,
                 );
                 filters.push('[garland2]transpose=1[garland_h2_rotated]');
                 filters.push(
-                  `[garland_h2_rotated]scale=${width}:-1,format=rgba[garland_h2_scaled]`,
+                  `[garland_h2_rotated]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h2_scaled]`,
                 );
               } else {
                 // Garland is already wide
                 filters.push(
-                  `[garland1]scale=${width}:-1,format=rgba[garland_h1_scaled]`,
+                  `[garland1]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h1_scaled]`,
                 );
                 filters.push(
-                  `[garland2]scale=${width}:-1,format=rgba[garland_h2_scaled]`,
+                  `[garland2]scale=${horizontalScaleWidth}:-1,format=rgba[garland_h2_scaled]`,
                 );
               }
               
-              // Crop horizontal strips for top and bottom
+              // Crop horizontal strips from center of scaled garland
+              // Top strip: crop from top center
               filters.push(
-                `[garland_h1_scaled]crop=w=${width}:h=${garlandThickness}:x=0:y=0[garland_top]`,
+                `[garland_h1_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=0[garland_top]`,
               );
+              // Bottom strip: crop from bottom center
               filters.push(
-                `[garland_h2_scaled]crop=w=${width}:h=${garlandThickness}:x=0:y=ih-${garlandThickness}[garland_bottom]`,
+                `[garland_h2_scaled]crop=w=${width}:h=${garlandThickness}:x='(iw-${width})/2':y=ih-${garlandThickness}[garland_bottom]`,
               );
 
               // Process garland3 and garland4 for left/right (vertical strips)
               // For left/right: need vertical strips (garlandThickness x height)
+              // Scale to be taller than video height to ensure we have enough to crop from center
+              const verticalScaleHeight = height * 1.5; // Scale taller to crop from center
+              
               if (isGarlandVertical) {
                 // Garland is tall, use it directly
                 filters.push(
-                  `[garland3]scale=-1:${height},format=rgba[garland_v1_scaled]`,
+                  `[garland3]scale=-1:${verticalScaleHeight},format=rgba[garland_v1_scaled]`,
                 );
                 filters.push(
-                  `[garland4]scale=-1:${height},format=rgba[garland_v2_scaled]`,
+                  `[garland4]scale=-1:${verticalScaleHeight},format=rgba[garland_v2_scaled]`,
                 );
               } else {
                 // Garland is wide, rotate it to make it tall
                 filters.push('[garland3]transpose=1[garland_v1_rotated]');
                 filters.push(
-                  `[garland_v1_rotated]scale=-1:${height},format=rgba[garland_v1_scaled]`,
+                  `[garland_v1_rotated]scale=-1:${verticalScaleHeight},format=rgba[garland_v1_scaled]`,
                 );
                 filters.push('[garland4]transpose=1[garland_v2_rotated]');
                 filters.push(
-                  `[garland_v2_rotated]scale=-1:${height},format=rgba[garland_v2_scaled]`,
+                  `[garland_v2_rotated]scale=-1:${verticalScaleHeight},format=rgba[garland_v2_scaled]`,
                 );
               }
               
-              // Crop vertical strips for left and right
+              // Crop vertical strips from center of scaled garland
+              // Left strip: crop from left center
               filters.push(
-                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${height}:x=0:y=0[garland_left]`,
+                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${height}:x=0:y='(ih-${height})/2'[garland_left]`,
               );
+              // Right strip: crop from right center
               filters.push(
-                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${height}:x=iw-${garlandThickness}:y=0[garland_right]`,
+                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${height}:x=iw-${garlandThickness}:y='(ih-${height})/2'[garland_right]`,
               );
 
               // Overlay all 4 sides: top, bottom, left, right
-              filters.push('[v0][garland_top]overlay=x=0:y=0[v1]');
-              filters.push(`[v1][garland_bottom]overlay=x=0:y=H-h[v2]`);
-              filters.push(`[v2][garland_left]overlay=x=0:y=0[v3]`);
-              filters.push(`[v3][garland_right]overlay=x=W-w:y=0[v]`);
+              // Use precise coordinates to ensure proper alignment
+              filters.push('[v0][garland_top]overlay=x=0:y=0:format=auto[v1]');
+              filters.push(`[v1][garland_bottom]overlay=x=0:y=H-h:format=auto[v2]`);
+              filters.push(`[v2][garland_left]overlay=x=0:y=0:format=auto[v3]`);
+              filters.push(`[v3][garland_right]overlay=x=W-w:y=0:format=auto[v]`);
 
               const finalLabel = 'v';
               const command = ffmpeg(inputPath);
