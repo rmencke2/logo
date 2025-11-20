@@ -511,13 +511,94 @@ function initializeChristmasVideoService(app) {
     });
   }
 
+  // Test endpoint to verify service is loaded
+  app.get('/convert-to-christmas-test', (req, res) => {
+    console.log('✅ Christmas video service test endpoint hit');
+    res.json({ 
+      success: true, 
+      message: 'Christmas video service is loaded',
+      videoOutputDir,
+      assetsDir,
+      snowflakeExists: fs.existsSync(path.join(assetsDir, 'snowflake.png')),
+      garlandExists: fs.existsSync(path.join(assetsDir, 'christmas-garland-frame.png'))
+    });
+  });
+
   // Main endpoint: Convert video to Christmas version
+  console.log('🎄 Registering /convert-to-christmas endpoint');
   app.post(
     '/convert-to-christmas',
-    requireAuth,
-    abuseProtectionMiddleware,
-    upload.single('video'),
+    (req, res, next) => {
+      console.log('🎄 ========== /convert-to-christmas REQUEST RECEIVED ==========');
+      console.log('🎄 Method:', req.method);
+      console.log('🎄 URL:', req.url);
+      console.log('🎄 Content-Type:', req.headers['content-type']);
+      console.log('🎄 Content-Length:', req.headers['content-length']);
+      console.log('🎄 Body (before multer):', req.body);
+      console.log('🎄 ========================================================');
+      next();
+    },
+    (req, res, next) => {
+      console.log('🔐 Running requireAuth middleware...');
+      try {
+        requireAuth(req, res, (err) => {
+          if (err) {
+            console.error('❌ Auth middleware error:', err);
+            return next(err);
+          }
+          console.log('✅ Auth passed, proceeding to abuse protection');
+          next();
+        });
+      } catch (authErr) {
+        console.error('❌ Auth middleware exception:', authErr);
+        next(authErr);
+      }
+    },
+    (req, res, next) => {
+      console.log('🛡️  Running abuse protection middleware...');
+      try {
+        abuseProtectionMiddleware(req, res, (err) => {
+          if (err) {
+            console.error('❌ Abuse protection middleware error:', err);
+            return next(err);
+          }
+          console.log('✅ Abuse protection passed, proceeding to file upload');
+          next();
+        });
+      } catch (abuseErr) {
+        console.error('❌ Abuse protection middleware exception:', abuseErr);
+        next(abuseErr);
+      }
+    },
+    (req, res, next) => {
+      console.log('📤 Running multer upload middleware...');
+      upload.single('video')(req, res, (err) => {
+        if (err) {
+          console.error('❌ Multer upload error:', err);
+          console.error('❌ Multer error details:', {
+            message: err.message,
+            code: err.code,
+            field: err.field,
+            storageErrors: err.storageErrors
+          });
+          return next(err);
+        }
+        console.log('🎄 After multer upload middleware');
+        console.log('🎄 req.file:', req.file ? {
+          fieldname: req.file.fieldname,
+          originalname: req.file.originalname,
+          encoding: req.file.encoding,
+          mimetype: req.file.mimetype,
+          size: req.file.size,
+          filename: req.file.filename,
+          path: req.file.path
+        } : 'null');
+        console.log('🎄 req.body:', req.body);
+        next();
+      });
+    },
     async (req, res) => {
+      console.log('🎄 ========== INSIDE HANDLER ==========');
       console.log('🎄 Received /convert-to-christmas request');
       console.log('🎄 Request body:', req.body);
       if (req.file) {
