@@ -389,16 +389,59 @@ function initializeChristmasVideoService(app) {
   // Preset 3: Holiday Frame - Add Christmas garland border frame
   async function applyHolidayFrame(inputPath, outputPath, includeMusic = false) {
     return new Promise((resolve, reject) => {
+      console.log(`🎬 Starting HolidayFrame preset processing...`);
+      console.log(`📥 Input: ${inputPath}`);
+      console.log(`📤 Output: ${outputPath}`);
+      
       ffmpeg.ffprobe(inputPath, (err, metadata) => {
-        if (err) return reject(err);
+        if (err) {
+          console.error('❌ Error probing video:', err);
+          return reject(err);
+        }
 
         const width = metadata.streams[0].width;
         const height = metadata.streams[0].height;
+        
+        // Use same rotation detection as SnowMagic
         const rotationTag = metadata.streams[0].tags?.rotate;
-        const rotationAngle = rotationTag ? parseInt(rotationTag, 10) || 0 : 0;
-        const isVertical = height > width;
+        const sideData = metadata.streams[0].side_data || [];
+        const rotationSideData = sideData.find((sd) => sd.rotation !== undefined);
+        const displayMatrix = sideData.find((sd) => sd.displaymatrix);
 
-        console.log(`🎄 HolidayFrame video: ${width}x${height}, rotation=${rotationAngle}°, vertical=${isVertical}`);
+        let rotationAngle = 0;
+        if (rotationTag) {
+          rotationAngle = parseInt(rotationTag, 10) || 0;
+        } else if (rotationSideData && typeof rotationSideData.rotation === 'number') {
+          rotationAngle = Math.round(rotationSideData.rotation);
+        } else if (displayMatrix && typeof displayMatrix.displaymatrix === 'string') {
+          const matrixStr = displayMatrix.displaymatrix;
+          const match = matrixStr.match(/rotation of ([-+]?\d+\.?\d*) degrees/);
+          if (match) {
+            rotationAngle = Math.round(parseFloat(match[1]));
+          }
+        }
+
+        // Adjust orientation detection based on rotation
+        let effectiveWidth = width;
+        let effectiveHeight = height;
+        if (
+          rotationAngle === 90 ||
+          rotationAngle === -90 ||
+          rotationAngle === 270 ||
+          rotationAngle === -270
+        ) {
+          effectiveWidth = height;
+          effectiveHeight = width;
+        }
+
+        const isVertical = effectiveHeight > effectiveWidth;
+
+        console.log(`🎄 ========== HOLIDAY FRAME VIDEO ORIENTATION ==========`);
+        console.log(`🎄 Stored dimensions: ${width}x${height}`);
+        console.log(`🎄 Rotation metadata: ${rotationAngle}°`);
+        console.log(`🎄 Effective dimensions: ${effectiveWidth}x${effectiveHeight}`);
+        console.log(`🎄 Orientation: ${isVertical ? 'VERTICAL' : 'HORIZONTAL'}`);
+        console.log(`🎄 =====================================================`);
 
         const garlandPath = getGarlandPath();
         if (!garlandPath) {
@@ -417,7 +460,10 @@ function initializeChristmasVideoService(app) {
 
         // Read garland image via sharp to get dimensions
         fs.readFile(garlandPath, (err2, data) => {
-          if (err2) return reject(err2);
+          if (err2) {
+            console.error('❌ Error reading garland file:', err2);
+            return reject(err2);
+          }
 
           sharp(data)
             .metadata()
@@ -426,81 +472,150 @@ function initializeChristmasVideoService(app) {
               const garlandHeight = garlandMeta.height || 1080;
               const isGarlandVertical = garlandHeight > garlandWidth;
 
-              const garlandHeightPercent = 0.2;
-              const referenceDimension = isVertical ? width : height;
-              const garlandStripHeight = Math.floor(referenceDimension * garlandHeightPercent);
-              const scaleTarget = isVertical ? height : width;
+              // Garland strip thickness: 15% of the smaller video dimension
+              const garlandThicknessPercent = 0.15;
+              const garlandThickness = Math.floor(
+                Math.min(width, height) * garlandThicknessPercent
+              );
 
               console.log(
                 `🎄 Garland image: ${garlandWidth}x${garlandHeight} (${isGarlandVertical ? 'vertical' : 'horizontal'})`,
               );
               console.log(`🎄 Video: ${width}x${height} (${isVertical ? 'VERTICAL' : 'HORIZONTAL'})`);
-              console.log(`🎄 Scale target: ${scaleTarget}, Garland strip height: ${garlandStripHeight}`);
+              console.log(`🎄 Garland thickness: ${garlandThickness}px`);
 
               const filters = [
                 '[0:v]eq=brightness=0.03:saturation=1.2[v0]',
               ];
 
-              // Rotate garland if needed, then scale
+              // Create garland strips for all 4 sides
+              // Strategy: Split garland input into 4 copies, process each for different sides
+              
+              // Split garland into 4 copies
+              filters.push('[1:v]split=4[garland1][garland2][garland3][garland4]');
+              
+              // Process garland1 and garland2 for top/bottom (horizontal strips)
+              // For top/bottom: need horizontal strips (width x garlandThickness)
               if (isGarlandVertical) {
-                filters.push('[1:v]transpose=1[garland_rotated]');
+                // Garland is tall, rotate it to make it wide
+                filters.push('[garland1]transpose=1[garland_h1_rotated]');
                 filters.push(
-                  `[garland_rotated]scale=${scaleTarget}:-1,format=rgba[garland_scaled_full]`,
+                  `[garland_h1_rotated]scale=${width}:-1,format=rgba[garland_h1_scaled]`,
+                );
+                filters.push('[garland2]transpose=1[garland_h2_rotated]');
+                filters.push(
+                  `[garland_h2_rotated]scale=${width}:-1,format=rgba[garland_h2_scaled]`,
                 );
               } else {
-                filters.push(`[1:v]scale=${scaleTarget}:-1,format=rgba[garland_scaled_full]`);
+                // Garland is already wide
+                filters.push(
+                  `[garland1]scale=${width}:-1,format=rgba[garland_h1_scaled]`,
+                );
+                filters.push(
+                  `[garland2]scale=${width}:-1,format=rgba[garland_h2_scaled]`,
+                );
               }
-
-              // Crop top/bottom strip
+              
+              // Crop horizontal strips for top and bottom
               filters.push(
-                `[garland_scaled_full]crop=w=iw:h=${garlandStripHeight}:x=0:y=0[garland_top]`,
+                `[garland_h1_scaled]crop=w=${width}:h=${garlandThickness}:x=0:y=0[garland_top]`,
               );
               filters.push(
-                `[garland_scaled_full]crop=w=iw:h=${garlandStripHeight}:x=0:y=ih-${garlandStripHeight}[garland_bottom]`,
+                `[garland_h2_scaled]crop=w=${width}:h=${garlandThickness}:x=0:y=ih-${garlandThickness}[garland_bottom]`,
               );
 
-              // Overlay top and bottom
+              // Process garland3 and garland4 for left/right (vertical strips)
+              // For left/right: need vertical strips (garlandThickness x height)
+              if (isGarlandVertical) {
+                // Garland is tall, use it directly
+                filters.push(
+                  `[garland3]scale=-1:${height},format=rgba[garland_v1_scaled]`,
+                );
+                filters.push(
+                  `[garland4]scale=-1:${height},format=rgba[garland_v2_scaled]`,
+                );
+              } else {
+                // Garland is wide, rotate it to make it tall
+                filters.push('[garland3]transpose=1[garland_v1_rotated]');
+                filters.push(
+                  `[garland_v1_rotated]scale=-1:${height},format=rgba[garland_v1_scaled]`,
+                );
+                filters.push('[garland4]transpose=1[garland_v2_rotated]');
+                filters.push(
+                  `[garland_v2_rotated]scale=-1:${height},format=rgba[garland_v2_scaled]`,
+                );
+              }
+              
+              // Crop vertical strips for left and right
+              filters.push(
+                `[garland_v1_scaled]crop=w=${garlandThickness}:h=${height}:x=0:y=0[garland_left]`,
+              );
+              filters.push(
+                `[garland_v2_scaled]crop=w=${garlandThickness}:h=${height}:x=iw-${garlandThickness}:y=0[garland_right]`,
+              );
+
+              // Overlay all 4 sides: top, bottom, left, right
               filters.push('[v0][garland_top]overlay=x=0:y=0[v1]');
-              filters.push(`[v1][garland_bottom]overlay=x=0:y=H-${garlandStripHeight}[v2]`);
+              filters.push(`[v1][garland_bottom]overlay=x=0:y=H-h[v2]`);
+              filters.push(`[v2][garland_left]overlay=x=0:y=0[v3]`);
+              filters.push(`[v3][garland_right]overlay=x=W-w:y=0[v]`);
 
-              const finalLabel = 'v2';
+              const finalLabel = 'v';
               const command = ffmpeg(inputPath);
               command.inputOptions(['-noautorotate']);
               command.input(garlandPath);
               command.complexFilter(filters);
+              
+              console.log(`🎄 Garland frame filters configured for all 4 sides`);
 
               if (includeMusic) {
                 const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
                 if (fs.existsSync(musicPath)) {
+                  console.log(`🎵 Adding music: ${musicPath}`);
                   command.input(musicPath);
+                  // Music is input 2 (0=video, 1=garland, 2=music)
                   filters.push('[0:a:0]volume=0.7[a0]');
-                  filters.push('[1:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]');
+                  filters.push('[2:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]');
                   filters.push('[a0][a1]amix=inputs=2:duration=first:normalize=1[a]');
                   command.complexFilter(filters);
                   command.outputOptions(['-map', `[${finalLabel}]`, '-map', '[a]', '-ignore_unknown']);
+                  console.log(`🎵 Music mixing configured`);
                 } else {
+                  console.log(`⚠️  Music file not found: ${musicPath}`);
                   command.outputOptions(['-map', `[${finalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
                 }
               } else {
                 command.outputOptions(['-map', `[${finalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
               }
 
+              console.log(`🎬 Starting FFmpeg processing for HolidayFrame...`);
+              console.log(`📤 Output path: ${outputPath}`);
+
               command
                 .outputOptions(['-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-c:a', 'aac', '-b:a', '128k'])
                 .output(outputPath)
-                .on('start', (cmd) => console.log('🎄 FFmpeg command:', cmd))
+                .on('start', (cmdLine) => {
+                  console.log('🎬 FFmpeg command started:');
+                  console.log(cmdLine);
+                })
                 .on('progress', (progress) => {
-                  if (progress.percent) {
-                    console.log(`⏳ Processing: ${Math.round(progress.percent)}%`);
+                  if (progress.percent !== undefined) {
+                    console.log(`⏳ HolidayFrame progress: ${Math.round(progress.percent)}%`);
                   }
                 })
                 .on('end', () => {
-                  console.log('✅ Holiday frame processing complete');
+                  console.log(`✅ HolidayFrame processing complete: ${outputPath}`);
+                  if (fs.existsSync(outputPath)) {
+                    const stats = fs.statSync(outputPath);
+                    console.log(`📊 Output file size: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+                  }
                   resolve(outputPath);
                 })
                 .on('error', (ffErr, stdout, stderr) => {
-                  console.error('❌ FFmpeg error:', ffErr);
-                  if (stderr) console.error('❌ FFmpeg stderr:', stderr);
+                  console.error('❌ FFmpeg error in HolidayFrame:');
+                  console.error('Error object:', ffErr);
+                  if (stdout) console.error('FFmpeg stdout:', stdout);
+                  if (stderr) console.error('FFmpeg stderr:', stderr);
                   reject(ffErr);
                 })
                 .run();
