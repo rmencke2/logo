@@ -621,15 +621,6 @@ function initializeChristmasVideoService(app) {
               filters.push(
                 `[garland_bottom_raw]drawtext=text='2':fontcolor=white:fontsize=${fontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_bottom]`,
               );
-              
-              // Side 2: Bottom strip - crop from bottom center
-              filters.push(
-                `[garland_h2_scaled]crop=w=${workWidth}:h=${garlandThickness}:x='(iw-${workWidth})/2':y=ih-${garlandThickness}[garland_bottom_raw]`,
-              );
-              // Add label "2" to bottom strip
-              filters.push(
-                `[garland_bottom_raw]drawtext=text='2':fontcolor=white:fontsize=${fontSize}:x=w/2-text_w/2:y=h/2-text_h/2:borderw=2:bordercolor=black[garland_bottom]`,
-              );
 
               // Process garland3 and garland4 for left/right (vertical strips)
               // For left/right: need vertical strips (garlandThickness x workHeight)
