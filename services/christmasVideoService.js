@@ -688,10 +688,8 @@ function initializeChristmasVideoService(app) {
               const command = ffmpeg(inputPath);
               command.inputOptions(['-noautorotate']);
               command.input(garlandPath);
-              command.complexFilter(filters);
               
-              console.log(`🎄 Garland frame filters configured for all 4 sides`);
-
+              // Add audio filters to filters array BEFORE calling complexFilter if music is included
               if (includeMusic) {
                 const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
                 if (fs.existsSync(musicPath)) {
@@ -701,11 +699,22 @@ function initializeChristmasVideoService(app) {
                   filters.push('[0:a:0]volume=0.7[a0]');
                   filters.push('[2:a]volume=0.3,aloop=loop=-1:size=2e+09[a1]');
                   filters.push('[a0][a1]amix=inputs=2:duration=first:normalize=1[a]');
-                  command.complexFilter(filters);
+                } else {
+                  console.log(`⚠️  Music file not found: ${musicPath}`);
+                }
+              }
+              
+              // Call complexFilter ONCE with all filters (video + audio if music included)
+              command.complexFilter(filters);
+              console.log(`🎄 Garland frame filters configured for all 4 sides`);
+
+              // Set output mapping based on whether music was added
+              if (includeMusic) {
+                const musicPath = path.join(assetsDir, 'jingle_bells.mp3');
+                if (fs.existsSync(musicPath)) {
                   command.outputOptions(['-map', `[${finalLabel}]`, '-map', '[a]', '-ignore_unknown']);
                   console.log(`🎵 Music mixing configured`);
                 } else {
-                  console.log(`⚠️  Music file not found: ${musicPath}`);
                   command.outputOptions(['-map', `[${finalLabel}]`, '-map', '0:a:0', '-ignore_unknown']);
                 }
               } else {
