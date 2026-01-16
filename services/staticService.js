@@ -34,6 +34,30 @@ function initializeStaticService(app) {
     }
   });
 
+  // Serve main.js with cache control
+  app.get('/js/main.js', (req, res) => {
+    const mainJsPath = path.join(__dirname, '..', 'public', 'js', 'main.js');
+    if (fs.existsSync(mainJsPath)) {
+      res.type('application/javascript');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.sendFile(mainJsPath);
+    } else {
+      res.status(404).send('main.js not found');
+    }
+  });
+
+  // Serve styles.css with cache control
+  app.get('/css/styles.css', (req, res) => {
+    const cssPath = path.join(__dirname, '..', 'public', 'css', 'styles.css');
+    if (fs.existsSync(cssPath)) {
+      res.type('text/css');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.sendFile(cssPath);
+    } else {
+      res.status(404).send('styles.css not found');
+    }
+  });
+
   // Serve favicon requests
   app.get('/favicon.ico', (req, res) => {
     const svgFavicon = path.join(__dirname, '..', 'public', 'favicon.svg');
