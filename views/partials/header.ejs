@@ -1,0 +1,42 @@
+<!-- Auth Header -->
+<header class="auth-header">
+  <div style="display: flex; align-items: center; gap: 24px;">
+    <a href="/" class="brand-link">Influzer.ai</a>
+    <nav class="main-nav">
+      <a href="/" class="<%= currentPage === 'logo' ? 'active' : '' %>">Logo Generator</a>
+      <a href="/video-converter" class="<%= currentPage === 'video-converter' ? 'active' : '' %>">AVI to MP4</a>
+      <a href="/video-to-gif" class="<%= currentPage === 'video-to-gif' ? 'active' : '' %>">Video to GIF</a>
+      <a href="/video-metadata" class="<%= currentPage === 'video-metadata' ? 'active' : '' %>">Video Metadata</a>
+      <a href="/meme-generator" class="<%= currentPage === 'meme-generator' ? 'active' : '' %>">Meme Generator</a>
+    </nav>
+  </div>
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <!-- Language Selector -->
+    <select id="languageSelector" onchange="window.i18n && window.i18n.setLanguage(this.value)" class="language-selector">
+      <option value="en">English</option>
+      <option value="da">Dansk</option>
+      <option value="sv">Svenska</option>
+      <option value="de">Deutsch</option>
+      <option value="fr">Francais</option>
+      <option value="es">Espanol</option>
+      <option value="it">Italiano</option>
+      <option value="nl">Nederlands</option>
+      <option value="pt">Portugues</option>
+      <option value="no">Norsk</option>
+      <option value="fi">Suomi</option>
+      <option value="pl">Polski</option>
+    </select>
+    <div class="auth-buttons" id="authButtons">
+      <a href="/" class="auth-btn" onclick="showLoginModal && showLoginModal(); return false;">Log In</a>
+      <a href="/" class="auth-btn primary" onclick="showSignupModal && showSignupModal(); return false;">Sign Up</a>
+    </div>
+    <div class="user-info" id="userInfo" style="display: none;">
+      <div class="user-avatar" id="userAvatar">U</div>
+      <div class="user-details">
+        <div class="user-name" id="userName">User</div>
+        <div class="usage-info" id="usageInfo">Loading...</div>
+      </div>
+      <button class="auth-btn" onclick="logout()" style="margin-left: 8px;">Logout</button>
+    </div>
+  </div>
+</header>

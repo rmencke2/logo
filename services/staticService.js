@@ -11,6 +11,10 @@ const fs = require('fs');
  * @param {express.Application} app - Express application instance
  */
 function initializeStaticService(app) {
+  // Set up EJS as the view engine
+  app.set('view engine', 'ejs');
+  app.set('views', path.join(__dirname, '..', 'views'));
+
   // Explicitly serve app.js FIRST to ensure it's accessible
   app.get('/app.js', (req, res) => {
     const appJsPath = path.join(__dirname, '..', 'public', 'app.js');
@@ -135,6 +139,34 @@ function initializeStaticService(app) {
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     res.sendFile(footerPath);
+  });
+
+  // ================================
+  // Service Pages (EJS Templates)
+  // ================================
+
+  // Video Converter (AVI to MP4)
+  app.get('/video-converter', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('video-converter');
+  });
+
+  // Video to GIF Converter
+  app.get('/video-to-gif', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('video-to-gif');
+  });
+
+  // Video Metadata Extractor
+  app.get('/video-metadata', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('video-metadata');
+  });
+
+  // Meme Generator
+  app.get('/meme-generator', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('meme-generator');
   });
 
   // Serve admin dashboard (protected by adminService middleware - must be after admin service is initialized)
