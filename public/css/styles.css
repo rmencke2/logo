@@ -307,6 +307,7 @@ body {
   display: flex;
   gap: var(--space-md);
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -354,6 +355,8 @@ body {
   font-size: 0.875rem;
   padding: 12px 28px;
   border-radius: 100px;
+  width: auto !important;
+  max-width: fit-content;
 }
 
 .hero-cta.large {
@@ -362,6 +365,8 @@ body {
   background: var(--color-charcoal);
   box-shadow: none;
   border-radius: 100px;
+  width: auto !important;
+  max-width: fit-content;
 }
 
 .hero-cta.large:hover {
@@ -1585,12 +1590,14 @@ button:active:enabled {
 
   .hero-buttons {
     flex-direction: column;
+    align-items: center;
     gap: var(--space-sm);
   }
 
   .hero-cta {
-    width: 100%;
-    padding: 16px 24px !important;
+    width: auto !important;
+    max-width: fit-content;
+    padding: 14px 28px !important;
   }
 
   .tools-showcase-section > div > div {
