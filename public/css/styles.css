@@ -1851,6 +1851,9 @@ button:active:enabled {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .auth-message p {
@@ -1864,7 +1867,21 @@ button:active:enabled {
   display: flex;
   gap: var(--space-md);
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
+}
+
+.auth-buttons-inline .cta-button {
+  width: auto;
+  max-width: fit-content;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 0.875rem;
+}
+
+.auth-buttons-inline .cta-button.secondary {
+  background: var(--color-paper);
+  border: 1px solid var(--color-border-strong);
 }
 
 /* Form Elements for Service Pages */
