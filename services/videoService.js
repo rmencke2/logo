@@ -9,6 +9,7 @@ const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
 const { requireAuth } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
+const { trackService } = require('./analyticsService');
 
 /**
  * Initialize video processing service
@@ -66,6 +67,7 @@ function initializeVideoService(app) {
   // Convert AVI to MP4 endpoint
   app.post(
     '/convert-avi-to-mp4',
+    trackService('avi-to-mp4'),
     requireAuth,
     abuseProtectionMiddleware,
     upload.single('video'),
@@ -148,6 +150,7 @@ function initializeVideoService(app) {
   // Convert video to GIF endpoint
   app.post(
     '/convert-video-to-gif',
+    trackService('video-to-gif'),
     requireAuth,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
@@ -231,6 +234,7 @@ function initializeVideoService(app) {
   // Extract video metadata endpoint
   app.post(
     '/extract-video-metadata',
+    trackService('video-metadata'),
     requireAuth,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
@@ -326,6 +330,7 @@ function initializeVideoService(app) {
   // Convert video/GIF to meme endpoint
   app.post(
     '/convert-to-meme',
+    trackService('meme-generator'),
     requireAuth,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),

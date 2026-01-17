@@ -17,6 +17,7 @@ const { initializeFaviconService } = require('./services/faviconService');
 const { initializeVideoService } = require('./services/videoService');
 const { initializeUtilityService } = require('./services/utilityService');
 const { initializeAdminService } = require('./services/adminService');
+const { initializeAnalyticsService } = require('./services/analyticsService');
 
 require('dotenv').config();
 
@@ -28,24 +29,26 @@ const PORT = process.env.PORT || 4000;
   try {
     // 1. Core service (middleware, auth, session)
     await initializeCore(app);
-    
-    // 2. Static file service (HTML pages, static assets)
+
+    // 2. Analytics service (page views, service tracking) - must be early for tracking
+    await initializeAnalyticsService(app);
+
+    // 3. Static file service (HTML pages, static assets)
     initializeStaticService(app);
     
-    // 3. Logo generation service
+    // 4. Logo generation service
     initializeLogoService(app);
-    
-    // 4. Favicon generation service
+
+    // 5. Favicon generation service
     initializeFaviconService(app);
-    
-    // 5. Video processing service
+
+    // 6. Video processing service
     initializeVideoService(app);
-    
-    
-    // 6. Utility service (health, location, usage limits)
+
+    // 7. Utility service (health, location, usage limits)
     initializeUtilityService(app);
-    
-    // 7. Admin service (user management, monitoring)
+
+    // 8. Admin service (user management, monitoring)
     initializeAdminService(app);
     
     // Global error handling middleware (must be last)

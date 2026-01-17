@@ -9,6 +9,7 @@ const sharp = require('sharp');
 const TextToSVG = require('text-to-svg');
 const { body, validationResult } = require('express-validator');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
+const { trackService } = require('./analyticsService');
 
 // Font category mapping
 const fontCategories = {
@@ -119,6 +120,7 @@ function initializeLogoService(app) {
   // Generate logo endpoint
   app.post(
     '/generate-logo',
+    trackService('logo-generator'),
     abuseProtectionMiddleware,
     [
       body('name').isString().notEmpty(),
