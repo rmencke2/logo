@@ -94,12 +94,17 @@ body {
   right: 0;
   background: var(--color-paper);
   border-bottom: 1px solid var(--color-border);
-  padding: 16px 32px;
+  padding: 14px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(12px);
+}
+
+.auth-header > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 48px;
 }
 
 .auth-header a[href="/"] {
@@ -111,71 +116,77 @@ body {
   letter-spacing: -0.02em;
 }
 
+.auth-header nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
 .auth-header nav a {
   font-family: var(--font-ui);
-  font-size: 0.875rem;
-  color: var(--color-muted) !important;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--color-charcoal) !important;
   text-decoration: none;
   transition: color var(--transition-fast);
-  position: relative;
 }
 
 .auth-header nav a:hover {
-  color: var(--color-charcoal) !important;
-}
-
-.auth-header nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--color-terracotta);
-  transition: width var(--transition-medium);
-}
-
-.auth-header nav a:hover::after {
-  width: 100%;
+  color: var(--color-muted) !important;
 }
 
 /* Auth Buttons */
 .auth-buttons {
   display: flex;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
 }
 
 .auth-btn {
   font-family: var(--font-ui);
-  padding: 8px 16px;
+  padding: 10px 20px;
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 100px;
   color: var(--color-charcoal);
   text-decoration: none;
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .auth-btn.secondary {
-  color: var(--color-muted);
+  color: var(--color-charcoal);
+  padding: 10px 0;
 }
 
 .auth-btn.secondary:hover {
-  color: var(--color-charcoal);
+  color: var(--color-muted);
 }
 
 .auth-btn.primary {
-  background: var(--color-charcoal);
-  color: white;
-  padding: 8px 18px;
+  background: #E8F5E0;
+  color: var(--color-charcoal);
+  padding: 10px 24px;
 }
 
 .auth-btn.primary:hover {
-  background: var(--color-ink);
+  background: #D4EDCC;
+}
+
+/* Language Globe Icon */
+.language-globe {
+  width: 20px;
+  height: 20px;
+  color: var(--color-charcoal);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.language-globe:hover {
+  opacity: 1;
 }
 
 /* User Info */
