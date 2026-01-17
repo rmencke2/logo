@@ -103,22 +103,20 @@
           <a href="/meme-generator">Meme Generator</a>
         </nav>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <!-- Language Selector -->
-        <select id="languageSelector" onchange="window.i18n.setLanguage(this.value)" style="padding: 6px 10px; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 6px; color: #ececec; font-size: 12px; cursor: pointer;">
-          <option value="en">🇬🇧 English</option>
-          <option value="da">🇩🇰 Dansk</option>
-          <option value="sv">🇸🇪 Svenska</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="it">🇮🇹 Italiano</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="fr">🇫🇷 Français</option>
-          <option value="nl">🇳🇱 Nederlands</option>
-        </select>
-        <div class="auth-buttons" id="authButtons">
-          <button class="auth-btn" id="loginBtn" data-i18n="auth.login">Log In</button>
-          <button class="auth-btn primary" id="signupBtn" data-i18n="auth.signup">Sign Up</button>
-        </div>
+      <!-- Hidden language selector for i18n compatibility -->
+      <select id="languageSelector" style="display: none;">
+        <option value="en">English</option>
+        <option value="da">Dansk</option>
+        <option value="sv">Svenska</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="nl">Nederlands</option>
+      </select>
+      <div class="auth-buttons" id="authButtons">
+        <button class="auth-btn secondary" id="loginBtn" data-i18n="auth.login">Log In</button>
+        <button class="auth-btn primary" id="signupBtn" data-i18n="auth.signup">Get Started Free</button>
       </div>
       <div class="user-info" id="userInfo" style="display: none;">
         <div class="user-avatar" id="userAvatar">U</div>
@@ -135,180 +133,105 @@
       <!-- Hero Section -->
       <div class="hero hero-gradient">
         <div class="hero-content">
-          <h1 class="hero-title">AI-Powered Logo Generator & Brand Design Tools for Small Businesses</h1>
-          <p class="subtitle hero-subtitle" data-i18n="homepage.hero.subtitle">Create professional logos, favicons, and brand assets instantly using advanced AI. Generate logos in minutes with full usage rights. Perfect for cafés, freelancers, artisans, and new businesses.</p>
+          <div class="hero-badge">Free AI-Powered Design Tools</div>
+          <h1 class="hero-title">Create Your Professional Logo in Minutes</h1>
+          <p class="subtitle hero-subtitle" data-i18n="homepage.hero.subtitle">No design skills needed. Just enter your business name and let AI create stunning logos, favicons, and brand assets. Own your designs forever with full commercial rights.</p>
           <div class="hero-buttons">
-            <button class="cta-button primary hero-cta" id="heroSignupBtn" data-i18n="homepage.cta.signup">Start Free Account</button>
-            <button class="cta-button secondary hero-cta" id="heroLoginBtn" data-i18n="auth.login">Sign In</button>
+            <button class="cta-button primary hero-cta large" id="heroSignupBtn" data-i18n="homepage.cta.signup">Create Your Logo — It's Free</button>
+          </div>
+          <p class="hero-trust">No credit card required • Full ownership rights • Download instantly</p>
+        </div>
+      </div>
+
+      <!-- Value Props Section -->
+      <div class="value-props-section">
+        <div class="value-props-grid">
+          <div class="value-prop">
+            <div class="value-prop-icon">⚡</div>
+            <div class="value-prop-text">
+              <strong>Ready in seconds</strong>
+              <span>AI generates your logo instantly</span>
+            </div>
+          </div>
+          <div class="value-prop">
+            <div class="value-prop-icon">🎨</div>
+            <div class="value-prop-text">
+              <strong>Fully customizable</strong>
+              <span>Colors, fonts, icons & layouts</span>
+            </div>
+          </div>
+          <div class="value-prop">
+            <div class="value-prop-icon">📦</div>
+            <div class="value-prop-text">
+              <strong>All formats included</strong>
+              <span>SVG, PNG & favicon files</span>
+            </div>
+          </div>
+          <div class="value-prop">
+            <div class="value-prop-icon">✓</div>
+            <div class="value-prop-text">
+              <strong>100% yours</strong>
+              <span>Full commercial usage rights</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Tools Showcase Section -->
-      <div class="tools-showcase-section">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 80px 20px;">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 32px; margin-bottom: 60px;">
-
-            <!-- Logo Generator Card -->
-            <div class="tool-card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 16px; min-height: 200px;">
-                  <div class="sample-logo" style="background: #FFF8DC; color: #8B4513; width: 100%; height: 90px; font-size: 12px;">Sweet Dreams<br>Bakery</div>
-                  <div class="sample-logo" style="background: #E0F2FE; color: #1E3A8A; width: 100%; height: 90px; font-size: 12px;">Flow Masters<br>Plumbing</div>
-                  <div class="sample-logo" style="background: #EFEBE9; color: #5D4037; width: 100%; height: 90px; font-size: 12px;">Green Thumb<br>Landscaping</div>
-                  <div class="sample-logo" style="background: #F8BBD0; color: #6A5ACD; width: 100%; height: 90px; font-size: 12px;">Fit Zone<br>Fitness</div>
-                </div>
-              </div>
-              <h3 data-i18n="homepage.tools.logo.title">AI Logo Generator</h3>
-              <p data-i18n="homepage.tools.logo.description">Generate professional logos, brand identities, and business graphics instantly.</p>
-            </div>
-
-            <!-- Favicon Generator Card -->
-            <div class="tool-card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px; min-height: 200px;">
-                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--color-sage), #5a6b4e); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">AB</div>
-                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">C</div>
-                    <div style="width: 48px; height: 48px; background: var(--color-paper); border: 2px solid var(--color-terracotta); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--color-terracotta); font-weight: 700; font-size: 20px;">XY</div>
-                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">M</div>
-                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--color-terracotta), #a44d2f); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px;">Z</div>
-                    <div style="width: 48px; height: 48px; background: var(--color-charcoal); border: 2px solid #6366f1; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6366f1; font-weight: 700; font-size: 20px;">1</div>
-                  </div>
-                </div>
-              </div>
-              <h3 data-i18n="homepage.tools.favicon.title">AI Favicon Generator</h3>
-              <p data-i18n="homepage.tools.favicon.description">Create matching favicons for your website in all standard sizes instantly.</p>
-            </div>
-
-            <!-- Brand Assets Card -->
-            <div class="tool-card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 24px; min-height: 200px;">
-                  <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; background: var(--color-cream); border: 2px dashed var(--color-terracotta); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                      <span style="color: var(--color-terracotta); font-size: 24px; font-weight: 600;">SVG</span>
-                    </div>
-                    <div style="font-size: 12px; color: var(--color-muted);">Vector</div>
-                  </div>
-                  <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; background: var(--color-cream); border: 2px dashed var(--color-sage); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                      <span style="color: var(--color-sage); font-size: 24px; font-weight: 600;">PNG</span>
-                    </div>
-                    <div style="font-size: 12px; color: var(--color-muted);">Raster</div>
-                  </div>
-                </div>
-              </div>
-              <h3 data-i18n="homepage.tools.formats.title">All Formats Included</h3>
-              <p data-i18n="homepage.tools.formats.description">Get SVG and PNG files ready for web, print, and social media.</p>
-            </div>
-
-            <!-- AI-Powered Design Card -->
-            <div class="tool-card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; background: linear-gradient(135deg, var(--color-terracotta-light), var(--color-sage-light)); min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">✨</div>
-                    <div style="font-size: 14px; color: var(--color-terracotta); font-weight: 600;">AI-Powered</div>
-                  </div>
-                </div>
-              </div>
-              <h3 data-i18n="homepage.tools.ai.title">AI-Powered Design</h3>
-              <p data-i18n="homepage.tools.ai.description">Create professional logos in minutes with our intelligent design system.</p>
-            </div>
-
-            <!-- Full Rights Card -->
-            <div class="tool-card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">🔒</div>
-                    <div style="font-size: 14px; color: var(--color-sage); font-weight: 600;">100% Ownership</div>
-                  </div>
-                </div>
-              </div>
-              <h3 data-i18n="homepage.tools.rights.title">Full Usage Rights</h3>
-              <p data-i18n="homepage.tools.rights.description">You own your logo completely — use it anywhere, anytime.</p>
-            </div>
-
-            <!-- Lightning Fast Card -->
-            <div class="tool-card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; background: linear-gradient(135deg, var(--color-terracotta-light), transparent); min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">⚡</div>
-                    <div style="font-size: 14px; color: var(--color-terracotta); font-weight: 600;">Instant Generation</div>
-                  </div>
-                </div>
-              </div>
-              <h3 data-i18n="homepage.tools.fast.title">Lightning Fast</h3>
-              <p data-i18n="homepage.tools.fast.description">Generate your logo instantly — no waiting, no delays.</p>
-            </div>
-
-            <!-- AVI to MP4 Converter Card -->
-            <a href="/video-converter" class="tool-card" id="aviToMp4Card" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">🎬</div>
-                    <div style="font-size: 14px; color: var(--color-terracotta); font-weight: 600;">AVI → MP4</div>
-                  </div>
-                </div>
-              </div>
-              <h3>AVI to MP4 Converter</h3>
-              <p>Convert your AVI videos to MP4 format quickly and easily.</p>
-            </a>
-
-            <!-- Video to GIF Converter Card -->
-            <a href="/video-to-gif" class="tool-card" id="videoToGifCard" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">🎞️</div>
-                    <div style="font-size: 14px; color: var(--color-sage); font-weight: 600;">Video → GIF</div>
-                  </div>
-                </div>
-              </div>
-              <h3>Video to GIF Converter</h3>
-              <p>Convert your videos to animated GIFs for social media and web.</p>
-            </a>
-
-            <!-- Video Metadata Extractor Card -->
-            <a href="/video-metadata" class="tool-card" id="videoMetadataCard" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">📊</div>
-                    <div style="font-size: 14px; color: var(--color-charcoal-light); font-weight: 600;">Metadata</div>
-                  </div>
-                </div>
-              </div>
-              <h3>Video Metadata Extractor</h3>
-              <p>Extract detailed technical information from your video files.</p>
-            </a>
-
-            <!-- Meme Generator Card -->
-            <a href="/meme-generator" class="tool-card" id="memeGeneratorCard" data-tool-card="true">
-              <div class="tool-card-image">
-                <div style="padding: 24px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                  <div style="text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">🎭</div>
-                    <div style="font-size: 14px; color: var(--color-terracotta); font-weight: 600;">Meme</div>
-                  </div>
-                </div>
-              </div>
-              <h3>Meme Generator</h3>
-              <p>Transform videos and GIFs into hilarious memes with 13+ styles.</p>
-            </a>
-
+      <!-- Primary CTA Section - Logo Generator -->
+      <section class="primary-tool-section">
+        <div class="primary-tool-container">
+          <div class="primary-tool-content">
+            <h2>Start Creating Your Logo</h2>
+            <p>Enter your business name and we'll generate professional logo options in seconds. Customize colors, fonts, and styles until it's perfect.</p>
+            <button class="cta-button primary large" id="startLogoBtn">Create Logo Now</button>
           </div>
-
-          <!-- All Tools CTA Button -->
-          <div style="text-align: center;">
-            <button class="cta-button primary" id="allToolsBtn" data-i18n="homepage.tools.allTools">All Logo Design Tools</button>
+          <div class="primary-tool-preview">
+            <div class="logo-preview-grid">
+              <div class="sample-logo-card" style="background: #FFF8DC;">
+                <span style="color: #8B4513; font-weight: 600;">Sweet Dreams</span>
+                <span style="color: #8B4513; font-size: 0.75rem;">Bakery</span>
+              </div>
+              <div class="sample-logo-card" style="background: #E0F2FE;">
+                <span style="color: #1E3A8A; font-weight: 600;">Flow Masters</span>
+                <span style="color: #1E3A8A; font-size: 0.75rem;">Plumbing</span>
+              </div>
+              <div class="sample-logo-card" style="background: #EFEBE9;">
+                <span style="color: #5D4037; font-weight: 600;">Green Thumb</span>
+                <span style="color: #5D4037; font-size: 0.75rem;">Landscaping</span>
+              </div>
+              <div class="sample-logo-card" style="background: #F3E8FF;">
+                <span style="color: #6B21A8; font-weight: 600;">Fit Zone</span>
+                <span style="color: #6B21A8; font-size: 0.75rem;">Fitness</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <!-- More Tools Section -->
+      <section class="more-tools-section">
+        <div class="more-tools-container">
+          <h3>More Free Tools</h3>
+          <div class="tools-grid">
+            <a href="/video-converter" class="tool-link">
+              <span class="tool-link-icon">🎬</span>
+              <span class="tool-link-text">AVI to MP4</span>
+            </a>
+            <a href="/video-to-gif" class="tool-link">
+              <span class="tool-link-icon">🎞️</span>
+              <span class="tool-link-text">Video to GIF</span>
+            </a>
+            <a href="/video-metadata" class="tool-link">
+              <span class="tool-link-icon">📊</span>
+              <span class="tool-link-text">Video Metadata</span>
+            </a>
+            <a href="/meme-generator" class="tool-link">
+              <span class="tool-link-icon">🎭</span>
+              <span class="tool-link-text">Meme Generator</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       <!-- What is Influzer Section -->
       <section id="what-is-influzer" style="max-width: 1200px; margin: 0 auto;">

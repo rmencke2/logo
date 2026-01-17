@@ -1067,7 +1067,19 @@
             }
           });
         }
-        
+
+        // Start Logo button - opens signup for non-logged users, shows logo generator for logged users
+        const startLogoBtn = document.getElementById('startLogoBtn');
+        if (startLogoBtn) {
+          startLogoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof window.openSignupModal === 'function') {
+              window.openSignupModal();
+            }
+          });
+        }
+
         // Add event listeners to tool cards
         document.querySelectorAll('[data-tool-card="true"]').forEach(card => {
           card.style.cursor = 'pointer';
