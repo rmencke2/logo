@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVI to MP4 Converter - Influzer.ai</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8WMQQWLT7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q8WMQQWLT7');
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0d0d0d;
+      color: #ececec;
+      min-height: 100vh;
+      padding: 20px;
+      padding-top: 80px; /* Space for fixed header */
+    }
+    .auth-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #171717;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    .auth-buttons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .auth-btn {
+      padding: 8px 16px;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #ececec;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .auth-btn:hover {
+      background: #252525;
+      border-color: #10a37f;
+      color: #10a37f;
+    }
+    .auth-btn.primary {
+      background: #10a37f;
+      border-color: #10a37f;
+      color: #fff;
+    }
+    .auth-btn.primary:hover {
+      background: #0d8a6a;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #10a37f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      flex-shrink: 0;
+      border: 2px solid #2a2a2a;
+    }
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex-shrink: 1;
+    }
+    .user-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #ececec;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .usage-info {
+      font-size: 11px;
+      color: #8e8e93;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #10a37f 0%, #0d8a6a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header p {
+      font-size: 16px;
+      color: #8e8e93;
+    }
+    .card {
+      background: #171717;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ececec;
+    }
+    .form-group input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      color: #ececec;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .form-group input[type="file"]:hover {
+      border-color: #10a37f;
+    }
+    .file-info {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #8e8e93;
+    }
+    .file-info.success {
+      color: #10a37f;
+    }
+    .file-info.error {
+      color: #ff453a;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #10a37f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover:not(:disabled) {
+      background: #0d8a6a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
+    }
+    .btn:disabled {
+      background: #2a2a2a;
+      color: #6e6e73;
+      cursor: not-allowed;
+    }
+    .progress-container {
+      display: none;
+      margin-top: 24px;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .progress-container.active {
+      display: block;
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #10a37f;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .progress-bar {
+      background: #0d0d0d;
+      border-radius: 4px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-fill {
+      background: #10a37f;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .progress-text {
+      text-align: center;
+      font-size: 12px;
+      color: #8e8e93;
+    }
+    .result-container {
+      display: none;
+      margin-top: 24px;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+    }
+    .result-container.active {
+      display: block;
+    }
+    .result-container .success-icon {
+      color: #10a37f;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+    .result-container .success-message {
+      color: #10a37f;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .download-btn {
+      display: inline-block;
+      padding: 12px 32px;
+      background: #10a37f;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .download-btn:hover {
+      background: #0d8a6a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
+    }
+    .error-container {
+      display: none;
+      margin-top: 24px;
+      padding: 16px;
+      background: #2a1f1f;
+      border: 1px solid #ff453a;
+      border-radius: 8px;
+      color: #ff453a;
+      font-size: 14px;
+    }
+    .error-container.active {
+      display: block;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: #10a37f;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #0d8a6a;
+    }
+    .auth-message {
+      text-align: center;
+      padding: 24px;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+    }
+    .auth-message p {
+      margin-bottom: 16px;
+      color: #8e8e93;
+    }
+    .auth-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .auth-btn {
+      padding: 10px 20px;
+      background: #10a37f;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .auth-btn.secondary {
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+    }
+    .auth-btn:hover {
+      background: #0d8a6a;
+    }
+    .auth-btn.secondary:hover {
+      background: #252525;
+      border-color: #10a37f;
+    }
+  </style>
+</head>
+<body>
+  <!-- Auth Header -->
+  <div class="auth-header">
+    <div style="display: flex; align-items: center; gap: 24px;">
+      <a href="/" style="font-weight: 600; color: #10a37f; text-decoration: none;">Influzer.ai</a>
+      <nav style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+        <a href="/" style="color: #8e8e93; text-decoration: none; font-size: 14px; transition: color 0.2s;" onmouseover="this.style.color='#10a37f';" onmouseout="this.style.color='#8e8e93';">Logo Generator</a>
+        <a href="/video-converter" style="color: #10a37f; text-decoration: none; font-size: 14px; font-weight: 500;">AVI to MP4</a>
+        <a href="/video-to-gif" style="color: #8e8e93; text-decoration: none; font-size: 14px; transition: color 0.2s;" onmouseover="this.style.color='#10a37f';" onmouseout="this.style.color='#8e8e93';">Video to GIF</a>
+        <a href="/video-metadata" style="color: #8e8e93; text-decoration: none; font-size: 14px; transition: color 0.2s;" onmouseover="this.style.color='#10a37f';" onmouseout="this.style.color='#8e8e93';">Video Metadata</a>
+        <a href="/meme-generator" style="color: #8e8e93; text-decoration: none; font-size: 14px; transition: color 0.2s;" onmouseover="this.style.color='#10a37f';" onmouseout="this.style.color='#8e8e93';">Meme Generator</a>
+      </nav>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="auth-buttons" id="authButtons">
+        <a href="/" class="auth-btn">Log In</a>
+        <a href="/" class="auth-btn primary">Sign Up</a>
+      </div>
+      <div class="user-info" id="userInfo" style="display: none;">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <div class="user-details">
+          <div class="user-name" id="userName">User</div>
+          <div class="usage-info" id="usageInfo">Loading...</div>
+        </div>
+        <a href="/" class="auth-btn" onclick="logout(); return false;" style="margin-left: 8px;">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <a href="/" class="back-link">&larr; Back to Home</a>
+    
+    <div class="header">
+      <h1>🎬 AVI to MP4 Converter</h1>
+      <p>Convert your AVI videos to MP4 format quickly and easily</p>
+    </div>
+
+    <div id="authMessage" class="auth-message" style="display: none;">
+      <p>Please sign in to use the video converter</p>
+      <div class="auth-buttons">
+        <a href="/" class="auth-btn">Sign In</a>
+        <a href="/" class="auth-btn secondary">Sign Up</a>
+      </div>
+    </div>
+
+    <div id="converterCard" class="card">
+      <div class="form-group">
+        <label for="aviFileInput">Select AVI File</label>
+        <input type="file" id="aviFileInput" accept="video/x-msvideo,.avi" />
+        <div id="fileInfo" class="file-info"></div>
+      </div>
+
+      <button id="convertBtn" class="btn" disabled>Convert to MP4</button>
+
+      <div id="progressContainer" class="progress-container">
+        <div class="progress-header">
+          <div class="spinner"></div>
+          <span>Converting video...</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div id="progressText" class="progress-text">0%</div>
+      </div>
+
+      <div id="resultContainer" class="result-container">
+        <div class="success-icon">✅</div>
+        <div class="success-message">Conversion Complete!</div>
+        <a id="downloadLink" href="#" download class="download-btn">Download MP4</a>
+      </div>
+
+      <div id="errorContainer" class="error-container"></div>
+    </div>
+
+    <div class="card" style="background: #1f1f1f;">
+      <h3 style="font-size: 16px; margin-bottom: 12px; color: #ececec;">📋 Requirements</h3>
+      <ul style="list-style: none; padding: 0; color: #8e8e93; font-size: 14px; line-height: 1.8;">
+        <li>✓ Maximum file size: 500MB</li>
+        <li>✓ Only AVI files are supported</li>
+        <li>✓ Output format: MP4 (H.264 video, AAC audio)</li>
+        <li>✓ High quality conversion with minimal compression</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+
+    // Check authentication
+    async function checkAuth() {
+      try {
+        const response = await fetch('/auth/me', { credentials: 'include' });
+        if (response.ok) {
+          const data = await response.json();
+          currentUser = data.user;
+          document.getElementById('authMessage').style.display = 'none';
+          document.getElementById('converterCard').style.display = 'block';
+        } else {
+          currentUser = null;
+          document.getElementById('authMessage').style.display = 'block';
+          document.getElementById('converterCard').style.display = 'none';
+        }
+      } catch (err) {
+        console.error('Auth check error:', err);
+        currentUser = null;
+        document.getElementById('authMessage').style.display = 'block';
+        document.getElementById('converterCard').style.display = 'none';
+      }
+    }
+
+    // File input handling
+    const aviFileInput = document.getElementById('aviFileInput');
+    const convertBtn = document.getElementById('convertBtn');
+    const fileInfo = document.getElementById('fileInfo');
+    const progressContainer = document.getElementById('progressContainer');
+    const resultContainer = document.getElementById('resultContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const downloadLink = document.getElementById('downloadLink');
+
+    aviFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+        const maxSizeMB = 500;
+        
+        if (file.size > maxSizeMB * 1024 * 1024) {
+          fileInfo.textContent = `❌ File too large. Maximum size is ${maxSizeMB}MB.`;
+          fileInfo.className = 'file-info error';
+          convertBtn.disabled = true;
+        } else if (!file.name.toLowerCase().endsWith('.avi')) {
+          fileInfo.textContent = '❌ Only AVI files are supported.';
+          fileInfo.className = 'file-info error';
+          convertBtn.disabled = true;
+        } else {
+          fileInfo.textContent = `✅ Selected: ${file.name} (${fileSizeMB} MB)`;
+          fileInfo.className = 'file-info success';
+          convertBtn.disabled = false;
+        }
+        
+        // Hide previous results/errors
+        resultContainer.classList.remove('active');
+        errorContainer.classList.remove('active');
+      } else {
+        fileInfo.textContent = '';
+        fileInfo.className = 'file-info';
+        convertBtn.disabled = true;
+      }
+    });
+
+    // Convert function
+    async function convertVideo() {
+      const file = aviFileInput.files[0];
+      if (!file) {
+        errorContainer.textContent = 'Please select a file first.';
+        errorContainer.classList.add('active');
+        return;
+      }
+
+      if (!currentUser) {
+        window.location.href = '/';
+        return;
+      }
+
+      // Reset UI
+      progressContainer.classList.add('active');
+      resultContainer.classList.remove('active');
+      errorContainer.classList.remove('active');
+      convertBtn.disabled = true;
+      progressFill.style.width = '0%';
+      progressText.textContent = '0%';
+
+      const formData = new FormData();
+      formData.append('video', file);
+
+      try {
+        const response = await fetch('/convert-avi-to-mp4', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          // If not JSON, read as text to see what we got
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+
+        if (!response.ok) {
+          throw new Error(data.error || data.message || 'Conversion failed');
+        }
+
+        // Show success
+        progressContainer.classList.remove('active');
+        resultContainer.classList.add('active');
+        downloadLink.href = data.downloadUrl;
+        downloadLink.download = data.filename || 'converted-video.mp4';
+      } catch (err) {
+        console.error('Conversion error:', err);
+        progressContainer.classList.remove('active');
+        errorContainer.textContent = err.message || 'An error occurred during conversion. Please try again.';
+        errorContainer.classList.add('active');
+      } finally {
+        convertBtn.disabled = false;
+      }
+    }
+
+    convertBtn.addEventListener('click', convertVideo);
+
+    // Initialize
+    checkAuth();
+
+    // Check auth status and update header
+    async function updateAuthUI() {
+      try {
+        const response = await fetch('/auth/me', { credentials: 'include' });
+        if (response.ok) {
+          const data = await response.json();
+          const user = data.user;
+          document.getElementById('authButtons').style.display = 'none';
+          document.getElementById('userInfo').style.display = 'flex';
+          document.getElementById('userName').textContent = user.name || user.email;
+          document.getElementById('userAvatar').textContent = (user.name || user.email || 'U').charAt(0).toUpperCase();
+          if (user.avatarUrl) {
+            document.getElementById('userAvatar').style.backgroundImage = `url(${user.avatarUrl})`;
+            document.getElementById('userAvatar').style.backgroundSize = 'cover';
+            document.getElementById('userAvatar').textContent = '';
+          }
+        } else {
+          document.getElementById('authButtons').style.display = 'flex';
+          document.getElementById('userInfo').style.display = 'none';
+        }
+      } catch (err) {
+        console.error('Auth check error:', err);
+      }
+    }
+
+    function logout() {
+      fetch('/auth/logout', { method: 'POST', credentials: 'include' })
+        .then(() => {
+          window.location.href = '/';
+        })
+        .catch(err => console.error('Logout error:', err));
+    }
+
+    updateAuthUI();
+  </script>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+  <script>
+    // Load footer
+    function loadFooter() {
+      const footerContainer = document.getElementById('footer-container');
+      if (!footerContainer) {
+        console.error('Footer container not found');
+        return;
+      }
+      fetch('/footer.html')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          footerContainer.innerHTML = html;
+        })
+        .catch(err => console.error('Error loading footer:', err));
+    }
+    
+    // Load footer when DOM is ready
+    setTimeout(() => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadFooter);
+      } else {
+        loadFooter();
+      }
+    }, 100);
+  </script>
+</body>
+</html>
+

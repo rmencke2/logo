@@ -1,0 +1,29 @@
+FROM node:18-slim
+
+# Create non-root user
+RUN groupadd --gid 1001 appuser \
+ && useradd --uid 1001 --gid appuser --shell /bin/sh --create-home appuser
+
+WORKDIR /app
+
+# Install only production dependencies and clean cache
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --no-audit --no-fund \
+ && npm cache clean --force
+
+# Copy application code and set ownership
+COPY --chown=appuser:appuser . .
+
+# Ensure the app directory is owned by the non-root user
+RUN chown -R appuser:appuser /app
+# Pre-create output directory so non-root user can write to it
+RUN mkdir -p /app/generated_img \
+    && chown -R appuser:appuser /app/generated_img
+# Switch to non-root user
+USER appuser
+
+# Set environment
+ENV NODE_ENV=production
+EXPOSE 4000
+
+CMD ["npm", "run", "start"]

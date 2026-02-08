@@ -1,0 +1,77 @@
+<script>
+  let currentUser = null;
+
+  // Check authentication
+  async function checkAuth() {
+    try {
+      const response = await fetch('/auth/me', { credentials: 'include' });
+      if (response.ok) {
+        const data = await response.json();
+        currentUser = data.user;
+        document.getElementById('authMessage')?.style.setProperty('display', 'none');
+        document.getElementById('toolCard')?.style.setProperty('display', 'block');
+        updateAuthUI();
+        return true;
+      } else {
+        currentUser = null;
+        document.getElementById('authMessage')?.style.setProperty('display', 'block');
+        document.getElementById('toolCard')?.style.setProperty('display', 'none');
+        updateAuthUI();
+        return false;
+      }
+    } catch (err) {
+      console.error('Auth check error:', err);
+      currentUser = null;
+      document.getElementById('authMessage')?.style.setProperty('display', 'block');
+      document.getElementById('toolCard')?.style.setProperty('display', 'none');
+      updateAuthUI();
+      return false;
+    }
+  }
+
+  // Update header auth UI
+  async function updateAuthUI() {
+    try {
+      const response = await fetch('/auth/me', { credentials: 'include' });
+      if (response.ok) {
+        const data = await response.json();
+        const user = data.user;
+        document.getElementById('authButtons').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'flex';
+        document.getElementById('userName').textContent = user.name || user.email;
+        document.getElementById('userAvatar').textContent = (user.name || user.email || 'U').charAt(0).toUpperCase();
+        if (user.avatarUrl) {
+          document.getElementById('userAvatar').style.backgroundImage = `url(${user.avatarUrl})`;
+          document.getElementById('userAvatar').style.backgroundSize = 'cover';
+          document.getElementById('userAvatar').textContent = '';
+        }
+      } else {
+        document.getElementById('authButtons').style.display = 'flex';
+        document.getElementById('userInfo').style.display = 'none';
+      }
+    } catch (err) {
+      console.error('Auth check error:', err);
+    }
+  }
+
+  function logout() {
+    fetch('/auth/logout', { method: 'POST', credentials: 'include' })
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(err => console.error('Logout error:', err));
+  }
+
+  // Show login modal (redirect to homepage if not available)
+  function showLoginModal() {
+    window.location.href = '/?login=true';
+  }
+
+  // Show signup modal (redirect to homepage if not available)
+  function showSignupModal() {
+    window.location.href = '/?signup=true';
+  }
+
+  // Initialize auth
+  checkAuth();
+</script>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head', { title: title, description: description }) %>
+  <% if (typeof extraStyles !== 'undefined') { %>
+  <style>
+    <%- extraStyles %>
+  </style>
+  <% } %>
+</head>
+<body class="service-page">
+  <%- include('../partials/header', { currentPage: currentPage }) %>
+
+  <main class="service-container">
+    <a href="/" class="back-link">&larr; Back to Home</a>
+
+    <div class="service-header">
+      <h1 class="service-title"><%= icon %> <%= title %></h1>
+      <p class="service-subtitle"><%= subtitle %></p>
+    </div>
+
+    <div id="authMessage" class="auth-message" style="display: none;">
+      <p>Please sign in to use this tool</p>
+      <div class="auth-buttons-inline">
+        <button class="cta-button primary" onclick="showLoginModal()">Sign In</button>
+        <button class="cta-button secondary" onclick="showSignupModal()">Sign Up</button>
+      </div>
+    </div>
+
+    <div id="toolCard" class="service-card">
+      <%- body %>
+    </div>
+
+    <% if (typeof requirements !== 'undefined' && requirements.length > 0) { %>
+    <div class="info-card">
+      <h3>Requirements</h3>
+      <ul>
+        <% requirements.forEach(function(req) { %>
+        <li><%= req %></li>
+        <% }); %>
+      </ul>
+    </div>
+    <% } %>
+  </main>
+
+  <%- include('../partials/footer-loader') %>
+  <%- include('../partials/auth-scripts') %>
+
+  <% if (typeof extraScripts !== 'undefined') { %>
+  <script>
+    <%- extraScripts %>
+  </script>
+  <% } %>
+</body>
+</html>

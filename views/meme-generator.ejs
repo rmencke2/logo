@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head', { title: 'Meme Generator', description: 'Transform your videos and GIFs into hilarious memes with 13+ creative styles.' }) %>
+  <style>
+    .meme-style-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+    .meme-style-option {
+      padding: var(--space-md);
+      background: var(--color-cream);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      transition: all var(--transition-fast);
+    }
+    .meme-style-option:hover {
+      border-color: var(--color-terracotta);
+      background: var(--color-terracotta-light);
+    }
+    .meme-style-option.selected {
+      border-color: var(--color-terracotta);
+      background: var(--color-terracotta-light);
+    }
+    .meme-style-option .emoji {
+      font-size: 2rem;
+      margin-bottom: var(--space-sm);
+    }
+    .meme-style-option .name {
+      font-family: var(--font-ui);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-charcoal);
+      margin-bottom: var(--space-xs);
+    }
+    .meme-style-option .desc {
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      color: var(--color-muted);
+    }
+    .style-options {
+      display: none;
+      margin-top: var(--space-lg);
+      padding: var(--space-lg);
+      background: var(--color-cream);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+    .style-options.active {
+      display: block;
+    }
+    .loading-container {
+      display: none;
+      margin-top: var(--space-lg);
+      padding: var(--space-lg);
+      background: var(--color-cream);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .loading-container.active {
+      display: block;
+    }
+    #memePreview {
+      max-width: 100%;
+      max-height: 400px;
+      margin: var(--space-lg) auto;
+      border-radius: var(--radius-md);
+      display: block;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="service-page">
+  <%- include('partials/header', { currentPage: 'meme-generator' }) %>
+
+  <main class="service-container" style="max-width: 1000px;">
+    <a href="/" class="back-link">&larr; Back to Home</a>
+
+    <div class="service-header">
+      <h1 class="service-title">Meme Generator</h1>
+      <p class="service-subtitle">Transform your videos and GIFs into hilarious memes with 13+ styles</p>
+    </div>
+
+    <div id="authMessage" class="auth-message" style="display: none;">
+      <p>Please sign in to use the meme generator</p>
+      <div class="auth-buttons-inline">
+        <button class="cta-button primary" onclick="showLoginModal()">Sign In</button>
+        <button class="cta-button secondary" onclick="showSignupModal()">Sign Up</button>
+      </div>
+    </div>
+
+    <div id="toolCard" class="service-card">
+      <div class="form-group">
+        <label for="videoFileInput">Select Video or GIF File</label>
+        <input type="file" id="videoFileInput" accept="video/*,image/gif" />
+        <div id="fileInfo" class="file-info"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Choose Meme Style</label>
+        <div class="meme-style-grid" id="memeStyleGrid">
+          <div class="meme-style-option" data-style="text">
+            <div class="emoji">💬</div>
+            <div class="name">Text Captions</div>
+            <div class="desc">Top & bottom text</div>
+          </div>
+          <div class="meme-style-option" data-style="zoom">
+            <div class="emoji">🤣</div>
+            <div class="name">Zoom Reaction</div>
+            <div class="desc">Slow zoom in</div>
+          </div>
+          <div class="meme-style-option" data-style="mirror">
+            <div class="emoji">🪞</div>
+            <div class="name">Mirror Effect</div>
+            <div class="desc">Double mirror</div>
+          </div>
+          <div class="meme-style-option" data-style="glitch">
+            <div class="emoji">🧠</div>
+            <div class="name">Glitch Effect</div>
+            <div class="desc">AI-style glitch</div>
+          </div>
+          <div class="meme-style-option" data-style="pixelate">
+            <div class="emoji">🎨</div>
+            <div class="name">Pixelate</div>
+            <div class="desc">Retro style</div>
+          </div>
+          <div class="meme-style-option" data-style="rewind">
+            <div class="emoji">🌀</div>
+            <div class="name">Rewind</div>
+            <div class="desc">Reverse video</div>
+          </div>
+          <div class="meme-style-option" data-style="speed">
+            <div class="emoji">🐢</div>
+            <div class="name">Speed Control</div>
+            <div class="desc">Fast or slow</div>
+          </div>
+          <div class="meme-style-option" data-style="freeze">
+            <div class="emoji">📸</div>
+            <div class="name">Freeze Frame</div>
+            <div class="desc">Pause effect</div>
+          </div>
+          <div class="meme-style-option" data-style="cinematic">
+            <div class="emoji">🎬</div>
+            <div class="name">Cinematic Bars</div>
+            <div class="desc">Black bars</div>
+          </div>
+          <div class="meme-style-option" data-style="outline">
+            <div class="emoji">🧩</div>
+            <div class="name">Sticker Outline</div>
+            <div class="desc">Cartoon border</div>
+          </div>
+          <div class="meme-style-option" data-style="text_zoom">
+            <div class="emoji">💬🤣</div>
+            <div class="name">Text + Zoom</div>
+            <div class="desc">Combined</div>
+          </div>
+          <div class="meme-style-option" data-style="text_speed">
+            <div class="emoji">💬🐢</div>
+            <div class="name">Text + Speed</div>
+            <div class="desc">Combined</div>
+          </div>
+        </div>
+        <input type="hidden" id="selectedStyle" value="" />
+      </div>
+
+      <div id="styleOptions" class="style-options">
+        <!-- Text options -->
+        <div id="textOptions" style="display: none;">
+          <div class="form-group">
+            <label for="topText">Top Text</label>
+            <input type="text" id="topText" placeholder="Enter top caption..." />
+          </div>
+          <div class="form-group">
+            <label for="bottomText">Bottom Text</label>
+            <input type="text" id="bottomText" placeholder="Enter bottom caption..." />
+          </div>
+        </div>
+
+        <!-- Zoom options -->
+        <div id="zoomOptions" style="display: none;">
+          <div class="form-group">
+            <label for="zoomSpeed">Zoom Amount (1.0 - 2.0)</label>
+            <input type="number" id="zoomSpeed" min="1.0" max="2.0" step="0.1" value="1.5" />
+          </div>
+        </div>
+
+        <!-- Speed options -->
+        <div id="speedOptions" style="display: none;">
+          <div class="form-group">
+            <label for="speedMultiplier">Speed Multiplier (0.25 = slow, 1.0 = normal, 2.0 = fast)</label>
+            <input type="number" id="speedMultiplier" min="0.25" max="4.0" step="0.25" value="1.0" />
+          </div>
+        </div>
+
+        <!-- Freeze options -->
+        <div id="freezeOptions" style="display: none;">
+          <div class="form-group">
+            <label for="freezeDuration">Freeze Duration (seconds)</label>
+            <input type="number" id="freezeDuration" min="0.5" max="5.0" step="0.5" value="2.0" />
+          </div>
+        </div>
+
+        <!-- Combined text + zoom -->
+        <div id="textZoomOptions" style="display: none;">
+          <div class="form-group">
+            <label for="topTextZoom">Top Text</label>
+            <input type="text" id="topTextZoom" placeholder="Enter top caption..." />
+          </div>
+          <div class="form-group">
+            <label for="bottomTextZoom">Bottom Text</label>
+            <input type="text" id="bottomTextZoom" placeholder="Enter bottom caption..." />
+          </div>
+          <div class="form-group">
+            <label for="zoomSpeedCombined">Zoom Amount (1.0 - 2.0)</label>
+            <input type="number" id="zoomSpeedCombined" min="1.0" max="2.0" step="0.1" value="1.5" />
+          </div>
+        </div>
+
+        <!-- Combined text + speed -->
+        <div id="textSpeedOptions" style="display: none;">
+          <div class="form-group">
+            <label for="topTextSpeed">Top Text</label>
+            <input type="text" id="topTextSpeed" placeholder="Enter top caption..." />
+          </div>
+          <div class="form-group">
+            <label for="bottomTextSpeed">Bottom Text</label>
+            <input type="text" id="bottomTextSpeed" placeholder="Enter bottom caption..." />
+          </div>
+          <div class="form-group">
+            <label for="speedMultiplierCombined">Speed Multiplier (0.25 = slow, 1.0 = normal, 2.0 = fast)</label>
+            <input type="number" id="speedMultiplierCombined" min="0.25" max="4.0" step="0.25" value="1.0" />
+          </div>
+        </div>
+      </div>
+
+      <button id="generateBtn" class="service-btn" disabled style="margin-top: var(--space-lg);">Generate Meme</button>
+
+      <div id="loadingContainer" class="loading-container">
+        <div class="spinner"></div>
+        <span>Creating your meme...</span>
+      </div>
+
+      <div id="resultContainer" class="result-container">
+        <div class="success-icon">✓</div>
+        <div class="success-message">Meme Generated!</div>
+        <img id="memePreview" src="" alt="Generated meme" />
+        <a id="downloadLink" href="#" download class="download-btn">Download Meme</a>
+      </div>
+
+      <div id="errorContainer" class="error-container"></div>
+    </div>
+
+    <div class="info-card">
+      <h3>Requirements</h3>
+      <ul>
+        <li>Maximum file size: 500MB</li>
+        <li>Supports MP4, AVI, MOV, WebM, GIF, and more</li>
+        <li>Output format: Animated GIF (optimized for web)</li>
+        <li>13+ meme styles to choose from</li>
+      </ul>
+    </div>
+  </main>
+
+  <%- include('partials/footer-loader') %>
+  <%- include('partials/auth-scripts') %>
+
+  <script>
+    let selectedStyle = '';
+
+    // File input handling
+    const videoFileInput = document.getElementById('videoFileInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const fileInfo = document.getElementById('fileInfo');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const resultContainer = document.getElementById('resultContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const downloadLink = document.getElementById('downloadLink');
+    const memePreview = document.getElementById('memePreview');
+
+    videoFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+        const maxSizeMB = 500;
+
+        const videoMimeTypes = ['video/mp4', 'video/x-msvideo', 'video/quicktime', 'video/webm', 'video/x-matroska', 'image/gif'];
+        const videoExtensions = ['.mp4', '.avi', '.mov', '.webm', '.mkv', '.wmv', '.3gp', '.flv', '.gif'];
+        const isVideo = videoMimeTypes.includes(file.type) ||
+                       videoExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+
+        if (file.size > maxSizeMB * 1024 * 1024) {
+          fileInfo.textContent = `File too large. Maximum size is ${maxSizeMB}MB.`;
+          fileInfo.className = 'file-info error';
+          generateBtn.disabled = true;
+        } else if (!isVideo) {
+          fileInfo.textContent = 'Please select a video or GIF file.';
+          fileInfo.className = 'file-info error';
+          generateBtn.disabled = true;
+        } else {
+          fileInfo.textContent = `Selected: ${file.name} (${fileSizeMB} MB)`;
+          fileInfo.className = 'file-info success';
+          updateGenerateButton();
+        }
+
+        resultContainer.classList.remove('active');
+        errorContainer.classList.remove('active');
+      } else {
+        fileInfo.textContent = '';
+        fileInfo.className = 'file-info';
+        generateBtn.disabled = true;
+      }
+    });
+
+    // Meme style selection
+    const styleOptions = document.querySelectorAll('.meme-style-option');
+    const styleOptionsDiv = document.getElementById('styleOptions');
+    const selectedStyleInput = document.getElementById('selectedStyle');
+
+    styleOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        styleOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        selectedStyle = option.dataset.style;
+        selectedStyleInput.value = selectedStyle;
+
+        hideAllOptions();
+        showStyleOptions(selectedStyle);
+
+        updateGenerateButton();
+      });
+    });
+
+    function hideAllOptions() {
+      document.getElementById('textOptions').style.display = 'none';
+      document.getElementById('zoomOptions').style.display = 'none';
+      document.getElementById('speedOptions').style.display = 'none';
+      document.getElementById('freezeOptions').style.display = 'none';
+      document.getElementById('textZoomOptions').style.display = 'none';
+      document.getElementById('textSpeedOptions').style.display = 'none';
+      styleOptionsDiv.classList.remove('active');
+    }
+
+    function showStyleOptions(style) {
+      styleOptionsDiv.classList.add('active');
+
+      switch(style) {
+        case 'text':
+          document.getElementById('textOptions').style.display = 'block';
+          break;
+        case 'zoom':
+          document.getElementById('zoomOptions').style.display = 'block';
+          break;
+        case 'speed':
+          document.getElementById('speedOptions').style.display = 'block';
+          break;
+        case 'freeze':
+          document.getElementById('freezeOptions').style.display = 'block';
+          break;
+        case 'text_zoom':
+          document.getElementById('textZoomOptions').style.display = 'block';
+          break;
+        case 'text_speed':
+          document.getElementById('textSpeedOptions').style.display = 'block';
+          break;
+        default:
+          styleOptionsDiv.classList.remove('active');
+      }
+    }
+
+    function updateGenerateButton() {
+      const hasFile = videoFileInput.files.length > 0;
+      const hasStyle = selectedStyle !== '';
+      generateBtn.disabled = !(hasFile && hasStyle);
+    }
+
+    // Generate meme
+    async function generateMeme() {
+      const file = videoFileInput.files[0];
+      if (!file || !selectedStyle) {
+        errorContainer.textContent = 'Please select a file and meme style.';
+        errorContainer.classList.add('active');
+        return;
+      }
+
+      if (!currentUser) {
+        window.location.href = '/?login=true';
+        return;
+      }
+
+      loadingContainer.classList.add('active');
+      resultContainer.classList.remove('active');
+      errorContainer.classList.remove('active');
+      generateBtn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('video', file);
+      formData.append('memeStyle', selectedStyle);
+
+      // Add style-specific parameters
+      if (selectedStyle === 'text' || selectedStyle === 'text_zoom' || selectedStyle === 'text_speed') {
+        const topText = selectedStyle === 'text' ? document.getElementById('topText').value :
+                       selectedStyle === 'text_zoom' ? document.getElementById('topTextZoom').value :
+                       document.getElementById('topTextSpeed').value;
+        const bottomText = selectedStyle === 'text' ? document.getElementById('bottomText').value :
+                          selectedStyle === 'text_zoom' ? document.getElementById('bottomTextZoom').value :
+                          document.getElementById('bottomTextSpeed').value;
+        if (topText) formData.append('topText', topText);
+        if (bottomText) formData.append('bottomText', bottomText);
+      }
+
+      if (selectedStyle === 'zoom' || selectedStyle === 'text_zoom') {
+        const zoomSpeed = selectedStyle === 'zoom' ? document.getElementById('zoomSpeed').value :
+                         document.getElementById('zoomSpeedCombined').value;
+        formData.append('zoomSpeed', zoomSpeed);
+      }
+
+      if (selectedStyle === 'speed' || selectedStyle === 'text_speed') {
+        const speedMultiplier = selectedStyle === 'speed' ? document.getElementById('speedMultiplier').value :
+                               document.getElementById('speedMultiplierCombined').value;
+        formData.append('speedMultiplier', speedMultiplier);
+      }
+
+      if (selectedStyle === 'freeze') {
+        formData.append('freezeDuration', document.getElementById('freezeDuration').value);
+      }
+
+      try {
+        const response = await fetch('/convert-to-meme', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
+
+        const contentType = response.headers.get('content-type');
+        let data;
+
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+
+        if (!response.ok) {
+          throw new Error(data.error || data.message || 'Generation failed');
+        }
+
+        loadingContainer.classList.remove('active');
+        resultContainer.classList.add('active');
+        memePreview.src = data.downloadUrl;
+        downloadLink.href = data.downloadUrl;
+        downloadLink.download = data.filename || 'meme.gif';
+      } catch (err) {
+        console.error('Generation error:', err);
+        loadingContainer.classList.remove('active');
+        errorContainer.textContent = err.message || 'An error occurred during meme generation. Please try again.';
+        errorContainer.classList.add('active');
+      } finally {
+        generateBtn.disabled = false;
+        updateGenerateButton();
+      }
+    }
+
+    generateBtn.addEventListener('click', generateMeme);
+  </script>
+</body>
+</html>

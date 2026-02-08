@@ -1,0 +1,25 @@
+<!-- Footer -->
+<div id="footer-container"></div>
+<script>
+  // Load footer
+  function loadFooter() {
+    const footerContainer = document.getElementById('footer-container');
+    if (!footerContainer) return;
+    fetch('/footer.html')
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        footerContainer.innerHTML = html;
+      })
+      .catch(err => console.error('Error loading footer:', err));
+  }
+
+  // Load footer when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadFooter);
+  } else {
+    loadFooter();
+  }
+</script>

@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Influzer.ai</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background: #0d0d0d;
+      color: #ececec;
+      min-height: 100vh;
+    }
+    .header {
+      background: #171717;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      color: #10a37f;
+      font-size: 24px;
+    }
+    .header .user-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: #171717;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .stat-card h3 {
+      color: #8e8e93;
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-card .value {
+      color: #fff;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .section {
+      background: #171717;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .section h2 {
+      color: #fff;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .search-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .search-bar input {
+      flex: 1;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 12px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .search-bar input:focus {
+      outline: none;
+      border-color: #10a37f;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    th {
+      color: #8e8e93;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    td {
+      color: #ececec;
+      font-size: 14px;
+    }
+    tr:hover {
+      background: #1f1f1f;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.admin {
+      background: #10a37f;
+      color: #fff;
+    }
+    .badge.blocked {
+      background: #ff453a;
+      color: #fff;
+    }
+    .badge.free {
+      background: #2a2a2a;
+      color: #8e8e93;
+    }
+    .badge.premium {
+      background: #6366f1;
+      color: #fff;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #10a37f;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #0d8a6a;
+    }
+    .btn-danger {
+      background: #ff453a;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #d32f2f;
+    }
+    .btn-secondary {
+      background: #2a2a2a;
+      color: #ececec;
+      border: 1px solid #3a3a3a;
+    }
+    .btn-secondary:hover {
+      background: #3a3a3a;
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #171717;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-content h3 {
+      color: #fff;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      color: #8e8e93;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 12px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #8e8e93;
+    }
+    .error {
+      background: #2a1f1f;
+      border: 1px solid #ff453a;
+      border-radius: 6px;
+      padding: 12px;
+      color: #ff453a;
+      margin-bottom: 20px;
+    }
+    .success {
+      background: #1f2a1f;
+      border: 1px solid #10a37f;
+      border-radius: 6px;
+      padding: 12px;
+      color: #10a37f;
+      margin-bottom: 20px;
+    }
+    .activity-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .activity-item {
+      padding: 12px;
+      border-bottom: 1px solid #2a2a2a;
+      font-size: 13px;
+    }
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .tab {
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      color: #8e8e93;
+      cursor: pointer;
+      font-size: 14px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tab.active {
+      color: #10a37f;
+      border-bottom-color: #10a37f;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Admin Dashboard</h1>
+    <div class="user-info">
+      <a href="/" style="color: #8e8e93; text-decoration: none;">← Back to Site</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Stats Overview -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <h3>Total Users</h3>
+        <div class="value" id="totalUsers">-</div>
+      </div>
+      <div class="stat-card">
+        <h3>Recent Signups (7d)</h3>
+        <div class="value" id="recentSignups">-</div>
+      </div>
+      <div class="stat-card">
+        <h3>Blocked Users</h3>
+        <div class="value" id="blockedUsers">-</div>
+      </div>
+      <div class="stat-card">
+        <h3>Blocked IPs</h3>
+        <div class="value" id="blockedIPs">-</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="users">Users</button>
+      <button class="tab" data-tab="abuse">Abuse Tracking</button>
+      <button class="tab" data-tab="activity">Top Activity</button>
+    </div>
+
+    <!-- Users Tab -->
+    <div class="tab-content active" id="usersTab">
+      <div class="section">
+        <h2>User Management</h2>
+        <div class="search-bar">
+          <input type="text" id="userSearch" placeholder="Search by email or name...">
+          <button class="btn btn-primary" onclick="searchUsers()">Search</button>
+        </div>
+        <div id="usersTableContainer">
+          <div class="loading">Loading users...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abuse Tracking Tab -->
+    <div class="tab-content" id="abuseTab">
+      <div class="section">
+        <h2>Abuse Tracking</h2>
+        <div id="abuseTableContainer">
+          <div class="loading">Loading abuse records...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Tab -->
+    <div class="tab-content" id="activityTab">
+      <div class="section">
+        <h2>Top Users by Activity (Last 7 Days)</h2>
+        <div id="topUsersContainer">
+          <div class="loading">Loading activity...</div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>Top IPs by Activity (Last 7 Days)</h2>
+        <div id="topIPsContainer">
+          <div class="loading">Loading IP activity...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Details Modal -->
+  <div class="modal" id="userModal">
+    <div class="modal-content">
+      <h3 id="userModalTitle">User Details</h3>
+      <div id="userModalContent">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block User Modal -->
+  <div class="modal" id="blockUserModal">
+    <div class="modal-content">
+      <h3>Block User</h3>
+      <form id="blockUserForm" onsubmit="handleBlockUser(event)">
+        <div class="form-group">
+          <label>Reason (optional)</label>
+          <textarea id="blockReason" placeholder="Enter reason for blocking..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('blockUserModal')">Cancel</button>
+          <button type="submit" class="btn btn-danger">Block User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Set Limits Modal -->
+  <div class="modal" id="limitsModal">
+    <div class="modal-content">
+      <h3>Set Custom User Limits</h3>
+      <form id="limitsForm" onsubmit="handleSetLimits(event)">
+        <div class="form-group">
+          <label>Daily Limit</label>
+          <input type="number" id="dailyLimit" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Hourly Limit</label>
+          <input type="number" id="hourlyLimit" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <textarea id="limitsNotes" placeholder="Add notes about this limit..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('limitsModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Set Limits</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Block IP Modal -->
+  <div class="modal" id="blockIPModal">
+    <div class="modal-content">
+      <h3>Block IP Address</h3>
+      <form id="blockIPForm" onsubmit="handleBlockIP(event)">
+        <div class="form-group">
+          <label>Duration (hours)</label>
+          <input type="number" id="blockDuration" value="24" min="1" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('blockIPModal')">Cancel</button>
+          <button type="submit" class="btn btn-danger">Block IP</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentUserId = null;
+    let currentIP = null;
+
+    // Check authentication and admin status on load
+    async function checkAuth() {
+      try {
+        // Check if user is authenticated
+        const authRes = await fetch('/auth/me');
+        if (!authRes.ok) {
+          window.location.href = '/?redirect=/admin';
+          return;
+        }
+
+        // Check if user is admin
+        const adminRes = await fetch('/admin/api/check');
+        if (!adminRes.ok) {
+          alert('Access denied. Admin privileges required.');
+          window.location.href = '/';
+          return;
+        }
+
+        const { isAdmin } = await adminRes.json();
+        if (!isAdmin) {
+          alert('Access denied. Admin privileges required.');
+          window.location.href = '/';
+          return;
+        }
+      } catch (err) {
+        console.error('Auth check error:', err);
+        window.location.href = '/';
+      }
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`${tabName}Tab`).classList.add('active');
+        
+        if (tabName === 'abuse') loadAbuseRecords();
+        if (tabName === 'activity') loadActivity();
+      });
+    });
+
+    // Load dashboard stats
+    async function loadStats() {
+      try {
+        const res = await fetch('/admin/api/stats');
+        if (!res.ok) throw new Error('Failed to load stats');
+        const data = await res.json();
+        
+        document.getElementById('totalUsers').textContent = data.users.total;
+        document.getElementById('recentSignups').textContent = data.users.recent;
+        document.getElementById('blockedUsers').textContent = data.users.blocked;
+        document.getElementById('blockedIPs').textContent = data.blocks.ips;
+      } catch (err) {
+        console.error('Error loading stats:', err);
+      }
+    }
+
+    // Load users
+    async function loadUsers(search = '') {
+      const container = document.getElementById('usersTableContainer');
+      container.innerHTML = '<div class="loading">Loading users...</div>';
+      
+      try {
+        const url = search 
+          ? `/admin/api/users?search=${encodeURIComponent(search)}`
+          : '/admin/api/users';
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Failed to load users');
+        const data = await res.json();
+        
+        if (data.users.length === 0) {
+          container.innerHTML = '<div class="loading">No users found</div>';
+          return;
+        }
+        
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Tier</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        data.users.forEach(user => {
+          const created = new Date(user.created_at).toLocaleDateString();
+          const statusBadges = [];
+          if (user.is_admin) statusBadges.push('<span class="badge admin">Admin</span>');
+          if (user.is_blocked) statusBadges.push('<span class="badge blocked">Blocked</span>');
+          if (!user.email_verified) statusBadges.push('<span class="badge" style="background: #f59e0b; color: #fff;">Unverified</span>');
+          
+          html += `
+            <tr>
+              <td>${user.id}</td>
+              <td>${user.email || '-'}</td>
+              <td>${user.name || '-'}</td>
+              <td><span class="badge ${user.subscription_tier === 'premium' ? 'premium' : 'free'}">${user.subscription_tier || 'free'}</span></td>
+              <td>${statusBadges.join(' ')}</td>
+              <td>${created}</td>
+              <td>
+                <button class="btn btn-sm btn-primary" onclick="viewUser(${user.id})">View</button>
+                ${user.is_blocked 
+                  ? `<button class="btn btn-sm btn-secondary" onclick="unblockUser(${user.id})">Unblock</button>`
+                  : `<button class="btn btn-sm btn-danger" onclick="openBlockUserModal(${user.id})">Block</button>`
+                }
+              </td>
+            </tr>
+          `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">Error loading users: ${err.message}</div>`;
+      }
+    }
+
+    // View user details
+    async function viewUser(userId) {
+      const modal = document.getElementById('userModal');
+      const content = document.getElementById('userModalContent');
+      modal.classList.add('active');
+      content.innerHTML = '<div class="loading">Loading user details...</div>';
+      
+      try {
+        const res = await fetch(`/admin/api/users/${userId}`);
+        if (!res.ok) throw new Error('Failed to load user details');
+        const data = await res.json();
+        
+        const user = data.user;
+        const activity = data.activity || [];
+        const customLimits = data.customLimits;
+        
+        let html = `
+          <div style="margin-bottom: 24px;">
+            <h4 style="color: #fff; margin-bottom: 12px;">User Information</h4>
+            <p><strong>Email:</strong> ${user.email || '-'}</p>
+            <p><strong>Name:</strong> ${user.name || '-'}</p>
+            <p><strong>Tier:</strong> ${user.subscription_tier || 'free'}</p>
+            <p><strong>Verified:</strong> ${user.email_verified ? 'Yes' : 'No'}</p>
+            <p><strong>Admin:</strong> ${user.is_admin ? 'Yes' : 'No'}</p>
+            <p><strong>Blocked:</strong> ${user.is_blocked ? `Yes - ${user.blocked_reason || 'No reason'}` : 'No'}</p>
+            <p><strong>Created:</strong> ${new Date(user.created_at).toLocaleString()}</p>
+            <p><strong>Last Login:</strong> ${user.last_login ? new Date(user.last_login).toLocaleString() : 'Never'}</p>
+          </div>
+          
+          <div style="margin-bottom: 24px;">
+            <h4 style="color: #fff; margin-bottom: 12px;">Custom Limits</h4>
+            ${customLimits 
+              ? `<p>Daily: ${customLimits.daily_limit}, Hourly: ${customLimits.hourly_limit}</p>
+                 ${customLimits.notes ? `<p><strong>Notes:</strong> ${customLimits.notes}</p>` : ''}
+                 <button class="btn btn-sm btn-secondary" onclick="removeCustomLimits(${userId})">Remove Custom Limits</button>`
+              : '<p>No custom limits set</p>'
+            }
+            <button class="btn btn-sm btn-primary" onclick="openLimitsModal(${userId})" style="margin-top: 8px;">Set Custom Limits</button>
+          </div>
+          
+          <div>
+            <h4 style="color: #fff; margin-bottom: 12px;">Recent Activity (Last 50)</h4>
+            <div class="activity-list">
+        `;
+        
+        if (activity.length === 0) {
+          html += '<p style="color: #8e8e93;">No activity recorded</p>';
+        } else {
+          activity.forEach(item => {
+            html += `
+              <div class="activity-item">
+                <strong>${item.endpoint}</strong> - ${item.ip_address} - ${new Date(item.created_at).toLocaleString()}
+              </div>
+            `;
+          });
+        }
+        
+        html += `
+            </div>
+          </div>
+          
+          <div class="form-actions" style="margin-top: 24px;">
+            <button class="btn btn-secondary" onclick="closeModal('userModal')">Close</button>
+            ${user.is_blocked 
+              ? `<button class="btn btn-primary" onclick="unblockUser(${userId})">Unblock User</button>`
+              : `<button class="btn btn-danger" onclick="openBlockUserModal(${userId})">Block User</button>`
+            }
+            <button class="btn btn-primary" onclick="toggleAdminStatus(${userId}, ${!user.is_admin})">
+              ${user.is_admin ? 'Remove Admin' : 'Make Admin'}
+            </button>
+          </div>
+        `;
+        
+        content.innerHTML = html;
+      } catch (err) {
+        content.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      }
+    }
+
+    // Block user
+    function openBlockUserModal(userId) {
+      currentUserId = userId;
+      document.getElementById('blockUserModal').classList.add('active');
+    }
+
+    async function handleBlockUser(e) {
+      e.preventDefault();
+      const reason = document.getElementById('blockReason').value;
+      
+      try {
+        const res = await fetch(`/admin/api/users/${currentUserId}/block`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reason }),
+        });
+        
+        if (!res.ok) throw new Error('Failed to block user');
+        
+        closeModal('blockUserModal');
+        loadUsers();
+        loadStats();
+        if (document.getElementById('userModal').classList.contains('active')) {
+          viewUser(currentUserId);
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    async function unblockUser(userId) {
+      if (!confirm('Are you sure you want to unblock this user?')) return;
+      
+      try {
+        const res = await fetch(`/admin/api/users/${userId}/unblock`, {
+          method: 'POST',
+        });
+        
+        if (!res.ok) throw new Error('Failed to unblock user');
+        
+        loadUsers();
+        loadStats();
+        if (document.getElementById('userModal').classList.contains('active')) {
+          viewUser(userId);
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    // Custom limits
+    function openLimitsModal(userId) {
+      currentUserId = userId;
+      document.getElementById('limitsModal').classList.add('active');
+    }
+
+    async function handleSetLimits(e) {
+      e.preventDefault();
+      const dailyLimit = parseInt(document.getElementById('dailyLimit').value);
+      const hourlyLimit = parseInt(document.getElementById('hourlyLimit').value);
+      const notes = document.getElementById('limitsNotes').value;
+      
+      try {
+        const res = await fetch(`/admin/api/users/${currentUserId}/limits`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dailyLimit, hourlyLimit, notes }),
+        });
+        
+        if (!res.ok) throw new Error('Failed to set limits');
+        
+        closeModal('limitsModal');
+        viewUser(currentUserId);
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    async function removeCustomLimits(userId) {
+      if (!confirm('Remove custom limits for this user?')) return;
+      
+      try {
+        const res = await fetch(`/admin/api/users/${userId}/limits`, {
+          method: 'DELETE',
+        });
+        
+        if (!res.ok) throw new Error('Failed to remove limits');
+        
+        viewUser(userId);
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    // Admin status
+    async function toggleAdminStatus(userId, isAdmin) {
+      if (!confirm(`Are you sure you want to ${isAdmin ? 'make' : 'remove'} this user as admin?`)) return;
+      
+      try {
+        const res = await fetch(`/admin/api/users/${userId}/admin`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isAdmin }),
+        });
+        
+        if (!res.ok) throw new Error('Failed to update admin status');
+        
+        viewUser(userId);
+        loadUsers();
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    // IP management
+    async function viewIP(ipAddress) {
+      currentIP = ipAddress;
+      const modal = document.getElementById('userModal');
+      const content = document.getElementById('userModalContent');
+      modal.classList.add('active');
+      content.innerHTML = '<div class="loading">Loading IP details...</div>';
+      
+      try {
+        const res = await fetch(`/admin/api/ips/${encodeURIComponent(ipAddress)}`);
+        if (!res.ok) throw new Error('Failed to load IP details');
+        const data = await res.json();
+        
+        let html = `
+          <div style="margin-bottom: 24px;">
+            <h4 style="color: #fff; margin-bottom: 12px;">IP Address: ${ipAddress}</h4>
+            <p><strong>Blocked:</strong> ${data.isBlocked ? 'Yes' : 'No'}</p>
+            ${data.abuseRecord ? `<p><strong>Violations:</strong> ${data.abuseRecord.count}</p>` : ''}
+          </div>
+          
+          <div>
+            <h4 style="color: #fff; margin-bottom: 12px;">Recent Activity (Last 50)</h4>
+            <div class="activity-list">
+        `;
+        
+        if (data.activity.length === 0) {
+          html += '<p style="color: #8e8e93;">No activity recorded</p>';
+        } else {
+          data.activity.forEach(item => {
+            html += `
+              <div class="activity-item">
+                <strong>${item.endpoint}</strong> - User: ${item.user_id || 'Anonymous'} - ${new Date(item.created_at).toLocaleString()}
+              </div>
+            `;
+          });
+        }
+        
+        html += `
+            </div>
+          </div>
+          
+          <div class="form-actions" style="margin-top: 24px;">
+            <button class="btn btn-secondary" onclick="closeModal('userModal')">Close</button>
+            ${data.isBlocked 
+              ? `<button class="btn btn-primary" onclick="unblockIP('${ipAddress}')">Unblock IP</button>`
+              : `<button class="btn btn-danger" onclick="openBlockIPModal('${ipAddress}')">Block IP</button>`
+            }
+          </div>
+        `;
+        
+        content.innerHTML = html;
+      } catch (err) {
+        content.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      }
+    }
+
+    function openBlockIPModal(ipAddress) {
+      currentIP = ipAddress;
+      document.getElementById('blockIPModal').classList.add('active');
+    }
+
+    async function handleBlockIP(e) {
+      e.preventDefault();
+      const durationHours = parseInt(document.getElementById('blockDuration').value);
+      
+      try {
+        const res = await fetch(`/admin/api/ips/${encodeURIComponent(currentIP)}/block`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ durationHours }),
+        });
+        
+        if (!res.ok) throw new Error('Failed to block IP');
+        
+        closeModal('blockIPModal');
+        loadStats();
+        if (document.getElementById('userModal').classList.contains('active')) {
+          viewIP(currentIP);
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    async function unblockIP(ipAddress) {
+      if (!confirm('Are you sure you want to unblock this IP?')) return;
+      
+      try {
+        const res = await fetch(`/admin/api/ips/${encodeURIComponent(ipAddress)}/unblock`, {
+          method: 'POST',
+        });
+        
+        if (!res.ok) throw new Error('Failed to unblock IP');
+        
+        loadStats();
+        if (document.getElementById('userModal').classList.contains('active')) {
+          viewIP(ipAddress);
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    // Abuse records
+    async function loadAbuseRecords() {
+      const container = document.getElementById('abuseTableContainer');
+      container.innerHTML = '<div class="loading">Loading abuse records...</div>';
+      
+      try {
+        const res = await fetch('/admin/api/abuse');
+        if (!res.ok) throw new Error('Failed to load abuse records');
+        const data = await res.json();
+        
+        if (data.records.length === 0) {
+          container.innerHTML = '<div class="loading">No abuse records found</div>';
+          return;
+        }
+        
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>Type</th>
+                <th>Violations</th>
+                <th>Last Occurrence</th>
+                <th>Blocked Until</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        data.records.forEach(record => {
+          const blockedUntil = record.blocked_until 
+            ? new Date(record.blocked_until).toLocaleString()
+            : '-';
+          const isBlocked = record.blocked_until && new Date(record.blocked_until) > new Date();
+          
+          html += `
+            <tr>
+              <td>${record.identifier}</td>
+              <td>${record.identifier_type}</td>
+              <td>${record.count}</td>
+              <td>${new Date(record.last_occurrence).toLocaleString()}</td>
+              <td>${isBlocked ? `<span class="badge blocked">${blockedUntil}</span>` : blockedUntil}</td>
+            </tr>
+          `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      }
+    }
+
+    // Activity
+    async function loadActivity() {
+      try {
+        const res = await fetch('/admin/api/stats');
+        if (!res.ok) throw new Error('Failed to load activity');
+        const data = await res.json();
+        
+        // Top users
+        const topUsersContainer = document.getElementById('topUsersContainer');
+        if (data.activity.topUsers.length === 0) {
+          topUsersContainer.innerHTML = '<div class="loading">No activity</div>';
+        } else {
+          let html = '<table><thead><tr><th>User</th><th>Email</th><th>Activity Count</th><th>Actions</th></tr></thead><tbody>';
+          data.activity.topUsers.forEach(user => {
+            html += `
+              <tr>
+                <td>${user.name || '-'}</td>
+                <td>${user.email || '-'}</td>
+                <td>${user.activity_count || 0}</td>
+                <td><button class="btn btn-sm btn-primary" onclick="viewUser(${user.id})">View</button></td>
+              </tr>
+            `;
+          });
+          html += '</tbody></table>';
+          topUsersContainer.innerHTML = html;
+        }
+        
+        // Top IPs
+        const topIPsContainer = document.getElementById('topIPsContainer');
+        if (data.activity.topIPs.length === 0) {
+          topIPsContainer.innerHTML = '<div class="loading">No IP activity</div>';
+        } else {
+          let html = '<table><thead><tr><th>IP Address</th><th>Activity Count</th><th>Unique Users</th><th>Actions</th></tr></thead><tbody>';
+          data.activity.topIPs.forEach(ip => {
+            html += `
+              <tr>
+                <td>${ip.ip_address}</td>
+                <td>${ip.activity_count}</td>
+                <td>${ip.unique_users || 0}</td>
+                <td><button class="btn btn-sm btn-primary" onclick="viewIP('${ip.ip_address}')">View</button></td>
+              </tr>
+            `;
+          });
+          html += '</tbody></table>';
+          topIPsContainer.innerHTML = html;
+        }
+      } catch (err) {
+        console.error('Error loading activity:', err);
+      }
+    }
+
+    // Search
+    function searchUsers() {
+      const search = document.getElementById('userSearch').value;
+      loadUsers(search);
+    }
+
+    document.getElementById('userSearch').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') searchUsers();
+    });
+
+    // Modal helpers
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+      if (modalId === 'blockUserModal') {
+        document.getElementById('blockReason').value = '';
+        currentUserId = null;
+      }
+      if (modalId === 'limitsModal') {
+        document.getElementById('limitsForm').reset();
+        currentUserId = null;
+      }
+      if (modalId === 'blockIPModal') {
+        currentIP = null;
+      }
+    }
+
+    // Close modals on outside click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+        }
+      });
+    });
+
+    // Initialize
+    checkAuth().then(() => {
+      loadStats();
+      loadUsers();
+    });
+  </script>
+</body>
+</html>
+
