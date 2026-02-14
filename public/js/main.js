@@ -1155,6 +1155,11 @@
           setTimeout(generateLogo, 100);
         }
         
+        // Open signup modal if redirected from a tool (e.g. video-metadata) to sign up for download
+        if (params.get('signup') === 'true' && typeof window.openSignupModal === 'function') {
+          window.openSignupModal();
+        }
+        
         // Check authentication status on load
         checkAuthStatus();
         
@@ -1214,6 +1219,12 @@
                 a.click();
                 document.body.removeChild(a);
               }, 300);
+            }
+            // Redirect to returnTo (e.g. /video-metadata) if user came from a tool to sign up
+            const returnTo = new URLSearchParams(location.search).get('returnTo');
+            if (returnTo && returnTo.startsWith('/')) {
+              window.location.href = returnTo;
+              return;
             }
           } else {
             currentUser = null;
@@ -1396,6 +1407,12 @@
               // If still not authenticated, show login modal
               if (!currentUser) {
                 openLoginModal();
+              } else {
+                // Redirect to returnTo if user signed up from a tool (e.g. video-metadata download)
+                const returnTo = new URLSearchParams(location.search).get('returnTo');
+                if (returnTo && returnTo.startsWith('/')) {
+                  window.location.href = returnTo;
+                }
               }
             }, 2000);
           } else {

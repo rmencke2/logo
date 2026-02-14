@@ -375,14 +375,6 @@
       <p>Extract detailed technical information from your video files</p>
     </div>
 
-    <div id="authMessage" class="auth-message" style="display: none;">
-      <p>Please sign in to use the metadata extractor</p>
-      <div class="auth-buttons">
-        <a href="/" class="auth-btn">Sign In</a>
-        <a href="/" class="auth-btn secondary">Sign Up</a>
-      </div>
-    </div>
-
     <div id="extractorCard" class="card">
       <div class="form-group">
         <label for="videoFileInput">Select Video File</label>
@@ -418,27 +410,42 @@
 
   <script>
     let currentUser = null;
+    let lastMetadata = null; // Store for download when user signs up
 
-    // Check authentication
+    // Check authentication (page works without login; login needed only for download)
     async function checkAuth() {
       try {
         const response = await fetch('/auth/me', { credentials: 'include' });
         if (response.ok) {
           const data = await response.json();
           currentUser = data.user;
-          document.getElementById('authMessage').style.display = 'none';
-          document.getElementById('extractorCard').style.display = 'block';
+          // Trigger pending download if user just signed up to download
+          const pending = sessionStorage.getItem('pendingMetadataDownload');
+          if (pending && currentUser) {
+            sessionStorage.removeItem('pendingMetadataDownload');
+            const meta = JSON.parse(pending);
+            setTimeout(() => triggerMetadataDownload(meta), 300);
+          }
         } else {
           currentUser = null;
-          document.getElementById('authMessage').style.display = 'block';
-          document.getElementById('extractorCard').style.display = 'none';
         }
       } catch (err) {
         console.error('Auth check error:', err);
         currentUser = null;
-        document.getElementById('authMessage').style.display = 'block';
-        document.getElementById('extractorCard').style.display = 'none';
       }
+    }
+
+    function triggerMetadataDownload(meta) {
+      const blob = new Blob([JSON.stringify(meta, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (meta.filename || 'metadata').replace(/\.[^/.]+$/, '') + '-metadata.json';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     // File input handling
@@ -494,11 +501,6 @@
         return;
       }
 
-      if (!currentUser) {
-        window.location.href = '/';
-        return;
-      }
-
       // Reset UI
       loadingContainer.classList.add('active');
       metadataContainer.classList.remove('active');
@@ -533,6 +535,7 @@
         }
 
         // Display metadata
+        lastMetadata = data.metadata;
         displayMetadata(data.metadata);
         loadingContainer.classList.remove('active');
         metadataContainer.classList.add('active');
@@ -549,6 +552,25 @@
     function displayMetadata(meta) {
       const container = metadataContainer;
       container.innerHTML = '';
+
+      // Download button (requires sign-up/login)
+      const downloadRow = document.createElement('div');
+      downloadRow.className = 'metadata-section';
+      downloadRow.style.marginBottom = '20px';
+      downloadRow.innerHTML = `
+        <button id="downloadJsonBtn" class="btn" style="background: #10a37f;">Download as JSON</button>
+      `;
+      container.appendChild(downloadRow);
+      document.getElementById('downloadJsonBtn').addEventListener('click', () => {
+        if (currentUser) {
+          triggerMetadataDownload(meta);
+        } else {
+          const toStore = { ...meta };
+          if (toStore.raw) delete toStore.raw;
+          sessionStorage.setItem('pendingMetadataDownload', JSON.stringify(toStore));
+          window.location.href = '/?signup=true&returnTo=/video-metadata';
+        }
+      });
 
       // File Information
       const fileSection = document.createElement('div');

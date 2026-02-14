@@ -231,11 +231,10 @@ function initializeVideoService(app) {
     res.sendFile(path.join(__dirname, '..', 'public', 'video-metadata.html'));
   });
 
-  // Extract video metadata endpoint
+  // Extract video metadata endpoint (no auth required - auth only for download)
   app.post(
     '/extract-video-metadata',
     trackService('video-metadata'),
-    requireAuth,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
     async (req, res) => {
