@@ -382,14 +382,6 @@
       <p>Convert your AVI videos to MP4 format quickly and easily</p>
     </div>
 
-    <div id="authMessage" class="auth-message" style="display: none;">
-      <p>Please sign in to use the video converter</p>
-      <div class="auth-buttons">
-        <a href="/" class="auth-btn">Sign In</a>
-        <a href="/" class="auth-btn secondary">Sign Up</a>
-      </div>
-    </div>
-
     <div id="converterCard" class="card">
       <div class="form-group">
         <label for="aviFileInput">Select AVI File</label>
@@ -433,25 +425,33 @@
   <script>
     let currentUser = null;
 
-    // Check authentication
+    // Check authentication (page works without login; login needed only for download)
     async function checkAuth() {
       try {
         const response = await fetch('/auth/me', { credentials: 'include' });
         if (response.ok) {
           const data = await response.json();
           currentUser = data.user;
-          document.getElementById('authMessage').style.display = 'none';
-          document.getElementById('converterCard').style.display = 'block';
+          const pending = sessionStorage.getItem('pendingVideoDownload');
+          if (pending && currentUser) {
+            sessionStorage.removeItem('pendingVideoDownload');
+            const { url, filename } = JSON.parse(pending);
+            setTimeout(() => {
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = filename || 'converted-video.mp4';
+              a.style.display = 'none';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }, 300);
+          }
         } else {
           currentUser = null;
-          document.getElementById('authMessage').style.display = 'block';
-          document.getElementById('converterCard').style.display = 'none';
         }
       } catch (err) {
         console.error('Auth check error:', err);
         currentUser = null;
-        document.getElementById('authMessage').style.display = 'block';
-        document.getElementById('converterCard').style.display = 'none';
       }
     }
 
@@ -505,11 +505,6 @@
         return;
       }
 
-      if (!currentUser) {
-        window.location.href = '/';
-        return;
-      }
-
       // Reset UI
       progressContainer.classList.add('active');
       resultContainer.classList.remove('active');
@@ -550,6 +545,8 @@
         resultContainer.classList.add('active');
         downloadLink.href = data.downloadUrl;
         downloadLink.download = data.filename || 'converted-video.mp4';
+        downloadLink.dataset.downloadUrl = data.downloadUrl;
+        downloadLink.dataset.filename = data.filename || 'converted-video.mp4';
       } catch (err) {
         console.error('Conversion error:', err);
         progressContainer.classList.remove('active');
@@ -561,6 +558,19 @@
     }
 
     convertBtn.addEventListener('click', convertVideo);
+
+    // Gate download behind sign-up/login
+    downloadLink.addEventListener('click', (e) => {
+      if (!currentUser) {
+        e.preventDefault();
+        const url = downloadLink.dataset.downloadUrl || downloadLink.href;
+        const filename = downloadLink.dataset.filename || 'converted-video.mp4';
+        if (url && url !== '#') {
+          sessionStorage.setItem('pendingVideoDownload', JSON.stringify({ url, filename }));
+          window.location.href = '/?signup=true&returnTo=/video-converter';
+        }
+      }
+    });
 
     // Initialize
     checkAuth();

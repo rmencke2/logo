@@ -64,11 +64,10 @@ function initializeVideoService(app) {
     res.sendFile(path.join(__dirname, '..', 'public', 'video-converter.html'));
   });
 
-  // Convert AVI to MP4 endpoint
+  // Convert AVI to MP4 endpoint (no auth required - auth only for download)
   app.post(
     '/convert-avi-to-mp4',
     trackService('avi-to-mp4'),
-    requireAuth,
     abuseProtectionMiddleware,
     upload.single('video'),
     async (req, res) => {
