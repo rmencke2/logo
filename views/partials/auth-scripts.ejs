@@ -3,27 +3,59 @@
 
   // Check authentication
   async function checkAuth() {
+    const noAuthGate = document.body.dataset.noAuthGate === 'true';
     try {
       const response = await fetch('/auth/me', { credentials: 'include' });
       if (response.ok) {
         const data = await response.json();
         currentUser = data.user;
-        document.getElementById('authMessage')?.style.setProperty('display', 'none');
-        document.getElementById('toolCard')?.style.setProperty('display', 'block');
+        if (!noAuthGate) {
+          document.getElementById('authMessage')?.style.setProperty('display', 'none');
+          document.getElementById('toolCard')?.style.setProperty('display', 'block');
+        }
         updateAuthUI();
+        if (noAuthGate && currentUser) {
+          if (window.location.pathname === '/video-metadata') {
+            const pending = sessionStorage.getItem('pendingMetadataDownload');
+            if (pending) {
+              sessionStorage.removeItem('pendingMetadataDownload');
+              const meta = JSON.parse(pending);
+              setTimeout(() => typeof triggerMetadataDownload === 'function' && triggerMetadataDownload(meta), 300);
+            }
+          } else if (window.location.pathname === '/video-converter') {
+            const pending = sessionStorage.getItem('pendingVideoDownload');
+            if (pending) {
+              sessionStorage.removeItem('pendingVideoDownload');
+              const { url, filename } = JSON.parse(pending);
+              setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename || 'converted-video.mp4';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+              }, 300);
+            }
+          }
+        }
         return true;
       } else {
         currentUser = null;
-        document.getElementById('authMessage')?.style.setProperty('display', 'block');
-        document.getElementById('toolCard')?.style.setProperty('display', 'none');
+        if (!noAuthGate) {
+          document.getElementById('authMessage')?.style.setProperty('display', 'block');
+          document.getElementById('toolCard')?.style.setProperty('display', 'none');
+        }
         updateAuthUI();
         return false;
       }
     } catch (err) {
       console.error('Auth check error:', err);
       currentUser = null;
-      document.getElementById('authMessage')?.style.setProperty('display', 'block');
-      document.getElementById('toolCard')?.style.setProperty('display', 'none');
+      if (!noAuthGate) {
+        document.getElementById('authMessage')?.style.setProperty('display', 'block');
+        document.getElementById('toolCard')?.style.setProperty('display', 'none');
+      }
       updateAuthUI();
       return false;
     }

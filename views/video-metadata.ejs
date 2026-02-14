@@ -72,7 +72,7 @@
     }
   </style>
 </head>
-<body class="service-page">
+<body class="service-page" data-no-auth-gate="true">
   <%- include('partials/header', { currentPage: 'video-metadata' }) %>
 
   <main class="service-container" style="max-width: 900px;">
@@ -81,14 +81,6 @@
     <div class="service-header">
       <h1 class="service-title">Video Metadata Extractor</h1>
       <p class="service-subtitle">Extract detailed technical information from your video files</p>
-    </div>
-
-    <div id="authMessage" class="auth-message" style="display: none;">
-      <p>Please sign in to use the metadata extractor</p>
-      <div class="auth-buttons-inline">
-        <button class="cta-button primary" onclick="showLoginModal()">Sign In</button>
-        <button class="cta-button secondary" onclick="showSignupModal()">Sign Up</button>
-      </div>
     </div>
 
     <div id="toolCard" class="service-card">
@@ -179,11 +171,6 @@
         return;
       }
 
-      if (!currentUser) {
-        window.location.href = '/?login=true';
-        return;
-      }
-
       loadingContainer.classList.add('active');
       metadataContainer.classList.remove('active');
       errorContainer.classList.remove('active');
@@ -227,9 +214,39 @@
       }
     }
 
+    function triggerMetadataDownload(meta) {
+      const toDownload = meta.raw ? { ...meta, raw: undefined } : meta;
+      const blob = new Blob([JSON.stringify(toDownload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (meta.filename || 'metadata').replace(/\.[^/.]+$/, '') + '-metadata.json';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     function displayMetadata(meta) {
       const container = metadataContainer;
       container.innerHTML = '';
+
+      // Download button (requires sign-up/login)
+      const downloadRow = document.createElement('div');
+      downloadRow.className = 'metadata-section';
+      downloadRow.style.marginBottom = '20px';
+      downloadRow.innerHTML = '<button id="downloadJsonBtn" class="service-btn">Download as JSON</button>';
+      container.appendChild(downloadRow);
+      document.getElementById('downloadJsonBtn').addEventListener('click', () => {
+        if (currentUser) {
+          triggerMetadataDownload(meta);
+        } else {
+          const toStore = meta.raw ? { ...meta, raw: undefined } : meta;
+          sessionStorage.setItem('pendingMetadataDownload', JSON.stringify(toStore));
+          window.location.href = '/?signup=true&returnTo=/video-metadata';
+        }
+      });
 
       // File Information
       const fileSection = document.createElement('div');

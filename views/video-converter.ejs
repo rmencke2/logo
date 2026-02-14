@@ -3,7 +3,7 @@
 <head>
   <%- include('partials/head', { title: 'AVI to MP4 Converter', description: 'Convert your AVI videos to MP4 format quickly and easily with our free online converter.' }) %>
 </head>
-<body class="service-page">
+<body class="service-page" data-no-auth-gate="true">
   <%- include('partials/header', { currentPage: 'video-converter' }) %>
 
   <main class="service-container">
@@ -12,14 +12,6 @@
     <div class="service-header">
       <h1 class="service-title">AVI to MP4 Converter</h1>
       <p class="service-subtitle">Convert your AVI videos to MP4 format quickly and easily</p>
-    </div>
-
-    <div id="authMessage" class="auth-message" style="display: none;">
-      <p>Please sign in to use the video converter</p>
-      <div class="auth-buttons-inline">
-        <button class="cta-button primary" onclick="showLoginModal()">Sign In</button>
-        <button class="cta-button secondary" onclick="showSignupModal()">Sign Up</button>
-      </div>
     </div>
 
     <div id="toolCard" class="service-card">
@@ -115,11 +107,6 @@
         return;
       }
 
-      if (!currentUser) {
-        window.location.href = '/?login=true';
-        return;
-      }
-
       progressContainer.classList.add('active');
       resultContainer.classList.remove('active');
       errorContainer.classList.remove('active');
@@ -156,6 +143,8 @@
         resultContainer.classList.add('active');
         downloadLink.href = data.downloadUrl;
         downloadLink.download = data.filename || 'converted-video.mp4';
+        downloadLink.dataset.downloadUrl = data.downloadUrl;
+        downloadLink.dataset.filename = data.filename || 'converted-video.mp4';
       } catch (err) {
         console.error('Conversion error:', err);
         progressContainer.classList.remove('active');
@@ -167,6 +156,18 @@
     }
 
     convertBtn.addEventListener('click', convertVideo);
+
+    downloadLink.addEventListener('click', (e) => {
+      if (!currentUser) {
+        e.preventDefault();
+        const url = downloadLink.dataset.downloadUrl || downloadLink.href;
+        const filename = downloadLink.dataset.filename || 'converted-video.mp4';
+        if (url && url !== '#') {
+          sessionStorage.setItem('pendingVideoDownload', JSON.stringify({ url, filename }));
+          window.location.href = '/?signup=true&returnTo=/video-converter';
+        }
+      }
+    });
   </script>
 </body>
 </html>
