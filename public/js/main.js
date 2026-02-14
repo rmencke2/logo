@@ -1042,9 +1042,15 @@
           heroSignupBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (typeof window.openSignupModal === 'function') {
-              window.openSignupModal();
-            }
+            // Same action as startLogoBtn: show logo generator to create your business and logo
+            const homepage = document.getElementById('homepage');
+            const logoGenerator = document.getElementById('logoGenerator');
+            if (homepage) homepage.style.display = 'none';
+            if (logoGenerator) logoGenerator.style.display = 'block';
+            setTimeout(() => {
+              if (typeof loadAllFooters === 'function') loadAllFooters();
+              if (window.i18n && window.i18n.updateTranslations) window.i18n.updateTranslations();
+            }, 100);
           });
         }
         
