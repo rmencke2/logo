@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="788" viewBox="0 0 1400 788" role="img" aria-labelledby="title desc">
+  <title id="title">AI strategy operating plan visual</title>
+  <desc id="desc">Abstract visualization of workflow optimization, cost, revenue, and ROI.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="788" fill="url(#bg)"/>
+  <g opacity="0.08">
+    <circle cx="120" cy="110" r="180" fill="#22d3ee"/>
+    <circle cx="1320" cy="720" r="220" fill="#a78bfa"/>
+  </g>
+
+  <rect x="100" y="120" width="1200" height="548" rx="18" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+  <text x="150" y="190" fill="#e2e8f0" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700">AI Strategy: 90-Day Operating Plan</text>
+  <text x="150" y="235" fill="#94a3b8" font-family="Inter, Arial, sans-serif" font-size="24">Workflow-first execution with measurable ROI</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="150" y="290" width="340" height="290" rx="14" fill="#111827" stroke="#334155"/>
+    <text x="180" y="335" fill="#67e8f9" font-size="20" font-weight="600">Days 1-30</text>
+    <text x="180" y="370" fill="#e2e8f0" font-size="26" font-weight="700">Find Workflows</text>
+    <text x="180" y="410" fill="#cbd5e1" font-size="18">- Map cost, delay, revenue impact</text>
+    <text x="180" y="440" fill="#cbd5e1" font-size="18">- Prioritize by business value</text>
+    <text x="180" y="470" fill="#cbd5e1" font-size="18">- Baseline KPI and effort</text>
+
+    <rect x="530" y="290" width="340" height="290" rx="14" fill="#111827" stroke="#334155"/>
+    <text x="560" y="335" fill="#67e8f9" font-size="20" font-weight="600">Days 31-60</text>
+    <text x="560" y="370" fill="#e2e8f0" font-size="26" font-weight="700">Prove Impact</text>
+    <text x="560" y="410" fill="#cbd5e1" font-size="18">- Run one production workflow</text>
+    <text x="560" y="440" fill="#cbd5e1" font-size="18">- Track weekly outcome delta</text>
+    <text x="560" y="470" fill="#cbd5e1" font-size="18">- Include AI cost in analysis</text>
+
+    <rect x="910" y="290" width="340" height="290" rx="14" fill="#111827" stroke="#334155"/>
+    <text x="940" y="335" fill="#67e8f9" font-size="20" font-weight="600">Days 61-90</text>
+    <text x="940" y="370" fill="#e2e8f0" font-size="26" font-weight="700">Scale ROI</text>
+    <text x="940" y="410" fill="#cbd5e1" font-size="18">- Expand what is repeatable</text>
+    <text x="940" y="440" fill="#cbd5e1" font-size="18">- Improve margin and speed</text>
+    <text x="940" y="470" fill="#cbd5e1" font-size="18">- Stop low-value experiments</text>
+  </g>
+
+  <rect x="150" y="620" width="1100" height="8" rx="4" fill="url(#accent)"/>
+</svg>
