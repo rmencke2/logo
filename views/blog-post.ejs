@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= post ? `${post.title} - Influzer.ai` : 'Post Not Found - Influzer.ai' %></title>
+    <meta name="description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+      .post-shell { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; }
+      .post-back { font-family: var(--font-ui); margin-bottom: 20px; display: inline-block; }
+      .post-meta { font-family: var(--font-ui); color: var(--color-muted); margin-bottom: 12px; font-size: .85rem; }
+      .post-title { margin-bottom: 12px; }
+      .post-excerpt { font-size: 1.08rem; color: var(--color-charcoal-light); margin-bottom: 20px; }
+      .post-cover { width: 100%; border-radius: 14px; border: 1px solid var(--color-border); margin-bottom: 20px; }
+      .post-video { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 14px; margin-bottom: 22px; }
+      .post-content { font-size: 1.05rem; line-height: 1.8; }
+      .post-content h2, .post-content h3 { margin-top: 1.2em; margin-bottom: .5em; }
+      .post-content p { margin-bottom: .95em; }
+      .post-content ul { margin: 0 0 1em 1.25em; }
+      .post-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+      .post-tag { font-family: var(--font-ui); font-size: .75rem; padding: 4px 8px; border-radius: 999px; background: var(--color-terracotta-light); }
+      .post-author-note { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--color-border); color: var(--color-charcoal-light); }
+      .not-found { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 16px; padding: 24px; }
+    </style>
+  </head>
+  <body>
+    <div class="auth-header">
+      <div>
+        <a href="/">Influzer.ai</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/insights">Insights</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="post-shell">
+      <a class="post-back" href="/insights">← Back to Insights</a>
+      <% if (!post) { %>
+        <section class="not-found">
+          <h1>Post not found</h1>
+          <p>The article you requested is not available.</p>
+        </section>
+      <% } else { %>
+        <article>
+          <div class="post-meta"><%= post.date %></div>
+          <h1 class="post-title"><%= post.title %></h1>
+          <p class="post-excerpt"><%= post.excerpt %></p>
+          <% if (post.tags && post.tags.length) { %>
+            <div class="post-tags">
+              <% if (post.category) { %>
+                <span class="post-tag"><%= post.category %></span>
+              <% } %>
+              <% post.tags.forEach((tag) => { %>
+                <span class="post-tag"><%= tag %></span>
+              <% }) %>
+            </div>
+          <% } %>
+          <% if (post.coverImage) { %>
+            <img class="post-cover" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" />
+          <% } %>
+          <% if (post.videoEmbedUrl) { %>
+            <iframe class="post-video" src="<%= post.videoEmbedUrl %>" title="Embedded video for <%= post.title %>" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <% } %>
+          <section class="post-content"><%- post.contentHtml %></section>
+          <section class="post-author-note">
+            <p><strong>Written by Rasmus Mencke</strong> — technology and product leader sharing practical insights on AI, leadership, and scaling teams.</p>
+          </section>
+        </article>
+      <% } %>
+    </main>
+  </body>
+</html>

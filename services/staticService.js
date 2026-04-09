@@ -6,6 +6,57 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
+const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
+
+function getAllBlogPosts() {
+  if (!fs.existsSync(BLOG_POSTS_DIR)) {
+    return [];
+  }
+
+  const files = fs.readdirSync(BLOG_POSTS_DIR).filter((file) => file.endsWith('.json'));
+  const posts = [];
+
+  for (const file of files) {
+    try {
+      const fullPath = path.join(BLOG_POSTS_DIR, file);
+      const raw = fs.readFileSync(fullPath, 'utf8');
+      const parsed = JSON.parse(raw);
+
+      if (!parsed.slug || !parsed.title || !parsed.date || !parsed.excerpt || !parsed.contentHtml) {
+        continue;
+      }
+
+      posts.push({
+        slug: parsed.slug,
+        title: parsed.title,
+        date: parsed.date,
+        excerpt: parsed.excerpt,
+        tags: Array.isArray(parsed.tags) ? parsed.tags : [],
+        category: parsed.category || 'General',
+        featured: Boolean(parsed.featured),
+        coverImage: parsed.coverImage || '',
+        coverImageAlt: parsed.coverImageAlt || parsed.title,
+        videoEmbedUrl: parsed.videoEmbedUrl || '',
+        contentHtml: parsed.contentHtml,
+      });
+    } catch (error) {
+      console.error(`❌ Failed to load blog post file ${file}:`, error.message);
+    }
+  }
+
+  posts.sort((a, b) => {
+    if (a.featured !== b.featured) {
+      return a.featured ? -1 : 1;
+    }
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+  return posts;
+}
+
+function findBlogPostBySlug(slug) {
+  return getAllBlogPosts().find((post) => post.slug === slug);
+}
+
 /**
  * Initialize static file serving
  * @param {express.Application} app - Express application instance
@@ -104,6 +155,46 @@ function initializeStaticService(app) {
     res.setHeader('Expires', '0');
     
     res.sendFile(indexPath);
+  });
+
+  // Blog index
+  app.get(['/insights', '/blog'], (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const allPosts = getAllBlogPosts();
+    const selectedCategory = req.query.category ? String(req.query.category) : '';
+    const categories = [...new Set(allPosts.map((post) => post.category))].sort((a, b) =>
+      a.localeCompare(b),
+    );
+    const posts = selectedCategory
+      ? allPosts.filter((post) => post.category === selectedCategory)
+      : allPosts;
+    const featuredPost = posts.find((post) => post.featured) || null;
+
+    res.render('blog-index', {
+      title: 'Insights',
+      posts,
+      featuredPost,
+      categories,
+      selectedCategory,
+    });
+  });
+
+  // Blog post detail
+  app.get(['/insights/:slug', '/blog/:slug'], (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const post = findBlogPostBySlug(req.params.slug);
+
+    if (!post) {
+      return res.status(404).render('blog-post', {
+        title: 'Post Not Found',
+        post: null,
+      });
+    }
+
+    return res.render('blog-post', {
+      title: post.title,
+      post,
+    });
   });
 
   // Serve policy pages

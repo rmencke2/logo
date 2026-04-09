@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>Insights - Influzer.ai</title>
+    <meta name="description" content="Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive." />
+    <link rel="canonical" href="https://www.influzer.ai/insights" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+      .insights-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
+      .insights-header { margin-bottom: 24px; }
+      .insights-header p { max-width: 760px; }
+      .category-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+      .category-chip { text-decoration: none; font-family: var(--font-ui); font-size: .8rem; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--color-border); color: var(--color-charcoal); background: var(--color-paper); }
+      .category-chip.active { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
+      .featured-card { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; border: 1px solid var(--color-border); background: var(--color-paper); border-radius: 18px; overflow: hidden; margin-bottom: 24px; text-decoration: none; color: inherit; }
+      .featured-media { min-height: 260px; background: var(--color-cream-dark); }
+      .featured-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .featured-content { padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+      .featured-label { font-family: var(--font-ui); letter-spacing: .08em; font-size: .72rem; text-transform: uppercase; color: var(--color-muted); margin-bottom: 10px; }
+      .featured-title { font-family: var(--font-display); font-size: 2rem; line-height: 1.15; margin-bottom: 10px; }
+      .featured-excerpt { color: var(--color-charcoal-light); margin-bottom: 14px; }
+      .featured-cta { font-family: var(--font-ui); font-weight: 600; }
+      .insights-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+      .insight-card { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: transform .2s ease, box-shadow .2s ease; }
+      .insight-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-medium); }
+      .insight-cover { width: 100%; height: 180px; object-fit: cover; background: var(--color-cream-dark); }
+      .insight-content { padding: 20px; }
+      .insight-meta { font-family: var(--font-ui); font-size: .8rem; color: var(--color-muted); margin-bottom: 8px; }
+      .insight-title { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 8px; }
+      .insight-excerpt { font-size: .98rem; color: var(--color-charcoal-light); }
+      .insight-tags { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+      .insight-tag { font-family: var(--font-ui); font-size: .75rem; padding: 4px 8px; border-radius: 999px; background: var(--color-terracotta-light); color: var(--color-charcoal); }
+      .empty-state { background: var(--color-paper); border: 1px dashed var(--color-border-strong); border-radius: 16px; padding: 24px; }
+      @media (max-width: 900px) {
+        .featured-card { grid-template-columns: 1fr; }
+        .featured-title { font-size: 1.65rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-header">
+      <div>
+        <a href="/">Influzer.ai</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/insights">Insights</a>
+          <a href="/video-converter">AVI to MP4</a>
+          <a href="/video-to-gif">Video to GIF</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="insights-page">
+      <header class="insights-header">
+        <h1>Insights</h1>
+        <p class="subtitle">Thoughts on AI, leadership, scaling teams, and building product-led companies.</p>
+      </header>
+      <% if (categories && categories.length) { %>
+        <nav class="category-filter" aria-label="Insight categories">
+          <a href="/insights" class="category-chip <%= selectedCategory ? '' : 'active' %>">All</a>
+          <% categories.forEach((category) => { %>
+            <a href="/insights?category=<%= encodeURIComponent(category) %>" class="category-chip <%= selectedCategory === category ? 'active' : '' %>"><%= category %></a>
+          <% }) %>
+        </nav>
+      <% } %>
+
+      <% if (!posts || posts.length === 0) { %>
+        <section class="empty-state">
+          <h2 style="margin-bottom: 8px;">No posts published yet</h2>
+          <p>Add a JSON file in <code>content/blog/</code> to publish your first insight.</p>
+        </section>
+      <% } else { %>
+        <% if (featuredPost) { %>
+          <a class="featured-card" href="/insights/<%= featuredPost.slug %>">
+            <div class="featured-media">
+              <% if (featuredPost.coverImage) { %>
+                <img src="<%= featuredPost.coverImage %>" alt="<%= featuredPost.coverImageAlt %>" />
+              <% } %>
+            </div>
+            <div class="featured-content">
+              <div class="featured-label">Featured insight</div>
+              <h2 class="featured-title"><%= featuredPost.title %></h2>
+              <p class="featured-excerpt"><%= featuredPost.excerpt %></p>
+              <span class="featured-cta">Read article →</span>
+            </div>
+          </a>
+        <% } %>
+        <section class="insights-grid">
+          <% posts.forEach((post) => { %>
+            <% if (!(featuredPost && post.slug === featuredPost.slug)) { %>
+              <a class="insight-card" href="/insights/<%= post.slug %>">
+                <% if (post.coverImage) { %>
+                  <img class="insight-cover" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" />
+                <% } %>
+                <div class="insight-content">
+                  <div class="insight-meta"><%= post.date %></div>
+                  <h2 class="insight-title"><%= post.title %></h2>
+                  <p class="insight-excerpt"><%= post.excerpt %></p>
+                  <% if (post.tags && post.tags.length) { %>
+                    <div class="insight-tags">
+                      <% post.tags.forEach((tag) => { %>
+                        <span class="insight-tag"><%= tag %></span>
+                      <% }) %>
+                    </div>
+                  <% } %>
+                </div>
+              </a>
+            <% } %>
+          <% }) %>
+        </section>
+      <% } %>
+    </main>
+  </body>
+</html>
