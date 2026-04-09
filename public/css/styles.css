@@ -78,6 +78,35 @@ body {
   padding-top: 72px;
 }
 
+/* Skip link — visible on keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 10001;
+  padding: 12px 20px;
+  background: var(--color-paper);
+  border: 2px solid var(--color-terracotta);
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-charcoal);
+  text-decoration: none;
+  box-shadow: var(--shadow-medium);
+  transition: top var(--transition-medium);
+}
+
+.skip-link:focus {
+  top: 16px;
+  outline: none;
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
 /* Selection highlight */
 ::selection {
   background: var(--color-terracotta-light);
@@ -101,10 +130,61 @@ body {
   z-index: 1000;
 }
 
-.auth-header > div:first-child {
+.auth-header-start {
   display: flex;
   align-items: center;
   gap: 48px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-menu-toggle {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-menu-toggle:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.nav-menu-toggle-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-charcoal);
+  border-radius: 1px;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.auth-header.nav-open .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.auth-header.nav-open .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.auth-header.nav-open .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .auth-header a[href="/"] {
@@ -1559,10 +1639,48 @@ button:active:enabled {
   .auth-header {
     padding: 12px 16px;
     flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .auth-header-start {
+    flex-wrap: wrap;
+    gap: 12px;
+    row-gap: 8px;
+    align-items: center;
+  }
+
+  .nav-menu-toggle {
+    display: flex;
+    order: 0;
+  }
+
+  .auth-header-start > a[href="/"] {
+    order: 1;
+    flex: 1;
+    min-width: 0;
   }
 
   .auth-header nav {
     display: none;
+    order: 3;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    flex-basis: 100%;
+    gap: 0;
+    padding: 8px 0 12px;
+    margin: 4px 0 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .auth-header nav a {
+    padding: 14px 4px;
+    font-size: 1rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .auth-header.nav-open nav {
+    display: flex;
   }
 
   .auth-buttons {

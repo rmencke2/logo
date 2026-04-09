@@ -15,12 +15,16 @@
     <meta property="og:url" content="https://www.influzer.ai" />
     <meta property="og:title" content="Influzer.ai – AI-Powered Logo Generator & Brand Design Tools" />
     <meta property="og:description" content="Create professional logos, favicons, and brand assets instantly using AI. Free logo generator with full usage rights." />
+    <meta property="og:image" content="https://www.influzer.ai/favicon.svg" />
+    <meta property="og:image:alt" content="Influzer.ai — AI logo and brand tools" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://www.influzer.ai" />
     <meta property="twitter:title" content="Influzer.ai – AI-Powered Logo Generator & Brand Design Tools" />
     <meta property="twitter:description" content="Create professional logos, favicons, and brand assets instantly using AI. Free logo generator with full usage rights." />
+    <meta name="twitter:image" content="https://www.influzer.ai/favicon.svg" />
+    <meta name="twitter:image:alt" content="Influzer.ai — AI logo and brand tools" />
     
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -91,11 +95,19 @@
     <link rel="stylesheet" href="/css/styles.css">
   </head>
   <body>
+    <a class="skip-link" href="#homepage">Skip to main content</a>
     <!-- Auth Header -->
-    <div class="auth-header">
-      <div>
+    <div class="auth-header" id="siteHeader">
+      <div class="auth-header-start">
+        <button type="button" class="nav-menu-toggle" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
+          <span class="nav-menu-toggle-bars" aria-hidden="true">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </span>
+        </button>
         <a href="/">Influzer.ai</a>
-        <nav>
+        <nav id="mainSiteNav" class="site-nav" aria-label="Main">
           <a href="/">Logo Generator</a>
           <a href="/video-converter">AVI to MP4</a>
           <a href="/video-to-gif">Video to GIF</a>
@@ -132,7 +144,7 @@
     </div>
 
     <!-- Homepage / Landing Page -->
-    <div id="homepage" class="homepage" style="display: block;">
+    <div id="homepage" class="homepage" style="display: block;" tabindex="-1">
       <!-- Hero Section -->
       <div class="hero hero-gradient">
         <div class="hero-content">
