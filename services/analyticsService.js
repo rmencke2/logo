@@ -311,6 +311,54 @@ async function getAnalytics(days = 1) {
     );
   });
 
+  // 11. Total blog page views
+  analytics.totalBlogPageViews = await new Promise((resolve, reject) => {
+    db.db.get(
+      `SELECT COUNT(*) as count
+       FROM page_views
+       WHERE created_at > ?
+         AND (page LIKE '/insights/%' OR page LIKE '/blog/%')`,
+      [since],
+      (err, row) => {
+        if (err) reject(err);
+        else resolve(row?.count || 0);
+      }
+    );
+  });
+
+  // 12. Unique blog visitors (by IP)
+  analytics.uniqueBlogVisitors = await new Promise((resolve, reject) => {
+    db.db.get(
+      `SELECT COUNT(DISTINCT ip_address) as count
+       FROM page_views
+       WHERE created_at > ?
+         AND (page LIKE '/insights/%' OR page LIKE '/blog/%')`,
+      [since],
+      (err, row) => {
+        if (err) reject(err);
+        else resolve(row?.count || 0);
+      }
+    );
+  });
+
+  // 13. Top blog posts
+  analytics.topBlogPosts = await new Promise((resolve, reject) => {
+    db.db.all(
+      `SELECT page, COUNT(*) as views
+       FROM page_views
+       WHERE created_at > ?
+         AND (page LIKE '/insights/%' OR page LIKE '/blog/%')
+       GROUP BY page
+       ORDER BY views DESC
+       LIMIT 10`,
+      [since],
+      (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows || []);
+      }
+    );
+  });
+
   return analytics;
 }
 
@@ -406,6 +454,14 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
     <tr>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${c.country || 'Unknown'}</td>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${c.visitors}</td>
+    </tr>
+  `).join('');
+
+  // Build top blog posts rows
+  const blogRows = (analytics.topBlogPosts || []).map((b) => `
+    <tr>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${b.page}</td>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${b.views}</td>
     </tr>
   `).join('');
 
@@ -508,6 +564,26 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
             </div>
 
             <div class="section">
+              <div class="section-title">Blog Traffic</div>
+              <p style="text-align: center; color: #666; margin: 0 0 12px 0;">
+                Total Blog Views: ${analytics.totalBlogPageViews || 0} | Unique Blog Visitors: ${analytics.uniqueBlogVisitors || 0}
+              </p>
+              ${analytics.topBlogPosts && analytics.topBlogPosts.length > 0 ? `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Blog Page</th>
+                    <th style="text-align: center;">Views</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${blogRows}
+                </tbody>
+              </table>
+              ` : '<p style="color: #666;">No blog traffic data available for this period.</p>'}
+            </div>
+
+            <div class="section">
               <div class="section-title">Recommendations</div>
               <div class="recommendations">
                 <ul style="margin: 0; padding-left: 20px;">
@@ -543,6 +619,12 @@ ${analytics.serviceUsage.map(s => `${s.service_name}: ${s.total_calls} total (${
 VISITORS BY COUNTRY
 ===================
 ${analytics.visitorsByCountry.map(c => `${c.country || 'Unknown'}: ${c.visitors} visitors`).join('\n') || 'No country data available yet.'}
+
+BLOG TRAFFIC
+============
+Total Blog Views: ${analytics.totalBlogPageViews || 0}
+Unique Blog Visitors: ${analytics.uniqueBlogVisitors || 0}
+${(analytics.topBlogPosts || []).map(b => `${b.page}: ${b.views} views`).join('\n') || 'No blog traffic data available yet.'}
 
 RECOMMENDATIONS
 ===============
@@ -702,6 +784,22 @@ async function initializeAnalyticsService(app) {
       const analytics = await getAnalytics(days);
       const recommendations = generateRecommendations(analytics);
       res.json({ ...analytics, recommendations });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // API endpoint to get blog traffic only
+  app.get('/api/analytics/blog-posts', async (req, res) => {
+    try {
+      const days = parseInt(req.query?.days) || 1;
+      const analytics = await getAnalytics(days);
+      res.json({
+        days,
+        totalBlogPageViews: analytics.totalBlogPageViews || 0,
+        uniqueBlogVisitors: analytics.uniqueBlogVisitors || 0,
+        topBlogPosts: analytics.topBlogPosts || [],
+      });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
