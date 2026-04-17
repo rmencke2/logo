@@ -5,9 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>Insights - Influzer.ai</title>
     <meta name="description" content="Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive." />
-    <link rel="canonical" href="https://www.influzer.ai/insights" />
+    <link rel="canonical" href="<%= selectedCategory ? `https://www.influzer.ai/insights?category=${encodeURIComponent(selectedCategory)}` : 'https://www.influzer.ai/insights' %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Influzer.ai" />
+    <meta property="og:title" content="Insights - Influzer.ai" />
+    <meta property="og:description" content="Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive." />
+    <meta property="og:url" content="<%= selectedCategory ? `https://www.influzer.ai/insights?category=${encodeURIComponent(selectedCategory)}` : 'https://www.influzer.ai/insights' %>" />
+    <% if (featuredPost && featuredPost.coverImage) { %>
+      <meta property="og:image" content="https://www.influzer.ai<%= featuredPost.coverImage %>" />
+    <% } %>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Insights - Influzer.ai" />
+    <meta name="twitter:description" content="Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive." />
+    <% if (featuredPost && featuredPost.coverImage) { %>
+      <meta name="twitter:image" content="https://www.influzer.ai<%= featuredPost.coverImage %>" />
+    <% } %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
+    <script type="application/ld+json">
+      <%- JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: 'Influzer.ai Insights',
+        description:
+          'Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive.',
+        url: selectedCategory
+          ? `https://www.influzer.ai/insights?category=${encodeURIComponent(selectedCategory)}`
+          : 'https://www.influzer.ai/insights',
+      }) %>
+    </script>
     <style>
       .insights-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
       .insights-header { margin-bottom: 24px; }

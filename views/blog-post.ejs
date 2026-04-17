@@ -5,8 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title><%= post ? `${post.title} - Influzer.ai` : 'Post Not Found - Influzer.ai' %></title>
     <meta name="description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
+    <link rel="canonical" href="<%= post ? `https://www.influzer.ai/insights/${post.slug}` : 'https://www.influzer.ai/insights' %>" />
+    <meta property="og:type" content="<%= post ? 'article' : 'website' %>" />
+    <meta property="og:site_name" content="Influzer.ai" />
+    <meta property="og:title" content="<%= post ? post.title : 'Post Not Found - Influzer.ai' %>" />
+    <meta property="og:description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
+    <meta property="og:url" content="<%= post ? `https://www.influzer.ai/insights/${post.slug}` : 'https://www.influzer.ai/insights' %>" />
+    <% if (post && post.coverImage) { %>
+      <meta property="og:image" content="https://www.influzer.ai<%= post.coverImage %>" />
+    <% } %>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="<%= post ? post.title : 'Post Not Found - Influzer.ai' %>" />
+    <meta name="twitter:description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
+    <% if (post && post.coverImage) { %>
+      <meta name="twitter:image" content="https://www.influzer.ai<%= post.coverImage %>" />
+    <% } %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
+    <% if (post) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.excerpt,
+          image: post.coverImage ? [`https://www.influzer.ai${post.coverImage}`] : [],
+          datePublished: post.date,
+          dateModified: post.date,
+          author: {
+            '@type': 'Person',
+            name: 'Rasmus Mencke',
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: 'Influzer.ai',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://www.influzer.ai/favicon.svg',
+            },
+          },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': `https://www.influzer.ai/insights/${post.slug}`,
+          },
+          keywords: (post.tags || []).join(', '),
+          articleSection: post.category || 'General',
+        }) %>
+      </script>
+    <% } %>
     <style>
       .post-shell { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; }
       .post-back { font-family: var(--font-ui); margin-bottom: 20px; display: inline-block; }
