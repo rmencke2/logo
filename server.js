@@ -18,6 +18,7 @@ const { initializeVideoService } = require('./services/videoService');
 const { initializeUtilityService } = require('./services/utilityService');
 const { initializeAdminService } = require('./services/adminService');
 const { initializeAnalyticsService } = require('./services/analyticsService');
+const { initializeBlogFeedbackService } = require('./services/blogFeedbackService');
 
 require('dotenv').config();
 
@@ -35,6 +36,9 @@ const PORT = process.env.PORT || 4000;
 
     // 3. Static file service (HTML pages, static assets)
     initializeStaticService(app);
+
+    // 3b. Blog feedback service (reactions + comments)
+    await initializeBlogFeedbackService(app);
     
     // 4. Logo generation service
     initializeLogoService(app);

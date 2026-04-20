@@ -69,6 +69,34 @@
       .post-tag { font-family: var(--font-ui); font-size: .75rem; padding: 4px 8px; border-radius: 999px; background: var(--color-terracotta-light); }
       .post-author-note { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--color-border); color: var(--color-charcoal-light); }
       .not-found { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 16px; padding: 24px; }
+
+      .feedback-section { margin-top: 36px; padding: 22px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-paper); }
+      .feedback-title { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 12px 0; }
+      .feedback-reactions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+      .reaction-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--color-border); background: #fff; color: var(--color-charcoal); padding: 8px 14px; border-radius: 999px; font-family: var(--font-ui); font-size: .9rem; cursor: pointer; transition: transform .1s ease, background .2s ease, border-color .2s ease; }
+      .reaction-btn:hover { transform: translateY(-1px); border-color: var(--color-border-strong, #c8c8c8); }
+      .reaction-btn[aria-pressed="true"] { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
+      .reaction-count { font-variant-numeric: tabular-nums; font-weight: 600; }
+      .reaction-helper { font-family: var(--font-ui); font-size: .8rem; color: var(--color-muted); }
+
+      .comments-block { border-top: 1px solid var(--color-border); padding-top: 18px; }
+      .comments-title { font-family: var(--font-display); font-size: 1.1rem; margin: 0 0 10px 0; }
+      .comment-form { display: grid; gap: 10px; margin-bottom: 18px; }
+      .comment-form input, .comment-form textarea { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--color-border); background: #fff; color: var(--color-charcoal); }
+      .comment-form textarea { min-height: 96px; resize: vertical; }
+      .comment-form-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+      .comment-submit { border: 0; border-radius: 999px; background: var(--color-charcoal); color: #fff; padding: 10px 18px; font-family: var(--font-ui); font-weight: 600; cursor: pointer; }
+      .comment-submit:disabled { opacity: .6; cursor: not-allowed; }
+      .comment-status { font-family: var(--font-ui); font-size: .85rem; min-height: 1.1em; }
+      .comment-status.error { color: #b3261e; }
+      .comment-status.success { color: #0f6f4f; }
+
+      .comment-list { display: grid; gap: 12px; }
+      .comment-item { padding: 12px 14px; border: 1px solid var(--color-border); border-radius: 12px; background: #fff; }
+      .comment-meta { font-family: var(--font-ui); font-size: .8rem; color: var(--color-muted); margin-bottom: 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+      .comment-meta strong { color: var(--color-charcoal); font-weight: 600; }
+      .comment-body { line-height: 1.6; white-space: pre-wrap; }
+      .comments-empty { font-family: var(--font-ui); color: var(--color-muted); font-size: .9rem; }
     </style>
   </head>
   <body>
@@ -123,6 +151,38 @@
           <section class="post-author-note">
             <p><strong>Written by Rasmus Mencke</strong> — technology and product leader sharing practical insights on AI, leadership, and scaling teams.</p>
           </section>
+
+          <section class="feedback-section" data-slug="<%= post.slug %>">
+            <h2 class="feedback-title">Was this useful?</h2>
+            <div class="feedback-reactions" role="group" aria-label="Post reactions">
+              <button type="button" class="reaction-btn" data-reaction="up" aria-pressed="false">
+                <span aria-hidden="true">👍</span>
+                <span class="reaction-label">Helpful</span>
+                <span class="reaction-count" data-count="up">0</span>
+              </button>
+              <button type="button" class="reaction-btn" data-reaction="down" aria-pressed="false">
+                <span aria-hidden="true">👎</span>
+                <span class="reaction-label">Not for me</span>
+                <span class="reaction-count" data-count="down">0</span>
+              </button>
+              <span class="reaction-helper">Click again to undo.</span>
+            </div>
+
+            <div class="comments-block">
+              <h3 class="comments-title">Leave a comment</h3>
+              <form class="comment-form" id="commentForm" novalidate>
+                <input type="text" name="name" id="commentName" placeholder="Your name" maxlength="60" required />
+                <textarea name="comment" id="commentBody" placeholder="Share your take, question, or feedback..." maxlength="1000" required></textarea>
+                <div class="comment-form-row">
+                  <span class="comment-status" id="commentStatus" role="status" aria-live="polite"></span>
+                  <button type="submit" class="comment-submit" id="commentSubmit">Post comment</button>
+                </div>
+              </form>
+              <div class="comment-list" id="commentList">
+                <p class="comments-empty" id="commentsEmpty">Be the first to share your thoughts.</p>
+              </div>
+            </div>
+          </section>
         </article>
       <% } %>
     </main>
@@ -156,6 +216,151 @@
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape' && siteHeader.classList.contains('nav-open')) closeMobileNav();
         });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const section = document.querySelector('.feedback-section');
+        if (!section) return;
+        const slug = section.getAttribute('data-slug');
+        if (!slug) return;
+
+        const reactionButtons = section.querySelectorAll('.reaction-btn');
+        const commentForm = section.querySelector('#commentForm');
+        const commentName = section.querySelector('#commentName');
+        const commentBody = section.querySelector('#commentBody');
+        const commentStatus = section.querySelector('#commentStatus');
+        const commentSubmit = section.querySelector('#commentSubmit');
+        const commentList = section.querySelector('#commentList');
+        const commentsEmpty = section.querySelector('#commentsEmpty');
+        const storedNameKey = 'influzer:commenter-name';
+
+        try {
+          const storedName = localStorage.getItem(storedNameKey);
+          if (storedName) commentName.value = storedName;
+        } catch {}
+
+        function setStatus(message, type) {
+          commentStatus.textContent = message || '';
+          commentStatus.classList.remove('error', 'success');
+          if (type) commentStatus.classList.add(type);
+        }
+
+        function escapeHtml(str) {
+          return String(str || '').replace(/[&<>"']/g, (c) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+          }[c]));
+        }
+
+        function formatDate(iso) {
+          try {
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return '';
+            return d.toLocaleString(undefined, {
+              year: 'numeric', month: 'short', day: 'numeric',
+              hour: '2-digit', minute: '2-digit',
+            });
+          } catch { return ''; }
+        }
+
+        function renderReactions(data) {
+          const counts = (data && data.reactions) || { up: 0, down: 0 };
+          const userReaction = data && data.userReaction;
+          section.querySelectorAll('[data-count]').forEach((el) => {
+            const key = el.getAttribute('data-count');
+            el.textContent = counts[key] != null ? counts[key] : 0;
+          });
+          reactionButtons.forEach((btn) => {
+            const r = btn.getAttribute('data-reaction');
+            btn.setAttribute('aria-pressed', userReaction === r ? 'true' : 'false');
+          });
+        }
+
+        function renderComments(comments) {
+          commentList.innerHTML = '';
+          if (!comments || comments.length === 0) {
+            const p = document.createElement('p');
+            p.className = 'comments-empty';
+            p.textContent = 'Be the first to share your thoughts.';
+            commentList.appendChild(p);
+            return;
+          }
+          comments.forEach((c) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'comment-item';
+            wrapper.innerHTML =
+              '<div class="comment-meta"><strong>' + escapeHtml(c.name) + '</strong><span>' +
+              escapeHtml(formatDate(c.created_at)) + '</span></div>' +
+              '<div class="comment-body">' + escapeHtml(c.comment) + '</div>';
+            commentList.appendChild(wrapper);
+          });
+        }
+
+        async function loadFeedback() {
+          try {
+            const res = await fetch('/api/blog/' + encodeURIComponent(slug) + '/feedback', {
+              headers: { Accept: 'application/json' },
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            renderReactions(data);
+            renderComments(data.comments);
+          } catch {}
+        }
+
+        async function toggleReaction(reaction) {
+          try {
+            const res = await fetch('/api/blog/' + encodeURIComponent(slug) + '/reactions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ reaction }),
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            renderReactions(data);
+          } catch {}
+        }
+
+        reactionButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            toggleReaction(btn.getAttribute('data-reaction'));
+          });
+        });
+
+        commentForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = commentName.value.trim();
+          const comment = commentBody.value.trim();
+          if (name.length < 2 || comment.length < 2) {
+            setStatus('Please add your name and a comment.', 'error');
+            return;
+          }
+          commentSubmit.disabled = true;
+          setStatus('Posting...', '');
+          try {
+            const res = await fetch('/api/blog/' + encodeURIComponent(slug) + '/comments', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ name, comment }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+              setStatus(data && data.error ? data.error : 'Something went wrong.', 'error');
+            } else {
+              try { localStorage.setItem(storedNameKey, name); } catch {}
+              commentBody.value = '';
+              setStatus('Thanks for your comment.', 'success');
+              renderComments(data.comments);
+            }
+          } catch {
+            setStatus('Network error. Please try again.', 'error');
+          } finally {
+            commentSubmit.disabled = false;
+          }
+        });
+
+        loadFeedback();
       })();
     </script>
   </body>
