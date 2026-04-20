@@ -188,12 +188,14 @@ function initializeStaticService(app) {
       return res.status(404).render('blog-post', {
         title: 'Post Not Found',
         post: null,
+        turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
       });
     }
 
     return res.render('blog-post', {
       title: post.title,
       post,
+      turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
     });
   });
 

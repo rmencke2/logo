@@ -3,6 +3,8 @@
 // ================================
 
 const { getDatabase } = require('../database');
+const { requireAuth } = require('../auth');
+const { requireAdmin } = require('./adminService');
 
 const VALID_REACTIONS = new Set(['up', 'down']);
 const MAX_NAME_LENGTH = 60;
@@ -180,6 +182,98 @@ async function countRecentCommentsByIp(ipAddress, withinSeconds = 60) {
   });
 }
 
+async function verifyTurnstileToken(token, ipAddress) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    return { success: true, skipped: true };
+  }
+  if (!token || typeof token !== 'string') {
+    return { success: false, error: 'Missing Turnstile token.' };
+  }
+
+  try {
+    const body = new URLSearchParams({
+      secret,
+      response: token,
+      remoteip: ipAddress || '',
+    });
+    const response = await fetch(
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      },
+    );
+    const data = await response.json();
+    if (!data.success) {
+      return { success: false, error: 'Turnstile verification failed.' };
+    }
+    return { success: true };
+  } catch {
+    return { success: false, error: 'Turnstile verification error.' };
+  }
+}
+
+async function listAdminComments({ slug = '', status = 'all', limit = 200 }) {
+  const db = await getDatabase();
+  const where = [];
+  const params = [];
+
+  if (slug) {
+    where.push('slug = ?');
+    params.push(slug);
+  }
+  if (status === 'approved') where.push('approved = 1');
+  if (status === 'pending') where.push('approved = 0');
+
+  const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
+  const cappedLimit = Math.max(1, Math.min(500, Number(limit) || 200));
+
+  return new Promise((resolve, reject) => {
+    db.db.all(
+      `SELECT id, slug, name, comment, approved, ip_address, created_at
+       FROM blog_comments
+       ${whereSql}
+       ORDER BY created_at DESC
+       LIMIT ?`,
+      [...params, cappedLimit],
+      (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows || []);
+      },
+    );
+  });
+}
+
+async function setCommentApproval(commentId, approved) {
+  const db = await getDatabase();
+  return new Promise((resolve, reject) => {
+    db.db.run(
+      'UPDATE blog_comments SET approved = ? WHERE id = ?',
+      [approved ? 1 : 0, commentId],
+      function (err) {
+        if (err) reject(err);
+        else resolve(this.changes || 0);
+      },
+    );
+  });
+}
+
+async function deleteCommentById(commentId) {
+  const db = await getDatabase();
+  return new Promise((resolve, reject) => {
+    db.db.run(
+      'DELETE FROM blog_comments WHERE id = ?',
+      [commentId],
+      function (err) {
+        if (err) reject(err);
+        else resolve(this.changes || 0);
+      },
+    );
+  });
+}
+
 async function initializeBlogFeedbackService(app) {
   const db = await getDatabase();
   await initializeBlogFeedbackTables(db);
@@ -259,6 +353,14 @@ async function initializeBlogFeedbackService(app) {
 
       const ip = getClientIp(req);
 
+      const turnstile = await verifyTurnstileToken(
+        req.body?.turnstileToken,
+        ip,
+      );
+      if (!turnstile.success) {
+        return res.status(400).json({ error: turnstile.error });
+      }
+
       // Rate limit: max 3 comments per 60 seconds per IP
       const recent = await countRecentCommentsByIp(ip, 60);
       if (recent >= 3) {
@@ -271,6 +373,50 @@ async function initializeBlogFeedbackService(app) {
       const comments = await listComments(slug);
 
       res.json({ slug, comments });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin: list comments for moderation
+  app.get('/admin/api/blog/comments', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const slug = String(req.query.slug || '').slice(0, 200);
+      const status = String(req.query.status || 'all');
+      const limit = parseInt(req.query.limit, 10) || 200;
+      const comments = await listAdminComments({ slug, status, limit });
+      res.json({ comments });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin: approve/hide a comment
+  app.post('/admin/api/blog/comments/:id/approval', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ error: 'Invalid comment id' });
+      }
+      const approved = Boolean(req.body?.approved);
+      const changes = await setCommentApproval(id, approved);
+      if (!changes) return res.status(404).json({ error: 'Comment not found' });
+      res.json({ success: true, id, approved });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin: delete a comment
+  app.delete('/admin/api/blog/comments/:id', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ error: 'Invalid comment id' });
+      }
+      const changes = await deleteCommentById(id);
+      if (!changes) return res.status(404).json({ error: 'Comment not found' });
+      res.json({ success: true, id });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

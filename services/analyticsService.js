@@ -359,6 +359,75 @@ async function getAnalytics(days = 1) {
     );
   });
 
+  // 14. Blog engagement totals
+  analytics.blogEngagement = {
+    comments: 0,
+    likes: 0,
+    dislikes: 0,
+  };
+  try {
+    analytics.blogEngagement.comments = await new Promise((resolve, reject) => {
+      db.db.get(
+        `SELECT COUNT(*) as count
+         FROM blog_comments
+         WHERE created_at > ?`,
+        [since],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row?.count || 0);
+        },
+      );
+    });
+  } catch {
+    analytics.blogEngagement.comments = 0;
+  }
+  try {
+    const reactionTotals = await new Promise((resolve, reject) => {
+      db.db.get(
+        `SELECT
+          SUM(CASE WHEN reaction = 'up' THEN 1 ELSE 0 END) as likes,
+          SUM(CASE WHEN reaction = 'down' THEN 1 ELSE 0 END) as dislikes
+         FROM blog_reactions
+         WHERE updated_at > ?`,
+        [since],
+        (err, row) => {
+          if (err) reject(err);
+          else
+            resolve({
+              likes: row?.likes || 0,
+              dislikes: row?.dislikes || 0,
+            });
+        },
+      );
+    });
+    analytics.blogEngagement.likes = reactionTotals.likes;
+    analytics.blogEngagement.dislikes = reactionTotals.dislikes;
+  } catch {
+    analytics.blogEngagement.likes = 0;
+    analytics.blogEngagement.dislikes = 0;
+  }
+
+  // 15. Most commented blog posts
+  try {
+    analytics.topCommentedBlogPosts = await new Promise((resolve, reject) => {
+      db.db.all(
+        `SELECT slug, COUNT(*) as comments
+         FROM blog_comments
+         WHERE created_at > ?
+         GROUP BY slug
+         ORDER BY comments DESC
+         LIMIT 10`,
+        [since],
+        (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows || []);
+        },
+      );
+    });
+  } catch {
+    analytics.topCommentedBlogPosts = [];
+  }
+
   return analytics;
 }
 
@@ -462,6 +531,13 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
     <tr>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${b.page}</td>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${b.views}</td>
+    </tr>
+  `).join('');
+
+  const commentedRows = (analytics.topCommentedBlogPosts || []).map((c) => `
+    <tr>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${c.slug}</td>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${c.comments}</td>
     </tr>
   `).join('');
 
@@ -581,6 +657,22 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
                 </tbody>
               </table>
               ` : '<p style="color: #666;">No blog traffic data available for this period.</p>'}
+              <p style="text-align: center; color: #666; margin: 4px 0 12px 0;">
+                Comments: ${analytics.blogEngagement?.comments || 0} | Likes: ${analytics.blogEngagement?.likes || 0} | Dislikes: ${analytics.blogEngagement?.dislikes || 0}
+              </p>
+              ${analytics.topCommentedBlogPosts && analytics.topCommentedBlogPosts.length > 0 ? `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Most Commented (Slug)</th>
+                    <th style="text-align: center;">Comments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${commentedRows}
+                </tbody>
+              </table>
+              ` : '<p style="color: #666;">No blog comments recorded for this period.</p>'}
             </div>
 
             <div class="section">
@@ -625,6 +717,10 @@ BLOG TRAFFIC
 Total Blog Views: ${analytics.totalBlogPageViews || 0}
 Unique Blog Visitors: ${analytics.uniqueBlogVisitors || 0}
 ${(analytics.topBlogPosts || []).map(b => `${b.page}: ${b.views} views`).join('\n') || 'No blog traffic data available yet.'}
+Comments: ${analytics.blogEngagement?.comments || 0}
+Likes: ${analytics.blogEngagement?.likes || 0}
+Dislikes: ${analytics.blogEngagement?.dislikes || 0}
+${(analytics.topCommentedBlogPosts || []).map(c => `${c.slug}: ${c.comments} comments`).join('\n') || 'No blog comments recorded for this period.'}
 
 RECOMMENDATIONS
 ===============

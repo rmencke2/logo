@@ -324,6 +324,7 @@
     <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" data-tab="users">Users</button>
+      <button class="tab" data-tab="comments">Comments</button>
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
       <button class="tab" data-tab="activity">Top Activity</button>
     </div>
@@ -338,6 +339,25 @@
         </div>
         <div id="usersTableContainer">
           <div class="loading">Loading users...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comments Tab -->
+    <div class="tab-content" id="commentsTab">
+      <div class="section">
+        <h2>Blog Comment Moderation</h2>
+        <div class="search-bar">
+          <input type="text" id="commentSlugFilter" placeholder="Filter by blog slug (optional)">
+          <select id="commentStatusFilter" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
+            <option value="all">All</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Hidden</option>
+          </select>
+          <button class="btn btn-primary" onclick="loadComments()">Refresh</button>
+        </div>
+        <div id="commentsTableContainer">
+          <div class="loading">Loading comments...</div>
         </div>
       </div>
     </div>
@@ -483,6 +503,7 @@
         
         if (tabName === 'abuse') loadAbuseRecords();
         if (tabName === 'activity') loadActivity();
+        if (tabName === 'comments') loadComments();
       });
     });
 
@@ -566,6 +587,93 @@
         container.innerHTML = html;
       } catch (err) {
         container.innerHTML = `<div class="error">Error loading users: ${err.message}</div>`;
+      }
+    }
+
+    // Comments moderation
+    async function loadComments() {
+      const container = document.getElementById('commentsTableContainer');
+      container.innerHTML = '<div class="loading">Loading comments...</div>';
+      try {
+        const slug = document.getElementById('commentSlugFilter').value.trim();
+        const status = document.getElementById('commentStatusFilter').value;
+        const params = new URLSearchParams();
+        if (slug) params.set('slug', slug);
+        if (status) params.set('status', status);
+        params.set('limit', '250');
+        const res = await fetch(`/admin/api/blog/comments?${params.toString()}`);
+        if (!res.ok) throw new Error('Failed to load comments');
+        const data = await res.json();
+        const comments = data.comments || [];
+
+        if (!comments.length) {
+          container.innerHTML = '<div class="loading">No comments found</div>';
+          return;
+        }
+
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Slug</th>
+                <th>Name</th>
+                <th>Comment</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        comments.forEach((c) => {
+          const safeComment = String(c.comment || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          html += `
+            <tr>
+              <td>${c.id}</td>
+              <td>${c.slug}</td>
+              <td>${c.name}</td>
+              <td style="max-width:360px;white-space:normal;">${safeComment}</td>
+              <td>${c.approved ? '<span class="badge admin">Approved</span>' : '<span class="badge blocked">Hidden</span>'}</td>
+              <td>${new Date(c.created_at).toLocaleString()}</td>
+              <td>
+                <button class="btn btn-sm btn-secondary" onclick="toggleCommentApproval(${c.id}, ${c.approved ? 'false' : 'true'})">
+                  ${c.approved ? 'Hide' : 'Approve'}
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="deleteComment(${c.id})">Delete</button>
+              </td>
+            </tr>
+          `;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      }
+    }
+
+    async function toggleCommentApproval(commentId, approved) {
+      try {
+        const res = await fetch(`/admin/api/blog/comments/${commentId}/approval`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ approved }),
+        });
+        if (!res.ok) throw new Error('Failed to update comment status');
+        loadComments();
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+
+    async function deleteComment(commentId) {
+      if (!confirm('Delete this comment permanently?')) return;
+      try {
+        const res = await fetch(`/admin/api/blog/comments/${commentId}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete comment');
+        loadComments();
+      } catch (err) {
+        alert(`Error: ${err.message}`);
       }
     }
 
