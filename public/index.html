@@ -150,14 +150,14 @@
       <!-- Hero Section -->
       <div class="hero hero-gradient">
         <div class="hero-content">
-          <div class="hero-badge">Executive Insights on AI, Growth, and Leadership</div>
-          <h1 class="hero-title">Operator-Level Insights for Building High-Performance Companies</h1>
-          <p class="subtitle hero-subtitle">Practical writing on AI execution, profitable growth, leadership systems, and scaling product and technology organizations. Built for founders, executives, and operators who want decisions that translate into outcomes.</p>
+          <div class="hero-badge" id="homepageHeroBadge">Executive Insights on AI, Growth, and Leadership</div>
+          <h1 class="hero-title" id="homepageHeroTitle">Operator-Level Insights for Building High-Performance Companies</h1>
+          <p class="subtitle hero-subtitle" id="homepageHeroSubtitle">Practical writing on AI execution, profitable growth, leadership systems, and scaling product and technology organizations. Built for founders, executives, and operators who want decisions that translate into outcomes.</p>
           <div class="hero-buttons">
             <a href="/insights" class="cta-button primary hero-cta large">Read Insights</a>
-            <a href="/insights/from-cpto-to-defacto-ceo" class="cta-button secondary hero-cta">Start with CPTO → CEO</a>
+            <a href="/insights/from-cpto-to-defacto-ceo" class="cta-button secondary hero-cta" id="homepageHeroLatestLink">Start with CPTO → CEO</a>
           </div>
-          <p class="hero-trust">Latest topics: P&amp;L leadership • Workflow-first AI strategy • Scaling teams without losing velocity</p>
+          <p class="hero-trust" id="homepageHeroTrust">Latest topics: P&amp;L leadership • Workflow-first AI strategy • Scaling teams without losing velocity</p>
         </div>
       </div>
 
@@ -1090,6 +1090,43 @@
     </div>
 
     <!-- i18n System -->
+    <script>
+      (function () {
+        const titleEl = document.getElementById('homepageHeroTitle');
+        const subtitleEl = document.getElementById('homepageHeroSubtitle');
+        const badgeEl = document.getElementById('homepageHeroBadge');
+        const latestLinkEl = document.getElementById('homepageHeroLatestLink');
+        const trustEl = document.getElementById('homepageHeroTrust');
+        if (!titleEl || !subtitleEl || !latestLinkEl || !trustEl || !badgeEl) return;
+
+        function formatDate(dateString) {
+          try {
+            const d = new Date(dateString);
+            if (Number.isNaN(d.getTime())) return dateString || '';
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+          } catch {
+            return dateString || '';
+          }
+        }
+
+        fetch('/api/insights/latest', { headers: { Accept: 'application/json' } })
+          .then((res) => (res.ok ? res.json() : null))
+          .then((post) => {
+            if (!post || !post.slug) return;
+            badgeEl.textContent = `Latest Insight • ${post.category || 'General'}`;
+            titleEl.textContent = post.title || titleEl.textContent;
+            subtitleEl.textContent = post.excerpt || subtitleEl.textContent;
+            latestLinkEl.href = `/insights/${post.slug}`;
+            latestLinkEl.textContent = 'Read latest insight';
+            const tags = Array.isArray(post.tags) && post.tags.length ? post.tags.slice(0, 3).join(' • ') : '';
+            const datePart = formatDate(post.date);
+            trustEl.textContent = tags
+              ? `Published ${datePart} • ${tags}`
+              : `Published ${datePart}`;
+          })
+          .catch(() => {});
+      })();
+    </script>
     <script src="/i18n.js"></script>
     <script src="/js/main.js" defer></script>
   </body>

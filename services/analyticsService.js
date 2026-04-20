@@ -529,14 +529,18 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
   // Build top blog posts rows
   const blogRows = (analytics.topBlogPosts || []).map((b) => `
     <tr>
-      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${b.page}</td>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">
+        <a href="https://www.influzer.ai${b.page}" style="color:#0d8a6a;text-decoration:none;">${b.page}</a>
+      </td>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${b.views}</td>
     </tr>
   `).join('');
 
   const commentedRows = (analytics.topCommentedBlogPosts || []).map((c) => `
     <tr>
-      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${c.slug}</td>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">
+        <a href="https://www.influzer.ai/insights/${c.slug}" style="color:#0d8a6a;text-decoration:none;">${c.slug}</a>
+      </td>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${c.comments}</td>
     </tr>
   `).join('');

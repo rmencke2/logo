@@ -157,6 +157,27 @@ function initializeStaticService(app) {
     res.sendFile(indexPath);
   });
 
+  // Latest insight summary for homepage hero freshness
+  app.get('/api/insights/latest', (req, res) => {
+    try {
+      const posts = getAllBlogPosts();
+      if (!posts.length) {
+        return res.status(404).json({ error: 'No posts found' });
+      }
+      const [latest] = posts;
+      return res.json({
+        slug: latest.slug,
+        title: latest.title,
+        excerpt: latest.excerpt,
+        date: latest.date,
+        tags: latest.tags || [],
+        category: latest.category || 'General',
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  });
+
   // Blog index
   app.get(['/insights', '/blog'], (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
