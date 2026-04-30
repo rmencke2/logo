@@ -19,6 +19,7 @@ const { initializeUtilityService } = require('./services/utilityService');
 const { initializeAdminService } = require('./services/adminService');
 const { initializeAnalyticsService } = require('./services/analyticsService');
 const { initializeBlogFeedbackService } = require('./services/blogFeedbackService');
+const { initializeNewsletterService } = require('./services/newsletterService');
 
 require('dotenv').config();
 
@@ -39,6 +40,9 @@ const PORT = process.env.PORT || 4000;
 
     // 3b. Blog feedback service (reactions + comments)
     await initializeBlogFeedbackService(app);
+
+    // 3c. Newsletter signup service
+    await initializeNewsletterService(app);
     
     // 4. Logo generation service
     initializeLogoService(app);

@@ -428,6 +428,57 @@ async function getAnalytics(days = 1) {
     analytics.topCommentedBlogPosts = [];
   }
 
+  // 16. Newsletter subscribers
+  analytics.newsletter = {
+    newSubscribers: 0,
+    totalSubscribers: 0,
+    sources: [],
+  };
+  try {
+    analytics.newsletter.newSubscribers = await new Promise((resolve, reject) => {
+      db.db.get(
+        `SELECT COUNT(*) as count
+         FROM newsletter_subscribers
+         WHERE created_at > ? AND status = 'active'`,
+        [since],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row?.count || 0);
+        },
+      );
+    });
+    analytics.newsletter.totalSubscribers = await new Promise((resolve, reject) => {
+      db.db.get(
+        `SELECT COUNT(*) as count
+         FROM newsletter_subscribers
+         WHERE status = 'active'`,
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row?.count || 0);
+        },
+      );
+    });
+    analytics.newsletter.sources = await new Promise((resolve, reject) => {
+      db.db.all(
+        `SELECT source, COUNT(*) as count
+         FROM newsletter_subscribers
+         WHERE created_at > ? AND status = 'active'
+         GROUP BY source
+         ORDER BY count DESC
+         LIMIT 10`,
+        [since],
+        (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows || []);
+        },
+      );
+    });
+  } catch {
+    analytics.newsletter.newSubscribers = 0;
+    analytics.newsletter.totalSubscribers = 0;
+    analytics.newsletter.sources = [];
+  }
+
   return analytics;
 }
 
@@ -542,6 +593,13 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
         <a href="https://www.influzer.ai/insights/${c.slug}" style="color:#0d8a6a;text-decoration:none;">${c.slug}</a>
       </td>
       <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${c.comments}</td>
+    </tr>
+  `).join('');
+
+  const newsletterSourceRows = (analytics.newsletter?.sources || []).map((s) => `
+    <tr>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee;">${s.source || 'site'}</td>
+      <td style="padding: 6px 8px; border-bottom: 1px solid #eee; text-align: center;">${s.count}</td>
     </tr>
   `).join('');
 
@@ -680,6 +738,33 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
             </div>
 
             <div class="section">
+              <div class="section-title">Newsletter Growth</div>
+              <div class="stat-grid">
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.newsletter?.newSubscribers || 0}</div>
+                  <div class="stat-label">New Subscribers</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.newsletter?.totalSubscribers || 0}</div>
+                  <div class="stat-label">Total Active Subscribers</div>
+                </div>
+              </div>
+              ${(analytics.newsletter?.sources || []).length > 0 ? `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Source</th>
+                    <th style="text-align: center;">Subscribers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${newsletterSourceRows}
+                </tbody>
+              </table>
+              ` : '<p style="color: #666;">No newsletter signup source data for this period.</p>'}
+            </div>
+
+            <div class="section">
               <div class="section-title">Recommendations</div>
               <div class="recommendations">
                 <ul style="margin: 0; padding-left: 20px;">
@@ -725,6 +810,12 @@ Comments: ${analytics.blogEngagement?.comments || 0}
 Likes: ${analytics.blogEngagement?.likes || 0}
 Dislikes: ${analytics.blogEngagement?.dislikes || 0}
 ${(analytics.topCommentedBlogPosts || []).map(c => `${c.slug}: ${c.comments} comments`).join('\n') || 'No blog comments recorded for this period.'}
+
+NEWSLETTER GROWTH
+=================
+New Subscribers: ${analytics.newsletter?.newSubscribers || 0}
+Total Active Subscribers: ${analytics.newsletter?.totalSubscribers || 0}
+${(analytics.newsletter?.sources || []).map(s => `${s.source || 'site'}: ${s.count} subscribers`).join('\n') || 'No newsletter signup source data for this period.'}
 
 RECOMMENDATIONS
 ===============

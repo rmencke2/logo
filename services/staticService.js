@@ -58,6 +58,17 @@ function findBlogPostBySlug(slug) {
   return getAllBlogPosts().find((post) => post.slug === slug);
 }
 
+function getRelatedBlogPosts(currentPost, limit = 3) {
+  const allPosts = getAllBlogPosts();
+  if (!currentPost) {
+    return [];
+  }
+  const otherPosts = allPosts.filter((post) => post.slug !== currentPost.slug);
+  const sameCategory = otherPosts.filter((post) => post.category === currentPost.category);
+  const remaining = otherPosts.filter((post) => post.category !== currentPost.category);
+  return [...sameCategory, ...remaining].slice(0, limit);
+}
+
 function escapeXml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -260,6 +271,7 @@ function initializeStaticService(app) {
     return res.render('blog-post', {
       title: post.title,
       post,
+      relatedPosts: getRelatedBlogPosts(post, 3),
       turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
     });
   });

@@ -325,6 +325,7 @@
     <div class="tabs">
       <button class="tab active" data-tab="users">Users</button>
       <button class="tab" data-tab="comments">Comments</button>
+      <button class="tab" data-tab="newsletter">Newsletter</button>
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
       <button class="tab" data-tab="activity">Top Activity</button>
     </div>
@@ -358,6 +359,21 @@
         </div>
         <div id="commentsTableContainer">
           <div class="loading">Loading comments...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Tab -->
+    <div class="tab-content" id="newsletterTab">
+      <div class="section">
+        <h2>Newsletter Subscribers</h2>
+        <div class="search-bar">
+          <input type="number" id="newsletterLimit" min="1" max="1000" value="500" placeholder="Limit (max 1000)">
+          <button class="btn btn-primary" onclick="loadNewsletterSubscribers()">Refresh</button>
+          <button class="btn btn-secondary" onclick="exportNewsletterCsv()">Export CSV</button>
+        </div>
+        <div id="newsletterTableContainer">
+          <div class="loading">Loading subscribers...</div>
         </div>
       </div>
     </div>
@@ -504,6 +520,7 @@
         if (tabName === 'abuse') loadAbuseRecords();
         if (tabName === 'activity') loadActivity();
         if (tabName === 'comments') loadComments();
+        if (tabName === 'newsletter') loadNewsletterSubscribers();
       });
     });
 
@@ -675,6 +692,80 @@
       } catch (err) {
         alert(`Error: ${err.message}`);
       }
+    }
+
+    // Newsletter subscribers
+    async function loadNewsletterSubscribers() {
+      const container = document.getElementById('newsletterTableContainer');
+      container.innerHTML = '<div class="loading">Loading subscribers...</div>';
+      try {
+        const limit = parseInt(document.getElementById('newsletterLimit').value, 10) || 500;
+        const safeLimit = Math.max(1, Math.min(1000, limit));
+        const res = await fetch(`/admin/api/newsletter/subscribers?limit=${safeLimit}`);
+        if (!res.ok) throw new Error('Failed to load subscribers');
+        const data = await res.json();
+        const subscribers = data.subscribers || [];
+
+        if (!subscribers.length) {
+          container.innerHTML = '<div class="loading">No subscribers yet</div>';
+          return;
+        }
+
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Source</th>
+                <th>Status</th>
+                <th>Subscribed</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        subscribers.forEach((subscriber) => {
+          html += `
+            <tr>
+              <td>${subscriber.id}</td>
+              <td>${subscriber.email}</td>
+              <td>${subscriber.source || 'site'}</td>
+              <td>${subscriber.status || 'active'}</td>
+              <td>${new Date(subscriber.created_at).toLocaleString()}</td>
+            </tr>
+          `;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      }
+    }
+
+    function exportNewsletterCsv() {
+      const table = document.querySelector('#newsletterTableContainer table');
+      if (!table) {
+        alert('No subscriber data available to export.');
+        return;
+      }
+      const rows = Array.from(table.querySelectorAll('tr'));
+      const csv = rows
+        .map((row) =>
+          Array.from(row.querySelectorAll('th,td'))
+            .map((cell) => `"${String(cell.textContent || '').replace(/"/g, '""')}"`)
+            .join(',')
+        )
+        .join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `newsletter-subscribers-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
 
     // View user details
