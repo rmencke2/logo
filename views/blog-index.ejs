@@ -60,6 +60,18 @@
       .insight-tags { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
       .insight-tag { font-family: var(--font-ui); font-size: .75rem; padding: 4px 8px; border-radius: 999px; background: var(--color-terracotta-light); color: var(--color-charcoal); }
       .empty-state { background: var(--color-paper); border: 1px dashed var(--color-border-strong); border-radius: 16px; padding: 24px; }
+      .newsletter-card { margin-top: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-cream-dark); padding: 18px; }
+      .newsletter-card h2 { margin: 0 0 8px 0; font-size: 1.4rem; }
+      .newsletter-card p { margin: 0 0 10px 0; color: var(--color-charcoal-light); }
+      .newsletter-form { display: grid; gap: 8px; }
+      .newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+      .newsletter-input { flex: 1; min-width: 220px; border: 1px solid var(--color-border); border-radius: 999px; padding: 10px 14px; font: inherit; }
+      .newsletter-submit { border: 0; border-radius: 999px; background: var(--color-charcoal); color: #fff; padding: 10px 14px; font-family: var(--font-ui); font-weight: 600; cursor: pointer; }
+      .newsletter-submit:disabled { opacity: .65; cursor: not-allowed; }
+      .newsletter-hp { display: none !important; }
+      .newsletter-status { font-family: var(--font-ui); font-size: .84rem; min-height: 1.1em; color: var(--color-muted); }
+      .newsletter-status.error { color: #b3261e; }
+      .newsletter-status.success { color: #0f6f4f; }
       @media (max-width: 900px) {
         .featured-card { grid-template-columns: 1fr; }
         .featured-title { font-size: 1.65rem; }
@@ -144,8 +156,67 @@
             <% } %>
           <% }) %>
         </section>
+        <section class="newsletter-card" aria-label="Subscribe to the newsletter">
+          <h2>Get weekly executive AI insights</h2>
+          <p>One practical email per week with frameworks you can apply immediately.</p>
+          <form class="newsletter-form" id="newsletterForm" novalidate>
+            <div class="newsletter-row">
+              <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your email" maxlength="254" required />
+              <button class="newsletter-submit" id="newsletterSubmit" type="submit">Subscribe</button>
+            </div>
+            <input class="newsletter-hp" type="text" id="newsletterWebsite" autocomplete="off" tabindex="-1" aria-hidden="true" />
+            <span class="newsletter-status" id="newsletterStatus" role="status" aria-live="polite"></span>
+          </form>
+        </section>
       <% } %>
     </main>
+    <script>
+      (function () {
+        const form = document.getElementById('newsletterForm');
+        const emailEl = document.getElementById('newsletterEmail');
+        const submitEl = document.getElementById('newsletterSubmit');
+        const statusEl = document.getElementById('newsletterStatus');
+        const hpEl = document.getElementById('newsletterWebsite');
+        if (!form || !emailEl || !submitEl || !statusEl || !hpEl) return;
+
+        function setStatus(message, type) {
+          statusEl.textContent = message || '';
+          statusEl.classList.remove('error', 'success');
+          if (type) statusEl.classList.add(type);
+        }
+
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const email = String(emailEl.value || '').trim();
+          const website = String(hpEl.value || '').trim();
+          if (!email) {
+            setStatus('Please enter your email address.', 'error');
+            return;
+          }
+          submitEl.disabled = true;
+          setStatus('Subscribing...', '');
+          try {
+            const response = await fetch('/api/newsletter/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ email, source: 'insights_index', website }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+              setStatus(data?.error || 'Could not subscribe right now.', 'error');
+            } else {
+              setStatus(data?.message || 'Thanks! You are subscribed.', 'success');
+              form.reset();
+            }
+          } catch {
+            setStatus('Network error. Please try again.', 'error');
+          } finally {
+            submitEl.disabled = false;
+          }
+        });
+      })();
+    </script>
+
     <script>
       (function () {
         const siteHeader = document.getElementById('siteHeader');

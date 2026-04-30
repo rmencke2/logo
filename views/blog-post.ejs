@@ -75,10 +75,6 @@
       .post-growth-cta { margin-top: 26px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-cream-dark); padding: 18px; }
       .post-growth-cta h3 { margin: 0 0 6px 0; font-family: var(--font-display); }
       .post-growth-cta p { margin: 0 0 12px 0; color: var(--color-charcoal-light); }
-      .post-growth-cta-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-      .post-growth-cta-link { display: inline-flex; align-items: center; justify-content: center; padding: 9px 14px; border-radius: 999px; font-family: var(--font-ui); text-decoration: none; font-weight: 600; }
-      .post-growth-cta-link.primary { background: var(--color-charcoal); color: #fff; }
-      .post-growth-cta-link.secondary { border: 1px solid var(--color-border); color: var(--color-charcoal); background: #fff; }
       .newsletter-form { margin-top: 12px; display: grid; gap: 8px; }
       .newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
       .newsletter-input { flex: 1; min-width: 220px; font: inherit; border: 1px solid var(--color-border); border-radius: 999px; padding: 10px 14px; }
@@ -179,14 +175,10 @@
           <section class="post-content"><%- post.contentHtml %></section>
           <section class="post-growth-cta" aria-label="Get executive AI playbooks">
             <h3>Get practical AI operating playbooks each week</h3>
-            <p>Follow new frameworks on EBITDA, Rule of 40, decision systems, and AI execution for leadership teams.</p>
-            <div class="post-growth-cta-actions">
-              <a class="post-growth-cta-link primary" href="/insights">Read the latest insights</a>
-              <a class="post-growth-cta-link secondary" href="/">Try Influzer tools</a>
-            </div>
+            <p>Get one clear email each week with actionable frameworks on EBITDA, Rule of 40, decision systems, and AI execution.</p>
             <form class="newsletter-form" id="newsletterForm" novalidate>
               <div class="newsletter-row">
-                <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your work email" maxlength="254" required />
+                <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your email" maxlength="254" required />
                 <button class="newsletter-submit" id="newsletterSubmit" type="submit">Subscribe</button>
               </div>
               <input class="newsletter-hp" type="text" id="newsletterWebsite" autocomplete="off" tabindex="-1" aria-hidden="true" />

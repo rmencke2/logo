@@ -178,6 +178,18 @@
           <div style="text-align: center; margin-top: 28px;">
             <a href="/insights" class="cta-button secondary" style="display: inline-flex;">View all insights</a>
           </div>
+          <div style="margin-top: 20px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-cream-dark); padding: 18px;">
+            <h3 style="margin-bottom: 8px;">Get weekly executive AI insights</h3>
+            <p style="margin-bottom: 10px; color: var(--color-charcoal-light);">One practical email each week with clear frameworks for leadership and execution.</p>
+            <form id="homepageNewsletterForm" novalidate style="display: grid; gap: 8px;">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input id="homepageNewsletterEmail" type="email" placeholder="Enter your email" maxlength="254" required style="flex: 1; min-width: 220px; border: 1px solid var(--color-border); border-radius: 999px; padding: 10px 14px; font: inherit;" />
+                <button id="homepageNewsletterSubmit" type="submit" style="border: 0; border-radius: 999px; background: var(--color-charcoal); color: #fff; padding: 10px 14px; font-family: var(--font-ui); font-weight: 600; cursor: pointer;">Subscribe</button>
+              </div>
+              <input id="homepageNewsletterWebsite" type="text" autocomplete="off" tabindex="-1" aria-hidden="true" style="display:none !important;" />
+              <span id="homepageNewsletterStatus" role="status" aria-live="polite" style="font-family: var(--font-ui); font-size: .84rem; min-height: 1.1em; color: var(--color-muted);"></span>
+            </form>
+          </div>
         </div>
       </section>
 
@@ -1080,6 +1092,52 @@
     </div>
 
     <!-- i18n System -->
+    <script>
+      (function () {
+        const form = document.getElementById('homepageNewsletterForm');
+        const emailEl = document.getElementById('homepageNewsletterEmail');
+        const submitEl = document.getElementById('homepageNewsletterSubmit');
+        const statusEl = document.getElementById('homepageNewsletterStatus');
+        const hpEl = document.getElementById('homepageNewsletterWebsite');
+        if (!form || !emailEl || !submitEl || !statusEl || !hpEl) return;
+
+        function setStatus(message, type) {
+          statusEl.textContent = message || '';
+          statusEl.style.color = type === 'error' ? '#b3261e' : type === 'success' ? '#0f6f4f' : 'var(--color-muted)';
+        }
+
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const email = String(emailEl.value || '').trim();
+          const website = String(hpEl.value || '').trim();
+          if (!email) {
+            setStatus('Please enter your email address.', 'error');
+            return;
+          }
+          submitEl.disabled = true;
+          setStatus('Subscribing...', '');
+          try {
+            const response = await fetch('/api/newsletter/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ email, source: 'homepage_insights_section', website }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+              setStatus(data?.error || 'Could not subscribe right now.', 'error');
+            } else {
+              setStatus(data?.message || 'Thanks! You are subscribed.', 'success');
+              form.reset();
+            }
+          } catch {
+            setStatus('Network error. Please try again.', 'error');
+          } finally {
+            submitEl.disabled = false;
+          }
+        });
+      })();
+    </script>
+
     <script>
       (function () {
         const titleEl = document.getElementById('homepageHeroTitle');
