@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 
 const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
+const SITE_BASE_URL = 'https://www.influzer.ai';
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -55,6 +56,30 @@ function getAllBlogPosts() {
 
 function findBlogPostBySlug(slug) {
   return getAllBlogPosts().find((post) => post.slug === slug);
+}
+
+function escapeXml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function toRfc822Date(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return new Date().toUTCString();
+  }
+  return date.toUTCString();
+}
+
+function stripHtml(html) {
+  return String(html || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
@@ -178,6 +203,25 @@ function initializeStaticService(app) {
     }
   });
 
+  // Latest insight list for homepage freshness
+  app.get('/api/insights/recent', (req, res) => {
+    try {
+      const posts = getAllBlogPosts();
+      const limit = Math.max(1, Math.min(6, Number(req.query.limit) || 3));
+      const recent = posts.slice(0, limit).map((post) => ({
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        date: post.date,
+        tags: post.tags || [],
+        category: post.category || 'General',
+      }));
+      return res.json({ posts: recent });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  });
+
   // Blog index
   app.get(['/insights', '/blog'], (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -241,8 +285,75 @@ function initializeStaticService(app) {
 
   // Serve sitemap.xml
   app.get('/sitemap.xml', (req, res) => {
+    const posts = getAllBlogPosts();
+    const latestPostDate = posts.length ? posts[0].date : new Date().toISOString().slice(0, 10);
+    const staticUrls = [
+      { loc: `${SITE_BASE_URL}/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '1.0' },
+      { loc: `${SITE_BASE_URL}/video-converter`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
+      { loc: `${SITE_BASE_URL}/video-to-gif`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
+      { loc: `${SITE_BASE_URL}/video-metadata`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
+      { loc: `${SITE_BASE_URL}/meme-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
+      { loc: `${SITE_BASE_URL}/insights`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.9' },
+      { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
+      { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
+      { loc: `${SITE_BASE_URL}/cookie`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
+    ];
+    const postUrls = posts.map((post) => ({
+      loc: `${SITE_BASE_URL}/insights/${post.slug}`,
+      lastmod: post.date,
+      changefreq: 'monthly',
+      priority: '0.7',
+    }));
+    const allUrls = [...staticUrls, ...postUrls];
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allUrls
+  .map(
+    (url) => `  <url>
+    <loc>${escapeXml(url.loc)}</loc>
+    <lastmod>${escapeXml(url.lastmod)}</lastmod>
+    <changefreq>${escapeXml(url.changefreq)}</changefreq>
+    <priority>${escapeXml(url.priority)}</priority>
+  </url>`,
+  )
+  .join('\n')}
+</urlset>`;
     res.type('application/xml');
-    res.sendFile(path.join(__dirname, '..', 'public', 'sitemap.xml'));
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.send(xml);
+  });
+
+  // Serve RSS feed for insight discovery and indexing
+  app.get('/insights/rss.xml', (req, res) => {
+    const posts = getAllBlogPosts().slice(0, 25);
+    const latest = posts.length ? posts[0].date : new Date().toISOString();
+    const itemsXml = posts
+      .map((post) => {
+        const postUrl = `${SITE_BASE_URL}/insights/${post.slug}`;
+        const description = post.excerpt || stripHtml(post.contentHtml).slice(0, 220);
+        return `<item>
+  <title>${escapeXml(post.title)}</title>
+  <link>${escapeXml(postUrl)}</link>
+  <guid>${escapeXml(postUrl)}</guid>
+  <pubDate>${escapeXml(toRfc822Date(post.date))}</pubDate>
+  <description>${escapeXml(description)}</description>
+</item>`;
+      })
+      .join('\n');
+    const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Influzer.ai Insights</title>
+  <link>${SITE_BASE_URL}/insights</link>
+  <description>Thoughts on AI, leadership, scaling teams, and product-led execution.</description>
+  <language>en-us</language>
+  <lastBuildDate>${escapeXml(toRfc822Date(latest))}</lastBuildDate>
+${itemsXml}
+</channel>
+</rss>`;
+    res.type('application/rss+xml');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.send(rssXml);
   });
 
   // Serve footer.html with cache-busting headers

@@ -168,21 +168,11 @@
           <p style="text-align: center; margin-bottom: 40px;">
             Practical perspectives on AI execution, leadership systems, and profitable growth.
           </p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
-            <a href="/insights/from-cpto-to-defacto-ceo" class="feature-card" style="text-decoration: none; color: inherit;">
-              <h3>From CPTO to Defacto CEO</h3>
-              <p>How P&L ownership changes decision-making, alignment, and company-wide execution.</p>
-              <p style="margin-top: 10px; font-size: 0.82rem; color: var(--color-muted);">April 1, 2026</p>
-            </a>
-            <a href="/insights/ai-strategy-90-day-operating-plan" class="feature-card" style="text-decoration: none; color: inherit;">
-              <h3>AI Strategy: 90-Day Operating Plan</h3>
-              <p>Why workflow-first beats tool-first, and how to measure real ROI from AI initiatives.</p>
-              <p style="margin-top: 10px; font-size: 0.82rem; color: var(--color-muted);">April 3, 2026</p>
-            </a>
-            <a href="/insights/scaling-leadership-without-losing-velocity" class="feature-card" style="text-decoration: none; color: inherit;">
-              <h3>Scaling Leadership Without Losing Velocity</h3>
-              <p>Fix accountability gaps, raise urgency, and stop value from falling between teams.</p>
-              <p style="margin-top: 10px; font-size: 0.82rem; color: var(--color-muted);">April 5, 2026</p>
+          <div id="homepageInsightsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+            <a href="/insights" class="feature-card" style="text-decoration: none; color: inherit;">
+              <h3>Latest Insights</h3>
+              <p>Fresh leadership and AI execution perspectives are loaded automatically from the latest published posts.</p>
+              <p style="margin-top: 10px; font-size: 0.82rem; color: var(--color-muted);">Updating…</p>
             </a>
           </div>
           <div style="text-align: center; margin-top: 28px;">
@@ -1097,7 +1087,8 @@
         const badgeEl = document.getElementById('homepageHeroBadge');
         const latestLinkEl = document.getElementById('homepageHeroLatestLink');
         const trustEl = document.getElementById('homepageHeroTrust');
-        if (!titleEl || !subtitleEl || !latestLinkEl || !trustEl || !badgeEl) return;
+        const insightsGridEl = document.getElementById('homepageInsightsGrid');
+        if (!titleEl || !subtitleEl || !latestLinkEl || !trustEl || !badgeEl || !insightsGridEl) return;
 
         function formatDate(dateString) {
           try {
@@ -1109,20 +1100,41 @@
           }
         }
 
-        fetch('/api/insights/latest', { headers: { Accept: 'application/json' } })
-          .then((res) => (res.ok ? res.json() : null))
-          .then((post) => {
-            if (!post || !post.slug) return;
-            badgeEl.textContent = `Latest Insight • ${post.category || 'General'}`;
-            titleEl.textContent = post.title || titleEl.textContent;
-            subtitleEl.textContent = post.excerpt || subtitleEl.textContent;
-            latestLinkEl.href = `/insights/${post.slug}`;
-            latestLinkEl.textContent = 'Read latest insight';
-            const tags = Array.isArray(post.tags) && post.tags.length ? post.tags.slice(0, 3).join(' • ') : '';
-            const datePart = formatDate(post.date);
-            trustEl.textContent = tags
-              ? `Published ${datePart} • ${tags}`
-              : `Published ${datePart}`;
+        function renderLatestCards(posts) {
+          if (!Array.isArray(posts) || !posts.length) return;
+          insightsGridEl.innerHTML = posts
+            .slice(0, 3)
+            .map((post) => {
+              const date = formatDate(post.date);
+              return `<a href="/insights/${post.slug}" class="feature-card" style="text-decoration: none; color: inherit;">
+                <h3>${post.title}</h3>
+                <p>${post.excerpt}</p>
+                <p style="margin-top: 10px; font-size: 0.82rem; color: var(--color-muted);">${date}</p>
+              </a>`;
+            })
+            .join('');
+        }
+
+        Promise.all([
+          fetch('/api/insights/latest', { headers: { Accept: 'application/json' } }).then((res) => (res.ok ? res.json() : null)),
+          fetch('/api/insights/recent?limit=3', { headers: { Accept: 'application/json' } }).then((res) => (res.ok ? res.json() : null)),
+        ])
+          .then(([post, recentData]) => {
+            if (post && post.slug) {
+              badgeEl.textContent = `Latest Insight • ${post.category || 'General'}`;
+              titleEl.textContent = post.title || titleEl.textContent;
+              subtitleEl.textContent = post.excerpt || subtitleEl.textContent;
+              latestLinkEl.href = `/insights/${post.slug}`;
+              latestLinkEl.textContent = 'Read latest insight';
+              const tags = Array.isArray(post.tags) && post.tags.length ? post.tags.slice(0, 3).join(' • ') : '';
+              const datePart = formatDate(post.date);
+              trustEl.textContent = tags
+                ? `Published ${datePart} • ${tags}`
+                : `Published ${datePart}`;
+            }
+            if (recentData && Array.isArray(recentData.posts)) {
+              renderLatestCards(recentData.posts);
+            }
           })
           .catch(() => {});
       })();
