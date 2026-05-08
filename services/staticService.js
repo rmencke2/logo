@@ -255,6 +255,39 @@ function initializeStaticService(app) {
     });
   });
 
+  // Serve RSS feed for insight discovery and indexing
+  app.get('/insights/rss.xml', (req, res) => {
+    const posts = getAllBlogPosts().slice(0, 25);
+    const latest = posts.length ? posts[0].date : new Date().toISOString();
+    const itemsXml = posts
+      .map((post) => {
+        const postUrl = `${SITE_BASE_URL}/insights/${post.slug}`;
+        const description = post.excerpt || stripHtml(post.contentHtml).slice(0, 220);
+        return `<item>
+  <title>${escapeXml(post.title)}</title>
+  <link>${escapeXml(postUrl)}</link>
+  <guid>${escapeXml(postUrl)}</guid>
+  <pubDate>${escapeXml(toRfc822Date(post.date))}</pubDate>
+  <description>${escapeXml(description)}</description>
+</item>`;
+      })
+      .join('\n');
+    const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Influzer.ai Insights</title>
+  <link>${SITE_BASE_URL}/insights</link>
+  <description>Thoughts on AI, leadership, scaling teams, and product-led execution.</description>
+  <language>en-us</language>
+  <lastBuildDate>${escapeXml(toRfc822Date(latest))}</lastBuildDate>
+${itemsXml}
+</channel>
+</rss>`;
+    res.type('application/rss+xml');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.send(rssXml);
+  });
+
   // Blog post detail
   app.get(['/insights/:slug', '/blog/:slug'], (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -335,38 +368,6 @@ ${allUrls
     res.send(xml);
   });
 
-  // Serve RSS feed for insight discovery and indexing
-  app.get('/insights/rss.xml', (req, res) => {
-    const posts = getAllBlogPosts().slice(0, 25);
-    const latest = posts.length ? posts[0].date : new Date().toISOString();
-    const itemsXml = posts
-      .map((post) => {
-        const postUrl = `${SITE_BASE_URL}/insights/${post.slug}`;
-        const description = post.excerpt || stripHtml(post.contentHtml).slice(0, 220);
-        return `<item>
-  <title>${escapeXml(post.title)}</title>
-  <link>${escapeXml(postUrl)}</link>
-  <guid>${escapeXml(postUrl)}</guid>
-  <pubDate>${escapeXml(toRfc822Date(post.date))}</pubDate>
-  <description>${escapeXml(description)}</description>
-</item>`;
-      })
-      .join('\n');
-    const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-<channel>
-  <title>Influzer.ai Insights</title>
-  <link>${SITE_BASE_URL}/insights</link>
-  <description>Thoughts on AI, leadership, scaling teams, and product-led execution.</description>
-  <language>en-us</language>
-  <lastBuildDate>${escapeXml(toRfc822Date(latest))}</lastBuildDate>
-${itemsXml}
-</channel>
-</rss>`;
-    res.type('application/rss+xml');
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.send(rssXml);
-  });
 
   // Serve footer.html with cache-busting headers
   app.get('/footer.html', (req, res) => {

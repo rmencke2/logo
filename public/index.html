@@ -166,7 +166,7 @@
         <div style="max-width: 900px; margin: 0 auto;">
           <h2 style="text-align: center;">From the Insights Blog</h2>
           <p style="text-align: center; margin-bottom: 40px;">
-            Practical perspectives on AI execution, leadership systems, and profitable growth.
+            Practical perspectives on AI execution, leadership systems, and profitable growth. Browse the latest playbooks below.
           </p>
           <div id="homepageInsightsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
             <a href="/insights" class="feature-card" style="text-decoration: none; color: inherit;">
@@ -1161,7 +1161,7 @@
         function renderLatestCards(posts) {
           if (!Array.isArray(posts) || !posts.length) return;
           insightsGridEl.innerHTML = posts
-            .slice(0, 3)
+            .slice(0, 6)
             .map((post) => {
               const date = formatDate(post.date);
               return `<a href="/insights/${post.slug}" class="feature-card" style="text-decoration: none; color: inherit;">
@@ -1175,7 +1175,7 @@
 
         Promise.all([
           fetch('/api/insights/latest', { headers: { Accept: 'application/json' } }).then((res) => (res.ok ? res.json() : null)),
-          fetch('/api/insights/recent?limit=3', { headers: { Accept: 'application/json' } }).then((res) => (res.ok ? res.json() : null)),
+          fetch('/api/insights/recent?limit=6', { headers: { Accept: 'application/json' } }).then((res) => (res.ok ? res.json() : null)),
         ])
           .then(([post, recentData]) => {
             if (post && post.slug) {
