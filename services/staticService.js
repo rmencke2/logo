@@ -233,8 +233,14 @@ function initializeStaticService(app) {
     }
   });
 
+  // Redirect /blog to /insights (301 permanent redirect to avoid duplicate content)
+  app.get('/blog', (req, res) => {
+    const qs = req.originalUrl.includes('?') ? req.originalUrl.slice(req.originalUrl.indexOf('?')) : '';
+    res.redirect(301, `/insights${qs}`);
+  });
+
   // Blog index
-  app.get(['/insights', '/blog'], (req, res) => {
+  app.get('/insights', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const allPosts = getAllBlogPosts();
     const selectedCategory = req.query.category ? String(req.query.category) : '';
@@ -288,8 +294,13 @@ ${itemsXml}
     res.send(rssXml);
   });
 
+  // Redirect /blog/:slug to /insights/:slug (301 permanent redirect)
+  app.get('/blog/:slug', (req, res) => {
+    res.redirect(301, `/insights/${req.params.slug}`);
+  });
+
   // Blog post detail
-  app.get(['/insights/:slug', '/blog/:slug'], (req, res) => {
+  app.get('/insights/:slug', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const post = findBlogPostBySlug(req.params.slug);
 

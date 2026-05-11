@@ -59,6 +59,11 @@ const PORT = process.env.PORT || 4000;
     // 8. Admin service (user management, monitoring)
     initializeAdminService(app);
     
+    // 404 catch-all (must be after all valid routes)
+    app.use((req, res) => {
+      res.status(404).render('404', { title: 'Page Not Found' });
+    });
+
     // Global error handling middleware (must be last)
     app.use((err, req, res, _next) => {
       console.error(err);
