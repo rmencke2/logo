@@ -72,6 +72,11 @@
       .newsletter-status { font-family: var(--font-ui); font-size: .84rem; min-height: 1.1em; color: var(--color-muted); }
       .newsletter-status.error { color: #b3261e; }
       .newsletter-status.success { color: #0f6f4f; }
+      .partner-lumipact { margin-top: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-paper); padding: 18px 20px; }
+      .partner-lumipact-title { margin: 0 0 8px 0; font-family: var(--font-display); font-size: 1.35rem; }
+      .partner-lumipact-lead { margin: 0 0 10px 0; color: var(--color-charcoal-light); line-height: 1.65; }
+      .partner-lumipact-lead a, .partner-lumipact-link { color: var(--color-terracotta); font-weight: 600; }
+      .partner-lumipact-cta { margin: 0; }
       @media (max-width: 900px) {
         .featured-card { grid-template-columns: 1fr; }
         .featured-title { font-size: 1.65rem; }
@@ -156,6 +161,7 @@
             <% } %>
           <% }) %>
         </section>
+        <%- include('partials/partner-lumipact', { partnerVariant: 'full' }) %>
         <section class="newsletter-card" aria-label="Subscribe to the newsletter">
           <h2>Get weekly executive AI insights</h2>
           <p>One practical email per week with frameworks you can apply immediately.</p>

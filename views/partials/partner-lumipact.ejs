@@ -1,0 +1,25 @@
+<%#
+  Cross-site partner link block (Influzer.ai ↔ Lumipact.com).
+  variant: 'compact' | 'full'
+%>
+<% const variant = typeof partnerVariant !== 'undefined' ? partnerVariant : 'compact'; %>
+<section class="partner-lumipact partner-lumipact--<%= variant %>" aria-label="Partner resource">
+  <% if (variant === 'full') { %>
+    <h2 class="partner-lumipact-title">From the same team</h2>
+    <p class="partner-lumipact-lead">
+      These executive insights pair well with practical contract and vendor spend control.
+      <a href="https://lumipact.com" rel="noopener noreferrer" target="_blank">Lumipact</a>
+      helps small business teams track renewals, avoid auto-renewal waste, and see total vendor commitments in one place.
+    </p>
+    <p class="partner-lumipact-cta">
+      <a class="partner-lumipact-link" href="https://lumipact.com" rel="noopener noreferrer" target="_blank">Explore Lumipact →</a>
+    </p>
+  <% } else { %>
+    <p class="partner-lumipact-compact">
+      <strong>Related tool:</strong>
+      For contract renewals, vendor spend visibility, and notice-deadline alerts, see
+      <a href="https://lumipact.com" rel="noopener noreferrer" target="_blank">Lumipact</a>
+      — contract management built for growing teams.
+    </p>
+  <% } %>
+</section>
