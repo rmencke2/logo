@@ -2404,3 +2404,107 @@ button:active:enabled {
     border: 1px solid #ddd;
   }
 }
+
+
+/* Homepage visual refresh */
+.hero-insight-strip {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-insight-chip {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: rgba(255, 253, 249, 0.85);
+  padding: 12px 14px;
+  text-align: left;
+  display: grid;
+  gap: 3px;
+}
+.hero-insight-chip strong {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--color-charcoal);
+}
+.hero-insight-chip span {
+  font-size: 0.86rem;
+  color: var(--color-muted);
+}
+.homepage-insight-card {
+  display: grid;
+  gap: 10px;
+  min-height: 220px;
+}
+.homepage-insight-date {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+}
+.homepage-insight-read {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--color-terracotta);
+  margin-top: auto;
+}
+.homepage-story-section,
+.homepage-capabilities-section { background: var(--color-paper); }
+.homepage-process-section,
+.homepage-faq-section { background: var(--color-cream-dark); }
+.homepage-story-wrap,
+.homepage-process-wrap,
+.homepage-capabilities-wrap,
+.homepage-faq-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.homepage-story-intro { margin-bottom: 24px; }
+.homepage-story-grid,
+.homepage-capabilities-grid,
+.homepage-process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.homepage-process-card { position: relative; padding-top: 60px; }
+.homepage-process-step {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--color-charcoal);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.homepage-faq-list { display: grid; gap: 10px; }
+.homepage-faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-paper);
+  padding: 14px 16px;
+}
+.homepage-faq-item summary {
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+.homepage-faq-item p {
+  margin-top: 10px;
+  color: var(--color-charcoal-light);
+  font-size: 0.96rem;
+}
+@media (max-width: 900px) {
+  .hero-insight-strip { grid-template-columns: 1fr; }
+}
