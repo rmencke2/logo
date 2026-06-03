@@ -1,0 +1,2360 @@
+{
+  "categories": [
+    "Dev Tools",
+    "Search & Web",
+    "Databases",
+    "Design",
+    "Cloud & Infra",
+    "Communication",
+    "Data & Analytics",
+    "Security & Monitoring",
+    "Payments & Commerce",
+    "AI & Memory",
+    "Files & Docs",
+    "Automation"
+  ],
+  "servers": [
+    {
+      "name": "GitHub",
+      "slug": "github",
+      "category": "Dev Tools",
+      "description": "Repos, pull requests, issues, commits, and code search via the GitHub API.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "github",
+      "tools": [
+        {
+          "name": "search_repositories",
+          "description": "Search GitHub repositories"
+        },
+        {
+          "name": "get_file_contents",
+          "description": "Read file contents from a repo"
+        },
+        {
+          "name": "create_issue",
+          "description": "Open a new issue"
+        },
+        {
+          "name": "create_pull_request",
+          "description": "Create a pull request"
+        },
+        {
+          "name": "list_commits",
+          "description": "List commits on a branch"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add github -- npx -y @modelcontextprotocol/server-github",
+      "stars": 3800
+    },
+    {
+      "name": "GitLab",
+      "slug": "gitlab",
+      "category": "Dev Tools",
+      "description": "GitLab repositories, merge requests, CI/CD pipelines, and project management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "gitlab",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List accessible GitLab projects"
+        },
+        {
+          "name": "get_merge_requests",
+          "description": "List and inspect merge requests"
+        },
+        {
+          "name": "get_pipeline_status",
+          "description": "Check CI pipeline status"
+        },
+        {
+          "name": "search_code",
+          "description": "Search code across repositories"
+        }
+      ],
+      "github_url": "https://github.com/zereight/gitlab-mcp"
+    },
+    {
+      "name": "Desktop Commander",
+      "slug": "desktop-commander",
+      "category": "Dev Tools",
+      "description": "Terminal access, process management, and ripgrep-powered search on the local machine.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "terminal",
+      "tools": [
+        {
+          "name": "execute_command",
+          "description": "Run shell commands in a controlled environment"
+        },
+        {
+          "name": "list_processes",
+          "description": "List running processes"
+        },
+        {
+          "name": "search_files",
+          "description": "Ripgrep search across directories"
+        },
+        {
+          "name": "read_file",
+          "description": "Read file contents from disk"
+        }
+      ],
+      "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp"
+    },
+    {
+      "name": "Filesystem",
+      "slug": "filesystem",
+      "category": "Dev Tools",
+      "description": "Official reference server for secure local file read, write, and directory operations within allowed paths.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "folder",
+      "tools": [
+        {
+          "name": "read_file",
+          "description": "Read contents of a file"
+        },
+        {
+          "name": "write_file",
+          "description": "Create or overwrite a file"
+        },
+        {
+          "name": "list_directory",
+          "description": "List files and directories"
+        },
+        {
+          "name": "search_files",
+          "description": "Search for files by pattern"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem /path/to/allowed",
+      "stars": 4200
+    },
+    {
+      "name": "E2B",
+      "slug": "e2b",
+      "category": "Dev Tools",
+      "description": "Sandboxed cloud code execution environments for running untrusted code safely.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "sandbox",
+      "tools": [
+        {
+          "name": "create_sandbox",
+          "description": "Provision a new cloud sandbox"
+        },
+        {
+          "name": "run_code",
+          "description": "Execute code in the sandbox"
+        },
+        {
+          "name": "upload_file",
+          "description": "Upload a file to the sandbox"
+        },
+        {
+          "name": "download_file",
+          "description": "Download results from the sandbox"
+        }
+      ],
+      "github_url": "https://github.com/e2b-dev/mcp-server",
+      "docs_url": "https://e2b.dev/docs"
+    },
+    {
+      "name": "Context7",
+      "slug": "context7",
+      "category": "Dev Tools",
+      "description": "Live versioned documentation fetching for libraries and frameworks.",
+      "official": false,
+      "transport": "http",
+      "icon": "book-open",
+      "tools": [
+        {
+          "name": "resolve-library-id",
+          "description": "Resolve a package name to Context7 ID"
+        },
+        {
+          "name": "get-library-docs",
+          "description": "Fetch up-to-date documentation for a library"
+        }
+      ],
+      "github_url": "https://github.com/upstash/context7",
+      "docs_url": "https://context7.com",
+      "stars": 2100
+    },
+    {
+      "name": "Sourcegraph Cody",
+      "slug": "sourcegraph-cody",
+      "category": "Dev Tools",
+      "description": "Semantic codebase search and navigation across large repositories.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "code",
+      "tools": [
+        {
+          "name": "search_code",
+          "description": "Semantic search across codebases"
+        },
+        {
+          "name": "find_references",
+          "description": "Find symbol references"
+        },
+        {
+          "name": "explain_symbol",
+          "description": "Explain a function or type in context"
+        }
+      ],
+      "github_url": "https://github.com/sourcegraph/cody",
+      "docs_url": "https://sourcegraph.com/cody"
+    },
+    {
+      "name": "Replit",
+      "slug": "replit",
+      "category": "Dev Tools",
+      "description": "Cloud coding environments: create repls, run code, and manage projects remotely.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud-code",
+      "tools": [
+        {
+          "name": "create_repl",
+          "description": "Create a new Replit project"
+        },
+        {
+          "name": "run_code",
+          "description": "Execute code in a repl"
+        },
+        {
+          "name": "list_files",
+          "description": "List project files"
+        },
+        {
+          "name": "deploy",
+          "description": "Deploy a repl application"
+        }
+      ],
+      "docs_url": "https://docs.replit.com"
+    },
+    {
+      "name": "StackBlitz",
+      "slug": "stackblitz",
+      "category": "Dev Tools",
+      "description": "Browser-based dev environments with instant Node and web project bootstrapping.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "browser",
+      "tools": [
+        {
+          "name": "open_project",
+          "description": "Open or create a StackBlitz project"
+        },
+        {
+          "name": "run_dev_server",
+          "description": "Start the development server"
+        },
+        {
+          "name": "edit_file",
+          "description": "Update project files"
+        }
+      ],
+      "docs_url": "https://developer.stackblitz.com"
+    },
+    {
+      "name": "Linear",
+      "slug": "linear",
+      "category": "Dev Tools",
+      "description": "Issue tracking, sprints, roadmaps, and engineering workflow in Linear.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "layout-list",
+      "tools": [
+        {
+          "name": "search_issues",
+          "description": "Search issues by query"
+        },
+        {
+          "name": "create_issue",
+          "description": "Create a new issue"
+        },
+        {
+          "name": "update_issue",
+          "description": "Update issue fields"
+        },
+        {
+          "name": "list_cycles",
+          "description": "List team cycles and roadmaps"
+        }
+      ],
+      "github_url": "https://github.com/jerhadad/linear-mcp-server",
+      "docs_url": "https://linear.app/docs",
+      "stars": 920
+    },
+    {
+      "name": "Brave Search",
+      "slug": "brave-search",
+      "category": "Search & Web",
+      "description": "Web search via the Brave Search API for up-to-date information retrieval.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "search",
+      "tools": [
+        {
+          "name": "brave_web_search",
+          "description": "Search the web via Brave"
+        },
+        {
+          "name": "brave_local_search",
+          "description": "Search local businesses and places"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add brave-search -- npx -y @modelcontextprotocol/server-brave-search"
+    },
+    {
+      "name": "Firecrawl",
+      "slug": "firecrawl",
+      "category": "Search & Web",
+      "description": "URL-to-clean-Markdown scraping for LLM-ready web content extraction.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "flame",
+      "tools": [
+        {
+          "name": "scrape_url",
+          "description": "Scrape a single URL to markdown"
+        },
+        {
+          "name": "crawl_site",
+          "description": "Crawl a site with depth limits"
+        },
+        {
+          "name": "map_site",
+          "description": "Discover URLs on a domain"
+        }
+      ],
+      "github_url": "https://github.com/mendableai/firecrawl-mcp-server",
+      "docs_url": "https://docs.firecrawl.dev"
+    },
+    {
+      "name": "Jina Reader",
+      "slug": "jina-reader",
+      "category": "Search & Web",
+      "description": "Web content extraction optimized for readability and RAG pipelines.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "globe",
+      "tools": [
+        {
+          "name": "read_url",
+          "description": "Extract clean content from a URL"
+        },
+        {
+          "name": "search_web",
+          "description": "Search and read top results"
+        }
+      ],
+      "docs_url": "https://jina.ai/reader"
+    },
+    {
+      "name": "Fetch",
+      "slug": "fetch",
+      "category": "Search & Web",
+      "description": "Raw HTML and Markdown fetching for LLM consumption.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "globe",
+      "tools": [
+        {
+          "name": "fetch",
+          "description": "Fetch a URL and return markdown or HTML content"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add fetch -- npx -y @modelcontextprotocol/server-fetch"
+    },
+    {
+      "name": "Perplexity",
+      "slug": "perplexity",
+      "category": "Search & Web",
+      "description": "AI-powered semantic search with cited answers from the web.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "search",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Run a Perplexity search query"
+        },
+        {
+          "name": "ask",
+          "description": "Ask a question with web grounding"
+        }
+      ],
+      "docs_url": "https://docs.perplexity.ai"
+    },
+    {
+      "name": "Exa",
+      "slug": "exa",
+      "category": "Search & Web",
+      "description": "Neural semantic web search for research and retrieval.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "search",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Semantic web search"
+        },
+        {
+          "name": "find_similar",
+          "description": "Find pages similar to a URL"
+        },
+        {
+          "name": "get_contents",
+          "description": "Fetch full text for result URLs"
+        }
+      ],
+      "github_url": "https://github.com/exa-labs/exa-mcp-server",
+      "docs_url": "https://docs.exa.ai"
+    },
+    {
+      "name": "Tavily",
+      "slug": "tavily",
+      "category": "Search & Web",
+      "description": "Search API optimized for AI agents and research workflows.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "search",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Agent-optimized web search"
+        },
+        {
+          "name": "extract",
+          "description": "Extract content from URLs"
+        }
+      ],
+      "github_url": "https://github.com/tavily-ai/tavily-mcp",
+      "docs_url": "https://docs.tavily.com"
+    },
+    {
+      "name": "SearXNG",
+      "slug": "searxng",
+      "category": "Search & Web",
+      "description": "Self-hosted meta-search aggregating multiple search engines.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "search",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Meta-search across configured engines"
+        },
+        {
+          "name": "image_search",
+          "description": "Search images via SearXNG"
+        }
+      ],
+      "github_url": "https://github.com/searxng/searxng"
+    },
+    {
+      "name": "GPT Researcher",
+      "slug": "gpt-researcher",
+      "category": "Search & Web",
+      "description": "Deep research report generation from multi-source web investigation.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "book-open",
+      "tools": [
+        {
+          "name": "conduct_research",
+          "description": "Run a deep research task"
+        },
+        {
+          "name": "generate_report",
+          "description": "Produce a structured research report"
+        }
+      ],
+      "github_url": "https://github.com/assafelovic/gpt-researcher"
+    },
+    {
+      "name": "Puppeteer",
+      "slug": "puppeteer",
+      "category": "Search & Web",
+      "description": "Headless browser automation for navigation, screenshots, and DOM interaction.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "monitor",
+      "tools": [
+        {
+          "name": "puppeteer_navigate",
+          "description": "Navigate to a URL"
+        },
+        {
+          "name": "puppeteer_screenshot",
+          "description": "Capture a screenshot"
+        },
+        {
+          "name": "puppeteer_click",
+          "description": "Click an element"
+        },
+        {
+          "name": "puppeteer_evaluate",
+          "description": "Run JavaScript in the page"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add puppeteer -- npx -y @modelcontextprotocol/server-puppeteer"
+    },
+    {
+      "name": "PostgreSQL",
+      "slug": "postgres",
+      "category": "Databases",
+      "description": "Full SQL access to PostgreSQL with schema inspection and query execution.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "query",
+          "description": "Execute SQL queries"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables in the database"
+        },
+        {
+          "name": "describe_table",
+          "description": "Get column definitions for a table"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add postgres -- npx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost/db"
+    },
+    {
+      "name": "MySQL",
+      "slug": "mysql",
+      "category": "Databases",
+      "description": "MySQL query and schema tools for relational data access.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "query",
+          "description": "Run SQL against MySQL"
+        },
+        {
+          "name": "list_tables",
+          "description": "List database tables"
+        },
+        {
+          "name": "describe_table",
+          "description": "Show table schema"
+        }
+      ],
+      "github_url": "https://github.com/benborla/mcp-server-mysql"
+    },
+    {
+      "name": "SQLite",
+      "slug": "sqlite",
+      "category": "Databases",
+      "description": "Local SQLite database operations with schema discovery.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "read_query",
+          "description": "Run SELECT queries"
+        },
+        {
+          "name": "write_query",
+          "description": "Run INSERT/UPDATE/DELETE"
+        },
+        {
+          "name": "list_tables",
+          "description": "List all tables"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers"
+    },
+    {
+      "name": "Supabase",
+      "slug": "supabase",
+      "category": "Databases",
+      "description": "Postgres plus auth, storage, and edge functions for Supabase projects.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List Supabase projects"
+        },
+        {
+          "name": "execute_sql",
+          "description": "Run SQL against a project"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables in a schema"
+        }
+      ],
+      "github_url": "https://github.com/supabase-community/supabase-mcp",
+      "docs_url": "https://supabase.com/docs"
+    },
+    {
+      "name": "Neon",
+      "slug": "neon",
+      "category": "Databases",
+      "description": "Serverless Postgres with branching via remote HTTP MCP transport.",
+      "official": false,
+      "transport": "http",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute SQL on a Neon branch"
+        },
+        {
+          "name": "list_branches",
+          "description": "List database branches"
+        },
+        {
+          "name": "create_branch",
+          "description": "Create a new database branch"
+        }
+      ],
+      "github_url": "https://github.com/neondatabase/mcp-server-neon",
+      "docs_url": "https://neon.tech/docs"
+    },
+    {
+      "name": "MongoDB",
+      "slug": "mongodb",
+      "category": "Databases",
+      "description": "Document database queries and collection management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "find",
+          "description": "Query documents in a collection"
+        },
+        {
+          "name": "aggregate",
+          "description": "Run aggregation pipelines"
+        },
+        {
+          "name": "list_collections",
+          "description": "List collections in a database"
+        }
+      ],
+      "github_url": "https://github.com/mongodb-js/mongodb-mcp-server"
+    },
+    {
+      "name": "Redis",
+      "slug": "redis",
+      "category": "Databases",
+      "description": "Key-value store access for cache and session inspection.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "get",
+          "description": "Get value by key"
+        },
+        {
+          "name": "set",
+          "description": "Set a key value"
+        },
+        {
+          "name": "keys",
+          "description": "List keys matching a pattern"
+        }
+      ],
+      "github_url": "https://github.com/redis/mcp-redis"
+    },
+    {
+      "name": "MotherDuck",
+      "slug": "motherduck",
+      "category": "Databases",
+      "description": "Analytical SQL with DuckDB in-process and MotherDuck cloud sync.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "query",
+          "description": "Run DuckDB SQL queries"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables and views"
+        },
+        {
+          "name": "attach_database",
+          "description": "Attach a MotherDuck database"
+        }
+      ],
+      "github_url": "https://github.com/motherduckdb/mcp-server-motherduck",
+      "docs_url": "https://motherduck.com/docs"
+    },
+    {
+      "name": "Milvus",
+      "slug": "milvus",
+      "category": "Databases",
+      "description": "Vector database search for embeddings and similarity retrieval.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "search_vectors",
+          "description": "Similarity search on embeddings"
+        },
+        {
+          "name": "insert_vectors",
+          "description": "Insert embedding records"
+        },
+        {
+          "name": "list_collections",
+          "description": "List vector collections"
+        }
+      ],
+      "github_url": "https://github.com/milvus-io/mcp-server-milvus"
+    },
+    {
+      "name": "MindsDB",
+      "slug": "mindsdb",
+      "category": "Databases",
+      "description": "Connect and unify data across platforms and databases as a single MCP server.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "database",
+      "tools": [
+        {
+          "name": "query",
+          "description": "Query federated data sources"
+        },
+        {
+          "name": "list_databases",
+          "description": "List connected data integrations"
+        },
+        {
+          "name": "create_model",
+          "description": "Create a predictive model"
+        }
+      ],
+      "github_url": "https://github.com/mindsdb/mindsdb",
+      "docs_url": "https://docs.mindsdb.com"
+    },
+    {
+      "name": "Figma",
+      "slug": "figma",
+      "category": "Design",
+      "description": "Live design layers to code via official Figma Dev Mode and REST APIs.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "figma",
+      "tools": [
+        {
+          "name": "get_file",
+          "description": "Fetch Figma file metadata and structure"
+        },
+        {
+          "name": "get_node",
+          "description": "Get details for a specific node"
+        },
+        {
+          "name": "export_asset",
+          "description": "Export images or SVGs from nodes"
+        }
+      ],
+      "github_url": "https://github.com/GLips/Figma-Context-MCP"
+    },
+    {
+      "name": "Magic UI",
+      "slug": "magic-ui",
+      "category": "Design",
+      "description": "React and Tailwind component library for rapid UI generation.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "figma",
+      "tools": [
+        {
+          "name": "list_components",
+          "description": "Browse available UI components"
+        },
+        {
+          "name": "get_component_code",
+          "description": "Fetch component source code"
+        }
+      ],
+      "github_url": "https://github.com/magicuidesign/mcp"
+    },
+    {
+      "name": "Builder Fusion",
+      "slug": "builder-fusion",
+      "category": "Design",
+      "description": "Visual canvas with GitHub integration for design-to-code workflows.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "figma",
+      "tools": [
+        {
+          "name": "sync_design",
+          "description": "Sync canvas to repository"
+        },
+        {
+          "name": "export_code",
+          "description": "Export generated code"
+        }
+      ],
+      "docs_url": "https://www.builder.io"
+    },
+    {
+      "name": "Canva",
+      "slug": "canva",
+      "category": "Design",
+      "description": "Design generation and editing through the Canva API.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "image",
+      "tools": [
+        {
+          "name": "create_design",
+          "description": "Create a new design from template"
+        },
+        {
+          "name": "export_design",
+          "description": "Export design assets"
+        },
+        {
+          "name": "list_templates",
+          "description": "Browse design templates"
+        }
+      ],
+      "docs_url": "https://www.canva.dev/docs"
+    },
+    {
+      "name": "Storybook",
+      "slug": "storybook",
+      "category": "Design",
+      "description": "Component documentation and story access for design systems.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "book-open",
+      "tools": [
+        {
+          "name": "list_stories",
+          "description": "List component stories"
+        },
+        {
+          "name": "get_story",
+          "description": "Get story metadata and args"
+        }
+      ],
+      "github_url": "https://github.com/storybookjs/mcp-storybook"
+    },
+    {
+      "name": "SlideSpeak",
+      "slug": "slidespeak",
+      "category": "Design",
+      "description": "Create presentations and PowerPoints using AI from outlines and data.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "file-text",
+      "tools": [
+        {
+          "name": "create_presentation",
+          "description": "Generate a slide deck from a brief"
+        },
+        {
+          "name": "add_slide",
+          "description": "Add a slide to an existing deck"
+        },
+        {
+          "name": "export_pptx",
+          "description": "Export to PowerPoint format"
+        }
+      ],
+      "github_url": "https://github.com/SlideSpeak/slidespeak-mcp"
+    },
+    {
+      "name": "AWS",
+      "slug": "aws",
+      "category": "Cloud & Infra",
+      "description": "S3, Lambda, EC2, and other AWS service operations.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        {
+          "name": "list_s3_buckets",
+          "description": "List S3 buckets"
+        },
+        {
+          "name": "describe_ec2_instances",
+          "description": "Describe EC2 instances"
+        },
+        {
+          "name": "invoke_lambda",
+          "description": "Invoke a Lambda function"
+        }
+      ],
+      "github_url": "https://github.com/awslabs/mcp",
+      "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/"
+    },
+    {
+      "name": "Google Cloud",
+      "slug": "google-cloud",
+      "category": "Cloud & Infra",
+      "description": "GCP services access for compute, storage, and APIs.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List GCP projects"
+        },
+        {
+          "name": "run_gcloud",
+          "description": "Execute allowed gcloud commands"
+        },
+        {
+          "name": "query_bigtable",
+          "description": "Query Bigtable instances"
+        }
+      ],
+      "docs_url": "https://cloud.google.com/mcp"
+    },
+    {
+      "name": "Azure",
+      "slug": "azure",
+      "category": "Cloud & Infra",
+      "description": "Azure resource management and cloud operations.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        {
+          "name": "list_resources",
+          "description": "List resources in a resource group"
+        },
+        {
+          "name": "get_resource",
+          "description": "Get resource details"
+        },
+        {
+          "name": "run_cli",
+          "description": "Execute allowed Azure CLI commands"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/azure"
+    },
+    {
+      "name": "Vercel",
+      "slug": "vercel",
+      "category": "Cloud & Infra",
+      "description": "Deploy projects, manage domains, and view analytics.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        {
+          "name": "list_deployments",
+          "description": "List recent deployments"
+        },
+        {
+          "name": "get_deployment",
+          "description": "Get deployment status"
+        },
+        {
+          "name": "add_domain",
+          "description": "Configure a custom domain"
+        }
+      ],
+      "github_url": "https://github.com/vercel/mcp-handler",
+      "docs_url": "https://vercel.com/docs"
+    },
+    {
+      "name": "Netlify",
+      "slug": "netlify",
+      "category": "Cloud & Infra",
+      "description": "Build and deploy management for Netlify sites.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        {
+          "name": "list_sites",
+          "description": "List Netlify sites"
+        },
+        {
+          "name": "trigger_deploy",
+          "description": "Trigger a new deploy"
+        },
+        {
+          "name": "get_build_logs",
+          "description": "Fetch build logs"
+        }
+      ],
+      "docs_url": "https://docs.netlify.com"
+    },
+    {
+      "name": "Kubernetes",
+      "slug": "kubernetes",
+      "category": "Cloud & Infra",
+      "description": "Cluster and pod management: logs, deployments, and manifests.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "list_pods",
+          "description": "List pods in a namespace"
+        },
+        {
+          "name": "get_pod_logs",
+          "description": "Stream logs from a pod"
+        },
+        {
+          "name": "apply_manifest",
+          "description": "Apply a YAML manifest"
+        }
+      ],
+      "github_url": "https://github.com/Flux159/mcp-server-kubernetes"
+    },
+    {
+      "name": "Metoro",
+      "slug": "metoro",
+      "category": "Cloud & Infra",
+      "description": "Query and interact with Kubernetes environments for observability.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "query_cluster",
+          "description": "Query cluster metrics and state"
+        },
+        {
+          "name": "list_workloads",
+          "description": "List deployments and services"
+        }
+      ],
+      "github_url": "https://github.com/metoro-io/metoro-mcp-server"
+    },
+    {
+      "name": "Terraform",
+      "slug": "terraform",
+      "category": "Cloud & Infra",
+      "description": "Infrastructure-as-code plan, apply, and state operations.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "plan",
+          "description": "Run terraform plan"
+        },
+        {
+          "name": "apply",
+          "description": "Apply infrastructure changes"
+        },
+        {
+          "name": "show_state",
+          "description": "Inspect Terraform state"
+        }
+      ],
+      "github_url": "https://github.com/hashicorp/terraform-mcp-server"
+    },
+    {
+      "name": "Docker",
+      "slug": "docker",
+      "category": "Cloud & Infra",
+      "description": "Container build, run, and image management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "list_containers",
+          "description": "List running containers"
+        },
+        {
+          "name": "build_image",
+          "description": "Build a Docker image"
+        },
+        {
+          "name": "run_container",
+          "description": "Start a container"
+        }
+      ],
+      "github_url": "https://github.com/docker/mcp-server"
+    },
+    {
+      "name": "Microsoft MCP Gateway",
+      "slug": "microsoft-mcp-gateway",
+      "category": "Cloud & Infra",
+      "description": "Kubernetes-native reverse proxy for MCP routing in enterprise environments.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        {
+          "name": "register_server",
+          "description": "Register an upstream MCP server"
+        },
+        {
+          "name": "route_request",
+          "description": "Route client requests to backends"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com"
+    },
+    {
+      "name": "Slack",
+      "slug": "slack",
+      "category": "Communication",
+      "description": "Channels, messages, threads, and workspace collaboration.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "message-square",
+      "tools": [
+        {
+          "name": "list_channels",
+          "description": "List accessible channels"
+        },
+        {
+          "name": "post_message",
+          "description": "Send a message to a channel"
+        },
+        {
+          "name": "get_channel_history",
+          "description": "Read recent messages"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add slack -- npx -y @modelcontextprotocol/server-slack"
+    },
+    {
+      "name": "Gmail",
+      "slug": "gmail",
+      "category": "Communication",
+      "description": "Read, compose, and search email via Gmail API.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "mail",
+      "tools": [
+        {
+          "name": "search_messages",
+          "description": "Search inbox messages"
+        },
+        {
+          "name": "send_email",
+          "description": "Compose and send email"
+        },
+        {
+          "name": "read_thread",
+          "description": "Read an email thread"
+        }
+      ],
+      "github_url": "https://github.com/GongRzhe/Gmail-MCP-Server"
+    },
+    {
+      "name": "Google Calendar",
+      "slug": "google-calendar",
+      "category": "Communication",
+      "description": "Events, scheduling, and calendar management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "calendar",
+      "tools": [
+        {
+          "name": "list_events",
+          "description": "List upcoming events"
+        },
+        {
+          "name": "create_event",
+          "description": "Create a calendar event"
+        },
+        {
+          "name": "find_free_time",
+          "description": "Find available time slots"
+        }
+      ],
+      "docs_url": "https://developers.google.com/calendar"
+    },
+    {
+      "name": "Outlook",
+      "slug": "outlook",
+      "category": "Communication",
+      "description": "Microsoft email and calendar access.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "mail",
+      "tools": [
+        {
+          "name": "list_messages",
+          "description": "List Outlook messages"
+        },
+        {
+          "name": "send_mail",
+          "description": "Send an email"
+        },
+        {
+          "name": "list_events",
+          "description": "List calendar events"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/graph"
+    },
+    {
+      "name": "Microsoft Teams",
+      "slug": "microsoft-teams",
+      "category": "Communication",
+      "description": "Teams messaging and channel collaboration.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "message-square",
+      "tools": [
+        {
+          "name": "list_channels",
+          "description": "List Teams channels"
+        },
+        {
+          "name": "send_message",
+          "description": "Post a Teams message"
+        },
+        {
+          "name": "list_chats",
+          "description": "List recent chats"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/microsoftteams"
+    },
+    {
+      "name": "Notion",
+      "slug": "notion",
+      "category": "Communication",
+      "description": "Pages, databases, blocks, and workspace knowledge management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "file-text",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Search pages and databases"
+        },
+        {
+          "name": "get_page",
+          "description": "Retrieve page content"
+        },
+        {
+          "name": "create_page",
+          "description": "Create a new page"
+        }
+      ],
+      "github_url": "https://github.com/makenotion/notion-mcp-server",
+      "docs_url": "https://developers.notion.com"
+    },
+    {
+      "name": "Confluence",
+      "slug": "confluence",
+      "category": "Communication",
+      "description": "Atlassian wiki access for documentation search and edits.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "file-text",
+      "tools": [
+        {
+          "name": "search_pages",
+          "description": "Search Confluence pages"
+        },
+        {
+          "name": "get_page",
+          "description": "Get page content"
+        },
+        {
+          "name": "create_page",
+          "description": "Create a wiki page"
+        }
+      ],
+      "docs_url": "https://developer.atlassian.com/cloud/confluence"
+    },
+    {
+      "name": "Jira",
+      "slug": "jira",
+      "category": "Communication",
+      "description": "Tickets, sprints, and project tracking in Jira.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "layout-list",
+      "tools": [
+        {
+          "name": "search_issues",
+          "description": "Search Jira issues"
+        },
+        {
+          "name": "create_issue",
+          "description": "Create a ticket"
+        },
+        {
+          "name": "transition_issue",
+          "description": "Move issue through workflow"
+        }
+      ],
+      "docs_url": "https://developer.atlassian.com/cloud/jira"
+    },
+    {
+      "name": "Asana",
+      "slug": "asana",
+      "category": "Communication",
+      "description": "Tasks and project management in Asana.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "layout-list",
+      "tools": [
+        {
+          "name": "list_tasks",
+          "description": "List tasks in a project"
+        },
+        {
+          "name": "create_task",
+          "description": "Create a new task"
+        },
+        {
+          "name": "update_task",
+          "description": "Update task status"
+        }
+      ],
+      "docs_url": "https://developers.asana.com"
+    },
+    {
+      "name": "Monday.com",
+      "slug": "monday",
+      "category": "Communication",
+      "description": "Boards, items, and workflow automation on Monday.com.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "layout-list",
+      "tools": [
+        {
+          "name": "list_boards",
+          "description": "List workspace boards"
+        },
+        {
+          "name": "create_item",
+          "description": "Add an item to a board"
+        },
+        {
+          "name": "update_column",
+          "description": "Update column values"
+        }
+      ],
+      "docs_url": "https://developer.monday.com"
+    },
+    {
+      "name": "Google Sheets",
+      "slug": "google-sheets",
+      "category": "Data & Analytics",
+      "description": "Spreadsheet read and write via Google Sheets API.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "read_range",
+          "description": "Read cell range values"
+        },
+        {
+          "name": "write_range",
+          "description": "Write values to cells"
+        },
+        {
+          "name": "list_sheets",
+          "description": "List tabs in a spreadsheet"
+        }
+      ],
+      "docs_url": "https://developers.google.com/sheets/api"
+    },
+    {
+      "name": "Airtable",
+      "slug": "airtable",
+      "category": "Data & Analytics",
+      "description": "Base and table operations for structured data.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "list_records",
+          "description": "List records in a table"
+        },
+        {
+          "name": "create_record",
+          "description": "Create a new record"
+        },
+        {
+          "name": "update_record",
+          "description": "Update record fields"
+        }
+      ],
+      "docs_url": "https://airtable.com/developers/web/api"
+    },
+    {
+      "name": "Amplitude",
+      "slug": "amplitude",
+      "category": "Data & Analytics",
+      "description": "Product analytics dashboards and event exploration.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "query_events",
+          "description": "Query event segments"
+        },
+        {
+          "name": "get_chart",
+          "description": "Fetch chart data"
+        }
+      ],
+      "docs_url": "https://www.docs.developers.amplitude.com"
+    },
+    {
+      "name": "Mixpanel",
+      "slug": "mixpanel",
+      "category": "Data & Analytics",
+      "description": "Event analytics and funnel analysis.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "query_insights",
+          "description": "Run insights queries"
+        },
+        {
+          "name": "export_report",
+          "description": "Export analytics report"
+        }
+      ],
+      "docs_url": "https://developer.mixpanel.com"
+    },
+    {
+      "name": "Hex",
+      "slug": "hex",
+      "category": "Data & Analytics",
+      "description": "Collaborative data notebooks and SQL workspaces.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "run_cell",
+          "description": "Execute a notebook cell"
+        },
+        {
+          "name": "list_projects",
+          "description": "List Hex projects"
+        }
+      ],
+      "docs_url": "https://learn.hex.tech"
+    },
+    {
+      "name": "Metabase",
+      "slug": "metabase",
+      "category": "Data & Analytics",
+      "description": "BI dashboard querying and question execution.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "run_question",
+          "description": "Run a saved Metabase question"
+        },
+        {
+          "name": "list_dashboards",
+          "description": "List dashboards"
+        }
+      ],
+      "github_url": "https://github.com/metabase/mcp-metabase"
+    },
+    {
+      "name": "Snowflake",
+      "slug": "snowflake",
+      "category": "Data & Analytics",
+      "description": "Cloud data warehouse SQL and schema inspection.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute a SQL query"
+        },
+        {
+          "name": "list_databases",
+          "description": "List available databases"
+        },
+        {
+          "name": "describe_table",
+          "description": "Show table columns and types"
+        }
+      ],
+      "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server"
+    },
+    {
+      "name": "BigQuery",
+      "slug": "bigquery",
+      "category": "Data & Analytics",
+      "description": "Google analytics warehouse queries and table management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
+        },
+        {
+          "name": "list_datasets",
+          "description": "List datasets in a project"
+        },
+        {
+          "name": "get_table_schema",
+          "description": "Describe table schema"
+        }
+      ],
+      "docs_url": "https://cloud.google.com/bigquery/docs"
+    },
+    {
+      "name": "Keboola",
+      "slug": "keboola",
+      "category": "Data & Analytics",
+      "description": "Data workflows, integrations, and analytics pipelines.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "list_tables",
+          "description": "List storage tables"
+        },
+        {
+          "name": "run_transformation",
+          "description": "Execute a transformation"
+        },
+        {
+          "name": "create_flow",
+          "description": "Configure a data flow"
+        }
+      ],
+      "github_url": "https://github.com/keboola/mcp-server",
+      "docs_url": "https://developers.keboola.com"
+    },
+    {
+      "name": "VegaLite",
+      "slug": "vega-lite",
+      "category": "Data & Analytics",
+      "description": "Generate data visualizations from tabular data specs.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "bar-chart",
+      "tools": [
+        {
+          "name": "render_chart",
+          "description": "Render a Vega-Lite chart"
+        },
+        {
+          "name": "validate_spec",
+          "description": "Validate a visualization spec"
+        }
+      ],
+      "github_url": "https://github.com/vega/vega-lite"
+    },
+    {
+      "name": "Sentry",
+      "slug": "sentry",
+      "category": "Security & Monitoring",
+      "description": "Error tracking and issue triage with stack traces and releases.",
+      "official": false,
+      "transport": "http",
+      "icon": "shield-alert",
+      "tools": [
+        {
+          "name": "list_issues",
+          "description": "List unresolved issues"
+        },
+        {
+          "name": "get_issue_details",
+          "description": "Get stack trace and context"
+        },
+        {
+          "name": "search_events",
+          "description": "Search error events"
+        }
+      ],
+      "github_url": "https://github.com/getsentry/sentry-mcp",
+      "docs_url": "https://docs.sentry.io"
+    },
+    {
+      "name": "Datadog",
+      "slug": "datadog",
+      "category": "Security & Monitoring",
+      "description": "Logs, metrics, and APM for observability-driven debugging.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "activity",
+      "tools": [
+        {
+          "name": "query_metrics",
+          "description": "Query timeseries metrics"
+        },
+        {
+          "name": "search_logs",
+          "description": "Search log indexes"
+        },
+        {
+          "name": "list_monitors",
+          "description": "List configured monitors"
+        }
+      ],
+      "github_url": "https://github.com/GeLi2001/datadog-mcp-server"
+    },
+    {
+      "name": "PagerDuty",
+      "slug": "pagerduty",
+      "category": "Security & Monitoring",
+      "description": "Incident management and on-call workflows.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "shield-alert",
+      "tools": [
+        {
+          "name": "list_incidents",
+          "description": "List open incidents"
+        },
+        {
+          "name": "acknowledge_incident",
+          "description": "Acknowledge an incident"
+        },
+        {
+          "name": "create_incident",
+          "description": "Create a new incident"
+        }
+      ],
+      "docs_url": "https://developer.pagerduty.com"
+    },
+    {
+      "name": "Snyk",
+      "slug": "snyk",
+      "category": "Security & Monitoring",
+      "description": "Vulnerability scanning for dependencies and containers.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "shield-alert",
+      "tools": [
+        {
+          "name": "test_project",
+          "description": "Scan project for vulnerabilities"
+        },
+        {
+          "name": "list_issues",
+          "description": "List security issues"
+        }
+      ],
+      "docs_url": "https://docs.snyk.io"
+    },
+    {
+      "name": "SonarQube",
+      "slug": "sonarqube",
+      "category": "Security & Monitoring",
+      "description": "Seamless code quality and static analysis integration.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "shield-alert",
+      "tools": [
+        {
+          "name": "analyze_project",
+          "description": "Run code quality analysis"
+        },
+        {
+          "name": "get_issues",
+          "description": "List code smells and bugs"
+        }
+      ],
+      "github_url": "https://github.com/SonarSource/sonarqube-mcp-server"
+    },
+    {
+      "name": "Grafana",
+      "slug": "grafana",
+      "category": "Security & Monitoring",
+      "description": "Dashboard and alert access for metrics visualization.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "activity",
+      "tools": [
+        {
+          "name": "list_dashboards",
+          "description": "List Grafana dashboards"
+        },
+        {
+          "name": "query_datasource",
+          "description": "Query a Prometheus or Loki datasource"
+        }
+      ],
+      "github_url": "https://github.com/grafana/mcp-grafana"
+    },
+    {
+      "name": "New Relic",
+      "slug": "new-relic",
+      "category": "Security & Monitoring",
+      "description": "Observability platform for APM and infrastructure.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "activity",
+      "tools": [
+        {
+          "name": "query_nrql",
+          "description": "Run NRQL queries"
+        },
+        {
+          "name": "list_entities",
+          "description": "List monitored entities"
+        }
+      ],
+      "docs_url": "https://docs.newrelic.com"
+    },
+    {
+      "name": "Stripe",
+      "slug": "stripe",
+      "category": "Payments & Commerce",
+      "description": "Payments, customers, subscriptions, and invoices.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "credit-card",
+      "tools": [
+        {
+          "name": "list_customers",
+          "description": "List Stripe customers"
+        },
+        {
+          "name": "get_payment",
+          "description": "Retrieve payment intent details"
+        },
+        {
+          "name": "list_subscriptions",
+          "description": "List active subscriptions"
+        }
+      ],
+      "github_url": "https://github.com/stripe/agent-toolkit",
+      "docs_url": "https://stripe.com/docs"
+    },
+    {
+      "name": "Shopify",
+      "slug": "shopify",
+      "category": "Payments & Commerce",
+      "description": "Store, products, orders, and inventory management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "credit-card",
+      "tools": [
+        {
+          "name": "list_products",
+          "description": "List store products"
+        },
+        {
+          "name": "get_order",
+          "description": "Retrieve order details"
+        },
+        {
+          "name": "update_inventory",
+          "description": "Update product inventory"
+        }
+      ],
+      "docs_url": "https://shopify.dev/docs/api"
+    },
+    {
+      "name": "Mercado Libre",
+      "slug": "mercado-libre",
+      "category": "Payments & Commerce",
+      "description": "Marketplace interaction and product integration for Latin America.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "credit-card",
+      "tools": [
+        {
+          "name": "search_listings",
+          "description": "Search marketplace listings"
+        },
+        {
+          "name": "get_item",
+          "description": "Get product listing details"
+        },
+        {
+          "name": "update_listing",
+          "description": "Update a product listing"
+        }
+      ],
+      "github_url": "https://github.com/mercadolibre/mcp-mercadolibre"
+    },
+    {
+      "name": "Mercado Pago",
+      "slug": "mercado-pago",
+      "category": "Payments & Commerce",
+      "description": "Latin America payments API for charges and refunds.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "credit-card",
+      "tools": [
+        {
+          "name": "create_payment",
+          "description": "Create a payment"
+        },
+        {
+          "name": "get_payment_status",
+          "description": "Check payment status"
+        },
+        {
+          "name": "refund_payment",
+          "description": "Issue a refund"
+        }
+      ],
+      "docs_url": "https://www.mercadopago.com/developers"
+    },
+    {
+      "name": "ShopSavvy",
+      "slug": "shopsavvy",
+      "category": "Payments & Commerce",
+      "description": "Product and pricing data, barcode and ASIN search, and price history.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "credit-card",
+      "tools": [
+        {
+          "name": "search_product",
+          "description": "Search by barcode or ASIN"
+        },
+        {
+          "name": "get_price_history",
+          "description": "Fetch historical pricing"
+        },
+        {
+          "name": "compare_prices",
+          "description": "Compare retailer prices"
+        }
+      ],
+      "github_url": "https://github.com/shopsavvy/mcp-server"
+    },
+    {
+      "name": "Memory",
+      "slug": "memory",
+      "category": "AI & Memory",
+      "description": "Persistent agent memory with entities, relations, and facts across sessions.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "brain",
+      "tools": [
+        {
+          "name": "create_entities",
+          "description": "Create new memory entities"
+        },
+        {
+          "name": "search_nodes",
+          "description": "Search the knowledge graph"
+        },
+        {
+          "name": "read_graph",
+          "description": "Read full memory graph"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add memory -- npx -y @modelcontextprotocol/server-memory"
+    },
+    {
+      "name": "Mem0",
+      "slug": "mem0",
+      "category": "AI & Memory",
+      "description": "Long-term memory layer for AI agents across conversations.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "brain",
+      "tools": [
+        {
+          "name": "add_memory",
+          "description": "Store a new memory"
+        },
+        {
+          "name": "search_memory",
+          "description": "Retrieve relevant memories"
+        },
+        {
+          "name": "list_memories",
+          "description": "List stored memories"
+        }
+      ],
+      "github_url": "https://github.com/mem0ai/mem0",
+      "docs_url": "https://docs.mem0.ai"
+    },
+    {
+      "name": "Zep",
+      "slug": "zep",
+      "category": "AI & Memory",
+      "description": "Temporal knowledge graph memory for agents.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "brain",
+      "tools": [
+        {
+          "name": "add_message",
+          "description": "Add messages to session memory"
+        },
+        {
+          "name": "search_facts",
+          "description": "Search extracted facts"
+        },
+        {
+          "name": "get_session",
+          "description": "Retrieve session context"
+        }
+      ],
+      "github_url": "https://github.com/getzep/zep",
+      "docs_url": "https://docs.getzep.com"
+    },
+    {
+      "name": "OpenRouter",
+      "slug": "openrouter",
+      "category": "AI & Memory",
+      "description": "Multi-model API routing across LLM providers.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "brain",
+      "tools": [
+        {
+          "name": "list_models",
+          "description": "List available models"
+        },
+        {
+          "name": "chat_completion",
+          "description": "Route a chat completion request"
+        }
+      ],
+      "docs_url": "https://openrouter.ai/docs"
+    },
+    {
+      "name": "Replicate",
+      "slug": "replicate",
+      "category": "AI & Memory",
+      "description": "Image and video generation via standard MCP calls.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "image",
+      "tools": [
+        {
+          "name": "run_model",
+          "description": "Run a Replicate model prediction"
+        },
+        {
+          "name": "list_models",
+          "description": "Browse available models"
+        }
+      ],
+      "docs_url": "https://replicate.com/docs"
+    },
+    {
+      "name": "Fal.ai",
+      "slug": "fal-ai",
+      "category": "AI & Memory",
+      "description": "Fast AI image and media generation.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "image",
+      "tools": [
+        {
+          "name": "generate_image",
+          "description": "Generate an image from prompt"
+        },
+        {
+          "name": "get_result",
+          "description": "Poll generation job status"
+        }
+      ],
+      "docs_url": "https://fal.ai/docs"
+    },
+    {
+      "name": "Deepseek",
+      "slug": "deepseek",
+      "category": "AI & Memory",
+      "description": "Fallback model switching and Deepseek API access.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "brain",
+      "tools": [
+        {
+          "name": "chat",
+          "description": "Send a chat completion"
+        },
+        {
+          "name": "list_models",
+          "description": "List Deepseek models"
+        }
+      ],
+      "docs_url": "https://api-docs.deepseek.com"
+    },
+    {
+      "name": "Taskade",
+      "slug": "taskade",
+      "category": "AI & Memory",
+      "description": "Workspace memory plus agent automation for tasks.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "brain",
+      "tools": [
+        {
+          "name": "create_task",
+          "description": "Create a workspace task"
+        },
+        {
+          "name": "run_agent",
+          "description": "Trigger an automation agent"
+        },
+        {
+          "name": "search_workspace",
+          "description": "Search workspace content"
+        }
+      ],
+      "docs_url": "https://www.taskade.com/api"
+    },
+    {
+      "name": "Google Drive",
+      "slug": "google-drive",
+      "category": "Files & Docs",
+      "description": "File listing, search, and read access in Google Drive.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "hard-drive",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Search files in Drive"
+        },
+        {
+          "name": "read_file",
+          "description": "Read file contents"
+        },
+        {
+          "name": "list_files",
+          "description": "List files in a folder"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add gdrive -- npx -y @modelcontextprotocol/server-gdrive"
+    },
+    {
+      "name": "Dropbox",
+      "slug": "dropbox",
+      "category": "Files & Docs",
+      "description": "File access and sharing in Dropbox.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "hard-drive",
+      "tools": [
+        {
+          "name": "list_folder",
+          "description": "List folder contents"
+        },
+        {
+          "name": "download_file",
+          "description": "Download a file"
+        },
+        {
+          "name": "upload_file",
+          "description": "Upload a file"
+        }
+      ],
+      "docs_url": "https://www.dropbox.com/developers/documentation"
+    },
+    {
+      "name": "Box",
+      "slug": "box",
+      "category": "Files & Docs",
+      "description": "Enterprise file management and collaboration.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "hard-drive",
+      "tools": [
+        {
+          "name": "search_files",
+          "description": "Search Box content"
+        },
+        {
+          "name": "get_file",
+          "description": "Download file metadata and content"
+        }
+      ],
+      "docs_url": "https://developer.box.com"
+    },
+    {
+      "name": "OneDrive",
+      "slug": "onedrive",
+      "category": "Files & Docs",
+      "description": "Microsoft cloud storage file operations.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "hard-drive",
+      "tools": [
+        {
+          "name": "list_items",
+          "description": "List OneDrive items"
+        },
+        {
+          "name": "read_file",
+          "description": "Read file content"
+        },
+        {
+          "name": "upload_file",
+          "description": "Upload a file"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/graph/onedrive"
+    },
+    {
+      "name": "iMessage",
+      "slug": "imessage",
+      "category": "Files & Docs",
+      "description": "Safely query and analyze iMessage conversations including attachments.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "message-square",
+      "tools": [
+        {
+          "name": "list_conversations",
+          "description": "List recent conversations"
+        },
+        {
+          "name": "search_messages",
+          "description": "Search message history"
+        },
+        {
+          "name": "export_thread",
+          "description": "Export a conversation thread"
+        }
+      ],
+      "github_url": "https://github.com/tylerwince/mcp-imessage"
+    },
+    {
+      "name": "Playwright",
+      "slug": "playwright",
+      "category": "Files & Docs",
+      "description": "Full browser automation and end-to-end testing with Playwright.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "monitor-play",
+      "tools": [
+        {
+          "name": "browser_navigate",
+          "description": "Open a URL in the browser"
+        },
+        {
+          "name": "browser_snapshot",
+          "description": "Capture accessibility snapshot"
+        },
+        {
+          "name": "browser_click",
+          "description": "Click by ref or selector"
+        }
+      ],
+      "github_url": "https://github.com/executeautomation/mcp-playwright"
+    },
+    {
+      "name": "n8n",
+      "slug": "n8n",
+      "category": "Automation",
+      "description": "Conversational workflow automation and node orchestration.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "list_workflows",
+          "description": "List n8n workflows"
+        },
+        {
+          "name": "execute_workflow",
+          "description": "Trigger a workflow run"
+        },
+        {
+          "name": "get_execution",
+          "description": "Get execution status"
+        }
+      ],
+      "github_url": "https://github.com/n8n-io/n8n",
+      "docs_url": "https://docs.n8n.io"
+    },
+    {
+      "name": "Zapier",
+      "slug": "zapier",
+      "category": "Automation",
+      "description": "5,000+ app integrations via Zapier actions.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "list_zaps",
+          "description": "List configured Zaps"
+        },
+        {
+          "name": "run_action",
+          "description": "Execute a Zapier action"
+        }
+      ],
+      "docs_url": "https://platform.zapier.com"
+    },
+    {
+      "name": "Pipedream",
+      "slug": "pipedream",
+      "category": "Automation",
+      "description": "Connect with 2,500 APIs and 8,000+ prebuilt tools.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "list_actions",
+          "description": "List available actions"
+        },
+        {
+          "name": "run_action",
+          "description": "Execute a connected action"
+        }
+      ],
+      "github_url": "https://github.com/PipedreamHQ/pipedream",
+      "docs_url": "https://pipedream.com/docs"
+    },
+    {
+      "name": "Make",
+      "slug": "make",
+      "category": "Automation",
+      "description": "Visual automation flows (Integromat) for multi-step integrations.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "list_scenarios",
+          "description": "List Make scenarios"
+        },
+        {
+          "name": "run_scenario",
+          "description": "Execute a scenario"
+        }
+      ],
+      "docs_url": "https://www.make.com/en/api-documentation"
+    },
+    {
+      "name": "HubSpot",
+      "slug": "hubspot",
+      "category": "Automation",
+      "description": "CRM contacts, deals, and marketing campaigns.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "search_contacts",
+          "description": "Search CRM contacts"
+        },
+        {
+          "name": "create_deal",
+          "description": "Create a sales deal"
+        },
+        {
+          "name": "list_campaigns",
+          "description": "List marketing campaigns"
+        }
+      ],
+      "docs_url": "https://developers.hubspot.com"
+    },
+    {
+      "name": "Salesforce",
+      "slug": "salesforce",
+      "category": "Automation",
+      "description": "Enterprise CRM operations and record management.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "boxes",
+      "tools": [
+        {
+          "name": "query_records",
+          "description": "Run SOQL queries"
+        },
+        {
+          "name": "create_record",
+          "description": "Create a CRM record"
+        },
+        {
+          "name": "update_record",
+          "description": "Update record fields"
+        }
+      ],
+      "docs_url": "https://developer.salesforce.com"
+    },
+    {
+      "name": "Publora",
+      "slug": "publora",
+      "category": "Automation",
+      "description": "Social media posting across 10 platforms from one workflow.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "globe",
+      "tools": [
+        {
+          "name": "schedule_post",
+          "description": "Schedule a social post"
+        },
+        {
+          "name": "list_accounts",
+          "description": "List connected social accounts"
+        }
+      ],
+      "docs_url": "https://publora.com"
+    },
+    {
+      "name": "Bluesky",
+      "slug": "bluesky",
+      "category": "Automation",
+      "description": "Connect and interact with the Bluesky social network.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "globe",
+      "tools": [
+        {
+          "name": "create_post",
+          "description": "Publish a post"
+        },
+        {
+          "name": "get_timeline",
+          "description": "Read home timeline"
+        },
+        {
+          "name": "search_posts",
+          "description": "Search public posts"
+        }
+      ],
+      "github_url": "https://github.com/bluesky-social/mcp-bluesky"
+    }
+  ]
+}

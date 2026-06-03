@@ -14,6 +14,8 @@ const {
   findMcpServerBySlug,
   getMcpIconEmoji,
   transportLabel,
+  getMcpLastUpdated,
+  getMcpCatalogPayload,
 } = require('./mcpDirectoryService');
 
 function getAllBlogPosts() {
@@ -306,15 +308,21 @@ ${itemsXml}
     res.redirect(301, `/insights/${req.params.slug}`);
   });
 
+  // MCP catalog JSON (large dataset — loaded client-side)
+  app.get('/api/mcp/catalog', (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.json(getMcpCatalogPayload());
+  });
+
   // MCP Server Directory (must be registered before /insights/:slug)
   app.get('/mcp', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    const categories = getMcpCategories();
-    const servers = getAllMcpServers().map((s) => ({
-      ...s,
-      iconEmoji: getMcpIconEmoji(s.icon),
-    }));
-    res.render('mcp-index', { categories, servers });
+    const lastUpdated = getMcpLastUpdated();
+    res.render('mcp-index', {
+      categories: getMcpCategories(),
+      lastUpdated: lastUpdated.display,
+      totalServers: getAllMcpServers().length,
+    });
   });
 
   app.get('/mcp/:slug', (req, res) => {
@@ -396,12 +404,14 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.7',
     }));
-    const mcpUrls = getAllMcpServers().map((s) => ({
-      loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
-      lastmod: '2026-06-03',
-      changefreq: 'monthly',
-      priority: '0.65',
-    }));
+    const mcpUrls = getAllMcpServers()
+      .slice(0, 500)
+      .map((s) => ({
+        loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
+        lastmod: '2026-06-03',
+        changefreq: 'monthly',
+        priority: '0.65',
+      }));
     const allUrls = [...staticUrls, ...postUrls, ...mcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

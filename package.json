@@ -7,6 +7,7 @@
     "lint:js": "eslint server.js",
     "format": "prettier --write .",
     "start": "node server.js",
+    "refresh-data": "node scripts/fetch-servers.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
