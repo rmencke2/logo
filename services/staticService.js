@@ -8,6 +8,13 @@ const fs = require('fs');
 
 const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
 const SITE_BASE_URL = 'https://www.influzer.ai';
+const {
+  getAllMcpServers,
+  getMcpCategories,
+  findMcpServerBySlug,
+  getMcpIconEmoji,
+  transportLabel,
+} = require('./mcpDirectoryService');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -299,6 +306,34 @@ ${itemsXml}
     res.redirect(301, `/insights/${req.params.slug}`);
   });
 
+  // MCP Server Directory (must be registered before /insights/:slug)
+  app.get('/mcp', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const categories = getMcpCategories();
+    const servers = getAllMcpServers().map((s) => ({
+      ...s,
+      iconEmoji: getMcpIconEmoji(s.icon),
+    }));
+    res.render('mcp-index', { categories, servers });
+  });
+
+  app.get('/mcp/:slug', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const server = findMcpServerBySlug(req.params.slug);
+    if (!server) {
+      return res.status(404).render('mcp-server', {
+        server: null,
+        iconEmoji: '',
+        transportLabel: '',
+      });
+    }
+    return res.render('mcp-server', {
+      server,
+      iconEmoji: getMcpIconEmoji(server.icon),
+      transportLabel: transportLabel(server.transport),
+    });
+  });
+
   // Blog post detail
   app.get('/insights/:slug', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -350,6 +385,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/video-metadata`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/meme-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/insights`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.9' },
+      { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/cookie`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
@@ -360,7 +396,13 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.7',
     }));
-    const allUrls = [...staticUrls, ...postUrls];
+    const mcpUrls = getAllMcpServers().map((s) => ({
+      loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
+      lastmod: '2026-06-03',
+      changefreq: 'monthly',
+      priority: '0.65',
+    }));
+    const allUrls = [...staticUrls, ...postUrls, ...mcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls

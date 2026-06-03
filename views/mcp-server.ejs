@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= server ? `${server.name} — MCP Server Directory - Influzer.ai` : 'Server Not Found - Influzer.ai' %></title>
+    <meta name="description" content="<%= server ? server.description : 'The requested MCP server could not be found.' %>" />
+    <link rel="canonical" href="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
+    <meta property="og:title" content="<%= server ? server.name : 'Server Not Found' %>" />
+    <meta property="og:description" content="<%= server ? server.description : '' %>" />
+    <meta property="og:url" content="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <% if (server) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: server.name,
+          description: server.description,
+          applicationCategory: 'DeveloperApplication',
+          url: `https://www.influzer.ai/mcp/${server.slug}`,
+        }) %>
+      </script>
+    <% } %>
+    <style>
+      .mcp-detail { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
+      .mcp-back { font-family: var(--font-ui); margin-bottom: 24px; display: inline-block; }
+      .mcp-detail-head { display: flex; gap: 16px; margin-bottom: 20px; }
+      .mcp-detail-icon {
+        width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; background: var(--color-cream-dark); flex-shrink: 0;
+      }
+      .mcp-detail-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .mcp-detail-badge {
+        font-family: var(--font-ui); font-size: .72rem; padding: 4px 10px; border-radius: 999px;
+        background: var(--color-cream-dark); color: var(--color-charcoal-light);
+      }
+      .mcp-detail-badge-official { background: var(--color-terracotta-light); font-weight: 600; }
+      .mcp-detail-desc { font-size: 1.05rem; line-height: 1.7; color: var(--color-charcoal-light); margin-bottom: 24px; }
+      .mcp-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+      .mcp-links a {
+        font-family: var(--font-ui); font-size: .88rem; padding: 8px 14px; border-radius: 10px;
+        border: 1px solid var(--color-border); text-decoration: none; color: var(--color-charcoal);
+      }
+      .mcp-install { margin-bottom: 32px; }
+      .mcp-install label { font-family: var(--font-ui); font-size: .8rem; font-weight: 600; display: block; margin-bottom: 8px; }
+      .mcp-install-row {
+        display: flex; gap: 8px; align-items: stretch; border: 1px solid var(--color-border); border-radius: 12px;
+        background: var(--color-cream-dark); padding: 4px 4px 4px 14px;
+      }
+      .mcp-install-row code { flex: 1; font-size: .82rem; word-break: break-all; align-self: center; padding: 8px 0; }
+      .mcp-copy {
+        font-family: var(--font-ui); font-size: .8rem; padding: 8px 14px; border: none; border-radius: 8px;
+        background: var(--color-charcoal); color: #fff; cursor: pointer; flex-shrink: 0;
+      }
+      .mcp-tools h2 { margin-bottom: 16px; }
+      .mcp-tool-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+      .mcp-tool-item {
+        border: 1px solid var(--color-border); border-radius: 14px; padding: 16px; background: var(--color-paper);
+      }
+      .mcp-tool-item code { font-size: .9rem; font-weight: 600; color: var(--color-terracotta); }
+      .mcp-tool-item p { margin: 8px 0 0; font-size: .95rem; color: var(--color-charcoal-light); }
+    </style>
+  </head>
+  <body>
+    <div class="auth-header" id="siteHeader">
+      <div class="auth-header-start">
+        <button type="button" class="nav-menu-toggle" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
+          <span class="nav-menu-toggle-bars" aria-hidden="true">
+            <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+          </span>
+        </button>
+        <a href="/">Influzer.ai</a>
+        <nav id="mainSiteNav" class="site-nav" aria-label="Main">
+          <%- include('partials/site-nav-insights-mcp') %>
+          <a href="/">Logo Generator</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="mcp-detail">
+      <a class="mcp-back" href="/mcp">← Back to MCP Directory</a>
+      <% if (!server) { %>
+        <h1>Server not found</h1>
+        <p>This MCP server is not in our directory yet.</p>
+      <% } else { %>
+        <div class="mcp-detail-head">
+          <div class="mcp-detail-icon" aria-hidden="true"><%= iconEmoji %></div>
+          <div>
+            <h1><%= server.name %></h1>
+            <div class="mcp-detail-badges">
+              <span class="mcp-detail-badge"><%= server.category %></span>
+              <span class="mcp-detail-badge <%= server.official ? 'mcp-detail-badge-official' : '' %>"><%= server.official ? 'Official' : 'Community' %></span>
+              <span class="mcp-detail-badge"><%= transportLabel %></span>
+              <% if (server.stars) { %><span class="mcp-detail-badge">★ <%= server.stars.toLocaleString() %></span><% } %>
+            </div>
+          </div>
+        </div>
+        <p class="mcp-detail-desc"><%= server.description %></p>
+        <% if (server.github_url || server.docs_url) { %>
+          <div class="mcp-links">
+            <% if (server.github_url) { %><a href="<%= server.github_url %>" target="_blank" rel="noopener noreferrer">GitHub</a><% } %>
+            <% if (server.docs_url) { %><a href="<%= server.docs_url %>" target="_blank" rel="noopener noreferrer">Documentation</a><% } %>
+          </div>
+        <% } %>
+        <% if (server.install_command) { %>
+          <div class="mcp-install">
+            <label for="mcpInstallCmd">Install command</label>
+            <div class="mcp-install-row">
+              <code id="mcpInstallCmd"><%= server.install_command %></code>
+              <button type="button" class="mcp-copy" id="mcpCopyBtn">Copy</button>
+            </div>
+          </div>
+        <% } %>
+        <section class="mcp-tools">
+          <h2>Tools (<%= server.tools.length %>)</h2>
+          <ul class="mcp-tool-list">
+            <% server.tools.forEach(function(tool) { %>
+              <li class="mcp-tool-item">
+                <code><%= tool.name %></code>
+                <p><%= tool.description %></p>
+              </li>
+            <% }); %>
+          </ul>
+        </section>
+      <% } %>
+    </main>
+
+    <% if (server && server.install_command) { %>
+      <script>
+        document.getElementById('mcpCopyBtn').addEventListener('click', function () {
+          const cmd = document.getElementById('mcpInstallCmd').textContent;
+          navigator.clipboard.writeText(cmd).then(function () {
+            const btn = document.getElementById('mcpCopyBtn');
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+          });
+        });
+      </script>
+    <% } %>
+    <script>
+      (function () {
+        const h = document.getElementById('siteHeader');
+        const t = document.getElementById('navMenuToggle');
+        const n = document.getElementById('mainSiteNav');
+        if (!h || !t || !n) return;
+        t.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const open = !h.classList.contains('nav-open');
+          h.classList.toggle('nav-open', open);
+          t.setAttribute('aria-expanded', open);
+        });
+        n.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => h.classList.remove('nav-open')));
+      })();
+    </script>
+  </body>
+</html>

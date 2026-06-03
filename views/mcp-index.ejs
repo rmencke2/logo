@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MCP Server Directory - Influzer.ai</title>
+    <meta name="description" content="Search and discover Model Context Protocol (MCP) servers and the tools they expose for AI development workflows." />
+    <link rel="canonical" href="https://www.influzer.ai/mcp" />
+    <meta property="og:title" content="MCP Server Directory - Influzer.ai" />
+    <meta property="og:description" content="Browse MCP servers, categories, and tools for developers." />
+    <meta property="og:url" content="https://www.influzer.ai/mcp" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+      .mcp-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
+      .mcp-hero { text-align: center; margin-bottom: 32px; }
+      .mcp-hero h1 { margin-bottom: 12px; }
+      .mcp-hero .subtitle { max-width: 640px; margin: 0 auto; }
+      .mcp-search { position: relative; margin-bottom: 20px; }
+      .mcp-search input {
+        width: 100%; padding: 12px 40px 12px 14px; font: inherit; font-size: 1rem;
+        border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-paper);
+      }
+      .mcp-search input:focus { outline: 2px solid var(--color-terracotta-light); border-color: var(--color-terracotta); }
+      .mcp-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .mcp-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+      .mcp-chip {
+        border: 1px solid var(--color-border); background: var(--color-paper); color: var(--color-charcoal);
+        font-family: var(--font-ui); font-size: .78rem; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+      }
+      .mcp-chip.active { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
+      .mcp-sort label { font-family: var(--font-ui); font-size: .85rem; color: var(--color-muted); margin-right: 8px; }
+      .mcp-sort select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--color-border); }
+      .mcp-count { font-family: var(--font-ui); font-size: .85rem; color: var(--color-muted); margin-bottom: 20px; }
+      .mcp-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+      .mcp-card {
+        display: flex; flex-direction: column; text-decoration: none; color: inherit;
+        border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-paper); padding: 18px;
+        transition: transform .15s ease, box-shadow .15s ease;
+      }
+      .mcp-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-medium); }
+      .mcp-card-head { display: flex; gap: 12px; margin-bottom: 12px; }
+      .mcp-icon {
+        width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.25rem; flex-shrink: 0; background: var(--color-cream-dark);
+      }
+      .mcp-card-title { font-family: var(--font-display); font-size: 1.15rem; margin: 0 0 4px 0; }
+      .mcp-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+      .mcp-badge {
+        font-family: var(--font-ui); font-size: .68rem; padding: 2px 8px; border-radius: 999px;
+        background: var(--color-cream-dark); color: var(--color-charcoal-light);
+      }
+      .mcp-badge-official { background: var(--color-terracotta-light); color: var(--color-charcoal); font-weight: 600; }
+      .mcp-card-desc { font-size: .92rem; color: var(--color-charcoal-light); line-height: 1.55; flex: 1; margin-bottom: 12px; }
+      .mcp-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+      .mcp-tool-pill {
+        font-family: var(--font-ui); font-size: .68rem; padding: 3px 8px; border-radius: 6px;
+        background: var(--color-cream-dark); color: var(--color-charcoal); font-family: ui-monospace, monospace;
+      }
+      .mcp-empty { text-align: center; padding: 40px 20px; border: 1px dashed var(--color-border); border-radius: 16px; }
+      .mcp-card.hidden { display: none; }
+      @media (prefers-color-scheme: dark) {
+        .mcp-search input { background: #1e293b; color: #f1f5f9; border-color: #334155; }
+        .mcp-chip { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+        .mcp-chip.active { background: #e2e8f0; color: #0f172a; }
+        .mcp-card { background: #1e293b; border-color: #334155; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-header" id="siteHeader">
+      <div class="auth-header-start">
+        <button type="button" class="nav-menu-toggle" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
+          <span class="nav-menu-toggle-bars" aria-hidden="true">
+            <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
+          </span>
+        </button>
+        <a href="/">Influzer.ai</a>
+        <nav id="mainSiteNav" class="site-nav" aria-label="Main">
+          <%- include('partials/site-nav-insights-mcp') %>
+          <a href="/">Logo Generator</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="mcp-page">
+      <header class="mcp-hero">
+        <p style="font-family: var(--font-ui); font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--color-terracotta); margin-bottom: 10px;">Model Context Protocol</p>
+        <h1>MCP Server Directory</h1>
+        <p class="subtitle">Search and discover MCP servers and the tools they expose for AI-assisted development.</p>
+      </header>
+
+      <div class="mcp-search">
+        <input type="search" id="mcpSearch" placeholder="Search servers, tools, categories..." aria-label="Search MCP servers" />
+      </div>
+
+      <div class="mcp-toolbar">
+        <div class="mcp-filters" id="mcpFilters" role="group" aria-label="Filter by category"></div>
+        <div class="mcp-sort">
+          <label for="mcpSort">Sort</label>
+          <select id="mcpSort">
+            <option value="name">Name A–Z</option>
+            <option value="tools">Most tools</option>
+            <option value="official">Official first</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="mcp-count" id="mcpCount" aria-live="polite"></p>
+      <div class="mcp-grid" id="mcpGrid"></div>
+      <div class="mcp-empty" id="mcpEmpty" hidden>
+        <p>No servers match your filters.</p>
+        <button type="button" id="mcpClear" style="margin-top:10px;font-family:var(--font-ui);color:var(--color-terracotta);background:none;border:none;cursor:pointer;text-decoration:underline;">Clear filters</button>
+      </div>
+    </main>
+
+    <script type="application/json" id="mcpData"><%- JSON.stringify({ categories, servers }) %></script>
+    <script>
+      (function () {
+        const data = JSON.parse(document.getElementById('mcpData').textContent);
+        const servers = data.servers;
+        const categories = ['All', ...data.categories];
+        const grid = document.getElementById('mcpGrid');
+        const countEl = document.getElementById('mcpCount');
+        const emptyEl = document.getElementById('mcpEmpty');
+        const filtersEl = document.getElementById('mcpFilters');
+        let query = '';
+        let category = 'All';
+        let sort = 'name';
+
+        function counts() {
+          const c = {};
+          for (const cat of data.categories) {
+            c[cat] = servers.filter((s) => s.category === cat).length;
+          }
+          return c;
+        }
+        const catCounts = counts();
+
+        categories.forEach((cat) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mcp-chip' + (cat === 'All' ? ' active' : '');
+          const n = cat === 'All' ? servers.length : catCounts[cat] || 0;
+          btn.textContent = cat + ' ' + n;
+          btn.dataset.category = cat;
+          btn.addEventListener('click', () => {
+            category = cat;
+            filtersEl.querySelectorAll('.mcp-chip').forEach((b) => b.classList.toggle('active', b.dataset.category === cat));
+            render();
+          });
+          filtersEl.appendChild(btn);
+        });
+
+        function matches(s) {
+          const q = query.trim().toLowerCase();
+          if (category !== 'All' && s.category !== category) return false;
+          if (!q) return true;
+          if (s.name.toLowerCase().includes(q)) return true;
+          if (s.description.toLowerCase().includes(q)) return true;
+          if (s.category.toLowerCase().includes(q)) return true;
+          return s.tools.some((t) => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+        }
+
+        function sortList(list) {
+          const copy = [...list];
+          if (sort === 'tools') return copy.sort((a, b) => b.tools.length - a.tools.length);
+          if (sort === 'official') {
+            return copy.sort((a, b) => {
+              if (a.official !== b.official) return a.official ? -1 : 1;
+              return a.name.localeCompare(b.name);
+            });
+          }
+          return copy.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function render() {
+          const list = sortList(servers.filter(matches));
+          countEl.textContent = 'Showing ' + list.length + (list.length === 1 ? ' server' : ' servers');
+          emptyEl.hidden = list.length > 0;
+          grid.innerHTML = list.map((s) => {
+            const tools = s.tools.slice(0, 3);
+            const extra = s.tools.length - tools.length;
+            const toolHtml = tools.map((t) => '<span class="mcp-tool-pill">' + t.name + '</span>').join('')
+              + (extra > 0 ? '<span class="mcp-tool-pill" style="opacity:.7">+' + extra + ' more</span>' : '');
+            const official = s.official ? '<span class="mcp-badge mcp-badge-official">Official</span>' : '';
+            return '<a class="mcp-card" href="/mcp/' + s.slug + '" data-name="' + s.name.toLowerCase() + '">'
+              + '<div class="mcp-card-head"><div class="mcp-icon" aria-hidden="true">' + s.iconEmoji + '</div>'
+              + '<div><h2 class="mcp-card-title">' + s.name + '</h2><div class="mcp-badges"><span class="mcp-badge">' + s.category + '</span>' + official + '</div></div></div>'
+              + '<p class="mcp-card-desc">' + s.description + '</p><div class="mcp-tools">' + toolHtml + '</div></a>';
+          }).join('');
+        }
+
+        document.getElementById('mcpSearch').addEventListener('input', (e) => { query = e.target.value; render(); });
+        document.getElementById('mcpSort').addEventListener('change', (e) => { sort = e.target.value; render(); });
+        document.getElementById('mcpClear').addEventListener('click', () => {
+          query = '';
+          category = 'All';
+          document.getElementById('mcpSearch').value = '';
+          filtersEl.querySelectorAll('.mcp-chip').forEach((b) => b.classList.toggle('active', b.dataset.category === 'All'));
+          render();
+        });
+        render();
+      })();
+    </script>
+    <script>
+      (function () {
+        const h = document.getElementById('siteHeader');
+        const t = document.getElementById('navMenuToggle');
+        const n = document.getElementById('mainSiteNav');
+        if (!h || !t || !n) return;
+        t.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const open = !h.classList.contains('nav-open');
+          h.classList.toggle('nav-open', open);
+          t.setAttribute('aria-expanded', open);
+        });
+        n.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => h.classList.remove('nav-open')));
+      })();
+    </script>
+  </body>
+</html>
