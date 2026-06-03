@@ -24,8 +24,10 @@
       </script>
     <% } %>
     <style>
-      .mcp-detail { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
-      .mcp-back { font-family: var(--font-ui); margin-bottom: 24px; display: inline-block; }
+      .mcp-detail-page { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
+      .mcp-detail-page button { width: auto; margin-top: 0; }
+      .mcp-back { font-family: var(--font-ui); margin-bottom: 24px; display: inline-block; color: var(--color-charcoal); text-decoration: none; }
+      .mcp-back:hover { color: var(--color-terracotta); }
       .mcp-detail-head { display: flex; gap: 16px; margin-bottom: 20px; }
       .mcp-detail-icon {
         width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
@@ -54,6 +56,7 @@
         font-family: var(--font-ui); font-size: .8rem; padding: 8px 14px; border: none; border-radius: 8px;
         background: var(--color-charcoal); color: #fff; cursor: pointer; flex-shrink: 0;
       }
+      .mcp-copy:hover { background: var(--color-ink); transform: none; }
       .mcp-tools h2 { margin-bottom: 16px; }
       .mcp-tool-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
       .mcp-tool-item {
@@ -79,7 +82,7 @@
       </div>
     </div>
 
-    <main class="mcp-detail">
+    <main class="mcp-detail-page">
       <a class="mcp-back" href="/mcp">← Back to MCP Directory</a>
       <% if (!server) { %>
         <h1>Server not found</h1>
