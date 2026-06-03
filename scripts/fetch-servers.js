@@ -75,6 +75,7 @@ function toCatalogServer(partial) {
     source: partial.source,
     last_updated: partial.last_updated || new Date().toISOString().slice(0, 10),
     icon: partial.icon,
+    smithery_qualified_name: partial.smithery_qualified_name,
   });
 }
 
@@ -219,9 +220,10 @@ async function fetchSmitheryServers() {
           transport: item.remote ? 'http' : 'stdio',
           tools: [],
           github_url: gh,
-          docs_url: item.homepage,
+          docs_url: item.homepage || `https://smithery.ai/servers/${qn}`,
           stars: item.useCount || item.score || 0,
           source: 'smithery',
+          smithery_qualified_name: qn,
         }),
       );
     }
@@ -401,6 +403,10 @@ async function main() {
   stats.filtered = servers.length;
 
   servers = ensureUniqueSlugs(servers);
+
+  const { enrichSmitheryTools } = require('./utils/enrich-tools');
+  await enrichSmitheryTools(servers, { delayMs: 80, logEvery: 25 });
+
   servers.sort((a, b) => (b.stars || 0) - (a.stars || 0) || a.name.localeCompare(b.name));
 
   const output = {

@@ -9,6 +9,7 @@
     "start": "node server.js",
     "refresh-data": "node scripts/fetch-servers.js",
     "build-top100": "node scripts/build-top100.js",
+    "enrich-tools": "node scripts/enrich-tools.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

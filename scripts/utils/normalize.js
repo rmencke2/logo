@@ -186,11 +186,12 @@ function finalizeServer(server) {
  */
 function qualityScore(s) {
   let score = 0;
-  score += (s.tools?.length || 0) * 10;
+  score += (s.tools?.length || 0) * 50;
   score += Math.min(s.description?.length || 0, 200);
   score += Math.min(s.stars || 0, 5000);
   if (s.source === 'manual') score += 500;
-  if (s.source === 'glama') score += 50;
+  if (s.source === 'smithery') score += 120;
+  if (s.source === 'glama') score += 30;
   if (s.github_url) score += 20;
   return score;
 }
@@ -297,7 +298,19 @@ function top100RankScore(s) {
  * @param {string[]} [pinnedSlugs]
  * @param {number} [limit]
  */
+/**
+ * Top 100 should surface servers we can describe concretely (tool list known).
+ * @param {CatalogServer} s
+ * @param {Set<string>} pinnedSlugs
+ */
+function isEligibleForTop100(s, pinnedSlugs) {
+  if (pinnedSlugs.has(s.slug)) return true;
+  if (s.source === 'manual') return true;
+  return (s.tools?.length || 0) > 0;
+}
+
 function pickTop100(servers, pinnedSlugs = [], limit = TOP100_SIZE) {
+  const pinnedSet = new Set(pinnedSlugs);
   const bySlug = new Map(servers.map((s) => [s.slug, s]));
   const picked = [];
   const seen = new Set();
@@ -310,7 +323,10 @@ function pickTop100(servers, pinnedSlugs = [], limit = TOP100_SIZE) {
     }
   }
 
-  const ranked = [...servers].sort((a, b) => top100RankScore(b) - top100RankScore(a));
+  const ranked = [...servers]
+    .filter((s) => isEligibleForTop100(s, pinnedSet))
+    .sort((a, b) => top100RankScore(b) - top100RankScore(a));
+
   for (const s of ranked) {
     if (picked.length >= limit) break;
     if (seen.has(s.slug)) continue;
@@ -338,5 +354,6 @@ module.exports = {
   qualityScore,
   TOP100_SIZE,
   top100RankScore,
+  isEligibleForTop100,
   pickTop100,
 };

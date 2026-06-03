@@ -421,9 +421,9 @@
           if (s.name.toLowerCase().includes(q)) return true;
           if (s.description.toLowerCase().includes(q)) return true;
           if (s.category.toLowerCase().includes(q)) return true;
-          return s.tools.some(
+          return (s.tools || []).some(
             (t) =>
-              t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q),
+              t.name.toLowerCase().includes(q) || (t.description || '').toLowerCase().includes(q),
           );
         }
 
@@ -472,15 +472,17 @@
 
           grid.innerHTML = list
             .map((s) => {
-              const tools = s.tools.slice(0, 3);
-              const extra = s.tools.length - tools.length;
-              const toolHtml =
-                tools
+            const toolList = s.tools || [];
+            const tools = toolList.slice(0, 3);
+            const extra = toolList.length - tools.length;
+            const toolHtml = toolList.length
+              ? tools
                   .map((t) => '<span class="mcp-tool-pill">' + esc(t.name) + '</span>')
                   .join('') +
                 (extra > 0
                   ? '<span class="mcp-tool-pill muted">+' + extra + ' more</span>'
-                  : '');
+                  : '')
+              : '<span class="mcp-tool-pill muted">Tools available after MCP install</span>';
               const official = s.official
                 ? '<span class="mcp-badge mcp-badge-official">Official</span>'
                 : '';

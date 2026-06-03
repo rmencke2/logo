@@ -123,15 +123,23 @@
           </div>
         <% } %>
         <section class="mcp-tools">
-          <h2>Tools (<%= server.tools.length %>)</h2>
-          <ul class="mcp-tool-list">
-            <% server.tools.forEach(function(tool) { %>
-              <li class="mcp-tool-item">
-                <code><%= tool.name %></code>
-                <p><%= tool.description %></p>
-              </li>
-            <% }); %>
-          </ul>
+          <% if (server.tools && server.tools.length) { %>
+            <h2>Tools (<%= server.tools.length %>)</h2>
+            <ul class="mcp-tool-list">
+              <% server.tools.forEach(function(tool) { %>
+                <li class="mcp-tool-item">
+                  <code><%= tool.name %></code>
+                  <p><%= tool.description %></p>
+                </li>
+              <% }); %>
+            </ul>
+          <% } else { %>
+            <h2>Tools</h2>
+            <p style="color: var(--color-charcoal-light); font-size: 0.95rem;">
+              Tool names are not listed in our registry for this server (common for Glama index entries).
+              Connect via MCP in your client to discover the live tool list.
+            </p>
+          <% } %>
         </section>
       <% } %>
     </main>
