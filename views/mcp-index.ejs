@@ -310,6 +310,16 @@
         color: var(--color-charcoal);
       }
       .mcp-load-more:hover { border-color: var(--color-border-strong); background: var(--color-cream); }
+      .mcp-tools-only {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        font-family: var(--font-ui);
+        font-size: .85rem;
+        color: var(--color-charcoal-light);
+      }
+      .mcp-tools-only input { width: auto; margin: 0; }
 
       @media (max-width: 640px) {
         .mcp-controls-top { flex-direction: column; align-items: stretch; }
@@ -360,6 +370,12 @@
           </div>
         </div>
         <div class="mcp-filters" id="mcpFilters" role="group" aria-label="Filter by category"></div>
+        <% if (catalogScope === 'all') { %>
+          <label class="mcp-tools-only">
+            <input type="checkbox" id="mcpToolsOnly" <%= defaultToolsOnly !== false ? 'checked' : '' %> />
+            Only show servers with indexed tools (<%= typeof totalWithTools !== 'undefined' ? totalWithTools : '—' %> of <%= totalCatalog.toLocaleString() %>)
+          </label>
+        <% } %>
       </section>
 
       <div class="mcp-meta">
@@ -370,15 +386,28 @@
       <% if (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) { %>
         <script id="mcpCatalogData" type="application/json"><%- inlineCatalogJson %></script>
       <% } %>
-      <p class="mcp-loading" id="mcpLoading">Loading MCP server catalog…</p>
-      <div class="mcp-grid" id="mcpGrid" hidden></div>
+      <p class="mcp-loading" id="mcpLoading"<%= (typeof previewServers !== 'undefined' && previewServers && previewServers.length) || (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) ? ' hidden' : '' %>>Loading MCP server catalog…</p>
+      <div class="mcp-grid" id="mcpGrid"<%= (typeof previewServers !== 'undefined' && previewServers && previewServers.length) ? '' : ' hidden' %>>
+        <% if (typeof previewServers !== 'undefined' && previewServers) { %>
+          <% previewServers.forEach(function(server) { %>
+            <%- include('partials/mcp-server-card', { server: server }) %>
+          <% }); %>
+        <% } %>
+      </div>
       <button type="button" class="mcp-load-more" id="mcpLoadMore" hidden>Show more servers</button>
       <div class="mcp-empty" id="mcpEmpty" hidden>
         <p>No servers match your search or filters.</p>
         <button type="button" class="mcp-clear-link" id="mcpClearEmpty">Clear filters</button>
       </div>
       <% if (lastUpdated) { %>
-        <p class="mcp-footer-note">Data last refreshed: <%= lastUpdated %> · showing <%= catalogScope === 'top' ? 'top ' + totalInView : totalInView %> of <%= totalCatalog.toLocaleString() %> servers · run <code>npm run refresh-data</code> weekly to update</p>
+        <p class="mcp-footer-note">
+          Data last refreshed: <%= lastUpdated %> ·
+          <% if (catalogScope === 'top') { %>
+            Top <%= totalInView %> curated servers (<%= typeof totalWithTools !== 'undefined' ? totalWithTools : totalInView %> with indexed tools in full catalog)
+          <% } else { %>
+            <%= totalInView %> shown · <%= totalCatalog.toLocaleString() %> total in registry
+          <% } %>
+        </p>
       <% } %>
     </main>
 
@@ -401,7 +430,9 @@
         let query = '';
         let category = 'All';
         let sort = catalogScope === 'top' ? 'tools' : 'stars';
+        let toolsOnly = catalogScope === 'top' || <%= defaultToolsOnly !== false ? 'true' : 'false' %>;
         let filteredList = [];
+        const toolsOnlyToggle = document.getElementById('mcpToolsOnly');
 
         function hostLabel(url) {
           if (!url) return '';
@@ -453,6 +484,7 @@
         function matches(s) {
           const q = query.trim().toLowerCase();
           if (category !== 'All' && s.category !== category) return false;
+          if (toolsOnly && !(s.tools && s.tools.length)) return false;
           if (!q) return true;
           if (s.name.toLowerCase().includes(q)) return true;
           if (s.description.toLowerCase().includes(q)) return true;
@@ -579,12 +611,41 @@
           render(false);
         });
 
+        function catalogUrl() {
+          let url = '/api/mcp/catalog?scope=' + catalogScope;
+          if (catalogScope === 'all' && !toolsOnly) url += '&tools_only=0';
+          return url;
+        }
+
         function applyCatalog(payload) {
           data = payload;
           servers = payload.servers || [];
           categories = ['All', ...(payload.categories || [])];
           buildFilters();
           render(true);
+        }
+
+        function loadCatalog() {
+          if (loadingEl) loadingEl.hidden = false;
+          return fetch(catalogUrl(), { headers: { Accept: 'application/json' } })
+            .then((res) => {
+              if (!res.ok) throw new Error('Catalog unavailable');
+              return res.json();
+            })
+            .then(applyCatalog)
+            .catch(() => {
+              if (loadingEl) {
+                loadingEl.hidden = false;
+                loadingEl.textContent = 'Could not load catalog. Please try again later.';
+              }
+            });
+        }
+
+        if (toolsOnlyToggle) {
+          toolsOnlyToggle.addEventListener('change', () => {
+            toolsOnly = toolsOnlyToggle.checked;
+            loadCatalog();
+          });
         }
 
         const bootEl = document.getElementById('mcpCatalogData');
@@ -594,18 +655,14 @@
           } catch (err) {
             if (loadingEl) loadingEl.textContent = 'Could not read catalog data.';
           }
+        } else if (catalogScope === 'all') {
+          loadCatalog();
+        } else if (grid.children.length) {
+          if (loadingEl) loadingEl.hidden = true;
+          grid.hidden = false;
+          loadCatalog();
         } else {
-          fetch('/api/mcp/catalog?scope=' + catalogScope, { headers: { Accept: 'application/json' } })
-            .then((res) => {
-              if (!res.ok) throw new Error('Catalog unavailable');
-              return res.json();
-            })
-            .then(applyCatalog)
-            .catch(() => {
-              if (loadingEl) {
-                loadingEl.textContent = 'Could not load catalog. Please try again later.';
-              }
-            });
+          loadCatalog();
         }
       })();
     </script>

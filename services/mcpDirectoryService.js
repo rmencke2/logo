@@ -108,20 +108,37 @@ function normalizeLegacyManual(server) {
   });
 }
 
+function toolCount(server) {
+  return server.tools?.length || 0;
+}
+
+function preferRicherServer(existing, incoming) {
+  const existingTools = toolCount(existing);
+  const incomingTools = toolCount(incoming);
+  if (incomingTools > existingTools) return incoming;
+  if (incomingTools < existingTools) return existing;
+  if (incoming.source === 'manual' && existing.source !== 'manual') return incoming;
+  return existing;
+}
+
 function mergeManualInto(servers, manualData) {
   if (!manualData?.servers?.length) return servers;
-  const slugs = new Set(servers.map((s) => s.slug));
+  const bySlug = new Map(servers.map((s) => [s.slug, s]));
   const ghKeys = new Set(servers.map((s) => (s.github_url || '').toLowerCase()).filter(Boolean));
-  const merged = [...servers];
+
   for (const raw of manualData.servers) {
     const m = normalizeLegacyManual(raw);
     const gh = (m.github_url || '').toLowerCase();
-    if (slugs.has(m.slug) || (gh && ghKeys.has(gh))) continue;
-    merged.push(m);
-    slugs.add(m.slug);
+    const existing = bySlug.get(m.slug);
+    if (existing) {
+      bySlug.set(m.slug, preferRicherServer(existing, m));
+      continue;
+    }
+    if (gh && ghKeys.has(gh)) continue;
+    bySlug.set(m.slug, m);
     if (gh) ghKeys.add(gh);
   }
-  return merged;
+  return [...bySlug.values()];
 }
 
 function computeTop100FromAll(allServers) {
@@ -239,22 +256,30 @@ function withEmoji(servers) {
 
 /**
  * @param {'top' | 'all'} scope
+ * @param {{ toolsOnly?: boolean }} [opts]
  */
-function getMcpCatalogPayload(scope = 'all') {
+function getMcpCatalogPayload(scope = 'all', opts = {}) {
   const catalog = loadCatalog();
   const lastUpdated = getMcpLastUpdated();
+  const toolsOnly = opts.toolsOnly ?? scope === 'top';
   let servers = scope === 'top' ? getTop100McpServers() : getAllMcpServers();
 
   if (scope === 'top') {
     servers = servers.filter((s) => hasIndexedTools(s) || (s.setup_steps?.length && s.primary_url));
+  } else if (toolsOnly) {
+    servers = servers.filter((s) => hasIndexedTools(s));
   }
+
+  const withToolsCount = getAllMcpServers().filter((s) => hasIndexedTools(s)).length;
 
   return {
     scope,
+    tools_only: toolsOnly,
     categories: catalog.categories,
     servers: withEmoji(servers),
     total: servers.length,
     total_catalog: catalog.allServers.length,
+    total_with_tools: withToolsCount,
     generated_at: catalog.generatedAt,
     last_updated: lastUpdated.display,
   };

@@ -14,11 +14,16 @@ function sleep(ms) {
 /**
  * @param {string} url
  */
-async function fetchJson(url) {
+async function fetchJson(url, attempt = 0) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
     const res = await fetch(url, { signal: controller.signal });
+    if (res.status === 429 && attempt < 6) {
+      const retryAfter = Number(res.headers.get('retry-after')) || 2 ** attempt;
+      await sleep(Math.min(30000, retryAfter * 1000));
+      return fetchJson(url, attempt + 1);
+    }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } finally {
@@ -151,7 +156,7 @@ async function enrichSmitheryTools(servers, opts = {}) {
       }
       await sleep(delayMs);
     },
-    6,
+    2,
   );
 
   console.log(`✅ Smithery: ${enriched} enriched, ${failed} failed`);

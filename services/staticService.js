@@ -315,8 +315,12 @@ ${itemsXml}
   // MCP catalog JSON (scope=top | all — loaded client-side)
   app.get('/api/mcp/catalog', (req, res) => {
     const scope = req.query.scope === 'top' ? 'top' : 'all';
+    const toolsOnly =
+      scope === 'top'
+        ? true
+        : !(req.query.tools_only === '0' || req.query.tools_only === 'false');
     res.setHeader('Cache-Control', scope === 'top' ? 'public, max-age=7200' : 'public, max-age=3600');
-    res.json(getMcpCatalogPayload(scope));
+    res.json(getMcpCatalogPayload(scope, { toolsOnly }));
   });
 
   app.get('/api/mcp/preview', (req, res) => {
@@ -330,9 +334,10 @@ ${itemsXml}
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
-    const catalogPayload = getMcpCatalogPayload('all');
+    const catalogPayload = getMcpCatalogPayload('all', { toolsOnly: true });
     res.render('mcp-index', {
       catalogScope: 'all',
+      defaultToolsOnly: true,
       pageTitle: 'Full MCP Server Directory',
       metaDescription:
         'Search the complete MCP server catalog — 1,000+ integrations from Glama, Smithery, and community registries.',
@@ -341,9 +346,10 @@ ${itemsXml}
       lastUpdated: lastUpdated.display,
       totalInView: catalogPayload.total,
       totalCatalog: totals.total,
+      totalWithTools: catalogPayload.total_with_tools,
       sisterHref: '/mcp',
       sisterLabel: 'Top 100 MCP servers',
-      inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
+      inlineCatalogJson: null,
     });
   });
 
@@ -352,8 +358,10 @@ ${itemsXml}
     const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
     const catalogPayload = getMcpCatalogPayload('top');
+    const previewServers = catalogPayload.servers.slice(0, 60);
     res.render('mcp-index', {
       catalogScope: 'top',
+      defaultToolsOnly: true,
       pageTitle: 'Top 100 MCP Servers',
       metaDescription:
         'The top 100 Model Context Protocol servers for AI development — each with indexed tools, connection URLs, and setup steps.',
@@ -362,9 +370,11 @@ ${itemsXml}
       lastUpdated: lastUpdated.display,
       totalInView: catalogPayload.total,
       totalCatalog: totals.total,
+      totalWithTools: catalogPayload.total_with_tools,
       sisterHref: '/mcp/all',
       sisterLabel: `Browse all ${totals.total.toLocaleString()} servers`,
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
+      previewServers,
     });
   });
 

@@ -366,10 +366,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/slack\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/slack\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://slack.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/slack",
+      "smithery_qualified_name": "slack",
+      "mcp_endpoint": "https://slack.run.tools",
+      "deployment_url": "https://slack.run.tools",
+      "connection_url": "https://slack.run.tools",
       "featured": true
     },
     {
@@ -737,10 +741,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlesheets\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/googlesheets\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlesheets.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
+      "smithery_qualified_name": "googlesheets",
+      "mcp_endpoint": "https://googlesheets.run.tools",
+      "deployment_url": "https://googlesheets.run.tools",
+      "connection_url": "https://googlesheets.run.tools",
       "featured": true
     },
     {
@@ -851,10 +859,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://math-mcp--ethanhenrickson.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "smithery_qualified_name": "EthanHenrickson/math-mcp",
+      "mcp_endpoint": "https://math-mcp--ethanhenrickson.run.tools",
+      "deployment_url": "https://math-mcp--ethanhenrickson.run.tools",
+      "connection_url": "https://math-mcp--ethanhenrickson.run.tools",
       "featured": true
     },
     {
@@ -957,10 +969,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gmail.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/gmail",
+      "smithery_qualified_name": "gmail",
+      "mcp_endpoint": "https://gmail.run.tools",
+      "deployment_url": "https://gmail.run.tools",
+      "connection_url": "https://gmail.run.tools",
       "featured": true
     },
     {
@@ -981,19 +997,24 @@
           "description": "Read a webpage's full content as clean markdown. Use after web_search_exa when highlights are insufficient or to read any URL.\n\nBest for: Extracting full content from known URLs. Batch multiple URLs in one call.\nReturns: Clean text content and metadata from the page(s)."
         }
       ],
-      "docs_url": "https://exa.ai",
+      "docs_url": "https://smithery.ai/servers/exa",
       "stars": 20840,
       "source": "smithery",
       "last_updated": "2026-06-03",
       "icon": "search",
-      "primary_url": "https://exa.ai",
+      "primary_url": "https://smithery.ai/servers/exa",
       "setup_steps": [
         {
-          "title": "Get started",
-          "text": "Open https://exa.ai for documentation and connection details."
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/exa\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://exa.run.tools"
         }
       ],
-      "setup_summary": "Open https://exa.ai for documentation and connection details.",
+      "setup_summary": "1. Open https://smithery.ai/servers/exa",
+      "smithery_qualified_name": "exa",
+      "smithery_page_url": "https://smithery.ai/servers/exa",
+      "mcp_endpoint": "https://exa.run.tools",
+      "deployment_url": "https://exa.run.tools",
+      "connection_url": "https://exa.run.tools",
       "featured": true
     },
     {
@@ -3882,19 +3903,24 @@
           "description": "Retrieves AI-generated summaries of web search results. Two-step flow: first call `brave_web_search` with `summary=true` to obtain `summarizer.key`, then pass it here. Pro AI tier required."
         }
       ],
-      "docs_url": "https://brave.com/search/api/",
+      "docs_url": "https://smithery.ai/servers/brave",
       "stars": 11574,
       "source": "smithery",
       "last_updated": "2026-06-03",
       "icon": "search",
-      "primary_url": "https://brave.com/search/api/",
+      "primary_url": "https://smithery.ai/servers/brave",
       "setup_steps": [
         {
-          "title": "Get started",
-          "text": "Open https://brave.com/search/api/ for documentation and connection details."
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/brave\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://brave.run.tools"
         }
       ],
-      "setup_summary": "Open https://brave.com/search/api/ for documentation and connection details.",
+      "setup_summary": "1. Open https://smithery.ai/servers/brave",
+      "smithery_qualified_name": "brave",
+      "smithery_page_url": "https://smithery.ai/servers/brave",
+      "mcp_endpoint": "https://brave.run.tools",
+      "deployment_url": "https://brave.run.tools",
+      "connection_url": "https://brave.run.tools",
       "featured": true
     },
     {
@@ -3973,10 +3999,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googletasks\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/googletasks\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googletasks.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googletasks",
+      "smithery_qualified_name": "googletasks",
+      "mcp_endpoint": "https://googletasks.run.tools",
+      "deployment_url": "https://googletasks.run.tools",
+      "connection_url": "https://googletasks.run.tools",
       "featured": true
     },
     {
@@ -4115,10 +4145,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
+      "smithery_qualified_name": "googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
       "featured": true
     },
     {
@@ -4181,10 +4215,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/reddit\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/reddit\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://reddit.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/reddit",
+      "smithery_qualified_name": "reddit",
+      "mcp_endpoint": "https://reddit.run.tools",
+      "deployment_url": "https://reddit.run.tools",
+      "connection_url": "https://reddit.run.tools",
       "featured": true
     },
     {
@@ -4407,10 +4445,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/outlook\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/outlook\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://outlook.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/outlook",
+      "smithery_qualified_name": "outlook",
+      "mcp_endpoint": "https://outlook.run.tools",
+      "deployment_url": "https://outlook.run.tools",
+      "connection_url": "https://outlook.run.tools",
       "featured": true
     },
     {
@@ -4633,10 +4675,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlesuper\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/googlesuper\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlesuper.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesuper",
+      "smithery_qualified_name": "googlesuper",
+      "mcp_endpoint": "https://googlesuper.run.tools",
+      "deployment_url": "https://googlesuper.run.tools",
+      "connection_url": "https://googlesuper.run.tools",
       "featured": true
     },
     {
@@ -4843,10 +4889,14 @@
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/etweisberg/mlb-mcp\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/etweisberg/mlb-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://mlb-mcp--etweisberg.run.tools"
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/etweisberg/mlb-mcp",
+      "smithery_qualified_name": "etweisberg/mlb-mcp",
+      "mcp_endpoint": "https://mlb-mcp--etweisberg.run.tools",
+      "deployment_url": "https://mlb-mcp--etweisberg.run.tools",
+      "connection_url": "https://mlb-mcp--etweisberg.run.tools",
       "featured": true
     },
     {
@@ -4903,19 +4953,24 @@
           "description": "Update message"
         }
       ],
-      "docs_url": "https://agentmail.to",
+      "docs_url": "https://smithery.ai/servers/agentmail",
       "stars": 7346,
       "source": "smithery",
       "last_updated": "2026-06-03",
       "icon": "boxes",
-      "primary_url": "https://agentmail.to",
+      "primary_url": "https://smithery.ai/servers/agentmail",
       "setup_steps": [
         {
-          "title": "Get started",
-          "text": "Open https://agentmail.to for documentation and connection details."
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/agentmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://agentmail.run.tools"
         }
       ],
-      "setup_summary": "Open https://agentmail.to for documentation and connection details.",
+      "setup_summary": "1. Open https://smithery.ai/servers/agentmail",
+      "smithery_qualified_name": "agentmail",
+      "smithery_page_url": "https://smithery.ai/servers/agentmail",
+      "mcp_endpoint": "https://agentmail.run.tools",
+      "deployment_url": "https://agentmail.run.tools",
+      "connection_url": "https://agentmail.run.tools",
       "featured": true
     },
     {
@@ -5012,19 +5067,24 @@
           "description": "Extract figures, tables, and equations from PDF documents using layout detection. Perfect for extracting visual elements from academic papers on arXiv or any PDF URL. Returns base64-encoded images of detected elements with metadata."
         }
       ],
-      "docs_url": "https://jina.ai",
+      "docs_url": "https://smithery.ai/servers/jina",
       "stars": 6078,
       "source": "smithery",
       "last_updated": "2026-06-03",
       "icon": "search",
-      "primary_url": "https://jina.ai",
+      "primary_url": "https://smithery.ai/servers/jina",
       "setup_steps": [
         {
-          "title": "Get started",
-          "text": "Open https://jina.ai for documentation and connection details."
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/jina\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://jina.run.tools"
         }
       ],
-      "setup_summary": "Open https://jina.ai for documentation and connection details.",
+      "setup_summary": "1. Open https://smithery.ai/servers/jina",
+      "smithery_qualified_name": "jina",
+      "smithery_page_url": "https://smithery.ai/servers/jina",
+      "mcp_endpoint": "https://jina.run.tools",
+      "deployment_url": "https://jina.run.tools",
+      "connection_url": "https://jina.run.tools",
       "featured": true
     },
     {
@@ -5153,19 +5213,24 @@
           "description": "Rebases a development branch on production. This will effectively run any newer migrations from production onto this branch to help handle migration drift."
         }
       ],
-      "docs_url": "https://supabase.com/",
+      "docs_url": "https://smithery.ai/servers/Supabase",
       "stars": 4725,
       "source": "smithery",
       "last_updated": "2026-06-03",
       "icon": "search",
-      "primary_url": "https://supabase.com/",
+      "primary_url": "https://smithery.ai/servers/Supabase",
       "setup_steps": [
         {
-          "title": "Get started",
-          "text": "Open https://supabase.com/ for documentation and connection details."
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/Supabase\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://supabase.run.tools"
         }
       ],
-      "setup_summary": "Open https://supabase.com/ for documentation and connection details.",
+      "setup_summary": "1. Open https://smithery.ai/servers/Supabase",
+      "smithery_qualified_name": "Supabase",
+      "smithery_page_url": "https://smithery.ai/servers/Supabase",
+      "mcp_endpoint": "https://supabase.run.tools",
+      "deployment_url": "https://supabase.run.tools",
+      "connection_url": "https://supabase.run.tools",
       "featured": true
     }
   ]

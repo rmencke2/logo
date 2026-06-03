@@ -23,7 +23,7 @@ async function main() {
   const catalog = JSON.parse(fs.readFileSync(GENERATED_PATH, 'utf8'));
   const servers = catalog.servers || [];
 
-  await enrichSmitheryTools(servers, { delayMs: 80, logEvery: 20, allSmithery: true });
+  await enrichSmitheryTools(servers, { delayMs: 350, logEvery: 20, allSmithery: true });
 
   for (let i = 0; i < servers.length; i++) {
     servers[i] = attachSetupInfo(servers[i]);

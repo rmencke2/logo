@@ -1,0 +1,38 @@
+<a class="mcp-card" href="/mcp/<%= server.slug %>">
+  <div class="mcp-card-body">
+    <div class="mcp-card-head">
+      <div class="mcp-icon" aria-hidden="true"><%= server.iconEmoji || '⚡' %></div>
+      <div>
+        <h2 class="mcp-card-title"><%= server.name %></h2>
+        <div class="mcp-badges">
+          <span class="mcp-badge"><%= server.category %></span>
+          <% if (server.tools && server.tools.length) { %>
+            <span class="mcp-badge mcp-badge-tools"><%= server.tools.length %> tools</span>
+          <% } %>
+          <% if (server.official) { %>
+            <span class="mcp-badge mcp-badge-official">Official</span>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <p class="mcp-card-desc"><%= server.description %></p>
+    <% if (server.setup_summary) { %>
+      <p class="mcp-card-setup"><%= server.setup_summary %></p>
+    <% } %>
+    <% if (server.primary_url) { %>
+      <p class="mcp-card-link"><%= server.primary_url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] %> →</p>
+    <% } %>
+    <div class="mcp-tools">
+      <% if (server.tools && server.tools.length) { %>
+        <% server.tools.slice(0, 3).forEach(function(tool) { %>
+          <span class="mcp-tool-pill"><%= tool.name %></span>
+        <% }); %>
+        <% if (server.tools.length > 3) { %>
+          <span class="mcp-tool-pill muted">+<%= server.tools.length - 3 %> more</span>
+        <% } %>
+      <% } else { %>
+        <span class="mcp-tool-pill muted">No indexed tools — see setup on detail page</span>
+      <% } %>
+    </div>
+  </div>
+</a>
