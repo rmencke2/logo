@@ -169,6 +169,7 @@ async function fetchGlamaServers() {
         tools: normalizeTools(detail.tools),
         github_url: gh,
         docs_url: detail.url || detail.docs_url,
+        glama_url: detail.url || `https://glama.ai/mcp/servers/${detail.id || ''}`,
         stars: detail.stars || detail.starCount || 0,
         source: 'glama',
       }),
@@ -405,7 +406,11 @@ async function main() {
   servers = ensureUniqueSlugs(servers);
 
   const { enrichSmitheryTools } = require('./utils/enrich-tools');
-  await enrichSmitheryTools(servers, { delayMs: 80, logEvery: 25 });
+  const { attachSetupInfo } = require('./utils/setup-info');
+  await enrichSmitheryTools(servers, { delayMs: 80, logEvery: 25, allSmithery: true });
+  for (let i = 0; i < servers.length; i++) {
+    servers[i] = attachSetupInfo(servers[i]);
+  }
 
   servers.sort((a, b) => (b.stars || 0) - (a.stars || 0) || a.name.localeCompare(b.name));
 

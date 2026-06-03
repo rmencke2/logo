@@ -1,5 +1,5 @@
 /**
- * Enrich catalog entries with tool lists from Smithery detail API.
+ * Enrich catalog entries with tool lists and connection URLs from Smithery detail API.
  */
 
 const { normalizeTools } = require('./normalize');
@@ -36,25 +36,62 @@ function smitheryQualifiedName(server) {
   return server.slug;
 }
 
+function smitheryDetailUrl(qn) {
+  return `${SMITHERY_BASE}/${qn.split('/').map(encodeURIComponent).join('/')}`;
+}
+
+/**
+ * @param {object} server
+ * @returns {Promise<object|null>}
+ */
+async function fetchSmitheryDetail(server) {
+  const qn = smitheryQualifiedName(server);
+  const urls = [smitheryDetailUrl(qn)];
+  for (const url of urls) {
+    try {
+      return await fetchJson(url);
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+/**
+ * @param {object} server
+ * @param {object} detail
+ */
+function applySmitheryDetail(server, detail) {
+  const tools = normalizeTools(detail.tools);
+  if (tools.length) server.tools = tools;
+
+  server.smithery_qualified_name = detail.qualifiedName || smitheryQualifiedName(server);
+  server.smithery_page_url = `https://smithery.ai/servers/${server.smithery_qualified_name}`;
+  if (detail.homepage && !String(detail.homepage).includes('smithery.ai/servers')) {
+    server.docs_url = detail.homepage;
+  } else {
+    server.docs_url = server.smithery_page_url;
+  }
+
+  const endpoint =
+    detail.deploymentUrl ||
+    (Array.isArray(detail.connections) && detail.connections[0]?.deploymentUrl) ||
+    null;
+  if (endpoint) {
+    server.mcp_endpoint = endpoint;
+    server.deployment_url = endpoint;
+  }
+  if (detail.remote !== undefined) {
+    server.transport = detail.remote ? 'http' : 'stdio';
+  }
+}
+
 /**
  * @param {object} server
  */
 async function fetchSmitheryTools(server) {
-  const qn = smitheryQualifiedName(server);
-  const url = `${SMITHERY_BASE}/${encodeURIComponent(qn).replace(/%2F/g, '/')}`;
-  // encodeURIComponent encodes / in namespace paths — use path segments
-  const pathUrl = `${SMITHERY_BASE}/${qn.split('/').map(encodeURIComponent).join('/')}`;
-  try {
-    const detail = await fetchJson(pathUrl);
-    return normalizeTools(detail.tools);
-  } catch {
-    try {
-      const detail = await fetchJson(url);
-      return normalizeTools(detail.tools);
-    } catch {
-      return [];
-    }
-  }
+  const detail = await fetchSmitheryDetail(server);
+  return detail ? normalizeTools(detail.tools) : [];
 }
 
 /**
@@ -76,43 +113,48 @@ async function runPool(items, fn, concurrency = 6) {
 
 /**
  * @param {object[]} servers
- * @param {{ delayMs?: number; logEvery?: number }} [opts]
+ * @param {{ delayMs?: number; logEvery?: number; allSmithery?: boolean }} [opts]
  */
 async function enrichSmitheryTools(servers, opts = {}) {
   const delayMs = opts.delayMs ?? 80;
   const logEvery = opts.logEvery ?? 25;
-  const targets = servers.filter(
-    (s) => s.source === 'smithery' && (!s.tools || s.tools.length === 0),
-  );
+  const allSmithery = opts.allSmithery ?? false;
+
+  const targets = servers.filter((s) => {
+    if (s.source !== 'smithery') return false;
+    if (allSmithery) return true;
+    return !s.tools || s.tools.length === 0 || !s.mcp_endpoint;
+  });
 
   if (!targets.length) {
-    console.log('Smithery tool enrichment: nothing to fetch');
+    console.log('Smithery enrichment: nothing to fetch');
     return { enriched: 0, failed: 0 };
   }
 
-  console.log(`Smithery tool enrichment: ${targets.length} servers…`);
+  console.log(`Smithery enrichment: ${targets.length} servers…`);
   let enriched = 0;
   let failed = 0;
 
   await runPool(
     targets,
     async (server, idx) => {
-      const tools = await fetchSmitheryTools(server);
-      if (tools.length) {
-        server.tools = tools;
-        enriched += 1;
+      const detail = await fetchSmitheryDetail(server);
+      if (detail) {
+        applySmitheryDetail(server, detail);
+        if (server.tools?.length || server.mcp_endpoint) enriched += 1;
+        else failed += 1;
       } else {
         failed += 1;
       }
       if ((idx + 1) % logEvery === 0) {
-        console.log(`   … ${idx + 1}/${targets.length} (${enriched} with tools)`);
+        console.log(`   … ${idx + 1}/${targets.length} (${enriched} enriched)`);
       }
       await sleep(delayMs);
     },
     6,
   );
 
-  console.log(`✅ Smithery tools: ${enriched} enriched, ${failed} still empty`);
+  console.log(`✅ Smithery: ${enriched} enriched, ${failed} failed`);
   return { enriched, failed };
 }
 
@@ -120,4 +162,6 @@ module.exports = {
   enrichSmitheryTools,
   smitheryQualifiedName,
   fetchSmitheryTools,
+  fetchSmitheryDetail,
+  applySmitheryDetail,
 };

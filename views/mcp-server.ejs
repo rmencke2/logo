@@ -45,6 +45,9 @@
         font-family: var(--font-ui); font-size: .88rem; padding: 8px 14px; border-radius: 10px;
         border: 1px solid var(--color-border); text-decoration: none; color: var(--color-charcoal);
       }
+      .mcp-links a.mcp-link-primary {
+        background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal);
+      }
       .mcp-install { margin-bottom: 32px; }
       .mcp-install label { font-family: var(--font-ui); font-size: .8rem; font-weight: 600; display: block; margin-bottom: 8px; }
       .mcp-install-row {
@@ -57,6 +60,24 @@
         background: var(--color-charcoal); color: #fff; cursor: pointer; flex-shrink: 0;
       }
       .mcp-copy:hover { background: var(--color-ink); transform: none; }
+      .mcp-setup { margin-bottom: 32px; }
+      .mcp-setup h2 { margin-bottom: 16px; }
+      .mcp-setup-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+      .mcp-setup-item {
+        border: 1px solid var(--color-border); border-radius: 14px; padding: 16px 18px; background: var(--color-paper);
+      }
+      .mcp-setup-item h3 {
+        font-family: var(--font-ui); font-size: .88rem; font-weight: 600; margin: 0 0 8px 0; color: var(--color-ink);
+      }
+      .mcp-setup-item p {
+        margin: 0; font-size: .95rem; line-height: 1.65; color: var(--color-charcoal-light); white-space: pre-wrap;
+      }
+      .mcp-endpoint {
+        margin-bottom: 32px; padding: 16px 18px; border-radius: 14px;
+        background: var(--color-cream-dark); border: 1px solid var(--color-border);
+      }
+      .mcp-endpoint label { font-family: var(--font-ui); font-size: .8rem; font-weight: 600; display: block; margin-bottom: 8px; }
+      .mcp-endpoint code { font-size: .82rem; word-break: break-all; }
       .mcp-tools h2 { margin-bottom: 16px; }
       .mcp-tool-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
       .mcp-tool-item {
@@ -103,16 +124,48 @@
               <span class="mcp-detail-badge"><%= transportLabel %></span>
               <% if (inTop100) { %><span class="mcp-detail-badge mcp-detail-badge-official">Top 100</span><% } %>
               <% if (server.stars) { %><span class="mcp-detail-badge">★ <%= server.stars.toLocaleString() %></span><% } %>
+              <% if (server.tools && server.tools.length) { %><span class="mcp-detail-badge"><%= server.tools.length %> tools indexed</span><% } %>
             </div>
           </div>
         </div>
         <p class="mcp-detail-desc"><%= server.description %></p>
-        <% if (server.github_url || server.docs_url) { %>
-          <div class="mcp-links">
-            <% if (server.github_url) { %><a href="<%= server.github_url %>" target="_blank" rel="noopener noreferrer">GitHub</a><% } %>
-            <% if (server.docs_url) { %><a href="<%= server.docs_url %>" target="_blank" rel="noopener noreferrer">Documentation</a><% } %>
+
+        <div class="mcp-links">
+          <% if (server.smithery_page_url) { %>
+            <a class="mcp-link-primary" href="<%= server.smithery_page_url %>" target="_blank" rel="noopener noreferrer">Connect on Smithery</a>
+          <% } %>
+          <% if (server.glama_url) { %>
+            <a href="<%= server.glama_url %>" target="_blank" rel="noopener noreferrer">Glama registry</a>
+          <% } %>
+          <% if (server.primary_url && server.primary_url !== server.smithery_page_url && server.primary_url !== server.glama_url) { %>
+            <a href="<%= server.primary_url %>" target="_blank" rel="noopener noreferrer">Open registry / docs</a>
+          <% } %>
+          <% if (server.github_url) { %><a href="<%= server.github_url %>" target="_blank" rel="noopener noreferrer">GitHub</a><% } %>
+          <% if (server.docs_url && server.docs_url !== server.primary_url) { %><a href="<%= server.docs_url %>" target="_blank" rel="noopener noreferrer">Documentation</a><% } %>
+        </div>
+
+        <% if (server.connection_url) { %>
+          <div class="mcp-endpoint">
+            <label>MCP endpoint URL</label>
+            <code id="mcpEndpoint"><%= server.connection_url %></code>
+            <button type="button" class="mcp-copy" id="mcpEndpointCopy" style="margin-top: 10px;">Copy URL</button>
           </div>
         <% } %>
+
+        <% if (server.setup_steps && server.setup_steps.length) { %>
+          <section class="mcp-setup">
+            <h2>How to connect</h2>
+            <ol class="mcp-setup-list">
+              <% server.setup_steps.forEach(function(step) { %>
+                <li class="mcp-setup-item">
+                  <h3><%= step.title %></h3>
+                  <p><%= step.text %></p>
+                </li>
+              <% }); %>
+            </ol>
+          </section>
+        <% } %>
+
         <% if (server.install_command) { %>
           <div class="mcp-install">
             <label for="mcpInstallCmd">Install command</label>
@@ -122,6 +175,7 @@
             </div>
           </div>
         <% } %>
+
         <section class="mcp-tools">
           <% if (server.tools && server.tools.length) { %>
             <h2>Tools (<%= server.tools.length %>)</h2>
@@ -137,7 +191,7 @@
             <h2>Tools</h2>
             <p style="color: var(--color-charcoal-light); font-size: 0.95rem;">
               Tool names are not listed in our registry for this server (common for Glama index entries).
-              Connect via MCP in your client to discover the live tool list.
+              Use the connection links above, then connect via MCP in your client to discover the live tool list.
             </p>
           <% } %>
         </section>
@@ -152,6 +206,18 @@
             const btn = document.getElementById('mcpCopyBtn');
             btn.textContent = 'Copied';
             setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+          });
+        });
+      </script>
+    <% } %>
+    <% if (server && server.connection_url) { %>
+      <script>
+        document.getElementById('mcpEndpointCopy').addEventListener('click', function () {
+          const url = document.getElementById('mcpEndpoint').textContent;
+          navigator.clipboard.writeText(url).then(function () {
+            const btn = document.getElementById('mcpEndpointCopy');
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = 'Copy URL'; }, 2000);
           });
         });
       </script>

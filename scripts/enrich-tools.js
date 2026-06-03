@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { enrichSmitheryTools } = require('./utils/enrich-tools');
+const { attachSetupInfo } = require('./utils/setup-info');
 const { buildTop100FromCatalog } = require('./build-top100');
 
 const ROOT = path.join(__dirname, '..');
@@ -22,7 +23,11 @@ async function main() {
   const catalog = JSON.parse(fs.readFileSync(GENERATED_PATH, 'utf8'));
   const servers = catalog.servers || [];
 
-  await enrichSmitheryTools(servers, { delayMs: 80, logEvery: 20 });
+  await enrichSmitheryTools(servers, { delayMs: 80, logEvery: 20, allSmithery: true });
+
+  for (let i = 0; i < servers.length; i++) {
+    servers[i] = attachSetupInfo(servers[i]);
+  }
 
   const withTools = servers.filter((s) => s.tools?.length > 0).length;
   console.log(`Catalog: ${withTools}/${servers.length} servers have indexed tools`);

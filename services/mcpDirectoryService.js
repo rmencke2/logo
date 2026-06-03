@@ -4,9 +4,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const { pickTop100, TOP100_SIZE } = require('../scripts/utils/normalize');
+const { attachSetupInfo } = require('../scripts/utils/setup-info');
 
 const GENERATED_PATH = path.join(__dirname, '..', 'data', 'servers-generated.json');
 const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
+const PINNED_PATH = path.join(__dirname, '..', 'data', 'mcp-top100-pinned.json');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
 const LEGACY_MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers.json');
 const LAST_UPDATED_PATH = path.join(__dirname, '..', 'data', 'last-updated.json');
@@ -66,6 +69,15 @@ function readJsonIfExists(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function loadPinnedSlugs() {
+  const data = readJsonIfExists(PINNED_PATH);
+  return Array.isArray(data?.slugs) ? data.slugs : [];
+}
+
+function hasIndexedTools(server) {
+  return (server.tools?.length || 0) > 0;
+}
+
 function normalizeServer(s) {
   return {
     ...s,
@@ -87,6 +99,7 @@ function normalizeLegacyManual(server) {
     tools: Array.isArray(server.tools) ? server.tools : [],
     github_url: server.github_url,
     docs_url: server.docs_url,
+    install_command: server.install_command,
     stars: server.stars || 0,
     source: 'manual',
     featured: true,
@@ -111,6 +124,13 @@ function mergeManualInto(servers, manualData) {
   return merged;
 }
 
+function computeTop100FromAll(allServers) {
+  const prepared = allServers.map((s) => attachSetupInfo(normalizeServer(s)));
+  return pickTop100(prepared, loadPinnedSlugs(), TOP100_SIZE).filter(
+    (s) => hasIndexedTools(s) || s.source === 'manual',
+  );
+}
+
 function loadCatalog() {
   if (cached) return cached;
 
@@ -127,39 +147,32 @@ function loadCatalog() {
   let top100Servers = [];
   let categories = STANDARD_CATEGORIES;
   let generatedAt = null;
-  let top100Slugs = [];
 
   if (generated?.servers?.length) {
     allServers = generated.servers.map(normalizeServer);
     categories = generated.categories || STANDARD_CATEGORIES;
     generatedAt = generated.generated_at || null;
-    top100Slugs = generated.top100_slugs || [];
   }
 
   allServers = mergeManualInto(allServers, manualData);
 
   if (top100File?.servers?.length) {
-    top100Servers = top100File.servers.map(normalizeServer);
-    top100Slugs = top100File.top100_slugs || top100Servers.map((s) => s.slug);
-  } else if (top100Slugs.length) {
-    const slugSet = new Set(top100Slugs);
-    top100Servers = allServers.filter((s) => slugSet.has(s.slug));
+    top100Servers = top100File.servers
+      .map(normalizeServer)
+      .filter((s) => hasIndexedTools(s) || s.source === 'manual');
   } else {
-    top100Servers = allServers.slice(0, 100);
-    top100Slugs = top100Servers.map((s) => s.slug);
+    top100Servers = computeTop100FromAll(allServers);
   }
 
   if (!allServers.length && manualData?.servers?.length) {
     allServers = manualData.servers.map(normalizeLegacyManual);
-    top100Servers = allServers.slice(0, 100);
-    top100Slugs = top100Servers.map((s) => s.slug);
+    top100Servers = computeTop100FromAll(allServers);
     categories = manualData.categories || STANDARD_CATEGORIES;
   }
 
   cached = {
     allServers,
     top100Servers,
-    top100Slugs: new Set(top100Slugs),
     categories,
     generatedAt,
   };
@@ -192,11 +205,12 @@ function getMcpLastUpdated() {
 }
 
 function getAllMcpServers() {
-  return sortServers(loadCatalog().allServers);
+  return sortServers(loadCatalog().allServers.map((s) => attachSetupInfo(s)));
 }
 
 function getTop100McpServers() {
-  return sortServers(loadCatalog().top100Servers);
+  const { top100Servers } = loadCatalog();
+  return sortServers(top100Servers.map((s) => attachSetupInfo(s)));
 }
 
 function getMcpCatalogTotals() {
@@ -211,16 +225,9 @@ function getMcpCategories() {
   return loadCatalog().categories;
 }
 
-function getMcpCategoryCounts(servers) {
-  const counts = {};
-  for (const cat of getMcpCategories()) {
-    counts[cat] = servers.filter((s) => s.category === cat).length;
-  }
-  return counts;
-}
-
 function findMcpServerBySlug(slug) {
-  return getAllMcpServers().find((s) => s.slug === slug || s.id === slug);
+  const server = getAllMcpServers().find((s) => s.slug === slug || s.id === slug);
+  return server || null;
 }
 
 function withEmoji(servers) {
@@ -236,7 +243,11 @@ function withEmoji(servers) {
 function getMcpCatalogPayload(scope = 'all') {
   const catalog = loadCatalog();
   const lastUpdated = getMcpLastUpdated();
-  const servers = scope === 'top' ? getTop100McpServers() : getAllMcpServers();
+  let servers = scope === 'top' ? getTop100McpServers() : getAllMcpServers();
+
+  if (scope === 'top') {
+    servers = servers.filter((s) => hasIndexedTools(s) || (s.setup_steps?.length && s.primary_url));
+  }
 
   return {
     scope,
@@ -250,7 +261,9 @@ function getMcpCatalogPayload(scope = 'all') {
 }
 
 function getMcpHomepagePreview(limit = 6) {
-  const servers = getTop100McpServers().slice(0, limit);
+  const servers = getTop100McpServers()
+    .filter((s) => hasIndexedTools(s))
+    .slice(0, limit);
   const totals = getMcpCatalogTotals();
   const lastUpdated = getMcpLastUpdated();
   return {
@@ -272,7 +285,7 @@ function transportLabel(transport) {
 }
 
 function isInTop100(slug) {
-  return loadCatalog().top100Slugs.has(slug);
+  return getTop100McpServers().some((s) => s.slug === slug);
 }
 
 function clearMcpCache() {
@@ -284,7 +297,6 @@ module.exports = {
   getTop100McpServers,
   getMcpCatalogTotals,
   getMcpCategories,
-  getMcpCategoryCounts,
   findMcpServerBySlug,
   getMcpIconEmoji,
   transportLabel,

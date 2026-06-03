@@ -330,6 +330,7 @@ ${itemsXml}
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
+    const catalogPayload = getMcpCatalogPayload('all');
     res.render('mcp-index', {
       catalogScope: 'all',
       pageTitle: 'Full MCP Server Directory',
@@ -338,10 +339,11 @@ ${itemsXml}
       canonicalUrl: 'https://www.influzer.ai/mcp/all',
       categories: getMcpCategories(),
       lastUpdated: lastUpdated.display,
-      totalInView: totals.total,
+      totalInView: catalogPayload.total,
       totalCatalog: totals.total,
       sisterHref: '/mcp',
       sisterLabel: 'Top 100 MCP servers',
+      inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
     });
   });
 
@@ -349,18 +351,20 @@ ${itemsXml}
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
+    const catalogPayload = getMcpCatalogPayload('top');
     res.render('mcp-index', {
       catalogScope: 'top',
       pageTitle: 'Top 100 MCP Servers',
       metaDescription:
-        'The top 100 Model Context Protocol servers for AI development — curated by popularity, tools, and official status.',
+        'The top 100 Model Context Protocol servers for AI development — each with indexed tools, connection URLs, and setup steps.',
       canonicalUrl: 'https://www.influzer.ai/mcp',
       categories: getMcpCategories(),
       lastUpdated: lastUpdated.display,
-      totalInView: totals.top100,
+      totalInView: catalogPayload.total,
       totalCatalog: totals.total,
       sisterHref: '/mcp/all',
       sisterLabel: `Browse all ${totals.total.toLocaleString()} servers`,
+      inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
     });
   });
 
