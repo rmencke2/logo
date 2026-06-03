@@ -276,6 +276,51 @@ function ensureUniqueSlugs(servers) {
   });
 }
 
+const TOP100_SIZE = 100;
+
+/**
+ * Ranking score for Top 100 selection (higher = more likely featured).
+ * @param {CatalogServer} s
+ */
+function top100RankScore(s) {
+  let score = Math.min(s.stars || 0, 50000);
+  if (s.official) score += 5000;
+  score += (s.tools?.length || 0) * 80;
+  if (s.source === 'manual') score += 20000;
+  if (s.description && s.description.length > 80) score += 40;
+  return score;
+}
+
+/**
+ * Pick the featured Top 100: pinned slugs first, then highest rank score.
+ * @param {CatalogServer[]} servers
+ * @param {string[]} [pinnedSlugs]
+ * @param {number} [limit]
+ */
+function pickTop100(servers, pinnedSlugs = [], limit = TOP100_SIZE) {
+  const bySlug = new Map(servers.map((s) => [s.slug, s]));
+  const picked = [];
+  const seen = new Set();
+
+  for (const slug of pinnedSlugs) {
+    const s = bySlug.get(slug);
+    if (s && !seen.has(slug)) {
+      picked.push({ ...s, featured: true });
+      seen.add(slug);
+    }
+  }
+
+  const ranked = [...servers].sort((a, b) => top100RankScore(b) - top100RankScore(a));
+  for (const s of ranked) {
+    if (picked.length >= limit) break;
+    if (seen.has(s.slug)) continue;
+    picked.push({ ...s, featured: true });
+    seen.add(s.slug);
+  }
+
+  return picked.slice(0, limit);
+}
+
 module.exports = {
   STANDARD_CATEGORIES,
   FALLBACK_CATEGORY,
@@ -291,4 +336,7 @@ module.exports = {
   filterNoise,
   ensureUniqueSlugs,
   qualityScore,
+  TOP100_SIZE,
+  top100RankScore,
+  pickTop100,
 };

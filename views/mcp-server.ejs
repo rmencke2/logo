@@ -83,7 +83,12 @@
     </div>
 
     <main class="mcp-detail-page">
-      <a class="mcp-back" href="/mcp">← Back to MCP Directory</a>
+      <a class="mcp-back" href="/mcp">← Top 100</a>
+      <% if (typeof catalogTotals !== 'undefined' && catalogTotals) { %>
+        <span style="font-family: var(--font-ui); font-size: .85rem; margin-left: 12px;">
+          <a href="/mcp/all">Full directory (<%= catalogTotals.total.toLocaleString() %>)</a>
+        </span>
+      <% } %>
       <% if (!server) { %>
         <h1>Server not found</h1>
         <p>This MCP server is not in our directory yet.</p>
@@ -96,6 +101,7 @@
               <span class="mcp-detail-badge"><%= server.category %></span>
               <span class="mcp-detail-badge <%= server.official ? 'mcp-detail-badge-official' : '' %>"><%= server.official ? 'Official' : 'Community' %></span>
               <span class="mcp-detail-badge"><%= transportLabel %></span>
+              <% if (inTop100) { %><span class="mcp-detail-badge mcp-detail-badge-official">Top 100</span><% } %>
               <% if (server.stars) { %><span class="mcp-detail-badge">★ <%= server.stars.toLocaleString() %></span><% } %>
             </div>
           </div>

@@ -425,6 +425,17 @@ async function main() {
   printSummary(servers, stats);
   console.log(`\n💾 Wrote ${OUT_PATH}`);
   console.log(`💾 Wrote ${LAST_UPDATED_PATH}`);
+
+  console.log('\n📌 Building Top 100 slice…');
+  const { buildTop100FromCatalog } = require('./build-top100');
+  const top100Payload = buildTop100FromCatalog(output);
+  output.top100_slugs = top100Payload.top100_slugs;
+  fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2) + '\n');
+  fs.writeFileSync(
+    path.join(ROOT, 'data', 'servers-top100.json'),
+    JSON.stringify(top100Payload, null, 2) + '\n',
+  );
+  console.log(`✅ Top 100: ${top100Payload.count} servers → data/servers-top100.json`);
 }
 
 main().catch((err) => {

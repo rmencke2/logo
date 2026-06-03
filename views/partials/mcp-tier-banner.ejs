@@ -1,0 +1,11 @@
+<div class="mcp-tier-banner" role="navigation" aria-label="MCP directory views">
+  <a href="/mcp" class="mcp-tier-tab <%= catalogScope === 'top' ? 'active' : '' %>">Top 100</a>
+  <a href="/mcp/all" class="mcp-tier-tab <%= catalogScope === 'all' ? 'active' : '' %>">Full directory</a>
+  <span class="mcp-tier-meta">
+    <% if (catalogScope === 'top') { %>
+      Curated leaders · <a href="<%= sisterHref %>"><%= sisterLabel %></a>
+    <% } else { %>
+      Complete catalog · <a href="<%= sisterHref %>"><%= sisterLabel %></a>
+    <% } %>
+  </span>
+</div>

@@ -109,7 +109,8 @@
         <a href="/">Influzer.ai</a>
         <nav id="mainSiteNav" class="site-nav" aria-label="Main">
           <a href="/insights">Insights</a>
-          <a href="/mcp">MCP Directory</a>
+          <a href="/mcp">MCP Top 100</a>
+          <a href="/mcp/all">MCP Full List</a>
           <a href="/">Logo Generator</a>
           <a href="/video-converter">AVI to MP4</a>
           <a href="/video-to-gif">Video to GIF</a>
@@ -156,6 +157,7 @@
           <p class="subtitle hero-subtitle" id="homepageHeroSubtitle">Practical playbooks for executives building AI-powered, profitable companies. Less theory. More decisions that move EBITDA, velocity, and execution quality.</p>
           <div class="hero-buttons">
             <a href="/insights" class="cta-button primary hero-cta large">Read Insights</a>
+            <a href="/mcp" class="cta-button secondary hero-cta">MCP Top 100</a>
             <a href="/insights/from-cpto-to-defacto-ceo" class="cta-button secondary hero-cta" id="homepageHeroLatestLink">Start with CPTO → CEO</a>
           </div>
           <p class="hero-trust" id="homepageHeroTrust">Latest topics: P&amp;L leadership • Workflow-first AI strategy • Scaling teams without losing velocity</p>
@@ -166,6 +168,27 @@
           </div>
         </div>
       </div>
+
+      <!-- MCP Directory Preview -->
+      <section id="mcp-preview" style="max-width: 1200px; margin: 48px auto 0; padding: 0 20px;">
+        <div style="max-width: 900px; margin: 0 auto;">
+          <h2 style="text-align: center;">MCP Server Directory</h2>
+          <p style="text-align: center; margin-bottom: 32px; color: var(--color-charcoal-light);">
+            Discover Model Context Protocol servers for your AI stack. Start with the <strong>Top 100</strong>, then search the full catalog of <span id="homepageMcpTotal">1,500+</span> integrations.
+          </p>
+          <div id="homepageMcpGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+            <a href="/mcp" class="feature-card" style="text-decoration: none; color: inherit;">
+              <h3>Top 100 MCP Servers</h3>
+              <p>Curated leaders by popularity, official status, and tool coverage — updated weekly from Glama, Smithery, and community lists.</p>
+            </a>
+          </div>
+          <div style="text-align: center; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+            <a href="/mcp" class="cta-button primary" style="display: inline-flex;">Browse Top 100</a>
+            <a href="/mcp/all" class="cta-button secondary" style="display: inline-flex;">Full directory</a>
+          </div>
+          <p id="homepageMcpMeta" style="text-align: center; margin-top: 14px; font-size: 0.88rem; color: var(--color-muted); font-family: var(--font-ui);"></p>
+        </div>
+      </section>
 
       <!-- Insights Preview Section -->
       <section id="insights-preview" style="max-width: 1200px; margin: 0 auto;">
@@ -1155,6 +1178,48 @@
             if (recentData && Array.isArray(recentData.posts)) {
               renderLatestCards(recentData.posts);
             }
+          })
+          .catch(() => {});
+      })();
+
+      (function loadHomepageMcpPreview() {
+        const gridEl = document.getElementById('homepageMcpGrid');
+        const totalEl = document.getElementById('homepageMcpTotal');
+        const metaEl = document.getElementById('homepageMcpMeta');
+        if (!gridEl) return;
+
+        function esc(s) {
+          return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+        }
+
+        fetch('/api/mcp/preview?limit=6', { headers: { Accept: 'application/json' } })
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => {
+            if (!data || !Array.isArray(data.servers) || !data.servers.length) return;
+            if (totalEl && data.total_catalog) {
+              totalEl.textContent = data.total_catalog.toLocaleString();
+            }
+            if (metaEl) {
+              const refreshed = data.last_updated ? `Updated ${data.last_updated}` : '';
+              metaEl.textContent = [refreshed, `Top ${data.total_top100 || 100} featured`].filter(Boolean).join(' · ');
+            }
+            gridEl.innerHTML = data.servers
+              .map((s) => {
+                const desc = s.description || '';
+                const tools = (s.tools || []).slice(0, 2).map((t) => t.name).join(', ');
+                const official = s.official ? '<span style="font-size:.72rem;color:var(--color-terracotta);font-weight:600;">Official</span> ' : '';
+                return `<a href="/mcp/${esc(s.slug)}" class="feature-card" style="text-decoration:none;color:inherit;">
+                  <div style="font-size:1.4rem;margin-bottom:8px;" aria-hidden="true">${s.iconEmoji || '⚡'}</div>
+                  <h3>${esc(s.name)}</h3>
+                  <p>${esc(desc.slice(0, 120))}${desc.length > 120 ? '…' : ''}</p>
+                  <p style="margin-top:8px;font-size:.8rem;color:var(--color-muted);">${official}${esc(s.category)}${tools ? ' · ' + esc(tools) : ''}</p>
+                </a>`;
+              })
+              .join('');
           })
           .catch(() => {});
       })();

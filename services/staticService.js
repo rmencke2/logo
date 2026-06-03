@@ -10,12 +10,16 @@ const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
 const SITE_BASE_URL = 'https://www.influzer.ai';
 const {
   getAllMcpServers,
+  getTop100McpServers,
   getMcpCategories,
   findMcpServerBySlug,
   getMcpIconEmoji,
   transportLabel,
   getMcpLastUpdated,
   getMcpCatalogPayload,
+  getMcpHomepagePreview,
+  getMcpCatalogTotals,
+  isInTop100,
 } = require('./mcpDirectoryService');
 
 function getAllBlogPosts() {
@@ -308,20 +312,55 @@ ${itemsXml}
     res.redirect(301, `/insights/${req.params.slug}`);
   });
 
-  // MCP catalog JSON (large dataset — loaded client-side)
+  // MCP catalog JSON (scope=top | all — loaded client-side)
   app.get('/api/mcp/catalog', (req, res) => {
+    const scope = req.query.scope === 'top' ? 'top' : 'all';
+    res.setHeader('Cache-Control', scope === 'top' ? 'public, max-age=7200' : 'public, max-age=3600');
+    res.json(getMcpCatalogPayload(scope));
+  });
+
+  app.get('/api/mcp/preview', (req, res) => {
+    const limit = Math.min(12, Math.max(1, parseInt(String(req.query.limit || '6'), 10) || 6));
     res.setHeader('Cache-Control', 'public, max-age=3600');
-    res.json(getMcpCatalogPayload());
+    res.json(getMcpHomepagePreview(limit));
   });
 
   // MCP Server Directory (must be registered before /insights/:slug)
-  app.get('/mcp', (req, res) => {
+  app.get('/mcp/all', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
     res.render('mcp-index', {
+      catalogScope: 'all',
+      pageTitle: 'Full MCP Server Directory',
+      metaDescription:
+        'Search the complete MCP server catalog — 1,000+ integrations from Glama, Smithery, and community registries.',
+      canonicalUrl: 'https://www.influzer.ai/mcp/all',
       categories: getMcpCategories(),
       lastUpdated: lastUpdated.display,
-      totalServers: getAllMcpServers().length,
+      totalInView: totals.total,
+      totalCatalog: totals.total,
+      sisterHref: '/mcp',
+      sisterLabel: 'Top 100 MCP servers',
+    });
+  });
+
+  app.get('/mcp', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const totals = getMcpCatalogTotals();
+    const lastUpdated = getMcpLastUpdated();
+    res.render('mcp-index', {
+      catalogScope: 'top',
+      pageTitle: 'Top 100 MCP Servers',
+      metaDescription:
+        'The top 100 Model Context Protocol servers for AI development — curated by popularity, tools, and official status.',
+      canonicalUrl: 'https://www.influzer.ai/mcp',
+      categories: getMcpCategories(),
+      lastUpdated: lastUpdated.display,
+      totalInView: totals.top100,
+      totalCatalog: totals.total,
+      sisterHref: '/mcp/all',
+      sisterLabel: `Browse all ${totals.total.toLocaleString()} servers`,
     });
   });
 
@@ -339,6 +378,8 @@ ${itemsXml}
       server,
       iconEmoji: getMcpIconEmoji(server.icon),
       transportLabel: transportLabel(server.transport),
+      inTop100: isInTop100(server.slug),
+      catalogTotals: getMcpCatalogTotals(),
     });
   });
 
@@ -393,7 +434,8 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/video-metadata`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/meme-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/insights`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.9' },
-      { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
+      { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
+      { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/cookie`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
@@ -404,8 +446,8 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.7',
     }));
-    const mcpUrls = getAllMcpServers()
-      .slice(0, 500)
+    const mcpUrls = getTop100McpServers()
+      .slice(0, 100)
       .map((s) => ({
         loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
         lastmod: '2026-06-03',

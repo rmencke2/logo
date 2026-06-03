@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>MCP Server Directory - Influzer.ai</title>
-    <meta name="description" content="Search and discover Model Context Protocol (MCP) servers and the tools they expose for AI development workflows." />
-    <link rel="canonical" href="https://www.influzer.ai/mcp" />
-    <meta property="og:title" content="MCP Server Directory - Influzer.ai" />
-    <meta property="og:description" content="Browse MCP servers, categories, and tools for developers." />
-    <meta property="og:url" content="https://www.influzer.ai/mcp" />
+    <title><%= pageTitle %> - Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta property="og:title" content="<%= pageTitle %> - Influzer.ai" />
+    <meta property="og:description" content="<%= metaDescription %>" />
+    <meta property="og:url" content="<%= canonicalUrl %>" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
     <style>
@@ -262,6 +262,19 @@
         text-align: center;
       }
       .mcp-footer-note { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--color-border); }
+      .mcp-tier-banner {
+        display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+        margin-bottom: 24px; padding: 12px 16px; border-radius: 14px;
+        background: var(--color-cream-dark); border: 1px solid var(--color-border);
+      }
+      .mcp-tier-tab {
+        font-family: var(--font-ui); font-size: .85rem; font-weight: 600;
+        padding: 8px 14px; border-radius: 999px; text-decoration: none;
+        color: var(--color-charcoal); border: 1px solid var(--color-border); background: var(--color-paper);
+      }
+      .mcp-tier-tab.active { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
+      .mcp-tier-meta { font-family: var(--font-ui); font-size: .85rem; color: var(--color-charcoal-light); flex: 1; min-width: 200px; }
+      .mcp-tier-meta a { color: var(--color-terracotta); font-weight: 600; }
       .mcp-load-more {
         display: block;
         margin: 24px auto 0;
@@ -301,9 +314,11 @@
     <main class="mcp-page">
       <header class="mcp-header">
         <p class="mcp-kicker">Model Context Protocol</p>
-        <h1>MCP Server Directory</h1>
-        <p class="mcp-lead">Search and discover MCP servers and the tools they expose for AI-assisted development.</p>
+        <h1><%= pageTitle %></h1>
+        <p class="mcp-lead"><%= metaDescription %></p>
       </header>
+
+      <%- include('partials/mcp-tier-banner') %>
 
       <section class="mcp-controls" aria-label="Search and filters">
         <div class="mcp-controls-top">
@@ -337,7 +352,7 @@
         <button type="button" class="mcp-clear-link" id="mcpClearEmpty">Clear filters</button>
       </div>
       <% if (lastUpdated) { %>
-        <p class="mcp-footer-note">Data last refreshed: <%= lastUpdated %> · <%= totalServers %> servers in catalog</p>
+        <p class="mcp-footer-note">Data last refreshed: <%= lastUpdated %> · showing <%= catalogScope === 'top' ? 'top ' + totalInView : totalInView %> of <%= totalCatalog.toLocaleString() %> servers · run <code>npm run refresh-data</code> weekly to update</p>
       <% } %>
     </main>
 
@@ -513,7 +528,8 @@
           render(false);
         });
 
-        fetch('/api/mcp/catalog', { headers: { Accept: 'application/json' } })
+        const catalogScope = '<%= catalogScope %>';
+        fetch('/api/mcp/catalog?scope=' + catalogScope, { headers: { Accept: 'application/json' } })
           .then((res) => {
             if (!res.ok) throw new Error('Catalog unavailable');
             return res.json();
