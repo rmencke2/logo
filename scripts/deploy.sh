@@ -55,15 +55,24 @@ else
 fi
 
 echo "==> Installing dependencies"
-if command -v npm >/dev/null 2>&1; then
-  if [[ -f "package-lock.json" ]]; then
-    npm ci --omit=dev
-  else
-    npm install --omit=dev
-  fi
-else
+if ! command -v npm >/dev/null 2>&1; then
   echo "ERROR: npm not found."
   exit 1
+fi
+
+install_deps() {
+  npm install --omit=dev "$@"
+}
+
+if [[ -f "package-lock.json" ]] && node -e "JSON.parse(require('fs').readFileSync('package-lock.json','utf8'))" 2>/dev/null; then
+  echo "    using npm ci (valid package-lock.json)"
+  if ! npm ci --omit=dev; then
+    echo "WARN: npm ci failed; falling back to npm install"
+    install_deps
+  fi
+else
+  echo "    using npm install (no valid package-lock.json)"
+  install_deps
 fi
 
 echo "==> Restarting PM2 app: ${PM2_APP_NAME}"
