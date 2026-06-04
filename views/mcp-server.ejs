@@ -111,7 +111,17 @@
         </div>
         <p class="mcp-detail-desc"><%= server.description %></p>
 
+        <%- include('partials/mcp-affiliate-cta', { server: server }) %>
+
         <div class="mcp-detail-actions">
+          <% if (server.affiliate && server.affiliate.url) { %>
+            <a
+              class="mcp-btn mcp-btn-affiliate"
+              href="<%= server.affiliate.url %>"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+            ><%= server.affiliate.cta %></a>
+          <% } %>
           <% if (server.smithery_page_url && server.isRemote) { %>
             <a class="mcp-btn mcp-btn-connect" href="<%= server.smithery_page_url %>" target="_blank" rel="noopener noreferrer">Connect</a>
           <% } %>

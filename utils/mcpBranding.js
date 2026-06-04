@@ -3,6 +3,7 @@
  */
 
 const { SLUG_LOGO_DOMAINS, GITHUB_OWNER_DOMAINS } = require('../data/logo-domains');
+const MCP_AFFILIATE_LINKS = require('../data/mcp-affiliate-links');
 
 const CLEARBIT_LOGO_BASE = 'https://logo.clearbit.com';
 
@@ -250,6 +251,20 @@ function transportBadgeLabel(server) {
 /**
  * @param {object} server
  */
+function getAffiliateForServer(server) {
+  if (server?.affiliate_url) {
+    return {
+      url: server.affiliate_url,
+      headline: server.affiliate_headline || `Get ${server.name}`,
+      description: server.affiliate_description || '',
+      cta: server.affiliate_cta || `Try ${server.name} →`,
+      provider: server.name,
+    };
+  }
+  const slug = server?.slug || server?.id;
+  return slug ? MCP_AFFILIATE_LINKS[slug] || null : null;
+}
+
 function attachBranding(server) {
   const categoryStyle = getCategoryStyle(server.category);
   const logoDomain = resolveLogoDomain(server);
@@ -257,6 +272,7 @@ function attachBranding(server) {
   const logoFallbackUrl = faviconLogoUrl(logoDomain);
   const initial = logoInitial(server.name);
   const remote = isRemoteServer(server);
+  const affiliate = getAffiliateForServer(server);
 
   return {
     ...server,
@@ -267,6 +283,7 @@ function attachBranding(server) {
     categoryStyle,
     transportBadge: transportBadgeLabel(server),
     isRemote: remote,
+    affiliate: affiliate || undefined,
   };
 }
 
