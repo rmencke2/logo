@@ -22,6 +22,7 @@
     <% } %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/site-header.css">
     <script type="application/ld+json">
       <%- JSON.stringify({
         '@context': 'https://schema.org',
@@ -84,24 +85,8 @@
     </style>
   </head>
   <body>
-    <div class="auth-header" id="siteHeader">
-      <div class="auth-header-start">
-        <button type="button" class="nav-menu-toggle" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
-          <span class="nav-menu-toggle-bars" aria-hidden="true">
-            <span class="nav-toggle-bar"></span>
-            <span class="nav-toggle-bar"></span>
-            <span class="nav-toggle-bar"></span>
-          </span>
-        </button>
-        <a href="/">Influzer.ai</a>
-        <nav id="mainSiteNav" class="site-nav" aria-label="Main">
-          <%- include('partials/site-nav-insights-mcp') %>
-          <a href="/">Logo Generator</a>
-          <a href="/video-converter">AVI to MP4</a>
-          <a href="/video-to-gif">Video to GIF</a>
-        </nav>
-      </div>
-    </div>
+    <%- include('partials/site-header') %>
+    <script src="/js/site-header.js" defer></script>
 
     <main class="insights-page">
       <header class="insights-header">
@@ -223,37 +208,5 @@
       })();
     </script>
 
-    <script>
-      (function () {
-        const siteHeader = document.getElementById('siteHeader');
-        const navMenuToggle = document.getElementById('navMenuToggle');
-        const mainSiteNav = document.getElementById('mainSiteNav');
-        if (!siteHeader || !navMenuToggle || !mainSiteNav) return;
-
-        function closeMobileNav() {
-          siteHeader.classList.remove('nav-open');
-          navMenuToggle.setAttribute('aria-expanded', 'false');
-          navMenuToggle.setAttribute('aria-label', 'Open menu');
-        }
-
-        navMenuToggle.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const open = !siteHeader.classList.contains('nav-open');
-          siteHeader.classList.toggle('nav-open', open);
-          navMenuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-          navMenuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-        });
-
-        mainSiteNav.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMobileNav));
-        document.addEventListener('click', (e) => {
-          if (siteHeader.classList.contains('nav-open') && !siteHeader.contains(e.target)) {
-            closeMobileNav();
-          }
-        });
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && siteHeader.classList.contains('nav-open')) closeMobileNav();
-        });
-      })();
-    </script>
   </body>
 </html>

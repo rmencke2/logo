@@ -11,6 +11,7 @@
     <meta property="og:url" content="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
     <% if (server) { %>
       <script type="application/ld+json">
@@ -71,20 +72,8 @@
     </style>
   </head>
   <body>
-    <div class="auth-header" id="siteHeader">
-      <div class="auth-header-start">
-        <button type="button" class="nav-menu-toggle" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
-          <span class="nav-menu-toggle-bars" aria-hidden="true">
-            <span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>
-          </span>
-        </button>
-        <a href="/">Influzer.ai</a>
-        <nav id="mainSiteNav" class="site-nav" aria-label="Main">
-          <%- include('partials/site-nav-insights-mcp') %>
-          <a href="/">Logo Generator</a>
-        </nav>
-      </div>
-    </div>
+    <%- include('partials/site-header') %>
+    <script src="/js/site-header.js" defer></script>
 
     <main class="mcp-detail-page">
       <a class="mcp-back" href="/mcp">← Top 100</a>
@@ -225,20 +214,5 @@
         });
       </script>
     <% } %>
-    <script>
-      (function () {
-        const h = document.getElementById('siteHeader');
-        const t = document.getElementById('navMenuToggle');
-        const n = document.getElementById('mainSiteNav');
-        if (!h || !t || !n) return;
-        t.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const open = !h.classList.contains('nav-open');
-          h.classList.toggle('nav-open', open);
-          t.setAttribute('aria-expanded', open);
-        });
-        n.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => h.classList.remove('nav-open')));
-      })();
-    </script>
   </body>
 </html>

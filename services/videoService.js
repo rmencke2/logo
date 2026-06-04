@@ -59,10 +59,7 @@ function initializeVideoService(app) {
     },
   });
 
-  // Serve video converter page
-  app.get('/video-converter', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'video-converter.html'));
-  });
+  // Page routes served by staticService (EJS + shared site header)
 
   // Convert AVI to MP4 endpoint (no auth required - auth only for download)
   app.post(
@@ -140,11 +137,6 @@ function initializeVideoService(app) {
       }
     },
   );
-
-  // Serve video to GIF converter page
-  app.get('/video-to-gif', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'video-to-gif.html'));
-  });
 
   // Convert video to GIF endpoint
   app.post(
@@ -224,11 +216,6 @@ function initializeVideoService(app) {
       }
     },
   );
-
-  // Serve video metadata extractor page
-  app.get('/video-metadata', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'video-metadata.html'));
-  });
 
   // Extract video metadata endpoint (no auth required - auth only for download)
   app.post(
@@ -319,11 +306,6 @@ function initializeVideoService(app) {
       }
     },
   );
-
-  // Serve meme generator page
-  app.get('/meme-generator', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'meme-generator.html'));
-  });
 
   // Convert video/GIF to meme endpoint
   app.post(

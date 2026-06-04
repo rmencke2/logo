@@ -93,59 +93,57 @@
       gtag('config', 'G-Q8WMQQWLT7');
     </script>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/site-header.css">
   </head>
   <body>
     <a class="skip-link" href="#homepage">Skip to main content</a>
-    <!-- Auth Header -->
-    <div class="auth-header" id="siteHeader">
-      <div class="auth-header-start">
-        <button type="button" class="nav-menu-toggle" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
-          <span class="nav-menu-toggle-bars" aria-hidden="true">
-            <span class="nav-toggle-bar"></span>
-            <span class="nav-toggle-bar"></span>
-            <span class="nav-toggle-bar"></span>
-          </span>
-        </button>
-        <a href="/">Influzer.ai</a>
-        <nav id="mainSiteNav" class="site-nav" aria-label="Main">
-          <a href="/insights">Insights</a>
-          <a href="/mcp">MCP Top 100</a>
-          <a href="/mcp/all">MCP Full List</a>
-          <a href="/">Logo Generator</a>
-          <a href="/video-converter">AVI to MP4</a>
-          <a href="/video-to-gif">Video to GIF</a>
-          <a href="/video-metadata">Video Metadata</a>
-          <a href="/meme-generator">Meme Generator</a>
-          <a href="https://apps.apple.com/us/app/get-motivated-and-inspired/id6758354841" target="_blank" rel="noopener noreferrer">Get Motivated and Inspired App</a>
-        </nav>
-      </div>
-      <!-- Hidden language selector for i18n compatibility -->
-      <select id="languageSelector" style="display: none;">
-        <option value="en">English</option>
-        <option value="da">Dansk</option>
-        <option value="sv">Svenska</option>
-        <option value="de">Deutsch</option>
-        <option value="it">Italiano</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="nl">Nederlands</option>
-      </select>
-      <div class="auth-buttons" id="authButtons">
-        <svg class="language-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" onclick="document.getElementById('footerLanguageSelector')?.scrollIntoView({behavior: 'smooth'})">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <button class="auth-btn primary" id="signupBtn" data-i18n="auth.signup">Start Creating</button>
-      </div>
-      <div class="user-info" id="userInfo" style="display: none;">
-        <div class="user-avatar" id="userAvatar">U</div>
-        <div class="user-details">
-          <div class="user-name" id="userName">User</div>
-          <div class="usage-info" id="usageInfo" data-i18n="usage.loading">Loading...</div>
+    <header class="site-header" id="siteHeader">
+      <div class="site-header-inner">
+        <div class="site-header-left">
+          <button type="button" class="site-header-menu-btn" id="navMenuToggle" aria-expanded="false" aria-controls="mainSiteNav" aria-label="Open menu">
+            <span class="site-header-menu-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+          </button>
+          <a href="/" class="site-header-brand">Influzer.ai</a>
         </div>
-        <button class="auth-btn secondary" onclick="logout()" data-i18n="auth.logout">Logout</button>
+        <nav class="site-header-nav" id="mainSiteNav" aria-label="Main">
+          <a href="/mcp" class="site-header-link">MCP Directory</a>
+          <a href="/insights" class="site-header-link">Insights</a>
+          <div class="site-header-dropdown" id="toolsDropdown">
+            <button type="button" class="site-header-link site-header-dropdown-trigger" id="toolsDropdownBtn" aria-expanded="false" aria-haspopup="true">Tools <span class="site-header-caret" aria-hidden="true">▾</span></button>
+            <div class="site-header-dropdown-panel" role="menu" id="toolsDropdownPanel">
+              <a href="/favicon-generator" role="menuitem">Favicon Creator</a>
+              <a href="/video-to-gif" role="menuitem">Video to GIF</a>
+              <a href="/video-converter" role="menuitem">AVI to MP4</a>
+              <a href="/video-metadata" role="menuitem">Video Metadata</a>
+              <a href="/meme-generator" role="menuitem">Meme Generator</a>
+            </div>
+          </div>
+        </nav>
+        <a href="#newsletter" class="site-header-subscribe">Subscribe →</a>
       </div>
+    </header>
+    <select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1">
+      <option value="en">English</option>
+      <option value="da">Dansk</option>
+      <option value="sv">Svenska</option>
+      <option value="de">Deutsch</option>
+      <option value="it">Italiano</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="nl">Nederlands</option>
+    </select>
+    <div class="auth-buttons" id="authButtons" hidden>
+      <button class="auth-btn primary" id="signupBtn" data-i18n="auth.signup">Start Creating</button>
     </div>
+    <div class="user-info" id="userInfo" style="display: none;">
+      <div class="user-avatar" id="userAvatar">U</div>
+      <div class="user-details">
+        <div class="user-name" id="userName">User</div>
+        <div class="usage-info" id="usageInfo" data-i18n="usage.loading">Loading...</div>
+      </div>
+      <button class="auth-btn secondary" onclick="logout()" data-i18n="auth.logout">Logout</button>
+    </div>
+    <script src="/js/site-header.js" defer></script>
 
     <!-- Homepage / Landing Page -->
     <div id="homepage" class="homepage" style="display: block;" tabindex="-1">

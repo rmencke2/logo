@@ -116,6 +116,15 @@ function initializeStaticService(app) {
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '..', 'views'));
 
+  app.use((req, res, next) => {
+    res.locals.navPath = req.path;
+    next();
+  });
+
+  app.get('/favicon-generator', (req, res) => {
+    res.redirect(302, '/#favicon');
+  });
+
   // Explicitly serve app.js FIRST to ensure it's accessible
   app.get('/app.js', (req, res) => {
     const appJsPath = path.join(__dirname, '..', 'public', 'app.js');

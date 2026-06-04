@@ -1,0 +1,65 @@
+<%#
+  Shared sticky header — used on all pages.
+  Pass navPath (e.g. req.path) or set activeNav: 'mcp' | 'insights'
+%>
+<%
+  const path = typeof navPath !== 'undefined' ? navPath : '';
+  const activeMcp = typeof activeNav !== 'undefined' ? activeNav === 'mcp' : path.startsWith('/mcp');
+  const activeInsights =
+    typeof activeNav !== 'undefined'
+      ? activeNav === 'insights'
+      : path.startsWith('/insights') || path.startsWith('/blog');
+%>
+<header class="site-header" id="siteHeader">
+  <div class="site-header-inner">
+    <div class="site-header-left">
+      <button
+        type="button"
+        class="site-header-menu-btn"
+        id="navMenuToggle"
+        aria-expanded="false"
+        aria-controls="mainSiteNav"
+        aria-label="Open menu"
+      >
+        <span class="site-header-menu-bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+      <a href="/" class="site-header-brand">Influzer.ai</a>
+    </div>
+    <nav class="site-header-nav" id="mainSiteNav" aria-label="Main">
+      <a href="/mcp" class="site-header-link<%= activeMcp ? ' is-active' : '' %>">MCP Directory</a>
+      <a href="/insights" class="site-header-link<%= activeInsights ? ' is-active' : '' %>">Insights</a>
+      <div class="site-header-dropdown" id="toolsDropdown">
+        <button
+          type="button"
+          class="site-header-link site-header-dropdown-trigger"
+          id="toolsDropdownBtn"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          Tools <span class="site-header-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="site-header-dropdown-panel" role="menu" id="toolsDropdownPanel">
+          <a href="/favicon-generator" role="menuitem">Favicon Creator</a>
+          <a href="/video-to-gif" role="menuitem">Video to GIF</a>
+          <a href="/video-converter" role="menuitem">AVI to MP4</a>
+          <a href="/video-metadata" role="menuitem">Video Metadata</a>
+          <a href="/meme-generator" role="menuitem">Meme Generator</a>
+        </div>
+      </div>
+    </nav>
+    <a href="/#newsletter" class="site-header-subscribe">Subscribe →</a>
+  </div>
+</header>
+<!-- Hidden language selector for i18n (footer controls language) -->
+<select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1">
+  <option value="en">English</option>
+  <option value="da">Dansk</option>
+  <option value="sv">Svenska</option>
+  <option value="de">Deutsch</option>
+  <option value="it">Italiano</option>
+  <option value="es">Español</option>
+  <option value="fr">Français</option>
+  <option value="nl">Nederlands</option>
+</select>
