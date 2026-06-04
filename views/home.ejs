@@ -3,31 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>MCP Server Directory — Influzer.ai</title>
-    <meta
-      name="description"
-      content="Find the right MCP server for your AI stack. Search 1,500+ Model Context Protocol servers with indexed tools, updated weekly."
-    />
+    <title><%= seo.pageTitle %></title>
+    <meta name="description" content="<%= seo.metaDescription %>" />
+    <meta name="keywords" content="<%= seo.metaKeywords %>" />
+    <meta name="author" content="Influzer.ai" />
     <link rel="canonical" href="https://www.influzer.ai/" />
+    <link rel="alternate" type="application/rss+xml" title="Influzer.ai Insights" href="https://www.influzer.ai/insights/rss.xml" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Influzer.ai" />
     <meta property="og:url" content="https://www.influzer.ai/" />
-    <meta property="og:title" content="MCP Server Directory — Influzer.ai" />
-    <meta
-      property="og:description"
-      content="The most complete directory of Model Context Protocol servers — every tool indexed and searchable."
-    />
-    <meta property="og:image" content="https://www.influzer.ai/favicon.svg" />
+    <meta property="og:title" content="<%= seo.pageTitle %>" />
+    <meta property="og:description" content="<%= seo.metaDescription %>" />
+    <meta property="og:image" content="<%= seo.ogImage %>" />
+    <meta property="og:image:alt" content="<%= featuredPost ? featuredPost.coverImageAlt : 'Influzer.ai MCP directory and AI insights' %>" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="MCP Server Directory — Influzer.ai" />
-    <meta
-      name="twitter:description"
-      content="Find MCP servers for your AI stack. Searchable directory with indexed tools."
-    />
+    <meta name="twitter:title" content="<%= seo.pageTitle %>" />
+    <meta name="twitter:description" content="<%= seo.metaDescription %>" />
+    <meta name="twitter:image" content="<%= seo.ogImage %>" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
     <link rel="stylesheet" href="/css/home.css" />
+    <script type="application/ld+json">
+      <%- JSON.stringify(jsonLd) %>
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8WMQQWLT7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -70,7 +70,52 @@
         </form>
       </section>
 
+      <div class="home-intro">
+        <p>
+          Influzer.ai combines a searchable <a href="/mcp">MCP server directory</a> (<%= heroStats.totalServers.toLocaleString() %> integrations, <%= toolCountDisplay %> tools) with
+          <a href="/insights">executive insights</a> on AI agents, workflows, and operating systems — built for teams shipping production AI, not just browsing lists.
+        </p>
+      </div>
+
       <%- include('partials/home-newsletter-card') %>
+
+      <% if (featuredPost) { %>
+        <section class="home-section" aria-labelledby="homeFeaturedTitle">
+          <div class="home-section__head">
+            <h2 class="home-section__title" id="homeFeaturedTitle">Latest insight</h2>
+            <a class="home-section__link" href="/insights">All insights →</a>
+          </div>
+          <a class="home-featured" href="/insights/<%= featuredPost.slug %>">
+            <div class="home-featured__media">
+              <% if (featuredPost.coverImage) { %>
+                <img
+                  src="<%= featuredPost.coverImage %>"
+                  alt="<%= featuredPost.coverImageAlt %>"
+                  width="640"
+                  height="360"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              <% } else { %>
+                <div class="home-featured__media-placeholder" aria-hidden="true">Insights</div>
+              <% } %>
+            </div>
+            <div class="home-featured__body">
+              <p class="home-featured__label"><%= featuredPost.category %> · <%= featuredPost.dateDisplay %></p>
+              <h3 class="home-featured__title"><%= featuredPost.title %></h3>
+              <p class="home-featured__excerpt"><%= featuredPost.excerpt %></p>
+              <% if (featuredPost.tags && featuredPost.tags.length) { %>
+                <div class="home-featured__tags">
+                  <% featuredPost.tags.slice(0, 4).forEach(function(tag) { %>
+                    <span class="home-featured__tag"><%= tag %></span>
+                  <% }); %>
+                </div>
+              <% } %>
+              <span class="home-featured__cta">Read article →</span>
+            </div>
+          </a>
+        </section>
+      <% } %>
 
       <section class="home-section" aria-labelledby="homeMcpServersTitle">
         <div class="home-section__head">
@@ -84,38 +129,40 @@
         </div>
       </section>
 
-      <section class="home-section home-section--last" aria-labelledby="homeInsightsTitle">
-        <div class="home-section__head">
-          <h2 class="home-section__title" id="homeInsightsTitle">From the blog</h2>
-          <a class="home-section__link" href="/insights">View all →</a>
-        </div>
-        <div class="home-insights-list">
-          <% latestPosts.forEach(function(post) { %>
-            <a class="home-insight-row" href="/insights/<%= post.slug %>">
-              <% if (post.coverImage) { %>
-                <img class="home-insight-thumb" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" width="120" height="72" />
-              <% } else { %>
-                <div class="home-insight-thumb home-insight-thumb--placeholder" aria-hidden="true">Insights</div>
-              <% } %>
-              <div>
-                <% if (post.tags && post.tags.length) { %>
-                  <div class="home-insight-tags">
-                    <% post.tags.slice(0, 3).forEach(function(tag) { %>
-                      <span class="home-insight-tag"><%= tag %></span>
-                    <% }); %>
-                  </div>
+      <% if (morePosts && morePosts.length) { %>
+        <section class="home-section home-section--last" aria-labelledby="homeInsightsTitle">
+          <div class="home-section__head">
+            <h2 class="home-section__title" id="homeInsightsTitle">From the blog</h2>
+            <a class="home-section__link" href="/insights">View all →</a>
+          </div>
+          <div class="home-insights-list">
+            <% morePosts.forEach(function(post) { %>
+              <a class="home-insight-row" href="/insights/<%= post.slug %>">
+                <% if (post.coverImage) { %>
+                  <img class="home-insight-thumb" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" width="120" height="72" />
+                <% } else { %>
+                  <div class="home-insight-thumb home-insight-thumb--placeholder" aria-hidden="true">Insights</div>
                 <% } %>
-                <h3 class="home-insight-title"><%= post.title %></h3>
-                <p class="home-insight-meta"><%= post.dateDisplay %></p>
-              </div>
-            </a>
-          <% }); %>
-        </div>
-      </section>
+                <div>
+                  <% if (post.tags && post.tags.length) { %>
+                    <div class="home-insight-tags">
+                      <% post.tags.slice(0, 3).forEach(function(tag) { %>
+                        <span class="home-insight-tag"><%= tag %></span>
+                      <% }); %>
+                    </div>
+                  <% } %>
+                  <h3 class="home-insight-title"><%= post.title %></h3>
+                  <p class="home-insight-meta"><%= post.dateDisplay %> · <%= post.readMinutes %> min read</p>
+                </div>
+              </a>
+            <% }); %>
+          </div>
+        </section>
+      <% } %>
     </main>
 
     <footer class="home-site-footer">
-      <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a></span>
+      <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a> · <a href="/insights/rss.xml">RSS</a></span>
       <label class="home-site-footer__lang">
         <span class="visually-hidden">Language</span>
         <select id="languageSelector" aria-label="Language">

@@ -118,12 +118,142 @@ function formatPostDate(dateString) {
   return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-function mapPostsForHome(limit = 3) {
-  return getAllBlogPosts().slice(0, limit).map((post) => ({
+function mapPostForDisplay(post) {
+  return {
     ...post,
     dateDisplay: formatPostDate(post.date),
     readMinutes: estimateReadMinutes(post.contentHtml),
-  }));
+    coverImageAbsolute: toAbsoluteUrl(post.coverImage),
+    articleUrl: `${SITE_BASE_URL}/insights/${post.slug}`,
+  };
+}
+
+function toAbsoluteUrl(url) {
+  if (!url) return `${SITE_BASE_URL}/favicon.svg`;
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${SITE_BASE_URL}${url.startsWith('/') ? url : `/${url}`}`;
+}
+
+function getHomeBlogContent() {
+  const all = getAllBlogPosts();
+  const featuredRaw = all.find((post) => post.featured) || all[0] || null;
+  const featuredPost = featuredRaw ? mapPostForDisplay(featuredRaw) : null;
+  const morePosts = all
+    .filter((post) => !featuredPost || post.slug !== featuredPost.slug)
+    .slice(0, 2)
+    .map(mapPostForDisplay);
+  return { featuredPost, morePosts };
+}
+
+function buildHomeSeo({ heroStats, featuredPost }) {
+  const serverCount = heroStats.totalServers.toLocaleString();
+  const metaDescription = featuredPost
+    ? `Search ${serverCount} MCP servers with indexed tools, plus weekly AI insights. Featured: ${featuredPost.title}`
+    : `Search ${serverCount} Model Context Protocol servers with indexed tools. Weekly MCP directory updates and executive AI insights from Influzer.ai.`;
+  const pageTitle = 'MCP Server Directory & AI Insights | Influzer.ai';
+  const metaKeywords = [
+    'MCP server directory',
+    'Model Context Protocol',
+    'MCP tools',
+    'AI agents',
+    'AI workflows',
+    'Claude MCP',
+    'Cursor MCP',
+    'AI insights',
+    'executive AI strategy',
+  ].join(', ');
+  const ogImage = featuredPost?.coverImageAbsolute || `${SITE_BASE_URL}/favicon.svg`;
+  return { pageTitle, metaDescription, metaKeywords, ogImage };
+}
+
+function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts }) {
+  const graph = [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_BASE_URL}/#website`,
+      url: SITE_BASE_URL,
+      name: 'Influzer.ai',
+      description:
+        'MCP server directory and executive insights on AI agents, workflows, and operating systems.',
+      publisher: { '@id': `${SITE_BASE_URL}/#organization` },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${SITE_BASE_URL}/mcp?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_BASE_URL}/#organization`,
+      name: 'Influzer.ai',
+      url: SITE_BASE_URL,
+      logo: `${SITE_BASE_URL}/favicon.svg`,
+      sameAs: ['https://x.com/Influzerai'],
+    },
+    {
+      '@type': 'CollectionPage',
+      '@id': `${SITE_BASE_URL}/#webpage`,
+      url: SITE_BASE_URL,
+      name: 'MCP Server Directory & AI Insights',
+      description: `Browse ${heroStats.totalServers} MCP servers and read weekly AI execution insights.`,
+      isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
+      about: [
+        { '@type': 'Thing', name: 'Model Context Protocol' },
+        { '@type': 'Thing', name: 'AI agent tooling' },
+      ],
+      mainEntity: { '@id': `${SITE_BASE_URL}/#mcp-list` },
+    },
+  ];
+
+  if (topServers.length) {
+    graph.push({
+      '@type': 'ItemList',
+      '@id': `${SITE_BASE_URL}/#mcp-list`,
+      name: 'Top MCP servers this week',
+      numberOfItems: topServers.length,
+      itemListElement: topServers.map((server, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: server.name,
+        url: `${SITE_BASE_URL}/mcp/${server.slug}`,
+      })),
+    });
+  }
+
+  if (featuredPost) {
+    graph.push({
+      '@type': 'BlogPosting',
+      '@id': `${featuredPost.articleUrl}#article`,
+      headline: featuredPost.title,
+      description: featuredPost.excerpt,
+      datePublished: featuredPost.date,
+      dateModified: featuredPost.date,
+      image: featuredPost.coverImageAbsolute,
+      author: {
+        '@type': 'Person',
+        name: 'Rasmus Mencke',
+      },
+      publisher: { '@id': `${SITE_BASE_URL}/#organization` },
+      mainEntityOfPage: featuredPost.articleUrl,
+      url: featuredPost.articleUrl,
+    });
+  }
+
+  const blogItems = [featuredPost, ...morePosts].filter(Boolean);
+  if (blogItems.length) {
+    graph.push({
+      '@type': 'Blog',
+      '@id': `${SITE_BASE_URL}/insights#blog`,
+      name: 'Influzer.ai Insights',
+      url: `${SITE_BASE_URL}/insights`,
+      blogPost: blogItems.map((post) => ({ '@id': `${post.articleUrl}#article` })),
+    });
+  }
+
+  return { '@context': 'https://schema.org', '@graph': graph };
 }
 
 function formatHomeToolCount(totalTools) {
@@ -137,6 +267,14 @@ function formatHomeToolCount(totalTools) {
 function renderHomepage(req, res) {
   const preview = getMcpHomepagePreview(6);
   const heroStats = getMcpHeroStats();
+  const { featuredPost, morePosts } = getHomeBlogContent();
+  const seo = buildHomeSeo({ heroStats, featuredPost });
+  const jsonLd = buildHomeJsonLd({
+    heroStats,
+    topServers: preview.servers,
+    featuredPost,
+    morePosts,
+  });
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -144,7 +282,10 @@ function renderHomepage(req, res) {
     heroStats,
     toolCountDisplay: formatHomeToolCount(heroStats.totalTools),
     topServers: preview.servers,
-    latestPosts: mapPostsForHome(3),
+    featuredPost,
+    morePosts,
+    seo,
+    jsonLd,
   });
 }
 
