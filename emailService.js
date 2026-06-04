@@ -4,40 +4,60 @@
 
 const nodemailer = require('nodemailer');
 
+let transporter;
+let transporterMode = 'unknown';
+
+function normalizeEmailPass(pass) {
+  return String(pass || '').replace(/\s/g, '');
+}
+
+function isEmailConfigured() {
+  if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    return true;
+  }
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    return true;
+  }
+  return false;
+}
+
 // Create transporter (supports multiple email providers)
 function createTransporter() {
   // Gmail example
   if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     console.log('✅ Email service: Gmail configured');
+    transporterMode = 'gmail';
     return nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        pass: normalizeEmailPass(process.env.EMAIL_PASS),
       },
     });
   }
-  
+
   // SMTP configuration
   if (process.env.SMTP_HOST) {
     console.log('✅ Email service: SMTP configured');
+    transporterMode = 'smtp';
     return nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
+      port: parseInt(process.env.SMTP_PORT || '587', 10),
       secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        pass: normalizeEmailPass(process.env.SMTP_PASS),
       },
     });
   }
-  
+
   // Development: console transporter (logs emails instead of sending)
   console.log('⚠️  WARNING: No email configuration found!');
   console.log('⚠️  Email service requires one of:');
   console.log('   - EMAIL_SERVICE=gmail + EMAIL_USER + EMAIL_PASS');
   console.log('   - SMTP_HOST + SMTP_USER + SMTP_PASS');
   console.log('⚠️  Using console transporter (emails will be logged, not sent)');
+  transporterMode = 'console';
   return nodemailer.createTransport({
     streamTransport: true,
     newline: 'unix',
@@ -45,19 +65,31 @@ function createTransporter() {
   });
 }
 
-const transporter = createTransporter();
+function getTransporter() {
+  if (!transporter) {
+    transporter = createTransporter();
+  }
+  return transporter;
+}
 
-// Send verification email
-async function sendVerificationEmail(email, token, name) {
-  const verificationUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/auth/verify-email?token=${token}`;
-  
-  // Use EMAIL_USER as "from" when using Gmail (Gmail requires this)
-  // Otherwise use EMAIL_FROM or default
+function resetTransporter() {
+  transporter = null;
+  transporterMode = 'unknown';
+}
+
+function getFromAddress() {
   let fromAddress = process.env.EMAIL_FROM || 'noreply@logogenerator.com';
   if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER) {
     fromAddress = process.env.EMAIL_USER;
   }
-  
+  return fromAddress;
+}
+
+// Send verification email
+async function sendVerificationEmail(email, token, name) {
+  const verificationUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/auth/verify-email?token=${token}`;
+  const fromAddress = getFromAddress();
+
   const mailOptions = {
     from: fromAddress,
     to: email,
@@ -102,9 +134,9 @@ async function sendVerificationEmail(email, token, name) {
       If you didn't create an account, please ignore this email.
     `,
   };
-  
+
   try {
-    const info = await transporter.sendMail(mailOptions);
+    const info = await getTransporter().sendMail(mailOptions);
     if (info.messageId) {
       console.log('✅ Verification email sent successfully');
       console.log('   From:', fromAddress);
@@ -132,14 +164,8 @@ async function sendVerificationEmail(email, token, name) {
 // Send password reset email
 async function sendPasswordResetEmail(email, token, name) {
   const resetUrl = `${process.env.BASE_URL || 'http://localhost:4000'}/reset-password?token=${token}`;
-  
-  // Use EMAIL_USER as "from" when using Gmail (Gmail requires this)
-  // Otherwise use EMAIL_FROM or default
-  let fromAddress = process.env.EMAIL_FROM || 'noreply@logogenerator.com';
-  if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER) {
-    fromAddress = process.env.EMAIL_USER;
-  }
-  
+  const fromAddress = getFromAddress();
+
   const mailOptions = {
     from: fromAddress,
     to: email,
@@ -186,23 +212,15 @@ async function sendPasswordResetEmail(email, token, name) {
       If you didn't request a password reset, please ignore this email.
     `,
   };
-  
+
   try {
-    const info = await transporter.sendMail(mailOptions);
+    const info = await getTransporter().sendMail(mailOptions);
     console.log('✅ Password reset email sent:', info.messageId || 'logged to console');
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Error sending password reset email:', error);
     throw error;
   }
-}
-
-function getFromAddress() {
-  let fromAddress = process.env.EMAIL_FROM || 'noreply@logogenerator.com';
-  if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER) {
-    fromAddress = process.env.EMAIL_USER;
-  }
-  return fromAddress;
 }
 
 function escapeHtml(value) {
@@ -215,7 +233,9 @@ function escapeHtml(value) {
 
 function formatSubmissionField(label, value) {
   const text = String(value || '').trim();
-  if (!text) return `<tr><td colspan="2" style="padding:8px 0;color:#888;"><em>${escapeHtml(label)}: (not provided)</em></td></tr>`;
+  if (!text) {
+    return `<tr><td colspan="2" style="padding:8px 0;color:#888;"><em>${escapeHtml(label)}: (not provided)</em></td></tr>`;
+  }
   return `<tr>
     <td style="padding:8px 12px 8px 0;vertical-align:top;font-weight:600;color:#444;white-space:nowrap;">${escapeHtml(label)}</td>
     <td style="padding:8px 0;word-break:break-word;">${escapeHtml(text).replace(/\n/g, '<br>')}</td>
@@ -223,6 +243,19 @@ function formatSubmissionField(label, value) {
 }
 
 async function sendMcpSubmissionEmail(submission) {
+  if (!isEmailConfigured()) {
+    throw new Error(
+      'Email is not configured on the server (set EMAIL_SERVICE=gmail, EMAIL_USER, EMAIL_PASS in .env and restart PM2).',
+    );
+  }
+  if (transporterMode === 'console') {
+    resetTransporter();
+    getTransporter();
+  }
+  if (transporterMode === 'console') {
+    throw new Error('Email transport is in console-only mode; no real SMTP/Gmail connection.');
+  }
+
   const to = process.env.MCP_SUBMISSION_EMAIL || 'mencke@gmail.com';
   const fromAddress = getFromAddress();
   const toolsBlock = submission.toolsFormatted || '(none listed)';
@@ -292,18 +325,27 @@ async function sendMcpSubmissionEmail(submission) {
     ].join('\n'),
   };
 
-  const info = await transporter.sendMail(mailOptions);
-  if (info.messageId) {
-    console.log('✅ MCP submission email sent to', to);
-  } else {
-    console.log('⚠️  MCP submission logged (no email transport):', submission.serverName);
+  try {
+    const info = await getTransporter().sendMail(mailOptions);
+    console.log('✅ MCP submission email sent');
+    console.log('   Mode:', transporterMode);
+    console.log('   From:', fromAddress);
+    console.log('   To:', to);
+    console.log('   Subject:', mailOptions.subject);
+    console.log('   Message ID:', info.messageId || '(none)');
+    return { success: true, messageId: info.messageId, to };
+  } catch (error) {
+    console.error('❌ MCP submission email failed:', error.message);
+    if (error.response) console.error('   SMTP response:', error.response);
+    throw error;
   }
-  return { success: true, messageId: info.messageId };
 }
 
 module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendMcpSubmissionEmail,
+  isEmailConfigured,
+  getTransporter,
+  resetTransporter,
 };
-

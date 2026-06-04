@@ -2,10 +2,12 @@
 //  Logo Generator Server - Main Entry Point
 // ================================
 
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 const express = require('express');
 const https = require('https');
 const http = require('http');
-const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 
@@ -21,8 +23,7 @@ const { initializeAnalyticsService } = require('./services/analyticsService');
 const { initializeBlogFeedbackService } = require('./services/blogFeedbackService');
 const { initializeNewsletterService } = require('./services/newsletterService');
 const { initializeMcpSubmissionService } = require('./services/mcpSubmissionService');
-
-require('dotenv').config();
+const { isEmailConfigured, getTransporter } = require('./emailService');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -47,6 +48,12 @@ const PORT = process.env.PORT || 4000;
 
     // 3d. MCP submission API (page route registered in staticService before /mcp/:slug)
     initializeMcpSubmissionService(app);
+    if (isEmailConfigured()) {
+      getTransporter();
+      console.log('✅ MCP submission notifications: email enabled');
+    } else {
+      console.warn('⚠️  MCP submission notifications: email NOT configured — submissions save to disk only');
+    }
 
     // 4. Logo generation service
     initializeLogoService(app);

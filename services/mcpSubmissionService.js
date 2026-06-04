@@ -214,25 +214,41 @@ function registerMcpSubmissionRoutes(app) {
       };
 
       const savedPath = persistSubmission(payload);
-      await sendMcpSubmissionEmail(payload);
+      const reference = path.basename(savedPath, '.json');
+
+      try {
+        await sendMcpSubmissionEmail(payload);
+      } catch (emailError) {
+        console.error('MCP submission saved but email failed:', emailError.message);
+        return res.status(500).json({
+          error:
+            'Your submission was saved but the notification email could not be sent. We will still review it — reference: ' +
+            reference,
+          reference,
+          emailConfigured: false,
+        });
+      }
 
       return res.json({
         success: true,
         message: 'Thanks! Your submission was received and will be reviewed shortly.',
-        reference: path.basename(savedPath, '.json'),
+        reference,
       });
     } catch (error) {
       console.error('MCP submission error:', error);
       return res.status(500).json({
-        error: 'Could not send your submission. Please try again later or email mencke@gmail.com directly.',
+        error: 'Could not save your submission. Please try again or email mencke@gmail.com directly.',
       });
     }
   });
 }
 
 function initializeMcpSubmissionService(_app) {
-  // Routes are registered in staticService before /mcp/:slug
-  console.log('MCP submission service ready');
+  const { isEmailConfigured } = require('../emailService');
+  console.log(
+    'MCP submission service ready —',
+    isEmailConfigured() ? 'email notifications on' : 'email OFF (check .env)',
+  );
 }
 
 module.exports = {
