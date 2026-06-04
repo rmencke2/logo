@@ -1,0 +1,34 @@
+<section class="home-newsletter-wrap" aria-labelledby="homeNewsletterTitle">
+  <div class="home-newsletter-card" id="newsletter">
+    <h2 class="home-newsletter-card__title" id="homeNewsletterTitle">Get the weekly MCP digest</h2>
+    <p class="home-newsletter-card__desc">
+      New servers, agent workflows, and AI insights — every Thursday.
+    </p>
+    <form class="home-newsletter-card__form" id="homeNewsletterForm" novalidate>
+      <label class="visually-hidden" for="homeNewsletterEmail">Email address</label>
+      <input
+        id="homeNewsletterEmail"
+        class="home-newsletter-card__input"
+        type="email"
+        name="email"
+        placeholder="you@company.com"
+        maxlength="254"
+        autocomplete="email"
+        required
+      />
+      <button type="submit" class="home-newsletter-card__submit" id="homeNewsletterSubmit">
+        Subscribe free
+      </button>
+      <input
+        id="homeNewsletterWebsite"
+        class="home-newsletter-card__hp"
+        type="text"
+        name="website"
+        autocomplete="off"
+        tabindex="-1"
+        aria-hidden="true"
+      />
+      <p class="home-newsletter-card__status" id="homeNewsletterStatus" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>

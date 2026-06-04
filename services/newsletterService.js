@@ -104,7 +104,7 @@ async function initializeNewsletterService(app) {
   const db = await getDatabase();
   await initializeNewsletterTables(db);
 
-  app.post('/api/newsletter/subscribe', async (req, res) => {
+  const handleSubscribe = async (req, res) => {
     try {
       const email = sanitizeEmail(req.body?.email || '');
       const source = String(req.body?.source || 'site').slice(0, 120);
@@ -132,11 +132,14 @@ async function initializeNewsletterService(app) {
         throw error;
       }
 
-      return res.json({ success: true, message: 'Thanks! You are subscribed.' });
+      return res.json({ success: true, message: "You're in! First issue arrives Thursday." });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  });
+  };
+
+  app.post('/api/newsletter/subscribe', handleSubscribe);
+  app.post('/api/subscribe', handleSubscribe);
 
   app.get('/admin/api/newsletter/subscribers', requireAuth, requireAdmin, async (req, res) => {
     try {

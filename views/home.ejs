@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MCP Server Directory — Influzer.ai</title>
+    <meta
+      name="description"
+      content="Find the right MCP server for your AI stack. Search 1,500+ Model Context Protocol servers with indexed tools, updated weekly."
+    />
+    <link rel="canonical" href="https://www.influzer.ai/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.influzer.ai/" />
+    <meta property="og:title" content="MCP Server Directory — Influzer.ai" />
+    <meta
+      property="og:description"
+      content="The most complete directory of Model Context Protocol servers — every tool indexed and searchable."
+    />
+    <meta property="og:image" content="https://www.influzer.ai/favicon.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MCP Server Directory — Influzer.ai" />
+    <meta
+      name="twitter:description"
+      content="Find MCP servers for your AI stack. Searchable directory with indexed tools."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8WMQQWLT7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-Q8WMQQWLT7');
+    </script>
+  </head>
+  <body class="home-page">
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <%- include('partials/site-header', { activeNav: 'home' }) %>
+
+    <main id="main">
+      <section class="home-hero" aria-labelledby="homeHeroTitle">
+        <p class="home-hero__eyebrow">MCP Server Directory</p>
+        <h1 class="home-hero__title" id="homeHeroTitle">Find the right MCP server for your AI stack</h1>
+        <p class="home-hero__subtext">
+          The most complete directory of Model Context Protocol servers — every tool indexed and searchable. Updated weekly.
+        </p>
+        <div class="home-hero__stats" aria-label="Directory statistics">
+          <div class="home-stat">
+            <span class="home-stat__value"><%= heroStats.totalServers.toLocaleString() %></span>
+            <span class="home-stat__label">servers</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__value"><%= toolCountDisplay %></span>
+            <span class="home-stat__label">tools</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__value"><%= heroStats.categoryCount %></span>
+            <span class="home-stat__label">categories</span>
+          </div>
+        </div>
+        <form class="home-hero__search" action="/mcp" method="get" role="search">
+          <label class="visually-hidden" for="homeMcpSearch">Search MCP servers</label>
+          <input id="homeMcpSearch" type="search" name="q" placeholder="Search servers, tools, categories…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+      </section>
+
+      <%- include('partials/home-newsletter-card') %>
+
+      <section class="home-section" aria-labelledby="homeMcpServersTitle">
+        <div class="home-section__head">
+          <h2 class="home-section__title" id="homeMcpServersTitle">Top servers this week</h2>
+          <a class="home-section__link" href="/mcp">Browse all →</a>
+        </div>
+        <div class="home-mcp-grid mcp-grid">
+          <% topServers.forEach(function(server) { %>
+            <%- include('partials/mcp-server-card', { server: server, toolDisplayLimit: 3 }) %>
+          <% }); %>
+        </div>
+      </section>
+
+      <section class="home-section home-section--last" aria-labelledby="homeInsightsTitle">
+        <div class="home-section__head">
+          <h2 class="home-section__title" id="homeInsightsTitle">From the blog</h2>
+          <a class="home-section__link" href="/insights">View all →</a>
+        </div>
+        <div class="home-insights-list">
+          <% latestPosts.forEach(function(post) { %>
+            <a class="home-insight-row" href="/insights/<%= post.slug %>">
+              <% if (post.coverImage) { %>
+                <img class="home-insight-thumb" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" width="120" height="72" />
+              <% } else { %>
+                <div class="home-insight-thumb home-insight-thumb--placeholder" aria-hidden="true">Insights</div>
+              <% } %>
+              <div>
+                <% if (post.tags && post.tags.length) { %>
+                  <div class="home-insight-tags">
+                    <% post.tags.slice(0, 3).forEach(function(tag) { %>
+                      <span class="home-insight-tag"><%= tag %></span>
+                    <% }); %>
+                  </div>
+                <% } %>
+                <h3 class="home-insight-title"><%= post.title %></h3>
+                <p class="home-insight-meta"><%= post.dateDisplay %></p>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+      </section>
+    </main>
+
+    <footer class="home-site-footer">
+      <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a></span>
+      <label class="home-site-footer__lang">
+        <span class="visually-hidden">Language</span>
+        <select id="languageSelector" aria-label="Language">
+          <option value="en">English</option>
+          <option value="da">Dansk</option>
+          <option value="sv">Svenska</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </footer>
+
+    <script src="/js/site-header.js" defer></script>
+    <script src="/js/home-newsletter.js" defer></script>
+    <script src="/js/mcp-cards.js" defer></script>
+  </body>
+</html>

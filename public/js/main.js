@@ -1082,8 +1082,6 @@
               console.error('❌ window.openSignupModal is not a function!');
             }
           });
-        } else {
-          console.error('❌ Signup button not found!');
         }
         
         if (heroSignupBtn) {
@@ -1293,8 +1291,8 @@
         const logoGenerator = document.getElementById('logoGenerator');
 
         if (user) {
-          authButtons.style.display = 'none';
-          userInfo.style.display = 'flex';
+          if (authButtons) authButtons.style.display = 'none';
+          if (userInfo) userInfo.style.display = 'flex';
           document.getElementById('userName').textContent = user.name || user.email;
           document.getElementById('userAvatar').textContent = (user.name || user.email || 'U')[0].toUpperCase();
           if (user.avatarUrl) {
@@ -1320,8 +1318,8 @@
             window.i18n.updateTranslations();
           }, 100);
         } else {
-          authButtons.style.display = 'flex';
-          userInfo.style.display = 'none';
+          if (authButtons) authButtons.style.display = 'flex';
+          if (userInfo) userInfo.style.display = 'none';
           
           // Show homepage, hide logo generator
           if (homepage) {

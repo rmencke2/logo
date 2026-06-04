@@ -107,6 +107,47 @@ function stripHtml(html) {
     .trim();
 }
 
+function estimateReadMinutes(contentHtml) {
+  const words = stripHtml(contentHtml).split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+function formatPostDate(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function mapPostsForHome(limit = 3) {
+  return getAllBlogPosts().slice(0, limit).map((post) => ({
+    ...post,
+    dateDisplay: formatPostDate(post.date),
+    readMinutes: estimateReadMinutes(post.contentHtml),
+  }));
+}
+
+function formatHomeToolCount(totalTools) {
+  if (totalTools >= 1000) {
+    const k = totalTools / 1000;
+    return k >= 100 ? `${Math.round(k)}k` : `${k.toFixed(1).replace(/\.0$/, '')}k`;
+  }
+  return totalTools.toLocaleString();
+}
+
+function renderHomepage(req, res) {
+  const preview = getMcpHomepagePreview(6);
+  const heroStats = getMcpHeroStats();
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.render('home', {
+    heroStats,
+    toolCountDisplay: formatHomeToolCount(heroStats.totalTools),
+    topServers: preview.servers,
+    latestPosts: mapPostsForHome(3),
+  });
+}
+
 /**
  * Initialize static file serving
  * @param {express.Application} app - Express application instance
@@ -122,7 +163,26 @@ function initializeStaticService(app) {
   });
 
   app.get('/favicon-generator', (req, res) => {
-    res.redirect(302, '/#favicon');
+    res.redirect(302, '/logo-generator#favicon');
+  });
+
+  app.get('/', (req, res) => {
+    if (req.query.signup === 'true') {
+      const params = new URLSearchParams(req.query);
+      return res.redirect(302, `/logo-generator?${params.toString()}`);
+    }
+    renderHomepage(req, res);
+  });
+
+  app.get('/preview/newsletter-bar', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('preview-newsletter-card');
+  });
+
+  app.get('/logo-generator', (req, res) => {
+    const indexPath = path.join(__dirname, '..', 'public', 'index.html');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile(indexPath);
   });
 
   // Explicitly serve app.js FIRST to ensure it's accessible
@@ -202,19 +262,6 @@ function initializeStaticService(app) {
       lastModified: true,
     }),
   );
-
-  // Serve index.html
-  app.get('/', (req, res) => {
-    console.log('🌐 Serving index.html');
-    const indexPath = path.join(__dirname, '..', 'public', 'index.html');
-    
-    // Add cache-busting headers to prevent stale homepage (always, not just in dev)
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    
-    res.sendFile(indexPath);
-  });
 
   // Latest insight summary for homepage hero freshness
   app.get('/api/insights/latest', (req, res) => {

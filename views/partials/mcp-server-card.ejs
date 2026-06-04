@@ -28,12 +28,13 @@
     </div>
     <p class="mcp-card-desc"><%= server.description %></p>
     <div class="mcp-tools">
+      <% const toolLimit = typeof toolDisplayLimit !== 'undefined' ? toolDisplayLimit : 4; %>
       <% if (server.tools && server.tools.length) { %>
-        <% server.tools.slice(0, 4).forEach(function(tool) { %>
+        <% server.tools.slice(0, toolLimit).forEach(function(tool) { %>
           <span class="mcp-tool-pill" title="<%= tool.description || tool.name %>"><%= tool.name %></span>
         <% }); %>
-        <% if (server.tools.length > 4) { %>
-          <span class="mcp-tool-pill muted">+<%= server.tools.length - 4 %> more</span>
+        <% if (server.tools.length > toolLimit) { %>
+          <span class="mcp-tool-pill muted">+<%= server.tools.length - toolLimit %> more</span>
         <% } %>
       <% } else { %>
         <span class="mcp-tool-pill muted">Tools on detail page</span>
