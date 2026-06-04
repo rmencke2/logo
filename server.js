@@ -45,7 +45,7 @@ const PORT = process.env.PORT || 4000;
     // 3c. Newsletter signup service
     await initializeNewsletterService(app);
 
-    // 3d. MCP server submission form (email to admin)
+    // 3d. MCP submission API (page route registered in staticService before /mcp/:slug)
     initializeMcpSubmissionService(app);
 
     // 4. Logo generation service

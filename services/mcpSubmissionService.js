@@ -166,17 +166,26 @@ function validateSubmission(body) {
   };
 }
 
-async function initializeMcpSubmissionService(app) {
-  app.get('/mcp/submit', (req, res) => {
-    res.render('mcp-submit', {
-      pageTitle: 'Submit an MCP Server',
-      metaDescription:
-        'Suggest a Model Context Protocol server for the Influzer.ai MCP directory. We review submissions manually.',
-      categories: [...getMcpCategories(), 'Other'],
-      transports: TRANSPORTS,
-      canonicalUrl: 'https://www.influzer.ai/mcp/submit',
-    });
+/** Reserved MCP path segments — must not be handled as server slugs */
+const RESERVED_MCP_PATHS = new Set(['submit', 'all']);
+
+function isReservedMcpPath(slug) {
+  return RESERVED_MCP_PATHS.has(String(slug || '').toLowerCase());
+}
+
+function renderMcpSubmitPage(req, res) {
+  res.render('mcp-submit', {
+    pageTitle: 'Submit an MCP Server',
+    metaDescription:
+      'Suggest a Model Context Protocol server for the Influzer.ai MCP directory. We review submissions manually.',
+    categories: [...getMcpCategories(), 'Other'],
+    transports: TRANSPORTS,
+    canonicalUrl: 'https://www.influzer.ai/mcp/submit',
   });
+}
+
+function registerMcpSubmissionRoutes(app) {
+  app.get('/mcp/submit', renderMcpSubmitPage);
 
   app.post('/api/mcp/submit', async (req, res) => {
     try {
@@ -219,10 +228,15 @@ async function initializeMcpSubmissionService(app) {
       });
     }
   });
+}
 
-  console.log('MCP submission service initialized');
+function initializeMcpSubmissionService(_app) {
+  // Routes are registered in staticService before /mcp/:slug
+  console.log('MCP submission service ready');
 }
 
 module.exports = {
   initializeMcpSubmissionService,
+  registerMcpSubmissionRoutes,
+  isReservedMcpPath,
 };

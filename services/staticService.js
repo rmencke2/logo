@@ -22,6 +22,7 @@ const {
   getMcpHeroStats,
   isInTop100,
 } = require('./mcpDirectoryService');
+const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -580,8 +581,14 @@ ${itemsXml}
     });
   });
 
+  // Before /mcp/:slug — otherwise "submit" is treated as a server slug
+  registerMcpSubmissionRoutes(app);
+
   app.get('/mcp/:slug', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    if (isReservedMcpPath(req.params.slug)) {
+      return res.status(404).render('404', { title: 'Page Not Found' });
+    }
     const server = findMcpServerBySlug(req.params.slug);
     if (!server) {
       return res.status(404).render('mcp-server', {
