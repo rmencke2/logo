@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="stylesheet" href="/css/promo-strip.css" />
     <style>
       /* Scoped overrides — global button/input rules are form-sized and full-width */
       .mcp-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
@@ -274,6 +275,8 @@
         <a href="/mcp/submit">Submit an MCP server</a>
         — we review every suggestion manually.
       </p>
+
+      <%- include('partials/promo-strip', { promo: promo }) %>
 
       <%- include('partials/mcp-tier-banner') %>
 

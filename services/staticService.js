@@ -23,6 +23,7 @@ const {
   isInTop100,
 } = require('./mcpDirectoryService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
+const { getSitePromo } = require('../data/mcp-affiliate-links');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -287,6 +288,7 @@ function renderHomepage(req, res) {
     morePosts,
     seo,
     jsonLd,
+    promo: getSitePromo(),
   });
 }
 
@@ -551,6 +553,7 @@ ${itemsXml}
       sisterHref: '/mcp',
       sisterLabel: 'Top 100 MCP servers',
       inlineCatalogJson: null,
+      promo: getSitePromo(),
     });
   });
 
@@ -578,6 +581,7 @@ ${itemsXml}
       sisterLabel: `Browse all ${totals.total.toLocaleString()} servers`,
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
+      promo: getSitePromo(),
     });
   });
 

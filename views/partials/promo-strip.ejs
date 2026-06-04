@@ -1,0 +1,16 @@
+<%#
+  Subtle site-wide promo strip (homepage, MCP directory).
+  Expects promo: { provider, blurb, cta, url, directoryHref }
+%>
+<% if (typeof promo !== 'undefined' && promo && promo.url) { %>
+  <aside class="promo-strip" aria-label="Recommended tool">
+    <p class="promo-strip__text">
+      <span class="promo-strip__provider"><%= promo.provider %></span>
+      <%= promo.blurb %>
+      <a class="promo-strip__link" href="<%= promo.url %>" target="_blank" rel="noopener noreferrer sponsored"><%= promo.cta %> →</a>
+      <span class="promo-strip__dot" aria-hidden="true">·</span>
+      <a class="promo-strip__link promo-strip__link--muted" href="<%= promo.directoryHref %>">In the directory</a>
+    </p>
+    <span class="promo-strip__fine">Affiliate</span>
+  </aside>
+<% } %>

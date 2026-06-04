@@ -3,7 +3,7 @@
  */
 
 const { SLUG_LOGO_DOMAINS, GITHUB_OWNER_DOMAINS } = require('../data/logo-domains');
-const MCP_AFFILIATE_LINKS = require('../data/mcp-affiliate-links');
+const { MCP_AFFILIATE_LINKS } = require('../data/mcp-affiliate-links');
 
 const CLEARBIT_LOGO_BASE = 'https://logo.clearbit.com';
 

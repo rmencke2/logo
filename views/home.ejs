@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
     <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/promo-strip.css" />
     <script type="application/ld+json">
       <%- JSON.stringify(jsonLd) %>
     </script>
@@ -127,6 +128,7 @@
             <%- include('partials/mcp-server-card', { server: server, toolDisplayLimit: 3 }) %>
           <% }); %>
         </div>
+        <%- include('partials/promo-strip', { promo: promo }) %>
       </section>
 
       <% if (morePosts && morePosts.length) { %>
