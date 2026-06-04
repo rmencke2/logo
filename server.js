@@ -20,6 +20,7 @@ const { initializeAdminService } = require('./services/adminService');
 const { initializeAnalyticsService } = require('./services/analyticsService');
 const { initializeBlogFeedbackService } = require('./services/blogFeedbackService');
 const { initializeNewsletterService } = require('./services/newsletterService');
+const { initializeMcpSubmissionService } = require('./services/mcpSubmissionService');
 
 require('dotenv').config();
 
@@ -43,7 +44,10 @@ const PORT = process.env.PORT || 4000;
 
     // 3c. Newsletter signup service
     await initializeNewsletterService(app);
-    
+
+    // 3d. MCP server submission form (email to admin)
+    initializeMcpSubmissionService(app);
+
     // 4. Logo generation service
     initializeLogoService(app);
 

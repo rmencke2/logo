@@ -197,8 +197,113 @@ async function sendPasswordResetEmail(email, token, name) {
   }
 }
 
+function getFromAddress() {
+  let fromAddress = process.env.EMAIL_FROM || 'noreply@logogenerator.com';
+  if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER) {
+    fromAddress = process.env.EMAIL_USER;
+  }
+  return fromAddress;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatSubmissionField(label, value) {
+  const text = String(value || '').trim();
+  if (!text) return `<tr><td colspan="2" style="padding:8px 0;color:#888;"><em>${escapeHtml(label)}: (not provided)</em></td></tr>`;
+  return `<tr>
+    <td style="padding:8px 12px 8px 0;vertical-align:top;font-weight:600;color:#444;white-space:nowrap;">${escapeHtml(label)}</td>
+    <td style="padding:8px 0;word-break:break-word;">${escapeHtml(text).replace(/\n/g, '<br>')}</td>
+  </tr>`;
+}
+
+async function sendMcpSubmissionEmail(submission) {
+  const to = process.env.MCP_SUBMISSION_EMAIL || 'mencke@gmail.com';
+  const fromAddress = getFromAddress();
+  const toolsBlock = submission.toolsFormatted || '(none listed)';
+  const mailOptions = {
+    from: fromAddress,
+    to,
+    replyTo: submission.submitterEmail || undefined,
+    subject: `[MCP Submit] ${submission.serverName}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+        <body style="font-family:Arial,sans-serif;line-height:1.5;color:#333;">
+          <div style="max-width:720px;margin:0 auto;padding:20px;">
+            <h2 style="margin:0 0 8px;">New MCP server submission</h2>
+            <p style="margin:0 0 20px;color:#666;">Submitted via influzer.ai — review and add manually to the catalog.</p>
+            <table style="width:100%;border-collapse:collapse;font-size:14px;">
+              ${formatSubmissionField('Server name', submission.serverName)}
+              ${formatSubmissionField('Suggested slug', submission.suggestedSlug)}
+              ${formatSubmissionField('Category', submission.category)}
+              ${formatSubmissionField('Transport', submission.transport)}
+              ${formatSubmissionField('Official server', submission.official ? 'Yes' : 'No')}
+              ${formatSubmissionField('GitHub URL', submission.githubUrl)}
+              ${formatSubmissionField('Docs URL', submission.docsUrl)}
+              ${formatSubmissionField('Primary / install URL', submission.primaryUrl)}
+              ${formatSubmissionField('Stars (estimate)', submission.stars)}
+              ${formatSubmissionField('Submitter name', submission.submitterName)}
+              ${formatSubmissionField('Submitter email', submission.submitterEmail)}
+              ${formatSubmissionField('Description', submission.description)}
+              ${formatSubmissionField('Setup instructions', submission.setupInstructions)}
+              ${formatSubmissionField('Additional notes', submission.additionalNotes)}
+            </table>
+            <h3 style="margin:24px 0 8px;font-size:15px;">Tools</h3>
+            <pre style="background:#f5f5f5;padding:12px;border-radius:8px;overflow:auto;font-size:13px;white-space:pre-wrap;">${escapeHtml(toolsBlock)}</pre>
+            <p style="margin-top:24px;font-size:12px;color:#888;">IP: ${escapeHtml(submission.ip)} · ${escapeHtml(submission.submittedAt)}</p>
+          </div>
+        </body>
+      </html>
+    `,
+    text: [
+      'New MCP server submission',
+      '',
+      `Server name: ${submission.serverName}`,
+      `Suggested slug: ${submission.suggestedSlug || '(none)'}`,
+      `Category: ${submission.category}`,
+      `Transport: ${submission.transport}`,
+      `Official: ${submission.official ? 'Yes' : 'No'}`,
+      `GitHub: ${submission.githubUrl || '(none)'}`,
+      `Docs: ${submission.docsUrl || '(none)'}`,
+      `Primary URL: ${submission.primaryUrl || '(none)'}`,
+      `Stars: ${submission.stars || '(none)'}`,
+      `Submitter: ${submission.submitterName || '(none)'} <${submission.submitterEmail}>`,
+      '',
+      'Description:',
+      submission.description,
+      '',
+      'Setup:',
+      submission.setupInstructions || '(none)',
+      '',
+      'Tools:',
+      toolsBlock,
+      '',
+      'Notes:',
+      submission.additionalNotes || '(none)',
+      '',
+      `IP: ${submission.ip}`,
+      `At: ${submission.submittedAt}`,
+    ].join('\n'),
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  if (info.messageId) {
+    console.log('✅ MCP submission email sent to', to);
+  } else {
+    console.log('⚠️  MCP submission logged (no email transport):', submission.serverName);
+  }
+  return { success: true, messageId: info.messageId };
+}
+
 module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
+  sendMcpSubmissionEmail,
 };
 

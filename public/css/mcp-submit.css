@@ -1,0 +1,199 @@
+.mcp-submit-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.mcp-submit-header {
+  margin-bottom: 28px;
+}
+
+.mcp-submit-kicker {
+  margin: 0 0 8px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6366f1;
+}
+
+.mcp-submit-header h1 {
+  margin: 0 0 12px;
+}
+
+.mcp-submit-lead {
+  margin: 0;
+  max-width: 640px;
+  color: var(--color-charcoal-light);
+  line-height: 1.65;
+}
+
+.mcp-submit-back {
+  margin: 16px 0 0;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+}
+
+.mcp-submit-back a {
+  color: #6366f1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mcp-submit-back a:hover {
+  text-decoration: underline;
+}
+
+.mcp-submit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mcp-submit-fieldset {
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-paper);
+}
+
+.mcp-submit-fieldset legend {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0 6px;
+  color: var(--color-charcoal);
+}
+
+.mcp-submit-hint {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.mcp-submit-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mcp-submit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mcp-submit-field--wide {
+  grid-column: 1 / -1;
+}
+
+.mcp-submit-field span {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-charcoal);
+}
+
+.mcp-submit-field span em {
+  font-style: normal;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.mcp-submit-field input,
+.mcp-submit-field select,
+.mcp-submit-field textarea {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+}
+
+.mcp-submit-field textarea {
+  font-family: var(--font-body);
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.mcp-submit-field input:focus,
+.mcp-submit-field select:focus,
+.mcp-submit-field textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: #fff;
+}
+
+.mcp-submit-field--check {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+
+.mcp-submit-field--check input {
+  width: auto;
+}
+
+.mcp-submit-hp {
+  display: none !important;
+}
+
+.mcp-submit-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.mcp-submit-btn {
+  margin: 0;
+  padding: 12px 24px;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #fff;
+  background: #6366f1;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mcp-submit-btn:hover {
+  background: #4f46e5;
+}
+
+.mcp-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.mcp-submit-status {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  min-height: 1.2em;
+  color: var(--color-muted);
+}
+
+.mcp-submit-status.is-error {
+  color: #b3261e;
+}
+
+.mcp-submit-status.is-success {
+  color: #047857;
+}
+
+@media (max-width: 640px) {
+  .mcp-submit-grid {
+    grid-template-columns: 1fr;
+  }
+}

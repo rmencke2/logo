@@ -195,6 +195,18 @@
       }
       .mcp-tier-tab.active { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
       .mcp-tier-meta { font-family: var(--font-ui); font-size: .85rem; color: var(--color-charcoal-light); flex: 1; min-width: 200px; }
+      .mcp-submit-cta {
+        margin: 0 0 20px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        font-family: var(--font-ui);
+        font-size: 0.9rem;
+        color: #4338ca;
+      }
+      .mcp-submit-cta a { color: #6366f1; font-weight: 600; text-decoration: none; }
+      .mcp-submit-cta a:hover { text-decoration: underline; }
       .mcp-tier-meta a { color: var(--color-terracotta); font-weight: 600; }
       .mcp-load-more {
         display: block;
@@ -256,6 +268,12 @@
           <p class="mcp-lead"><%= metaDescription %></p>
         <% } %>
       </header>
+
+      <p class="mcp-submit-cta">
+        Know a server we should list?
+        <a href="/mcp/submit">Submit an MCP server</a>
+        — we review every suggestion manually.
+      </p>
 
       <%- include('partials/mcp-tier-banner') %>
 

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-submit.css" />
+  </head>
+  <body>
+    <%- include('partials/site-header', { activeNav: 'mcp' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="mcp-submit-page">
+      <header class="mcp-submit-header">
+        <p class="mcp-submit-kicker">MCP Directory</p>
+        <h1><%= pageTitle %></h1>
+        <p class="mcp-submit-lead">
+          Missing a server? Fill in everything you know below. We review each submission manually and email you if we need more detail.
+        </p>
+        <p class="mcp-submit-back"><a href="/mcp">← Back to directory</a></p>
+      </header>
+
+      <form id="mcpSubmitForm" class="mcp-submit-form" novalidate>
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Your contact</legend>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field">
+              <span>Your email <em>(required)</em></span>
+              <input type="email" name="submitter_email" required maxlength="254" autocomplete="email" />
+            </label>
+            <label class="mcp-submit-field">
+              <span>Your name</span>
+              <input type="text" name="submitter_name" maxlength="120" autocomplete="name" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Server basics</legend>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Server name <em>(required)</em></span>
+              <input type="text" name="server_name" required maxlength="200" placeholder="e.g. Slack" />
+            </label>
+            <label class="mcp-submit-field">
+              <span>Suggested URL slug</span>
+              <input type="text" name="suggested_slug" maxlength="120" placeholder="e.g. slack" />
+            </label>
+            <label class="mcp-submit-field">
+              <span>Category <em>(required)</em></span>
+              <select name="category" required>
+                <option value="">Select category</option>
+                <% categories.forEach(function(cat) { %>
+                  <option value="<%= cat %>"><%= cat %></option>
+                <% }); %>
+              </select>
+            </label>
+            <label class="mcp-submit-field">
+              <span>Transport <em>(required)</em></span>
+              <select name="transport" required>
+                <option value="">Select transport</option>
+                <% transports.forEach(function(t) { %>
+                  <option value="<%= t %>"><%= t %></option>
+                <% }); %>
+              </select>
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--check">
+              <input type="checkbox" name="official" value="1" />
+              <span>Official / maintained by the vendor</span>
+            </label>
+            <label class="mcp-submit-field">
+              <span>GitHub stars (estimate)</span>
+              <input type="number" name="stars" min="0" step="1" placeholder="e.g. 1200" />
+            </label>
+          </div>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>Short description <em>(required)</em></span>
+            <textarea name="description" required rows="4" maxlength="8000" placeholder="What does this MCP server do? Who is it for?"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Links</legend>
+          <p class="mcp-submit-hint">Provide at least one link so we can verify the server.</p>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>GitHub repository URL</span>
+              <input type="url" name="github_url" maxlength="500" placeholder="https://github.com/org/repo" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Documentation URL</span>
+              <input type="url" name="docs_url" maxlength="500" placeholder="https://docs.example.com/mcp" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Primary / install URL</span>
+              <input type="url" name="primary_url" maxlength="500" placeholder="npm package, Smithery, or connection endpoint docs" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Tools &amp; setup</legend>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>Tools <em>(one per line)</em></span>
+            <textarea name="tools" rows="8" maxlength="20000" placeholder="read_file — Read file contents&#10;write_file — Create or overwrite a file&#10;list_directory — List files in a folder"></textarea>
+          </label>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>Setup instructions</span>
+            <textarea name="setup_instructions" rows="5" maxlength="8000" placeholder="How to install in Cursor, Claude Desktop, etc. Include config snippet if possible."></textarea>
+          </label>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>Anything else we should know?</span>
+            <textarea name="additional_notes" rows="3" maxlength="8000"></textarea>
+          </label>
+        </fieldset>
+
+        <input type="text" name="website" class="mcp-submit-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="mcp-submit-actions">
+          <button type="submit" class="mcp-submit-btn" id="mcpSubmitBtn">Send submission</button>
+          <p class="mcp-submit-status" id="mcpSubmitStatus" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </main>
+
+    <script src="/js/mcp-submit.js" defer></script>
+  </body>
+</html>

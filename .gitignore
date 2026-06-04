@@ -46,6 +46,9 @@ Dockerfile*
 *.sqlite
 *.sqlite3
 
+# MCP submission form payloads (may contain emails)
+data/mcp-submissions/*.json
+
 # Expo (mobile subproject)
 .expo/
 dist/
