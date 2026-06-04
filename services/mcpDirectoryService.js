@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { pickTop100, TOP100_SIZE } = require('../scripts/utils/normalize');
 const { attachSetupInfo } = require('../scripts/utils/setup-info');
+const { attachBranding } = require('../utils/mcpBranding');
 
 const GENERATED_PATH = path.join(__dirname, '..', 'data', 'servers-generated.json');
 const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
@@ -244,14 +245,24 @@ function getMcpCategories() {
 
 function findMcpServerBySlug(slug) {
   const server = getAllMcpServers().find((s) => s.slug === slug || s.id === slug);
-  return server || null;
+  return server ? attachBranding(server) : null;
 }
 
-function withEmoji(servers) {
-  return servers.map((s) => ({
+function withDisplay(servers) {
+  return servers.map((s) => attachBranding({
     ...s,
     iconEmoji: getMcpIconEmoji(s.icon),
   }));
+}
+
+function getMcpHeroStats() {
+  const all = getAllMcpServers();
+  const totalTools = all.reduce((sum, s) => sum + (s.tools?.length || 0), 0);
+  return {
+    totalServers: all.length,
+    totalTools,
+    categoryCount: getMcpCategories().length,
+  };
 }
 
 /**
@@ -276,7 +287,7 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
     scope,
     tools_only: toolsOnly,
     categories: catalog.categories,
-    servers: withEmoji(servers),
+    servers: withDisplay(servers),
     total: servers.length,
     total_catalog: catalog.allServers.length,
     total_with_tools: withToolsCount,
@@ -292,7 +303,7 @@ function getMcpHomepagePreview(limit = 6) {
   const totals = getMcpCatalogTotals();
   const lastUpdated = getMcpLastUpdated();
   return {
-    servers: withEmoji(servers),
+    servers: withDisplay(servers),
     total_top100: totals.top100,
     total_catalog: totals.total,
     last_updated: lastUpdated.display,
@@ -328,6 +339,7 @@ module.exports = {
   getMcpLastUpdated,
   getMcpCatalogPayload,
   getMcpHomepagePreview,
+  getMcpHeroStats,
   isInTop100,
   clearMcpCache,
 };

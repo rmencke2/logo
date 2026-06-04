@@ -11,6 +11,7 @@
     <meta property="og:url" content="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/mcp-directory.css" />
     <% if (server) { %>
       <script type="application/ld+json">
         <%- JSON.stringify({
@@ -28,26 +29,15 @@
       .mcp-detail-page button { width: auto; margin-top: 0; }
       .mcp-back { font-family: var(--font-ui); margin-bottom: 24px; display: inline-block; color: var(--color-charcoal); text-decoration: none; }
       .mcp-back:hover { color: var(--color-terracotta); }
-      .mcp-detail-head { display: flex; gap: 16px; margin-bottom: 20px; }
-      .mcp-detail-icon {
-        width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; background: var(--color-cream-dark); flex-shrink: 0;
-      }
-      .mcp-detail-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .mcp-detail-head { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+      .mcp-detail-title { flex: 1; min-width: 0; }
+      .mcp-detail-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
       .mcp-detail-badge {
         font-family: var(--font-ui); font-size: .72rem; padding: 4px 10px; border-radius: 999px;
         background: var(--color-cream-dark); color: var(--color-charcoal-light);
       }
       .mcp-detail-badge-official { background: var(--color-terracotta-light); font-weight: 600; }
       .mcp-detail-desc { font-size: 1.05rem; line-height: 1.7; color: var(--color-charcoal-light); margin-bottom: 24px; }
-      .mcp-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-      .mcp-links a {
-        font-family: var(--font-ui); font-size: .88rem; padding: 8px 14px; border-radius: 10px;
-        border: 1px solid var(--color-border); text-decoration: none; color: var(--color-charcoal);
-      }
-      .mcp-links a.mcp-link-primary {
-        background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal);
-      }
       .mcp-install { margin-bottom: 32px; }
       .mcp-install label { font-family: var(--font-ui); font-size: .8rem; font-weight: 600; display: block; margin-bottom: 8px; }
       .mcp-install-row {
@@ -67,17 +57,10 @@
         border: 1px solid var(--color-border); border-radius: 14px; padding: 16px 18px; background: var(--color-paper);
       }
       .mcp-setup-item h3 {
-        font-family: var(--font-ui); font-size: .88rem; font-weight: 600; margin: 0 0 8px 0; color: var(--color-ink);
+        font-family: var(--font-ui); font-size: .88rem; font-weight: 600; margin: 0 0 10px 0; color: var(--color-ink);
       }
-      .mcp-setup-item p {
-        margin: 0; font-size: .95rem; line-height: 1.65; color: var(--color-charcoal-light); white-space: pre-wrap;
-      }
-      .mcp-endpoint {
-        margin-bottom: 32px; padding: 16px 18px; border-radius: 14px;
-        background: var(--color-cream-dark); border: 1px solid var(--color-border);
-      }
+      .mcp-endpoint { margin-bottom: 32px; }
       .mcp-endpoint label { font-family: var(--font-ui); font-size: .8rem; font-weight: 600; display: block; margin-bottom: 8px; }
-      .mcp-endpoint code { font-size: .82rem; word-break: break-all; }
       .mcp-tools h2 { margin-bottom: 16px; }
       .mcp-tool-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
       .mcp-tool-item {
@@ -115,51 +98,66 @@
         <p>This MCP server is not in our directory yet.</p>
       <% } else { %>
         <div class="mcp-detail-head">
-          <div class="mcp-detail-icon" aria-hidden="true"><%= iconEmoji %></div>
-          <div>
+          <%- include('partials/mcp-server-logo', {
+            logoUrl: server.logoUrl,
+            logoFallbackUrl: server.logoFallbackUrl,
+            logoInitial: server.logoInitial,
+            categoryStyle: server.categoryStyle,
+            size: 'lg',
+          }) %>
+          <div class="mcp-detail-title">
             <h1><%= server.name %></h1>
             <div class="mcp-detail-badges">
-              <span class="mcp-detail-badge"><%= server.category %></span>
-              <span class="mcp-detail-badge <%= server.official ? 'mcp-detail-badge-official' : '' %>"><%= server.official ? 'Official' : 'Community' %></span>
-              <span class="mcp-detail-badge"><%= transportLabel %></span>
+              <span
+                class="mcp-badge-cat"
+                style="background: <%= server.categoryStyle.badgeBg %>; color: <%= server.categoryStyle.badgeText %>;"
+              ><%= server.category %></span>
+              <span class="mcp-badge-transport mcp-badge-transport--<%= server.isRemote ? 'remote' : 'local' %>"><%= server.transportBadge %></span>
+              <% if (server.official) { %><span class="mcp-detail-badge mcp-detail-badge-official">Official</span><% } %>
               <% if (inTop100) { %><span class="mcp-detail-badge mcp-detail-badge-official">Top 100</span><% } %>
               <% if (server.stars) { %><span class="mcp-detail-badge">★ <%= server.stars.toLocaleString() %></span><% } %>
-              <% if (server.tools && server.tools.length) { %><span class="mcp-detail-badge"><%= server.tools.length %> tools indexed</span><% } %>
+              <% if (server.tools && server.tools.length) { %><span class="mcp-detail-badge"><%= server.tools.length %> tools</span><% } %>
             </div>
           </div>
         </div>
         <p class="mcp-detail-desc"><%= server.description %></p>
 
-        <div class="mcp-links">
-          <% if (server.smithery_page_url) { %>
-            <a class="mcp-link-primary" href="<%= server.smithery_page_url %>" target="_blank" rel="noopener noreferrer">Connect on Smithery</a>
+        <div class="mcp-detail-actions">
+          <% if (server.smithery_page_url && server.isRemote) { %>
+            <a class="mcp-btn mcp-btn-connect" href="<%= server.smithery_page_url %>" target="_blank" rel="noopener noreferrer">Connect</a>
+          <% } %>
+          <% if (server.install_command) { %>
+            <button type="button" class="mcp-btn mcp-btn-install" id="mcpInstallScroll">Install</button>
+          <% } else if (server.github_url && !server.isRemote) { %>
+            <a class="mcp-btn mcp-btn-install" href="<%= server.github_url %>" target="_blank" rel="noopener noreferrer">Install from GitHub</a>
+          <% } %>
+          <% if (server.github_url) { %>
+            <a class="mcp-btn mcp-btn-secondary" href="<%= server.github_url %>" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <% } %>
+          <% if (server.docs_url && server.docs_url !== server.smithery_page_url) { %>
+            <a class="mcp-btn mcp-btn-secondary" href="<%= server.docs_url %>" target="_blank" rel="noopener noreferrer">Docs</a>
           <% } %>
           <% if (server.glama_url) { %>
-            <a href="<%= server.glama_url %>" target="_blank" rel="noopener noreferrer">Glama registry</a>
+            <a class="mcp-btn mcp-btn-secondary" href="<%= server.glama_url %>" target="_blank" rel="noopener noreferrer">Glama</a>
           <% } %>
-          <% if (server.primary_url && server.primary_url !== server.smithery_page_url && server.primary_url !== server.glama_url) { %>
-            <a href="<%= server.primary_url %>" target="_blank" rel="noopener noreferrer">Open registry / docs</a>
-          <% } %>
-          <% if (server.github_url) { %><a href="<%= server.github_url %>" target="_blank" rel="noopener noreferrer">GitHub</a><% } %>
-          <% if (server.docs_url && server.docs_url !== server.primary_url) { %><a href="<%= server.docs_url %>" target="_blank" rel="noopener noreferrer">Documentation</a><% } %>
         </div>
 
         <% if (server.connection_url) { %>
-          <div class="mcp-endpoint">
-            <label>MCP endpoint URL</label>
-            <code id="mcpEndpoint"><%= server.connection_url %></code>
+          <div class="mcp-endpoint" id="mcpEndpointBlock">
+            <label>MCP endpoint</label>
+            <pre class="mcp-setup-code" id="mcpEndpoint"><%= server.connection_url %></pre>
             <button type="button" class="mcp-copy" id="mcpEndpointCopy" style="margin-top: 10px;">Copy URL</button>
           </div>
         <% } %>
 
         <% if (server.setup_steps && server.setup_steps.length) { %>
-          <section class="mcp-setup">
+          <section class="mcp-setup" id="mcpSetupSection">
             <h2>How to connect</h2>
             <ol class="mcp-setup-list">
               <% server.setup_steps.forEach(function(step) { %>
                 <li class="mcp-setup-item">
                   <h3><%= step.title %></h3>
-                  <p><%= step.text %></p>
+                  <pre class="mcp-setup-code"><%= step.text %></pre>
                 </li>
               <% }); %>
             </ol>
@@ -167,7 +165,7 @@
         <% } %>
 
         <% if (server.install_command) { %>
-          <div class="mcp-install">
+          <div class="mcp-install" id="mcpInstallBlock">
             <label for="mcpInstallCmd">Install command</label>
             <div class="mcp-install-row">
               <code id="mcpInstallCmd"><%= server.install_command %></code>
@@ -190,8 +188,7 @@
           <% } else { %>
             <h2>Tools</h2>
             <p style="color: var(--color-charcoal-light); font-size: 0.95rem;">
-              Tool names are not listed in our registry for this server (common for Glama index entries).
-              Use the connection links above, then connect via MCP in your client to discover the live tool list.
+              Tool names are not listed in our registry for this server. Use Connect or Install above, then open your MCP client to see the live tool list.
             </p>
           <% } %>
         </section>
@@ -208,13 +205,19 @@
             setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
           });
         });
+        var scrollBtn = document.getElementById('mcpInstallScroll');
+        if (scrollBtn) {
+          scrollBtn.addEventListener('click', function () {
+            document.getElementById('mcpInstallBlock').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
       </script>
     <% } %>
     <% if (server && server.connection_url) { %>
       <script>
         document.getElementById('mcpEndpointCopy').addEventListener('click', function () {
           const url = document.getElementById('mcpEndpoint').textContent;
-          navigator.clipboard.writeText(url).then(function () {
+          navigator.clipboard.writeText(url.trim()).then(function () {
             const btn = document.getElementById('mcpEndpointCopy');
             btn.textContent = 'Copied';
             setTimeout(function () { btn.textContent = 'Copy URL'; }, 2000);

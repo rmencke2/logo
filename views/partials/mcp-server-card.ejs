@@ -1,37 +1,42 @@
-<a class="mcp-card" href="/mcp/<%= server.slug %>">
+<%#
+  MCP server card — logo, transport badge, category colors, tool pills.
+  Server must include branding fields from attachBranding().
+%>
+<a
+  class="mcp-card"
+  href="/mcp/<%= server.slug %>"
+  style="--mcp-cat-border: <%= server.categoryStyle.border %>; --mcp-cat-border-dark: <%= server.categoryStyle.borderDark %>; --mcp-cat-badge-bg: <%= server.categoryStyle.badgeBg %>; --mcp-cat-badge-text: <%= server.categoryStyle.badgeText %>; --mcp-cat-badge-bg-dark: <%= server.categoryStyle.badgeBgDark %>; --mcp-cat-badge-text-dark: <%= server.categoryStyle.badgeTextDark %>;"
+>
   <div class="mcp-card-body">
-    <div class="mcp-card-head">
-      <div class="mcp-icon" aria-hidden="true"><%= server.iconEmoji || '⚡' %></div>
-      <div>
+    <div class="mcp-card-top">
+      <%- include('mcp-server-logo', {
+        logoUrl: server.logoUrl,
+        logoFallbackUrl: server.logoFallbackUrl,
+        logoInitial: server.logoInitial,
+        categoryStyle: server.categoryStyle,
+      }) %>
+      <div class="mcp-card-title-wrap">
         <h2 class="mcp-card-title"><%= server.name %></h2>
-        <div class="mcp-badges">
-          <span class="mcp-badge"><%= server.category %></span>
-          <% if (server.tools && server.tools.length) { %>
-            <span class="mcp-badge mcp-badge-tools"><%= server.tools.length %> tools</span>
-          <% } %>
-          <% if (server.official) { %>
-            <span class="mcp-badge mcp-badge-official">Official</span>
+        <div class="mcp-card-meta">
+          <span class="mcp-badge-cat"><%= server.category %></span>
+          <% if (server.stars) { %>
+            <span class="mcp-badge-stars">★ <%= Number(server.stars).toLocaleString() %></span>
           <% } %>
         </div>
       </div>
+      <span class="mcp-badge-transport mcp-badge-transport--<%= server.isRemote ? 'remote' : 'local' %>"><%= server.transportBadge %></span>
     </div>
     <p class="mcp-card-desc"><%= server.description %></p>
-    <% if (server.setup_summary) { %>
-      <p class="mcp-card-setup"><%= server.setup_summary %></p>
-    <% } %>
-    <% if (server.primary_url) { %>
-      <p class="mcp-card-link"><%= server.primary_url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] %> →</p>
-    <% } %>
     <div class="mcp-tools">
       <% if (server.tools && server.tools.length) { %>
-        <% server.tools.slice(0, 3).forEach(function(tool) { %>
-          <span class="mcp-tool-pill"><%= tool.name %></span>
+        <% server.tools.slice(0, 4).forEach(function(tool) { %>
+          <span class="mcp-tool-pill" title="<%= tool.description || tool.name %>"><%= tool.name %></span>
         <% }); %>
-        <% if (server.tools.length > 3) { %>
-          <span class="mcp-tool-pill muted">+<%= server.tools.length - 3 %> more</span>
+        <% if (server.tools.length > 4) { %>
+          <span class="mcp-tool-pill muted">+<%= server.tools.length - 4 %> more</span>
         <% } %>
       <% } else { %>
-        <span class="mcp-tool-pill muted">No indexed tools — see setup on detail page</span>
+        <span class="mcp-tool-pill muted">Tools on detail page</span>
       <% } %>
     </div>
   </div>

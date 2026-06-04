@@ -1,0 +1,34 @@
+<%#
+  Logo: Clearbit image with letter-tile fallback.
+  Expects: logoUrl, logoInitial, categoryStyle (tile colors)
+  Optional: size — 'sm' (28px, default) | 'lg' (56px detail)
+%>
+<% const sz = typeof size !== 'undefined' && size === 'lg' ? 'lg' : 'sm'; %>
+<% const dim = sz === 'lg' ? 56 : 28; %>
+<% const wrapClass = sz === 'lg' ? 'mcp-detail-logo' : ''; %>
+<div class="<%= wrapClass %> mcp-logo-wrap">
+  <div
+    class="mcp-logo<%= sz === 'lg' ? ' mcp-logo--lg' : '' %>"
+    style="--mcp-tile-bg: <%= categoryStyle.tileBg %>; --mcp-tile-text: <%= categoryStyle.tileText %>; --mcp-tile-bg-dark: <%= categoryStyle.tileBgDark %>; --mcp-tile-text-dark: <%= categoryStyle.tileTextDark %>;<%= sz === 'lg' ? ' width:56px;height:56px;' : '' %>"
+  >
+    <% if (logoUrl || logoFallbackUrl) { %>
+      <img
+        class="mcp-logo-img"
+        src="<%= logoUrl || logoFallbackUrl %>"
+        <% if (logoFallbackUrl && logoUrl) { %>data-fallback="<%= logoFallbackUrl %>"<% } %>
+        alt=""
+        width="<%= dim %>"
+        height="<%= dim %>"
+        loading="lazy"
+        decoding="async"
+        referrerpolicy="no-referrer"
+        onerror="if(this.dataset.fallback&&!this.dataset.fallbackUsed){this.dataset.fallbackUsed='1';this.src=this.dataset.fallback;return;}this.classList.add('is-hidden');var f=this.parentElement.querySelector('.mcp-logo-fallback');if(f)f.classList.add('is-visible');"
+      />
+    <% } %>
+    <span
+      class="mcp-logo-fallback<%= (logoUrl || logoFallbackUrl) ? '' : ' is-visible' %>"
+      aria-hidden="true"
+      style="background: var(--mcp-tile-bg); color: var(--mcp-tile-text);"
+    ><%= logoInitial %></span>
+  </div>
+</div>

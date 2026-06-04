@@ -19,6 +19,7 @@ const {
   getMcpCatalogPayload,
   getMcpHomepagePreview,
   getMcpCatalogTotals,
+  getMcpHeroStats,
   isInTop100,
 } = require('./mcpDirectoryService');
 
@@ -335,9 +336,11 @@ ${itemsXml}
     const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
     const catalogPayload = getMcpCatalogPayload('all', { toolsOnly: true });
+    const heroStats = getMcpHeroStats();
     res.render('mcp-index', {
       catalogScope: 'all',
       defaultToolsOnly: true,
+      heroStats,
       pageTitle: 'Full MCP Server Directory',
       metaDescription:
         'Search the complete MCP server catalog — 1,000+ integrations from Glama, Smithery, and community registries.',
@@ -359,9 +362,11 @@ ${itemsXml}
     const lastUpdated = getMcpLastUpdated();
     const catalogPayload = getMcpCatalogPayload('top');
     const previewServers = catalogPayload.servers.slice(0, 60);
+    const heroStats = getMcpHeroStats();
     res.render('mcp-index', {
       catalogScope: 'top',
       defaultToolsOnly: true,
+      heroStats,
       pageTitle: 'Top 100 MCP Servers',
       metaDescription:
         'The top 100 Model Context Protocol servers for AI development — each with indexed tools, connection URLs, and setup steps.',
