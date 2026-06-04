@@ -72,6 +72,36 @@ pm2 status
 pm2 logs logo-generator
 ```
 
+## Redeploy after pushing to GitHub
+
+The repo includes **`scripts/deploy.sh`** on the `main` branch. If you do not see it on the server, the instance is behind `origin/main` — pull first (see below).
+
+**On Lightsail (recommended — ignores local edits to tracked files like `package.json`):**
+
+```bash
+cd ~/logo   # or your clone path, e.g. cd logo
+git fetch origin main
+# If scripts/deploy.sh is still missing, sync once:
+#   git reset --hard origin/main
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh main logo-generator --server
+```
+
+Or:
+
+```bash
+npm run deploy:server
+```
+
+**What the script does:** `git fetch` → `git reset --hard origin/main` (with `--server`) → `npm ci --omit=dev` → `pm2 restart logo-generator` → `pm2 save`.
+
+**On your laptop (only if the working tree is clean):**
+
+```bash
+./scripts/deploy.sh
+# or: npm run deploy
+```
+
 ## Step 5: Configure Lightsail to Route Traffic
 
 The Bitnami default page is running on port 80. You need to either:

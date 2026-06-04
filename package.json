@@ -10,6 +10,8 @@
     "refresh-data": "node scripts/fetch-servers.js",
     "build-top100": "node scripts/build-top100.js",
     "enrich-tools": "node scripts/enrich-tools.js",
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:server": "bash scripts/deploy.sh main logo-generator --server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
