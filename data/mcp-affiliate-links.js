@@ -4,14 +4,15 @@
  */
 const MCP_AFFILIATE_LINKS = {
   webnode: {
-    url: 'https://mcp.webnode.com/_mcp',
+    url: 'https://www.webnode.com',
+    promoHref: '/mcp/webnode',
     headline: 'Build websites with Webnode MCP',
     description:
-      'Connect your AI assistant to Webnode and create sites from a prompt. List templates by language, then launch a new project — hosted at mcp.webnode.com.',
-    cta: 'Connect Webnode MCP →',
+      'Connect your AI assistant to Webnode and create sites from a prompt. Add the MCP endpoint from this page in Claude, Cursor, or VS Code — then list templates and launch a new project.',
+    cta: 'Get started on Webnode →',
     provider: 'Webnode',
     promoBlurb: 'Create Webnode websites from Claude, Cursor, or any MCP client.',
-    promoCta: 'Try Webnode MCP',
+    promoCta: 'View setup guide',
     featured: true,
   },
   firecrawl: {
@@ -34,7 +35,8 @@ function getSitePromo(slug = DEFAULT_PROMO_SLUG) {
   if (!entry) return null;
   return {
     slug,
-    url: entry.url,
+    url: entry.promoHref || entry.url,
+    external: !entry.promoHref,
     provider: entry.provider,
     cta: entry.promoCta || entry.cta.replace(/\s*→\s*$/, ''),
     blurb: entry.promoBlurb || entry.description,
