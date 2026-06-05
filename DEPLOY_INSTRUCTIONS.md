@@ -95,6 +95,59 @@ npm run deploy:server
 
 **What the script does:** `git fetch` → `git reset --hard origin/main` (with `--server`) → `npm ci --omit=dev` → `pm2 restart logo-generator` → `pm2 save`.
 
+## MCP catalog automation (daily tool checks)
+
+The MCP directory is updated by **GitHub Actions** (not by running Node on the server). Two workflows are in `.github/workflows/`:
+
+| Workflow | Schedule (UTC) | What it does |
+|----------|----------------|--------------|
+| **Validate MCP catalog** | Daily 05:30 | Live `tools/list` on HTTP endpoints, Smithery fallback, commits `data/servers-generated.json` + top 100 |
+| **Refresh MCP catalog** | Monday 06:00 | Full registry re-fetch (`npm run refresh-data`) |
+
+Both push commits to `main` when data changes. Check runs: GitHub → **Actions** → *Validate MCP catalog* / *Refresh MCP catalog*.
+
+**Manual run (GitHub):** Actions → *Validate MCP catalog* → **Run workflow** (apply defaults to `true`).
+
+**Manual run (local):**
+
+```bash
+npm run validate-mcp-catalog              # report only
+npm run validate-mcp-catalog -- --apply   # update JSON + top 100
+```
+
+### Server cron: pull catalog updates after GitHub Actions
+
+The Lightsail app does **not** run the validator itself. After GitHub commits new catalog JSON, the server should **pull and restart** so influzer.ai serves fresh data.
+
+On the server (once):
+
+```bash
+cd ~/logo
+chmod +x scripts/sync-mcp-catalog.sh
+crontab -e
+```
+
+Add (runs daily at **06:15 UTC**, ~45 min after validation):
+
+```
+15 6 * * * cd /home/ubuntu/logo && ./scripts/sync-mcp-catalog.sh main logo-generator >> /home/ubuntu/logo/logs/mcp-sync.log 2>&1
+```
+
+Create the log directory if needed:
+
+```bash
+mkdir -p ~/logo/logs
+```
+
+`sync-mcp-catalog.sh` only `git pull --ff-only` + `pm2 restart` — fast when catalog JSON changed. Use full `./scripts/deploy.sh main logo-generator --server` when `package.json` or app code changed.
+
+**One-time deploy** (Webnode, SEO, validator script — after `git push`):
+
+```bash
+cd ~/logo
+./scripts/deploy.sh main logo-generator --server
+```
+
 **On your laptop (only if the working tree is clean):**
 
 ```bash
