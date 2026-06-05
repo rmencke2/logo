@@ -47,6 +47,7 @@ const SLUG_LOGO_DOMAINS = {
   brave: 'brave.com',
   perplexity: 'perplexity.ai',
   exa: 'exa.ai',
+  webnode: 'webnode.com',
   firecrawl: 'firecrawl.dev',
   playwright: 'playwright.dev',
   anthropic: 'anthropic.com',

@@ -9,34 +9,21 @@
     <meta name="author" content="Influzer.ai" />
     <link rel="canonical" href="https://www.influzer.ai/" />
     <link rel="alternate" type="application/rss+xml" title="Influzer.ai Insights" href="https://www.influzer.ai/insights/rss.xml" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Influzer.ai" />
-    <meta property="og:url" content="https://www.influzer.ai/" />
-    <meta property="og:title" content="<%= seo.pageTitle %>" />
-    <meta property="og:description" content="<%= seo.metaDescription %>" />
-    <meta property="og:image" content="<%= seo.ogImage %>" />
-    <meta property="og:image:alt" content="<%= featuredPost ? featuredPost.coverImageAlt : 'Influzer.ai MCP directory and AI insights' %>" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="<%= seo.pageTitle %>" />
-    <meta name="twitter:description" content="<%= seo.metaDescription %>" />
-    <meta name="twitter:image" content="<%= seo.ogImage %>" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/promo-strip.css" />
+    <%- include('partials/seo-social', {
+      ogTitle: seo.pageTitle,
+      ogDescription: seo.metaDescription,
+      ogUrl: 'https://www.influzer.ai/',
+      ogImage: seo.ogImage,
+      ogImageAlt: featuredPost ? featuredPost.coverImageAlt : 'Influzer.ai MCP directory and AI insights',
+    }) %>
     <script type="application/ld+json">
       <%- JSON.stringify(jsonLd) %>
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8WMQQWLT7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-Q8WMQQWLT7');
     </script>
   </head>
   <body class="home-page">
@@ -48,7 +35,7 @@
         <p class="home-hero__eyebrow">MCP Server Directory</p>
         <h1 class="home-hero__title" id="homeHeroTitle">Find the right MCP server for your AI stack</h1>
         <p class="home-hero__subtext">
-          The most complete directory of Model Context Protocol servers — every tool indexed and searchable. Updated weekly.
+          <%= heroStats.totalServers.toLocaleString() %> MCP servers in our registry · <%= heroStats.serversWithIndexedTools.toLocaleString() %> with indexed tools you can search. Updated weekly.
         </p>
         <div class="home-hero__stats" aria-label="Directory statistics">
           <div class="home-stat">
@@ -73,7 +60,7 @@
 
       <div class="home-intro">
         <p>
-          Influzer.ai combines a searchable <a href="/mcp">MCP server directory</a> (<%= heroStats.totalServers.toLocaleString() %> integrations, <%= toolCountDisplay %> tools) with
+          Influzer.ai combines a searchable <a href="/mcp">MCP server directory</a> (<%= heroStats.totalServers.toLocaleString() %> in the registry, <%= heroStats.serversWithIndexedTools.toLocaleString() %> with indexed tools, <%= toolCountDisplay %> tool entries) with
           <a href="/insights">executive insights</a> on AI agents, workflows, and operating systems — built for teams shipping production AI, not just browsing lists.
         </p>
       </div>

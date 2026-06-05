@@ -6,20 +6,14 @@
     <title><%= post ? `${post.title} - Influzer.ai` : 'Post Not Found - Influzer.ai' %></title>
     <meta name="description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
     <link rel="canonical" href="<%= post ? `https://www.influzer.ai/insights/${post.slug}` : 'https://www.influzer.ai/insights' %>" />
-    <meta property="og:type" content="<%= post ? 'article' : 'website' %>" />
-    <meta property="og:site_name" content="Influzer.ai" />
-    <meta property="og:title" content="<%= post ? post.title : 'Post Not Found - Influzer.ai' %>" />
-    <meta property="og:description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
-    <meta property="og:url" content="<%= post ? `https://www.influzer.ai/insights/${post.slug}` : 'https://www.influzer.ai/insights' %>" />
-    <% if (post && post.coverImage) { %>
-      <meta property="og:image" content="https://www.influzer.ai<%= post.coverImage %>" />
-    <% } %>
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="<%= post ? post.title : 'Post Not Found - Influzer.ai' %>" />
-    <meta name="twitter:description" content="<%= post ? post.excerpt : 'The requested post could not be found.' %>" />
-    <% if (post && post.coverImage) { %>
-      <meta name="twitter:image" content="https://www.influzer.ai<%= post.coverImage %>" />
-    <% } %>
+    <%- include('partials/seo-social', {
+      ogTitle: post ? post.title + ' - Influzer.ai' : 'Post Not Found - Influzer.ai',
+      ogDescription: post ? post.excerpt : 'The requested post could not be found.',
+      ogUrl: post ? `https://www.influzer.ai/insights/${post.slug}` : 'https://www.influzer.ai/insights',
+      ogImage: post && post.coverImage ? `https://www.influzer.ai${post.coverImage}` : undefined,
+      ogType: post ? 'article' : 'website',
+      noindex: !post,
+    }) %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/site-header.css">

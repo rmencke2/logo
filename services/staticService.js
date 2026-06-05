@@ -8,6 +8,7 @@ const fs = require('fs');
 
 const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
 const SITE_BASE_URL = 'https://www.influzer.ai';
+const SITE_DEFAULT_OG_IMAGE = `${SITE_BASE_URL}/images/blog/ai-weekly-operating-review-for-executives-cover.png`;
 const {
   getAllMcpServers,
   getTop100McpServers,
@@ -148,10 +149,11 @@ function getHomeBlogContent() {
 }
 
 function buildHomeSeo({ heroStats, featuredPost }) {
-  const serverCount = heroStats.totalServers.toLocaleString();
+  const registryCount = heroStats.totalServers.toLocaleString();
+  const indexedCount = heroStats.serversWithIndexedTools.toLocaleString();
   const metaDescription = featuredPost
-    ? `Search ${serverCount} MCP servers with indexed tools, plus weekly AI insights. Featured: ${featuredPost.title}`
-    : `Search ${serverCount} Model Context Protocol servers with indexed tools. Weekly MCP directory updates and executive AI insights from Influzer.ai.`;
+    ? `${registryCount} MCP servers in our registry (${indexedCount} with indexed tools). Featured insight: ${featuredPost.title}`
+    : `Browse ${registryCount} Model Context Protocol servers (${indexedCount} with indexed tools). Weekly directory updates and executive AI insights from Influzer.ai.`;
   const pageTitle = 'MCP Server Directory & AI Insights | Influzer.ai';
   const metaKeywords = [
     'MCP server directory',
@@ -164,8 +166,36 @@ function buildHomeSeo({ heroStats, featuredPost }) {
     'AI insights',
     'executive AI strategy',
   ].join(', ');
-  const ogImage = featuredPost?.coverImageAbsolute || `${SITE_BASE_URL}/favicon.svg`;
+  const ogImage = featuredPost?.coverImageAbsolute || SITE_DEFAULT_OG_IMAGE;
   return { pageTitle, metaDescription, metaKeywords, ogImage };
+}
+
+function buildMcpCollectionJsonLd({ pageUrl, pageName, description, servers }) {
+  const graph = [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: pageName,
+      description,
+      isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
+    },
+  ];
+  if (servers.length) {
+    graph.push({
+      '@type': 'ItemList',
+      '@id': `${pageUrl}#itemlist`,
+      name: pageName,
+      numberOfItems: servers.length,
+      itemListElement: servers.slice(0, 100).map((server, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: server.name,
+        url: `${SITE_BASE_URL}/mcp/${server.slug}`,
+      })),
+    });
+  }
+  return { '@context': 'https://schema.org', '@graph': graph };
 }
 
 function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts }) {
@@ -200,7 +230,7 @@ function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts }) {
       '@id': `${SITE_BASE_URL}/#webpage`,
       url: SITE_BASE_URL,
       name: 'MCP Server Directory & AI Insights',
-      description: `Browse ${heroStats.totalServers} MCP servers and read weekly AI execution insights.`,
+      description: `Browse ${heroStats.totalServers} MCP servers (${heroStats.serversWithIndexedTools} with indexed tools) and read weekly AI execution insights.`,
       isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
       about: [
         { '@type': 'Thing', name: 'Model Context Protocol' },
@@ -536,15 +566,24 @@ ${itemsXml}
     const totals = getMcpCatalogTotals();
     const lastUpdated = getMcpLastUpdated();
     const catalogPayload = getMcpCatalogPayload('all', { toolsOnly: true });
+    const previewServers = catalogPayload.servers.slice(0, 60);
     const heroStats = getMcpHeroStats();
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/all`;
+    const metaDescription = `Search ${totals.total.toLocaleString()} MCP servers in our registry — ${catalogPayload.total_with_tools.toLocaleString()} with indexed tools, setup steps, and connection URLs.`;
     res.render('mcp-index', {
       catalogScope: 'all',
       defaultToolsOnly: true,
       heroStats,
       pageTitle: 'Full MCP Server Directory',
-      metaDescription:
-        'Search the complete MCP server catalog — 1,000+ integrations from Glama, Smithery, and community registries.',
-      canonicalUrl: 'https://www.influzer.ai/mcp/all',
+      metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      jsonLd: buildMcpCollectionJsonLd({
+        pageUrl: canonicalUrl,
+        pageName: 'Full MCP Server Directory',
+        description: metaDescription,
+        servers: previewServers,
+      }),
       categories: getMcpCategories(),
       lastUpdated: lastUpdated.display,
       totalInView: catalogPayload.total,
@@ -552,7 +591,8 @@ ${itemsXml}
       totalWithTools: catalogPayload.total_with_tools,
       sisterHref: '/mcp',
       sisterLabel: 'Top 100 MCP servers',
-      inlineCatalogJson: null,
+      inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
+      previewServers,
       promo: getSitePromo(),
     });
   });
@@ -564,14 +604,22 @@ ${itemsXml}
     const catalogPayload = getMcpCatalogPayload('top');
     const previewServers = catalogPayload.servers.slice(0, 60);
     const heroStats = getMcpHeroStats();
+    const canonicalUrl = `${SITE_BASE_URL}/mcp`;
+    const metaDescription = `Top 100 Model Context Protocol servers for AI development — curated list with indexed tools, connection URLs, and setup steps. Full registry: ${totals.total.toLocaleString()} servers.`;
     res.render('mcp-index', {
       catalogScope: 'top',
       defaultToolsOnly: true,
       heroStats,
       pageTitle: 'Top 100 MCP Servers',
-      metaDescription:
-        'The top 100 Model Context Protocol servers for AI development — each with indexed tools, connection URLs, and setup steps.',
-      canonicalUrl: 'https://www.influzer.ai/mcp',
+      metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      jsonLd: buildMcpCollectionJsonLd({
+        pageUrl: canonicalUrl,
+        pageName: 'Top 100 MCP Servers',
+        description: metaDescription,
+        servers: previewServers,
+      }),
       categories: getMcpCategories(),
       lastUpdated: lastUpdated.display,
       totalInView: catalogPayload.total,
@@ -663,6 +711,8 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/insights`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
+      { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
+      { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/cookie`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
@@ -673,14 +723,14 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.7',
     }));
-    const mcpUrls = getTop100McpServers()
-      .slice(0, 100)
-      .map((s) => ({
-        loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
-        lastmod: '2026-06-03',
-        changefreq: 'monthly',
-        priority: '0.65',
-      }));
+    const lastUpdatedRaw = getMcpLastUpdated().iso;
+    const mcpLastMod = lastUpdatedRaw ? String(lastUpdatedRaw).slice(0, 10) : '2026-06-03';
+    const mcpUrls = getAllMcpServers().map((s) => ({
+      loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
+      lastmod: mcpLastMod,
+      changefreq: 'monthly',
+      priority: '0.6',
+    }));
     const allUrls = [...staticUrls, ...postUrls, ...mcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

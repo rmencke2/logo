@@ -103,9 +103,12 @@ function normalizeLegacyManual(server) {
     install_command: server.install_command,
     stars: server.stars || 0,
     source: 'manual',
-    featured: true,
+    featured: server.featured !== false,
     last_updated: new Date().toISOString().slice(0, 10),
     icon: server.icon || 'boxes',
+    mcp_endpoint: server.mcp_endpoint,
+    deployment_url: server.mcp_endpoint || server.deployment_url,
+    install_command: server.install_command,
   });
 }
 
@@ -173,14 +176,7 @@ function loadCatalog() {
   }
 
   allServers = mergeManualInto(allServers, manualData);
-
-  if (top100File?.servers?.length) {
-    top100Servers = top100File.servers
-      .map(normalizeServer)
-      .filter((s) => hasIndexedTools(s) || s.source === 'manual');
-  } else {
-    top100Servers = computeTop100FromAll(allServers);
-  }
+  top100Servers = computeTop100FromAll(allServers);
 
   if (!allServers.length && manualData?.servers?.length) {
     allServers = manualData.servers.map(normalizeLegacyManual);
@@ -228,7 +224,7 @@ function getAllMcpServers() {
 
 function getTop100McpServers() {
   const { top100Servers } = loadCatalog();
-  return sortServers(top100Servers.map((s) => attachSetupInfo(s)));
+  return top100Servers.map((s) => attachSetupInfo(s));
 }
 
 function getMcpCatalogTotals() {
@@ -258,9 +254,11 @@ function withDisplay(servers) {
 function getMcpHeroStats() {
   const all = getAllMcpServers();
   const totalTools = all.reduce((sum, s) => sum + (s.tools?.length || 0), 0);
+  const serversWithIndexedTools = all.filter((s) => hasIndexedTools(s)).length;
   return {
     totalServers: all.length,
     totalTools,
+    serversWithIndexedTools,
     categoryCount: getMcpCategories().length,
   };
 }
@@ -342,4 +340,5 @@ module.exports = {
   getMcpHeroStats,
   isInTop100,
   clearMcpCache,
+  mergeManualInto,
 };

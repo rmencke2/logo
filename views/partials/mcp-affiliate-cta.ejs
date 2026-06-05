@@ -4,7 +4,7 @@
 %>
 <% if (server && server.affiliate && server.affiliate.url) { %>
   <aside class="mcp-affiliate" aria-label="Partner offer">
-    <p class="mcp-affiliate__label">Partner offer</p>
+    <p class="mcp-affiliate__label"><%= server.affiliate.featured ? 'Featured' : 'Partner offer' %></p>
     <h2 class="mcp-affiliate__title"><%= server.affiliate.headline %></h2>
     <% if (server.affiliate.description) { %>
       <p class="mcp-affiliate__desc"><%= server.affiliate.description %></p>
@@ -15,6 +15,6 @@
       target="_blank"
       rel="noopener noreferrer sponsored"
     ><%= server.affiliate.cta %></a>
-    <p class="mcp-affiliate__fine">Affiliate link — we may earn a commission if you sign up.</p>
+    <p class="mcp-affiliate__fine"><%= server.affiliate.featured ? 'Featured MCP server' : 'Affiliate link — we may earn a commission if you sign up.' %></p>
   </aside>
 <% } %>

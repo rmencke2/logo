@@ -7,11 +7,24 @@
 const fs = require('fs');
 const path = require('path');
 const { pickTop100, TOP100_SIZE } = require('./utils/normalize');
+const { mergeManualInto } = require('../services/mcpDirectoryService');
 
 const ROOT = path.join(__dirname, '..');
 const GENERATED_PATH = path.join(ROOT, 'data', 'servers-generated.json');
+const MANUAL_PATH = path.join(ROOT, 'data', 'mcp-servers-manual.json');
+const LEGACY_MANUAL_PATH = path.join(ROOT, 'data', 'mcp-servers.json');
 const PINNED_PATH = path.join(ROOT, 'data', 'mcp-top100-pinned.json');
 const TOP100_PATH = path.join(ROOT, 'data', 'servers-top100.json');
+
+function loadManualData() {
+  const manualFile = fs.existsSync(MANUAL_PATH)
+    ? MANUAL_PATH
+    : fs.existsSync(LEGACY_MANUAL_PATH)
+      ? LEGACY_MANUAL_PATH
+      : null;
+  if (!manualFile) return null;
+  return JSON.parse(fs.readFileSync(manualFile, 'utf8'));
+}
 
 function loadPinnedSlugs() {
   if (!fs.existsSync(PINNED_PATH)) return [];
@@ -20,7 +33,8 @@ function loadPinnedSlugs() {
 }
 
 function buildTop100FromCatalog(catalog) {
-  const servers = catalog.servers || [];
+  const manualData = loadManualData();
+  const servers = mergeManualInto(catalog.servers || [], manualData);
   const pinned = loadPinnedSlugs();
   const top100 = pickTop100(servers, pinned, TOP100_SIZE);
   return {

@@ -1,0 +1,26 @@
+<%
+  const _base = 'https://www.influzer.ai';
+  const _defaultOg = _base + '/images/blog/ai-weekly-operating-review-for-executives-cover.png';
+  const _ogImage = typeof ogImage !== 'undefined' && ogImage ? ogImage : _defaultOg;
+  const _ogType = typeof ogType !== 'undefined' ? ogType : 'website';
+  const _ogTitle = typeof ogTitle !== 'undefined' ? ogTitle : 'Influzer.ai';
+  const _ogDescription = typeof ogDescription !== 'undefined' ? ogDescription : 'MCP server directory and AI insights for executive teams.';
+  const _ogUrl = typeof ogUrl !== 'undefined' ? ogUrl : _base + '/';
+%>
+<% if (typeof noindex !== 'undefined' && noindex) { %>
+<meta name="robots" content="noindex, nofollow" />
+<% } %>
+<meta property="og:type" content="<%= _ogType %>" />
+<meta property="og:site_name" content="Influzer.ai" />
+<meta property="og:title" content="<%= _ogTitle %>" />
+<meta property="og:description" content="<%= _ogDescription %>" />
+<meta property="og:url" content="<%= _ogUrl %>" />
+<meta property="og:image" content="<%= _ogImage %>" />
+<meta property="og:image:alt" content="<%= typeof ogImageAlt !== 'undefined' ? ogImageAlt : 'Influzer.ai MCP directory and AI insights' %>" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="<%= _ogTitle %>" />
+<meta name="twitter:description" content="<%= _ogDescription %>" />
+<meta name="twitter:image" content="<%= _ogImage %>" />
+<% if (!(typeof skipGa !== 'undefined' && skipGa)) { %>
+<%- include('ga') %>
+<% } %>

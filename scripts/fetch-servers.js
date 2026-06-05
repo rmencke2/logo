@@ -170,6 +170,9 @@ async function fetchGlamaServers() {
         github_url: gh,
         docs_url: detail.url || detail.docs_url,
         glama_url: detail.url || `https://glama.ai/mcp/servers/${detail.id || ''}`,
+        glama_id: detail.id,
+        glama_namespace: detail.namespace,
+        glama_slug: detail.slug,
         stars: detail.stars || detail.starCount || 0,
         source: 'glama',
       }),
@@ -339,6 +342,8 @@ function loadManualServers() {
       source: 'manual',
       last_updated: today,
       icon: s.icon,
+      mcp_endpoint: s.mcp_endpoint,
+      deployment_url: s.mcp_endpoint || s.deployment_url,
     }),
   );
 }

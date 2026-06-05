@@ -6,9 +6,12 @@
     <title><%= server ? `${server.name} — MCP Server Directory - Influzer.ai` : 'Server Not Found - Influzer.ai' %></title>
     <meta name="description" content="<%= server ? server.description : 'The requested MCP server could not be found.' %>" />
     <link rel="canonical" href="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
-    <meta property="og:title" content="<%= server ? server.name : 'Server Not Found' %>" />
-    <meta property="og:description" content="<%= server ? server.description : '' %>" />
-    <meta property="og:url" content="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: (server ? server.name : 'Server Not Found') + ' - Influzer.ai',
+      ogDescription: server ? server.description : 'MCP server not found in the Influzer.ai directory.',
+      ogUrl: server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp',
+      ogType: 'website',
+    }) %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/site-header.css" />
@@ -21,7 +24,9 @@
           name: server.name,
           description: server.description,
           applicationCategory: 'DeveloperApplication',
+          operatingSystem: 'Web',
           url: `https://www.influzer.ai/mcp/${server.slug}`,
+          featureList: (server.tools || []).slice(0, 12).map((t) => t.name),
         }) %>
       </script>
     <% } %>

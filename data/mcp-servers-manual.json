@@ -15,6 +15,29 @@
   ],
   "servers": [
     {
+      "name": "Webnode",
+      "slug": "webnode",
+      "category": "Design",
+      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building — list templates by language and spin up new projects.",
+      "official": true,
+      "transport": "http",
+      "icon": "browser",
+      "featured": true,
+      "mcp_endpoint": "https://mcp.webnode.com/_mcp",
+      "docs_url": "https://www.webnode.com",
+      "tools": [
+        {
+          "name": "get_project_branches",
+          "description": "List available project templates (branches) for a language — call before create_project"
+        },
+        {
+          "name": "create_project",
+          "description": "Create a new Webnode website from a description, language, and optional site name"
+        }
+      ],
+      "stars": 500
+    },
+    {
       "name": "GitHub",
       "slug": "github",
       "category": "Dev Tools",

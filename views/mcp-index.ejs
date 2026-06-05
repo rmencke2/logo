@@ -6,9 +6,17 @@
     <title><%= pageTitle %> - Influzer.ai</title>
     <meta name="description" content="<%= metaDescription %>" />
     <link rel="canonical" href="<%= canonicalUrl %>" />
-    <meta property="og:title" content="<%= pageTitle %> - Influzer.ai" />
-    <meta property="og:description" content="<%= metaDescription %>" />
-    <meta property="og:url" content="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' - Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      ogImage: typeof ogImage !== 'undefined' ? ogImage : undefined,
+    }) %>
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify(jsonLd) %>
+      </script>
+    <% } %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/site-header.css" />
@@ -249,7 +257,9 @@
         <h1><%= pageTitle %></h1>
         <% if (typeof heroStats !== 'undefined' && heroStats) { %>
           <div class="mcp-hero">
-            <p class="mcp-hero-tagline">The most complete MCP server directory — with every tool indexed and searchable</p>
+            <p class="mcp-hero-tagline">
+              <%= heroStats.totalServers.toLocaleString() %> servers in the registry · <%= heroStats.serversWithIndexedTools.toLocaleString() %> with indexed tools searchable
+            </p>
             <div class="mcp-hero-stats">
               <div>
                 <span class="mcp-stat-value mcp-stat-value--primary"><%= heroStats.totalServers.toLocaleString() %></span>

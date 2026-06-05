@@ -11,6 +11,6 @@
       <span class="promo-strip__dot" aria-hidden="true">·</span>
       <a class="promo-strip__link promo-strip__link--muted" href="<%= promo.directoryHref %>">In the directory</a>
     </p>
-    <span class="promo-strip__fine">Affiliate</span>
+    <span class="promo-strip__fine"><%= promo.featured ? 'Featured' : 'Affiliate' %></span>
   </aside>
 <% } %>

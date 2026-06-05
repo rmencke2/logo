@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
   <%- include('partials/head', { title: 'Page Not Found', description: 'The page you are looking for does not exist.' }) %>
-  <link rel="canonical" href="https://www.influzer.ai" />
+  <%- include('partials/seo-social', {
+    noindex: true,
+    skipGa: true,
+    ogTitle: 'Page Not Found - Influzer.ai',
+    ogDescription: 'The page you are looking for does not exist.',
+    ogUrl: 'https://www.influzer.ai/',
+  }) %>
   <style>
     .error-page {
       display: flex;
