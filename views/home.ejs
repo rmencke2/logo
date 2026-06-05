@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
     <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/seo-content.css" />
     <link rel="stylesheet" href="/css/promo-strip.css" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
@@ -58,12 +59,7 @@
         </form>
       </section>
 
-      <div class="home-intro">
-        <p>
-          Influzer.ai combines a searchable <a href="/mcp">MCP server directory</a> (<%= heroStats.totalServers.toLocaleString() %> in the registry, <%= heroStats.serversWithIndexedTools.toLocaleString() %> with indexed tools, <%= toolCountDisplay %> tool entries) with
-          <a href="/insights">executive insights</a> on AI agents, workflows, and operating systems — built for teams shipping production AI, not just browsing lists.
-        </p>
-      </div>
+      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: true, seoShowCrossLinks: false, seoShowFaq: false }) %>
 
       <%- include('partials/home-newsletter-card') %>
 
@@ -117,6 +113,8 @@
         </div>
         <%- include('partials/promo-strip', { promo: promo }) %>
       </section>
+
+      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: false }) %>
 
       <% if (morePosts && morePosts.length) { %>
         <section class="home-section home-section--last" aria-labelledby="homeInsightsTitle">

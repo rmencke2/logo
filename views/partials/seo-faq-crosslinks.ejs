@@ -1,0 +1,56 @@
+<%#
+  SEO / GEO block: intro copy, FAQ accordion, internal cross-links.
+  Expects seoContent: { introTitle, introParagraphs[], faqs[], crossLinkGroups[] }
+  Optional: seoShowIntro, seoShowCrossLinks, seoShowFaq (default true)
+%>
+<% if (typeof seoContent !== 'undefined' && seoContent) { %>
+  <% var _showIntro = typeof seoShowIntro === 'undefined' ? true : seoShowIntro; %>
+  <% var _showCrossLinks = typeof seoShowCrossLinks === 'undefined' ? true : seoShowCrossLinks; %>
+  <% var _showFaq = typeof seoShowFaq === 'undefined' ? true : seoShowFaq; %>
+
+  <% if (_showIntro && seoContent.introTitle) { %>
+  <section class="seo-block seo-block--intro" aria-labelledby="seoIntroTitle">
+    <h2 class="seo-block__title" id="seoIntroTitle"><%= seoContent.introTitle %></h2>
+    <% (seoContent.introParagraphs || []).forEach(function (paragraph) { %>
+      <p class="seo-block__text"><%- paragraph %></p>
+    <% }); %>
+  </section>
+  <% } %>
+
+  <% if (_showCrossLinks && seoContent.crossLinkGroups && seoContent.crossLinkGroups.length) { %>
+    <nav class="seo-block seo-block--links" aria-label="Related pages and servers">
+      <h2 class="seo-block__title">Explore</h2>
+      <div class="seo-crosslinks">
+        <% seoContent.crossLinkGroups.forEach(function (group) { %>
+          <div class="seo-crosslinks__group">
+            <h3 class="seo-crosslinks__heading"><%= group.title %></h3>
+            <ul class="seo-crosslinks__list">
+              <% group.links.forEach(function (link) { %>
+                <li class="seo-crosslinks__item">
+                  <a class="seo-crosslinks__link" href="<%= link.href %>"><%= link.label %></a>
+                  <% if (link.desc || link.note) { %>
+                    <span class="seo-crosslinks__desc"><%= link.desc || link.note %></span>
+                  <% } %>
+                </li>
+              <% }); %>
+            </ul>
+          </div>
+        <% }); %>
+      </div>
+    </nav>
+  <% } %>
+
+  <% if (_showFaq && seoContent.faqs && seoContent.faqs.length) { %>
+    <section class="seo-block seo-block--faq" aria-labelledby="seoFaqTitle">
+      <h2 class="seo-block__title" id="seoFaqTitle">Frequently asked questions</h2>
+      <div class="seo-faq">
+        <% seoContent.faqs.forEach(function (faq, index) { %>
+          <details class="seo-faq__item"<%= index === 0 ? ' open' : '' %>>
+            <summary class="seo-faq__question"><%= faq.q %></summary>
+            <div class="seo-faq__answer"><%- faq.a %></div>
+          </details>
+        <% }); %>
+      </div>
+    </section>
+  <% } %>
+<% } %>
