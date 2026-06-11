@@ -141,7 +141,11 @@
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || 'Could not send reset email');
-            showStatus('If that email has a password account, a reset link was sent. Check your inbox.', 'success');
+            showStatus(
+              data.message ||
+                'If that email uses password login, a reset link was sent. Check spam. Google-only accounts must use Google sign-in, or reset via SSH on the server.',
+              'success',
+            );
           } catch (err) {
             showStatus(err.message || 'Could not send reset email', 'error');
           } finally {
