@@ -352,6 +352,11 @@ function initializeStaticService(app) {
     res.render('login');
   });
 
+  app.get('/reset-password', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('reset-password');
+  });
+
   app.get('/', (req, res) => {
     if (req.query.signup === 'true') {
       const params = new URLSearchParams(req.query);

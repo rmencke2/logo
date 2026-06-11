@@ -38,6 +38,21 @@
             <input type="password" id="loginPassword" name="password" autocomplete="current-password" required />
           </div>
           <button type="submit" class="login-submit" id="loginSubmitBtn">Log in</button>
+          <p style="margin:4px 0 0;font-size:0.88rem;">
+            <a href="#" id="forgotPasswordLink" style="color:var(--color-terracotta,#c45d3e);">Forgot password?</a>
+          </p>
+        </form>
+
+        <form id="forgotForm" class="login-form" novalidate>
+          <p class="login-card__lead" style="margin:0 0 8px;">Enter your email and we will send a reset link if the account uses email/password login.</p>
+          <div class="login-field">
+            <label for="forgotEmail">Email</label>
+            <input type="email" id="forgotEmail" autocomplete="email" required />
+          </div>
+          <button type="submit" class="login-submit" id="forgotSubmitBtn">Send reset link</button>
+          <p style="margin:4px 0 0;font-size:0.88rem;">
+            <a href="#" id="backToLoginLink" style="color:var(--color-terracotta,#c45d3e);">← Back to log in</a>
+          </p>
         </form>
 
         <form id="registerForm" class="login-form" novalidate>
@@ -74,8 +89,10 @@
         const statusEl = document.getElementById('loginStatus');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
+        const forgotForm = document.getElementById('forgotForm');
         const loginTabBtn = document.getElementById('loginTabBtn');
         const registerTabBtn = document.getElementById('registerTabBtn');
+        const loginTabs = document.querySelector('.login-tabs');
 
         if (params.get('mode') === 'register') {
           showMode('register');
@@ -88,15 +105,49 @@
 
         function showMode(mode) {
           const isLogin = mode === 'login';
+          const isRegister = mode === 'register';
+          const isForgot = mode === 'forgot';
           loginForm.classList.toggle('active', isLogin);
-          registerForm.classList.toggle('active', !isLogin);
+          registerForm.classList.toggle('active', isRegister);
+          forgotForm.classList.toggle('active', isForgot);
+          if (loginTabs) loginTabs.hidden = isForgot;
           loginTabBtn.classList.toggle('active', isLogin);
-          registerTabBtn.classList.toggle('active', !isLogin);
+          registerTabBtn.classList.toggle('active', isRegister);
           showStatus('', '');
         }
 
         loginTabBtn.addEventListener('click', () => showMode('login'));
         registerTabBtn.addEventListener('click', () => showMode('register'));
+        document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          showMode('forgot');
+        });
+        document.getElementById('backToLoginLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          showMode('login');
+        });
+
+        forgotForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById('forgotSubmitBtn');
+          btn.disabled = true;
+          showStatus('', '');
+          try {
+            const res = await fetch('/auth/forgot-password', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: document.getElementById('forgotEmail').value.trim() }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Could not send reset email');
+            showStatus('If that email has a password account, a reset link was sent. Check your inbox.', 'success');
+          } catch (err) {
+            showStatus(err.message || 'Could not send reset email', 'error');
+          } finally {
+            btn.disabled = false;
+          }
+        });
 
         async function afterAuth() {
           window.location.href = redirectTo;
