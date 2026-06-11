@@ -671,8 +671,18 @@ ${itemsXml}
   // Before /mcp/:slug — otherwise "submit" is treated as a server slug
   registerMcpSubmissionRoutes(app);
 
+  const MCP_SLUG_ALIASES = {
+    'xgr-network': 'xgr-mcp',
+    'xgr-network-mcp': 'xgr-mcp',
+    'https-mcp-xgr-network-mcp': 'xgr-mcp',
+  };
+
   app.get('/mcp/:slug', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const alias = MCP_SLUG_ALIASES[req.params.slug];
+    if (alias) {
+      return res.redirect(301, `/mcp/${alias}`);
+    }
     if (isReservedMcpPath(req.params.slug)) {
       return res.status(404).render('404', { title: 'Page Not Found' });
     }

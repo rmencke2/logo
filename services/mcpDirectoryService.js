@@ -138,7 +138,15 @@ function mergeManualInto(servers, manualData) {
       bySlug.set(m.slug, preferRicherServer(existing, m));
       continue;
     }
-    if (gh && ghKeys.has(gh)) continue;
+    if (gh && ghKeys.has(gh)) {
+      const existingByGh = [...bySlug.values()].find(
+        (s) => (s.github_url || '').toLowerCase() === gh,
+      );
+      if (existingByGh) {
+        bySlug.set(existingByGh.slug, preferRicherServer(existingByGh, m));
+        continue;
+      }
+    }
     bySlug.set(m.slug, m);
     if (gh) ghKeys.add(gh);
   }
