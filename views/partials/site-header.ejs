@@ -49,10 +49,30 @@
         </div>
       </div>
     </nav>
+    <div class="site-header-auth" id="siteHeaderAuth">
+      <div id="siteHeaderAuthGuest">
+        <a href="/login" class="site-header-auth-btn site-header-auth-btn--primary" id="siteHeaderLoginLink">Log in</a>
+      </div>
+      <div id="siteHeaderAuthUser" class="site-header-user" hidden>
+        <div class="site-header-user-menu" id="siteHeaderUserMenu">
+          <button type="button" class="site-header-user-trigger" id="siteHeaderUserTrigger" aria-haspopup="true">
+            <span class="site-header-user-avatar" id="siteHeaderUserAvatar" aria-hidden="true">U</span>
+            <span id="siteHeaderUserName">Account</span>
+          </button>
+          <div class="site-header-user-panel" role="menu">
+            <div class="site-header-user-email" id="siteHeaderUserEmail"></div>
+            <a href="/admin" id="siteHeaderAdminLink" role="menuitem" hidden>Admin dashboard</a>
+            <button type="button" id="siteHeaderLogoutBtn" role="menuitem">Log out</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <a href="/#newsletter" class="site-header-subscribe">Subscribe →</a>
   </div>
 </header>
 <!-- Hidden language selector for i18n (footer controls language) -->
+<link rel="stylesheet" href="/css/site-auth.css" />
+<script src="/js/site-auth.js" defer></script>
 <select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1">
   <option value="en">English</option>
   <option value="da">Dansk</option>

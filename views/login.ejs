@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>Log in — Influzer.ai</title>
+    <meta name="description" content="Log in to Influzer.ai with your email and password." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://www.influzer.ai/login" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/site-auth.css" />
+  </head>
+  <body>
+    <%- include('partials/site-header', { activeNav: '' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="login-page" id="main">
+      <div class="login-card">
+        <h1>Account</h1>
+        <p class="login-card__lead">Sign in with your email and password to access admin tools and saved features.</p>
+
+        <div class="login-tabs" role="tablist" aria-label="Account mode">
+          <button type="button" class="login-tab active" id="loginTabBtn" data-mode="login">Log in</button>
+          <button type="button" class="login-tab" id="registerTabBtn" data-mode="register">Create account</button>
+        </div>
+
+        <div id="loginStatus" class="login-status" role="status" aria-live="polite"></div>
+
+        <form id="loginForm" class="login-form active" novalidate>
+          <div class="login-field">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" name="email" autocomplete="email" required />
+          </div>
+          <div class="login-field">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="login-submit" id="loginSubmitBtn">Log in</button>
+        </form>
+
+        <form id="registerForm" class="login-form" novalidate>
+          <div class="login-field">
+            <label for="registerName">Name (optional)</label>
+            <input type="text" id="registerName" name="name" autocomplete="name" maxlength="100" />
+          </div>
+          <div class="login-field">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" name="email" autocomplete="email" required />
+          </div>
+          <div class="login-field">
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" name="password" autocomplete="new-password" required minlength="8" />
+          </div>
+          <div class="login-field">
+            <label for="registerPasswordConfirm">Confirm password</label>
+            <input type="password" id="registerPasswordConfirm" autocomplete="new-password" required minlength="8" />
+          </div>
+          <button type="submit" class="login-submit" id="registerSubmitBtn">Create account</button>
+        </form>
+
+        <p class="login-footnote">
+          Admin access requires an account with admin privileges. After registering, run
+          <code>node scripts/set-admin.js your@email.com</code> on the server if you are setting up for the first time.
+        </p>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        const redirectTo = params.get('redirect') || '/';
+        const statusEl = document.getElementById('loginStatus');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginTabBtn = document.getElementById('loginTabBtn');
+        const registerTabBtn = document.getElementById('registerTabBtn');
+
+        if (params.get('mode') === 'register') {
+          showMode('register');
+        }
+
+        function showStatus(message, type) {
+          statusEl.textContent = message;
+          statusEl.className = 'login-status' + (type ? ' is-' + type : '');
+        }
+
+        function showMode(mode) {
+          const isLogin = mode === 'login';
+          loginForm.classList.toggle('active', isLogin);
+          registerForm.classList.toggle('active', !isLogin);
+          loginTabBtn.classList.toggle('active', isLogin);
+          registerTabBtn.classList.toggle('active', !isLogin);
+          showStatus('', '');
+        }
+
+        loginTabBtn.addEventListener('click', () => showMode('login'));
+        registerTabBtn.addEventListener('click', () => showMode('register'));
+
+        async function afterAuth() {
+          window.location.href = redirectTo;
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById('loginSubmitBtn');
+          btn.disabled = true;
+          showStatus('', '');
+          try {
+            const res = await fetch('/auth/login', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: document.getElementById('loginEmail').value.trim(),
+                password: document.getElementById('loginPassword').value,
+              }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+              throw new Error(data.error || 'Login failed');
+            }
+            showStatus('Signed in. Redirecting…', 'success');
+            setTimeout(afterAuth, 400);
+          } catch (err) {
+            showStatus(err.message || 'Login failed', 'error');
+          } finally {
+            btn.disabled = false;
+          }
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const password = document.getElementById('registerPassword').value;
+          const confirm = document.getElementById('registerPasswordConfirm').value;
+          if (password !== confirm) {
+            showStatus('Passwords do not match', 'error');
+            return;
+          }
+          const btn = document.getElementById('registerSubmitBtn');
+          btn.disabled = true;
+          showStatus('', '');
+          try {
+            const res = await fetch('/auth/register', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: document.getElementById('registerEmail').value.trim(),
+                password,
+                name: document.getElementById('registerName').value.trim() || undefined,
+              }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+              const msg = data.error || (data.errors && data.errors[0]?.msg) || 'Registration failed';
+              throw new Error(msg);
+            }
+            showStatus('Account created. Redirecting…', 'success');
+            setTimeout(afterAuth, 500);
+          } catch (err) {
+            showStatus(err.message || 'Registration failed', 'error');
+          } finally {
+            btn.disabled = false;
+          }
+        });
+
+        fetch('/auth/me', { credentials: 'include' })
+          .then((res) => {
+            if (res.ok) window.location.href = redirectTo;
+          })
+          .catch(() => {});
+      })();
+    </script>
+  </body>
+</html>

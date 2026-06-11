@@ -55,7 +55,7 @@ function initializeAdminService(app) {
       
       // If still not authenticated, redirect to login
       if (!req.user || !req.user.id) {
-        return res.redirect('/?redirect=/admin');
+        return res.redirect('/login?redirect=/admin');
       }
     }
     

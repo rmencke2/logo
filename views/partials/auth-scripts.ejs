@@ -96,12 +96,13 @@
 
   // Show login modal (redirect to homepage if not available)
   function showLoginModal() {
-    window.location.href = '/?login=true';
+    const redirect = encodeURIComponent(window.location.pathname + window.location.search);
+    window.location.href = `/login?redirect=${redirect}`;
   }
 
   // Show signup modal (redirect to homepage if not available)
   function showSignupModal() {
-    window.location.href = '/?signup=true';
+    window.location.href = '/login?mode=register';
   }
 
   // Initialize auth

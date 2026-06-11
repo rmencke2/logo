@@ -347,10 +347,21 @@ function initializeStaticService(app) {
     res.redirect(302, '/logo-generator#favicon');
   });
 
+  app.get('/login', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('login');
+  });
+
   app.get('/', (req, res) => {
     if (req.query.signup === 'true') {
       const params = new URLSearchParams(req.query);
       return res.redirect(302, `/logo-generator?${params.toString()}`);
+    }
+    if (req.query.login === 'true' || req.query.redirect) {
+      const params = new URLSearchParams();
+      if (req.query.redirect) params.set('redirect', String(req.query.redirect));
+      const qs = params.toString();
+      return res.redirect(302, `/login${qs ? `?${qs}` : ''}`);
     }
     renderHomepage(req, res);
   });

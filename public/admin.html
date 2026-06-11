@@ -643,7 +643,7 @@
         // Check if user is authenticated
         const authRes = await fetch('/auth/me');
         if (!authRes.ok) {
-          window.location.href = '/?redirect=/admin';
+          window.location.href = '/login?redirect=/admin';
           return;
         }
 
