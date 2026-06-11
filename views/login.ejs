@@ -19,7 +19,10 @@
     <main class="login-page" id="main">
       <div class="login-card">
         <h1>Account</h1>
-        <p class="login-card__lead">Sign in with your email and password to access admin tools and saved features.</p>
+        <p class="login-card__lead">Sign in to access admin tools and saved features. If you originally registered with Google, use <strong>Continue with Google</strong> — password reset does not apply to those accounts.</p>
+
+        <a class="login-oauth-btn" id="googleLoginBtn" href="/auth/google">Continue with Google</a>
+        <p class="login-oauth-divider"><span>or use email & password</span></p>
 
         <div class="login-tabs" role="tablist" aria-label="Account mode">
           <button type="button" class="login-tab active" id="loginTabBtn" data-mode="login">Log in</button>
@@ -86,6 +89,10 @@
       (function () {
         const params = new URLSearchParams(window.location.search);
         const redirectTo = params.get('redirect') || '/';
+        const googleBtn = document.getElementById('googleLoginBtn');
+        if (googleBtn && redirectTo && redirectTo !== '/') {
+          googleBtn.href = '/auth/google?redirect=' + encodeURIComponent(redirectTo);
+        }
         const statusEl = document.getElementById('loginStatus');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
@@ -143,8 +150,8 @@
             if (!res.ok) throw new Error(data.error || 'Could not send reset email');
             showStatus(
               data.message ||
-                'If that email uses password login, a reset link was sent. Check spam. Google-only accounts must use Google sign-in, or reset via SSH on the server.',
-              'success',
+                'If that email uses password login, a reset link was sent. Check spam.',
+              data.oauthAccount ? 'error' : 'success',
             );
           } catch (err) {
             showStatus(err.message || 'Could not send reset email', 'error');

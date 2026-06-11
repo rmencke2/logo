@@ -371,9 +371,20 @@ router.post(
       const normalizedEmail = normalizeEmailForLookup(email);
       const user = await db.getUserByEmail(normalizedEmail);
 
-      if (!user || user.provider !== 'local') {
-        // Don't reveal if email exists
-        return res.json({ success: true, message: 'If the email exists, a password reset link has been sent.' });
+      if (!user) {
+        return res.json({
+          success: true,
+          message: 'If the email exists, a password reset link has been sent.',
+        });
+      }
+
+      if (user.provider !== 'local') {
+        return res.json({
+          success: true,
+          oauthAccount: true,
+          message:
+            'This email uses Google sign-in. Password reset emails are not sent for Google accounts — use “Continue with Google” on the login page instead.',
+        });
       }
 
       // Generate reset token
@@ -459,7 +470,13 @@ router.post(
 );
 
 // OAuth routes
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google', (req, res, next) => {
+  const redirect = String(req.query.redirect || '').trim();
+  if (redirect.startsWith('/') && !redirect.startsWith('//')) {
+    req.session.oauthRedirect = redirect;
+  }
+  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
 
 router.get(
   '/google/callback',
@@ -509,7 +526,9 @@ router.get(
           // Check if cookie header will be set
           // Note: The cookie is set by Express-session middleware, not manually
           // It should be set automatically when the response is sent
-          res.redirect('/?auth_success=true');
+          const redirectTo = req.session.oauthRedirect || '/';
+          delete req.session.oauthRedirect;
+          res.redirect(redirectTo);
         });
       } catch (err) {
         console.error('❌ Database error:', err);
