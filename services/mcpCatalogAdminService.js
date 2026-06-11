@@ -10,6 +10,7 @@ const {
   getMcpCategories,
   findMcpServerBySlug,
 } = require('./mcpDirectoryService');
+const { sendMcpApprovalEmail } = require('../emailService');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -173,10 +174,11 @@ function markSubmission(id, status, meta = {}) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
-function approveSubmission(id, body = {}, reviewedBy = '') {
+async function approveSubmission(id, body = {}, reviewedBy = '') {
   const sub = readSubmissionFile(id);
   if (!sub) throw new Error('Submission not found');
 
+  const wasAlreadyApproved = sub.reviewStatus === 'approved';
   const server = submissionToManualServer(sub, body);
   if (!server.name || !server.slug || !server.description) {
     throw new Error('Server name, slug, and description are required');
@@ -193,12 +195,26 @@ function approveSubmission(id, body = {}, reviewedBy = '') {
   upsertManualServer(server);
   if (body.pinToTop100) pinToTop100(server.slug);
 
+  const pageUrl = `/mcp/${server.slug}`;
+
   markSubmission(id, 'approved', {
     approvedSlug: server.slug,
     reviewedBy,
   });
 
-  return { server, slug: server.slug, pageUrl: `/mcp/${server.slug}` };
+  let emailSent = false;
+  let emailError = null;
+  if (!wasAlreadyApproved && sub.submitterEmail) {
+    try {
+      await sendMcpApprovalEmail({ submission: sub, server, pageUrl });
+      emailSent = true;
+    } catch (err) {
+      emailError = err.message || 'Failed to send approval email';
+      console.error('MCP approval notification failed:', emailError);
+    }
+  }
+
+  return { server, slug: server.slug, pageUrl, emailSent, emailError };
 }
 
 function registerMcpCatalogAdminRoutes(app, requireAdmin) {
@@ -234,16 +250,22 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     }
   });
 
-  app.post('/admin/api/mcp/submissions/:id/approve', requireAuth, requireAdmin, (req, res) => {
+  app.post('/admin/api/mcp/submissions/:id/approve', requireAuth, requireAdmin, async (req, res) => {
     try {
-      const result = approveSubmission(
+      const result = await approveSubmission(
         req.params.id,
         req.body || {},
         req.user?.email || req.user?.name || 'admin',
       );
+      let message = `Added ${result.server.name} to the catalog`;
+      if (result.emailSent) {
+        message += '. Approval email sent to submitter.';
+      } else if (result.emailError) {
+        message += `. Warning: approval email failed (${result.emailError}).`;
+      }
       res.json({
         success: true,
-        message: `Added ${result.server.name} to the catalog`,
+        message,
         ...result,
       });
     } catch (err) {

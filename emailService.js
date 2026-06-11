@@ -242,7 +242,7 @@ function formatSubmissionField(label, value) {
   </tr>`;
 }
 
-async function sendMcpSubmissionEmail(submission) {
+function ensureMcpEmailTransportReady() {
   if (!isEmailConfigured()) {
     throw new Error(
       'Email is not configured on the server (set EMAIL_SERVICE=gmail, EMAIL_USER, EMAIL_PASS in .env and restart PM2).',
@@ -255,6 +255,10 @@ async function sendMcpSubmissionEmail(submission) {
   if (transporterMode === 'console') {
     throw new Error('Email transport is in console-only mode; no real SMTP/Gmail connection.');
   }
+}
+
+async function sendMcpSubmissionEmail(submission) {
+  ensureMcpEmailTransportReady();
 
   const to = process.env.MCP_SUBMISSION_EMAIL || 'mencke@gmail.com';
   const fromAddress = getFromAddress();
@@ -341,10 +345,83 @@ async function sendMcpSubmissionEmail(submission) {
   }
 }
 
+async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
+  ensureMcpEmailTransportReady();
+
+  const to = String(submission.submitterEmail || '').trim();
+  if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    throw new Error('Submitter email is missing or invalid');
+  }
+
+  const base = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
+  const listingUrl = `${base}${pageUrl}`;
+  const fromAddress = getFromAddress();
+  const greeting = submission.submitterName || 'there';
+  const serverName = server.name || submission.serverName;
+  const toolCount = Array.isArray(server.tools) ? server.tools.length : 0;
+
+  const mailOptions = {
+    from: fromAddress,
+    to,
+    replyTo: process.env.MCP_SUBMISSION_EMAIL || process.env.EMAIL_USER || undefined,
+    subject: `Your MCP server is live on Influzer.ai — ${serverName}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+        <body style="font-family:Arial,sans-serif;line-height:1.6;color:#333;">
+          <div style="max-width:600px;margin:0 auto;padding:20px;">
+            <h2 style="margin:0 0 12px;">You're listed in the MCP directory</h2>
+            <p>Hi ${escapeHtml(greeting)},</p>
+            <p>Thanks for submitting <strong>${escapeHtml(serverName)}</strong>. We've reviewed and published it in the Influzer.ai MCP server directory.</p>
+            <p style="margin:24px 0;">
+              <a href="${escapeHtml(listingUrl)}" style="display:inline-block;padding:12px 24px;background:#6366f1;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;">View your listing</a>
+            </p>
+            <p style="word-break:break-all;font-size:14px;color:#555;">${escapeHtml(listingUrl)}</p>
+            <ul style="font-size:14px;color:#444;padding-left:20px;">
+              <li><strong>Category:</strong> ${escapeHtml(server.category || submission.category || '—')}</li>
+              <li><strong>Tools indexed:</strong> ${toolCount}</li>
+            </ul>
+            <p style="font-size:14px;color:#666;">Share the link with your users or add it to your docs. If anything looks wrong, reply to this email.</p>
+            <p style="margin-top:28px;font-size:13px;color:#888;">— Influzer.ai MCP Directory</p>
+          </div>
+        </body>
+      </html>
+    `,
+    text: [
+      `Hi ${greeting},`,
+      '',
+      `Thanks for submitting ${serverName}. We've reviewed and published it in the Influzer.ai MCP server directory.`,
+      '',
+      `View your listing: ${listingUrl}`,
+      '',
+      `Category: ${server.category || submission.category || '—'}`,
+      `Tools indexed: ${toolCount}`,
+      '',
+      'If anything looks wrong, reply to this email.',
+      '',
+      '— Influzer.ai MCP Directory',
+    ].join('\n'),
+  };
+
+  try {
+    const info = await getTransporter().sendMail(mailOptions);
+    console.log('✅ MCP approval email sent to submitter');
+    console.log('   To:', to);
+    console.log('   Listing:', listingUrl);
+    console.log('   Message ID:', info.messageId || '(none)');
+    return { success: true, messageId: info.messageId, to, listingUrl };
+  } catch (error) {
+    console.error('❌ MCP approval email failed:', error.message);
+    if (error.response) console.error('   SMTP response:', error.response);
+    throw error;
+  }
+}
+
 module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendMcpSubmissionEmail,
+  sendMcpApprovalEmail,
   isEmailConfigured,
   getTransporter,
   resetTransporter,
