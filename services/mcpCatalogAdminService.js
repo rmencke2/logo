@@ -5,7 +5,6 @@
 const fs = require('fs');
 const path = require('path');
 const { requireAuth } = require('../auth');
-const { requireAdmin } = require('./adminService');
 const {
   clearMcpCache,
   getMcpCategories,
@@ -202,7 +201,11 @@ function approveSubmission(id, body = {}, reviewedBy = '') {
   return { server, slug: server.slug, pageUrl: `/mcp/${server.slug}` };
 }
 
-function registerMcpCatalogAdminRoutes(app) {
+function registerMcpCatalogAdminRoutes(app, requireAdmin) {
+  if (typeof requireAdmin !== 'function') {
+    throw new Error('registerMcpCatalogAdminRoutes requires requireAdmin middleware');
+  }
+
   app.get('/admin/api/mcp/submissions', requireAuth, requireAdmin, (req, res) => {
     try {
       const status = String(req.query.status || 'pending');

@@ -414,7 +414,7 @@ function initializeAdminService(app) {
     }
   });
 
-  registerMcpCatalogAdminRoutes(app);
+  registerMcpCatalogAdminRoutes(app, requireAdmin);
 }
 
 module.exports = { initializeAdminService, requireAdmin };
