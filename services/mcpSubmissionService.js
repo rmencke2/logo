@@ -211,6 +211,7 @@ function registerMcpSubmissionRoutes(app) {
         ...data,
         ip,
         submittedAt,
+        reviewStatus: 'pending',
       };
 
       const savedPath = persistSubmission(payload);

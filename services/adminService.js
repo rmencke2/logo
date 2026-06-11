@@ -5,6 +5,7 @@
 const express = require('express');
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
+const { registerMcpCatalogAdminRoutes } = require('./mcpCatalogAdminService');
 
 /**
  * Middleware to check if user is admin (requires auth first)
@@ -412,6 +413,8 @@ function initializeAdminService(app) {
       res.status(500).json({ error: 'Failed to fetch abuse records' });
     }
   });
+
+  registerMcpCatalogAdminRoutes(app);
 }
 
 module.exports = { initializeAdminService, requireAdmin };

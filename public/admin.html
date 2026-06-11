@@ -290,6 +290,55 @@
     .tab-content.active {
       display: block;
     }
+    .modal-content--wide {
+      max-width: 820px;
+    }
+    .form-group select {
+      width: 100%;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 12px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .badge.pending {
+      background: #6366f1;
+      color: #fff;
+    }
+    .badge.approved {
+      background: #10a37f;
+      color: #fff;
+    }
+    .badge.dismissed {
+      background: #2a2a2a;
+      color: #8e8e93;
+    }
+    .mcp-tools-preview {
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 12px;
+      max-height: 160px;
+      overflow-y: auto;
+      color: #8e8e93;
+      white-space: pre-wrap;
+    }
+    .form-row-check {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .form-row-check label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ececec;
+      font-size: 14px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -328,6 +377,7 @@
       <button class="tab" data-tab="newsletter">Newsletter</button>
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
       <button class="tab" data-tab="activity">Top Activity</button>
+      <button class="tab" data-tab="mcp">MCP Submissions</button>
     </div>
 
     <!-- Users Tab -->
@@ -403,6 +453,28 @@
         </div>
       </div>
     </div>
+
+    <!-- MCP Submissions Tab -->
+    <div class="tab-content" id="mcpTab">
+      <div class="section">
+        <h2>MCP Server Submissions</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Review submissions from <a href="/mcp/submit" style="color:#10a37f;">/mcp/submit</a>. Approving writes to <code>data/mcp-servers-manual.json</code> on the server.
+        </p>
+        <div class="search-bar">
+          <select id="mcpStatusFilter">
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="dismissed">Dismissed</option>
+            <option value="all">All</option>
+          </select>
+          <button class="btn btn-primary" onclick="loadMcpSubmissions()">Refresh</button>
+        </div>
+        <div id="mcpSubmissionsContainer">
+          <div class="loading">Loading submissions...</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- User Details Modal -->
@@ -457,6 +529,84 @@
     </div>
   </div>
 
+  <!-- MCP Review Modal -->
+  <div class="modal" id="mcpReviewModal">
+    <div class="modal-content modal-content--wide">
+      <h3>Review MCP submission</h3>
+      <div id="mcpReviewAlert"></div>
+      <form id="mcpReviewForm" onsubmit="handleMcpApprove(event)">
+        <input type="hidden" id="mcpReviewId" />
+        <div class="form-group">
+          <label>Server name</label>
+          <input type="text" id="mcpServerName" required />
+        </div>
+        <div class="form-group">
+          <label>Slug (URL: /mcp/…)</label>
+          <input type="text" id="mcpSlug" required pattern="[a-z0-9-]+" />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="mcpDescription" required minlength="20"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="mcpCategory" required></select>
+        </div>
+        <div class="form-group">
+          <label>Transport</label>
+          <select id="mcpTransport" required>
+            <option value="stdio">stdio</option>
+            <option value="http">http</option>
+            <option value="sse">sse</option>
+            <option value="unknown">unknown</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>MCP endpoint URL (remote http/sse)</label>
+          <input type="url" id="mcpEndpoint" placeholder="https://mcp.example.com/mcp" />
+        </div>
+        <div class="form-group">
+          <label>Install command (stdio)</label>
+          <input type="text" id="mcpInstallCommand" placeholder="npx -y @scope/mcp-server" />
+        </div>
+        <div class="form-group">
+          <label>GitHub URL</label>
+          <input type="url" id="mcpGithubUrl" />
+        </div>
+        <div class="form-group">
+          <label>Docs URL</label>
+          <input type="url" id="mcpDocsUrl" />
+        </div>
+        <div class="form-group">
+          <label>Stars (estimate)</label>
+          <input type="number" id="mcpStars" min="0" />
+        </div>
+        <div class="form-row-check">
+          <label><input type="checkbox" id="mcpOfficial" /> Official server</label>
+          <label><input type="checkbox" id="mcpFeatured" /> Featured</label>
+          <label><input type="checkbox" id="mcpPinTop100" /> Pin to Top 100</label>
+        </div>
+        <div class="form-group">
+          <label>Tools (one per line: <code>tool_name — description</code>)</label>
+          <textarea id="mcpTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Submitter</label>
+          <div id="mcpSubmitterMeta" style="color:#8e8e93;font-size:13px;"></div>
+        </div>
+        <div class="form-group">
+          <label>Setup instructions (read-only)</label>
+          <div class="mcp-tools-preview" id="mcpSetupNotes"></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('mcpReviewModal')">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="handleMcpDismiss()">Dismiss</button>
+          <button type="submit" class="btn btn-primary" id="mcpApproveBtn">Approve &amp; publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Block IP Modal -->
   <div class="modal" id="blockIPModal">
     <div class="modal-content">
@@ -477,6 +627,15 @@
   <script>
     let currentUserId = null;
     let currentIP = null;
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
     // Check authentication and admin status on load
     async function checkAuth() {
@@ -521,6 +680,7 @@
         if (tabName === 'activity') loadActivity();
         if (tabName === 'comments') loadComments();
         if (tabName === 'newsletter') loadNewsletterSubscribers();
+        if (tabName === 'mcp') loadMcpSubmissions();
       });
     });
 
@@ -1178,6 +1338,182 @@
       if (e.key === 'Enter') searchUsers();
     });
 
+    function mcpStatusBadge(status) {
+      const s = status || 'pending';
+      return `<span class="badge ${s}">${s}</span>`;
+    }
+
+    function toolsToText(tools) {
+      if (!Array.isArray(tools)) return '';
+      return tools
+        .map((t) => (t.description ? `${t.name} — ${t.description}` : t.name))
+        .join('\n');
+    }
+
+    function parseToolsText(raw) {
+      return raw
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const sep = line.includes(' — ') ? ' — ' : line.includes(' - ') ? ' - ' : null;
+          if (sep) {
+            const [name, ...rest] = line.split(sep);
+            return { name: name.trim(), description: rest.join(sep).trim() };
+          }
+          return { name: line, description: '' };
+        });
+    }
+
+    async function loadMcpSubmissions() {
+      const container = document.getElementById('mcpSubmissionsContainer');
+      const status = document.getElementById('mcpStatusFilter').value;
+      container.innerHTML = '<div class="loading">Loading submissions...</div>';
+      try {
+        const res = await fetch(`/admin/api/mcp/submissions?status=${encodeURIComponent(status)}`);
+        if (!res.ok) throw new Error('Failed to load submissions');
+        const data = await res.json();
+        if (!data.submissions.length) {
+          container.innerHTML = '<div class="loading">No submissions in this filter.</div>';
+          return;
+        }
+        let html = `<table><thead><tr>
+          <th>Submitted</th><th>Server</th><th>Category</th><th>From</th><th>Tools</th><th>Status</th><th></th>
+        </tr></thead><tbody>`;
+        for (const row of data.submissions) {
+          const date = row.submittedAt ? new Date(row.submittedAt).toLocaleString() : '—';
+          html += `<tr>
+            <td>${date}</td>
+            <td><strong>${escapeHtml(row.serverName || '')}</strong><br><span style="color:#8e8e93;font-size:12px;">${escapeHtml(row.suggestedSlug || '')}</span></td>
+            <td>${escapeHtml(row.category || '')}</td>
+            <td>${escapeHtml(row.submitterName || row.submitterEmail || '')}</td>
+            <td>${row.toolCount || 0}</td>
+            <td>${mcpStatusBadge(row.reviewStatus)}</td>
+            <td><button class="btn btn-sm btn-secondary" onclick="openMcpReview('${escapeHtml(row.id)}')">Review</button></td>
+          </tr>`;
+        }
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    async function openMcpReview(id) {
+      document.getElementById('mcpReviewAlert').innerHTML = '';
+      document.getElementById('mcpReviewId').value = id;
+      try {
+        const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}`);
+        if (!res.ok) throw new Error('Failed to load submission');
+        const data = await res.json();
+        const sub = data.submission;
+        const preview = data.preview;
+
+        const catSelect = document.getElementById('mcpCategory');
+        catSelect.innerHTML = data.categories
+          .map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
+          .join('');
+
+        document.getElementById('mcpServerName').value = preview.name || '';
+        document.getElementById('mcpSlug').value = preview.slug || '';
+        document.getElementById('mcpDescription').value = preview.description || '';
+        document.getElementById('mcpCategory').value = preview.category || 'Dev Tools';
+        document.getElementById('mcpTransport').value = preview.transport || 'unknown';
+        document.getElementById('mcpEndpoint').value = preview.mcp_endpoint || sub.primaryUrl || '';
+        document.getElementById('mcpInstallCommand').value = preview.install_command || '';
+        document.getElementById('mcpGithubUrl').value = preview.github_url || sub.githubUrl || '';
+        document.getElementById('mcpDocsUrl').value = preview.docs_url || sub.docsUrl || '';
+        document.getElementById('mcpStars').value = preview.stars || sub.stars || 0;
+        document.getElementById('mcpOfficial').checked = Boolean(preview.official);
+        document.getElementById('mcpFeatured').checked = Boolean(preview.featured);
+        document.getElementById('mcpPinTop100').checked = false;
+        document.getElementById('mcpTools').value = toolsToText(preview.tools || sub.tools || []);
+        document.getElementById('mcpSubmitterMeta').textContent =
+          `${sub.submitterName || ''} · ${sub.submitterEmail || ''} · ${sub.submittedAt || ''}`;
+        document.getElementById('mcpSetupNotes').textContent =
+          [sub.setupInstructions, sub.additionalNotes].filter(Boolean).join('\n\n') || '(none)';
+
+        const approveBtn = document.getElementById('mcpApproveBtn');
+        if (sub.reviewStatus === 'approved') {
+          approveBtn.textContent = 'Update catalog entry';
+          document.getElementById('mcpReviewAlert').innerHTML =
+            `<div class="success">Already approved as <a href="/mcp/${escapeHtml(sub.approvedSlug || preview.slug)}" style="color:#10a37f;">/mcp/${escapeHtml(sub.approvedSlug || preview.slug)}</a>. Saving again will update the manual entry.</div>`;
+        } else {
+          approveBtn.textContent = 'Approve & publish';
+          if (data.alreadyInCatalog) {
+            document.getElementById('mcpReviewAlert').innerHTML =
+              '<div class="error">A server with this slug already exists in the catalog. Adjust the slug before approving.</div>';
+          }
+        }
+
+        document.getElementById('mcpReviewModal').classList.add('active');
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleMcpApprove(event) {
+      event.preventDefault();
+      const id = document.getElementById('mcpReviewId').value;
+      const tools = parseToolsText(document.getElementById('mcpTools').value);
+      if (!tools.length) {
+        alert('Add at least one tool.');
+        return;
+      }
+      const body = {
+        serverName: document.getElementById('mcpServerName').value.trim(),
+        slug: document.getElementById('mcpSlug').value.trim(),
+        description: document.getElementById('mcpDescription').value.trim(),
+        category: document.getElementById('mcpCategory').value,
+        transport: document.getElementById('mcpTransport').value,
+        mcpEndpoint: document.getElementById('mcpEndpoint').value.trim(),
+        installCommand: document.getElementById('mcpInstallCommand').value.trim(),
+        githubUrl: document.getElementById('mcpGithubUrl').value.trim(),
+        docsUrl: document.getElementById('mcpDocsUrl').value.trim(),
+        stars: document.getElementById('mcpStars').value,
+        official: document.getElementById('mcpOfficial').checked,
+        featured: document.getElementById('mcpFeatured').checked,
+        pinToTop100: document.getElementById('mcpPinTop100').checked,
+        tools,
+      };
+      const btn = document.getElementById('mcpApproveBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}/approve`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Approve failed');
+        closeModal('mcpReviewModal');
+        alert(`${data.message}\n\nLive at ${data.pageUrl}`);
+        loadMcpSubmissions();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function handleMcpDismiss() {
+      const id = document.getElementById('mcpReviewId').value;
+      if (!confirm('Dismiss this submission?')) return;
+      try {
+        const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}/dismiss`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Dismiss failed');
+        closeModal('mcpReviewModal');
+        loadMcpSubmissions();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
     // Modal helpers
     function closeModal(modalId) {
       document.getElementById(modalId).classList.remove('active');
@@ -1191,6 +1527,10 @@
       }
       if (modalId === 'blockIPModal') {
         currentIP = null;
+      }
+      if (modalId === 'mcpReviewModal') {
+        document.getElementById('mcpReviewForm').reset();
+        document.getElementById('mcpReviewAlert').innerHTML = '';
       }
     }
 
