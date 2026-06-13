@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-06-12T09:56:54.061Z",
+  "generated_at": "2026-06-13T08:51:25.218Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-06-11T10:05:12.239Z",
+  "catalog_generated_at": "2026-06-12T09:56:54.088Z",
   "summary": {
     "checked": 315,
     "skipped_manual": 85,
     "skipped_no_endpoint": 1185,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 313,
-    "tools_changed": 1,
+    "unchanged": 315,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 1,
+    "auth_required_kept": 0,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 1500,
@@ -25,23 +25,6 @@
     "with_tools_before": 389,
     "with_tools_after": 389
   },
-  "changes": [
-    {
-      "slug": "quantoracle-quantoracle",
-      "name": "quantoracle",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [],
-      "removed": [],
-      "changed": [
-        "options_price",
-        "crypto_liquidation-price",
-        "risk_var-parametric"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
