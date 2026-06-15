@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-14T09:00:42.819Z",
+  "generated_at": "2026-06-15T11:39:54.078Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-06-13T08:51:25.247Z",
+  "catalog_generated_at": "2026-06-14T09:00:42.853Z",
   "summary": {
     "checked": 315,
     "skipped_manual": 85,
     "skipped_no_endpoint": 1185,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 313,
-    "tools_changed": 2,
+    "unchanged": 315,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,44 +18,13 @@
     "live_ok": 0,
     "smithery_fallback": 1500,
     "errors": 0,
-    "tools_added_total": 1,
-    "tools_removed_total": 1,
+    "tools_added_total": 0,
+    "tools_removed_total": 0,
     "catalog_total": 1585,
     "http_endpoints": 313,
     "with_tools_before": 389,
     "with_tools_after": 389
   },
-  "changes": [
-    {
-      "slug": "sasabasara-where-is-my-train-mcp",
-      "name": "Where's my train? MTA Guide",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 8,
-      "afterToolCount": 8,
-      "added": [],
-      "removed": [],
-      "changed": [
-        "service_status"
-      ]
-    },
-    {
-      "slug": "contrastcyber-contrastapi",
-      "name": "ContrastAPI",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [
-        "contrast_scan"
-      ],
-      "removed": [
-        "check_injection"
-      ],
-      "changed": []
-    }
-  ],
+  "changes": [],
   "errors": []
 }
