@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-14T09:00:42.853Z",
+  "generated_at": "2026-06-15T11:56:21.677Z",
   "count": 100,
-  "total_catalog": 1587,
+  "total_catalog": 1563,
   "top100_slugs": [
     "webnode",
     "github",
+    "brave-search",
     "slack",
-    "google-drive",
     "linear",
     "context7",
     "stripe",
@@ -14,12 +14,15 @@
     "notion",
     "playwright",
     "googlesheets",
+    "henry-ships-sparkforge",
     "ethanhenrickson-math-mcp",
     "gmail",
     "clay-inc-clay-mcp",
+    "hamid-vakilzadeh-mcpsemanticscholar",
     "xgr-mcp",
-    "henry-ships-sparkforge",
-    "hugeicons-mcp-server",
+    "creativelead-unclick",
+    "googlecalendar",
+    "smithery-ai-national-weather-service",
     "desktop-commander",
     "e2b",
     "gitlab",
@@ -70,6 +73,7 @@
     "sourcegraph-cody",
     "sqlite",
     "stackblitz",
+    "supabase",
     "taskade",
     "terraform",
     "vercel",
@@ -98,11 +102,7 @@
     "searxng",
     "snyk",
     "sonarqube",
-    "storybook",
-    "vega-lite",
-    "zapier",
-    "googletasks",
-    "hamid-vakilzadeh-mcpsemanticscholar"
+    "storybook"
   ],
   "servers": [
     {
@@ -126,7 +126,7 @@
       "docs_url": "https://www.webnode.com",
       "stars": 500,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "browser",
       "primary_url": "https://www.webnode.com",
       "setup_steps": [
@@ -175,6 +175,32 @@
       "featured": true,
       "last_updated": "2026-06-15",
       "icon": "github"
+    },
+    {
+      "id": "brave-search",
+      "slug": "brave-search",
+      "name": "Brave Search",
+      "description": "Web search via the Brave Search API for up-to-date information retrieval.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "brave_web_search",
+          "description": "Search the web via Brave"
+        },
+        {
+          "name": "brave_local_search",
+          "description": "Search local businesses and places"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add brave-search -- npx -y @modelcontextprotocol/server-brave-search",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "last_updated": "2026-06-15",
+      "icon": "search"
     },
     {
       "id": "slack",
@@ -387,9 +413,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/slack",
-      "stars": 8002,
+      "stars": 8290,
       "source": "smithery",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "message-square",
       "smithery_qualified_name": "slack",
       "smithery_page_url": "https://smithery.ai/servers/slack",
@@ -404,39 +430,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/slack",
-      "tools_validated_at": "2026-06-15T11:29:48.284Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
-    },
-    {
-      "id": "google-drive",
-      "slug": "google-drive",
-      "name": "Google Drive",
-      "description": "File listing, search, and read access in Google Drive.",
-      "category": "Files & Docs",
-      "official": true,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search",
-          "description": "Search files in Drive"
-        },
-        {
-          "name": "read_file",
-          "description": "Read file contents"
-        },
-        {
-          "name": "list_files",
-          "description": "List files in a folder"
-        }
-      ],
-      "github_url": "https://github.com/modelcontextprotocol/servers",
-      "install_command": "claude mcp add gdrive -- npx -y @modelcontextprotocol/server-gdrive",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "last_updated": "2026-06-15",
-      "icon": "hard-drive"
     },
     {
       "id": "linear",
@@ -468,7 +462,7 @@
       "docs_url": "https://linear.app/docs",
       "stars": 920,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "layout-list",
       "primary_url": "https://linear.app/docs",
       "setup_steps": [
@@ -532,7 +526,7 @@
       "docs_url": "https://stripe.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "credit-card",
       "primary_url": "https://stripe.com/docs",
       "setup_steps": [
@@ -570,7 +564,7 @@
       "docs_url": "https://docs.sentry.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "shield-alert",
       "primary_url": "https://docs.sentry.io",
       "setup_steps": [
@@ -586,88 +580,38 @@
       "id": "notion",
       "slug": "notion",
       "name": "Notion",
-      "description": "Search across your Notion workspace and connected sources to quickly find pages, databases, and users. View full page and database details for deeper context. Create and update pages, manage databases, move or duplicate content, and add comments to keep work organized.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
+      "description": "Pages, databases, blocks, and workspace knowledge management.",
+      "category": "Communication",
+      "official": false,
+      "transport": "stdio",
       "tools": [
         {
-          "name": "notion-search",
-          "description": "Perform a search over:\n- \"internal\": Semantic search over Notion workspace and connected sources (Slack, Google Drive, Github, Jira, Microsoft Teams, Sharepoint, OneDrive, Linear). Supports filtering by creation date and creator.\n- \"user\": Search for users by name or email.\n\nAuto-selects AI search (with connected sources) or workspace search (workspace-only, faster) based on user's access to Notion AI. Use content_search_mode to override.\nUse \"fetch\" tool for full page/database contents after ge"
+          "name": "search",
+          "description": "Search pages and databases"
         },
         {
-          "name": "notion-fetch",
-          "description": "Retrieves details about a Notion entity (page, database, or data source) by URL or ID.\nProvide URL or ID in `id` parameter. Make multiple calls to fetch multiple entities.\nPages use enhanced Markdown format. For the complete specification, fetch the MCP resource at `notion://docs/enhanced-markdown-spec`.\nDatabases return all data sources (collections). Each data source has a unique ID shown in `<data-source url=\"collection://...\">` tags. You can pass a data source ID directly to this tool to fet"
+          "name": "get_page",
+          "description": "Retrieve page content"
         },
         {
-          "name": "notion-create-pages",
-          "description": "## Overview\nCreates one or more Notion pages, with the specified properties and content.\n## Parent\nAll pages created with a single call to this tool will have the same parent. The parent can be a Notion page (\"page_id\") or data source (\"data_source_id\"). If the parent is omitted, the pages are created as standalone, workspace-level private pages, and the person that created them can organize them later as they see fit.\nIf you have a database URL, ALWAYS pass it to the \"fetch\" tool first to get t"
-        },
-        {
-          "name": "notion-update-page",
-          "description": "## Overview\nUpdate a Notion page's properties or content.\n## Properties\nNotion page properties are a JSON map of property names to SQLite values.\nFor pages in a database:\n- ALWAYS use the \"fetch\" tool first to get the data source schema and the\texact property names.\n- Provide a non-null value to update a property's value.\n- Omitted properties are left unchanged.\n\n**IMPORTANT**: Some property types require expanded formats:\n- Date properties: Split into \"date:{property}:start\", \"date:{property}:e"
-        },
-        {
-          "name": "notion-move-pages",
-          "description": "Move one or more Notion pages or databases to a new parent."
-        },
-        {
-          "name": "notion-duplicate-page",
-          "description": "Duplicate a Notion page. The page must be within the current workspace, and you must have permission to access it. The duplication completes asynchronously, so do not rely on the new page identified by the returned ID or URL to be populated immediately. Let the user know that the duplication is in progress and that they can check back later using the 'fetch' tool or by clicking the returned URL and viewing it in the Notion app."
-        },
-        {
-          "name": "notion-create-database",
-          "description": "Creates a new Notion database using SQL DDL syntax.\nIf no title property provided, \"Name\" is auto-added. Returns Markdown with schema, SQLite definition, and data source ID in <data-source> tag for use with update_data_source and query_data_sources tools.\nThe schema param accepts a CREATE TABLE statement defining columns.\nType syntax:\n- Simple: TITLE, RICH_TEXT, DATE, PEOPLE, CHECKBOX, URL, EMAIL, PHONE_NUMBER, STATUS, FILES\n- SELECT('opt':color, ...) / MULTI_SELECT('opt':color, ...)\n- NUMBER [F"
-        },
-        {
-          "name": "notion-update-data-source",
-          "description": "Update a Notion data source's schema, title, or attributes using SQL DDL statements. Returns Markdown showing updated structure and schema.\nAccepts a data source ID (collection ID from fetch response's <data-source> tag) or a single-source database ID. Multi-source databases require the specific data source ID.\nThe statements param accepts semicolon-separated DDL statements:\n- ADD COLUMN \"Name\" <type> - add a new property\n- DROP COLUMN \"Name\" - remove a property\n- RENAME COLUMN \"Old\" TO \"New\" - "
-        },
-        {
-          "name": "notion-create-comment",
-          "description": "Add a comment to a page or specific content.\nCreates a new comment. Provide `page_id` to identify the page, then choose ONE targeting mode:\n- `page_id` alone: Page-level comment on the entire page\n- `page_id` + `selection_with_ellipsis`: Comment on specific block content\n- `discussion_id`: Reply to an existing discussion thread (page_id is still required)\n\nFor content targeting, use `selection_with_ellipsis` with ~10 chars from start and end: \"# Section Ti...tle content\"\n<example description=\"Pa"
-        },
-        {
-          "name": "notion-get-comments",
-          "description": "Get comments and discussions from a Notion page.\nReturns discussions with full comment content in XML format. By default, returns page-level discussions only.\nTip: Use the `fetch` tool with `include_discussions: true` first to see where discussions are anchored in the page content, then use this tool to retrieve full discussion threads. The `discussion://` URLs in the fetch output match the discussion IDs returned here.\nParameters:\n- `include_all_blocks`: Include discussions on child blocks (def"
-        },
-        {
-          "name": "notion-get-teams",
-          "description": "Retrieves a list of teams (teamspaces) in the current workspace. Shows which teams exist, user membership status, IDs, names, and roles.\nTeams are returned split by membership status and limited to a maximum of 10 results.\n<examples>\n1. List all teams (up to the limit of each type): {}\n2. Search for teams by name: {\"query\": \"engineering\"}\n3. Find a specific team: {\"query\": \"Product Design\"}\n</examples>"
-        },
-        {
-          "name": "notion-get-users",
-          "description": "Retrieves a list of users in the current workspace. Shows workspace members and guests with their IDs, names, emails (if available), and types (person or bot).\nSupports cursor-based pagination to iterate through all users in the workspace.\n<examples>\n1. List all users (first page): {}\n2. Search for users by name or email: {\"query\": \"john\"}\n3. Get next page of results: {\"start_cursor\": \"abc123\"}\n4. Set custom page size: {\"page_size\": 20}\n5. Fetch a specific user by ID: {\"user_id\": \"00000000-0000-"
-        },
-        {
-          "name": "notion-create-view",
-          "description": "Create a new view on a Notion database.\nExactly one of \"database_id\" or \"parent_page_id\" must be provided:\n- \"database_id\": add a new view tab to an existing database.\n- \"parent_page_id\": create an inline linked database view on a page that references the existing \"data_source_id\" (like the UI \"/linked\" command). The linked view block is appended to the end of the parent page.\n\nUse \"fetch\" first to get the database_id, parent_page_id, and data_source_id (from <data-source> tags in the response)."
-        },
-        {
-          "name": "notion-update-view",
-          "description": "Update a view's name, filters, sorts, or display configuration.\nUse \"fetch\" to get view IDs from database responses. Only include fields\nyou want to change. The \"configure\" param uses the same DSL as create_view.\nUse CLEAR to remove settings:\n- CLEAR FILTER — remove all filters\n- CLEAR SORT — remove all sorts\n- CLEAR GROUP BY — remove grouping\n\nSee notion://docs/view-dsl-spec resource for full syntax.\n<example description=\"Rename\">{\"view_id\": \"abc123\", \"name\": \"Sprint Board\"}</example>\n<example "
+          "name": "create_page",
+          "description": "Create a new page"
         }
       ],
-      "docs_url": "https://smithery.ai/servers/notion",
-      "stars": 3156,
-      "source": "smithery",
-      "last_updated": "2026-06-08",
-      "icon": "search",
-      "smithery_qualified_name": "notion",
-      "smithery_page_url": "https://smithery.ai/servers/notion",
-      "mcp_endpoint": "https://notion.run.tools",
-      "deployment_url": "https://notion.run.tools",
-      "connection_url": "https://notion.run.tools",
-      "primary_url": "https://smithery.ai/servers/notion",
+      "github_url": "https://github.com/makenotion/notion-mcp-server",
+      "docs_url": "https://developers.notion.com",
+      "stars": 0,
+      "source": "manual",
+      "last_updated": "2026-06-15",
+      "icon": "file-text",
+      "primary_url": "https://developers.notion.com",
       "setup_steps": [
         {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/notion\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://notion.run.tools"
+          "title": "GitHub",
+          "text": "Install from https://github.com/makenotion/notion-mcp-server and add the server to your MCP client configuration (see repository README)."
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/notion",
-      "tools_validated_at": "2026-06-15T11:29:57.717Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "Install from https://github.com/makenotion/notion-mcp-server and add the server to your MCP client configuration (see repository README).",
       "featured": true
     },
     {
@@ -695,7 +639,7 @@
       "github_url": "https://github.com/executeautomation/mcp-playwright",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "monitor-play",
       "primary_url": "https://github.com/executeautomation/mcp-playwright",
       "setup_steps": [
@@ -870,9 +814,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 46325,
+      "stars": 45592,
       "source": "smithery",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -887,433 +831,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-06-15T11:29:45.991Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
-    },
-    {
-      "id": "ethanhenrickson-math-mcp",
-      "slug": "ethanhenrickson-math-mcp",
-      "name": "Math-MCP",
-      "description": "Enable your LLMs to perform accurate numerical calculations with a simple API. Leverage basic arithmetic and statistical functions to enhance your applications. Simplify complex mathematical tasks effortlessly and improve your model's capabilities.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "add",
-          "description": "Adds two numbers together"
-        },
-        {
-          "name": "subtract",
-          "description": "Subtracts the second number from the first number"
-        },
-        {
-          "name": "multiply",
-          "description": "Multiplies two numbers together"
-        },
-        {
-          "name": "division",
-          "description": "Divides the first number by the second number"
-        },
-        {
-          "name": "sum",
-          "description": "Adds any number of numbers together"
-        },
-        {
-          "name": "modulo",
-          "description": "Divides two numbers and returns the remainder"
-        },
-        {
-          "name": "mean",
-          "description": "Calculates the arithmetic mean of a list of numbers"
-        },
-        {
-          "name": "median",
-          "description": "Calculates the median of a list of numbers"
-        },
-        {
-          "name": "mode",
-          "description": "Finds the most common number in a list of numbers"
-        },
-        {
-          "name": "min",
-          "description": "Finds the minimum value from a list of numbers"
-        },
-        {
-          "name": "max",
-          "description": "Finds the maximum value from a list of numbers"
-        },
-        {
-          "name": "floor",
-          "description": "Rounds a number down to the nearest integer"
-        },
-        {
-          "name": "ceiling",
-          "description": "Rounds a number up to the nearest integer"
-        },
-        {
-          "name": "round",
-          "description": "Rounds a number to the nearest integer"
-        },
-        {
-          "name": "sin",
-          "description": "Calculates the sine of a number in radians"
-        },
-        {
-          "name": "arcsin",
-          "description": "Calculates the arcsine of a number in radians"
-        },
-        {
-          "name": "cos",
-          "description": "Calculates the cosine of a number in radians"
-        },
-        {
-          "name": "arccos",
-          "description": "Calculates the arccosine of a number in radians"
-        },
-        {
-          "name": "tan",
-          "description": "Calculates the tangent of a number in radians"
-        },
-        {
-          "name": "arctan",
-          "description": "Calculates the arctangent of a number in radians"
-        },
-        {
-          "name": "radiansToDegrees",
-          "description": "Converts a radian value to its equivalent in degrees"
-        },
-        {
-          "name": "degreesToRadians",
-          "description": "Converts a degree value to its equivalent in radians"
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "stars": 869491,
-      "source": "smithery",
-      "last_updated": "2026-06-08",
-      "icon": "boxes",
-      "smithery_qualified_name": "EthanHenrickson/math-mcp",
-      "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "mcp_endpoint": "https://math-mcp--ethanhenrickson.run.tools",
-      "deployment_url": "https://math-mcp--ethanhenrickson.run.tools",
-      "connection_url": "https://math-mcp--ethanhenrickson.run.tools",
-      "primary_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://math-mcp--ethanhenrickson.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-06-15T11:29:45.752Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "gmail",
-      "slug": "gmail",
-      "name": "Gmail",
-      "description": "Manage Gmail end-to-end: send, draft, reply, forward, and bulk-modify or delete messages and threads. Organize your inbox with labels, archiving, and trashing, and retrieve messages, attachments, and profile details on demand. Access and search contacts to autofill recipients and keep people data in sync.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GMAIL_ADD_LABEL_TO_EMAIL",
-          "description": "Adds and/or removes specified gmail labels for a message; ensure `message id` and all `label ids` are valid (use 'listlabels' for custom label ids)."
-        },
-        {
-          "name": "GMAIL_CREATE_EMAIL_DRAFT",
-          "description": "Creates a gmail email draft, supporting to/cc/bcc, subject, plain/html body (ensure `is html=true` for html), attachments, and threading."
-        },
-        {
-          "name": "GMAIL_CREATE_LABEL",
-          "description": "Creates a new label with a unique name in the specified user's gmail account."
-        },
-        {
-          "name": "GMAIL_DELETE_DRAFT",
-          "description": "Permanently deletes a specific gmail draft using its id; ensure the draft exists and the user has necessary permissions for the given `user id`."
-        },
-        {
-          "name": "GMAIL_DELETE_MESSAGE",
-          "description": "Permanently deletes a specific email message by its id from a gmail mailbox; for `user id`, use 'me' for the authenticated user or an email address to which the authenticated user has delegated access."
-        },
-        {
-          "name": "GMAIL_FETCH_EMAILS",
-          "description": "Fetches a list of email messages from a gmail account, supporting filtering, pagination, and optional full content retrieval."
-        },
-        {
-          "name": "GMAIL_FETCH_MESSAGE_BY_MESSAGE_ID",
-          "description": "Fetches a specific email message by its id, provided the `message id` exists and is accessible to the authenticated `user id`."
-        },
-        {
-          "name": "GMAIL_FETCH_MESSAGE_BY_THREAD_ID",
-          "description": "Retrieves messages from a gmail thread using its `thread id`, where the thread must be accessible by the specified `user id`."
-        },
-        {
-          "name": "GMAIL_GET_ATTACHMENT",
-          "description": "Retrieves a specific attachment by id from a message in a user's gmail mailbox, requiring valid message and attachment ids."
-        },
-        {
-          "name": "GMAIL_GET_CONTACTS",
-          "description": "Fetches contacts (connections) for the authenticated google account, allowing selection of specific data fields and pagination."
-        },
-        {
-          "name": "GMAIL_GET_PEOPLE",
-          "description": "Retrieves either a specific person's details (using `resource name`) or lists 'other contacts' (if `other contacts` is true), with `person fields` specifying the data to return."
-        },
-        {
-          "name": "GMAIL_GET_PROFILE",
-          "description": "Retrieves key gmail profile information (email address, message/thread totals, history id) for a user."
-        },
-        {
-          "name": "GMAIL_LIST_DRAFTS",
-          "description": "Retrieves a paginated list of email drafts from a user's gmail account. use verbose=true to get full draft details including subject, body, sender, and timestamp."
-        },
-        {
-          "name": "GMAIL_LIST_LABELS",
-          "description": "Retrieves a list of all system and user-created labels for the specified gmail account."
-        },
-        {
-          "name": "GMAIL_LIST_THREADS",
-          "description": "Retrieves a list of email threads from a gmail account, identified by `user id` (email address or 'me'), supporting filtering and pagination."
-        },
-        {
-          "name": "GMAIL_MODIFY_THREAD_LABELS",
-          "description": "Adds or removes specified existing label ids from a gmail thread, affecting all its messages; ensure the thread id is valid."
-        },
-        {
-          "name": "GMAIL_MOVE_TO_TRASH",
-          "description": "Moves an existing, non-deleted email message to the trash for the specified user."
-        },
-        {
-          "name": "GMAIL_PATCH_LABEL",
-          "description": "Patches the specified label."
-        },
-        {
-          "name": "GMAIL_REMOVE_LABEL",
-          "description": "Permanently deletes a specific, existing user-created gmail label by its id for a user; cannot delete system labels."
-        },
-        {
-          "name": "GMAIL_REPLY_TO_THREAD",
-          "description": "Sends a reply within a specific gmail thread using the original thread's subject, requiring a valid `thread id` and correctly formatted email addresses. supports attachments via the `attachment` parameter with valid `s3key`, `mimetype`, and `name`."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/gmail",
-      "stars": 34533,
-      "source": "smithery",
-      "last_updated": "2026-06-08",
-      "icon": "search",
-      "smithery_qualified_name": "gmail",
-      "smithery_page_url": "https://smithery.ai/servers/gmail",
-      "mcp_endpoint": "https://gmail.run.tools",
-      "deployment_url": "https://gmail.run.tools",
-      "connection_url": "https://gmail.run.tools",
-      "primary_url": "https://smithery.ai/servers/gmail",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gmail.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/gmail",
-      "tools_validated_at": "2026-06-15T11:29:45.740Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "clay-inc-clay-mcp",
-      "slug": "clay-inc-clay-mcp",
-      "name": "Mesh MCP",
-      "description": "Access your network seamlessly with a simple and efficient server. Leverage a variety of tools to enhance your applications and workflows. Start integrating with your existing systems effortlessly.",
-      "category": "Dev Tools",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "get_user_information",
-          "description": "Get information about the current user"
-        },
-        {
-          "name": "searchContacts",
-          "description": "Search for contacts and return matching people. Use for questions about specific contacts or \"who\" questions (e.g. \"Who did I meet most?\" or \"who works as an engineer?\"). Returns actual contact records for queries needing specific people. Note: interaction counts represent total accumulated interactions and cannot be filtered by date ranges."
-        },
-        {
-          "name": "getContact",
-          "description": "Get full details for a contact by id, including emails, social links, phone numbers, and notes."
-        },
-        {
-          "name": "createContact",
-          "description": "Create a new contact record in Clay. This endpoint should only be used when you need to create a completely new contact, not for adding contacts to groups."
-        },
-        {
-          "name": "updateContact",
-          "description": "Update a contact record in Clay. This endpoint should only be used when you need to update a contact, not for adding contacts to groups."
-        },
-        {
-          "name": "archive_contact",
-          "description": "Archive a contact record in Clay. This endpoint should only be used when you need to archive a contact."
-        },
-        {
-          "name": "restore_contact",
-          "description": "Restore a archived contact record in Clay. This endpoint should only be used when you need to restore a contact."
-        },
-        {
-          "name": "createNote",
-          "description": "Create a note for a contact. Only use this when the user explicitly asks to create, add, or save a note."
-        },
-        {
-          "name": "getGroups",
-          "description": "Get all groups or lists for the user."
-        },
-        {
-          "name": "createGroup",
-          "description": "Create a group or list for the user. If a group with the same name already exists, it will not create a duplicate unless explicitly requested to ignore the check."
-        },
-        {
-          "name": "updateGroup",
-          "description": "Update a group or list. Use this to update the group title and/or modify its members. When adding or removing contacts, provide ALL contact IDs to add/remove in a single call - do not make multiple calls for individual contacts."
-        },
-        {
-          "name": "getNotes",
-          "description": "Use ONLY when the user explicitly mentions \"note\" or \"notes\" to retrieve notes between two dates (e.g. \"what notes from last week?\"). Returns notes by creation date only - does NOT search note content or filter by other criteria. NEVER use this tool for finding contacts or any other purpose besides retrieving notes. This tool is strictly prohibited from being used unless \"note\" or \"notes\" are explicitly mentioned in the query."
-        },
-        {
-          "name": "getEvents",
-          "description": "Use this tool ONLY to fetch meetings/events in a date range (e.g. \"what meetings next week?\", \"show calendar for tomorrow\"). DO NOT use for counting meetings, analyzing patterns, or finding frequent participants."
-        },
-        {
-          "name": "getUpcomingEvents",
-          "description": "Use this tool ONLY to fetch upcoming/next meetings/events when the user does not explicitly mention a range, and asks for upcoming or next meetings/events."
-        },
-        {
-          "name": "getEmails",
-          "description": "Use this tool ONLY to fetch emails in a date range (e.g. \"what emails did I recieve last week?\", \"show emails from yesterday\")"
-        },
-        {
-          "name": "getRecentEmails",
-          "description": "Use this tool ONLY to fetch recent email interactions when the user does not explicitly mention a range, and asks for past email interactions."
-        },
-        {
-          "name": "getRecentReminders",
-          "description": "Use this tool to find recent reminders that have already occured. This tool is strictly prohibited from being used unless \"reminder\" or \"reminders\" are explicitly mentioned in the query."
-        },
-        {
-          "name": "getUpcomingReminders",
-          "description": "Use this tool to find recent reminders that have already occured. This tool is strictly prohibited from being used unless \"reminder\" or \"reminders\" are explicitly mentioned in the query."
-        },
-        {
-          "name": "find_duplicates",
-          "description": "Find potential duplicate contacts."
-        },
-        {
-          "name": "merge_contacts",
-          "description": "Merge all contact ids into one contact, this is a destructive action and can not be undone. Only run one contact group at a time and only with the users explicit permission."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
-      "stars": 19616,
-      "source": "smithery",
-      "last_updated": "2026-06-08",
-      "icon": "boxes",
-      "smithery_qualified_name": "clay-inc/clay-mcp",
-      "smithery_page_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
-      "mcp_endpoint": "https://clay-mcp--clay-inc.run.tools",
-      "deployment_url": "https://clay-mcp--clay-inc.run.tools",
-      "connection_url": "https://clay-mcp--clay-inc.run.tools",
-      "primary_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/clay-inc/clay-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://clay-mcp--clay-inc.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/clay-inc/clay-mcp",
-      "tools_validated_at": "2026-06-15T11:29:46.281Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "xgr-mcp",
-      "slug": "xgr-mcp",
-      "name": "XGR.Network MCP",
-      "description": "Connector for XGRChain and the XDaLa on-chain process engine. AI agents can access chain data, inspect process activity, and prepare secure workflow actions for user-controlled wallet signing.",
-      "category": "Dev Tools",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "get_chain_status",
-          "description": "Read live XGRChain status"
-        },
-        {
-          "name": "get_latest_block",
-          "description": "Read the latest XGRChain block"
-        },
-        {
-          "name": "get_account_live_state",
-          "description": "Inspect account state on XGRChain"
-        },
-        {
-          "name": "get_transaction_evidence",
-          "description": "Retrieve transaction and explorer evidence"
-        },
-        {
-          "name": "get_sessions_overview",
-          "description": "Summarize indexed XDaLa sessions"
-        },
-        {
-          "name": "find_latest_xdala_session",
-          "description": "Find the latest XDaLa session"
-        },
-        {
-          "name": "get_xdala_session_detail",
-          "description": "Inspect XDaLa session steps, payloads and receipts"
-        },
-        {
-          "name": "list_xdala_sessions",
-          "description": "List indexed XDaLa sessions"
-        },
-        {
-          "name": "list_xdala_session_owners",
-          "description": "List XDaLa session owners"
-        },
-        {
-          "name": "get_xdala_session_stats",
-          "description": "Analyze XDaLa session statistics"
-        },
-        {
-          "name": "get_xdala_payload_key_stats",
-          "description": "Analyze payload fields"
-        },
-        {
-          "name": "estimate_xdala_rule_gas",
-          "description": "Estimate validation gas"
-        },
-        {
-          "name": "create_operation_handoff",
-          "description": "Prepare owner-signed on-chain operation handoffs"
-        },
-        {
-          "name": "get_operation_status",
-          "description": "Check status of a prepared operation handoff"
-        },
-        {
-          "name": "cancel_operation_handoff",
-          "description": "Cancel a pending operation handoff"
-        }
-      ],
-      "github_url": "https://github.com/xgr-network/xgr-mcp",
-      "docs_url": "https://xgr.network/docs/mcp_overview/",
-      "stars": 3,
-      "source": "manual",
-      "featured": true,
-      "last_updated": "2026-06-15",
-      "icon": "globe",
-      "mcp_endpoint": "https://mcp.xgr.network/mcp",
-      "deployment_url": "https://mcp.xgr.network/mcp"
     },
     {
       "id": "henry-ships-sparkforge",
@@ -1458,9 +976,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "stars": 19452,
+      "stars": 66353,
       "source": "smithery",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "search",
       "smithery_qualified_name": "henry-ships/sparkforge",
       "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
@@ -1475,57 +993,938 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-06-15T11:29:46.284Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "hugeicons-mcp-server",
-      "slug": "hugeicons-mcp-server",
-      "name": "Hugeicons MCP Server",
-      "description": "Integrate Hugeicons seamlessly into your applications. Discover icons, access platform-specific usage instructions, and enhance your projects with comprehensive documentation and examples.",
-      "category": "Dev Tools",
-      "official": true,
-      "transport": "stdio",
+      "id": "ethanhenrickson-math-mcp",
+      "slug": "ethanhenrickson-math-mcp",
+      "name": "Math-MCP",
+      "description": "Enable your LLMs to perform accurate numerical calculations with a simple API. Leverage basic arithmetic and statistical functions to enhance your applications. Simplify complex mathematical tasks effortlessly and improve your model's capabilities.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
       "tools": [
         {
-          "name": "list_icons",
-          "description": "Get a list of all available Hugeicons icons"
+          "name": "add",
+          "description": "Adds two numbers together"
         },
         {
-          "name": "search_icons",
-          "description": "Search for icons by name or tags. Use commas to search for multiple icons (e.g. 'home, notification, settings')"
+          "name": "subtract",
+          "description": "Subtracts the second number from the first number"
         },
         {
-          "name": "get_platform_usage",
-          "description": "Get platform-specific usage instructions for Hugeicons"
+          "name": "multiply",
+          "description": "Multiplies two numbers together"
         },
         {
-          "name": "get_icon_glyphs",
-          "description": "Get all glyphs (unicode characters) for a specific icon across all available styles"
+          "name": "division",
+          "description": "Divides the first number by the second number"
         },
         {
-          "name": "get_icon_glyph_by_style",
-          "description": "Get the glyph (unicode character) for a specific icon with a particular style"
+          "name": "sum",
+          "description": "Adds any number of numbers together"
+        },
+        {
+          "name": "modulo",
+          "description": "Divides two numbers and returns the remainder"
+        },
+        {
+          "name": "mean",
+          "description": "Calculates the arithmetic mean of a list of numbers"
+        },
+        {
+          "name": "median",
+          "description": "Calculates the median of a list of numbers"
+        },
+        {
+          "name": "mode",
+          "description": "Finds the most common number in a list of numbers"
+        },
+        {
+          "name": "min",
+          "description": "Finds the minimum value from a list of numbers"
+        },
+        {
+          "name": "max",
+          "description": "Finds the maximum value from a list of numbers"
+        },
+        {
+          "name": "floor",
+          "description": "Rounds a number down to the nearest integer"
+        },
+        {
+          "name": "ceiling",
+          "description": "Rounds a number up to the nearest integer"
+        },
+        {
+          "name": "round",
+          "description": "Rounds a number to the nearest integer"
+        },
+        {
+          "name": "sin",
+          "description": "Calculates the sine of a number in radians"
+        },
+        {
+          "name": "arcsin",
+          "description": "Calculates the arcsine of a number in radians"
+        },
+        {
+          "name": "cos",
+          "description": "Calculates the cosine of a number in radians"
+        },
+        {
+          "name": "arccos",
+          "description": "Calculates the arccosine of a number in radians"
+        },
+        {
+          "name": "tan",
+          "description": "Calculates the tangent of a number in radians"
+        },
+        {
+          "name": "arctan",
+          "description": "Calculates the arctangent of a number in radians"
+        },
+        {
+          "name": "radiansToDegrees",
+          "description": "Converts a radian value to its equivalent in degrees"
+        },
+        {
+          "name": "degreesToRadians",
+          "description": "Converts a degree value to its equivalent in radians"
         }
       ],
-      "docs_url": "https://smithery.ai/servers/hugeicons/mcp-server",
-      "stars": 16312,
+      "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "stars": 296413,
       "source": "smithery",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
-      "smithery_qualified_name": "hugeicons/mcp-server",
-      "smithery_page_url": "https://smithery.ai/servers/hugeicons/mcp-server",
-      "primary_url": "https://smithery.ai/servers/hugeicons/mcp-server",
+      "smithery_qualified_name": "EthanHenrickson/math-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "mcp_endpoint": "https://math-mcp--ethanhenrickson.run.tools",
+      "deployment_url": "https://math-mcp--ethanhenrickson.run.tools",
+      "connection_url": "https://math-mcp--ethanhenrickson.run.tools",
+      "primary_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/hugeicons/mcp-server\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://math-mcp--ethanhenrickson.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/hugeicons/mcp-server",
-      "tools_validated_at": "2026-06-15T11:29:46.958Z",
-      "tools_validation_method": "smithery_registry",
+      "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "featured": true
+    },
+    {
+      "id": "gmail",
+      "slug": "gmail",
+      "name": "Gmail",
+      "description": "Manage Gmail end-to-end: send, draft, reply, forward, and bulk-modify or delete messages and threads. Organize your inbox with labels, archiving, and trashing, and retrieve messages, attachments, and profile details on demand. Access and search contacts to autofill recipients and keep people data in sync.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "GMAIL_ADD_LABEL_TO_EMAIL",
+          "description": "Adds and/or removes specified gmail labels for a message; ensure `message id` and all `label ids` are valid (use 'listlabels' for custom label ids)."
+        },
+        {
+          "name": "GMAIL_CREATE_EMAIL_DRAFT",
+          "description": "Creates a gmail email draft, supporting to/cc/bcc, subject, plain/html body (ensure `is html=true` for html), attachments, and threading."
+        },
+        {
+          "name": "GMAIL_CREATE_LABEL",
+          "description": "Creates a new label with a unique name in the specified user's gmail account."
+        },
+        {
+          "name": "GMAIL_DELETE_DRAFT",
+          "description": "Permanently deletes a specific gmail draft using its id; ensure the draft exists and the user has necessary permissions for the given `user id`."
+        },
+        {
+          "name": "GMAIL_DELETE_MESSAGE",
+          "description": "Permanently deletes a specific email message by its id from a gmail mailbox; for `user id`, use 'me' for the authenticated user or an email address to which the authenticated user has delegated access."
+        },
+        {
+          "name": "GMAIL_FETCH_EMAILS",
+          "description": "Fetches a list of email messages from a gmail account, supporting filtering, pagination, and optional full content retrieval."
+        },
+        {
+          "name": "GMAIL_FETCH_MESSAGE_BY_MESSAGE_ID",
+          "description": "Fetches a specific email message by its id, provided the `message id` exists and is accessible to the authenticated `user id`."
+        },
+        {
+          "name": "GMAIL_FETCH_MESSAGE_BY_THREAD_ID",
+          "description": "Retrieves messages from a gmail thread using its `thread id`, where the thread must be accessible by the specified `user id`."
+        },
+        {
+          "name": "GMAIL_GET_ATTACHMENT",
+          "description": "Retrieves a specific attachment by id from a message in a user's gmail mailbox, requiring valid message and attachment ids."
+        },
+        {
+          "name": "GMAIL_GET_CONTACTS",
+          "description": "Fetches contacts (connections) for the authenticated google account, allowing selection of specific data fields and pagination."
+        },
+        {
+          "name": "GMAIL_GET_PEOPLE",
+          "description": "Retrieves either a specific person's details (using `resource name`) or lists 'other contacts' (if `other contacts` is true), with `person fields` specifying the data to return."
+        },
+        {
+          "name": "GMAIL_GET_PROFILE",
+          "description": "Retrieves key gmail profile information (email address, message/thread totals, history id) for a user."
+        },
+        {
+          "name": "GMAIL_LIST_DRAFTS",
+          "description": "Retrieves a paginated list of email drafts from a user's gmail account. use verbose=true to get full draft details including subject, body, sender, and timestamp."
+        },
+        {
+          "name": "GMAIL_LIST_LABELS",
+          "description": "Retrieves a list of all system and user-created labels for the specified gmail account."
+        },
+        {
+          "name": "GMAIL_LIST_THREADS",
+          "description": "Retrieves a list of email threads from a gmail account, identified by `user id` (email address or 'me'), supporting filtering and pagination."
+        },
+        {
+          "name": "GMAIL_MODIFY_THREAD_LABELS",
+          "description": "Adds or removes specified existing label ids from a gmail thread, affecting all its messages; ensure the thread id is valid."
+        },
+        {
+          "name": "GMAIL_MOVE_TO_TRASH",
+          "description": "Moves an existing, non-deleted email message to the trash for the specified user."
+        },
+        {
+          "name": "GMAIL_PATCH_LABEL",
+          "description": "Patches the specified label."
+        },
+        {
+          "name": "GMAIL_REMOVE_LABEL",
+          "description": "Permanently deletes a specific, existing user-created gmail label by its id for a user; cannot delete system labels."
+        },
+        {
+          "name": "GMAIL_REPLY_TO_THREAD",
+          "description": "Sends a reply within a specific gmail thread using the original thread's subject, requiring a valid `thread id` and correctly formatted email addresses. supports attachments via the `attachment` parameter with valid `s3key`, `mimetype`, and `name`."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/gmail",
+      "stars": 36089,
+      "source": "smithery",
+      "last_updated": "2026-06-15",
+      "icon": "search",
+      "smithery_qualified_name": "gmail",
+      "smithery_page_url": "https://smithery.ai/servers/gmail",
+      "mcp_endpoint": "https://gmail.run.tools",
+      "deployment_url": "https://gmail.run.tools",
+      "connection_url": "https://gmail.run.tools",
+      "primary_url": "https://smithery.ai/servers/gmail",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gmail.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/gmail",
+      "featured": true
+    },
+    {
+      "id": "clay-inc-clay-mcp",
+      "slug": "clay-inc-clay-mcp",
+      "name": "Mesh MCP",
+      "description": "Access your network seamlessly with a simple and efficient server. Leverage a variety of tools to enhance your applications and workflows. Start integrating with your existing systems effortlessly.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_user_information",
+          "description": "Get information about the current user"
+        },
+        {
+          "name": "searchContacts",
+          "description": "Search for contacts and return matching people. Use for questions about specific contacts or \"who\" questions (e.g. \"Who did I meet most?\" or \"who works as an engineer?\"). Returns actual contact records for queries needing specific people. Note: interaction counts represent total accumulated interactions and cannot be filtered by date ranges."
+        },
+        {
+          "name": "getContact",
+          "description": "Get full details for a contact by id, including emails, social links, phone numbers, and notes."
+        },
+        {
+          "name": "createContact",
+          "description": "Create a new contact record in Clay. This endpoint should only be used when you need to create a completely new contact, not for adding contacts to groups."
+        },
+        {
+          "name": "updateContact",
+          "description": "Update a contact record in Clay. This endpoint should only be used when you need to update a contact, not for adding contacts to groups."
+        },
+        {
+          "name": "archive_contact",
+          "description": "Archive a contact record in Clay. This endpoint should only be used when you need to archive a contact."
+        },
+        {
+          "name": "restore_contact",
+          "description": "Restore a archived contact record in Clay. This endpoint should only be used when you need to restore a contact."
+        },
+        {
+          "name": "createNote",
+          "description": "Create a note for a contact. Only use this when the user explicitly asks to create, add, or save a note."
+        },
+        {
+          "name": "getGroups",
+          "description": "Get all groups or lists for the user."
+        },
+        {
+          "name": "createGroup",
+          "description": "Create a group or list for the user. If a group with the same name already exists, it will not create a duplicate unless explicitly requested to ignore the check."
+        },
+        {
+          "name": "updateGroup",
+          "description": "Update a group or list. Use this to update the group title and/or modify its members. When adding or removing contacts, provide ALL contact IDs to add/remove in a single call - do not make multiple calls for individual contacts."
+        },
+        {
+          "name": "getNotes",
+          "description": "Use ONLY when the user explicitly mentions \"note\" or \"notes\" to retrieve notes between two dates (e.g. \"what notes from last week?\"). Returns notes by creation date only - does NOT search note content or filter by other criteria. NEVER use this tool for finding contacts or any other purpose besides retrieving notes. This tool is strictly prohibited from being used unless \"note\" or \"notes\" are explicitly mentioned in the query."
+        },
+        {
+          "name": "getEvents",
+          "description": "Use this tool ONLY to fetch meetings/events in a date range (e.g. \"what meetings next week?\", \"show calendar for tomorrow\"). DO NOT use for counting meetings, analyzing patterns, or finding frequent participants."
+        },
+        {
+          "name": "getUpcomingEvents",
+          "description": "Use this tool ONLY to fetch upcoming/next meetings/events when the user does not explicitly mention a range, and asks for upcoming or next meetings/events."
+        },
+        {
+          "name": "getEmails",
+          "description": "Use this tool ONLY to fetch emails in a date range (e.g. \"what emails did I recieve last week?\", \"show emails from yesterday\")"
+        },
+        {
+          "name": "getRecentEmails",
+          "description": "Use this tool ONLY to fetch recent email interactions when the user does not explicitly mention a range, and asks for past email interactions."
+        },
+        {
+          "name": "getRecentReminders",
+          "description": "Use this tool to find recent reminders that have already occured. This tool is strictly prohibited from being used unless \"reminder\" or \"reminders\" are explicitly mentioned in the query."
+        },
+        {
+          "name": "getUpcomingReminders",
+          "description": "Use this tool to find recent reminders that have already occured. This tool is strictly prohibited from being used unless \"reminder\" or \"reminders\" are explicitly mentioned in the query."
+        },
+        {
+          "name": "find_duplicates",
+          "description": "Find potential duplicate contacts."
+        },
+        {
+          "name": "merge_contacts",
+          "description": "Merge all contact ids into one contact, this is a destructive action and can not be undone. Only run one contact group at a time and only with the users explicit permission."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
+      "stars": 23995,
+      "source": "smithery",
+      "last_updated": "2026-06-15",
+      "icon": "boxes",
+      "smithery_qualified_name": "clay-inc/clay-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
+      "mcp_endpoint": "https://clay-mcp--clay-inc.run.tools",
+      "deployment_url": "https://clay-mcp--clay-inc.run.tools",
+      "connection_url": "https://clay-mcp--clay-inc.run.tools",
+      "primary_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/clay-inc/clay-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://clay-mcp--clay-inc.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/clay-inc/clay-mcp",
+      "featured": true
+    },
+    {
+      "id": "hamid-vakilzadeh-mcpsemanticscholar",
+      "slug": "hamid-vakilzadeh-mcpsemanticscholar",
+      "name": "AI Research Assistant",
+      "description": "The server provides immediate access to millions of academic papers through Semantic Scholar and arXiv, enabling AI-powered research with comprehensive search, citation analysis, and full-text PDF extraction from multiple sources (arXiv and Wiley open-access).\n\n - No API key is required.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "papers-search-basic",
+          "description": "Search for academic papers with a simple query."
+        },
+        {
+          "name": "paper-search-advanced",
+          "description": "Search for academic papers with advanced filtering options"
+        },
+        {
+          "name": "search-paper-title",
+          "description": "Find a paper by closest title match"
+        },
+        {
+          "name": "get-paper-abstract",
+          "description": "Get detailed information about a specific paper including its abstract"
+        },
+        {
+          "name": "papers-citations",
+          "description": "Get papers that cite a specific paper"
+        },
+        {
+          "name": "papers-references",
+          "description": "Get papers cited by a specific paper"
+        },
+        {
+          "name": "authors-search",
+          "description": "Search for authors by name or affiliation"
+        },
+        {
+          "name": "authors-papers",
+          "description": "Get papers written by a specific author"
+        },
+        {
+          "name": "papers-batch",
+          "description": "Look up multiple papers by their IDs"
+        },
+        {
+          "name": "search-arxiv",
+          "description": "Search for papers on arXiv using their API"
+        },
+        {
+          "name": "download-full-paper-arxiv",
+          "description": "Download full-text PDF of an arXiv paper and extract text content (memory only)"
+        },
+        {
+          "name": "analysis-citation-network",
+          "description": "Analyze the citation network for a specific paper"
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "stars": 26910,
+      "source": "smithery",
+      "last_updated": "2026-06-15",
+      "icon": "search",
+      "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
+      "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "mcp_endpoint": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
+      "deployment_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
+      "connection_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
+      "primary_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://mcpsemanticscholar--hamid-vakilzadeh.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "featured": true
+    },
+    {
+      "id": "xgr-mcp",
+      "slug": "xgr-mcp",
+      "name": "XGR.Network MCP",
+      "description": "Connector for XGRChain and the XDaLa on-chain process engine. AI agents can access chain data, inspect process activity, and prepare secure workflow actions for user-controlled wallet signing.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_chain_status",
+          "description": "Read live XGRChain status"
+        },
+        {
+          "name": "get_latest_block",
+          "description": "Read the latest XGRChain block"
+        },
+        {
+          "name": "get_account_live_state",
+          "description": "Inspect account state on XGRChain"
+        },
+        {
+          "name": "get_transaction_evidence",
+          "description": "Retrieve transaction and explorer evidence"
+        },
+        {
+          "name": "get_sessions_overview",
+          "description": "Summarize indexed XDaLa sessions"
+        },
+        {
+          "name": "find_latest_xdala_session",
+          "description": "Find the latest XDaLa session"
+        },
+        {
+          "name": "get_xdala_session_detail",
+          "description": "Inspect XDaLa session steps, payloads and receipts"
+        },
+        {
+          "name": "list_xdala_sessions",
+          "description": "List indexed XDaLa sessions"
+        },
+        {
+          "name": "list_xdala_session_owners",
+          "description": "List XDaLa session owners"
+        },
+        {
+          "name": "get_xdala_session_stats",
+          "description": "Analyze XDaLa session statistics"
+        },
+        {
+          "name": "get_xdala_payload_key_stats",
+          "description": "Analyze payload fields"
+        },
+        {
+          "name": "estimate_xdala_rule_gas",
+          "description": "Estimate validation gas"
+        },
+        {
+          "name": "create_operation_handoff",
+          "description": "Prepare owner-signed on-chain operation handoffs"
+        },
+        {
+          "name": "get_operation_status",
+          "description": "Check status of a prepared operation handoff"
+        },
+        {
+          "name": "cancel_operation_handoff",
+          "description": "Cancel a pending operation handoff"
+        }
+      ],
+      "github_url": "https://github.com/xgr-network/xgr-mcp",
+      "docs_url": "https://xgr.network/docs/mcp_overview/",
+      "stars": 3,
+      "source": "manual",
+      "last_updated": "2026-06-15",
+      "icon": "globe",
+      "primary_url": "https://xgr.network/docs/mcp_overview/",
+      "setup_steps": [
+        {
+          "title": "GitHub",
+          "text": "Install from https://github.com/xgr-network/xgr-mcp and add the server to your MCP client configuration (see repository README)."
+        }
+      ],
+      "setup_summary": "Install from https://github.com/xgr-network/xgr-mcp and add the server to your MCP client configuration (see repository README).",
+      "featured": true
+    },
+    {
+      "id": "creativelead-unclick",
+      "slug": "creativelead-unclick",
+      "name": "UnClick",
+      "description": "AI agent tool marketplace. 60+ tools for social, e-commerce, accounting, messaging, media, and more. Search and call tools for Slack, Reddit, Discord, Shopify, Xero, Bluesky, TMDB, Steam, and 50+ more services.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "unclick_search",
+          "description": "Search the UnClick tool marketplace by keyword or description. Use this to discover which tools are available for a task. Example: 'I need to resize an image' → returns the image tool with its endpoints."
+        },
+        {
+          "name": "unclick_browse",
+          "description": "Browse all available UnClick tools, optionally filtered by category. Returns a list of tools with their slugs and descriptions."
+        },
+        {
+          "name": "unclick_tool_info",
+          "description": "Get detailed information about a specific UnClick tool including all its endpoints, required parameters, and response shapes. Use this after unclick_search to understand exactly how to call a tool."
+        },
+        {
+          "name": "unclick_call",
+          "description": "Call any UnClick tool endpoint. Specify the endpoint ID and parameters. Use unclick_search or unclick_tool_info to discover endpoint IDs and required params. Example: endpoint_id='image.resize', params={image: '<base64>', width: 800, height: 600}"
+        },
+        {
+          "name": "unclick_shorten_url",
+          "description": "Shorten a URL using UnClick. Returns a short URL and its code."
+        },
+        {
+          "name": "unclick_generate_qr",
+          "description": "Generate a QR code from text or a URL. Returns base64-encoded PNG or SVG."
+        },
+        {
+          "name": "unclick_hash",
+          "description": "Compute a cryptographic hash (MD5, SHA1, SHA256, SHA512) of text."
+        },
+        {
+          "name": "unclick_transform_text",
+          "description": "Transform text case: upper, lower, title, sentence, camelCase, snake_case, kebab-case, PascalCase."
+        },
+        {
+          "name": "unclick_validate_email",
+          "description": "Validate an email address format."
+        },
+        {
+          "name": "unclick_validate_url",
+          "description": "Validate a URL format, optionally check if it's reachable."
+        },
+        {
+          "name": "unclick_resize_image",
+          "description": "Resize an image (provided as base64) to specified dimensions."
+        },
+        {
+          "name": "unclick_parse_csv",
+          "description": "Parse a CSV string into a JSON array of rows."
+        },
+        {
+          "name": "unclick_json_format",
+          "description": "Format / pretty-print a JSON string."
+        },
+        {
+          "name": "unclick_encode",
+          "description": "Encode or decode text. Supports base64, URL, HTML, and hex."
+        },
+        {
+          "name": "unclick_generate_uuid",
+          "description": "Generate one or more random UUIDs (v4)."
+        },
+        {
+          "name": "unclick_random_password",
+          "description": "Generate a secure random password."
+        },
+        {
+          "name": "unclick_cron_parse",
+          "description": "Convert a cron expression to a human-readable description and get next occurrences."
+        },
+        {
+          "name": "unclick_ip_parse",
+          "description": "Parse an IP address — get decimal, binary, hex, and type (private/loopback/multicast)."
+        },
+        {
+          "name": "unclick_color_convert",
+          "description": "Convert a color between hex, RGB, HSL, and HSV formats."
+        },
+        {
+          "name": "unclick_regex_test",
+          "description": "Test a regex pattern against text and get all matches with groups."
+        },
+        {
+          "name": "unclick_timestamp_convert",
+          "description": "Convert a timestamp (ISO, Unix seconds, or Unix ms) to all common formats."
+        },
+        {
+          "name": "unclick_diff_text",
+          "description": "Compare two strings and return a unified diff showing what changed."
+        },
+        {
+          "name": "unclick_kv_set",
+          "description": "Store a value in the UnClick key-value store with optional TTL."
+        },
+        {
+          "name": "unclick_kv_get",
+          "description": "Retrieve a value from the UnClick key-value store."
+        },
+        {
+          "name": "report_bug",
+          "description": "Report a bug or unexpected behavior encountered while using an UnClick tool. Call this whenever a tool returns an error, behaves unexpectedly, or fails silently. Severity is auto-classified from the error message: 500/fatal → critical, timeout/503 → high, 4xx/invalid → low, everything else → medium."
+        },
+        {
+          "name": "rawg_search_games",
+          "description": "Search for video games on RAWG."
+        },
+        {
+          "name": "rawg_get_game",
+          "description": "Get details for a specific game by RAWG ID or slug."
+        },
+        {
+          "name": "rawg_game_screenshots",
+          "description": "Get screenshots for a RAWG game."
+        },
+        {
+          "name": "rawg_list_genres",
+          "description": "List all game genres on RAWG."
+        },
+        {
+          "name": "rawg_list_platforms",
+          "description": "List all gaming platforms on RAWG."
+        },
+        {
+          "name": "rawg_upcoming_games",
+          "description": "Get upcoming game releases from RAWG."
+        },
+        {
+          "name": "riot_summoner",
+          "description": "Get a League of Legends summoner by name."
+        },
+        {
+          "name": "riot_ranked",
+          "description": "Get ranked stats for a League of Legends summoner."
+        },
+        {
+          "name": "riot_match_history",
+          "description": "Get match history for a LoL/Riot account by PUUID."
+        },
+        {
+          "name": "riot_get_match",
+          "description": "Get details for a specific Riot match by match ID."
+        },
+        {
+          "name": "riot_valorant_account",
+          "description": "Get a Valorant account by game name and tag line."
+        },
+        {
+          "name": "bungie_search_player",
+          "description": "Search for a Destiny 2 player by display name."
+        },
+        {
+          "name": "bungie_get_profile",
+          "description": "Get a Destiny 2 player profile."
+        },
+        {
+          "name": "bungie_get_manifest",
+          "description": "Get the Destiny 2 manifest definition."
+        },
+        {
+          "name": "bungie_search_entities",
+          "description": "Search Destiny 2 manifest entities."
+        },
+        {
+          "name": "coc_player",
+          "description": "Get a Clash of Clans player by tag."
+        },
+        {
+          "name": "coc_clan",
+          "description": "Get a Clash of Clans clan by tag."
+        },
+        {
+          "name": "coc_clan_members",
+          "description": "Get members of a Clash of Clans clan."
+        },
+        {
+          "name": "cr_player",
+          "description": "Get a Clash Royale player by tag."
+        },
+        {
+          "name": "cr_top_players",
+          "description": "Get top Clash Royale players globally or by location."
+        },
+        {
+          "name": "bs_player",
+          "description": "Get a Brawl Stars player by tag."
+        },
+        {
+          "name": "bs_club",
+          "description": "Get a Brawl Stars club by tag."
+        },
+        {
+          "name": "lego_search_sets",
+          "description": "Search LEGO sets by name/theme (Rebrickable)."
+        },
+        {
+          "name": "lego_get_set",
+          "description": "Get details for a specific LEGO set by set number."
+        },
+        {
+          "name": "lego_set_parts",
+          "description": "Get the parts list for a LEGO set."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/creativelead/unclick",
+      "stars": 18587,
+      "source": "smithery",
+      "last_updated": "2026-06-15",
+      "icon": "search",
+      "smithery_qualified_name": "creativelead/unclick",
+      "smithery_page_url": "https://smithery.ai/servers/creativelead/unclick",
+      "mcp_endpoint": "https://unclick--creativelead.run.tools",
+      "deployment_url": "https://unclick--creativelead.run.tools",
+      "connection_url": "https://unclick--creativelead.run.tools",
+      "primary_url": "https://smithery.ai/servers/creativelead/unclick",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/creativelead/unclick\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://unclick--creativelead.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
+      "featured": true
+    },
+    {
+      "id": "googlecalendar",
+      "slug": "googlecalendar",
+      "name": "Google Calendar",
+      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "GOOGLECALENDAR_ACL_PATCH",
+          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
+          "description": "Inserts an existing calendar into the user's calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
+          "description": "Updates an existing entry on the user\\'s calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
+          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
+          "description": "Updates metadata for a calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
+          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
+        },
+        {
+          "name": "GOOGLECALENDAR_CREATE_EVENT",
+          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
+        },
+        {
+          "name": "GOOGLECALENDAR_DELETE_EVENT",
+          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
+        },
+        {
+          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
+          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
+          "description": "Returns instances of the specified recurring event."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_LIST",
+          "description": "Returns events on the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_MOVE",
+          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_WATCH",
+          "description": "Watch for changes to Events resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_EVENT",
+          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
+          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
+        },
+        {
+          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
+          "description": "Returns free/busy information for a set of calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CALENDAR",
+          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
+          "description": "Gets the current date and time, allowing for a specific timezone offset."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
+          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_CALENDARS",
+          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
+          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_EVENT",
+          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_QUICK_ADD",
+          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
+        },
+        {
+          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
+          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_LIST",
+          "description": "Returns all user settings for the authenticated user."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
+          "description": "Watch for changes to Settings resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_SYNC_EVENTS",
+          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
+          "description": "Updates an access control rule for the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_EVENT",
+          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googlecalendar",
+      "stars": 13414,
+      "source": "smithery",
+      "last_updated": "2026-06-15",
+      "icon": "boxes",
+      "smithery_qualified_name": "googlecalendar",
+      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlecalendar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
+      "featured": true
+    },
+    {
+      "id": "smithery-ai-national-weather-service",
+      "slug": "smithery-ai-national-weather-service",
+      "name": "United States Weather",
+      "description": "Provide real-time and forecast weather information for locations in the United States using natural language queries. Access current conditions, multi-day and hourly forecasts, weather alerts, and nearby weather stations without requiring an API key. Enable users to get official, government-sourced weather data easily through intuitive tools.",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_current_weather",
+          "description": "Get current weather conditions for a location in the United States. Perfect for 'What's the weather like in [US location]?' questions. Covers all US states, territories, and coastal waters."
+        },
+        {
+          "name": "get_weather_forecast",
+          "description": "Get multi-day weather forecast for a location in the United States. Perfect for 'What's the forecast for [US location]?' questions. Provides detailed day/night forecasts for up to 7 days."
+        },
+        {
+          "name": "get_hourly_forecast",
+          "description": "Get hour-by-hour weather forecast for a location in the United States. Perfect for 'What's the hourly forecast?' or 'Will it rain this afternoon in [US location]?' questions. Provides detailed hourly conditions for up to 48 hours."
+        },
+        {
+          "name": "get_weather_alerts",
+          "description": "Get active weather alerts, warnings, watches, and advisories for locations in the United States. Perfect for 'Are there any weather alerts in [US location]?' questions. Covers severe weather, winter storms, heat warnings, flood alerts, and more."
+        },
+        {
+          "name": "find_weather_stations",
+          "description": "Find weather observation stations near a location in the United States. Useful for getting station-specific data, finding data sources, or understanding which stations provide weather data for an area. Includes ASOS, AWOS, and other automated weather stations."
+        },
+        {
+          "name": "get_local_time",
+          "description": "Get the current local time for a US location. Shows what time it is right now at the specified location."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "stars": 19998,
+      "source": "smithery",
+      "last_updated": "2026-06-15",
+      "icon": "boxes",
+      "smithery_qualified_name": "smithery-ai/national-weather-service",
+      "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "mcp_endpoint": "https://national-weather-service--smithery-ai.run.tools",
+      "deployment_url": "https://national-weather-service--smithery-ai.run.tools",
+      "connection_url": "https://national-weather-service--smithery-ai.run.tools",
+      "primary_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://national-weather-service--smithery-ai.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
       "featured": true
     },
     {
@@ -1557,7 +1956,7 @@
       "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "terminal",
       "primary_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "setup_steps": [
@@ -1599,7 +1998,7 @@
       "docs_url": "https://e2b.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "sandbox",
       "primary_url": "https://e2b.dev/docs",
       "setup_steps": [
@@ -1640,7 +2039,7 @@
       "github_url": "https://github.com/zereight/gitlab-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "gitlab",
       "primary_url": "https://github.com/zereight/gitlab-mcp",
       "setup_steps": [
@@ -1681,7 +2080,7 @@
       "docs_url": "https://docs.replit.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud-code",
       "primary_url": "https://docs.replit.com",
       "setup_steps": [
@@ -1748,7 +2147,7 @@
       "docs_url": "https://airtable.com/developers/web/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://airtable.com/developers/web/api",
       "setup_steps": [
@@ -1785,7 +2184,7 @@
       "docs_url": "https://developers.asana.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "layout-list",
       "primary_url": "https://developers.asana.com",
       "setup_steps": [
@@ -1823,7 +2222,7 @@
       "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud",
       "primary_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "setup_steps": [
@@ -1860,7 +2259,7 @@
       "docs_url": "https://learn.microsoft.com/azure",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud",
       "primary_url": "https://learn.microsoft.com/azure",
       "setup_steps": [
@@ -1897,7 +2296,7 @@
       "docs_url": "https://cloud.google.com/bigquery/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://cloud.google.com/bigquery/docs",
       "setup_steps": [
@@ -1934,7 +2333,7 @@
       "github_url": "https://github.com/bluesky-social/mcp-bluesky",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "globe",
       "primary_url": "https://github.com/bluesky-social/mcp-bluesky",
       "setup_steps": [
@@ -1971,7 +2370,7 @@
       "docs_url": "https://www.canva.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "image",
       "primary_url": "https://www.canva.dev/docs",
       "setup_steps": [
@@ -2008,7 +2407,7 @@
       "docs_url": "https://developer.atlassian.com/cloud/confluence",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "file-text",
       "primary_url": "https://developer.atlassian.com/cloud/confluence",
       "setup_steps": [
@@ -2045,7 +2444,7 @@
       "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "activity",
       "primary_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "setup_steps": [
@@ -2082,7 +2481,7 @@
       "github_url": "https://github.com/docker/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://github.com/docker/mcp-server",
       "setup_steps": [
@@ -2119,7 +2518,7 @@
       "docs_url": "https://www.dropbox.com/developers/documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "hard-drive",
       "primary_url": "https://www.dropbox.com/developers/documentation",
       "setup_steps": [
@@ -2156,7 +2555,7 @@
       "github_url": "https://github.com/GLips/Figma-Context-MCP",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "figma",
       "primary_url": "https://github.com/GLips/Figma-Context-MCP",
       "setup_steps": [
@@ -2194,7 +2593,7 @@
       "docs_url": "https://docs.firecrawl.dev",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "flame",
       "primary_url": "https://docs.firecrawl.dev",
       "setup_steps": [
@@ -2231,7 +2630,7 @@
       "docs_url": "https://developers.google.com/calendar",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "calendar",
       "primary_url": "https://developers.google.com/calendar",
       "setup_steps": [
@@ -2268,7 +2667,7 @@
       "docs_url": "https://cloud.google.com/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud",
       "primary_url": "https://cloud.google.com/mcp",
       "setup_steps": [
@@ -2305,7 +2704,7 @@
       "docs_url": "https://developers.google.com/sheets/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://developers.google.com/sheets/api",
       "setup_steps": [
@@ -2342,7 +2741,7 @@
       "docs_url": "https://developers.hubspot.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://developers.hubspot.com",
       "setup_steps": [
@@ -2379,7 +2778,7 @@
       "github_url": "https://github.com/tylerwince/mcp-imessage",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "message-square",
       "primary_url": "https://github.com/tylerwince/mcp-imessage",
       "setup_steps": [
@@ -2416,7 +2815,7 @@
       "docs_url": "https://developer.atlassian.com/cloud/jira",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "layout-list",
       "primary_url": "https://developer.atlassian.com/cloud/jira",
       "setup_steps": [
@@ -2454,7 +2853,7 @@
       "docs_url": "https://developers.keboola.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://developers.keboola.com",
       "setup_steps": [
@@ -2491,7 +2890,7 @@
       "github_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "setup_steps": [
@@ -2529,7 +2928,7 @@
       "docs_url": "https://docs.mem0.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "brain",
       "primary_url": "https://docs.mem0.ai",
       "setup_steps": [
@@ -2566,7 +2965,7 @@
       "github_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "credit-card",
       "primary_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "setup_steps": [
@@ -2603,7 +3002,7 @@
       "docs_url": "https://www.mercadopago.com/developers",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "credit-card",
       "primary_url": "https://www.mercadopago.com/developers",
       "setup_steps": [
@@ -2640,7 +3039,7 @@
       "docs_url": "https://learn.microsoft.com/microsoftteams",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "message-square",
       "primary_url": "https://learn.microsoft.com/microsoftteams",
       "setup_steps": [
@@ -2677,7 +3076,7 @@
       "github_url": "https://github.com/milvus-io/mcp-server-milvus",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://github.com/milvus-io/mcp-server-milvus",
       "setup_steps": [
@@ -2715,7 +3114,7 @@
       "docs_url": "https://docs.mindsdb.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://docs.mindsdb.com",
       "setup_steps": [
@@ -2752,7 +3151,7 @@
       "docs_url": "https://developer.monday.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "layout-list",
       "primary_url": "https://developer.monday.com",
       "setup_steps": [
@@ -2789,7 +3188,7 @@
       "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "setup_steps": [
@@ -2827,7 +3226,7 @@
       "docs_url": "https://motherduck.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://motherduck.com/docs",
       "setup_steps": [
@@ -2864,7 +3263,7 @@
       "github_url": "https://github.com/benborla/mcp-server-mysql",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://github.com/benborla/mcp-server-mysql",
       "setup_steps": [
@@ -2902,7 +3301,7 @@
       "docs_url": "https://docs.n8n.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://docs.n8n.io",
       "setup_steps": [
@@ -2940,7 +3339,7 @@
       "docs_url": "https://neon.tech/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://neon.tech/docs",
       "setup_steps": [
@@ -2977,7 +3376,7 @@
       "docs_url": "https://docs.netlify.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud",
       "primary_url": "https://docs.netlify.com",
       "setup_steps": [
@@ -3014,7 +3413,7 @@
       "docs_url": "https://learn.microsoft.com/graph/onedrive",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "hard-drive",
       "primary_url": "https://learn.microsoft.com/graph/onedrive",
       "setup_steps": [
@@ -3051,7 +3450,7 @@
       "docs_url": "https://developer.pagerduty.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "shield-alert",
       "primary_url": "https://developer.pagerduty.com",
       "setup_steps": [
@@ -3088,7 +3487,7 @@
       "github_url": "https://github.com/redis/mcp-redis",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "database",
       "primary_url": "https://github.com/redis/mcp-redis",
       "setup_steps": [
@@ -3125,7 +3524,7 @@
       "docs_url": "https://developer.salesforce.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://developer.salesforce.com",
       "setup_steps": [
@@ -3162,7 +3561,7 @@
       "docs_url": "https://shopify.dev/docs/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "credit-card",
       "primary_url": "https://shopify.dev/docs/api",
       "setup_steps": [
@@ -3199,7 +3598,7 @@
       "github_url": "https://github.com/shopsavvy/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "credit-card",
       "primary_url": "https://github.com/shopsavvy/mcp-server",
       "setup_steps": [
@@ -3236,7 +3635,7 @@
       "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "file-text",
       "primary_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "setup_steps": [
@@ -3273,7 +3672,7 @@
       "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "setup_steps": [
@@ -3311,7 +3710,7 @@
       "docs_url": "https://sourcegraph.com/cody",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "code",
       "primary_url": "https://sourcegraph.com/cody",
       "setup_steps": [
@@ -3377,7 +3776,7 @@
       "docs_url": "https://developer.stackblitz.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "browser",
       "primary_url": "https://developer.stackblitz.com",
       "setup_steps": [
@@ -3387,6 +3786,44 @@
         }
       ],
       "setup_summary": "Open https://developer.stackblitz.com for documentation and connection details.",
+      "featured": true
+    },
+    {
+      "id": "supabase",
+      "slug": "supabase",
+      "name": "Supabase",
+      "description": "Postgres plus auth, storage, and edge functions for Supabase projects.",
+      "category": "Databases",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List Supabase projects"
+        },
+        {
+          "name": "execute_sql",
+          "description": "Run SQL against a project"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables in a schema"
+        }
+      ],
+      "github_url": "https://github.com/supabase-community/supabase-mcp",
+      "docs_url": "https://supabase.com/docs",
+      "stars": 0,
+      "source": "manual",
+      "last_updated": "2026-06-15",
+      "icon": "database",
+      "primary_url": "https://supabase.com/docs",
+      "setup_steps": [
+        {
+          "title": "GitHub",
+          "text": "Install from https://github.com/supabase-community/supabase-mcp and add the server to your MCP client configuration (see repository README)."
+        }
+      ],
+      "setup_summary": "Install from https://github.com/supabase-community/supabase-mcp and add the server to your MCP client configuration (see repository README).",
       "featured": true
     },
     {
@@ -3414,7 +3851,7 @@
       "docs_url": "https://www.taskade.com/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "brain",
       "primary_url": "https://www.taskade.com/api",
       "setup_steps": [
@@ -3451,7 +3888,7 @@
       "github_url": "https://github.com/hashicorp/terraform-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://github.com/hashicorp/terraform-mcp-server",
       "setup_steps": [
@@ -3489,7 +3926,7 @@
       "docs_url": "https://vercel.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud",
       "primary_url": "https://vercel.com/docs",
       "setup_steps": [
@@ -3527,7 +3964,7 @@
       "docs_url": "https://docs.getzep.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "brain",
       "primary_url": "https://docs.getzep.com",
       "setup_steps": [
@@ -3560,7 +3997,7 @@
       "docs_url": "https://www.docs.developers.amplitude.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://www.docs.developers.amplitude.com",
       "setup_steps": [
@@ -3593,7 +4030,7 @@
       "docs_url": "https://developer.box.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "hard-drive",
       "primary_url": "https://developer.box.com",
       "setup_steps": [
@@ -3626,7 +4063,7 @@
       "docs_url": "https://www.builder.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "figma",
       "primary_url": "https://www.builder.io",
       "setup_steps": [
@@ -3659,7 +4096,7 @@
       "docs_url": "https://api-docs.deepseek.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "brain",
       "primary_url": "https://api-docs.deepseek.com",
       "setup_steps": [
@@ -3692,7 +4129,7 @@
       "docs_url": "https://fal.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "image",
       "primary_url": "https://fal.ai/docs",
       "setup_steps": [
@@ -3725,7 +4162,7 @@
       "github_url": "https://github.com/assafelovic/gpt-researcher",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "book-open",
       "primary_url": "https://github.com/assafelovic/gpt-researcher",
       "setup_steps": [
@@ -3758,7 +4195,7 @@
       "github_url": "https://github.com/grafana/mcp-grafana",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "activity",
       "primary_url": "https://github.com/grafana/mcp-grafana",
       "setup_steps": [
@@ -3791,7 +4228,7 @@
       "docs_url": "https://learn.hex.tech",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://learn.hex.tech",
       "setup_steps": [
@@ -3824,7 +4261,7 @@
       "docs_url": "https://jina.ai/reader",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "globe",
       "primary_url": "https://jina.ai/reader",
       "setup_steps": [
@@ -3857,7 +4294,7 @@
       "github_url": "https://github.com/magicuidesign/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "figma",
       "primary_url": "https://github.com/magicuidesign/mcp",
       "setup_steps": [
@@ -3890,7 +4327,7 @@
       "docs_url": "https://www.make.com/en/api-documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://www.make.com/en/api-documentation",
       "setup_steps": [
@@ -3923,7 +4360,7 @@
       "github_url": "https://github.com/metabase/mcp-metabase",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://github.com/metabase/mcp-metabase",
       "setup_steps": [
@@ -3956,7 +4393,7 @@
       "github_url": "https://github.com/metoro-io/metoro-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://github.com/metoro-io/metoro-mcp-server",
       "setup_steps": [
@@ -3989,7 +4426,7 @@
       "docs_url": "https://learn.microsoft.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "cloud",
       "primary_url": "https://learn.microsoft.com",
       "setup_steps": [
@@ -4022,7 +4459,7 @@
       "docs_url": "https://developer.mixpanel.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "bar-chart",
       "primary_url": "https://developer.mixpanel.com",
       "setup_steps": [
@@ -4055,7 +4492,7 @@
       "docs_url": "https://docs.newrelic.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "activity",
       "primary_url": "https://docs.newrelic.com",
       "setup_steps": [
@@ -4088,7 +4525,7 @@
       "docs_url": "https://openrouter.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "brain",
       "primary_url": "https://openrouter.ai/docs",
       "setup_steps": [
@@ -4121,7 +4558,7 @@
       "docs_url": "https://docs.perplexity.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "search",
       "primary_url": "https://docs.perplexity.ai",
       "setup_steps": [
@@ -4155,7 +4592,7 @@
       "docs_url": "https://pipedream.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "boxes",
       "primary_url": "https://pipedream.com/docs",
       "setup_steps": [
@@ -4188,7 +4625,7 @@
       "docs_url": "https://publora.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "globe",
       "primary_url": "https://publora.com",
       "setup_steps": [
@@ -4221,7 +4658,7 @@
       "docs_url": "https://replicate.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "image",
       "primary_url": "https://replicate.com/docs",
       "setup_steps": [
@@ -4254,7 +4691,7 @@
       "github_url": "https://github.com/searxng/searxng",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "search",
       "primary_url": "https://github.com/searxng/searxng",
       "setup_steps": [
@@ -4287,7 +4724,7 @@
       "docs_url": "https://docs.snyk.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "shield-alert",
       "primary_url": "https://docs.snyk.io",
       "setup_steps": [
@@ -4320,7 +4757,7 @@
       "github_url": "https://github.com/SonarSource/sonarqube-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "shield-alert",
       "primary_url": "https://github.com/SonarSource/sonarqube-mcp-server",
       "setup_steps": [
@@ -4353,7 +4790,7 @@
       "github_url": "https://github.com/storybookjs/mcp-storybook",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-08",
+      "last_updated": "2026-06-15",
       "icon": "book-open",
       "primary_url": "https://github.com/storybookjs/mcp-storybook",
       "setup_steps": [
@@ -4363,240 +4800,6 @@
         }
       ],
       "setup_summary": "Install from https://github.com/storybookjs/mcp-storybook and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "vega-lite",
-      "slug": "vega-lite",
-      "name": "VegaLite",
-      "description": "Generate data visualizations from tabular data specs.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "render_chart",
-          "description": "Render a Vega-Lite chart"
-        },
-        {
-          "name": "validate_spec",
-          "description": "Validate a visualization spec"
-        }
-      ],
-      "github_url": "https://github.com/vega/vega-lite",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-08",
-      "icon": "bar-chart",
-      "primary_url": "https://github.com/vega/vega-lite",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/vega/vega-lite and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/vega/vega-lite and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "zapier",
-      "slug": "zapier",
-      "name": "Zapier",
-      "description": "5,000+ app integrations via Zapier actions.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_zaps",
-          "description": "List configured Zaps"
-        },
-        {
-          "name": "run_action",
-          "description": "Execute a Zapier action"
-        }
-      ],
-      "docs_url": "https://platform.zapier.com",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-08",
-      "icon": "boxes",
-      "primary_url": "https://platform.zapier.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://platform.zapier.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://platform.zapier.com for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "googletasks",
-      "slug": "googletasks",
-      "name": "Google Tasks",
-      "description": "Google Tasks provides a simple to-do list and task management system integrated into Gmail and Google Calendar for quick and easy tracking",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GOOGLETASKS_CLEAR_TASKS",
-          "description": "Permanently clears all completed tasks from a specified Google Tasks list; this action is destructive and idempotent."
-        },
-        {
-          "name": "GOOGLETASKS_CREATE_TASK_LIST",
-          "description": "Creates a new task list with the specified title."
-        },
-        {
-          "name": "GOOGLETASKS_DELETE_TASK",
-          "description": "Deletes a specified task from a given task list in Google Tasks."
-        },
-        {
-          "name": "GOOGLETASKS_DELETE_TASK_LIST",
-          "description": "Permanently deletes an existing Google Task list, identified by `tasklist_id`, along with all its tasks; this operation is irreversible."
-        },
-        {
-          "name": "GOOGLETASKS_GET_TASK",
-          "description": "Use to retrieve a specific Google Task if its `task_id` and parent `tasklist_id` are known."
-        },
-        {
-          "name": "GOOGLETASKS_GET_TASK_LIST",
-          "description": "Retrieves a specific task list from the user's Google Tasks if the `tasklist_id` exists for the authenticated user."
-        },
-        {
-          "name": "GOOGLETASKS_INSERT_TASK",
-          "description": "Creates a new task in a given `tasklist_id`, optionally as a subtask of an existing `task_parent` or positioned after an existing `task_previous` sibling, where both `task_parent` and `task_previous` must belong to the same `tasklist_id` if specified. IMPORTANT: Date fields (due, completed) accept various formats like '28 Sep 2025', '11:59 PM, 22 Sep 2025', or ISO format '2025-09-21T15:30:00Z' and will automatically convert them to RFC3339 format required by the API."
-        },
-        {
-          "name": "GOOGLETASKS_LIST_TASK_LISTS",
-          "description": "Fetches the authenticated user's task lists from Google Tasks; results may be paginated."
-        },
-        {
-          "name": "GOOGLETASKS_LIST_TASKS",
-          "description": "Retrieves tasks from a Google Tasks list; all date/time strings must be RFC3339 UTC, and `showCompleted` must be true if `completedMin` or `completedMax` are specified."
-        },
-        {
-          "name": "GOOGLETASKS_MOVE_TASK",
-          "description": "Moves the specified task to another position in the destination task list."
-        },
-        {
-          "name": "GOOGLETASKS_PATCH_TASK",
-          "description": "Partially updates an existing task (identified by `task_id`) within a specific Google Task list (identified by `tasklist_id`), modifying only the provided attributes from `TaskInput` (e.g., `title`, `notes`, `due` date, `status`) and requiring both the task and list to exist."
-        },
-        {
-          "name": "GOOGLETASKS_PATCH_TASK_LIST",
-          "description": "Updates the title of an existing Google Tasks task list."
-        },
-        {
-          "name": "GOOGLETASKS_UPDATE_TASK",
-          "description": "Updates the specified task."
-        },
-        {
-          "name": "GOOGLETASKS_UPDATE_TASK_LIST",
-          "description": "Updates the authenticated user's specified task list."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googletasks",
-      "stars": 13302,
-      "source": "smithery",
-      "last_updated": "2026-06-08",
-      "icon": "boxes",
-      "smithery_qualified_name": "googletasks",
-      "smithery_page_url": "https://smithery.ai/servers/googletasks",
-      "mcp_endpoint": "https://googletasks.run.tools",
-      "deployment_url": "https://googletasks.run.tools",
-      "connection_url": "https://googletasks.run.tools",
-      "primary_url": "https://smithery.ai/servers/googletasks",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googletasks\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googletasks.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googletasks",
-      "tools_validated_at": "2026-06-15T11:29:46.992Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "hamid-vakilzadeh-mcpsemanticscholar",
-      "slug": "hamid-vakilzadeh-mcpsemanticscholar",
-      "name": "AI Research Assistant",
-      "description": "The server provides immediate access to millions of academic papers through Semantic Scholar and arXiv, enabling AI-powered research with comprehensive search, citation analysis, and full-text PDF extraction from multiple sources (arXiv and Wiley open-access).\n\n - No API key is required.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "papers-search-basic",
-          "description": "Search for academic papers with a simple query."
-        },
-        {
-          "name": "paper-search-advanced",
-          "description": "Search for academic papers with advanced filtering options"
-        },
-        {
-          "name": "search-paper-title",
-          "description": "Find a paper by closest title match"
-        },
-        {
-          "name": "get-paper-abstract",
-          "description": "Get detailed information about a specific paper including its abstract"
-        },
-        {
-          "name": "papers-citations",
-          "description": "Get papers that cite a specific paper"
-        },
-        {
-          "name": "papers-references",
-          "description": "Get papers cited by a specific paper"
-        },
-        {
-          "name": "authors-search",
-          "description": "Search for authors by name or affiliation"
-        },
-        {
-          "name": "authors-papers",
-          "description": "Get papers written by a specific author"
-        },
-        {
-          "name": "papers-batch",
-          "description": "Look up multiple papers by their IDs"
-        },
-        {
-          "name": "search-arxiv",
-          "description": "Search for papers on arXiv using their API"
-        },
-        {
-          "name": "download-full-paper-arxiv",
-          "description": "Download full-text PDF of an arXiv paper and extract text content (memory only)"
-        },
-        {
-          "name": "analysis-citation-network",
-          "description": "Analyze the citation network for a specific paper"
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "stars": 18294,
-      "source": "smithery",
-      "last_updated": "2026-06-08",
-      "icon": "search",
-      "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
-      "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "mcp_endpoint": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "deployment_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "connection_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "primary_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://mcpsemanticscholar--hamid-vakilzadeh.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-06-15T11:29:46.446Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     }
   ]
