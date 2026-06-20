@@ -13,6 +13,9 @@
     "validate-mcp-catalog": "node scripts/validate-mcp-catalog.js",
     "deploy": "bash scripts/deploy.sh",
     "deploy:server": "bash scripts/deploy.sh main logo-generator --server",
+    "deploy:remote": "bash scripts/deploy-remote.sh",
+    "deploy:prod": "bash scripts/deploy-remote.sh --push",
+    "deploy:sync": "bash scripts/deploy-remote.sh --sync",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

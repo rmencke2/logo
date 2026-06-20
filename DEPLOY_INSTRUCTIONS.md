@@ -74,9 +74,34 @@ pm2 logs logo-generator
 
 ## Redeploy after pushing to GitHub
 
+### One command from your Mac (recommended)
+
+No Lightsail browser SSH needed. One-time setup:
+
+```bash
+cp .deploy.env.example .deploy.env
+# Edit .deploy.env: DEPLOY_HOST, DEPLOY_USER, DEPLOY_KEY path
+chmod +x scripts/deploy-remote.sh
+npm run deploy:remote -- --check   # test SSH
+```
+
+Then whenever you have pushed to GitHub:
+
+```bash
+npm run deploy:remote              # deploy latest origin/main on server
+npm run deploy:prod                # git push + deploy (clean tree required)
+npm run deploy:sync                # catalog JSON only (fast pull + pm2 restart)
+```
+
+What it does over SSH: runs `./scripts/deploy.sh main logo-generator --server` in `~/logo` (full deploy) or `sync-mcp-catalog.sh` (sync only).
+
+**Requirements:** SSH key in `.deploy.env`, server firewall allows SSH from your IP, repo already cloned at `DEPLOY_PATH`.
+
+---
+
 The repo includes **`scripts/deploy.sh`** on the `main` branch. If you do not see it on the server, the instance is behind `origin/main` — pull first (see below).
 
-**On Lightsail (recommended — ignores local edits to tracked files like `package.json`):**
+**On Lightsail via browser SSH (manual — ignores local edits to tracked files like `package.json`):**
 
 ```bash
 cd ~/logo   # or your clone path, e.g. cd logo
