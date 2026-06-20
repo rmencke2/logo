@@ -52,7 +52,8 @@
       <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <% } %>
     <style>
-      .post-shell { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; }
+      .post-shell { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; overflow-x: clip; }
+      .post-shell article { width: 100%; max-width: 100%; min-width: 0; }
       .post-back { font-family: var(--font-ui); margin-bottom: 20px; display: inline-block; }
       .post-meta { font-family: var(--font-ui); color: var(--color-muted); margin-bottom: 12px; font-size: .85rem; }
       .post-title { margin-bottom: 12px; }
@@ -66,6 +67,29 @@
         border-radius: 14px;
         border: 1px solid var(--color-border);
         margin-bottom: 20px;
+      }
+      .post-video { width: 100%; max-width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 14px; margin-bottom: 22px; }
+      .post-content {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        overflow-x: clip;
+      }
+      .post-content h2, .post-content h3 { margin-top: 1.2em; margin-bottom: .5em; }
+      .post-content p { margin-bottom: .95em; }
+      .post-content ul { margin: 0 0 1em 1.25em; }
+      .post-content img {
+        display: block;
+        float: none;
+        clear: both;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        margin: 1.5rem 0;
+        border-radius: 14px;
+        border: 1px solid var(--color-border);
+        box-sizing: border-box;
       }
       .post-content .roi-scorecard-wrap {
         margin: 1.5rem 0 1.75rem;

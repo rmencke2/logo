@@ -122,11 +122,23 @@ function formatPostDate(dateString) {
   return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
+function stripDuplicateCoverImage(contentHtml, coverImage) {
+  if (!contentHtml || !coverImage) return contentHtml;
+  const src = coverImage.startsWith('/') ? coverImage : `/${coverImage}`;
+  const escaped = src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return contentHtml.replace(
+    new RegExp(`<p>\\s*<img[^>]*src=["']${escaped}["'][^>]*>\\s*</p>`, 'i'),
+    '',
+  );
+}
+
 function mapPostForDisplay(post) {
+  const contentHtml = stripDuplicateCoverImage(post.contentHtml, post.coverImage);
   return {
     ...post,
+    contentHtml,
     dateDisplay: formatPostDate(post.date),
-    readMinutes: estimateReadMinutes(post.contentHtml),
+    readMinutes: estimateReadMinutes(contentHtml),
     coverImageAbsolute: toAbsoluteUrl(post.coverImage),
     articleUrl: `${SITE_BASE_URL}/insights/${post.slug}`,
   };
@@ -706,9 +718,9 @@ ${itemsXml}
   // Blog post detail
   app.get('/insights/:slug', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    const post = findBlogPostBySlug(req.params.slug);
+    const raw = findBlogPostBySlug(req.params.slug);
 
-    if (!post) {
+    if (!raw) {
       return res.status(404).render('blog-post', {
         title: 'Post Not Found',
         post: null,
@@ -716,10 +728,12 @@ ${itemsXml}
       });
     }
 
+    const post = mapPostForDisplay(raw);
+
     return res.render('blog-post', {
       title: post.title,
       post,
-      relatedPosts: getRelatedBlogPosts(post, 3),
+      relatedPosts: getRelatedBlogPosts(raw, 3),
       turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
     });
   });
