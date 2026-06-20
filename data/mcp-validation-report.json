@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-06-19T10:13:57.974Z",
+  "generated_at": "2026-06-20T08:41:57.292Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-06-18T10:03:48.281Z",
+  "catalog_generated_at": "2026-06-19T10:13:58.010Z",
   "summary": {
     "checked": 291,
     "skipped_manual": 88,
     "skipped_no_endpoint": 1182,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 288,
+    "unchanged": 290,
     "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 2,
+    "auth_required_kept": 0,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 1473,
     "errors": 0,
     "tools_added_total": 0,
-    "tools_removed_total": 2,
+    "tools_removed_total": 0,
     "catalog_total": 1561,
     "http_endpoints": 286,
     "with_tools_before": 368,
@@ -27,20 +27,17 @@
   },
   "changes": [
     {
-      "slug": "theagenttimes-news",
-      "name": "Agent News",
+      "slug": "dev-7bd0-mcp-server",
+      "name": "DataNexus MCP",
       "source": "smithery",
       "validationMethod": "live_mcp+smithery_fallback",
       "status": "tools_changed",
-      "beforeToolCount": 20,
-      "afterToolCount": 18,
+      "beforeToolCount": 50,
+      "afterToolCount": 50,
       "added": [],
-      "removed": [
-        "product_research_request",
-        "product_research_get_status"
-      ],
+      "removed": [],
       "changed": [
-        "search_articles"
+        "apikeys_generate_api_key"
       ]
     }
   ],
