@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-20T08:41:57.292Z",
+  "generated_at": "2026-06-21T09:22:19.509Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-06-19T10:13:58.010Z",
+  "catalog_generated_at": "2026-06-20T08:41:57.321Z",
   "summary": {
     "checked": 291,
     "skipped_manual": 88,
     "skipped_no_endpoint": 1182,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 290,
-    "tools_changed": 1,
+    "unchanged": 291,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -25,21 +25,6 @@
     "with_tools_before": 368,
     "with_tools_after": 368
   },
-  "changes": [
-    {
-      "slug": "dev-7bd0-mcp-server",
-      "name": "DataNexus MCP",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [],
-      "removed": [],
-      "changed": [
-        "apikeys_generate_api_key"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
