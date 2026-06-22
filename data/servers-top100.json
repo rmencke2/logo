@@ -1,11 +1,10 @@
 {
-  "generated_at": "2026-06-21T09:22:19.538Z",
+  "generated_at": "2026-06-22T11:45:54.639Z",
   "count": 100,
-  "total_catalog": 1563,
+  "total_catalog": 1557,
   "top100_slugs": [
     "webnode",
     "github",
-    "brave-search",
     "slack",
     "linear",
     "context7",
@@ -16,13 +15,14 @@
     "googlesheets",
     "henry-ships-sparkforge",
     "ethanhenrickson-math-mcp",
+    "smithery-ai-national-weather-service",
+    "hamid-vakilzadeh-mcpsemanticscholar",
     "gmail",
     "clay-inc-clay-mcp",
-    "hamid-vakilzadeh-mcpsemanticscholar",
     "xgr-mcp",
-    "creativelead-unclick",
+    "mikechao-metmuseum-mcp",
     "googlecalendar",
-    "smithery-ai-national-weather-service",
+    "creativelead-unclick",
     "desktop-commander",
     "e2b",
     "gitlab",
@@ -126,7 +126,7 @@
       "docs_url": "https://www.webnode.com",
       "stars": 500,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "browser",
       "primary_url": "https://www.webnode.com",
       "setup_steps": [
@@ -175,32 +175,6 @@
       "featured": true,
       "last_updated": "2026-06-22",
       "icon": "github"
-    },
-    {
-      "id": "brave-search",
-      "slug": "brave-search",
-      "name": "Brave Search",
-      "description": "Web search via the Brave Search API for up-to-date information retrieval.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "brave_web_search",
-          "description": "Search the web via Brave"
-        },
-        {
-          "name": "brave_local_search",
-          "description": "Search local businesses and places"
-        }
-      ],
-      "github_url": "https://github.com/modelcontextprotocol/servers",
-      "install_command": "claude mcp add brave-search -- npx -y @modelcontextprotocol/server-brave-search",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "last_updated": "2026-06-22",
-      "icon": "search"
     },
     {
       "id": "slack",
@@ -413,9 +387,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/slack",
-      "stars": 8290,
+      "stars": 8352,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "message-square",
       "smithery_qualified_name": "slack",
       "smithery_page_url": "https://smithery.ai/servers/slack",
@@ -430,8 +404,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/slack",
-      "tools_validated_at": "2026-06-22T11:14:16.657Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -464,7 +436,7 @@
       "docs_url": "https://linear.app/docs",
       "stars": 920,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "layout-list",
       "primary_url": "https://linear.app/docs",
       "setup_steps": [
@@ -528,7 +500,7 @@
       "docs_url": "https://stripe.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "credit-card",
       "primary_url": "https://stripe.com/docs",
       "setup_steps": [
@@ -566,7 +538,7 @@
       "docs_url": "https://docs.sentry.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "shield-alert",
       "primary_url": "https://docs.sentry.io",
       "setup_steps": [
@@ -604,7 +576,7 @@
       "docs_url": "https://developers.notion.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "file-text",
       "primary_url": "https://developers.notion.com",
       "setup_steps": [
@@ -641,7 +613,7 @@
       "github_url": "https://github.com/executeautomation/mcp-playwright",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "monitor-play",
       "primary_url": "https://github.com/executeautomation/mcp-playwright",
       "setup_steps": [
@@ -816,9 +788,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 45592,
+      "stars": 45168,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -833,8 +805,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-06-22T11:14:10.718Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -980,9 +950,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "stars": 66353,
+      "stars": 67699,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "search",
       "smithery_qualified_name": "henry-ships/sparkforge",
       "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
@@ -997,8 +967,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-06-22T11:14:10.726Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1100,9 +1068,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "stars": 296413,
+      "stars": 114726,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "smithery_qualified_name": "EthanHenrickson/math-mcp",
       "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
@@ -1117,8 +1085,138 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-06-22T11:14:10.764Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "smithery-ai-national-weather-service",
+      "slug": "smithery-ai-national-weather-service",
+      "name": "United States Weather",
+      "description": "Provide real-time and forecast weather information for locations in the United States using natural language queries. Access current conditions, multi-day and hourly forecasts, weather alerts, and nearby weather stations without requiring an API key. Enable users to get official, government-sourced weather data easily through intuitive tools.",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_current_weather",
+          "description": "Get current weather conditions for a location in the United States. Perfect for 'What's the weather like in [US location]?' questions. Covers all US states, territories, and coastal waters."
+        },
+        {
+          "name": "get_weather_forecast",
+          "description": "Get multi-day weather forecast for a location in the United States. Perfect for 'What's the forecast for [US location]?' questions. Provides detailed day/night forecasts for up to 7 days."
+        },
+        {
+          "name": "get_hourly_forecast",
+          "description": "Get hour-by-hour weather forecast for a location in the United States. Perfect for 'What's the hourly forecast?' or 'Will it rain this afternoon in [US location]?' questions. Provides detailed hourly conditions for up to 48 hours."
+        },
+        {
+          "name": "get_weather_alerts",
+          "description": "Get active weather alerts, warnings, watches, and advisories for locations in the United States. Perfect for 'Are there any weather alerts in [US location]?' questions. Covers severe weather, winter storms, heat warnings, flood alerts, and more."
+        },
+        {
+          "name": "find_weather_stations",
+          "description": "Find weather observation stations near a location in the United States. Useful for getting station-specific data, finding data sources, or understanding which stations provide weather data for an area. Includes ASOS, AWOS, and other automated weather stations."
+        },
+        {
+          "name": "get_local_time",
+          "description": "Get the current local time for a US location. Shows what time it is right now at the specified location."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "stars": 69429,
+      "source": "smithery",
+      "last_updated": "2026-06-22",
+      "icon": "boxes",
+      "smithery_qualified_name": "smithery-ai/national-weather-service",
+      "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "mcp_endpoint": "https://national-weather-service--smithery-ai.run.tools",
+      "deployment_url": "https://national-weather-service--smithery-ai.run.tools",
+      "connection_url": "https://national-weather-service--smithery-ai.run.tools",
+      "primary_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://national-weather-service--smithery-ai.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "featured": true
+    },
+    {
+      "id": "hamid-vakilzadeh-mcpsemanticscholar",
+      "slug": "hamid-vakilzadeh-mcpsemanticscholar",
+      "name": "AI Research Assistant",
+      "description": "The server provides immediate access to millions of academic papers through Semantic Scholar and arXiv, enabling AI-powered research with comprehensive search, citation analysis, and full-text PDF extraction from multiple sources (arXiv and Wiley open-access).\n\n - No API key is required.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "papers-search-basic",
+          "description": "Search for academic papers with a simple query."
+        },
+        {
+          "name": "paper-search-advanced",
+          "description": "Search for academic papers with advanced filtering options"
+        },
+        {
+          "name": "search-paper-title",
+          "description": "Find a paper by closest title match"
+        },
+        {
+          "name": "get-paper-abstract",
+          "description": "Get detailed information about a specific paper including its abstract"
+        },
+        {
+          "name": "papers-citations",
+          "description": "Get papers that cite a specific paper"
+        },
+        {
+          "name": "papers-references",
+          "description": "Get papers cited by a specific paper"
+        },
+        {
+          "name": "authors-search",
+          "description": "Search for authors by name or affiliation"
+        },
+        {
+          "name": "authors-papers",
+          "description": "Get papers written by a specific author"
+        },
+        {
+          "name": "papers-batch",
+          "description": "Look up multiple papers by their IDs"
+        },
+        {
+          "name": "search-arxiv",
+          "description": "Search for papers on arXiv using their API"
+        },
+        {
+          "name": "download-full-paper-arxiv",
+          "description": "Download full-text PDF of an arXiv paper and extract text content (memory only)"
+        },
+        {
+          "name": "analysis-citation-network",
+          "description": "Analyze the citation network for a specific paper"
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "stars": 43601,
+      "source": "smithery",
+      "last_updated": "2026-06-22",
+      "icon": "search",
+      "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
+      "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "mcp_endpoint": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
+      "deployment_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
+      "connection_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
+      "primary_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://mcpsemanticscholar--hamid-vakilzadeh.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
       "featured": true
     },
     {
@@ -1212,9 +1310,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/gmail",
-      "stars": 36089,
+      "stars": 36810,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "search",
       "smithery_qualified_name": "gmail",
       "smithery_page_url": "https://smithery.ai/servers/gmail",
@@ -1229,8 +1327,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/gmail",
-      "tools_validated_at": "2026-06-22T11:14:10.788Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1324,9 +1420,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
-      "stars": 23995,
+      "stars": 24530,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "smithery_qualified_name": "clay-inc/clay-mcp",
       "smithery_page_url": "https://smithery.ai/servers/clay-inc/clay-mcp",
@@ -1341,88 +1437,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/clay-inc/clay-mcp",
-      "tools_validated_at": "2026-06-22T11:14:11.624Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "hamid-vakilzadeh-mcpsemanticscholar",
-      "slug": "hamid-vakilzadeh-mcpsemanticscholar",
-      "name": "AI Research Assistant",
-      "description": "The server provides immediate access to millions of academic papers through Semantic Scholar and arXiv, enabling AI-powered research with comprehensive search, citation analysis, and full-text PDF extraction from multiple sources (arXiv and Wiley open-access).\n\n - No API key is required.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "papers-search-basic",
-          "description": "Search for academic papers with a simple query."
-        },
-        {
-          "name": "paper-search-advanced",
-          "description": "Search for academic papers with advanced filtering options"
-        },
-        {
-          "name": "search-paper-title",
-          "description": "Find a paper by closest title match"
-        },
-        {
-          "name": "get-paper-abstract",
-          "description": "Get detailed information about a specific paper including its abstract"
-        },
-        {
-          "name": "papers-citations",
-          "description": "Get papers that cite a specific paper"
-        },
-        {
-          "name": "papers-references",
-          "description": "Get papers cited by a specific paper"
-        },
-        {
-          "name": "authors-search",
-          "description": "Search for authors by name or affiliation"
-        },
-        {
-          "name": "authors-papers",
-          "description": "Get papers written by a specific author"
-        },
-        {
-          "name": "papers-batch",
-          "description": "Look up multiple papers by their IDs"
-        },
-        {
-          "name": "search-arxiv",
-          "description": "Search for papers on arXiv using their API"
-        },
-        {
-          "name": "download-full-paper-arxiv",
-          "description": "Download full-text PDF of an arXiv paper and extract text content (memory only)"
-        },
-        {
-          "name": "analysis-citation-network",
-          "description": "Analyze the citation network for a specific paper"
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "stars": 26910,
-      "source": "smithery",
-      "last_updated": "2026-06-15",
-      "icon": "search",
-      "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
-      "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "mcp_endpoint": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "deployment_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "connection_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "primary_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://mcpsemanticscholar--hamid-vakilzadeh.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-06-22T11:14:11.282Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1499,7 +1513,7 @@
       "docs_url": "https://xgr.network/docs/mcp_overview/",
       "stars": 3,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "globe",
       "primary_url": "https://xgr.network/docs/mcp_overview/",
       "setup_steps": [
@@ -1509,6 +1523,192 @@
         }
       ],
       "setup_summary": "Install from https://github.com/xgr-network/xgr-mcp and add the server to your MCP client configuration (see repository README).",
+      "featured": true
+    },
+    {
+      "id": "mikechao-metmuseum-mcp",
+      "slug": "mikechao-metmuseum-mcp",
+      "name": "Met Museum Server",
+      "description": "Access the Metropolitan Museum of Art's collection through natural language queries. Search for artworks, retrieve detailed information, and explore various departments effortlessly. Enhance your AI's capabilities with rich art resources and data.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list-departments",
+          "description": "List all departments in the Metropolitan Museum of Art (Met Museum)"
+        },
+        {
+          "name": "search-museum-objects",
+          "description": "Search for objects in the Metropolitan Museum of Art (Met Museum). Will return Total objects found, followed by a list of Object Ids.The parameter title should be set to true if you want to search for objects by title.The parameter hasImages is false by default, but can be set to true to return objects without images.If the parameter hasImages is true, the parameter title should be false."
+        },
+        {
+          "name": "get-museum-object",
+          "description": "Get a museum object by its ID, from the Metropolitan Museum of Art Collection"
+        }
+      ],
+      "github_url": "https://github.com/mikechao/metmuseum-mcp",
+      "docs_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "stars": 23100,
+      "source": "smithery",
+      "last_updated": "2026-06-22",
+      "icon": "search",
+      "smithery_qualified_name": "mikechao/metmuseum-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "primary_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "featured": true
+    },
+    {
+      "id": "googlecalendar",
+      "slug": "googlecalendar",
+      "name": "Google Calendar",
+      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "GOOGLECALENDAR_ACL_PATCH",
+          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
+          "description": "Inserts an existing calendar into the user's calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
+          "description": "Updates an existing entry on the user\\'s calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
+          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
+          "description": "Updates metadata for a calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
+          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
+        },
+        {
+          "name": "GOOGLECALENDAR_CREATE_EVENT",
+          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
+        },
+        {
+          "name": "GOOGLECALENDAR_DELETE_EVENT",
+          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
+        },
+        {
+          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
+          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
+          "description": "Returns instances of the specified recurring event."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_LIST",
+          "description": "Returns events on the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_MOVE",
+          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_WATCH",
+          "description": "Watch for changes to Events resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_EVENT",
+          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
+          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
+        },
+        {
+          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
+          "description": "Returns free/busy information for a set of calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CALENDAR",
+          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
+          "description": "Gets the current date and time, allowing for a specific timezone offset."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
+          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_CALENDARS",
+          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
+          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_EVENT",
+          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_QUICK_ADD",
+          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
+        },
+        {
+          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
+          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_LIST",
+          "description": "Returns all user settings for the authenticated user."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
+          "description": "Watch for changes to Settings resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_SYNC_EVENTS",
+          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
+          "description": "Updates an access control rule for the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_EVENT",
+          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googlecalendar",
+      "stars": 15561,
+      "source": "smithery",
+      "last_updated": "2026-06-22",
+      "icon": "boxes",
+      "smithery_qualified_name": "googlecalendar",
+      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlecalendar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
       "featured": true
     },
     {
@@ -1722,9 +1922,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/creativelead/unclick",
-      "stars": 18587,
+      "stars": 18876,
       "source": "smithery",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "search",
       "smithery_qualified_name": "creativelead/unclick",
       "smithery_page_url": "https://smithery.ai/servers/creativelead/unclick",
@@ -1739,212 +1939,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-06-22T11:14:12.329Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "googlecalendar",
-      "slug": "googlecalendar",
-      "name": "Google Calendar",
-      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GOOGLECALENDAR_ACL_PATCH",
-          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
-          "description": "Inserts an existing calendar into the user's calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
-          "description": "Updates an existing entry on the user\\'s calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
-          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
-          "description": "Updates metadata for a calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
-          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
-        },
-        {
-          "name": "GOOGLECALENDAR_CREATE_EVENT",
-          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
-        },
-        {
-          "name": "GOOGLECALENDAR_DELETE_EVENT",
-          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
-        },
-        {
-          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
-          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
-          "description": "Returns instances of the specified recurring event."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_LIST",
-          "description": "Returns events on the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_MOVE",
-          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_WATCH",
-          "description": "Watch for changes to Events resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_EVENT",
-          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
-          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
-        },
-        {
-          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
-          "description": "Returns free/busy information for a set of calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CALENDAR",
-          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
-          "description": "Gets the current date and time, allowing for a specific timezone offset."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
-          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_CALENDARS",
-          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
-          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_EVENT",
-          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_QUICK_ADD",
-          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
-        },
-        {
-          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
-          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_LIST",
-          "description": "Returns all user settings for the authenticated user."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
-          "description": "Watch for changes to Settings resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_SYNC_EVENTS",
-          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
-          "description": "Updates an access control rule for the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_EVENT",
-          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 13414,
-      "source": "smithery",
-      "last_updated": "2026-06-15",
-      "icon": "boxes",
-      "smithery_qualified_name": "googlecalendar",
-      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
-      "mcp_endpoint": "https://googlecalendar.run.tools",
-      "deployment_url": "https://googlecalendar.run.tools",
-      "connection_url": "https://googlecalendar.run.tools",
-      "primary_url": "https://smithery.ai/servers/googlecalendar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-06-22T11:14:13.155Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "smithery-ai-national-weather-service",
-      "slug": "smithery-ai-national-weather-service",
-      "name": "United States Weather",
-      "description": "Provide real-time and forecast weather information for locations in the United States using natural language queries. Access current conditions, multi-day and hourly forecasts, weather alerts, and nearby weather stations without requiring an API key. Enable users to get official, government-sourced weather data easily through intuitive tools.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "get_current_weather",
-          "description": "Get current weather conditions for a location in the United States. Perfect for 'What's the weather like in [US location]?' questions. Covers all US states, territories, and coastal waters."
-        },
-        {
-          "name": "get_weather_forecast",
-          "description": "Get multi-day weather forecast for a location in the United States. Perfect for 'What's the forecast for [US location]?' questions. Provides detailed day/night forecasts for up to 7 days."
-        },
-        {
-          "name": "get_hourly_forecast",
-          "description": "Get hour-by-hour weather forecast for a location in the United States. Perfect for 'What's the hourly forecast?' or 'Will it rain this afternoon in [US location]?' questions. Provides detailed hourly conditions for up to 48 hours."
-        },
-        {
-          "name": "get_weather_alerts",
-          "description": "Get active weather alerts, warnings, watches, and advisories for locations in the United States. Perfect for 'Are there any weather alerts in [US location]?' questions. Covers severe weather, winter storms, heat warnings, flood alerts, and more."
-        },
-        {
-          "name": "find_weather_stations",
-          "description": "Find weather observation stations near a location in the United States. Useful for getting station-specific data, finding data sources, or understanding which stations provide weather data for an area. Includes ASOS, AWOS, and other automated weather stations."
-        },
-        {
-          "name": "get_local_time",
-          "description": "Get the current local time for a US location. Shows what time it is right now at the specified location."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "stars": 19998,
-      "source": "smithery",
-      "last_updated": "2026-06-15",
-      "icon": "boxes",
-      "smithery_qualified_name": "smithery-ai/national-weather-service",
-      "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "mcp_endpoint": "https://national-weather-service--smithery-ai.run.tools",
-      "deployment_url": "https://national-weather-service--smithery-ai.run.tools",
-      "connection_url": "https://national-weather-service--smithery-ai.run.tools",
-      "primary_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://national-weather-service--smithery-ai.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-06-22T11:14:11.464Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1976,7 +1970,7 @@
       "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "terminal",
       "primary_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "setup_steps": [
@@ -2018,7 +2012,7 @@
       "docs_url": "https://e2b.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "sandbox",
       "primary_url": "https://e2b.dev/docs",
       "setup_steps": [
@@ -2059,7 +2053,7 @@
       "github_url": "https://github.com/zereight/gitlab-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "gitlab",
       "primary_url": "https://github.com/zereight/gitlab-mcp",
       "setup_steps": [
@@ -2100,7 +2094,7 @@
       "docs_url": "https://docs.replit.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud-code",
       "primary_url": "https://docs.replit.com",
       "setup_steps": [
@@ -2167,7 +2161,7 @@
       "docs_url": "https://airtable.com/developers/web/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://airtable.com/developers/web/api",
       "setup_steps": [
@@ -2204,7 +2198,7 @@
       "docs_url": "https://developers.asana.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "layout-list",
       "primary_url": "https://developers.asana.com",
       "setup_steps": [
@@ -2242,7 +2236,7 @@
       "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud",
       "primary_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "setup_steps": [
@@ -2279,7 +2273,7 @@
       "docs_url": "https://learn.microsoft.com/azure",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud",
       "primary_url": "https://learn.microsoft.com/azure",
       "setup_steps": [
@@ -2316,7 +2310,7 @@
       "docs_url": "https://cloud.google.com/bigquery/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://cloud.google.com/bigquery/docs",
       "setup_steps": [
@@ -2353,7 +2347,7 @@
       "github_url": "https://github.com/bluesky-social/mcp-bluesky",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "globe",
       "primary_url": "https://github.com/bluesky-social/mcp-bluesky",
       "setup_steps": [
@@ -2390,7 +2384,7 @@
       "docs_url": "https://www.canva.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "image",
       "primary_url": "https://www.canva.dev/docs",
       "setup_steps": [
@@ -2427,7 +2421,7 @@
       "docs_url": "https://developer.atlassian.com/cloud/confluence",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "file-text",
       "primary_url": "https://developer.atlassian.com/cloud/confluence",
       "setup_steps": [
@@ -2464,7 +2458,7 @@
       "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "activity",
       "primary_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "setup_steps": [
@@ -2501,7 +2495,7 @@
       "github_url": "https://github.com/docker/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://github.com/docker/mcp-server",
       "setup_steps": [
@@ -2538,7 +2532,7 @@
       "docs_url": "https://www.dropbox.com/developers/documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "hard-drive",
       "primary_url": "https://www.dropbox.com/developers/documentation",
       "setup_steps": [
@@ -2575,7 +2569,7 @@
       "github_url": "https://github.com/GLips/Figma-Context-MCP",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "figma",
       "primary_url": "https://github.com/GLips/Figma-Context-MCP",
       "setup_steps": [
@@ -2613,7 +2607,7 @@
       "docs_url": "https://docs.firecrawl.dev",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "flame",
       "primary_url": "https://docs.firecrawl.dev",
       "setup_steps": [
@@ -2650,7 +2644,7 @@
       "docs_url": "https://developers.google.com/calendar",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "calendar",
       "primary_url": "https://developers.google.com/calendar",
       "setup_steps": [
@@ -2687,7 +2681,7 @@
       "docs_url": "https://cloud.google.com/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud",
       "primary_url": "https://cloud.google.com/mcp",
       "setup_steps": [
@@ -2724,7 +2718,7 @@
       "docs_url": "https://developers.google.com/sheets/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://developers.google.com/sheets/api",
       "setup_steps": [
@@ -2761,7 +2755,7 @@
       "docs_url": "https://developers.hubspot.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://developers.hubspot.com",
       "setup_steps": [
@@ -2798,7 +2792,7 @@
       "github_url": "https://github.com/tylerwince/mcp-imessage",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "message-square",
       "primary_url": "https://github.com/tylerwince/mcp-imessage",
       "setup_steps": [
@@ -2835,7 +2829,7 @@
       "docs_url": "https://developer.atlassian.com/cloud/jira",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "layout-list",
       "primary_url": "https://developer.atlassian.com/cloud/jira",
       "setup_steps": [
@@ -2873,7 +2867,7 @@
       "docs_url": "https://developers.keboola.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://developers.keboola.com",
       "setup_steps": [
@@ -2910,7 +2904,7 @@
       "github_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "setup_steps": [
@@ -2948,7 +2942,7 @@
       "docs_url": "https://docs.mem0.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "brain",
       "primary_url": "https://docs.mem0.ai",
       "setup_steps": [
@@ -2985,7 +2979,7 @@
       "github_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "credit-card",
       "primary_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "setup_steps": [
@@ -3022,7 +3016,7 @@
       "docs_url": "https://www.mercadopago.com/developers",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "credit-card",
       "primary_url": "https://www.mercadopago.com/developers",
       "setup_steps": [
@@ -3059,7 +3053,7 @@
       "docs_url": "https://learn.microsoft.com/microsoftteams",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "message-square",
       "primary_url": "https://learn.microsoft.com/microsoftteams",
       "setup_steps": [
@@ -3096,7 +3090,7 @@
       "github_url": "https://github.com/milvus-io/mcp-server-milvus",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://github.com/milvus-io/mcp-server-milvus",
       "setup_steps": [
@@ -3134,7 +3128,7 @@
       "docs_url": "https://docs.mindsdb.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://docs.mindsdb.com",
       "setup_steps": [
@@ -3171,7 +3165,7 @@
       "docs_url": "https://developer.monday.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "layout-list",
       "primary_url": "https://developer.monday.com",
       "setup_steps": [
@@ -3208,7 +3202,7 @@
       "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "setup_steps": [
@@ -3246,7 +3240,7 @@
       "docs_url": "https://motherduck.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://motherduck.com/docs",
       "setup_steps": [
@@ -3283,7 +3277,7 @@
       "github_url": "https://github.com/benborla/mcp-server-mysql",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://github.com/benborla/mcp-server-mysql",
       "setup_steps": [
@@ -3321,7 +3315,7 @@
       "docs_url": "https://docs.n8n.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://docs.n8n.io",
       "setup_steps": [
@@ -3359,7 +3353,7 @@
       "docs_url": "https://neon.tech/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://neon.tech/docs",
       "setup_steps": [
@@ -3396,7 +3390,7 @@
       "docs_url": "https://docs.netlify.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud",
       "primary_url": "https://docs.netlify.com",
       "setup_steps": [
@@ -3433,7 +3427,7 @@
       "docs_url": "https://learn.microsoft.com/graph/onedrive",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "hard-drive",
       "primary_url": "https://learn.microsoft.com/graph/onedrive",
       "setup_steps": [
@@ -3470,7 +3464,7 @@
       "docs_url": "https://developer.pagerduty.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "shield-alert",
       "primary_url": "https://developer.pagerduty.com",
       "setup_steps": [
@@ -3507,7 +3501,7 @@
       "github_url": "https://github.com/redis/mcp-redis",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://github.com/redis/mcp-redis",
       "setup_steps": [
@@ -3544,7 +3538,7 @@
       "docs_url": "https://developer.salesforce.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://developer.salesforce.com",
       "setup_steps": [
@@ -3581,7 +3575,7 @@
       "docs_url": "https://shopify.dev/docs/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "credit-card",
       "primary_url": "https://shopify.dev/docs/api",
       "setup_steps": [
@@ -3618,7 +3612,7 @@
       "github_url": "https://github.com/shopsavvy/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "credit-card",
       "primary_url": "https://github.com/shopsavvy/mcp-server",
       "setup_steps": [
@@ -3655,7 +3649,7 @@
       "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "file-text",
       "primary_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "setup_steps": [
@@ -3692,7 +3686,7 @@
       "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "setup_steps": [
@@ -3730,7 +3724,7 @@
       "docs_url": "https://sourcegraph.com/cody",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "code",
       "primary_url": "https://sourcegraph.com/cody",
       "setup_steps": [
@@ -3796,7 +3790,7 @@
       "docs_url": "https://developer.stackblitz.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "browser",
       "primary_url": "https://developer.stackblitz.com",
       "setup_steps": [
@@ -3834,7 +3828,7 @@
       "docs_url": "https://supabase.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "database",
       "primary_url": "https://supabase.com/docs",
       "setup_steps": [
@@ -3871,7 +3865,7 @@
       "docs_url": "https://www.taskade.com/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "brain",
       "primary_url": "https://www.taskade.com/api",
       "setup_steps": [
@@ -3908,7 +3902,7 @@
       "github_url": "https://github.com/hashicorp/terraform-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://github.com/hashicorp/terraform-mcp-server",
       "setup_steps": [
@@ -3946,7 +3940,7 @@
       "docs_url": "https://vercel.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud",
       "primary_url": "https://vercel.com/docs",
       "setup_steps": [
@@ -3984,7 +3978,7 @@
       "docs_url": "https://docs.getzep.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "brain",
       "primary_url": "https://docs.getzep.com",
       "setup_steps": [
@@ -4017,7 +4011,7 @@
       "docs_url": "https://www.docs.developers.amplitude.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://www.docs.developers.amplitude.com",
       "setup_steps": [
@@ -4050,7 +4044,7 @@
       "docs_url": "https://developer.box.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "hard-drive",
       "primary_url": "https://developer.box.com",
       "setup_steps": [
@@ -4083,7 +4077,7 @@
       "docs_url": "https://www.builder.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "figma",
       "primary_url": "https://www.builder.io",
       "setup_steps": [
@@ -4116,7 +4110,7 @@
       "docs_url": "https://api-docs.deepseek.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "brain",
       "primary_url": "https://api-docs.deepseek.com",
       "setup_steps": [
@@ -4149,7 +4143,7 @@
       "docs_url": "https://fal.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "image",
       "primary_url": "https://fal.ai/docs",
       "setup_steps": [
@@ -4182,7 +4176,7 @@
       "github_url": "https://github.com/assafelovic/gpt-researcher",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "book-open",
       "primary_url": "https://github.com/assafelovic/gpt-researcher",
       "setup_steps": [
@@ -4215,7 +4209,7 @@
       "github_url": "https://github.com/grafana/mcp-grafana",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "activity",
       "primary_url": "https://github.com/grafana/mcp-grafana",
       "setup_steps": [
@@ -4248,7 +4242,7 @@
       "docs_url": "https://learn.hex.tech",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://learn.hex.tech",
       "setup_steps": [
@@ -4281,7 +4275,7 @@
       "docs_url": "https://jina.ai/reader",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "globe",
       "primary_url": "https://jina.ai/reader",
       "setup_steps": [
@@ -4314,7 +4308,7 @@
       "github_url": "https://github.com/magicuidesign/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "figma",
       "primary_url": "https://github.com/magicuidesign/mcp",
       "setup_steps": [
@@ -4347,7 +4341,7 @@
       "docs_url": "https://www.make.com/en/api-documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://www.make.com/en/api-documentation",
       "setup_steps": [
@@ -4380,7 +4374,7 @@
       "github_url": "https://github.com/metabase/mcp-metabase",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://github.com/metabase/mcp-metabase",
       "setup_steps": [
@@ -4413,7 +4407,7 @@
       "github_url": "https://github.com/metoro-io/metoro-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://github.com/metoro-io/metoro-mcp-server",
       "setup_steps": [
@@ -4446,7 +4440,7 @@
       "docs_url": "https://learn.microsoft.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "cloud",
       "primary_url": "https://learn.microsoft.com",
       "setup_steps": [
@@ -4479,7 +4473,7 @@
       "docs_url": "https://developer.mixpanel.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "bar-chart",
       "primary_url": "https://developer.mixpanel.com",
       "setup_steps": [
@@ -4512,7 +4506,7 @@
       "docs_url": "https://docs.newrelic.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "activity",
       "primary_url": "https://docs.newrelic.com",
       "setup_steps": [
@@ -4545,7 +4539,7 @@
       "docs_url": "https://openrouter.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "brain",
       "primary_url": "https://openrouter.ai/docs",
       "setup_steps": [
@@ -4578,7 +4572,7 @@
       "docs_url": "https://docs.perplexity.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "search",
       "primary_url": "https://docs.perplexity.ai",
       "setup_steps": [
@@ -4612,7 +4606,7 @@
       "docs_url": "https://pipedream.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "boxes",
       "primary_url": "https://pipedream.com/docs",
       "setup_steps": [
@@ -4645,7 +4639,7 @@
       "docs_url": "https://publora.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "globe",
       "primary_url": "https://publora.com",
       "setup_steps": [
@@ -4678,7 +4672,7 @@
       "docs_url": "https://replicate.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "image",
       "primary_url": "https://replicate.com/docs",
       "setup_steps": [
@@ -4711,7 +4705,7 @@
       "github_url": "https://github.com/searxng/searxng",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "search",
       "primary_url": "https://github.com/searxng/searxng",
       "setup_steps": [
@@ -4744,7 +4738,7 @@
       "docs_url": "https://docs.snyk.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "shield-alert",
       "primary_url": "https://docs.snyk.io",
       "setup_steps": [
@@ -4777,7 +4771,7 @@
       "github_url": "https://github.com/SonarSource/sonarqube-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "shield-alert",
       "primary_url": "https://github.com/SonarSource/sonarqube-mcp-server",
       "setup_steps": [
@@ -4810,7 +4804,7 @@
       "github_url": "https://github.com/storybookjs/mcp-storybook",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-15",
+      "last_updated": "2026-06-22",
       "icon": "book-open",
       "primary_url": "https://github.com/storybookjs/mcp-storybook",
       "setup_steps": [
