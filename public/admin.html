@@ -416,6 +416,34 @@
     <!-- Newsletter Tab -->
     <div class="tab-content" id="newsletterTab">
       <div class="section">
+        <h2>Send Blog Newsletter</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          After you deploy a new blog post, pick it here to preview and optionally email all active subscribers.
+          Each post can only be broadcast once unless you explicitly resend.
+        </p>
+        <div id="newsletterSendStatus" style="margin-bottom:16px;font-size:14px;"></div>
+        <div class="search-bar" style="flex-wrap:wrap;align-items:flex-start;">
+          <select id="newsletterPostSelect" style="min-width:320px;flex:1;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
+            <option value="">Select a blog post…</option>
+          </select>
+          <button class="btn btn-secondary" onclick="loadNewsletterSendPanel()">Refresh posts</button>
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label for="newsletterCustomIntro" style="display:block;color:#8e8e93;font-size:13px;margin-bottom:8px;">Optional intro (shown above the excerpt)</label>
+          <textarea id="newsletterCustomIntro" rows="3" placeholder="e.g. We just published a hands-on Cursor story — worth a read if you're wiring MCP tools this week." style="width:100%;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;font-family:inherit;"></textarea>
+        </div>
+        <div id="newsletterPostMeta" style="color:#8e8e93;font-size:13px;margin:12px 0 16px;"></div>
+        <div class="search-bar">
+          <button class="btn btn-secondary" onclick="previewNewsletterEmail()">Preview email</button>
+          <button class="btn btn-secondary" onclick="sendNewsletterTest()">Send test to my email</button>
+          <button class="btn btn-primary" onclick="sendNewsletterBroadcast()">Send to all subscribers</button>
+        </div>
+        <div id="newsletterPreviewContainer" style="margin-top:20px;display:none;">
+          <h3 style="color:#fff;font-size:16px;margin-bottom:12px;">Email preview</h3>
+          <iframe id="newsletterPreviewFrame" title="Newsletter preview" style="width:100%;min-height:520px;border:1px solid #2a2a2a;border-radius:8px;background:#fff;"></iframe>
+        </div>
+      </div>
+      <div class="section">
         <h2>Newsletter Subscribers</h2>
         <div class="search-bar">
           <input type="number" id="newsletterLimit" min="1" max="1000" value="500" placeholder="Limit (max 1000)">
@@ -626,7 +654,9 @@
 
   <script>
     let currentUserId = null;
+    let currentUserEmail = null;
     let currentIP = null;
+    let newsletterPostsCache = [];
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -646,6 +676,9 @@
           window.location.href = '/login?redirect=/admin';
           return;
         }
+
+        const authData = await authRes.json();
+        currentUserEmail = authData.user?.email || authData.email || null;
 
         // Check if user is admin
         const adminRes = await fetch('/admin/api/check');
@@ -679,7 +712,10 @@
         if (tabName === 'abuse') loadAbuseRecords();
         if (tabName === 'activity') loadActivity();
         if (tabName === 'comments') loadComments();
-        if (tabName === 'newsletter') loadNewsletterSubscribers();
+        if (tabName === 'newsletter') {
+          loadNewsletterSendPanel();
+          loadNewsletterSubscribers();
+        }
         if (tabName === 'mcp') loadMcpSubmissions();
       });
     });
@@ -851,6 +887,176 @@
         loadComments();
       } catch (err) {
         alert(`Error: ${err.message}`);
+      }
+    }
+
+    // Newsletter send panel
+    function getSelectedNewsletterPost() {
+      const slug = document.getElementById('newsletterPostSelect')?.value || '';
+      return newsletterPostsCache.find((post) => post.slug === slug) || null;
+    }
+
+    function updateNewsletterPostMeta() {
+      const meta = document.getElementById('newsletterPostMeta');
+      const status = document.getElementById('newsletterSendStatus');
+      const post = getSelectedNewsletterPost();
+      if (!meta) return;
+
+      if (!post) {
+        meta.textContent = '';
+        return;
+      }
+
+      let metaText = `${post.date}${post.category ? ` · ${post.category}` : ''}`;
+      if (post.newsletterSent) {
+        const sentAt = post.lastSentAt ? new Date(post.lastSentAt).toLocaleString() : 'previously';
+        metaText += ` · Already sent ${sentAt} to ${post.lastSentCount || 0} recipients`;
+      } else {
+        metaText += ' · Not sent yet';
+      }
+      meta.innerHTML = `<strong>${escapeHtml(post.title)}</strong><br>${escapeHtml(metaText)}`;
+    }
+
+    async function loadNewsletterSendPanel() {
+      const select = document.getElementById('newsletterPostSelect');
+      const status = document.getElementById('newsletterSendStatus');
+      if (!select || !status) return;
+
+      status.innerHTML = '<span style="color:#8e8e93;">Loading blog posts…</span>';
+      try {
+        const res = await fetch('/admin/api/newsletter/blog-posts');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to load blog posts');
+
+        newsletterPostsCache = data.posts || [];
+        const previous = select.value;
+        select.innerHTML = '<option value="">Select a blog post…</option>';
+        newsletterPostsCache.forEach((post) => {
+          const label = post.newsletterSent
+            ? `${post.title} (sent)`
+            : post.title;
+          select.innerHTML += `<option value="${escapeHtml(post.slug)}">${escapeHtml(label)}</option>`;
+        });
+        if (previous && newsletterPostsCache.some((post) => post.slug === previous)) {
+          select.value = previous;
+        }
+
+        const emailNote = data.emailConfigured
+          ? `<span style="color:#10a37f;">Email configured</span>`
+          : `<span style="color:#f59e0b;">Email not configured — sends will fail until .env is set on the server</span>`;
+        status.innerHTML = `${emailNote} · <strong>${data.activeSubscriberCount || 0}</strong> active subscribers`;
+        updateNewsletterPostMeta();
+      } catch (err) {
+        status.innerHTML = `<span style="color:#ef4444;">Error: ${escapeHtml(err.message)}</span>`;
+      }
+    }
+
+    document.addEventListener('change', (event) => {
+      if (event.target && event.target.id === 'newsletterPostSelect') {
+        updateNewsletterPostMeta();
+      }
+    });
+
+    async function previewNewsletterEmail() {
+      const post = getSelectedNewsletterPost();
+      if (!post) {
+        alert('Select a blog post first.');
+        return;
+      }
+
+      const intro = document.getElementById('newsletterCustomIntro')?.value || '';
+      const container = document.getElementById('newsletterPreviewContainer');
+      const frame = document.getElementById('newsletterPreviewFrame');
+      try {
+        const params = new URLSearchParams({ slug: post.slug, intro });
+        const res = await fetch(`/admin/api/newsletter/preview?${params.toString()}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Preview failed');
+        container.style.display = 'block';
+        frame.srcdoc = data.html;
+      } catch (err) {
+        alert(`Preview failed: ${err.message}`);
+      }
+    }
+
+    async function sendNewsletterTest() {
+      const post = getSelectedNewsletterPost();
+      if (!post) {
+        alert('Select a blog post first.');
+        return;
+      }
+      if (!currentUserEmail) {
+        const email = prompt('Enter the email address for the test send:');
+        if (!email) return;
+        currentUserEmail = email.trim();
+      }
+
+      const intro = document.getElementById('newsletterCustomIntro')?.value || '';
+      try {
+        const res = await fetch('/admin/api/newsletter/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug: post.slug,
+            customIntro: intro,
+            testEmail: currentUserEmail,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Test send failed');
+        alert(`Test email sent to ${currentUserEmail}.`);
+      } catch (err) {
+        alert(`Test send failed: ${err.message}`);
+      }
+    }
+
+    async function sendNewsletterBroadcast(confirmResend = false) {
+      const post = getSelectedNewsletterPost();
+      if (!post) {
+        alert('Select a blog post first.');
+        return;
+      }
+
+      const intro = document.getElementById('newsletterCustomIntro')?.value || '';
+      const status = document.getElementById('newsletterSendStatus');
+
+      if (!confirmResend && post.newsletterSent) {
+        const ok = confirm(
+          `This post was already sent on ${post.lastSentAt ? new Date(post.lastSentAt).toLocaleString() : 'a previous date'}.\n\nSend again to all active subscribers?`
+        );
+        if (!ok) return;
+        confirmResend = true;
+      } else if (!confirmResend) {
+        const activeMatch = status?.textContent?.match(/(\d+) active subscribers/);
+        const count = activeMatch ? activeMatch[1] : 'all';
+        const ok = confirm(`Send "${post.title}" to ${count} active subscribers?`);
+        if (!ok) return;
+      }
+
+      status.innerHTML = '<span style="color:#8e8e93;">Sending newsletter… this may take a minute.</span>';
+      try {
+        const res = await fetch('/admin/api/newsletter/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug: post.slug,
+            customIntro: intro,
+            confirmResend,
+          }),
+        });
+        const data = await res.json();
+        if (res.status === 409 && data.code === 'ALREADY_SENT') {
+          const retry = confirm(`${data.error}. Send again anyway?`);
+          if (retry) return sendNewsletterBroadcast(true);
+          throw new Error(data.error);
+        }
+        if (!res.ok) throw new Error(data.error || 'Send failed');
+
+        alert(`Newsletter sent.\n\nDelivered: ${data.sent}\nFailed: ${data.failed}`);
+        await loadNewsletterSendPanel();
+      } catch (err) {
+        status.innerHTML = `<span style="color:#ef4444;">Send failed: ${escapeHtml(err.message)}</span>`;
+        alert(`Send failed: ${err.message}`);
       }
     }
 

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter unsubscribe — Influzer.ai</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--color-cream, #faf9f7);
+        font-family: var(--font-body, Georgia, serif);
+        color: var(--color-charcoal, #18181b);
+      }
+      .shell {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--color-border, #e7e5e4);
+        border-radius: 16px;
+        padding: 28px 24px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 1.6rem;
+      }
+      p {
+        margin: 0 0 12px;
+        line-height: 1.6;
+        color: var(--color-charcoal-light, #444);
+      }
+      a {
+        color: #6366f1;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="card">
+        <% if (result && result.success) { %>
+          <h1>You’re unsubscribed</h1>
+          <% if (result.already) { %>
+            <p>This address was already removed from our list.</p>
+          <% } else { %>
+            <p>We removed <strong><%= result.email %></strong> from the Influzer Insights newsletter.</p>
+          <% } %>
+          <p>You won’t receive further emails from this list. You can still browse <a href="/insights">Insights</a> anytime.</p>
+        <% } else { %>
+          <h1>Couldn’t unsubscribe</h1>
+          <% if (result && result.reason === 'missing_token') { %>
+            <p>This unsubscribe link is incomplete. Use the link from your newsletter email.</p>
+          <% } else if (result && result.reason === 'not_found') { %>
+            <p>This unsubscribe link is invalid or expired.</p>
+          <% } else { %>
+            <p><%= result && result.message ? result.message : 'Something went wrong. Please try again later.' %></p>
+          <% } %>
+          <p>Need help? Reply to any newsletter email or visit <a href="/insights">Influzer Insights</a>.</p>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>

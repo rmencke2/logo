@@ -852,5 +852,9 @@ ${allUrls
   // Note: Admin route is handled in adminService.js
 }
 
-module.exports = { initializeStaticService };
+module.exports = {
+  initializeStaticService,
+  getAllBlogPosts,
+  findBlogPostBySlug,
+};
 

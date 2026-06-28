@@ -417,11 +417,84 @@ async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
   }
 }
 
+function buildBlogNewsletterHtml({ post, postUrl, coverImageUrl, customIntro, unsubscribeUrl }) {
+  const intro = customIntro
+    ? `<p style="font-size:16px;line-height:1.6;color:#333;margin:0 0 20px;">${escapeHtml(customIntro).replace(/\n/g, '<br>')}</p>`
+    : '';
+  const coverBlock = coverImageUrl
+    ? `<a href="${escapeHtml(postUrl)}" style="display:block;margin:0 0 20px;"><img src="${escapeHtml(coverImageUrl)}" alt="${escapeHtml(post.coverImageAlt || post.title)}" style="width:100%;max-width:560px;border-radius:12px;display:block;" /></a>`
+    : '';
+
+  return `<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background:#f5f5f4;font-family:Arial,sans-serif;line-height:1.6;color:#333;">
+    <div style="max-width:600px;margin:0 auto;padding:24px 16px;">
+      <div style="background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #e7e5e4;">
+        <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">Influzer Insights</p>
+        <h1 style="margin:0 0 12px;font-size:24px;line-height:1.25;color:#18181b;">${escapeHtml(post.title)}</h1>
+        <p style="margin:0 0 20px;font-size:14px;color:#71717a;">${escapeHtml(post.date)}${post.category ? ` · ${escapeHtml(post.category)}` : ''}</p>
+        ${intro}
+        ${coverBlock}
+        <p style="font-size:16px;line-height:1.6;color:#444;margin:0 0 20px;">${escapeHtml(post.excerpt)}</p>
+        <p style="margin:0 0 24px;">
+          <a href="${escapeHtml(postUrl)}" style="display:inline-block;padding:12px 24px;background:#18181b;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;">Read the article →</a>
+        </p>
+        <p style="margin:0;font-size:14px;color:#71717a;">Browse the <a href="${escapeHtml((process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, ''))}/mcp" style="color:#6366f1;">MCP server directory</a> for tools mentioned in our latest posts.</p>
+      </div>
+      <p style="margin:20px 0 0;font-size:12px;color:#a1a1aa;text-align:center;">
+        You subscribed at influzer.ai · <a href="${escapeHtml(unsubscribeUrl)}" style="color:#71717a;">Unsubscribe</a>
+      </p>
+    </div>
+  </body>
+</html>`;
+}
+
+function buildBlogNewsletterText({ post, postUrl, customIntro, unsubscribeUrl }) {
+  const intro = customIntro ? `${customIntro.trim()}\n\n` : '';
+  return [
+    'Influzer Insights',
+    '',
+    post.title,
+    post.date + (post.category ? ` · ${post.category}` : ''),
+    '',
+    intro + post.excerpt,
+    '',
+    `Read the article: ${postUrl}`,
+    '',
+    `Unsubscribe: ${unsubscribeUrl}`,
+  ].join('\n');
+}
+
+async function sendBlogNewsletterEmail({ to, post, postUrl, coverImageUrl, customIntro, unsubscribeUrl }) {
+  ensureMcpEmailTransportReady();
+
+  const fromAddress = getFromAddress();
+  const subject = `New on Influzer Insights: ${post.title}`;
+  const html = buildBlogNewsletterHtml({ post, postUrl, coverImageUrl, customIntro, unsubscribeUrl });
+  const text = buildBlogNewsletterText({ post, postUrl, customIntro, unsubscribeUrl });
+
+  const mailOptions = {
+    from: fromAddress,
+    to,
+    subject,
+    html,
+    text,
+    headers: {
+      'List-Unsubscribe': `<${unsubscribeUrl}>`,
+    },
+  };
+
+  const info = await getTransporter().sendMail(mailOptions);
+  return { success: true, messageId: info.messageId, to };
+}
+
 module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendMcpSubmissionEmail,
   sendMcpApprovalEmail,
+  sendBlogNewsletterEmail,
+  buildBlogNewsletterHtml,
   isEmailConfigured,
   getTransporter,
   resetTransporter,
