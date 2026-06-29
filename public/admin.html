@@ -378,6 +378,7 @@
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
       <button class="tab" data-tab="activity">Top Activity</button>
       <button class="tab" data-tab="mcp">MCP Submissions</button>
+      <button class="tab" data-tab="othernews">Other News</button>
     </div>
 
     <!-- Users Tab -->
@@ -500,6 +501,23 @@
         </div>
         <div id="mcpSubmissionsContainer">
           <div class="loading">Loading submissions...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other News Tab -->
+    <div class="tab-content" id="othernewsTab">
+      <div class="section">
+        <h2>In other news… — article controls</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Pin, hide, or publish external articles ingested by <code>npm run refresh-other-news</code>.
+          See <code>docs/OTHER_NEWS.md</code> for source config.
+        </p>
+        <div class="search-bar">
+          <button class="btn btn-primary" onclick="loadOtherNewsItems()">Refresh</button>
+        </div>
+        <div id="otherNewsTableContainer">
+          <div class="loading">Loading articles...</div>
         </div>
       </div>
     </div>
@@ -717,6 +735,7 @@
           loadNewsletterSubscribers();
         }
         if (tabName === 'mcp') loadMcpSubmissions();
+        if (tabName === 'othernews') loadOtherNewsItems();
       });
     });
 
@@ -1569,6 +1588,75 @@
           }
           return { name: line, description: '' };
         });
+    }
+
+    async function loadOtherNewsItems() {
+      const container = document.getElementById('otherNewsTableContainer');
+      container.innerHTML = '<div class="loading">Loading articles...</div>';
+      try {
+        const res = await fetch('/admin/api/other-news/items');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to load articles');
+        const items = data.items || [];
+        if (!items.length) {
+          container.innerHTML = '<div class="loading">No articles yet. Run <code>npm run refresh-other-news</code>.</div>';
+          return;
+        }
+        let html = `<p style="color:#8e8e93;font-size:13px;margin-bottom:12px;">Last pipeline run: ${data.lastRunAt ? new Date(data.lastRunAt).toLocaleString() : 'never'}</p>`;
+        html += `<table><thead><tr>
+          <th>Status</th><th>Score</th><th>Title</th><th>Source</th><th>Directory</th><th>Actions</th>
+        </tr></thead><tbody>`;
+        for (const item of items) {
+          const urlArg = encodeURIComponent(item.canonical_url);
+          html += `<tr>
+            <td>${escapeHtml(item.status)}${item.has_override ? ' *' : ''}</td>
+            <td>${Number(item.relevance_score || 0).toFixed(2)}</td>
+            <td><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title)}</a></td>
+            <td>${escapeHtml(item.source || '')}</td>
+            <td>${item.matched_server_slug ? `<a href="/mcp/${escapeHtml(item.matched_server_slug)}">${escapeHtml(item.matched_server_name)}</a>` : '—'}</td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-sm btn-secondary" onclick="setOtherNewsStatus(decodeURIComponent('${urlArg}'), 'pinned')">Pin</button>
+              <button class="btn btn-sm btn-secondary" onclick="setOtherNewsStatus(decodeURIComponent('${urlArg}'), 'hidden')">Hide</button>
+              <button class="btn btn-sm btn-secondary" onclick="setOtherNewsStatus(decodeURIComponent('${urlArg}'), 'published')">Publish</button>
+              <button class="btn btn-sm btn-secondary" onclick="resetOtherNewsStatus(decodeURIComponent('${urlArg}'))">Reset</button>
+            </td>
+          </tr>`;
+        }
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    async function setOtherNewsStatus(canonicalUrl, status) {
+      try {
+        const res = await fetch('/admin/api/other-news/override', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ canonicalUrl, status }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Update failed');
+        loadOtherNewsItems();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function resetOtherNewsStatus(canonicalUrl) {
+      try {
+        const res = await fetch('/admin/api/other-news/override', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ canonicalUrl, clear: true }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Reset failed');
+        loadOtherNewsItems();
+      } catch (err) {
+        alert(err.message);
+      }
     }
 
     async function loadMcpSubmissions() {

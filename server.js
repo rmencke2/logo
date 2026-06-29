@@ -22,6 +22,7 @@ const { initializeAdminService } = require('./services/adminService');
 const { initializeAnalyticsService } = require('./services/analyticsService');
 const { initializeBlogFeedbackService } = require('./services/blogFeedbackService');
 const { initializeNewsletterService } = require('./services/newsletterService');
+const { initializeOtherNewsService } = require('./services/otherNewsService');
 const { initializeMcpSubmissionService } = require('./services/mcpSubmissionService');
 const { isEmailConfigured, getTransporter } = require('./emailService');
 
@@ -45,6 +46,9 @@ const PORT = process.env.PORT || 4000;
 
     // 3c. Newsletter signup service
     await initializeNewsletterService(app);
+
+    // 3c2. "In other news..." discovery service
+    initializeOtherNewsService(app);
 
     // 3d. MCP submission API (page route registered in staticService before /mcp/:slug)
     initializeMcpSubmissionService(app);

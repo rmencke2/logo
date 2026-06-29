@@ -1,0 +1,46 @@
+<%#
+  "In other news..." external article discovery section.
+  Expects: otherNews { articles, isEmpty, hasData, lastRunAt }
+%>
+<% if (typeof otherNews !== 'undefined' && otherNews && !otherNews.isEmpty) { %>
+  <section class="home-section other-news-section" aria-labelledby="otherNewsTitle">
+    <div class="home-section__head">
+      <h2 class="home-section__title" id="otherNewsTitle">In other news…</h2>
+      <span class="other-news-updated">MCP &amp; AI agents · updated <%= otherNews.lastRunAt ? new Date(otherNews.lastRunAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'recently' %></span>
+    </div>
+    <div class="other-news-list">
+      <% otherNews.articles.forEach(function(article) { %>
+        <article class="other-news-card">
+          <div class="other-news-card__meta">
+            <span><%= article.source %></span>
+            <% if (article.display_date) { %><span aria-hidden="true">·</span><time datetime="<%= article.published_at || '' %>"><%= article.display_date %></time><% } %>
+            <% if (article.status === 'pinned') { %><span class="other-news-pin">Pinned</span><% } %>
+          </div>
+          <h3 class="other-news-card__title">
+            <a href="<%= article.outbound_url %>" target="_blank" rel="noopener noreferrer"><%= article.title %></a>
+          </h3>
+          <p class="other-news-card__blurb"><%= article.editorial_blurb %></p>
+          <% if (article.directory_url && article.matched_server_name) { %>
+            <a class="other-news-card__directory" href="<%= article.directory_url %>">Browse <%= article.matched_server_name %> in our directory →</a>
+          <% } %>
+        </article>
+      <% }); %>
+    </div>
+    <div class="other-news-newsletter">
+      <p class="other-news-newsletter__lead">Get MCP signal without the scroll — we email high-signal Insights, not every link.</p>
+      <form class="other-news-newsletter__form" data-other-news-subscribe novalidate>
+        <input type="email" name="email" placeholder="Your email" maxlength="254" required aria-label="Email for newsletter" />
+        <button type="submit">Subscribe</button>
+        <input type="text" name="website" class="other-news-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <span class="other-news-newsletter__status" role="status" aria-live="polite"></span>
+      </form>
+    </div>
+  </section>
+<% } else if (typeof otherNews !== 'undefined' && otherNews && otherNews.hasData === false) { %>
+  <section class="home-section other-news-section other-news-section--empty" aria-labelledby="otherNewsTitleEmpty">
+    <div class="home-section__head">
+      <h2 class="home-section__title" id="otherNewsTitleEmpty">In other news…</h2>
+    </div>
+    <p class="other-news-empty">We are fetching MCP-related stories from Hacker News, Reddit, Dev.to, and more. Check back soon.</p>
+  </section>
+<% } %>

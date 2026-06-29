@@ -17,6 +17,8 @@
     "deploy:prod": "bash scripts/deploy-remote.sh --push",
     "deploy:sync": "bash scripts/deploy-remote.sh --sync",
     "newsletter:send": "node scripts/send-newsletter.js",
+    "refresh-other-news": "node scripts/refresh-other-news.js",
+    "other-news:admin": "node scripts/other-news-admin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

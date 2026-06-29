@@ -27,6 +27,7 @@ const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmiss
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
+const { getDisplayArticles } = require('./otherNewsService');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -335,6 +336,7 @@ function renderHomepage(req, res) {
     topServers: preview.servers,
     featuredPost,
     morePosts,
+    otherNews: getDisplayArticles(),
     seo,
     seoContent,
     jsonLd,
@@ -669,6 +671,7 @@ ${itemsXml}
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),
+      otherNews: getDisplayArticles(),
     });
   });
 
@@ -711,6 +714,7 @@ ${itemsXml}
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),
+      otherNews: getDisplayArticles(),
     });
   });
 

@@ -1,0 +1,105 @@
+{
+  "recencyDays": 14,
+  "maxDisplay": 12,
+  "autoPublishThreshold": 0.52,
+  "fuzzyTitleSimilarity": 0.82,
+  "hnMinPoints": 8,
+  "redditMinScore": 5,
+  "githubMinStars": 50,
+  "utm": {
+    "source": "influzer",
+    "medium": "in_other_news"
+  },
+  "scoring": {
+    "allowlist": [
+      "mcp",
+      "model context protocol",
+      "mcp server",
+      "cursor",
+      "claude code",
+      "claude desktop",
+      "ai agent",
+      "ai coding",
+      "coding agent",
+      "anthropic",
+      "tool use",
+      "stdio",
+      "smithery",
+      "windsurf",
+      "cline",
+      "aider",
+      "devin",
+      "copilot"
+    ],
+    "denylist": [
+      "minecraft",
+      "crypto",
+      "bitcoin",
+      "nft",
+      "onlyfans",
+      "dating",
+      "casino",
+      "forex",
+      "get rich",
+      "weight loss"
+    ],
+    "boostTerms": [
+      { "term": "model context protocol", "weight": 0.25 },
+      { "term": "mcp server", "weight": 0.2 },
+      { "term": "cursor", "weight": 0.12 },
+      { "term": "claude code", "weight": 0.12 }
+    ]
+  },
+  "llm": {
+    "enabled": true,
+    "model": "claude-3-5-haiku-latest",
+    "maxArticles": 20
+  },
+  "sources": {
+    "hackerNews": {
+      "enabled": true,
+      "queries": [
+        "MCP",
+        "Model Context Protocol",
+        "Cursor editor",
+        "Claude Code",
+        "AI coding agent"
+      ],
+      "tags": "story",
+      "minPoints": 8
+    },
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        { "name": "mcp", "sort": "top", "t": "week" },
+        { "name": "cursor", "sort": "top", "t": "week" },
+        { "name": "ClaudeAI", "sort": "top", "t": "week" }
+      ],
+      "minScore": 5,
+      "userAgent": "influzer-other-news-bot/1.0 (https://www.influzer.ai)"
+    },
+    "devTo": {
+      "enabled": true,
+      "tags": ["mcp", "ai", "cursor"],
+      "perPage": 25
+    },
+    "googleNewsRss": {
+      "enabled": true,
+      "queries": [
+        "Model Context Protocol MCP",
+        "MCP server AI",
+        "Cursor AI coding MCP",
+        "Claude Code MCP"
+      ]
+    },
+    "github": {
+      "enabled": true,
+      "queries": [
+        "topic:mcp",
+        "mcp server model context protocol in:name,description"
+      ],
+      "minStars": 50,
+      "maxResults": 15
+    }
+  }
+}

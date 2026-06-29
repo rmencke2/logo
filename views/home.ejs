@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/seo-content.css" />
     <link rel="stylesheet" href="/css/promo-strip.css" />
+    <link rel="stylesheet" href="/css/other-news.css" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
       ogDescription: seo.metaDescription,
@@ -114,6 +115,8 @@
         <%- include('partials/promo-strip', { promo: promo }) %>
       </section>
 
+      <%- include('partials/other-news-section', { otherNews: otherNews }) %>
+
       <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: false }) %>
 
       <% if (morePosts && morePosts.length) { %>
@@ -167,6 +170,7 @@
 
     <script src="/js/site-header.js" defer></script>
     <script src="/js/home-newsletter.js" defer></script>
+    <script src="/js/other-news.js" defer></script>
     <script src="/js/mcp-cards.js" defer></script>
   </body>
 </html>
