@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/seo-content.css" />
     <link rel="stylesheet" href="/css/promo-strip.css" />
+    <link rel="stylesheet" href="/css/content-badges.css" />
     <link rel="stylesheet" href="/css/other-news.css" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
@@ -62,13 +63,14 @@
 
       <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: true, seoShowCrossLinks: false, seoShowFaq: false }) %>
 
-      <%- include('partials/home-newsletter-card') %>
-
       <% if (featuredPost) { %>
-        <section class="home-section" aria-labelledby="homeFeaturedTitle">
+        <section class="home-section home-section--insights" aria-labelledby="homeFeaturedTitle">
           <div class="home-section__head">
-            <h2 class="home-section__title" id="homeFeaturedTitle">Latest insight</h2>
-            <a class="home-section__link" href="/insights">All insights →</a>
+            <div class="content-badge-row">
+              <%- include('partials/content-type-badge', { type: 'original' }) %>
+              <h2 class="home-section__title" id="homeFeaturedTitle">Featured insight</h2>
+            </div>
+            <a class="home-section__link" href="/insights">All original articles →</a>
           </div>
           <a class="home-featured" href="/insights/<%= featuredPost.slug %>">
             <div class="home-featured__media">
@@ -96,9 +98,47 @@
                   <% }); %>
                 </div>
               <% } %>
-              <span class="home-featured__cta">Read article →</span>
+              <span class="home-featured__cta">Read original article →</span>
             </div>
           </a>
+        </section>
+      <% } %>
+
+      <% if (morePosts && morePosts.length) { %>
+        <section class="home-section home-section--insights" aria-labelledby="homeInsightsTitle">
+          <div class="home-section__head">
+            <div class="content-badge-row">
+              <%- include('partials/content-type-badge', { type: 'original' }) %>
+              <h2 class="home-section__title" id="homeInsightsTitle">More from Insights</h2>
+            </div>
+            <a class="home-section__link" href="/insights">View all →</a>
+          </div>
+          <p class="home-section__intro">Long-form tutorials, stories, and strategy — written by Influzer, not aggregated from the web.</p>
+          <div class="home-insights-list">
+            <% morePosts.forEach(function(post) { %>
+              <a class="home-insight-row" href="/insights/<%= post.slug %>">
+                <% if (post.coverImage) { %>
+                  <img class="home-insight-thumb" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" width="120" height="72" />
+                <% } else { %>
+                  <div class="home-insight-thumb home-insight-thumb--placeholder" aria-hidden="true">Insights</div>
+                <% } %>
+                <div>
+                  <div class="content-badge-row" style="margin-bottom:6px;">
+                    <%- include('partials/content-type-badge', { type: 'original', badgeLabel: 'Original' }) %>
+                  </div>
+                  <% if (post.tags && post.tags.length) { %>
+                    <div class="home-insight-tags">
+                      <% post.tags.slice(0, 3).forEach(function(tag) { %>
+                        <span class="home-insight-tag"><%= tag %></span>
+                      <% }); %>
+                    </div>
+                  <% } %>
+                  <h3 class="home-insight-title"><%= post.title %></h3>
+                  <p class="home-insight-meta"><%= post.dateDisplay %> · <%= post.readMinutes %> min read</p>
+                </div>
+              </a>
+            <% }); %>
+          </div>
         </section>
       <% } %>
 
@@ -115,40 +155,11 @@
         <%- include('partials/promo-strip', { promo: promo }) %>
       </section>
 
+      <%- include('partials/home-newsletter-card') %>
+
       <%- include('partials/other-news-section', { otherNews: otherNews }) %>
 
       <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: false }) %>
-
-      <% if (morePosts && morePosts.length) { %>
-        <section class="home-section home-section--last" aria-labelledby="homeInsightsTitle">
-          <div class="home-section__head">
-            <h2 class="home-section__title" id="homeInsightsTitle">From the blog</h2>
-            <a class="home-section__link" href="/insights">View all →</a>
-          </div>
-          <div class="home-insights-list">
-            <% morePosts.forEach(function(post) { %>
-              <a class="home-insight-row" href="/insights/<%= post.slug %>">
-                <% if (post.coverImage) { %>
-                  <img class="home-insight-thumb" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" width="120" height="72" />
-                <% } else { %>
-                  <div class="home-insight-thumb home-insight-thumb--placeholder" aria-hidden="true">Insights</div>
-                <% } %>
-                <div>
-                  <% if (post.tags && post.tags.length) { %>
-                    <div class="home-insight-tags">
-                      <% post.tags.slice(0, 3).forEach(function(tag) { %>
-                        <span class="home-insight-tag"><%= tag %></span>
-                      <% }); %>
-                    </div>
-                  <% } %>
-                  <h3 class="home-insight-title"><%= post.title %></h3>
-                  <p class="home-insight-meta"><%= post.dateDisplay %> · <%= post.readMinutes %> min read</p>
-                </div>
-              </a>
-            <% }); %>
-          </div>
-        </section>
-      <% } %>
     </main>
 
     <footer class="home-site-footer">
@@ -170,7 +181,6 @@
 
     <script src="/js/site-header.js" defer></script>
     <script src="/js/home-newsletter.js" defer></script>
-    <script src="/js/other-news.js" defer></script>
     <script src="/js/mcp-cards.js" defer></script>
   </body>
 </html>

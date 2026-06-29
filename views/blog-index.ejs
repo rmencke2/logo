@@ -16,6 +16,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/content-badges.css">
     <script type="application/ld+json">
       <%- JSON.stringify({
         '@context': 'https://schema.org',
@@ -83,8 +84,12 @@
 
     <main class="insights-page">
       <header class="insights-header">
+        <div class="content-badge-row">
+          <%- include('partials/content-type-badge', { type: 'original' }) %>
+        </div>
         <h1>Insights</h1>
-        <p class="subtitle">Thoughts on AI, leadership, scaling teams, and building product-led companies.</p>
+        <p class="subtitle">Original long-form articles — tutorials, stories, and strategy written by Influzer. Not republished from Dev.to or Hacker News.</p>
+        <p class="subtitle" style="margin-top:8px;font-size:.92rem;">Quick ecosystem takes → <a href="/news">Briefs</a> · Community links → <a href="/#aroundWebTitle">From around the web</a> on the homepage.</p>
       </header>
       <% if (categories && categories.length) { %>
         <nav class="category-filter" aria-label="Insight categories">
@@ -109,7 +114,10 @@
               <% } %>
             </div>
             <div class="featured-content">
-              <div class="featured-label">Featured insight</div>
+              <div class="content-badge-row" style="margin-bottom:10px;">
+                <%- include('partials/content-type-badge', { type: 'original' }) %>
+                <span class="featured-label">Featured</span>
+              </div>
               <h2 class="featured-title"><%= featuredPost.title %></h2>
               <p class="featured-excerpt"><%= featuredPost.excerpt %></p>
               <span class="featured-cta">Read article →</span>
@@ -124,7 +132,10 @@
                   <img class="insight-cover" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" />
                 <% } %>
                 <div class="insight-content">
-                  <div class="insight-meta"><%= post.date %></div>
+                  <div class="content-badge-row" style="margin-bottom:8px;">
+                    <%- include('partials/content-type-badge', { type: 'original' }) %>
+                    <span class="insight-meta"><%= post.date %></span>
+                  </div>
                   <h2 class="insight-title"><%= post.title %></h2>
                   <p class="insight-excerpt"><%= post.excerpt %></p>
                   <% if (post.tags && post.tags.length) { %>
@@ -141,8 +152,8 @@
         </section>
         <%- include('partials/partner-lumipact', { partnerVariant: 'full' }) %>
         <section class="newsletter-card" aria-label="Subscribe to the newsletter">
-          <h2>Get weekly executive AI insights</h2>
-          <p>One practical email per week with frameworks you can apply immediately.</p>
+          <h2>Get new Insights in your inbox</h2>
+          <p>Original articles only — not Briefs or external links. One email per week.</p>
           <form class="newsletter-form" id="newsletterForm" novalidate>
             <div class="newsletter-row">
               <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your email" maxlength="254" required />

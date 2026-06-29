@@ -1,0 +1,10 @@
+<%#
+  Content type badge — type: 'original' | 'brief' | 'external'
+  Optional label override via badgeLabel
+%>
+<%
+  const badgeType = typeof type !== 'undefined' ? type : 'original';
+  const labels = { original: 'Original', brief: 'Brief', external: 'External' };
+  const badgeText = typeof badgeLabel !== 'undefined' ? badgeLabel : labels[badgeType] || 'Original';
+%>
+<span class="content-badge content-badge--<%= badgeType %>"><%= badgeText %></span>

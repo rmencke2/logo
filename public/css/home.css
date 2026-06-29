@@ -113,6 +113,27 @@
   background: #4f46e5;
 }
 
+.home-section--insights .home-section__title {
+  margin: 0;
+}
+
+.home-section__head .content-badge-row {
+  margin-bottom: 0;
+}
+
+.home-section__intro {
+  margin: -8px 0 16px;
+  max-width: 640px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-light);
+}
+
+.home-section--insights .home-featured {
+  border-color: #18181b;
+  box-shadow: 0 8px 32px rgba(24, 24, 27, 0.08);
+}
+
 .home-intro {
   max-width: 720px;
   margin: 0 auto;

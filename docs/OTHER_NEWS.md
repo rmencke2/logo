@@ -1,6 +1,14 @@
-# In other news… — external MCP article discovery
+# From around the web — external MCP article discovery
 
-Curated headlines from Hacker News, Reddit, Dev.to, Google News RSS, and GitHub — scored, deduped, and displayed in the **In other news…** section on the homepage and MCP directory pages.
+Curated headlines from Hacker News, Reddit, Dev.to, Google News RSS, and GitHub — scored, deduped, and displayed in the **From around the web** section on the homepage and MCP directory pages. This is third-tier content: external links, visually secondary to **Insights** (original) and **Briefs** (short Influzer takes).
+
+## Content hierarchy
+
+| Tier | Nav label | URL | Source |
+|------|-----------|-----|--------|
+| 1 | Insights | `/insights` | `content/blog/*.json` — original long-form |
+| 2 | Briefs | `/news` | `content/news/*.json` — short Influzer briefs |
+| 3 | From around the web | Homepage, `/mcp` | `data/other-news-articles.json` — external |
 
 ## Stack
 
@@ -64,7 +72,7 @@ Toggle off entirely: `"llm": { "enabled": false }`.
 
 ## Pin, hide, or publish
 
-**Admin UI:** `/admin` → **Other News** tab
+**Admin UI:** `/admin` → **Around the web** tab
 
 **CLI:**
 
@@ -92,6 +100,6 @@ GitHub Actions workflow `refresh-other-news.yml` runs at **08:00, 14:00, and 20:
 
 After the workflow runs, deploy as usual (`npm run deploy:remote`) so Lightsail serves the latest JSON.
 
-## Newsletter signup
+## Newsletter
 
-The section reuses `POST /api/newsletter/subscribe` with source `in-other-news`.
+The newsletter promotes **Insights** only. The “From around the web” section does not include a signup form.

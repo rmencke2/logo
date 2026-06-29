@@ -17,6 +17,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/content-badges.css">
     <% if (post) { %>
       <script type="application/ld+json">
         <%- JSON.stringify({
@@ -258,7 +259,10 @@
         </section>
       <% } else { %>
         <article>
-          <div class="post-meta"><%= post.date %></div>
+          <div class="content-badge-row" style="margin-bottom:12px;">
+            <%- include('partials/content-type-badge', { type: 'original' }) %>
+            <span class="post-meta" style="margin:0;"><%= post.date %><% if (post.category) { %> · <%= post.category %><% } %></span>
+          </div>
           <h1 class="post-title"><%= post.title %></h1>
           <p class="post-excerpt"><%= post.excerpt %></p>
           <% if (post.tags && post.tags.length) { %>

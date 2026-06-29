@@ -1,46 +1,41 @@
 <%#
-  "In other news..." external article discovery section.
+  External article discovery — "From around the web" (not original Influzer content).
   Expects: otherNews { articles, isEmpty, hasData, lastRunAt }
 %>
 <% if (typeof otherNews !== 'undefined' && otherNews && !otherNews.isEmpty) { %>
-  <section class="home-section other-news-section" aria-labelledby="otherNewsTitle">
-    <div class="home-section__head">
-      <h2 class="home-section__title" id="otherNewsTitle">In other news…</h2>
-      <span class="other-news-updated">MCP &amp; AI agents · updated <%= otherNews.lastRunAt ? new Date(otherNews.lastRunAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'recently' %></span>
+  <section class="home-section around-web-section" aria-labelledby="aroundWebTitle">
+    <div class="home-section__head around-web-section__head">
+      <div>
+        <h2 class="home-section__title around-web-section__title" id="aroundWebTitle">From around the web</h2>
+        <p class="around-web-section__desc">Community posts and press — not written by Influzer. For our analysis, read <a href="/insights">Insights</a>.</p>
+      </div>
+      <span class="around-web-updated">Updated <%= otherNews.lastRunAt ? new Date(otherNews.lastRunAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'recently' %></span>
     </div>
-    <div class="other-news-list">
+    <div class="around-web-list">
       <% otherNews.articles.forEach(function(article) { %>
-        <article class="other-news-card">
-          <div class="other-news-card__meta">
+        <article class="around-web-card">
+          <div class="around-web-card__meta">
+            <%- include('content-type-badge', { type: 'external' }) %>
             <span><%= article.source %></span>
             <% if (article.display_date) { %><span aria-hidden="true">·</span><time datetime="<%= article.published_at || '' %>"><%= article.display_date %></time><% } %>
-            <% if (article.status === 'pinned') { %><span class="other-news-pin">Pinned</span><% } %>
+            <% if (article.status === 'pinned') { %><span class="around-web-pin">Pinned</span><% } %>
           </div>
-          <h3 class="other-news-card__title">
-            <a href="<%= article.outbound_url %>" target="_blank" rel="noopener noreferrer"><%= article.title %></a>
+          <h3 class="around-web-card__title">
+            <a href="<%= article.outbound_url %>" target="_blank" rel="noopener noreferrer"><%= article.title %><span class="visually-hidden"> (opens in new tab)</span></a>
           </h3>
-          <p class="other-news-card__blurb"><%= article.editorial_blurb %></p>
+          <p class="around-web-card__blurb"><%= article.editorial_blurb %></p>
           <% if (article.directory_url && article.matched_server_name) { %>
-            <a class="other-news-card__directory" href="<%= article.directory_url %>">Browse <%= article.matched_server_name %> in our directory →</a>
+            <a class="around-web-card__directory" href="<%= article.directory_url %>">Browse <%= article.matched_server_name %> in our directory →</a>
           <% } %>
         </article>
       <% }); %>
     </div>
-    <div class="other-news-newsletter">
-      <p class="other-news-newsletter__lead">Get MCP signal without the scroll — we email high-signal Insights, not every link.</p>
-      <form class="other-news-newsletter__form" data-other-news-subscribe novalidate>
-        <input type="email" name="email" placeholder="Your email" maxlength="254" required aria-label="Email for newsletter" />
-        <button type="submit">Subscribe</button>
-        <input type="text" name="website" class="other-news-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <span class="other-news-newsletter__status" role="status" aria-live="polite"></span>
-      </form>
-    </div>
   </section>
 <% } else if (typeof otherNews !== 'undefined' && otherNews && otherNews.hasData === false) { %>
-  <section class="home-section other-news-section other-news-section--empty" aria-labelledby="otherNewsTitleEmpty">
+  <section class="home-section around-web-section around-web-section--empty" aria-labelledby="aroundWebTitleEmpty">
     <div class="home-section__head">
-      <h2 class="home-section__title" id="otherNewsTitleEmpty">In other news…</h2>
+      <h2 class="home-section__title around-web-section__title" id="aroundWebTitleEmpty">From around the web</h2>
     </div>
-    <p class="other-news-empty">We are fetching MCP-related stories from Hacker News, Reddit, Dev.to, and more. Check back soon.</p>
+    <p class="around-web-empty">Fetching MCP-related stories from Dev.to, Hacker News, and more. Check back soon — or read <a href="/insights">original Insights</a> now.</p>
   </section>
 <% } %>

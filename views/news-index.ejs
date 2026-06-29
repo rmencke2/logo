@@ -3,18 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>News - Influzer.ai</title>
-    <meta name="description" content="Curated MCP ecosystem briefs — fast reads on connectors, IDE tooling, enterprise auth, and catalog moves from Influzer.ai." />
+    <title>Briefs - Influzer.ai</title>
+    <meta name="description" content="Short Influzer-written MCP ecosystem briefs — fast reads on connectors, IDE tooling, enterprise auth, and catalog moves." />
     <link rel="canonical" href="https://www.influzer.ai/news" />
     <%- include('partials/seo-social', {
-      ogTitle: 'Influzer News - MCP Ecosystem Briefs',
-      ogDescription: 'Curated MCP ecosystem briefs — fast reads on connectors, IDE tooling, enterprise auth, and catalog moves.',
+      ogTitle: 'MCP Briefs - Influzer.ai',
+      ogDescription: 'Short Influzer-written MCP ecosystem briefs — fast reads on connectors, IDE tooling, and catalog moves.',
       ogUrl: 'https://www.influzer.ai/news',
       ogType: 'website',
     }) %>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/content-badges.css">
     <style>
       .news-page { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
       .news-header { margin-bottom: 28px; }
@@ -50,12 +51,14 @@
 
     <main class="news-page">
       <header class="news-header">
-        <div class="eyebrow">Influzer News</div>
-        <h1>MCP ecosystem briefs</h1>
-        <p class="subtitle">Fast reads on what changed — connectors, IDE tooling, enterprise auth, and catalog moves. For depth, follow through to <a href="/insights">Insights</a>.</p>
+        <div class="content-badge-row">
+          <%- include('partials/content-type-badge', { type: 'brief' }) %>
+        </div>
+        <h1>MCP Briefs</h1>
+        <p class="subtitle">Short takes written by Influzer on what changed in the MCP ecosystem. For tutorials and depth, read <a href="/insights">Insights</a> — our original long-form articles.</p>
       </header>
 
-      <p class="news-sister">Long-form tutorials and strategy → <a href="/insights">Insights</a> · Find servers → <a href="/mcp">MCP Directory</a></p>
+      <p class="news-sister">Original articles → <a href="/insights">Insights</a> · Community links → <a href="/">homepage</a> · Find servers → <a href="/mcp">MCP Directory</a></p>
 
       <% if (!items || items.length === 0) { %>
         <section class="empty-state">
@@ -67,6 +70,7 @@
           <% items.forEach((item) => { %>
             <a class="news-item" href="/news/<%= item.slug %>">
               <div class="news-item-meta">
+                <%- include('partials/content-type-badge', { type: 'brief' }) %>
                 <span><%= item.displayDate %></span>
                 <% if (item.sourceName) { %>
                   <span class="news-item-badge"><%= item.sourceName %></span>
@@ -81,8 +85,8 @@
       <% } %>
 
       <section class="newsletter-card" aria-label="Subscribe to the newsletter">
-        <h2>Get MCP signal in your inbox</h2>
-        <p>We email for high-signal Insights and launches — not every brief. Always with a link back to the site.</p>
+        <h2>Insights in your inbox</h2>
+        <p>We email when a new original Insight publishes — not every brief. Always with a link back to the site.</p>
         <form class="newsletter-form" id="newsletterForm" novalidate>
           <div class="newsletter-row">
             <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your email" maxlength="254" required />

@@ -16,6 +16,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/content-badges.css">
     <% if (item) { %>
       <script type="application/ld+json">
         <%- JSON.stringify({
@@ -59,7 +60,7 @@
     <script src="/js/site-header.js" defer></script>
 
     <main class="news-shell">
-      <a class="news-back" href="/news">← Back to News</a>
+      <a class="news-back" href="/news">← Back to Briefs</a>
       <% if (!item) { %>
         <section class="not-found">
           <h1>Brief not found</h1>
@@ -67,7 +68,9 @@
         </section>
       <% } else { %>
         <article>
-          <div class="news-eyebrow">Influzer News</div>
+          <div class="content-badge-row" style="margin-bottom:10px;">
+            <%- include('partials/content-type-badge', { type: 'brief' }) %>
+          </div>
           <div class="news-meta"><%= item.displayDate %><% if (item.category) { %> · <%= item.category %><% } %></div>
           <h1 class="news-title"><%= item.title %></h1>
           <p class="news-excerpt"><%= item.excerpt %></p>

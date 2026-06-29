@@ -1,6 +1,6 @@
-# News Publishing Guide
+# Briefs publishing guide
 
-Short curated MCP ecosystem briefs — distinct from long-form Insights articles.
+Short Influzer-written MCP ecosystem briefs — distinct from long-form **Insights** articles and from **From around the web** (external aggregated links).
 
 ## Required fields
 
@@ -16,9 +16,9 @@ Short curated MCP ecosystem briefs — distinct from long-form Insights articles
 - `category` — default `MCP Ecosystem`
 - `sourceName` — e.g. `Anthropic`
 - `sourceUrl` — link to primary source
-- `relatedInsightSlug` — slug of a deeper Insights article on the same topic
+- `relatedInsightSlug` — slug of a deeper Insights article on the same topic (recommended when one exists)
 
 ## URLs
 
-- Index: `/news`
+- Index: `/news` (nav label: **Briefs**)
 - Item: `/news/<slug>`
