@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-28T08:39:54.790Z",
+  "generated_at": "2026-06-29T10:17:33.431Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-06-27T08:22:55.657Z",
+  "catalog_generated_at": "2026-06-28T08:39:54.816Z",
   "summary": {
     "checked": 281,
     "skipped_manual": 88,
     "skipped_no_endpoint": 1186,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 279,
-    "tools_changed": 2,
+    "unchanged": 281,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -25,35 +25,6 @@
     "with_tools_before": 360,
     "with_tools_after": 360
   },
-  "changes": [
-    {
-      "slug": "ia-qa-api",
-      "name": "ia-qa.com/mcp llm and RAG testing - Dev/QA toolbox",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [],
-      "removed": [],
-      "changed": [
-        "compare_responses"
-      ]
-    },
-    {
-      "slug": "curly-mole-labs-supericons",
-      "name": "Supericons",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 4,
-      "afterToolCount": 4,
-      "added": [],
-      "removed": [],
-      "changed": [
-        "search_icons"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
