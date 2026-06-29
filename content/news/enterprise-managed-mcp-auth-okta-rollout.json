@@ -1,0 +1,12 @@
+{
+  "slug": "enterprise-managed-mcp-auth-okta-rollout",
+  "title": "Enterprise-managed MCP auth lands with Okta partnership",
+  "date": "2026-06-18",
+  "excerpt": "Anthropic and Okta are pushing MCP toward enterprise-ready identity: centralized connector auth, policy controls, and zero-touch rollout for teams that cannot paste API keys into IDE configs.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Enterprise", "Auth", "Okta", "Anthropic"],
+  "sourceName": "Anthropic",
+  "sourceUrl": "https://www.anthropic.com/news",
+  "relatedInsightSlug": "enterprise-managed-mcp-auth-changes-the-game",
+  "contentHtml": "<p>Enterprise MCP adoption hit a wall when every developer needed their own tokens in local config files. The next wave is <strong>identity-provider-managed connectors</strong> — auth flows that IT can govern without killing agent velocity.</p><p>Anthropic’s enterprise MCP direction, amplified through Okta-style IdP integration, means:</p><ul><li><strong>Centralized credentials</strong> — no more shared PATs in <code>.cursor/mcp.json</code></li><li><strong>Policy at the connector boundary</strong> — which tools, which scopes, which teams</li><li><strong>Faster rollout</strong> — developers get tools; security keeps the perimeter</li></ul><p>For developers, the practical shift is subtle but huge: MCP stops being a solo hack and starts looking like something your company can standardize on.</p><p><strong>Why it matters:</strong> if agents are production infrastructure, connector auth cannot live in Slack DMs and dotfiles forever.</p><p>Read our deeper take: <a href=\"/insights/enterprise-managed-mcp-auth-changes-the-game\">Enterprise-managed MCP auth changes the game</a>.</p>"
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= item ? `${item.title} - Influzer News` : 'Brief Not Found - Influzer.ai' %></title>
+    <meta name="description" content="<%= item ? item.excerpt : 'The requested news brief could not be found.' %>" />
+    <link rel="canonical" href="<%= item ? `https://www.influzer.ai/news/${item.slug}` : 'https://www.influzer.ai/news' %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: item ? item.title + ' - Influzer News' : 'Brief Not Found',
+      ogDescription: item ? item.excerpt : 'The requested news brief could not be found.',
+      ogUrl: item ? `https://www.influzer.ai/news/${item.slug}` : 'https://www.influzer.ai/news',
+      ogType: item ? 'article' : 'website',
+      noindex: !item,
+    }) %>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <% if (item) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'NewsArticle',
+          headline: item.title,
+          description: item.excerpt,
+          datePublished: item.date,
+          dateModified: item.date,
+          author: { '@type': 'Person', name: 'Rasmus Mencke' },
+          publisher: {
+            '@type': 'Organization',
+            name: 'Influzer.ai',
+            logo: { '@type': 'ImageObject', url: 'https://www.influzer.ai/favicon.svg' },
+          },
+          mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.influzer.ai/news/${item.slug}` },
+        }) %>
+      </script>
+    <% } %>
+    <style>
+      .news-shell { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
+      .news-back { font-family: var(--font-ui); margin-bottom: 20px; display: inline-block; }
+      .news-eyebrow { font-family: var(--font-ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #6366f1; font-weight: 700; margin-bottom: 10px; }
+      .news-meta { font-family: var(--font-ui); color: var(--color-muted); margin-bottom: 12px; font-size: .85rem; }
+      .news-title { margin-bottom: 12px; }
+      .news-excerpt { font-size: 1.08rem; color: var(--color-charcoal-light); margin-bottom: 20px; }
+      .news-source { font-family: var(--font-ui); font-size: .88rem; margin-bottom: 24px; padding: 12px 14px; background: var(--color-cream-dark); border-radius: 12px; border: 1px solid var(--color-border); }
+      .news-content { font-size: 1.02rem; line-height: 1.75; }
+      .news-content h2 { font-size: 1.2rem; margin-top: 1.4em; }
+      .news-content p { margin-bottom: .9em; }
+      .news-content ul, .news-content ol { margin: 0 0 1em 1.25em; }
+      .news-related { margin-top: 32px; padding: 18px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-paper); }
+      .news-related h3 { margin: 0 0 8px; font-size: 1rem; font-family: var(--font-ui); }
+      .news-related p { margin: 0; color: var(--color-charcoal-light); font-size: .95rem; }
+      .news-related a { font-weight: 600; }
+      .not-found { padding: 24px; border: 1px dashed var(--color-border-strong); border-radius: 14px; }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/site-header', { navPath: '/news', activeNav: 'news' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="news-shell">
+      <a class="news-back" href="/news">← Back to News</a>
+      <% if (!item) { %>
+        <section class="not-found">
+          <h1>Brief not found</h1>
+          <p>The news item you requested is not available.</p>
+        </section>
+      <% } else { %>
+        <article>
+          <div class="news-eyebrow">Influzer News</div>
+          <div class="news-meta"><%= item.displayDate %><% if (item.category) { %> · <%= item.category %><% } %></div>
+          <h1 class="news-title"><%= item.title %></h1>
+          <p class="news-excerpt"><%= item.excerpt %></p>
+          <% if (item.sourceName && item.sourceUrl) { %>
+            <p class="news-source">Source: <a href="<%= item.sourceUrl %>" rel="noopener noreferrer" target="_blank"><%= item.sourceName %></a></p>
+          <% } else if (item.sourceName) { %>
+            <p class="news-source">Source: <%= item.sourceName %></p>
+          <% } %>
+          <section class="news-content"><%- item.contentHtml %></section>
+          <% if (item.relatedInsightSlug && item.relatedInsightTitle) { %>
+            <aside class="news-related">
+              <h3>Go deeper</h3>
+              <p><a href="/insights/<%= item.relatedInsightSlug %>"><%= item.relatedInsightTitle %></a> — full Insights article on this topic.</p>
+            </aside>
+          <% } %>
+        </article>
+      <% } %>
+    </main>
+  </body>
+</html>

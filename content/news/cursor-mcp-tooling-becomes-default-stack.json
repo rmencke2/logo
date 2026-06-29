@@ -1,0 +1,12 @@
+{
+  "slug": "cursor-mcp-tooling-becomes-default-stack",
+  "title": "Cursor teams standardize on MCP as the default agent perimeter",
+  "date": "2026-06-25",
+  "excerpt": "More Cursor users are wiring GitHub, docs, and database MCP servers into project config — replacing one-off REST scripts and paste-into-chat debugging loops.",
+  "category": "MCP Ecosystem",
+  "tags": ["Cursor", "MCP", "Developers", "IDE"],
+  "sourceName": "Influzer.ai Insights",
+  "sourceUrl": "https://www.influzer.ai/insights/cursor-mcp-vs-rest-the-afternoon-i-stopped-writing-glue-code",
+  "relatedInsightSlug": "cursor-mcp-vs-rest-the-afternoon-i-stopped-writing-glue-code",
+  "contentHtml": "<p>The Cursor workflow is splitting cleanly: <strong>REST inside your services, MCP at the IDE edge.</strong> Teams share <code>.cursor/mcp.json</code> for approved connectors — GitHub, Context7, read-only Postgres — and stop rebuilding debug glue every sprint.</p><p>Common pattern we hear:</p><ol><li>Agent reads the repo (baseline)</li><li>MCP tools reach staging data, issues, and live docs</li><li>Incidents that took an afternoon of cURL now close in twenty minutes</li></ol><p><strong>Why it matters:</strong> model quality is table stakes. Tool reach is the new bottleneck — and MCP is how Cursor users buy it back.</p><p>Read the story: <a href=\"/insights/cursor-mcp-vs-rest-the-afternoon-i-stopped-writing-glue-code\">The afternoon I stopped writing glue code</a>. Setup guide: <a href=\"/insights/how-to-set-up-your-first-mcp-servers-in-cursor\">First MCP servers in Cursor</a>.</p>"
+}

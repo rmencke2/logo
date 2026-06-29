@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>News - Influzer.ai</title>
+    <meta name="description" content="Curated MCP ecosystem briefs — fast reads on connectors, IDE tooling, enterprise auth, and catalog moves from Influzer.ai." />
+    <link rel="canonical" href="https://www.influzer.ai/news" />
+    <%- include('partials/seo-social', {
+      ogTitle: 'Influzer News - MCP Ecosystem Briefs',
+      ogDescription: 'Curated MCP ecosystem briefs — fast reads on connectors, IDE tooling, enterprise auth, and catalog moves.',
+      ogUrl: 'https://www.influzer.ai/news',
+      ogType: 'website',
+    }) %>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <style>
+      .news-page { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+      .news-header { margin-bottom: 28px; }
+      .news-header .eyebrow { font-family: var(--font-ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #6366f1; font-weight: 700; margin-bottom: 8px; }
+      .news-header p { color: var(--color-charcoal-light); max-width: 640px; }
+      .news-sister { margin-bottom: 24px; font-family: var(--font-ui); font-size: .9rem; }
+      .news-sister a { font-weight: 600; }
+      .news-feed { display: grid; gap: 0; border-top: 1px solid var(--color-border); }
+      .news-item { display: block; padding: 22px 0; border-bottom: 1px solid var(--color-border); text-decoration: none; color: inherit; transition: background .15s ease; }
+      .news-item:hover { background: rgba(99, 102, 241, 0.04); margin: 0 -12px; padding-left: 12px; padding-right: 12px; border-radius: 12px; }
+      .news-item-meta { font-family: var(--font-ui); font-size: .8rem; color: var(--color-muted); margin-bottom: 6px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      .news-item-badge { font-size: .7rem; padding: 3px 8px; border-radius: 999px; background: #eef2ff; color: #4338ca; font-weight: 600; }
+      .news-item-title { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.25; margin-bottom: 8px; }
+      .news-item-excerpt { color: var(--color-charcoal-light); line-height: 1.65; margin-bottom: 10px; }
+      .news-item-cta { font-family: var(--font-ui); font-size: .88rem; font-weight: 600; color: var(--color-charcoal); }
+      .empty-state { border: 1px dashed var(--color-border-strong); border-radius: 16px; padding: 24px; background: var(--color-paper); }
+      .newsletter-card { margin-top: 32px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-cream-dark); padding: 18px; }
+      .newsletter-card h2 { margin: 0 0 8px 0; font-size: 1.25rem; }
+      .newsletter-card p { margin: 0 0 10px 0; color: var(--color-charcoal-light); }
+      .newsletter-form { display: grid; gap: 8px; }
+      .newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+      .newsletter-input { flex: 1; min-width: 220px; border: 1px solid var(--color-border); border-radius: 999px; padding: 10px 14px; font: inherit; }
+      .newsletter-submit { border: 0; border-radius: 999px; background: var(--color-charcoal); color: #fff; padding: 10px 14px; font-family: var(--font-ui); font-weight: 600; cursor: pointer; }
+      .newsletter-hp { display: none !important; }
+      .newsletter-status { font-family: var(--font-ui); font-size: .84rem; min-height: 1.1em; color: var(--color-muted); }
+      .newsletter-status.error { color: #b3261e; }
+      .newsletter-status.success { color: #0f6f4f; }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/site-header', { navPath: '/news', activeNav: 'news' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="news-page">
+      <header class="news-header">
+        <div class="eyebrow">Influzer News</div>
+        <h1>MCP ecosystem briefs</h1>
+        <p class="subtitle">Fast reads on what changed — connectors, IDE tooling, enterprise auth, and catalog moves. For depth, follow through to <a href="/insights">Insights</a>.</p>
+      </header>
+
+      <p class="news-sister">Long-form tutorials and strategy → <a href="/insights">Insights</a> · Find servers → <a href="/mcp">MCP Directory</a></p>
+
+      <% if (!items || items.length === 0) { %>
+        <section class="empty-state">
+          <h2 style="margin-bottom: 8px;">No news briefs yet</h2>
+          <p>Add a JSON file in <code>content/news/</code> to publish the first brief.</p>
+        </section>
+      <% } else { %>
+        <section class="news-feed" aria-label="MCP news briefs">
+          <% items.forEach((item) => { %>
+            <a class="news-item" href="/news/<%= item.slug %>">
+              <div class="news-item-meta">
+                <span><%= item.displayDate %></span>
+                <% if (item.sourceName) { %>
+                  <span class="news-item-badge"><%= item.sourceName %></span>
+                <% } %>
+              </div>
+              <h2 class="news-item-title"><%= item.title %></h2>
+              <p class="news-item-excerpt"><%= item.excerpt %></p>
+              <span class="news-item-cta">Read brief →</span>
+            </a>
+          <% }) %>
+        </section>
+      <% } %>
+
+      <section class="newsletter-card" aria-label="Subscribe to the newsletter">
+        <h2>Get MCP signal in your inbox</h2>
+        <p>We email for high-signal Insights and launches — not every brief. Always with a link back to the site.</p>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <div class="newsletter-row">
+            <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your email" maxlength="254" required />
+            <button class="newsletter-submit" id="newsletterSubmit" type="submit">Subscribe</button>
+          </div>
+          <input class="newsletter-hp" type="text" id="newsletterWebsite" autocomplete="off" tabindex="-1" aria-hidden="true" />
+          <span class="newsletter-status" id="newsletterStatus" role="status" aria-live="polite"></span>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const form = document.getElementById('newsletterForm');
+        const emailEl = document.getElementById('newsletterEmail');
+        const submitEl = document.getElementById('newsletterSubmit');
+        const statusEl = document.getElementById('newsletterStatus');
+        const hpEl = document.getElementById('newsletterWebsite');
+        if (!form) return;
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          statusEl.textContent = '';
+          statusEl.classList.remove('error', 'success');
+          const email = String(emailEl.value || '').trim();
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            statusEl.textContent = 'Please enter a valid email address.';
+            statusEl.classList.add('error');
+            return;
+          }
+          submitEl.disabled = true;
+          try {
+            const response = await fetch('/api/newsletter/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, source: 'news-index', website: hpEl ? hpEl.value : '' }),
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(data.error || 'Subscription failed.');
+            statusEl.textContent = data.message || "You're in!";
+            statusEl.classList.add('success');
+            emailEl.value = '';
+          } catch (err) {
+            statusEl.textContent = err.message || 'Subscription failed.';
+            statusEl.classList.add('error');
+          } finally {
+            submitEl.disabled = false;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

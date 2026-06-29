@@ -26,6 +26,7 @@ const {
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
+const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -518,6 +519,39 @@ function initializeStaticService(app) {
     res.redirect(301, `/insights${qs}`);
   });
 
+  // News index (before /news/:slug)
+  app.get('/news', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const items = getAllNewsItems().map((item) => ({
+      ...item,
+      displayDate: formatNewsDate(item.date),
+    }));
+    res.render('news-index', { items });
+  });
+
+  app.get('/news/:slug', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const raw = findNewsItemBySlug(req.params.slug);
+
+    if (!raw) {
+      return res.status(404).render('news-item', { item: null });
+    }
+
+    let relatedInsightTitle = '';
+    if (raw.relatedInsightSlug) {
+      const related = findBlogPostBySlug(raw.relatedInsightSlug);
+      relatedInsightTitle = related?.title || '';
+    }
+
+    const item = {
+      ...raw,
+      displayDate: formatNewsDate(raw.date),
+      relatedInsightTitle,
+    };
+
+    return res.render('news-item', { item });
+  });
+
   // Blog index
   app.get('/insights', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -760,7 +794,9 @@ ${itemsXml}
   // Serve sitemap.xml
   app.get('/sitemap.xml', (req, res) => {
     const posts = getAllBlogPosts();
+    const newsItems = getAllNewsItems();
     const latestPostDate = posts.length ? posts[0].date : new Date().toISOString().slice(0, 10);
+    const latestNewsDate = newsItems.length ? newsItems[0].date : latestPostDate;
     const staticUrls = [
       { loc: `${SITE_BASE_URL}/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '1.0' },
       { loc: `${SITE_BASE_URL}/video-converter`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
@@ -768,6 +804,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/video-metadata`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/meme-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/insights`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.9' },
+      { loc: `${SITE_BASE_URL}/news`, lastmod: latestNewsDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
@@ -782,6 +819,12 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.7',
     }));
+    const newsUrls = newsItems.map((item) => ({
+      loc: `${SITE_BASE_URL}/news/${item.slug}`,
+      lastmod: item.date,
+      changefreq: 'weekly',
+      priority: '0.65',
+    }));
     const lastUpdatedRaw = getMcpLastUpdated().iso;
     const mcpLastMod = lastUpdatedRaw ? String(lastUpdatedRaw).slice(0, 10) : '2026-06-03';
     const mcpUrls = getAllMcpServers().map((s) => ({
@@ -790,7 +833,7 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.6',
     }));
-    const allUrls = [...staticUrls, ...postUrls, ...mcpUrls];
+    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...mcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls

@@ -547,4 +547,7 @@ async function initializeNewsletterService(app) {
 
 module.exports = {
   initializeNewsletterService,
+  sendBlogNewsletter,
+  countActiveSubscribers,
+  listActiveSubscribers,
 };

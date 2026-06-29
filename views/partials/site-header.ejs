@@ -9,6 +9,10 @@
     typeof activeNav !== 'undefined'
       ? activeNav === 'insights'
       : path.startsWith('/insights') || path.startsWith('/blog');
+  const activeNews =
+    typeof activeNav !== 'undefined'
+      ? activeNav === 'news'
+      : path.startsWith('/news');
 %>
 <header class="site-header" id="siteHeader">
   <div class="site-header-inner">
@@ -29,6 +33,7 @@
     </div>
     <nav class="site-header-nav" id="mainSiteNav" aria-label="Main">
       <a href="/mcp" class="site-header-link<%= activeMcp ? ' is-active' : '' %>">MCP Directory</a>
+      <a href="/news" class="site-header-link<%= activeNews ? ' is-active' : '' %>">News</a>
       <a href="/insights" class="site-header-link<%= activeInsights ? ' is-active' : '' %>">Insights</a>
       <div class="site-header-dropdown" id="toolsDropdown">
         <button

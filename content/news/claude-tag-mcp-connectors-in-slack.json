@@ -1,0 +1,12 @@
+{
+  "slug": "claude-tag-mcp-connectors-in-slack",
+  "title": "Claude Tag brings MCP connectors into Slack workflows",
+  "date": "2026-06-23",
+  "excerpt": "@Claude in Slack can now call MCP-backed connectors — turning channel messages into deployment checks, ticket updates, and database queries without leaving the conversation.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Claude", "Slack", "Connectors", "Agents"],
+  "sourceName": "Anthropic",
+  "sourceUrl": "https://www.anthropic.com/news",
+  "relatedInsightSlug": "claude-tag-mcp-servers-building-services-in-slack",
+  "contentHtml": "<p>The integration layer is moving to where teams already work. <strong>Claude Tag</strong> in Slack — mention <code>@Claude</code> with a task — can now reach external systems through MCP connectors instead of bespoke slash commands per tool.</p><p>Early workflows look familiar:</p><ul><li>Pull GitHub deployment status into a thread</li><li>Query a read-only database for error patterns</li><li>Summarize findings with a recommended next step</li></ul><p>This is the same MCP tool model developers use in Cursor, transplanted into team chat. One protocol, multiple surfaces.</p><p><strong>Why it matters:</strong> ops and engineering leads do not want another dashboard. They want answers in the channel where incidents already unfold.</p><p>Our full breakdown: <a href=\"/insights/claude-tag-mcp-servers-building-services-in-slack\">Claude Tag + MCP servers for building services in Slack</a>.</p>"
+}
