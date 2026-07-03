@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-07-02T08:42:16.431Z",
+  "generated_at": "2026-07-03T08:41:00.398Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-07-01T09:07:15.280Z",
+  "catalog_generated_at": "2026-07-02T08:42:16.468Z",
   "summary": {
     "checked": 290,
     "skipped_manual": 87,
     "skipped_no_endpoint": 1190,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 290,
-    "tools_changed": 0,
+    "unchanged": 289,
+    "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,13 +18,30 @@
     "live_ok": 0,
     "smithery_fallback": 1480,
     "errors": 0,
-    "tools_added_total": 0,
-    "tools_removed_total": 0,
+    "tools_added_total": 1,
+    "tools_removed_total": 1,
     "catalog_total": 1567,
     "http_endpoints": 285,
     "with_tools_before": 368,
     "with_tools_after": 368
   },
-  "changes": [],
+  "changes": [
+    {
+      "slug": "ia-qa-api",
+      "name": "ia-qa.com/mcp llm and RAG testing - Dev/QA toolbox",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 50,
+      "afterToolCount": 50,
+      "added": [
+        "analyze_responses"
+      ],
+      "removed": [
+        "number_base_convert"
+      ],
+      "changed": []
+    }
+  ],
   "errors": []
 }
