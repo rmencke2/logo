@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-03T08:41:00.398Z",
+  "generated_at": "2026-07-04T08:21:07.258Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-07-02T08:42:16.468Z",
+  "catalog_generated_at": "2026-07-03T08:41:00.426Z",
   "summary": {
     "checked": 290,
     "skipped_manual": 87,
     "skipped_no_endpoint": 1190,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 289,
+    "unchanged": 288,
     "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 0,
+    "auth_required_kept": 1,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 1480,
@@ -27,20 +27,22 @@
   },
   "changes": [
     {
-      "slug": "ia-qa-api",
-      "name": "ia-qa.com/mcp llm and RAG testing - Dev/QA toolbox",
+      "slug": "contrastcyber-contrastapi",
+      "name": "ContrastAPI",
       "source": "smithery",
       "validationMethod": "live_mcp+smithery_fallback",
       "status": "tools_changed",
       "beforeToolCount": 50,
       "afterToolCount": 50,
       "added": [
-        "analyze_responses"
+        "geo_audit"
       ],
       "removed": [
-        "number_base_convert"
+        "check_secrets"
       ],
-      "changed": []
+      "changed": [
+        "tech_stack_cve_audit"
+      ]
     }
   ],
   "errors": []
