@@ -1,49 +1,30 @@
 {
-  "generated_at": "2026-07-04T08:21:07.258Z",
+  "generated_at": "2026-07-05T08:36:08.506Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-07-03T08:41:00.426Z",
+  "catalog_generated_at": "2026-07-04T08:21:07.297Z",
   "summary": {
     "checked": 290,
     "skipped_manual": 87,
     "skipped_no_endpoint": 1190,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 288,
-    "tools_changed": 1,
+    "unchanged": 290,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 1,
+    "auth_required_kept": 0,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 1480,
     "errors": 0,
-    "tools_added_total": 1,
-    "tools_removed_total": 1,
+    "tools_added_total": 0,
+    "tools_removed_total": 0,
     "catalog_total": 1567,
     "http_endpoints": 285,
     "with_tools_before": 368,
     "with_tools_after": 368
   },
-  "changes": [
-    {
-      "slug": "contrastcyber-contrastapi",
-      "name": "ContrastAPI",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [
-        "geo_audit"
-      ],
-      "removed": [
-        "check_secrets"
-      ],
-      "changed": [
-        "tech_stack_cve_audit"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
