@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-04T08:21:07.297Z",
+  "generated_at": "2026-07-05T08:36:08.533Z",
   "count": 100,
-  "total_catalog": 1569,
+  "total_catalog": 1572,
   "top100_slugs": [
     "webnode",
     "github",
@@ -19,8 +19,11 @@
     "gmail",
     "hamid-vakilzadeh-mcpsemanticscholar",
     "xgr-mcp",
+    "llm-pulse",
+    "ignav-flights",
     "mikechao-metmuseum-mcp",
     "googlecalendar",
+    "mcp360-ai",
     "desktop-commander",
     "e2b",
     "gitlab",
@@ -99,10 +102,7 @@
     "replicate",
     "searxng",
     "snyk",
-    "sonarqube",
-    "storybook",
-    "vega-lite",
-    "zapier"
+    "sonarqube"
   ],
   "servers": [
     {
@@ -173,7 +173,7 @@
       "stars": 3800,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-05",
+      "last_updated": "2026-07-06",
       "icon": "github"
     },
     {
@@ -404,7 +404,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/slack",
-      "tools_validated_at": "2026-07-05T08:25:50.264Z",
+      "tools_validated_at": "2026-07-06T09:35:34.315Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -473,7 +473,7 @@
       "stars": 2100,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-05",
+      "last_updated": "2026-07-06",
       "icon": "book-open"
     },
     {
@@ -636,7 +636,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/notion",
-      "tools_validated_at": "2026-07-05T08:26:01.650Z",
+      "tools_validated_at": "2026-07-06T09:35:41.644Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -857,7 +857,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-07-05T08:25:47.055Z",
+      "tools_validated_at": "2026-07-06T09:35:32.202Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1021,7 +1021,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-07-05T08:25:47.036Z",
+      "tools_validated_at": "2026-07-06T09:35:32.330Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1141,7 +1141,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-07-05T08:25:46.994Z",
+      "tools_validated_at": "2026-07-06T09:35:33.248Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1197,7 +1197,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-07-05T08:25:46.949Z",
+      "tools_validated_at": "2026-07-06T09:35:32.290Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1309,7 +1309,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/gmail",
-      "tools_validated_at": "2026-07-05T08:25:47.416Z",
+      "tools_validated_at": "2026-07-06T09:35:32.858Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1389,7 +1389,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-07-05T08:25:47.732Z",
+      "tools_validated_at": "2026-07-06T09:35:32.612Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1480,6 +1480,86 @@
       "featured": true
     },
     {
+      "id": "llm-pulse",
+      "slug": "llm-pulse",
+      "name": "LLM Pulse",
+      "description": "LLM Pulse exposes AI visibility analytics through MCP, including projects, competitors, prompts, mentions, citations, sources, sentiment, share of voice, recommendations, GEO Writer data, Search Console, and AI traffic where plan access allows.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List accessible LLM Pulse projects"
+        },
+        {
+          "name": "get_project_details",
+          "description": "Retrieve project metadata"
+        },
+        {
+          "name": "get_timeseries",
+          "description": "Query AI visibility metrics over time"
+        },
+        {
+          "name": "get_summary",
+          "description": "Query aggregated metrics"
+        },
+        {
+          "name": "list_mentions",
+          "description": "List brand mentions"
+        },
+        {
+          "name": "list_citations",
+          "description": "List cited sources"
+        },
+        {
+          "name": "get_sov",
+          "description": "Query share of voice"
+        },
+        {
+          "name": "list_recommendations",
+          "description": "Inspect recommendation data"
+        }
+      ],
+      "github_url": "https://github.com/LLM-Pulse/llmpulse-mcp",
+      "docs_url": "https://api.llmpulse.ai/api-docs",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "last_updated": "2026-07-06",
+      "icon": "globe",
+      "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
+      "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
+    },
+    {
+      "id": "ignav-flights",
+      "slug": "ignav-flights",
+      "name": "Ignav Flights",
+      "description": "Ignav Flights gives AI agents live flight prices and working booking links. Search one-way and round-trip fares between airports; results include booking URLs. Try without an account, rate-limited per IP; use X-Api-Key for authenticated usage.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_airports",
+          "description": "Resolve city, airport, metro, or IATA inputs into airport codes"
+        },
+        {
+          "name": "search_flights",
+          "description": "Search one-way and round-trip fares with booking URLs"
+        }
+      ],
+      "github_url": "https://github.com/gusgordon/ignav-skill",
+      "docs_url": "https://ignav.com/docs/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "last_updated": "2026-07-06",
+      "icon": "globe",
+      "mcp_endpoint": "https://ignav.com/mcp",
+      "deployment_url": "https://ignav.com/mcp"
+    },
+    {
       "id": "mikechao-metmuseum-mcp",
       "slug": "mikechao-metmuseum-mcp",
       "name": "Met Museum Server",
@@ -1517,7 +1597,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "tools_validated_at": "2026-07-05T08:25:47.503Z",
+      "tools_validated_at": "2026-07-06T09:35:32.937Z",
       "tools_validation_method": "smithery_registry",
       "featured": true
     },
@@ -1665,9 +1745,49 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-07-05T08:25:48.736Z",
+      "tools_validated_at": "2026-07-06T09:35:33.606Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "mcp360-ai",
+      "slug": "mcp360-ai",
+      "name": "MCP360",
+      "description": "MCP360 is a unified gateway and marketplace that provides 100+ external tools and custom MCPs through a single integration for AI agents.",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "universal_gateway",
+          "description": "Universal MCP gateway to 100+ external tools"
+        },
+        {
+          "name": "google_search",
+          "description": "Google Search tools"
+        },
+        {
+          "name": "youtube_tools",
+          "description": "YouTube tools"
+        },
+        {
+          "name": "email_verification",
+          "description": "Email verification tools"
+        },
+        {
+          "name": "llm_prompt_tracker",
+          "description": "LLM prompt tracker"
+        }
+      ],
+      "github_url": "https://github.com/mcp360/unified-gateway-mcp",
+      "docs_url": "https://mcp360.ai/docs",
+      "stars": 22,
+      "source": "manual",
+      "featured": true,
+      "last_updated": "2026-07-06",
+      "icon": "globe",
+      "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
+      "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
     },
     {
       "id": "desktop-commander",
@@ -1861,7 +1981,7 @@
       "stars": 0,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-05",
+      "last_updated": "2026-07-06",
       "icon": "search"
     },
     {
@@ -3490,7 +3610,7 @@
       "stars": 0,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-05",
+      "last_updated": "2026-07-06",
       "icon": "database"
     },
     {
@@ -4509,105 +4629,6 @@
         }
       ],
       "setup_summary": "Install from https://github.com/SonarSource/sonarqube-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "storybook",
-      "slug": "storybook",
-      "name": "Storybook",
-      "description": "Component documentation and story access for design systems.",
-      "category": "Design",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_stories",
-          "description": "List component stories"
-        },
-        {
-          "name": "get_story",
-          "description": "Get story metadata and args"
-        }
-      ],
-      "github_url": "https://github.com/storybookjs/mcp-storybook",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "book-open",
-      "primary_url": "https://github.com/storybookjs/mcp-storybook",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/storybookjs/mcp-storybook and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/storybookjs/mcp-storybook and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "vega-lite",
-      "slug": "vega-lite",
-      "name": "VegaLite",
-      "description": "Generate data visualizations from tabular data specs.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "render_chart",
-          "description": "Render a Vega-Lite chart"
-        },
-        {
-          "name": "validate_spec",
-          "description": "Validate a visualization spec"
-        }
-      ],
-      "github_url": "https://github.com/vega/vega-lite",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "bar-chart",
-      "primary_url": "https://github.com/vega/vega-lite",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/vega/vega-lite and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/vega/vega-lite and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "zapier",
-      "slug": "zapier",
-      "name": "Zapier",
-      "description": "5,000+ app integrations via Zapier actions.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_zaps",
-          "description": "List configured Zaps"
-        },
-        {
-          "name": "run_action",
-          "description": "Execute a Zapier action"
-        }
-      ],
-      "docs_url": "https://platform.zapier.com",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "boxes",
-      "primary_url": "https://platform.zapier.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://platform.zapier.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://platform.zapier.com for documentation and connection details.",
       "featured": true
     }
   ]
