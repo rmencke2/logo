@@ -425,6 +425,25 @@ async function main() {
     servers,
   };
 
+  let previousServers = [];
+  if (fs.existsSync(OUT_PATH)) {
+    try {
+      previousServers = JSON.parse(fs.readFileSync(OUT_PATH, 'utf8')).servers || [];
+    } catch {
+      previousServers = [];
+    }
+  }
+
+  const {
+    diffNewCatalogSlugs,
+    recordNewMcpServersFromCatalog,
+  } = require('../services/mcpCatalogChangelogService');
+  const newSlugs = diffNewCatalogSlugs(previousServers, servers);
+  const changelogAdded = recordNewMcpServersFromCatalog(newSlugs, 'catalog-sync');
+  if (changelogAdded > 0) {
+    console.log(`📋 Catalog changelog: ${changelogAdded} new server(s) recorded`);
+  }
+
   fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
   fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2) + '\n');
 

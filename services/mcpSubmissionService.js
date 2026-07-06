@@ -230,9 +230,17 @@ function registerMcpSubmissionRoutes(app) {
         });
       }
 
+      try {
+        const { subscribeToNewsletter } = require('./newsletterService');
+        await subscribeToNewsletter(data.submitterEmail, 'mcp-submit', ip);
+      } catch (subscribeError) {
+        console.error('MCP submit newsletter subscribe failed:', subscribeError.message);
+      }
+
       return res.json({
         success: true,
-        message: 'Thanks! Your submission was received and will be reviewed shortly.',
+        message:
+          'Thanks! Your submission was received and will be reviewed shortly. You are also subscribed to Influzer Insights for listing updates and new MCP servers.',
         reference,
       });
     } catch (error) {

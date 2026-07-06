@@ -417,13 +417,59 @@ async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
   }
 }
 
-function buildBlogNewsletterHtml({ post, postUrl, coverImageUrl, customIntro, unsubscribeUrl }) {
+function buildRecentMcpServersHtml(recentMcpServers, baseUrl) {
+  const browseUrl = `${baseUrl}/mcp`;
+  const sectionHead = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">New in the MCP directory</p>`;
+
+  if (!recentMcpServers?.length) {
+    return `
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid #e7e5e4;">
+        ${sectionHead}
+        <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#444;">Fresh MCP servers are added every week. Browse the full catalog on Influzer.ai.</p>
+        <a href="${escapeHtml(browseUrl)}" style="display:inline-block;padding:10px 18px;border:1px solid #d4d4d8;color:#18181b;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Browse MCP servers →</a>
+      </div>`;
+  }
+
+  const items = recentMcpServers
+    .map((server) => {
+      const pageUrl = `${baseUrl}/mcp/${encodeURIComponent(server.slug)}`;
+      const desc = server.description
+        ? `<p style="margin:4px 0 0;font-size:14px;line-height:1.5;color:#71717a;">${escapeHtml(server.description)}</p>`
+        : '';
+      const category = server.category
+        ? `<span style="font-size:12px;color:#a1a1aa;"> · ${escapeHtml(server.category)}</span>`
+        : '';
+      return `<li style="margin:0 0 14px;">
+        <a href="${escapeHtml(pageUrl)}" style="font-size:16px;font-weight:600;color:#18181b;text-decoration:none;">${escapeHtml(server.name)}</a>${category}
+        ${desc}
+      </li>`;
+    })
+    .join('');
+
+  return `
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid #e7e5e4;">
+      ${sectionHead}
+      <ul style="margin:0 0 16px;padding:0;list-style:none;">${items}</ul>
+      <a href="${escapeHtml(browseUrl)}" style="font-size:14px;font-weight:600;color:#6366f1;text-decoration:none;">Browse all MCP servers →</a>
+    </div>`;
+}
+
+function buildBlogNewsletterHtml({
+  post,
+  postUrl,
+  coverImageUrl,
+  customIntro,
+  unsubscribeUrl,
+  recentMcpServers = [],
+}) {
+  const baseUrl = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
   const intro = customIntro
     ? `<p style="font-size:16px;line-height:1.6;color:#333;margin:0 0 20px;">${escapeHtml(customIntro).replace(/\n/g, '<br>')}</p>`
     : '';
   const coverBlock = coverImageUrl
     ? `<a href="${escapeHtml(postUrl)}" style="display:block;margin:0 0 20px;"><img src="${escapeHtml(coverImageUrl)}" alt="${escapeHtml(post.coverImageAlt || post.title)}" style="width:100%;max-width:560px;border-radius:12px;display:block;" /></a>`
     : '';
+  const mcpServersBlock = buildRecentMcpServersHtml(recentMcpServers, baseUrl);
 
   return `<!DOCTYPE html>
 <html>
@@ -439,7 +485,7 @@ function buildBlogNewsletterHtml({ post, postUrl, coverImageUrl, customIntro, un
         <p style="margin:0 0 24px;">
           <a href="${escapeHtml(postUrl)}" style="display:inline-block;padding:12px 24px;background:#18181b;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;">Read the article →</a>
         </p>
-        <p style="margin:0;font-size:14px;color:#71717a;">Browse the <a href="${escapeHtml((process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, ''))}/mcp" style="color:#6366f1;">MCP server directory</a> for tools mentioned in our latest posts.</p>
+        ${mcpServersBlock}
       </div>
       <p style="margin:20px 0 0;font-size:12px;color:#a1a1aa;text-align:center;">
         You subscribed at influzer.ai · <a href="${escapeHtml(unsubscribeUrl)}" style="color:#71717a;">Unsubscribe</a>
@@ -449,8 +495,27 @@ function buildBlogNewsletterHtml({ post, postUrl, coverImageUrl, customIntro, un
 </html>`;
 }
 
-function buildBlogNewsletterText({ post, postUrl, customIntro, unsubscribeUrl }) {
+function buildBlogNewsletterText({
+  post,
+  postUrl,
+  customIntro,
+  unsubscribeUrl,
+  recentMcpServers = [],
+}) {
+  const baseUrl = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
   const intro = customIntro ? `${customIntro.trim()}\n\n` : '';
+  const mcpLines = ['', 'New in the MCP directory', ''];
+
+  if (recentMcpServers?.length) {
+    for (const server of recentMcpServers) {
+      mcpLines.push(`- ${server.name} (${baseUrl}/mcp/${server.slug})`);
+      if (server.description) mcpLines.push(`  ${server.description}`);
+    }
+    mcpLines.push('', `Browse all: ${baseUrl}/mcp`);
+  } else {
+    mcpLines.push(`Browse the latest servers: ${baseUrl}/mcp`);
+  }
+
   return [
     'Influzer Insights',
     '',
@@ -460,18 +525,40 @@ function buildBlogNewsletterText({ post, postUrl, customIntro, unsubscribeUrl })
     intro + post.excerpt,
     '',
     `Read the article: ${postUrl}`,
+    ...mcpLines,
     '',
     `Unsubscribe: ${unsubscribeUrl}`,
   ].join('\n');
 }
 
-async function sendBlogNewsletterEmail({ to, post, postUrl, coverImageUrl, customIntro, unsubscribeUrl }) {
+async function sendBlogNewsletterEmail({
+  to,
+  post,
+  postUrl,
+  coverImageUrl,
+  customIntro,
+  unsubscribeUrl,
+  recentMcpServers = [],
+}) {
   ensureMcpEmailTransportReady();
 
   const fromAddress = getFromAddress();
   const subject = `New on Influzer Insights: ${post.title}`;
-  const html = buildBlogNewsletterHtml({ post, postUrl, coverImageUrl, customIntro, unsubscribeUrl });
-  const text = buildBlogNewsletterText({ post, postUrl, customIntro, unsubscribeUrl });
+  const html = buildBlogNewsletterHtml({
+    post,
+    postUrl,
+    coverImageUrl,
+    customIntro,
+    unsubscribeUrl,
+    recentMcpServers,
+  });
+  const text = buildBlogNewsletterText({
+    post,
+    postUrl,
+    customIntro,
+    unsubscribeUrl,
+    recentMcpServers,
+  });
 
   const mailOptions = {
     from: fromAddress,

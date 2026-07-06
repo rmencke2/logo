@@ -7,6 +7,7 @@ const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
 const { getAllBlogPosts, findBlogPostBySlug } = require('./staticService');
+const { getMcpServersForNewsletter } = require('./mcpCatalogChangelogService');
 const {
   sendBlogNewsletterEmail,
   buildBlogNewsletterHtml,
@@ -153,6 +154,46 @@ async function addSubscriber(email, source, ipAddress) {
   return result.lastID;
 }
 
+async function subscribeToNewsletter(email, source, ipAddress) {
+  const sanitized = sanitizeEmail(email);
+  if (!isValidEmail(sanitized)) {
+    return { success: false, reason: 'invalid_email' };
+  }
+
+  const db = await getDatabase();
+  const existing = await getDbRow(
+    db,
+    'SELECT id, status FROM newsletter_subscribers WHERE email = ?',
+    [sanitized],
+  );
+
+  if (existing?.status === 'active') {
+    return { success: true, already: true };
+  }
+
+  if (existing) {
+    const token = generateUnsubscribeToken();
+    await runDb(
+      db,
+      `UPDATE newsletter_subscribers
+       SET status = 'active', source = ?, ip_address = ?, unsubscribe_token = ?
+       WHERE id = ?`,
+      [source || 'site', ipAddress || 'unknown', token, existing.id],
+    );
+    return { success: true, reactivated: true };
+  }
+
+  try {
+    await addSubscriber(sanitized, source, ipAddress);
+    return { success: true };
+  } catch (error) {
+    if (String(error.message || '').includes('UNIQUE constraint failed')) {
+      return { success: true, already: true };
+    }
+    throw error;
+  }
+}
+
 async function ensureSubscriberToken(subscriber) {
   if (subscriber.unsubscribe_token) {
     return subscriber.unsubscribe_token;
@@ -240,10 +281,32 @@ function buildUnsubscribeUrl(token) {
   return `${getBaseUrl()}/newsletter/unsubscribe?token=${encodeURIComponent(token)}`;
 }
 
-function buildNewsletterPayload(post, customIntro) {
+async function getLastNewsletterSendAt() {
+  const db = await getDatabase();
+  const row = await getDbRow(
+    db,
+    `SELECT created_at FROM newsletter_sends ORDER BY created_at DESC LIMIT 1`,
+  );
+  return row?.created_at || null;
+}
+
+async function resolveNewsletterMcpServers() {
+  const lastSendAt = await getLastNewsletterSendAt();
+  const since =
+    lastSendAt || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  return getMcpServersForNewsletter({ since, limit: 8 });
+}
+
+function buildNewsletterPayload(post, customIntro, recentMcpServers = []) {
   const postUrl = buildPostUrl(post.slug);
   const coverImageUrl = buildCoverImageUrl(post);
-  return { post, postUrl, coverImageUrl, customIntro: customIntro || '' };
+  return {
+    post,
+    postUrl,
+    coverImageUrl,
+    customIntro: customIntro || '',
+    recentMcpServers,
+  };
 }
 
 async function sendNewsletterToRecipients({
@@ -258,7 +321,11 @@ async function sendNewsletterToRecipients({
     );
   }
 
-  const payload = buildNewsletterPayload(post, customIntro);
+  const payload = buildNewsletterPayload(
+    post,
+    customIntro,
+    await resolveNewsletterMcpServers(),
+  );
   let sent = 0;
   let failed = 0;
   const errors = [];
@@ -413,7 +480,7 @@ async function initializeNewsletterService(app) {
       }
 
       try {
-        await addSubscriber(email, source, ip);
+        await subscribeToNewsletter(email, source, ip);
       } catch (error) {
         if (String(error.message || '').includes('UNIQUE constraint failed')) {
           return res.json({ success: true, message: 'You are already subscribed.' });
@@ -492,7 +559,11 @@ async function initializeNewsletterService(app) {
         return res.status(404).json({ error: 'Blog post not found' });
       }
 
-      const payload = buildNewsletterPayload(post, customIntro);
+      const payload = buildNewsletterPayload(
+        post,
+        customIntro,
+        await resolveNewsletterMcpServers(),
+      );
       const html = buildBlogNewsletterHtml({
         ...payload,
         unsubscribeUrl: `${getBaseUrl()}/newsletter/unsubscribe?token=preview`,
@@ -548,6 +619,7 @@ async function initializeNewsletterService(app) {
 module.exports = {
   initializeNewsletterService,
   sendBlogNewsletter,
+  subscribeToNewsletter,
   countActiveSubscribers,
   listActiveSubscribers,
 };

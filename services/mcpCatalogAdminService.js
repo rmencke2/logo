@@ -142,12 +142,17 @@ function submissionToManualServer(sub, overrides = {}) {
 function upsertManualServer(server) {
   const manual = readManualFile();
   const idx = manual.servers.findIndex((s) => s.slug === server.slug);
+  const isNew = idx < 0;
   if (idx >= 0) {
     manual.servers[idx] = { ...manual.servers[idx], ...server };
   } else {
     manual.servers.unshift(server);
   }
   writeManualFile(manual);
+  if (isNew) {
+    const { recordMcpServerAdded } = require('./mcpCatalogChangelogService');
+    recordMcpServerAdded(server, 'manual');
+  }
 }
 
 function pinToTop100(slug) {
