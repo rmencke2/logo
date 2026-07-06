@@ -218,6 +218,16 @@ function registerMcpSubmissionRoutes(app) {
       const reference = path.basename(savedPath, '.json');
 
       try {
+        const { subscribeToNewsletter } = require('./newsletterService');
+        const subResult = await subscribeToNewsletter(data.submitterEmail, 'mcp-submit', ip);
+        if (!subResult?.success) {
+          console.warn('MCP submit newsletter subscribe skipped:', data.submitterEmail, subResult?.reason);
+        }
+      } catch (subscribeError) {
+        console.error('MCP submit newsletter subscribe failed:', subscribeError.message);
+      }
+
+      try {
         await sendMcpSubmissionEmail(payload);
       } catch (emailError) {
         console.error('MCP submission saved but email failed:', emailError.message);
@@ -228,13 +238,6 @@ function registerMcpSubmissionRoutes(app) {
           reference,
           emailConfigured: false,
         });
-      }
-
-      try {
-        const { subscribeToNewsletter } = require('./newsletterService');
-        await subscribeToNewsletter(data.submitterEmail, 'mcp-submit', ip);
-      } catch (subscribeError) {
-        console.error('MCP submit newsletter subscribe failed:', subscribeError.message);
       }
 
       return res.json({

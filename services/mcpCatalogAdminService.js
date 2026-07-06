@@ -207,6 +207,15 @@ async function approveSubmission(id, body = {}, reviewedBy = '') {
     reviewedBy,
   });
 
+  if (sub.submitterEmail) {
+    try {
+      const { subscribeToNewsletter } = require('./newsletterService');
+      await subscribeToNewsletter(sub.submitterEmail, 'mcp-submit-approved', 'admin-approve');
+    } catch (err) {
+      console.error('Newsletter subscribe on MCP approve failed:', err.message);
+    }
+  }
+
   let emailSent = false;
   let emailError = null;
   if (!wasAlreadyApproved && sub.submitterEmail) {
