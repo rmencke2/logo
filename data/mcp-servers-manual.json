@@ -15,6 +15,114 @@
   ],
   "servers": [
     {
+      "name": "MCP360",
+      "slug": "mcp360-ai",
+      "category": "Dev Tools",
+      "description": "MCP360 is a unified gateway and marketplace that provides 100+ external tools and custom MCPs through a single integration for AI agents.",
+      "official": false,
+      "transport": "http",
+      "icon": "globe",
+      "featured": false,
+      "github_url": "https://github.com/mcp360/unified-gateway-mcp",
+      "docs_url": "https://mcp360.ai/docs",
+      "stars": 22,
+      "tools": [
+        {
+          "name": "universal_gateway",
+          "description": "Universal MCP gateway to 100+ external tools"
+        },
+        {
+          "name": "google_search",
+          "description": "Google Search tools"
+        },
+        {
+          "name": "youtube_tools",
+          "description": "YouTube tools"
+        },
+        {
+          "name": "email_verification",
+          "description": "Email verification tools"
+        },
+        {
+          "name": "llm_prompt_tracker",
+          "description": "LLM prompt tracker"
+        }
+      ],
+      "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
+    },
+    {
+      "name": "Ignav Flights",
+      "slug": "ignav-flights",
+      "category": "Data & Analytics",
+      "description": "Ignav Flights gives AI agents live flight prices and working booking links. Search one-way and round-trip fares between airports; results include booking URLs. Try without an account, rate-limited per IP; use X-Api-Key for authenticated usage.",
+      "official": true,
+      "transport": "http",
+      "icon": "globe",
+      "featured": false,
+      "github_url": "https://github.com/gusgordon/ignav-skill",
+      "docs_url": "https://ignav.com/docs/mcp",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "search_airports",
+          "description": "Resolve city, airport, metro, or IATA inputs into airport codes"
+        },
+        {
+          "name": "search_flights",
+          "description": "Search one-way and round-trip fares with booking URLs"
+        }
+      ],
+      "mcp_endpoint": "https://ignav.com/mcp"
+    },
+    {
+      "name": "LLM Pulse",
+      "slug": "llm-pulse",
+      "category": "Data & Analytics",
+      "description": "LLM Pulse exposes AI visibility analytics through MCP, including projects, competitors, prompts, mentions, citations, sources, sentiment, share of voice, recommendations, GEO Writer data, Search Console, and AI traffic where plan access allows.",
+      "official": true,
+      "transport": "http",
+      "icon": "globe",
+      "featured": false,
+      "github_url": "https://github.com/LLM-Pulse/llmpulse-mcp",
+      "docs_url": "https://api.llmpulse.ai/api-docs",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List accessible LLM Pulse projects"
+        },
+        {
+          "name": "get_project_details",
+          "description": "Retrieve project metadata"
+        },
+        {
+          "name": "get_timeseries",
+          "description": "Query AI visibility metrics over time"
+        },
+        {
+          "name": "get_summary",
+          "description": "Query aggregated metrics"
+        },
+        {
+          "name": "list_mentions",
+          "description": "List brand mentions"
+        },
+        {
+          "name": "list_citations",
+          "description": "List cited sources"
+        },
+        {
+          "name": "get_sov",
+          "description": "Query share of voice"
+        },
+        {
+          "name": "list_recommendations",
+          "description": "Inspect recommendation data"
+        }
+      ],
+      "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp"
+    },
+    {
       "name": "Webnode",
       "slug": "webnode",
       "category": "Design",
@@ -51,21 +159,66 @@
       "github_url": "https://github.com/xgr-network/xgr-mcp",
       "stars": 3,
       "tools": [
-        { "name": "get_chain_status", "description": "Read live XGRChain status" },
-        { "name": "get_latest_block", "description": "Read the latest XGRChain block" },
-        { "name": "get_account_live_state", "description": "Inspect account state on XGRChain" },
-        { "name": "get_transaction_evidence", "description": "Retrieve transaction and explorer evidence" },
-        { "name": "get_sessions_overview", "description": "Summarize indexed XDaLa sessions" },
-        { "name": "find_latest_xdala_session", "description": "Find the latest XDaLa session" },
-        { "name": "get_xdala_session_detail", "description": "Inspect XDaLa session steps, payloads and receipts" },
-        { "name": "list_xdala_sessions", "description": "List indexed XDaLa sessions" },
-        { "name": "list_xdala_session_owners", "description": "List XDaLa session owners" },
-        { "name": "get_xdala_session_stats", "description": "Analyze XDaLa session statistics" },
-        { "name": "get_xdala_payload_key_stats", "description": "Analyze payload fields" },
-        { "name": "estimate_xdala_rule_gas", "description": "Estimate validation gas" },
-        { "name": "create_operation_handoff", "description": "Prepare owner-signed on-chain operation handoffs" },
-        { "name": "get_operation_status", "description": "Check status of a prepared operation handoff" },
-        { "name": "cancel_operation_handoff", "description": "Cancel a pending operation handoff" }
+        {
+          "name": "get_chain_status",
+          "description": "Read live XGRChain status"
+        },
+        {
+          "name": "get_latest_block",
+          "description": "Read the latest XGRChain block"
+        },
+        {
+          "name": "get_account_live_state",
+          "description": "Inspect account state on XGRChain"
+        },
+        {
+          "name": "get_transaction_evidence",
+          "description": "Retrieve transaction and explorer evidence"
+        },
+        {
+          "name": "get_sessions_overview",
+          "description": "Summarize indexed XDaLa sessions"
+        },
+        {
+          "name": "find_latest_xdala_session",
+          "description": "Find the latest XDaLa session"
+        },
+        {
+          "name": "get_xdala_session_detail",
+          "description": "Inspect XDaLa session steps, payloads and receipts"
+        },
+        {
+          "name": "list_xdala_sessions",
+          "description": "List indexed XDaLa sessions"
+        },
+        {
+          "name": "list_xdala_session_owners",
+          "description": "List XDaLa session owners"
+        },
+        {
+          "name": "get_xdala_session_stats",
+          "description": "Analyze XDaLa session statistics"
+        },
+        {
+          "name": "get_xdala_payload_key_stats",
+          "description": "Analyze payload fields"
+        },
+        {
+          "name": "estimate_xdala_rule_gas",
+          "description": "Estimate validation gas"
+        },
+        {
+          "name": "create_operation_handoff",
+          "description": "Prepare owner-signed on-chain operation handoffs"
+        },
+        {
+          "name": "get_operation_status",
+          "description": "Check status of a prepared operation handoff"
+        },
+        {
+          "name": "cancel_operation_handoff",
+          "description": "Cancel a pending operation handoff"
+        }
       ]
     },
     {
