@@ -146,7 +146,9 @@ function upsertManualServer(server) {
   const idx = manual.servers.findIndex((s) => s.slug === server.slug);
   const isNew = idx < 0;
   if (idx >= 0) {
-    manual.servers[idx] = { ...manual.servers[idx], ...server };
+    const merged = { ...manual.servers[idx], ...server };
+    if (!server.hidden) delete merged.hidden;
+    manual.servers[idx] = merged;
   } else {
     manual.servers.unshift(server);
   }
@@ -155,6 +157,22 @@ function upsertManualServer(server) {
     const { recordMcpServerAdded } = require('./mcpCatalogChangelogService');
     recordMcpServerAdded(server, 'manual');
   }
+}
+
+function readPinnedFile() {
+  if (!fs.existsSync(PINNED_PATH)) return { slugs: [] };
+  const pinned = JSON.parse(fs.readFileSync(PINNED_PATH, 'utf8'));
+  if (!Array.isArray(pinned.slugs)) pinned.slugs = [];
+  return pinned;
+}
+
+function writePinnedFile(pinned) {
+  fs.writeFileSync(PINNED_PATH, `${JSON.stringify(pinned, null, 2)}\n`, 'utf8');
+  clearMcpCache();
+}
+
+function isPinnedToTop100(slug) {
+  return readPinnedFile().slugs.includes(slug);
 }
 
 function findManualServer(slug) {
@@ -171,14 +189,27 @@ function removeManualServerBySlug(slug) {
 }
 
 function renamePinnedSlug(oldSlug, newSlug) {
-  if (!fs.existsSync(PINNED_PATH)) return;
-  const pinned = JSON.parse(fs.readFileSync(PINNED_PATH, 'utf8'));
-  if (!Array.isArray(pinned.slugs)) return;
+  const pinned = readPinnedFile();
   const idx = pinned.slugs.indexOf(oldSlug);
   if (idx < 0) return;
   pinned.slugs[idx] = newSlug;
-  fs.writeFileSync(PINNED_PATH, `${JSON.stringify(pinned, null, 2)}\n`, 'utf8');
-  clearMcpCache();
+  writePinnedFile(pinned);
+}
+
+function isSlugTaken(slug, exceptSlug = null) {
+  if (exceptSlug && slug === exceptSlug) return false;
+  const manual = findManualServer(slug);
+  if (manual && !manual.hidden) return true;
+  return Boolean(findMcpServerBySlug(slug));
+}
+
+function reclaimHiddenSlug(slug) {
+  const manual = findManualServer(slug);
+  if (manual?.hidden) {
+    removeManualServerBySlug(slug);
+    return true;
+  }
+  return false;
 }
 
 function catalogServerToEditPayload(server) {
@@ -202,6 +233,7 @@ function catalogServerToEditPayload(server) {
     inManual: Boolean(manual),
     catalogSource: manual ? 'manual' : server.source || 'catalog',
     inTop100: isInTop100(server.slug),
+    pinnedToTop100: isPinnedToTop100(server.slug),
     pageUrl: `/mcp/${server.slug}`,
   };
 }
@@ -276,10 +308,10 @@ function updateCatalogServer(originalSlug, body = {}) {
 
   const newSlug = server.slug;
   if (newSlug !== originalSlug) {
-    const conflict = findMcpServerBySlug(newSlug);
-    if (conflict) {
+    if (isSlugTaken(newSlug)) {
       throw new Error('Another server already uses that slug');
     }
+    reclaimHiddenSlug(newSlug);
     if (findManualServer(originalSlug)) {
       removeManualServerBySlug(originalSlug);
     } else {
@@ -297,21 +329,30 @@ function updateCatalogServer(originalSlug, body = {}) {
   }
 
   upsertManualServer(server);
-  if (body.pinToTop100) pinToTop100(newSlug);
+  syncTop100Pin(newSlug, Boolean(body.pinToTop100));
 
   return { server, slug: newSlug, pageUrl: `/mcp/${newSlug}` };
 }
 
 function pinToTop100(slug) {
-  const pinned = fs.existsSync(PINNED_PATH)
-    ? JSON.parse(fs.readFileSync(PINNED_PATH, 'utf8'))
-    : { slugs: [] };
-  if (!Array.isArray(pinned.slugs)) pinned.slugs = [];
+  const pinned = readPinnedFile();
   if (!pinned.slugs.includes(slug)) {
     pinned.slugs.unshift(slug);
-    fs.writeFileSync(PINNED_PATH, `${JSON.stringify(pinned, null, 2)}\n`, 'utf8');
-    clearMcpCache();
+    writePinnedFile(pinned);
   }
+}
+
+function unpinFromTop100(slug) {
+  const pinned = readPinnedFile();
+  const next = pinned.slugs.filter((s) => s !== slug);
+  if (next.length === pinned.slugs.length) return;
+  pinned.slugs = next;
+  writePinnedFile(pinned);
+}
+
+function syncTop100Pin(slug, shouldPin) {
+  if (shouldPin) pinToTop100(slug);
+  else unpinFromTop100(slug);
 }
 
 function markSubmission(id, status, meta = {}) {
@@ -335,7 +376,7 @@ async function approveSubmission(id, body = {}, reviewedBy = '') {
   validateManualServer(server);
 
   upsertManualServer(server);
-  if (body.pinToTop100) pinToTop100(server.slug);
+  syncTop100Pin(server.slug, Boolean(body.pinToTop100));
 
   const pageUrl = `/mcp/${server.slug}`;
 
@@ -443,7 +484,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
       const server = submissionToManualServer({ tools: [] }, req.body || {});
       validateManualServer(server);
       upsertManualServer(server);
-      if (req.body.pinToTop100) pinToTop100(server.slug);
+      syncTop100Pin(server.slug, Boolean(req.body.pinToTop100));
       res.json({
         success: true,
         slug: server.slug,

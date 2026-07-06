@@ -1978,7 +1978,7 @@
         document.getElementById('mcpEditIcon').value = server.icon || 'globe';
         document.getElementById('mcpEditOfficial').checked = Boolean(server.official);
         document.getElementById('mcpEditFeatured').checked = Boolean(server.featured);
-        document.getElementById('mcpEditPinTop100').checked = Boolean(server.inTop100);
+        document.getElementById('mcpEditPinTop100').checked = Boolean(server.pinnedToTop100);
         document.getElementById('mcpEditTools').value = toolsToText(server.tools || []);
 
         const sourceNote = server.inManual
