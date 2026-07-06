@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-05T08:36:08.533Z",
+  "generated_at": "2026-07-06T10:09:53.429Z",
   "count": 100,
-  "total_catalog": 1572,
+  "total_catalog": 1579,
   "top100_slugs": [
     "webnode",
     "github",
@@ -12,17 +12,22 @@
     "sentry",
     "notion",
     "playwright",
-    "googlesheets",
     "henry-ships-sparkforge",
-    "ethanhenrickson-math-mcp",
-    "smithery-ai-national-weather-service",
+    "googlesheets",
     "gmail",
+    "jina",
+    "smithery-ai-national-weather-service",
+    "ethanhenrickson-math-mcp",
     "hamid-vakilzadeh-mcpsemanticscholar",
     "xgr-mcp",
+    "vercel-grep",
     "llm-pulse",
     "ignav-flights",
-    "mikechao-metmuseum-mcp",
     "googlecalendar",
+    "support-9ef4-wayforth",
+    "mikechao-metmuseum-mcp",
+    "theagenttimes-ucp-gateway",
+    "nitrofire-q-gread",
     "mcp360-ai",
     "desktop-commander",
     "e2b",
@@ -97,12 +102,7 @@
     "new-relic",
     "openrouter",
     "perplexity",
-    "pipedream",
-    "publora",
-    "replicate",
-    "searxng",
-    "snyk",
-    "sonarqube"
+    "pipedream"
   ],
   "servers": [
     {
@@ -126,7 +126,7 @@
       "docs_url": "https://www.webnode.com",
       "stars": 500,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "browser",
       "primary_url": "https://www.webnode.com",
       "setup_steps": [
@@ -387,9 +387,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/slack",
-      "stars": 11109,
+      "stars": 12489,
       "source": "smithery",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "message-square",
       "smithery_qualified_name": "slack",
       "smithery_page_url": "https://smithery.ai/servers/slack",
@@ -404,8 +404,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/slack",
-      "tools_validated_at": "2026-07-06T09:35:34.315Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -438,7 +436,7 @@
       "docs_url": "https://linear.app/docs",
       "stars": 920,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "layout-list",
       "primary_url": "https://linear.app/docs",
       "setup_steps": [
@@ -502,7 +500,7 @@
       "docs_url": "https://stripe.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "credit-card",
       "primary_url": "https://stripe.com/docs",
       "setup_steps": [
@@ -540,7 +538,7 @@
       "docs_url": "https://docs.sentry.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "shield-alert",
       "primary_url": "https://docs.sentry.io",
       "setup_steps": [
@@ -556,88 +554,38 @@
       "id": "notion",
       "slug": "notion",
       "name": "Notion",
-      "description": "Search across your Notion workspace and connected sources to quickly find pages, databases, and users. View full page and database details for deeper context. Create and update pages, manage databases, move or duplicate content, and add comments to keep work organized.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
+      "description": "Pages, databases, blocks, and workspace knowledge management.",
+      "category": "Communication",
+      "official": false,
+      "transport": "stdio",
       "tools": [
         {
-          "name": "notion-search",
-          "description": "Perform a search over:\n- \"internal\": Semantic search over Notion workspace and connected sources (Slack, Google Drive, Github, Jira, Microsoft Teams, Sharepoint, OneDrive, Linear). Supports filtering by creation date and creator.\n- \"user\": Search for users by name or email.\n\nAuto-selects AI search (with connected sources) or workspace search (workspace-only, faster) based on user's access to Notion AI. Use content_search_mode to override.\nUse \"fetch\" tool for full page/database contents after ge"
+          "name": "search",
+          "description": "Search pages and databases"
         },
         {
-          "name": "notion-fetch",
-          "description": "Retrieves details about a Notion entity (page, database, or data source) by URL or ID.\nProvide URL or ID in `id` parameter. Make multiple calls to fetch multiple entities.\nPages use enhanced Markdown format. For the complete specification, fetch the MCP resource at `notion://docs/enhanced-markdown-spec`.\nDatabases return all data sources (collections). Each data source has a unique ID shown in `<data-source url=\"collection://...\">` tags. You can pass a data source ID directly to this tool to fet"
+          "name": "get_page",
+          "description": "Retrieve page content"
         },
         {
-          "name": "notion-create-pages",
-          "description": "## Overview\nCreates one or more Notion pages, with the specified properties and content.\n## Parent\nAll pages created with a single call to this tool will have the same parent. The parent can be a Notion page (\"page_id\") or data source (\"data_source_id\"). If the parent is omitted, the pages are created as standalone, workspace-level private pages, and the person that created them can organize them later as they see fit.\nIf you have a database URL, ALWAYS pass it to the \"fetch\" tool first to get t"
-        },
-        {
-          "name": "notion-update-page",
-          "description": "## Overview\nUpdate a Notion page's properties or content.\n## Properties\nNotion page properties are a JSON map of property names to SQLite values.\nFor pages in a database:\n- ALWAYS use the \"fetch\" tool first to get the data source schema and the\texact property names.\n- Provide a non-null value to update a property's value.\n- Omitted properties are left unchanged.\n\n**IMPORTANT**: Some property types require expanded formats:\n- Date properties: Split into \"date:{property}:start\", \"date:{property}:e"
-        },
-        {
-          "name": "notion-move-pages",
-          "description": "Move one or more Notion pages or databases to a new parent."
-        },
-        {
-          "name": "notion-duplicate-page",
-          "description": "Duplicate a Notion page. The page must be within the current workspace, and you must have permission to access it. The duplication completes asynchronously, so do not rely on the new page identified by the returned ID or URL to be populated immediately. Let the user know that the duplication is in progress and that they can check back later using the 'fetch' tool or by clicking the returned URL and viewing it in the Notion app."
-        },
-        {
-          "name": "notion-create-database",
-          "description": "Creates a new Notion database using SQL DDL syntax.\nIf no title property provided, \"Name\" is auto-added. Returns Markdown with schema, SQLite definition, and data source ID in <data-source> tag for use with update_data_source and query_data_sources tools.\nThe schema param accepts a CREATE TABLE statement defining columns.\nType syntax:\n- Simple: TITLE, RICH_TEXT, DATE, PEOPLE, CHECKBOX, URL, EMAIL, PHONE_NUMBER, STATUS, FILES\n- SELECT('opt':color, ...) / MULTI_SELECT('opt':color, ...)\n- NUMBER [F"
-        },
-        {
-          "name": "notion-update-data-source",
-          "description": "Update a Notion data source's schema, title, or attributes using SQL DDL statements. Returns Markdown showing updated structure and schema.\nAccepts a data source ID (collection ID from fetch response's <data-source> tag) or a single-source database ID. Multi-source databases require the specific data source ID.\nThe statements param accepts semicolon-separated DDL statements:\n- ADD COLUMN \"Name\" <type> - add a new property\n- DROP COLUMN \"Name\" - remove a property\n- RENAME COLUMN \"Old\" TO \"New\" - "
-        },
-        {
-          "name": "notion-create-comment",
-          "description": "Add a comment to a page or specific content.\nCreates a new comment. Provide `page_id` to identify the page, then choose ONE targeting mode:\n- `page_id` alone: Page-level comment on the entire page\n- `page_id` + `selection_with_ellipsis`: Comment on specific block content\n- `discussion_id`: Reply to an existing discussion thread (page_id is still required)\n\nFor content targeting, use `selection_with_ellipsis` with ~10 chars from start and end: \"# Section Ti...tle content\"\n<example description=\"Pa"
-        },
-        {
-          "name": "notion-get-comments",
-          "description": "Get comments and discussions from a Notion page.\nReturns discussions with full comment content in XML format. By default, returns page-level discussions only.\nTip: Use the `fetch` tool with `include_discussions: true` first to see where discussions are anchored in the page content, then use this tool to retrieve full discussion threads. The `discussion://` URLs in the fetch output match the discussion IDs returned here.\nParameters:\n- `include_all_blocks`: Include discussions on child blocks (def"
-        },
-        {
-          "name": "notion-get-teams",
-          "description": "Retrieves a list of teams (teamspaces) in the current workspace. Shows which teams exist, user membership status, IDs, names, and roles.\nTeams are returned split by membership status and limited to a maximum of 10 results.\n<examples>\n1. List all teams (up to the limit of each type): {}\n2. Search for teams by name: {\"query\": \"engineering\"}\n3. Find a specific team: {\"query\": \"Product Design\"}\n</examples>"
-        },
-        {
-          "name": "notion-get-users",
-          "description": "Retrieves a list of users in the current workspace. Shows workspace members and guests with their IDs, names, emails (if available), and types (person or bot).\nSupports cursor-based pagination to iterate through all users in the workspace.\n<examples>\n1. List all users (first page): {}\n2. Search for users by name or email: {\"query\": \"john\"}\n3. Get next page of results: {\"start_cursor\": \"abc123\"}\n4. Set custom page size: {\"page_size\": 20}\n5. Fetch a specific user by ID: {\"user_id\": \"00000000-0000-"
-        },
-        {
-          "name": "notion-create-view",
-          "description": "Create a new view on a Notion database.\nExactly one of \"database_id\" or \"parent_page_id\" must be provided:\n- \"database_id\": add a new view tab to an existing database.\n- \"parent_page_id\": create an inline linked database view on a page that references the existing \"data_source_id\" (like the UI \"/linked\" command). The linked view block is appended to the end of the parent page.\n\nUse \"fetch\" first to get the database_id, parent_page_id, and data_source_id (from <data-source> tags in the response)."
-        },
-        {
-          "name": "notion-update-view",
-          "description": "Update a view's name, filters, sorts, or display configuration.\nUse \"fetch\" to get view IDs from database responses. Only include fields\nyou want to change. The \"configure\" param uses the same DSL as create_view.\nUse CLEAR to remove settings:\n- CLEAR FILTER — remove all filters\n- CLEAR SORT — remove all sorts\n- CLEAR GROUP BY — remove grouping\n\nSee notion://docs/view-dsl-spec resource for full syntax.\n<example description=\"Rename\">{\"view_id\": \"abc123\", \"name\": \"Sprint Board\"}</example>\n<example "
+          "name": "create_page",
+          "description": "Create a new page"
         }
       ],
-      "docs_url": "https://smithery.ai/servers/notion",
-      "stars": 3283,
-      "source": "smithery",
-      "last_updated": "2026-06-29",
-      "icon": "search",
-      "smithery_qualified_name": "notion",
-      "smithery_page_url": "https://smithery.ai/servers/notion",
-      "mcp_endpoint": "https://notion.run.tools",
-      "deployment_url": "https://notion.run.tools",
-      "connection_url": "https://notion.run.tools",
-      "primary_url": "https://smithery.ai/servers/notion",
+      "github_url": "https://github.com/makenotion/notion-mcp-server",
+      "docs_url": "https://developers.notion.com",
+      "stars": 0,
+      "source": "manual",
+      "last_updated": "2026-07-06",
+      "icon": "file-text",
+      "primary_url": "https://developers.notion.com",
       "setup_steps": [
         {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/notion\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://notion.run.tools"
+          "title": "GitHub",
+          "text": "Install from https://github.com/makenotion/notion-mcp-server and add the server to your MCP client configuration (see repository README)."
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/notion",
-      "tools_validated_at": "2026-07-06T09:35:41.644Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "Install from https://github.com/makenotion/notion-mcp-server and add the server to your MCP client configuration (see repository README).",
       "featured": true
     },
     {
@@ -665,7 +613,7 @@
       "github_url": "https://github.com/executeautomation/mcp-playwright",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "monitor-play",
       "primary_url": "https://github.com/executeautomation/mcp-playwright",
       "setup_steps": [
@@ -675,6 +623,168 @@
         }
       ],
       "setup_summary": "Install from https://github.com/executeautomation/mcp-playwright and add the server to your MCP client configuration (see repository README).",
+      "featured": true
+    },
+    {
+      "id": "henry-ships-sparkforge",
+      "slug": "henry-ships-sparkforge",
+      "name": "SparkForge",
+      "description": "Access a versatile collection of tools for media generation, web scraping, and cryptocurrency research. Convert between data formats, summarize long documents, and extract text from images or PDFs with ease. Streamline your workflow by automating tasks like SEO metadata extraction, code reviews, and content creation.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "generate_image",
+          "description": "Generate an AI image from a text prompt using Flux models. Returns an image URL. Models: flux-schnell (fast, $0.02), flux-dev (quality, $0.03), flux-pro (best, $0.05)."
+        },
+        {
+          "name": "take_screenshot",
+          "description": "Capture a screenshot of any webpage URL. Returns the screenshot as a base64-encoded PNG image."
+        },
+        {
+          "name": "html_to_markdown",
+          "description": "Convert HTML content or fetch a URL and convert its HTML to clean Markdown."
+        },
+        {
+          "name": "summarize_text",
+          "description": "Summarize long text using extractive summarization. Fast, algorithmic — no AI API call needed."
+        },
+        {
+          "name": "generate_qr_code",
+          "description": "Generate a QR code as a base64-encoded PNG image from any text or URL."
+        },
+        {
+          "name": "validate_json",
+          "description": "Validate and prettify JSON. Optionally validate against a JSON Schema."
+        },
+        {
+          "name": "pdf_to_markdown",
+          "description": "Extract text from a PDF URL and convert to Markdown. Returns the text content with page count."
+        },
+        {
+          "name": "get_url_metadata",
+          "description": "Extract metadata from a URL — title, description, Open Graph tags, favicon, canonical URL."
+        },
+        {
+          "name": "get_crypto_price",
+          "description": "Get current cryptocurrency price, 24h change, and market cap from CoinGecko."
+        },
+        {
+          "name": "detect_language",
+          "description": "Detect the language of a text string. Supports 10+ languages."
+        },
+        {
+          "name": "text_diff",
+          "description": "Compare two texts and show a unified diff with additions and removals."
+        },
+        {
+          "name": "btc_signal",
+          "description": "Get a BTC price direction prediction based on 10-indicator technical analysis consensus. Returns up/down/neutral with confidence score. Supports 1m, 5m, 15m, 1h timeframes."
+        },
+        {
+          "name": "scrape_webpage",
+          "description": "Scrape a webpage and return clean readable text/markdown. Strips scripts, styles, and HTML tags."
+        },
+        {
+          "name": "web_search",
+          "description": "Search the web using Brave Search API. Returns titles, URLs, and descriptions."
+        },
+        {
+          "name": "code_review",
+          "description": "Review code using Claude AI. Returns bugs, improvements, and best practice suggestions."
+        },
+        {
+          "name": "write_tweet",
+          "description": "Generate tweet text from a topic or prompt using Claude AI. Returns tweet-ready text under 280 chars."
+        },
+        {
+          "name": "verify_email",
+          "description": "Validate email format and check MX records for the domain."
+        },
+        {
+          "name": "check_domain",
+          "description": "Check domain availability and DNS info via lookup."
+        },
+        {
+          "name": "token_research",
+          "description": "Research a crypto token — description, links, price, market cap, volume from CoinGecko."
+        },
+        {
+          "name": "wallet_analysis",
+          "description": "Analyze an Ethereum/Base wallet — ETH balance and recent transactions via Etherscan."
+        },
+        {
+          "name": "crypto_news_summary",
+          "description": "Get latest crypto news headlines from CryptoPanic."
+        },
+        {
+          "name": "generate_meme",
+          "description": "Generate a meme image using Imgflip API. Returns a meme image URL."
+        },
+        {
+          "name": "resize_image",
+          "description": "Fetch an image from a URL, resize it, and return as base64 PNG."
+        },
+        {
+          "name": "text_to_speech",
+          "description": "Convert text to speech using ElevenLabs. Returns audio as base64 MP3."
+        },
+        {
+          "name": "generate_video",
+          "description": "Generate a short AI video from a text prompt using fal.ai."
+        },
+        {
+          "name": "ocr",
+          "description": "Extract text from an image URL using Claude vision AI."
+        },
+        {
+          "name": "site_crawl",
+          "description": "Crawl a website starting from a URL, follow internal links, return pages as text."
+        },
+        {
+          "name": "smart_summarize",
+          "description": "AI-powered summarization in 4 modes: bullet_points, executive, technical, eli5."
+        },
+        {
+          "name": "store_data",
+          "description": "Key-value data storage. Operations: set, get, delete, list. Data persists per namespace."
+        },
+        {
+          "name": "extract_structured",
+          "description": "Extract structured JSON data from a URL using Claude AI and a provided JSON schema."
+        },
+        {
+          "name": "convert_format",
+          "description": "Convert between formats: csv→json, json→csv, markdown→html, html→text."
+        },
+        {
+          "name": "image_resize",
+          "description": "Fetch an image from a URL, resize it, and return as base64 PNG. Alias for resize_image."
+        },
+        {
+          "name": "list_services",
+          "description": "List all available SparkForge services with pricing, parameters, and demo URLs."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "stars": 62617,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "henry-ships/sparkforge",
+      "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "mcp_endpoint": "https://sparkforge--henry-ships.run.tools",
+      "deployment_url": "https://sparkforge--henry-ships.run.tools",
+      "connection_url": "https://sparkforge--henry-ships.run.tools",
+      "primary_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/henry-ships/sparkforge\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://sparkforge--henry-ships.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
       "featured": true
     },
     {
@@ -840,9 +950,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 44737,
+      "stars": 44540,
       "source": "smithery",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -857,172 +967,284 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-07-06T09:35:32.202Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "henry-ships-sparkforge",
-      "slug": "henry-ships-sparkforge",
-      "name": "SparkForge",
-      "description": "Access a versatile collection of tools for media generation, web scraping, and cryptocurrency research. Convert between data formats, summarize long documents, and extract text from images or PDFs with ease. Streamline your workflow by automating tasks like SEO metadata extraction, code reviews, and content creation.",
+      "id": "gmail",
+      "slug": "gmail",
+      "name": "Gmail",
+      "description": "Manage Gmail end-to-end: send, draft, reply, forward, and bulk-modify or delete messages and threads. Organize your inbox with labels, archiving, and trashing, and retrieve messages, attachments, and profile details on demand. Access and search contacts to autofill recipients and keep people data in sync.",
       "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "GMAIL_ADD_LABEL_TO_EMAIL",
+          "description": "Adds and/or removes specified gmail labels for a message; ensure `message id` and all `label ids` are valid (use 'listlabels' for custom label ids)."
+        },
+        {
+          "name": "GMAIL_CREATE_EMAIL_DRAFT",
+          "description": "Creates a gmail email draft, supporting to/cc/bcc, subject, plain/html body (ensure `is html=true` for html), attachments, and threading."
+        },
+        {
+          "name": "GMAIL_CREATE_LABEL",
+          "description": "Creates a new label with a unique name in the specified user's gmail account."
+        },
+        {
+          "name": "GMAIL_DELETE_DRAFT",
+          "description": "Permanently deletes a specific gmail draft using its id; ensure the draft exists and the user has necessary permissions for the given `user id`."
+        },
+        {
+          "name": "GMAIL_DELETE_MESSAGE",
+          "description": "Permanently deletes a specific email message by its id from a gmail mailbox; for `user id`, use 'me' for the authenticated user or an email address to which the authenticated user has delegated access."
+        },
+        {
+          "name": "GMAIL_FETCH_EMAILS",
+          "description": "Fetches a list of email messages from a gmail account, supporting filtering, pagination, and optional full content retrieval."
+        },
+        {
+          "name": "GMAIL_FETCH_MESSAGE_BY_MESSAGE_ID",
+          "description": "Fetches a specific email message by its id, provided the `message id` exists and is accessible to the authenticated `user id`."
+        },
+        {
+          "name": "GMAIL_FETCH_MESSAGE_BY_THREAD_ID",
+          "description": "Retrieves messages from a gmail thread using its `thread id`, where the thread must be accessible by the specified `user id`."
+        },
+        {
+          "name": "GMAIL_GET_ATTACHMENT",
+          "description": "Retrieves a specific attachment by id from a message in a user's gmail mailbox, requiring valid message and attachment ids."
+        },
+        {
+          "name": "GMAIL_GET_CONTACTS",
+          "description": "Fetches contacts (connections) for the authenticated google account, allowing selection of specific data fields and pagination."
+        },
+        {
+          "name": "GMAIL_GET_PEOPLE",
+          "description": "Retrieves either a specific person's details (using `resource name`) or lists 'other contacts' (if `other contacts` is true), with `person fields` specifying the data to return."
+        },
+        {
+          "name": "GMAIL_GET_PROFILE",
+          "description": "Retrieves key gmail profile information (email address, message/thread totals, history id) for a user."
+        },
+        {
+          "name": "GMAIL_LIST_DRAFTS",
+          "description": "Retrieves a paginated list of email drafts from a user's gmail account. use verbose=true to get full draft details including subject, body, sender, and timestamp."
+        },
+        {
+          "name": "GMAIL_LIST_LABELS",
+          "description": "Retrieves a list of all system and user-created labels for the specified gmail account."
+        },
+        {
+          "name": "GMAIL_LIST_THREADS",
+          "description": "Retrieves a list of email threads from a gmail account, identified by `user id` (email address or 'me'), supporting filtering and pagination."
+        },
+        {
+          "name": "GMAIL_MODIFY_THREAD_LABELS",
+          "description": "Adds or removes specified existing label ids from a gmail thread, affecting all its messages; ensure the thread id is valid."
+        },
+        {
+          "name": "GMAIL_MOVE_TO_TRASH",
+          "description": "Moves an existing, non-deleted email message to the trash for the specified user."
+        },
+        {
+          "name": "GMAIL_PATCH_LABEL",
+          "description": "Patches the specified label."
+        },
+        {
+          "name": "GMAIL_REMOVE_LABEL",
+          "description": "Permanently deletes a specific, existing user-created gmail label by its id for a user; cannot delete system labels."
+        },
+        {
+          "name": "GMAIL_REPLY_TO_THREAD",
+          "description": "Sends a reply within a specific gmail thread using the original thread's subject, requiring a valid `thread id` and correctly formatted email addresses. supports attachments via the `attachment` parameter with valid `s3key`, `mimetype`, and `name`."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/gmail",
+      "stars": 45703,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "gmail",
+      "smithery_page_url": "https://smithery.ai/servers/gmail",
+      "mcp_endpoint": "https://gmail.run.tools",
+      "deployment_url": "https://gmail.run.tools",
+      "connection_url": "https://gmail.run.tools",
+      "primary_url": "https://smithery.ai/servers/gmail",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gmail.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/gmail",
+      "featured": true
+    },
+    {
+      "id": "jina",
+      "slug": "jina",
+      "name": "Jina AI",
+      "description": "AI-powered search and retrieval platform. Search the web, read page content, extract structured data, and ground AI responses.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "show_api_key",
+          "description": "Return the bearer token from the Authorization header of the MCP settings, which is used to debug."
+        },
+        {
+          "name": "primer",
+          "description": "Get up-to-date contextual information of the current session to provide localized, time-aware responses. Use this when you need to know the current time, user's location, or network environment to give more relevant and personalized information."
+        },
+        {
+          "name": "guess_datetime_url",
+          "description": "Guess the last updated or published datetime of a web page. This tool examines HTTP headers, HTML metadata, Schema.org data, visible dates, JavaScript timestamps, HTML comments, Git information, RSS/Atom feeds, sitemaps, and international date formats to provide the most accurate update time with confidence scores. Returns the best guess timestamp and confidence level."
+        },
+        {
+          "name": "capture_screenshot_url",
+          "description": "Capture high-quality screenshots of web pages in base64 encoded JPEG format. Use this tool when you need to visually inspect a website, take a snapshot for analysis, or show users what a webpage looks like."
+        },
+        {
+          "name": "read_url",
+          "description": "Extract and convert web page content to clean, readable markdown format. Perfect for reading articles, documentation, blog posts, or any web content. Use this when you need to analyze text content from websites, bypass paywalls, or get structured data."
+        },
+        {
+          "name": "search_web",
+          "description": "Search the entire web for current information, news, articles, and websites. Use this when you need up-to-date information, want to find specific websites, research topics, or get the latest news. Ideal for answering questions about recent events, finding resources, or discovering relevant content."
+        },
+        {
+          "name": "expand_query",
+          "description": "Expand and rewrite search queries based on an up-to-date query expansion model. This tool takes an initial query and returns multiple expanded queries that can be used for more diversed and deeper searches. Useful for improving deep research results by searching broader and deeper."
+        },
+        {
+          "name": "search_arxiv",
+          "description": "Search academic papers and preprints on arXiv repository. Perfect for finding research papers, scientific studies, technical papers, and academic literature. Use this when researching scientific topics, looking for papers by specific authors, or finding the latest research in fields like AI, physics, mathematics, computer science, etc."
+        },
+        {
+          "name": "search_ssrn",
+          "description": "Search academic papers and preprints on SSRN (Social Science Research Network). Perfect for finding research papers in social sciences, economics, law, finance, accounting, management, and humanities. Use this when researching social science topics, looking for working papers, or finding the latest research in business and economics fields."
+        },
+        {
+          "name": "search_jina_blog",
+          "description": "Search Jina AI news and blog posts at jina.ai/news for articles about AI, machine learning, neural search, embeddings, and Jina products. Use this to find official Jina documentation, tutorials, product announcements, and technical deep-dives."
+        },
+        {
+          "name": "search_images",
+          "description": "Search for images across the web, similar to Google Images. Use this when you need to find photos, illustrations, diagrams, charts, logos, or any visual content. Perfect for finding images to illustrate concepts, locating specific pictures, or discovering visual resources. Images are returned by default as small base64-encoded JPEG images."
+        },
+        {
+          "name": "parallel_search_web",
+          "description": "Run multiple web searches in parallel for comprehensive topic coverage and diverse perspectives. For best results, provide multiple search queries that explore different aspects of your topic. You can use expand_query to help generate diverse queries, or create them yourself."
+        },
+        {
+          "name": "parallel_search_arxiv",
+          "description": "Run multiple arXiv searches in parallel for comprehensive research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
+        },
+        {
+          "name": "parallel_search_ssrn",
+          "description": "Run multiple SSRN searches in parallel for comprehensive social science research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
+        },
+        {
+          "name": "parallel_read_url",
+          "description": "Read multiple web pages in parallel to extract clean content efficiently. For best results, provide multiple URLs that you need to extract simultaneously. This is useful for comparing content across multiple sources or gathering information from multiple pages at once."
+        },
+        {
+          "name": "classify_text",
+          "description": "Classify texts into user-defined labels using Jina embeddings. Use this when you need to categorize, tag, or sort text content into predefined categories. Perfect for sentiment analysis, topic classification, content moderation, or any text categorization task."
+        },
+        {
+          "name": "sort_by_relevance",
+          "description": "Rerank a list of documents by relevance to a query using Jina Reranker API. Use this when you have multiple documents and want to sort them by how well they match a specific query or topic. Perfect for document retrieval, content filtering, or finding the most relevant information from a collection."
+        },
+        {
+          "name": "deduplicate_strings",
+          "description": "Get top-k semantically unique strings from a list using Jina embeddings and submodular optimization. Use this when you have many similar strings and want to select the most diverse subset that covers the semantic space. Perfect for removing duplicates, selecting representative samples, or finding diverse content."
+        },
+        {
+          "name": "deduplicate_images",
+          "description": "Get top-k semantically unique images (URLs or base64-encoded) using Jina CLIP v2 embeddings and submodular optimization. Use this when you have many visually similar images and want the most diverse subset."
+        },
+        {
+          "name": "search_bibtex",
+          "description": "Search for academic papers and return BibTeX citations. Searches DBLP (computer science) and Semantic Scholar (broad academic coverage) for comprehensive results. Returns formatted BibTeX entries ready to use in LaTeX documents."
+        },
+        {
+          "name": "extract_pdf",
+          "description": "Extract figures, tables, and equations from PDF documents using layout detection. Perfect for extracting visual elements from academic papers on arXiv or any PDF URL. Returns base64-encoded images of detected elements with metadata."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/jina",
+      "stars": 45021,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "jina",
+      "smithery_page_url": "https://smithery.ai/servers/jina",
+      "mcp_endpoint": "https://jina.run.tools",
+      "deployment_url": "https://jina.run.tools",
+      "connection_url": "https://jina.run.tools",
+      "primary_url": "https://smithery.ai/servers/jina",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/jina\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://jina.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/jina",
+      "featured": true
+    },
+    {
+      "id": "smithery-ai-national-weather-service",
+      "slug": "smithery-ai-national-weather-service",
+      "name": "United States Weather",
+      "description": "Provide real-time and forecast weather information for locations in the United States using natural language queries. Access current conditions, multi-day and hourly forecasts, weather alerts, and nearby weather stations without requiring an API key. Enable users to get official, government-sourced weather data easily through intuitive tools.",
+      "category": "Dev Tools",
       "official": false,
       "transport": "http",
       "tools": [
         {
-          "name": "generate_image",
-          "description": "Generate an AI image from a text prompt using Flux models. Returns an image URL. Models: flux-schnell (fast, $0.02), flux-dev (quality, $0.03), flux-pro (best, $0.05)."
+          "name": "get_current_weather",
+          "description": "Get current weather conditions for a location in the United States. Perfect for 'What's the weather like in [US location]?' questions. Covers all US states, territories, and coastal waters."
         },
         {
-          "name": "take_screenshot",
-          "description": "Capture a screenshot of any webpage URL. Returns the screenshot as a base64-encoded PNG image."
+          "name": "get_weather_forecast",
+          "description": "Get multi-day weather forecast for a location in the United States. Perfect for 'What's the forecast for [US location]?' questions. Provides detailed day/night forecasts for up to 7 days."
         },
         {
-          "name": "html_to_markdown",
-          "description": "Convert HTML content or fetch a URL and convert its HTML to clean Markdown."
+          "name": "get_hourly_forecast",
+          "description": "Get hour-by-hour weather forecast for a location in the United States. Perfect for 'What's the hourly forecast?' or 'Will it rain this afternoon in [US location]?' questions. Provides detailed hourly conditions for up to 48 hours."
         },
         {
-          "name": "summarize_text",
-          "description": "Summarize long text using extractive summarization. Fast, algorithmic — no AI API call needed."
+          "name": "get_weather_alerts",
+          "description": "Get active weather alerts, warnings, watches, and advisories for locations in the United States. Perfect for 'Are there any weather alerts in [US location]?' questions. Covers severe weather, winter storms, heat warnings, flood alerts, and more."
         },
         {
-          "name": "generate_qr_code",
-          "description": "Generate a QR code as a base64-encoded PNG image from any text or URL."
+          "name": "find_weather_stations",
+          "description": "Find weather observation stations near a location in the United States. Useful for getting station-specific data, finding data sources, or understanding which stations provide weather data for an area. Includes ASOS, AWOS, and other automated weather stations."
         },
         {
-          "name": "validate_json",
-          "description": "Validate and prettify JSON. Optionally validate against a JSON Schema."
-        },
-        {
-          "name": "pdf_to_markdown",
-          "description": "Extract text from a PDF URL and convert to Markdown. Returns the text content with page count."
-        },
-        {
-          "name": "get_url_metadata",
-          "description": "Extract metadata from a URL — title, description, Open Graph tags, favicon, canonical URL."
-        },
-        {
-          "name": "get_crypto_price",
-          "description": "Get current cryptocurrency price, 24h change, and market cap from CoinGecko."
-        },
-        {
-          "name": "detect_language",
-          "description": "Detect the language of a text string. Supports 10+ languages."
-        },
-        {
-          "name": "text_diff",
-          "description": "Compare two texts and show a unified diff with additions and removals."
-        },
-        {
-          "name": "btc_signal",
-          "description": "Get a BTC price direction prediction based on 10-indicator technical analysis consensus. Returns up/down/neutral with confidence score. Supports 1m, 5m, 15m, 1h timeframes."
-        },
-        {
-          "name": "scrape_webpage",
-          "description": "Scrape a webpage and return clean readable text/markdown. Strips scripts, styles, and HTML tags."
-        },
-        {
-          "name": "web_search",
-          "description": "Search the web using Brave Search API. Returns titles, URLs, and descriptions."
-        },
-        {
-          "name": "code_review",
-          "description": "Review code using Claude AI. Returns bugs, improvements, and best practice suggestions."
-        },
-        {
-          "name": "write_tweet",
-          "description": "Generate tweet text from a topic or prompt using Claude AI. Returns tweet-ready text under 280 chars."
-        },
-        {
-          "name": "verify_email",
-          "description": "Validate email format and check MX records for the domain."
-        },
-        {
-          "name": "check_domain",
-          "description": "Check domain availability and DNS info via lookup."
-        },
-        {
-          "name": "token_research",
-          "description": "Research a crypto token — description, links, price, market cap, volume from CoinGecko."
-        },
-        {
-          "name": "wallet_analysis",
-          "description": "Analyze an Ethereum/Base wallet — ETH balance and recent transactions via Etherscan."
-        },
-        {
-          "name": "crypto_news_summary",
-          "description": "Get latest crypto news headlines from CryptoPanic."
-        },
-        {
-          "name": "generate_meme",
-          "description": "Generate a meme image using Imgflip API. Returns a meme image URL."
-        },
-        {
-          "name": "resize_image",
-          "description": "Fetch an image from a URL, resize it, and return as base64 PNG."
-        },
-        {
-          "name": "text_to_speech",
-          "description": "Convert text to speech using ElevenLabs. Returns audio as base64 MP3."
-        },
-        {
-          "name": "generate_video",
-          "description": "Generate a short AI video from a text prompt using fal.ai."
-        },
-        {
-          "name": "ocr",
-          "description": "Extract text from an image URL using Claude vision AI."
-        },
-        {
-          "name": "site_crawl",
-          "description": "Crawl a website starting from a URL, follow internal links, return pages as text."
-        },
-        {
-          "name": "smart_summarize",
-          "description": "AI-powered summarization in 4 modes: bullet_points, executive, technical, eli5."
-        },
-        {
-          "name": "store_data",
-          "description": "Key-value data storage. Operations: set, get, delete, list. Data persists per namespace."
-        },
-        {
-          "name": "extract_structured",
-          "description": "Extract structured JSON data from a URL using Claude AI and a provided JSON schema."
-        },
-        {
-          "name": "convert_format",
-          "description": "Convert between formats: csv→json, json→csv, markdown→html, html→text."
-        },
-        {
-          "name": "image_resize",
-          "description": "Fetch an image from a URL, resize it, and return as base64 PNG. Alias for resize_image."
-        },
-        {
-          "name": "list_services",
-          "description": "List all available SparkForge services with pricing, parameters, and demo URLs."
+          "name": "get_local_time",
+          "description": "Get the current local time for a US location. Shows what time it is right now at the specified location."
         }
       ],
-      "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "stars": 67251,
+      "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "stars": 76573,
       "source": "smithery",
-      "last_updated": "2026-06-29",
-      "icon": "search",
-      "smithery_qualified_name": "henry-ships/sparkforge",
-      "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "mcp_endpoint": "https://sparkforge--henry-ships.run.tools",
-      "deployment_url": "https://sparkforge--henry-ships.run.tools",
-      "connection_url": "https://sparkforge--henry-ships.run.tools",
-      "primary_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "last_updated": "2026-07-06",
+      "icon": "boxes",
+      "smithery_qualified_name": "smithery-ai/national-weather-service",
+      "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "mcp_endpoint": "https://national-weather-service--smithery-ai.run.tools",
+      "deployment_url": "https://national-weather-service--smithery-ai.run.tools",
+      "connection_url": "https://national-weather-service--smithery-ai.run.tools",
+      "primary_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/henry-ships/sparkforge\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://sparkforge--henry-ships.run.tools"
+          "text": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://national-weather-service--smithery-ai.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-07-06T09:35:32.330Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
       "featured": true
     },
     {
@@ -1124,9 +1346,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "stars": 113901,
+      "stars": 45212,
       "source": "smithery",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "smithery_qualified_name": "EthanHenrickson/math-mcp",
       "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
@@ -1141,176 +1363,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-07-06T09:35:33.248Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "smithery-ai-national-weather-service",
-      "slug": "smithery-ai-national-weather-service",
-      "name": "United States Weather",
-      "description": "Provide real-time and forecast weather information for locations in the United States using natural language queries. Access current conditions, multi-day and hourly forecasts, weather alerts, and nearby weather stations without requiring an API key. Enable users to get official, government-sourced weather data easily through intuitive tools.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "get_current_weather",
-          "description": "Get current weather conditions for a location in the United States. Perfect for 'What's the weather like in [US location]?' questions. Covers all US states, territories, and coastal waters."
-        },
-        {
-          "name": "get_weather_forecast",
-          "description": "Get multi-day weather forecast for a location in the United States. Perfect for 'What's the forecast for [US location]?' questions. Provides detailed day/night forecasts for up to 7 days."
-        },
-        {
-          "name": "get_hourly_forecast",
-          "description": "Get hour-by-hour weather forecast for a location in the United States. Perfect for 'What's the hourly forecast?' or 'Will it rain this afternoon in [US location]?' questions. Provides detailed hourly conditions for up to 48 hours."
-        },
-        {
-          "name": "get_weather_alerts",
-          "description": "Get active weather alerts, warnings, watches, and advisories for locations in the United States. Perfect for 'Are there any weather alerts in [US location]?' questions. Covers severe weather, winter storms, heat warnings, flood alerts, and more."
-        },
-        {
-          "name": "find_weather_stations",
-          "description": "Find weather observation stations near a location in the United States. Useful for getting station-specific data, finding data sources, or understanding which stations provide weather data for an area. Includes ASOS, AWOS, and other automated weather stations."
-        },
-        {
-          "name": "get_local_time",
-          "description": "Get the current local time for a US location. Shows what time it is right now at the specified location."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "stars": 69322,
-      "source": "smithery",
-      "last_updated": "2026-06-29",
-      "icon": "boxes",
-      "smithery_qualified_name": "smithery-ai/national-weather-service",
-      "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "mcp_endpoint": "https://national-weather-service--smithery-ai.run.tools",
-      "deployment_url": "https://national-weather-service--smithery-ai.run.tools",
-      "connection_url": "https://national-weather-service--smithery-ai.run.tools",
-      "primary_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://national-weather-service--smithery-ai.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-07-06T09:35:32.290Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "gmail",
-      "slug": "gmail",
-      "name": "Gmail",
-      "description": "Manage Gmail end-to-end: send, draft, reply, forward, and bulk-modify or delete messages and threads. Organize your inbox with labels, archiving, and trashing, and retrieve messages, attachments, and profile details on demand. Access and search contacts to autofill recipients and keep people data in sync.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GMAIL_ADD_LABEL_TO_EMAIL",
-          "description": "Adds and/or removes specified gmail labels for a message; ensure `message id` and all `label ids` are valid (use 'listlabels' for custom label ids)."
-        },
-        {
-          "name": "GMAIL_CREATE_EMAIL_DRAFT",
-          "description": "Creates a gmail email draft, supporting to/cc/bcc, subject, plain/html body (ensure `is html=true` for html), attachments, and threading."
-        },
-        {
-          "name": "GMAIL_CREATE_LABEL",
-          "description": "Creates a new label with a unique name in the specified user's gmail account."
-        },
-        {
-          "name": "GMAIL_DELETE_DRAFT",
-          "description": "Permanently deletes a specific gmail draft using its id; ensure the draft exists and the user has necessary permissions for the given `user id`."
-        },
-        {
-          "name": "GMAIL_DELETE_MESSAGE",
-          "description": "Permanently deletes a specific email message by its id from a gmail mailbox; for `user id`, use 'me' for the authenticated user or an email address to which the authenticated user has delegated access."
-        },
-        {
-          "name": "GMAIL_FETCH_EMAILS",
-          "description": "Fetches a list of email messages from a gmail account, supporting filtering, pagination, and optional full content retrieval."
-        },
-        {
-          "name": "GMAIL_FETCH_MESSAGE_BY_MESSAGE_ID",
-          "description": "Fetches a specific email message by its id, provided the `message id` exists and is accessible to the authenticated `user id`."
-        },
-        {
-          "name": "GMAIL_FETCH_MESSAGE_BY_THREAD_ID",
-          "description": "Retrieves messages from a gmail thread using its `thread id`, where the thread must be accessible by the specified `user id`."
-        },
-        {
-          "name": "GMAIL_GET_ATTACHMENT",
-          "description": "Retrieves a specific attachment by id from a message in a user's gmail mailbox, requiring valid message and attachment ids."
-        },
-        {
-          "name": "GMAIL_GET_CONTACTS",
-          "description": "Fetches contacts (connections) for the authenticated google account, allowing selection of specific data fields and pagination."
-        },
-        {
-          "name": "GMAIL_GET_PEOPLE",
-          "description": "Retrieves either a specific person's details (using `resource name`) or lists 'other contacts' (if `other contacts` is true), with `person fields` specifying the data to return."
-        },
-        {
-          "name": "GMAIL_GET_PROFILE",
-          "description": "Retrieves key gmail profile information (email address, message/thread totals, history id) for a user."
-        },
-        {
-          "name": "GMAIL_LIST_DRAFTS",
-          "description": "Retrieves a paginated list of email drafts from a user's gmail account. use verbose=true to get full draft details including subject, body, sender, and timestamp."
-        },
-        {
-          "name": "GMAIL_LIST_LABELS",
-          "description": "Retrieves a list of all system and user-created labels for the specified gmail account."
-        },
-        {
-          "name": "GMAIL_LIST_THREADS",
-          "description": "Retrieves a list of email threads from a gmail account, identified by `user id` (email address or 'me'), supporting filtering and pagination."
-        },
-        {
-          "name": "GMAIL_MODIFY_THREAD_LABELS",
-          "description": "Adds or removes specified existing label ids from a gmail thread, affecting all its messages; ensure the thread id is valid."
-        },
-        {
-          "name": "GMAIL_MOVE_TO_TRASH",
-          "description": "Moves an existing, non-deleted email message to the trash for the specified user."
-        },
-        {
-          "name": "GMAIL_PATCH_LABEL",
-          "description": "Patches the specified label."
-        },
-        {
-          "name": "GMAIL_REMOVE_LABEL",
-          "description": "Permanently deletes a specific, existing user-created gmail label by its id for a user; cannot delete system labels."
-        },
-        {
-          "name": "GMAIL_REPLY_TO_THREAD",
-          "description": "Sends a reply within a specific gmail thread using the original thread's subject, requiring a valid `thread id` and correctly formatted email addresses. supports attachments via the `attachment` parameter with valid `s3key`, `mimetype`, and `name`."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/gmail",
-      "stars": 42297,
-      "source": "smithery",
-      "last_updated": "2026-06-29",
-      "icon": "search",
-      "smithery_qualified_name": "gmail",
-      "smithery_page_url": "https://smithery.ai/servers/gmail",
-      "mcp_endpoint": "https://gmail.run.tools",
-      "deployment_url": "https://gmail.run.tools",
-      "connection_url": "https://gmail.run.tools",
-      "primary_url": "https://smithery.ai/servers/gmail",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gmail.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/gmail",
-      "tools_validated_at": "2026-07-06T09:35:32.858Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1372,9 +1424,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "stars": 44639,
+      "stars": 45257,
       "source": "smithery",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "search",
       "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
       "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
@@ -1389,8 +1441,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-07-06T09:35:32.612Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1467,7 +1517,7 @@
       "docs_url": "https://xgr.network/docs/mcp_overview/",
       "stars": 3,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "globe",
       "primary_url": "https://xgr.network/docs/mcp_overview/",
       "setup_steps": [
@@ -1477,6 +1527,40 @@
         }
       ],
       "setup_summary": "Install from https://github.com/xgr-network/xgr-mcp and add the server to your MCP client configuration (see repository README).",
+      "featured": true
+    },
+    {
+      "id": "vercel-grep",
+      "slug": "vercel-grep",
+      "name": "Vercel Grep",
+      "description": "Search millions of public GitHub repositories for real-world code patterns and API implementations. Find production-ready examples of syntax, configurations, and library integrations to improve your development workflow. Discover exactly how other developers solve specific programming challenges using powerful literal and regular expression searches.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "searchGitHub",
+          "description": "Find real-world code examples from over a million public GitHub repositories to help answer programming questions.\n\n**IMPORTANT: This tool searches for literal code patterns (like grep), not keywords. Search for actual code that would appear in files:**\n- ✅ Good: 'useState(', 'import React from', 'async function', '(?s)try {.*await'\n- ❌ Bad: 'react tutorial', 'best practices', 'how to use'\n\n**When to use this tool:**\n- When implementing unfamiliar APIs or libraries and need to see real usage pat"
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/vercel/grep",
+      "stars": 20649,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "vercel/grep",
+      "smithery_page_url": "https://smithery.ai/servers/vercel/grep",
+      "mcp_endpoint": "https://grep--vercel.run.tools",
+      "deployment_url": "https://grep--vercel.run.tools",
+      "connection_url": "https://grep--vercel.run.tools",
+      "primary_url": "https://smithery.ai/servers/vercel/grep",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/vercel/grep\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://grep--vercel.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
       "featured": true
     },
     {
@@ -1525,11 +1609,17 @@
       "docs_url": "https://api.llmpulse.ai/api-docs",
       "stars": 0,
       "source": "manual",
-      "featured": true,
       "last_updated": "2026-07-06",
       "icon": "globe",
-      "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
-      "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
+      "primary_url": "https://api.llmpulse.ai/api-docs",
+      "setup_steps": [
+        {
+          "title": "GitHub",
+          "text": "Install from https://github.com/LLM-Pulse/llmpulse-mcp and add the server to your MCP client configuration (see repository README)."
+        }
+      ],
+      "setup_summary": "Install from https://github.com/LLM-Pulse/llmpulse-mcp and add the server to your MCP client configuration (see repository README).",
+      "featured": true
     },
     {
       "id": "ignav-flights",
@@ -1553,52 +1643,16 @@
       "docs_url": "https://ignav.com/docs/mcp",
       "stars": 0,
       "source": "manual",
-      "featured": true,
       "last_updated": "2026-07-06",
       "icon": "globe",
-      "mcp_endpoint": "https://ignav.com/mcp",
-      "deployment_url": "https://ignav.com/mcp"
-    },
-    {
-      "id": "mikechao-metmuseum-mcp",
-      "slug": "mikechao-metmuseum-mcp",
-      "name": "Met Museum Server",
-      "description": "Access the Metropolitan Museum of Art's collection through natural language queries. Search for artworks, retrieve detailed information, and explore various departments effortlessly. Enhance your AI's capabilities with rich art resources and data.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list-departments",
-          "description": "List all departments in the Metropolitan Museum of Art (Met Museum)"
-        },
-        {
-          "name": "search-museum-objects",
-          "description": "Search for objects in the Metropolitan Museum of Art (Met Museum). Will return Total objects found, followed by a list of Object Ids.The parameter title should be set to true if you want to search for objects by title.The parameter hasImages is false by default, but can be set to true to return objects without images.If the parameter hasImages is true, the parameter title should be false."
-        },
-        {
-          "name": "get-museum-object",
-          "description": "Get a museum object by its ID, from the Metropolitan Museum of Art Collection"
-        }
-      ],
-      "github_url": "https://github.com/mikechao/metmuseum-mcp",
-      "docs_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "stars": 23100,
-      "source": "smithery",
-      "last_updated": "2026-06-29",
-      "icon": "search",
-      "smithery_qualified_name": "mikechao/metmuseum-mcp",
-      "smithery_page_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "primary_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "primary_url": "https://ignav.com/docs/mcp",
       "setup_steps": [
         {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "title": "GitHub",
+          "text": "Install from https://github.com/gusgordon/ignav-skill and add the server to your MCP client configuration (see repository README)."
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "tools_validated_at": "2026-07-06T09:35:32.937Z",
-      "tools_validation_method": "smithery_registry",
+      "setup_summary": "Install from https://github.com/gusgordon/ignav-skill and add the server to your MCP client configuration (see repository README).",
       "featured": true
     },
     {
@@ -1728,9 +1782,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 15672,
+      "stars": 17238,
       "source": "smithery",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "smithery_qualified_name": "googlecalendar",
       "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
@@ -1745,8 +1799,272 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-07-06T09:35:33.606Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "support-9ef4-wayforth",
+      "slug": "support-9ef4-wayforth",
+      "name": "Wayforth",
+      "description": "The API runtime for AI agents.\nOne tool call. Any API. No setup.\nSearch 4,974 verified APIs ranked by WayforthRank — the only ranking algorithm powered by real agent payment signals, not ads. Execute via 18 managed services with zero API keys. Self-healing: if a service fails, credits restore automatically.\nWhat your agent can do:\n\nSearch 4,974 APIs across 19 categories by intent\nExecute: inference, translation, image generation, speech-to-text, web search, financial data, weather, news, and more\nBring your own API keys (BYOK) for any service\nPay per query via x402 at $0.002 USDC\nQuery with WayforthQL: filter by tier, price, protocol, latency\n\nThree payment rails: Card · USDC on Base · x402\nGet started free: 100 calls · No card required\nuvx wayforth-mcp · wayforth.io",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "wayforth_run",
+          "description": "The Wayforth runtime. One call does everything: searches for the best API,\n    picks the top-ranked service by WayforthRank v2, maps your input to the\n    service's params, and executes it — returning the result directly.\n\n    Use this instead of wayforth_search + wayforth_execute when you just want the result.\n    Supports: translation, weather, news, stock prices, web search, image generation,\n    speech-to-text, text-to-speech, email, and 300+ more catalog services.\n\n    Optional: include age"
+        },
+        {
+          "name": "wayforth_execute",
+          "description": "Execute any API service instantly.\n    15 managed services run with zero API keys —\n    Wayforth holds the credentials.\n    The fastest way to add any API capability\n    to your agent.\n\n    Optional: include agent_id='my-agent-name' to tag this call for per-agent analytics\n    in your dashboard at wayforth.io/dashboard/agents.\n    "
+        },
+        {
+          "name": "wayforth_search",
+          "description": "Search 300+ verified APIs ranked by\n    WayforthRank — real agent payment signals,\n    not ads. Use this when you don't know\n    which service to execute.\n    "
+        },
+        {
+          "name": "wayforth_list",
+          "description": "Browse the Wayforth service catalog."
+        },
+        {
+          "name": "wayforth_stats",
+          "description": "Get current Wayforth catalog statistics."
+        },
+        {
+          "name": "wayforth_status",
+          "description": "Return API health and catalog statistics."
+        },
+        {
+          "name": "wayforth_query",
+          "description": "Structured service discovery using WayforthQL v2.\n    More precise than wayforth_search — supports price caps, protocol filters,\n    x402-only, provider filtering, and explicit sort order.\n    Use when you need deterministic filtering rather than pure semantic ranking.\n    "
+        },
+        {
+          "name": "wayforth_compare",
+          "description": "\n    Compare 2-5 API services side by side.\n    Returns WRI scores, response times, costs, signal counts and a plain-English recommendation.\n    Use this before committing to a service.\n    "
+        },
+        {
+          "name": "wayforth_similar",
+          "description": "Find services similar to or commonly used alongside a given service.\n    Returns co-usage patterns from real agent behavior.\n    "
+        },
+        {
+          "name": "wayforth_pay",
+          "description": "\n    Pay for a service through Wayforth.\n\n    Two payment tracks:\n\n    track='card' (default — no crypto needed):\n      - Deducts from your Wayforth credit balance\n      - Stripe Treasury processes the payment to the service\n      - Get credits at wayforth.io/dashboard → Billing → Card Track\n\n    track='crypto' (non-custodial — your wallet):\n      - Returns Base calldata for you to broadcast\n      - Your USDC, your wallet, fully on-chain\n      - Non-custodial — Wayforth never holds your funds\n\n "
+        },
+        {
+          "name": "wayforth_keys",
+          "description": "Manage BYOK (Bring Your Own Key) stored service keys.\n    Store encrypted API keys for any service and call them via wayforth_execute with key_source='byok'.\n    Keys are encrypted at rest with AES-128 and never returned in plaintext.\n    "
+        },
+        {
+          "name": "wayforth_remember",
+          "description": "Save a service to agent memory for quick access later."
+        },
+        {
+          "name": "wayforth_recall",
+          "description": "Recall services previously saved to memory."
+        },
+        {
+          "name": "wayforth_identity",
+          "description": "Get or create your agent identity on Wayforth.\n    Returns your trust score, reputation tier, and usage history.\n    "
+        },
+        {
+          "name": "wayforth_check_agent_identity",
+          "description": "\n    Look up an agent's identity and reputation on Wayforth.\n\n    Returns tier (unknown/emerging/established/trusted/elite), trust score (0-100),\n    call history, and cumulative spend.\n\n    Agents build reputation automatically through x402 pay-per-call usage. No signup required.\n    Tiers unlock higher rate limits:\n      unknown:     10 calls/min\n      emerging:    30 calls/min\n      established: 60 calls/min\n      trusted:     120 calls/min\n      elite:       unlimited\n    "
+        },
+        {
+          "name": "wayforth_set_wri_alert",
+          "description": "\n    Register a webhook to be notified when any API service crosses a WayforthRank WRI score threshold.\n\n    The webhook fires once per service per 24 hours when the score crosses upward through the threshold.\n    Payload is HMAC-SHA256 signed with X-Wayforth-Signature for verification.\n\n    Use this to automatically discover new high-quality services as they accumulate payment signals.\n    "
+        },
+        {
+          "name": "wayforth_quickstart",
+          "description": "\n    Get the Wayforth developer quickstart guide.\n    Returns step-by-step instructions for using Wayforth in an agent.\n    "
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "stars": 17015,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "support-9ef4/Wayforth",
+      "smithery_page_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "mcp_endpoint": "https://wayforth--support-9ef4.run.tools",
+      "deployment_url": "https://wayforth--support-9ef4.run.tools",
+      "connection_url": "https://wayforth--support-9ef4.run.tools",
+      "primary_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://wayforth--support-9ef4.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
+      "featured": true
+    },
+    {
+      "id": "mikechao-metmuseum-mcp",
+      "slug": "mikechao-metmuseum-mcp",
+      "name": "Met Museum Server",
+      "description": "Access the Metropolitan Museum of Art's collection through natural language queries. Search for artworks, retrieve detailed information, and explore various departments effortlessly. Enhance your AI's capabilities with rich art resources and data.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list-departments",
+          "description": "List all departments in the Metropolitan Museum of Art (Met Museum)"
+        },
+        {
+          "name": "search-museum-objects",
+          "description": "Search for objects in the Metropolitan Museum of Art (Met Museum). Will return Total objects found, followed by a list of Object Ids.The parameter title should be set to true if you want to search for objects by title.The parameter hasImages is false by default, but can be set to true to return objects without images.If the parameter hasImages is true, the parameter title should be false."
+        },
+        {
+          "name": "get-museum-object",
+          "description": "Get a museum object by its ID, from the Metropolitan Museum of Art Collection"
+        }
+      ],
+      "github_url": "https://github.com/mikechao/metmuseum-mcp",
+      "docs_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "stars": 23042,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "mikechao/metmuseum-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "primary_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "featured": true
+    },
+    {
+      "id": "theagenttimes-ucp-gateway",
+      "slug": "theagenttimes-ucp-gateway",
+      "name": "UCP Gateway",
+      "description": "AI Shopping tools for product search, comparison, and safe checkout\n\nCommerce Gateway — an infrastructure layer that enables open-source AI agents to participate in agentic commerce through the Universal Commerce Protocol.\n\nOur platform gives agents a hosted UCP profile registry, a secure MCP gateway, and access to commerce flows without requiring every agent to own a domain, GitHub account, or Shopify credentials.\n\nWith this solution, agents can discover products, recommend options, build carts, validate them with the user, and generate checkout handoff links where the buyer completes payment safely on Shopping platform.\n\nThe value is simple: we make AI commerce accessible to open-source agents while keeping payments secure, merchants protected, and user confirmation at the center of every transaction.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "register_ucp_profile",
+          "description": "Register a public hosted UCP agent profile and receive agent_id/profile_url. Default path: send agent_name plus public_key_jwk and the gateway builds the canonical UCP profile with default Shopping capabilities. Re-registering the same public_key_jwk in the same namespace is idempotent and returns the existing agent_id. Do not build a capability map for normal registration. Create local ./.ucpgateway/ files; keep private_key.jwk local and save returned agent_id/profile_url/profile_json to ./.ucp"
+        },
+        {
+          "name": "get_ucp_profile",
+          "description": "Fetch one registered UCP profile by namespace and agent_id."
+        },
+        {
+          "name": "shopping_product_search",
+          "description": "Search the product catalog through The Agent Times UCP Gateway."
+        },
+        {
+          "name": "shopping_product_get",
+          "description": "Get product details by provider product or variant ID."
+        },
+        {
+          "name": "shopping_cart_create",
+          "description": "Create a merchant cart after the buyer/operator confirms selected variants."
+        },
+        {
+          "name": "shopping_cart_get",
+          "description": "Refresh a merchant cart state."
+        },
+        {
+          "name": "shopping_cart_update",
+          "description": "Replace a merchant cart with the full desired cart state."
+        },
+        {
+          "name": "shopping_cart_cancel",
+          "description": "Cancel a merchant cart using an idempotency key."
+        },
+        {
+          "name": "shopping_checkout_create",
+          "description": "Create a merchant checkout handoff URL after operator confirmation. Does not accept payment credentials. Buyer phone should be E.164 and country must be ISO-2."
+        },
+        {
+          "name": "shopping_checkout_get",
+          "description": "Refresh merchant checkout state."
+        },
+        {
+          "name": "shopping_checkout_update",
+          "description": "Update checkout with a full desired checkout object; use sparingly after checkout exists. Buyer phone should be E.164 and country must be ISO-2."
+        },
+        {
+          "name": "shopping_checkout_cancel",
+          "description": "Cancel an active merchant checkout using an idempotency key."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
+      "stars": 16917,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "search",
+      "smithery_qualified_name": "theagenttimes/ucp-gateway",
+      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
+      "mcp_endpoint": "https://ucp-gateway--theagenttimes.run.tools",
+      "deployment_url": "https://ucp-gateway--theagenttimes.run.tools",
+      "connection_url": "https://ucp-gateway--theagenttimes.run.tools",
+      "primary_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://ucp-gateway--theagenttimes.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway",
+      "featured": true
+    },
+    {
+      "id": "nitrofire-q-gread",
+      "slug": "nitrofire-q-gread",
+      "name": "Gread",
+      "description": "Gives your AI access to the source code of all public github repos.\n\n- Plug and Play: Compatible with all popular coding agents and MCP clients, ready to use out of the box\n- Skill and MCP: Both Skill and MCP are provided, connect with either option\n- Docs Integration: Automatically recognizes docs repo and provides them along with the main repo when accessed",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_repos",
+          "description": "Search for GitHub repositories by name, description, or topic keywords using the GitHub Search API."
+        },
+        {
+          "name": "view_repo",
+          "description": "View repository basic information and its directory structure. Includes corresponding documentation repo if available."
+        },
+        {
+          "name": "list_tree",
+          "description": "List the directory tree of a specific path in a repository with customizable depth and traversal limits."
+        },
+        {
+          "name": "read_code",
+          "description": "Retrieve the raw source code of specified files from within a known repository."
+        },
+        {
+          "name": "search_code",
+          "description": "Perform a fast git grep inside the repository, allowing regex matching by default or substring search."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "stars": 20772,
+      "source": "smithery",
+      "last_updated": "2026-07-06",
+      "icon": "boxes",
+      "smithery_qualified_name": "nitrofire-q/gread",
+      "smithery_page_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "mcp_endpoint": "https://gread--nitrofire-q.run.tools",
+      "deployment_url": "https://gread--nitrofire-q.run.tools",
+      "connection_url": "https://gread--nitrofire-q.run.tools",
+      "primary_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/nitrofire-q/gread\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gread--nitrofire-q.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
       "featured": true
     },
     {
@@ -1783,11 +2101,17 @@
       "docs_url": "https://mcp360.ai/docs",
       "stars": 22,
       "source": "manual",
-      "featured": true,
       "last_updated": "2026-07-06",
       "icon": "globe",
-      "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
-      "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
+      "primary_url": "https://mcp360.ai/docs",
+      "setup_steps": [
+        {
+          "title": "GitHub",
+          "text": "Install from https://github.com/mcp360/unified-gateway-mcp and add the server to your MCP client configuration (see repository README)."
+        }
+      ],
+      "setup_summary": "Install from https://github.com/mcp360/unified-gateway-mcp and add the server to your MCP client configuration (see repository README).",
+      "featured": true
     },
     {
       "id": "desktop-commander",
@@ -1818,7 +2142,7 @@
       "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "terminal",
       "primary_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "setup_steps": [
@@ -1860,7 +2184,7 @@
       "docs_url": "https://e2b.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "sandbox",
       "primary_url": "https://e2b.dev/docs",
       "setup_steps": [
@@ -1901,7 +2225,7 @@
       "github_url": "https://github.com/zereight/gitlab-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "gitlab",
       "primary_url": "https://github.com/zereight/gitlab-mcp",
       "setup_steps": [
@@ -1942,7 +2266,7 @@
       "docs_url": "https://docs.replit.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud-code",
       "primary_url": "https://docs.replit.com",
       "setup_steps": [
@@ -2009,7 +2333,7 @@
       "docs_url": "https://airtable.com/developers/web/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://airtable.com/developers/web/api",
       "setup_steps": [
@@ -2046,7 +2370,7 @@
       "docs_url": "https://developers.asana.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "layout-list",
       "primary_url": "https://developers.asana.com",
       "setup_steps": [
@@ -2084,7 +2408,7 @@
       "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud",
       "primary_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "setup_steps": [
@@ -2121,7 +2445,7 @@
       "docs_url": "https://learn.microsoft.com/azure",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud",
       "primary_url": "https://learn.microsoft.com/azure",
       "setup_steps": [
@@ -2158,7 +2482,7 @@
       "docs_url": "https://cloud.google.com/bigquery/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://cloud.google.com/bigquery/docs",
       "setup_steps": [
@@ -2195,7 +2519,7 @@
       "github_url": "https://github.com/bluesky-social/mcp-bluesky",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "globe",
       "primary_url": "https://github.com/bluesky-social/mcp-bluesky",
       "setup_steps": [
@@ -2232,7 +2556,7 @@
       "docs_url": "https://www.canva.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "image",
       "primary_url": "https://www.canva.dev/docs",
       "setup_steps": [
@@ -2269,7 +2593,7 @@
       "docs_url": "https://developer.atlassian.com/cloud/confluence",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "file-text",
       "primary_url": "https://developer.atlassian.com/cloud/confluence",
       "setup_steps": [
@@ -2306,7 +2630,7 @@
       "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "activity",
       "primary_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "setup_steps": [
@@ -2343,7 +2667,7 @@
       "github_url": "https://github.com/docker/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://github.com/docker/mcp-server",
       "setup_steps": [
@@ -2380,7 +2704,7 @@
       "docs_url": "https://www.dropbox.com/developers/documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "hard-drive",
       "primary_url": "https://www.dropbox.com/developers/documentation",
       "setup_steps": [
@@ -2417,7 +2741,7 @@
       "github_url": "https://github.com/GLips/Figma-Context-MCP",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "figma",
       "primary_url": "https://github.com/GLips/Figma-Context-MCP",
       "setup_steps": [
@@ -2455,7 +2779,7 @@
       "docs_url": "https://docs.firecrawl.dev",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "flame",
       "primary_url": "https://docs.firecrawl.dev",
       "setup_steps": [
@@ -2492,7 +2816,7 @@
       "docs_url": "https://developers.google.com/calendar",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "calendar",
       "primary_url": "https://developers.google.com/calendar",
       "setup_steps": [
@@ -2529,7 +2853,7 @@
       "docs_url": "https://cloud.google.com/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud",
       "primary_url": "https://cloud.google.com/mcp",
       "setup_steps": [
@@ -2566,7 +2890,7 @@
       "docs_url": "https://developers.google.com/sheets/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://developers.google.com/sheets/api",
       "setup_steps": [
@@ -2603,7 +2927,7 @@
       "docs_url": "https://developers.hubspot.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://developers.hubspot.com",
       "setup_steps": [
@@ -2640,7 +2964,7 @@
       "github_url": "https://github.com/tylerwince/mcp-imessage",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "message-square",
       "primary_url": "https://github.com/tylerwince/mcp-imessage",
       "setup_steps": [
@@ -2677,7 +3001,7 @@
       "docs_url": "https://developer.atlassian.com/cloud/jira",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "layout-list",
       "primary_url": "https://developer.atlassian.com/cloud/jira",
       "setup_steps": [
@@ -2715,7 +3039,7 @@
       "docs_url": "https://developers.keboola.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://developers.keboola.com",
       "setup_steps": [
@@ -2752,7 +3076,7 @@
       "github_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "setup_steps": [
@@ -2790,7 +3114,7 @@
       "docs_url": "https://docs.mem0.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "brain",
       "primary_url": "https://docs.mem0.ai",
       "setup_steps": [
@@ -2827,7 +3151,7 @@
       "github_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "credit-card",
       "primary_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "setup_steps": [
@@ -2864,7 +3188,7 @@
       "docs_url": "https://www.mercadopago.com/developers",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "credit-card",
       "primary_url": "https://www.mercadopago.com/developers",
       "setup_steps": [
@@ -2901,7 +3225,7 @@
       "docs_url": "https://learn.microsoft.com/microsoftteams",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "message-square",
       "primary_url": "https://learn.microsoft.com/microsoftteams",
       "setup_steps": [
@@ -2938,7 +3262,7 @@
       "github_url": "https://github.com/milvus-io/mcp-server-milvus",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://github.com/milvus-io/mcp-server-milvus",
       "setup_steps": [
@@ -2976,7 +3300,7 @@
       "docs_url": "https://docs.mindsdb.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://docs.mindsdb.com",
       "setup_steps": [
@@ -3013,7 +3337,7 @@
       "docs_url": "https://developer.monday.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "layout-list",
       "primary_url": "https://developer.monday.com",
       "setup_steps": [
@@ -3050,7 +3374,7 @@
       "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "setup_steps": [
@@ -3088,7 +3412,7 @@
       "docs_url": "https://motherduck.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://motherduck.com/docs",
       "setup_steps": [
@@ -3125,7 +3449,7 @@
       "github_url": "https://github.com/benborla/mcp-server-mysql",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://github.com/benborla/mcp-server-mysql",
       "setup_steps": [
@@ -3163,7 +3487,7 @@
       "docs_url": "https://docs.n8n.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://docs.n8n.io",
       "setup_steps": [
@@ -3201,7 +3525,7 @@
       "docs_url": "https://neon.tech/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://neon.tech/docs",
       "setup_steps": [
@@ -3238,7 +3562,7 @@
       "docs_url": "https://docs.netlify.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud",
       "primary_url": "https://docs.netlify.com",
       "setup_steps": [
@@ -3275,7 +3599,7 @@
       "docs_url": "https://learn.microsoft.com/graph/onedrive",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "hard-drive",
       "primary_url": "https://learn.microsoft.com/graph/onedrive",
       "setup_steps": [
@@ -3312,7 +3636,7 @@
       "docs_url": "https://developer.pagerduty.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "shield-alert",
       "primary_url": "https://developer.pagerduty.com",
       "setup_steps": [
@@ -3349,7 +3673,7 @@
       "github_url": "https://github.com/redis/mcp-redis",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://github.com/redis/mcp-redis",
       "setup_steps": [
@@ -3386,7 +3710,7 @@
       "docs_url": "https://developer.salesforce.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://developer.salesforce.com",
       "setup_steps": [
@@ -3423,7 +3747,7 @@
       "docs_url": "https://shopify.dev/docs/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "credit-card",
       "primary_url": "https://shopify.dev/docs/api",
       "setup_steps": [
@@ -3460,7 +3784,7 @@
       "github_url": "https://github.com/shopsavvy/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "credit-card",
       "primary_url": "https://github.com/shopsavvy/mcp-server",
       "setup_steps": [
@@ -3497,7 +3821,7 @@
       "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "file-text",
       "primary_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "setup_steps": [
@@ -3534,7 +3858,7 @@
       "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "setup_steps": [
@@ -3572,7 +3896,7 @@
       "docs_url": "https://sourcegraph.com/cody",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "code",
       "primary_url": "https://sourcegraph.com/cody",
       "setup_steps": [
@@ -3638,7 +3962,7 @@
       "docs_url": "https://developer.stackblitz.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "browser",
       "primary_url": "https://developer.stackblitz.com",
       "setup_steps": [
@@ -3676,7 +4000,7 @@
       "docs_url": "https://supabase.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "database",
       "primary_url": "https://supabase.com/docs",
       "setup_steps": [
@@ -3713,7 +4037,7 @@
       "docs_url": "https://www.taskade.com/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "brain",
       "primary_url": "https://www.taskade.com/api",
       "setup_steps": [
@@ -3750,7 +4074,7 @@
       "github_url": "https://github.com/hashicorp/terraform-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://github.com/hashicorp/terraform-mcp-server",
       "setup_steps": [
@@ -3788,7 +4112,7 @@
       "docs_url": "https://vercel.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud",
       "primary_url": "https://vercel.com/docs",
       "setup_steps": [
@@ -3826,7 +4150,7 @@
       "docs_url": "https://docs.getzep.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "brain",
       "primary_url": "https://docs.getzep.com",
       "setup_steps": [
@@ -3859,7 +4183,7 @@
       "docs_url": "https://www.docs.developers.amplitude.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://www.docs.developers.amplitude.com",
       "setup_steps": [
@@ -3892,7 +4216,7 @@
       "docs_url": "https://developer.box.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "hard-drive",
       "primary_url": "https://developer.box.com",
       "setup_steps": [
@@ -3925,7 +4249,7 @@
       "docs_url": "https://www.builder.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "figma",
       "primary_url": "https://www.builder.io",
       "setup_steps": [
@@ -3958,7 +4282,7 @@
       "docs_url": "https://api-docs.deepseek.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "brain",
       "primary_url": "https://api-docs.deepseek.com",
       "setup_steps": [
@@ -3991,7 +4315,7 @@
       "docs_url": "https://fal.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "image",
       "primary_url": "https://fal.ai/docs",
       "setup_steps": [
@@ -4024,7 +4348,7 @@
       "github_url": "https://github.com/assafelovic/gpt-researcher",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "book-open",
       "primary_url": "https://github.com/assafelovic/gpt-researcher",
       "setup_steps": [
@@ -4057,7 +4381,7 @@
       "github_url": "https://github.com/grafana/mcp-grafana",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "activity",
       "primary_url": "https://github.com/grafana/mcp-grafana",
       "setup_steps": [
@@ -4090,7 +4414,7 @@
       "docs_url": "https://learn.hex.tech",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://learn.hex.tech",
       "setup_steps": [
@@ -4123,7 +4447,7 @@
       "docs_url": "https://jina.ai/reader",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "globe",
       "primary_url": "https://jina.ai/reader",
       "setup_steps": [
@@ -4156,7 +4480,7 @@
       "github_url": "https://github.com/magicuidesign/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "figma",
       "primary_url": "https://github.com/magicuidesign/mcp",
       "setup_steps": [
@@ -4189,7 +4513,7 @@
       "docs_url": "https://www.make.com/en/api-documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://www.make.com/en/api-documentation",
       "setup_steps": [
@@ -4222,7 +4546,7 @@
       "github_url": "https://github.com/metabase/mcp-metabase",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://github.com/metabase/mcp-metabase",
       "setup_steps": [
@@ -4255,7 +4579,7 @@
       "github_url": "https://github.com/metoro-io/metoro-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://github.com/metoro-io/metoro-mcp-server",
       "setup_steps": [
@@ -4288,7 +4612,7 @@
       "docs_url": "https://learn.microsoft.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "cloud",
       "primary_url": "https://learn.microsoft.com",
       "setup_steps": [
@@ -4321,7 +4645,7 @@
       "docs_url": "https://developer.mixpanel.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "bar-chart",
       "primary_url": "https://developer.mixpanel.com",
       "setup_steps": [
@@ -4354,7 +4678,7 @@
       "docs_url": "https://docs.newrelic.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "activity",
       "primary_url": "https://docs.newrelic.com",
       "setup_steps": [
@@ -4387,7 +4711,7 @@
       "docs_url": "https://openrouter.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "brain",
       "primary_url": "https://openrouter.ai/docs",
       "setup_steps": [
@@ -4420,7 +4744,7 @@
       "docs_url": "https://docs.perplexity.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "search",
       "primary_url": "https://docs.perplexity.ai",
       "setup_steps": [
@@ -4454,7 +4778,7 @@
       "docs_url": "https://pipedream.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-06-29",
+      "last_updated": "2026-07-06",
       "icon": "boxes",
       "primary_url": "https://pipedream.com/docs",
       "setup_steps": [
@@ -4464,171 +4788,6 @@
         }
       ],
       "setup_summary": "Install from https://github.com/PipedreamHQ/pipedream and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "publora",
-      "slug": "publora",
-      "name": "Publora",
-      "description": "Social media posting across 10 platforms from one workflow.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "schedule_post",
-          "description": "Schedule a social post"
-        },
-        {
-          "name": "list_accounts",
-          "description": "List connected social accounts"
-        }
-      ],
-      "docs_url": "https://publora.com",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "globe",
-      "primary_url": "https://publora.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://publora.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://publora.com for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "replicate",
-      "slug": "replicate",
-      "name": "Replicate",
-      "description": "Image and video generation via standard MCP calls.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_model",
-          "description": "Run a Replicate model prediction"
-        },
-        {
-          "name": "list_models",
-          "description": "Browse available models"
-        }
-      ],
-      "docs_url": "https://replicate.com/docs",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "image",
-      "primary_url": "https://replicate.com/docs",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://replicate.com/docs for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://replicate.com/docs for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "searxng",
-      "slug": "searxng",
-      "name": "SearXNG",
-      "description": "Self-hosted meta-search aggregating multiple search engines.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search",
-          "description": "Meta-search across configured engines"
-        },
-        {
-          "name": "image_search",
-          "description": "Search images via SearXNG"
-        }
-      ],
-      "github_url": "https://github.com/searxng/searxng",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "search",
-      "primary_url": "https://github.com/searxng/searxng",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/searxng/searxng and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/searxng/searxng and add the server to your MCP client configuration (see repository README).",
-      "featured": true
-    },
-    {
-      "id": "snyk",
-      "slug": "snyk",
-      "name": "Snyk",
-      "description": "Vulnerability scanning for dependencies and containers.",
-      "category": "Security & Monitoring",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "test_project",
-          "description": "Scan project for vulnerabilities"
-        },
-        {
-          "name": "list_issues",
-          "description": "List security issues"
-        }
-      ],
-      "docs_url": "https://docs.snyk.io",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "shield-alert",
-      "primary_url": "https://docs.snyk.io",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://docs.snyk.io for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://docs.snyk.io for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "sonarqube",
-      "slug": "sonarqube",
-      "name": "SonarQube",
-      "description": "Seamless code quality and static analysis integration.",
-      "category": "Security & Monitoring",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "analyze_project",
-          "description": "Run code quality analysis"
-        },
-        {
-          "name": "get_issues",
-          "description": "List code smells and bugs"
-        }
-      ],
-      "github_url": "https://github.com/SonarSource/sonarqube-mcp-server",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-06-29",
-      "icon": "shield-alert",
-      "primary_url": "https://github.com/SonarSource/sonarqube-mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/SonarSource/sonarqube-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/SonarSource/sonarqube-mcp-server and add the server to your MCP client configuration (see repository README).",
       "featured": true
     }
   ]
