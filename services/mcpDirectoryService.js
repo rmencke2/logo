@@ -104,6 +104,7 @@ function normalizeLegacyManual(server) {
     stars: server.stars || 0,
     source: 'manual',
     featured: server.featured !== false,
+    hidden: Boolean(server.hidden),
     last_updated: new Date().toISOString().slice(0, 10),
     icon: server.icon || 'boxes',
     mcp_endpoint: server.mcp_endpoint,
@@ -117,11 +118,12 @@ function toolCount(server) {
 }
 
 function preferRicherServer(existing, incoming) {
+  if (incoming.source === 'manual') return incoming;
+  if (existing.source === 'manual') return existing;
   const existingTools = toolCount(existing);
   const incomingTools = toolCount(incoming);
   if (incomingTools > existingTools) return incoming;
   if (incomingTools < existingTools) return existing;
-  if (incoming.source === 'manual' && existing.source !== 'manual') return incoming;
   return existing;
 }
 
@@ -227,7 +229,9 @@ function getMcpLastUpdated() {
 }
 
 function getAllMcpServers() {
-  return sortServers(loadCatalog().allServers.map((s) => attachSetupInfo(s)));
+  return sortServers(
+    loadCatalog().allServers.filter((s) => !s.hidden).map((s) => attachSetupInfo(s)),
+  );
 }
 
 function getTop100McpServers() {

@@ -8,7 +8,9 @@ const { requireAuth } = require('../auth');
 const {
   clearMcpCache,
   getMcpCategories,
+  getAllMcpServers,
   findMcpServerBySlug,
+  isInTop100,
 } = require('./mcpDirectoryService');
 const { sendMcpApprovalEmail } = require('../emailService');
 
@@ -149,10 +151,155 @@ function upsertManualServer(server) {
     manual.servers.unshift(server);
   }
   writeManualFile(manual);
-  if (isNew) {
+  if (isNew && !server.hidden) {
     const { recordMcpServerAdded } = require('./mcpCatalogChangelogService');
     recordMcpServerAdded(server, 'manual');
   }
+}
+
+function findManualServer(slug) {
+  return readManualFile().servers.find((s) => s.slug === slug) || null;
+}
+
+function removeManualServerBySlug(slug) {
+  const manual = readManualFile();
+  const next = manual.servers.filter((s) => s.slug !== slug);
+  if (next.length === manual.servers.length) return false;
+  manual.servers = next;
+  writeManualFile(manual);
+  return true;
+}
+
+function renamePinnedSlug(oldSlug, newSlug) {
+  if (!fs.existsSync(PINNED_PATH)) return;
+  const pinned = JSON.parse(fs.readFileSync(PINNED_PATH, 'utf8'));
+  if (!Array.isArray(pinned.slugs)) return;
+  const idx = pinned.slugs.indexOf(oldSlug);
+  if (idx < 0) return;
+  pinned.slugs[idx] = newSlug;
+  fs.writeFileSync(PINNED_PATH, `${JSON.stringify(pinned, null, 2)}\n`, 'utf8');
+  clearMcpCache();
+}
+
+function catalogServerToEditPayload(server) {
+  const manual = findManualServer(server.slug);
+  return {
+    slug: server.slug,
+    originalSlug: server.slug,
+    serverName: server.name,
+    description: server.description || '',
+    category: server.category || 'Dev Tools',
+    transport: server.transport || 'unknown',
+    mcpEndpoint: server.mcp_endpoint || server.deployment_url || '',
+    installCommand: server.install_command || '',
+    githubUrl: server.github_url || '',
+    docsUrl: server.docs_url || '',
+    stars: server.stars || 0,
+    official: Boolean(server.official),
+    featured: Boolean(server.featured),
+    icon: server.icon || 'globe',
+    tools: server.tools || [],
+    inManual: Boolean(manual),
+    catalogSource: manual ? 'manual' : server.source || 'catalog',
+    inTop100: isInTop100(server.slug),
+    pageUrl: `/mcp/${server.slug}`,
+  };
+}
+
+function editBodyToManualServer(body) {
+  return submissionToManualServer(
+    { tools: [] },
+    {
+      serverName: body.serverName,
+      slug: body.slug,
+      description: body.description,
+      category: body.category,
+      transport: body.transport,
+      mcpEndpoint: body.mcpEndpoint,
+      installCommand: body.installCommand,
+      githubUrl: body.githubUrl,
+      docsUrl: body.docsUrl,
+      stars: body.stars,
+      official: body.official,
+      featured: body.featured,
+      icon: body.icon,
+      tools: body.tools,
+    },
+  );
+}
+
+function validateManualServer(server) {
+  if (!server.name || !server.slug || !server.description) {
+    throw new Error('Server name, slug, and description are required');
+  }
+  if (!server.tools?.length) {
+    throw new Error('At least one tool is required');
+  }
+  const categories = [...getMcpCategories(), 'Other'];
+  if (!categories.includes(server.category)) {
+    throw new Error('Invalid category');
+  }
+}
+
+function searchCatalogServers(query, limit = 50) {
+  const q = String(query || '').trim().toLowerCase();
+  const manualSlugs = new Set(readManualFile().servers.filter((s) => !s.hidden).map((s) => s.slug));
+  let servers = getAllMcpServers();
+
+  if (q) {
+    servers = servers.filter(
+      (s) =>
+        s.slug.includes(q) ||
+        (s.name || '').toLowerCase().includes(q) ||
+        (s.description || '').toLowerCase().includes(q),
+    );
+  }
+
+  return servers.slice(0, limit).map((s) => ({
+    slug: s.slug,
+    name: s.name,
+    category: s.category || '',
+    transport: s.transport || '',
+    toolCount: s.tools?.length || 0,
+    source: manualSlugs.has(s.slug) ? 'manual' : s.source || 'catalog',
+    inTop100: isInTop100(s.slug),
+    pageUrl: `/mcp/${s.slug}`,
+  }));
+}
+
+function updateCatalogServer(originalSlug, body = {}) {
+  const existing = findMcpServerBySlug(originalSlug);
+  if (!existing) throw new Error('Server not found in catalog');
+
+  const server = editBodyToManualServer(body);
+  validateManualServer(server);
+
+  const newSlug = server.slug;
+  if (newSlug !== originalSlug) {
+    const conflict = findMcpServerBySlug(newSlug);
+    if (conflict) {
+      throw new Error('Another server already uses that slug');
+    }
+    if (findManualServer(originalSlug)) {
+      removeManualServerBySlug(originalSlug);
+    } else {
+      upsertManualServer({
+        slug: originalSlug,
+        hidden: true,
+        name: existing.name,
+        category: existing.category || 'Dev Tools',
+        description: existing.description || '',
+        transport: 'unknown',
+        tools: [],
+      });
+    }
+    renamePinnedSlug(originalSlug, newSlug);
+  }
+
+  upsertManualServer(server);
+  if (body.pinToTop100) pinToTop100(newSlug);
+
+  return { server, slug: newSlug, pageUrl: `/mcp/${newSlug}` };
 }
 
 function pinToTop100(slug) {
@@ -185,17 +332,7 @@ async function approveSubmission(id, body = {}, reviewedBy = '') {
 
   const wasAlreadyApproved = sub.reviewStatus === 'approved';
   const server = submissionToManualServer(sub, body);
-  if (!server.name || !server.slug || !server.description) {
-    throw new Error('Server name, slug, and description are required');
-  }
-  if (!server.tools?.length) {
-    throw new Error('At least one tool is required');
-  }
-
-  const categories = [...getMcpCategories(), 'Other'];
-  if (!categories.includes(server.category)) {
-    throw new Error('Invalid category');
-  }
+  validateManualServer(server);
 
   upsertManualServer(server);
   if (body.pinToTop100) pinToTop100(server.slug);
@@ -304,12 +441,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
   app.post('/admin/api/mcp/servers', requireAuth, requireAdmin, (req, res) => {
     try {
       const server = submissionToManualServer({ tools: [] }, req.body || {});
-      if (!server.name || !server.slug) {
-        return res.status(400).json({ error: 'name and slug are required' });
-      }
-      if (!server.tools?.length) {
-        return res.status(400).json({ error: 'At least one tool is required' });
-      }
+      validateManualServer(server);
       upsertManualServer(server);
       if (req.body.pinToTop100) pinToTop100(server.slug);
       res.json({
@@ -322,6 +454,48 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
       res.status(400).json({ error: err.message || 'Failed to add server' });
     }
   });
+
+  app.get('/admin/api/mcp/catalog', requireAuth, requireAdmin, (req, res) => {
+    try {
+      const q = String(req.query.q || '').trim();
+      const limit = Math.min(parseInt(req.query.limit || '50', 10) || 50, 100);
+      if (!q) {
+        return res.json({ servers: [], message: 'Enter a search query' });
+      }
+      res.json({ servers: searchCatalogServers(q, limit) });
+    } catch (err) {
+      console.error('MCP catalog search error:', err);
+      res.status(500).json({ error: 'Failed to search catalog' });
+    }
+  });
+
+  app.get('/admin/api/mcp/catalog/:slug', requireAuth, requireAdmin, (req, res) => {
+    try {
+      const server = findMcpServerBySlug(req.params.slug);
+      if (!server) return res.status(404).json({ error: 'Server not found in catalog' });
+      res.json({
+        server: catalogServerToEditPayload(server),
+        categories: [...getMcpCategories(), 'Other'],
+      });
+    } catch (err) {
+      console.error('MCP catalog detail error:', err);
+      res.status(500).json({ error: 'Failed to load catalog server' });
+    }
+  });
+
+  app.put('/admin/api/mcp/catalog/:slug', requireAuth, requireAdmin, (req, res) => {
+    try {
+      const result = updateCatalogServer(req.params.slug, req.body || {});
+      res.json({
+        success: true,
+        message: `Updated ${result.server.name} in the catalog`,
+        ...result,
+      });
+    } catch (err) {
+      console.error('MCP catalog update error:', err);
+      res.status(400).json({ error: err.message || 'Failed to update catalog server' });
+    }
+  });
 }
 
 module.exports = {
@@ -330,4 +504,7 @@ module.exports = {
   submissionToManualServer,
   upsertManualServer,
   approveSubmission,
+  searchCatalogServers,
+  updateCatalogServer,
+  catalogServerToEditPayload,
 };

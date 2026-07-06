@@ -503,6 +503,19 @@
           <div class="loading">Loading submissions...</div>
         </div>
       </div>
+
+      <div class="section" style="margin-top:40px;border-top:1px solid #2a2a2a;padding-top:32px;">
+        <h2>Edit published listings</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Search the live MCP directory and edit any published server. Changes are saved to <code>data/mcp-servers-manual.json</code> (including overrides of generated listings).
+        </p>
+        <div class="search-bar">
+          <input type="search" id="mcpCatalogSearch" placeholder="Search by name or slug…" style="flex:1;" />
+        </div>
+        <div id="mcpCatalogResultsContainer">
+          <div class="loading" style="color:#8e8e93;">Type at least two characters to search the catalog.</div>
+        </div>
+      </div>
     </div>
 
     <!-- Around the web Tab -->
@@ -653,6 +666,79 @@
     </div>
   </div>
 
+  <!-- MCP Catalog Edit Modal -->
+  <div class="modal" id="mcpCatalogEditModal">
+    <div class="modal-content modal-content--wide">
+      <h3>Edit catalog listing</h3>
+      <div id="mcpCatalogEditAlert"></div>
+      <form id="mcpCatalogEditForm" onsubmit="handleMcpCatalogSave(event)">
+        <input type="hidden" id="mcpEditOriginalSlug" />
+        <div class="form-group">
+          <label>Server name</label>
+          <input type="text" id="mcpEditServerName" required />
+        </div>
+        <div class="form-group">
+          <label>Slug (URL: /mcp/…)</label>
+          <input type="text" id="mcpEditSlug" required pattern="[a-z0-9-]+" />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="mcpEditDescription" required minlength="20"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="mcpEditCategory" required></select>
+        </div>
+        <div class="form-group">
+          <label>Transport</label>
+          <select id="mcpEditTransport" required>
+            <option value="stdio">stdio</option>
+            <option value="http">http</option>
+            <option value="sse">sse</option>
+            <option value="unknown">unknown</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>MCP endpoint URL (remote http/sse)</label>
+          <input type="url" id="mcpEditEndpoint" placeholder="https://mcp.example.com/mcp" />
+        </div>
+        <div class="form-group">
+          <label>Install command (stdio)</label>
+          <input type="text" id="mcpEditInstallCommand" placeholder="npx -y @scope/mcp-server" />
+        </div>
+        <div class="form-group">
+          <label>GitHub URL</label>
+          <input type="url" id="mcpEditGithubUrl" />
+        </div>
+        <div class="form-group">
+          <label>Docs URL</label>
+          <input type="url" id="mcpEditDocsUrl" />
+        </div>
+        <div class="form-group">
+          <label>Stars (estimate)</label>
+          <input type="number" id="mcpEditStars" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Icon key</label>
+          <input type="text" id="mcpEditIcon" placeholder="globe, github, database…" />
+        </div>
+        <div class="form-row-check">
+          <label><input type="checkbox" id="mcpEditOfficial" /> Official server</label>
+          <label><input type="checkbox" id="mcpEditFeatured" /> Featured</label>
+          <label><input type="checkbox" id="mcpEditPinTop100" /> Pin to Top 100</label>
+        </div>
+        <div class="form-group">
+          <label>Tools (one per line: <code>tool_name — description</code>)</label>
+          <textarea id="mcpEditTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('mcpCatalogEditModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="mcpCatalogSaveBtn">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Block IP Modal -->
   <div class="modal" id="blockIPModal">
     <div class="modal-content">
@@ -675,6 +761,7 @@
     let currentUserEmail = null;
     let currentIP = null;
     let newsletterPostsCache = [];
+    let mcpCatalogSearchTimer = null;
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -734,7 +821,10 @@
           loadNewsletterSendPanel();
           loadNewsletterSubscribers();
         }
-        if (tabName === 'mcp') loadMcpSubmissions();
+        if (tabName === 'mcp') {
+          loadMcpSubmissions();
+          initMcpCatalogSearch();
+        }
         if (tabName === 'othernews') loadOtherNewsItems();
       });
     });
@@ -1808,6 +1898,150 @@
       }
     }
 
+    function initMcpCatalogSearch() {
+      const input = document.getElementById('mcpCatalogSearch');
+      if (!input || input.dataset.bound) return;
+      input.dataset.bound = '1';
+      input.addEventListener('input', () => {
+        clearTimeout(mcpCatalogSearchTimer);
+        mcpCatalogSearchTimer = setTimeout(loadMcpCatalogSearch, 300);
+      });
+    }
+
+    async function loadMcpCatalogSearch() {
+      const container = document.getElementById('mcpCatalogResultsContainer');
+      const q = document.getElementById('mcpCatalogSearch').value.trim();
+      if (q.length < 2) {
+        container.innerHTML = '<div class="loading" style="color:#8e8e93;">Type at least two characters to search the catalog.</div>';
+        return;
+      }
+      container.innerHTML = '<div class="loading">Searching catalog…</div>';
+      try {
+        const res = await fetch(`/admin/api/mcp/catalog?q=${encodeURIComponent(q)}&limit=50`);
+        if (!res.ok) throw new Error('Search failed');
+        const data = await res.json();
+        if (!data.servers.length) {
+          container.innerHTML = '<div class="loading">No servers matched that search.</div>';
+          return;
+        }
+        let html = `<table><thead><tr>
+          <th>Server</th><th>Category</th><th>Transport</th><th>Tools</th><th>Source</th><th></th>
+        </tr></thead><tbody>`;
+        for (const row of data.servers) {
+          const sourceLabel = row.source === 'manual'
+            ? '<span class="badge approved">manual</span>'
+            : '<span class="badge dismissed">generated</span>';
+          const top100 = row.inTop100 ? ' · Top 100' : '';
+          html += `<tr>
+            <td>
+              <strong>${escapeHtml(row.name || '')}</strong><br>
+              <a href="${escapeHtml(row.pageUrl)}" style="color:#10a37f;font-size:12px;">${escapeHtml(row.slug || '')}</a>${top100}
+            </td>
+            <td>${escapeHtml(row.category || '')}</td>
+            <td>${escapeHtml(row.transport || '')}</td>
+            <td>${row.toolCount || 0}</td>
+            <td>${sourceLabel}</td>
+            <td><button class="btn btn-sm btn-secondary" onclick="openMcpCatalogEdit('${escapeHtml(row.slug)}')">Edit</button></td>
+          </tr>`;
+        }
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    async function openMcpCatalogEdit(slug) {
+      document.getElementById('mcpCatalogEditAlert').innerHTML = '';
+      document.getElementById('mcpEditOriginalSlug').value = slug;
+      try {
+        const res = await fetch(`/admin/api/mcp/catalog/${encodeURIComponent(slug)}`);
+        if (!res.ok) throw new Error('Failed to load server');
+        const data = await res.json();
+        const server = data.server;
+
+        const catSelect = document.getElementById('mcpEditCategory');
+        catSelect.innerHTML = data.categories
+          .map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
+          .join('');
+
+        document.getElementById('mcpEditServerName').value = server.serverName || '';
+        document.getElementById('mcpEditSlug').value = server.slug || '';
+        document.getElementById('mcpEditDescription').value = server.description || '';
+        document.getElementById('mcpEditCategory').value = server.category || 'Dev Tools';
+        document.getElementById('mcpEditTransport').value = server.transport || 'unknown';
+        document.getElementById('mcpEditEndpoint').value = server.mcpEndpoint || '';
+        document.getElementById('mcpEditInstallCommand').value = server.installCommand || '';
+        document.getElementById('mcpEditGithubUrl').value = server.githubUrl || '';
+        document.getElementById('mcpEditDocsUrl').value = server.docsUrl || '';
+        document.getElementById('mcpEditStars').value = server.stars || 0;
+        document.getElementById('mcpEditIcon').value = server.icon || 'globe';
+        document.getElementById('mcpEditOfficial').checked = Boolean(server.official);
+        document.getElementById('mcpEditFeatured').checked = Boolean(server.featured);
+        document.getElementById('mcpEditPinTop100').checked = Boolean(server.inTop100);
+        document.getElementById('mcpEditTools').value = toolsToText(server.tools || []);
+
+        const sourceNote = server.inManual
+          ? 'This listing has a manual override.'
+          : 'This listing comes from the generated catalog. Saving will create a manual override.';
+        document.getElementById('mcpCatalogEditAlert').innerHTML =
+          `<div class="success">${escapeHtml(sourceNote)} Live at <a href="${escapeHtml(server.pageUrl)}" style="color:#10a37f;">${escapeHtml(server.pageUrl)}</a>.</div>`;
+
+        document.getElementById('mcpCatalogEditModal').classList.add('active');
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleMcpCatalogSave(event) {
+      event.preventDefault();
+      const originalSlug = document.getElementById('mcpEditOriginalSlug').value;
+      const tools = parseToolsText(document.getElementById('mcpEditTools').value);
+      if (!tools.length) {
+        alert('Add at least one tool.');
+        return;
+      }
+      const newSlug = document.getElementById('mcpEditSlug').value.trim();
+      if (newSlug !== originalSlug && !confirm(`Change slug from "${originalSlug}" to "${newSlug}"? The old URL will stop working.`)) {
+        return;
+      }
+      const body = {
+        serverName: document.getElementById('mcpEditServerName').value.trim(),
+        slug: newSlug,
+        description: document.getElementById('mcpEditDescription').value.trim(),
+        category: document.getElementById('mcpEditCategory').value,
+        transport: document.getElementById('mcpEditTransport').value,
+        mcpEndpoint: document.getElementById('mcpEditEndpoint').value.trim(),
+        installCommand: document.getElementById('mcpEditInstallCommand').value.trim(),
+        githubUrl: document.getElementById('mcpEditGithubUrl').value.trim(),
+        docsUrl: document.getElementById('mcpEditDocsUrl').value.trim(),
+        stars: document.getElementById('mcpEditStars').value,
+        icon: document.getElementById('mcpEditIcon').value.trim() || 'globe',
+        official: document.getElementById('mcpEditOfficial').checked,
+        featured: document.getElementById('mcpEditFeatured').checked,
+        pinToTop100: document.getElementById('mcpEditPinTop100').checked,
+        tools,
+      };
+      const btn = document.getElementById('mcpCatalogSaveBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch(`/admin/api/mcp/catalog/${encodeURIComponent(originalSlug)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Save failed');
+        closeModal('mcpCatalogEditModal');
+        alert(`${data.message}\n\nLive at ${data.pageUrl}`);
+        loadMcpCatalogSearch();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     // Modal helpers
     function closeModal(modalId) {
       document.getElementById(modalId).classList.remove('active');
@@ -1825,6 +2059,10 @@
       if (modalId === 'mcpReviewModal') {
         document.getElementById('mcpReviewForm').reset();
         document.getElementById('mcpReviewAlert').innerHTML = '';
+      }
+      if (modalId === 'mcpCatalogEditModal') {
+        document.getElementById('mcpCatalogEditForm').reset();
+        document.getElementById('mcpCatalogEditAlert').innerHTML = '';
       }
     }
 
