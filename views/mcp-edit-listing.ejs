@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-submit.css" />
+  </head>
+  <body>
+    <%- include('partials/site-header', { activeNav: 'mcp' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="mcp-submit-page">
+      <header class="mcp-submit-header">
+        <p class="mcp-submit-kicker">My MCP Listings</p>
+        <h1><%= pageTitle %></h1>
+        <p class="mcp-submit-back"><a href="/mcp/my-listings">← Back to my listings</a></p>
+      </header>
+
+      <div id="mcpEditAlert" class="mcp-submit-status" role="status"></div>
+
+      <form id="mcpEditListingForm" class="mcp-submit-form" novalidate data-slug="<%= slug %>">
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Listing details</legend>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Server name <em>(required)</em></span>
+              <input type="text" id="editServerName" required />
+            </label>
+            <label class="mcp-submit-field">
+              <span>Slug (URL: /mcp/…)</span>
+              <input type="text" id="editSlug" required pattern="[a-z0-9-]+" />
+            </label>
+            <label class="mcp-submit-field">
+              <span>Category <em>(required)</em></span>
+              <select id="editCategory" required></select>
+            </label>
+            <label class="mcp-submit-field">
+              <span>Transport <em>(required)</em></span>
+              <select id="editTransport" required>
+                <option value="stdio">stdio</option>
+                <option value="http">http</option>
+                <option value="sse">sse</option>
+                <option value="unknown">unknown</option>
+              </select>
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--check">
+              <input type="checkbox" id="editOfficial" />
+              <span>Official / maintained by the vendor</span>
+            </label>
+            <label class="mcp-submit-field">
+              <span>GitHub stars (estimate)</span>
+              <input type="number" id="editStars" min="0" />
+            </label>
+          </div>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>Description <em>(required)</em></span>
+            <textarea id="editDescription" required rows="4" minlength="20"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Links</legend>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>GitHub repository URL</span>
+              <input type="url" id="editGithubUrl" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Documentation URL</span>
+              <input type="url" id="editDocsUrl" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>MCP endpoint URL (remote http/sse)</span>
+              <input type="url" id="editEndpoint" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Install command (stdio)</span>
+              <input type="text" id="editInstallCommand" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Tools</legend>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>Tools <em>(one per line: name — description)</em></span>
+            <textarea id="editTools" required rows="8"></textarea>
+          </label>
+        </fieldset>
+
+        <div class="mcp-submit-actions">
+          <button type="submit" class="mcp-submit-btn" id="mcpEditSaveBtn">Save changes</button>
+          <p class="mcp-submit-status" id="mcpEditStatus" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </main>
+
+    <script src="/js/mcp-edit-listing.js" defer></script>
+  </body>
+</html>

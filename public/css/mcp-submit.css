@@ -197,6 +197,129 @@
   color: #047857;
 }
 
+.mcp-account-callout {
+  margin: 20px 0 0;
+  padding: 18px 20px;
+  border: 1px solid #c7d2fe;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 100%);
+}
+
+.mcp-account-callout h2 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.mcp-account-callout p {
+  margin: 0 0 10px;
+  color: var(--color-charcoal-light);
+  line-height: 1.6;
+}
+
+.mcp-account-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.mcp-account-callout__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px !important;
+}
+
+.mcp-account-callout__btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #6366f1;
+  color: #fff !important;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mcp-account-callout__btn:hover {
+  background: #4f46e5;
+}
+
+.mcp-account-callout__btn--secondary {
+  background: #fff;
+  color: #4338ca !important;
+  border: 1px solid #c7d2fe;
+}
+
+.mcp-account-callout__btn--secondary:hover {
+  background: #f8fafc;
+}
+
+.mcp-listings-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-paper);
+}
+
+.mcp-listings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.mcp-listings-table th,
+.mcp-listings-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.mcp-listings-table th {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.mcp-listings-table tr:last-child td {
+  border-bottom: none;
+}
+
+.mcp-listing-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.mcp-listing-badge--published {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.mcp-listing-badge--pending {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.mcp-listing-edit-link {
+  color: #6366f1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mcp-listing-edit-link:hover {
+  text-decoration: underline;
+}
+
+.mcp-listing-muted {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
 @media (max-width: 640px) {
   .mcp-submit-grid {
     grid-template-columns: 1fr;

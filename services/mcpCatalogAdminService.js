@@ -134,6 +134,11 @@ function submissionToManualServer(sub, overrides = {}) {
     server.install_command = primaryUrl;
   }
 
+  const ownerUserId = overrides.ownerUserId ?? sub.submitterUserId;
+  if (ownerUserId) {
+    server.owner_user_id = ownerUserId;
+  }
+
   for (const key of Object.keys(server)) {
     if (server[key] === undefined || server[key] === '') delete server[key];
   }
@@ -548,4 +553,8 @@ module.exports = {
   searchCatalogServers,
   updateCatalogServer,
   catalogServerToEditPayload,
+  findManualServer,
+  validateManualServer,
+  editBodyToManualServer,
+  parseToolsFromText,
 };

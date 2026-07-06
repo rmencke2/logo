@@ -4,6 +4,25 @@
 
   const btn = document.getElementById('mcpSubmitBtn');
   const statusEl = document.getElementById('mcpSubmitStatus');
+  const guestCallout = document.getElementById('mcpAccountCalloutGuest');
+  const userCallout = document.getElementById('mcpAccountCalloutUser');
+
+  async function initAuthState() {
+    try {
+      const res = await fetch('/auth/me', { credentials: 'include' });
+      if (!res.ok) return;
+      const user = await res.json();
+      if (guestCallout) guestCallout.hidden = true;
+      if (userCallout) userCallout.hidden = false;
+
+      const emailInput = form.querySelector('[name="submitter_email"]');
+      const nameInput = form.querySelector('[name="submitter_name"]');
+      if (emailInput && user.email && !emailInput.value) emailInput.value = user.email;
+      if (nameInput && user.name && !nameInput.value) nameInput.value = user.name;
+    } catch {
+      // guest state is fine
+    }
+  }
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -35,15 +54,21 @@
       const res = await fetch('/api/mcp/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(body),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         throw new Error(data.error || 'Submission failed.');
       }
-      statusEl.textContent = data.message || 'Submission received. Thank you!';
+      let message = data.message || 'Submission received. Thank you!';
+      if (data.hasAccount) {
+        message += ' View status at /mcp/my-listings.';
+      }
+      statusEl.textContent = message;
       statusEl.classList.add('is-success');
       form.reset();
+      initAuthState();
     } catch (err) {
       statusEl.textContent = err.message || 'Submission failed. Please try again.';
       statusEl.classList.add('is-error');
@@ -51,4 +76,6 @@
       btn.disabled = false;
     }
   });
+
+  initAuthState();
 })();

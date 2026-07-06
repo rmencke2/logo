@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { getMcpCategories } = require('./mcpDirectoryService');
 const { sendMcpSubmissionEmail } = require('../emailService');
+const { getOptionalAuthUser } = require('../auth');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MAX_FIELD = 8000;
@@ -167,7 +168,7 @@ function validateSubmission(body) {
 }
 
 /** Reserved MCP path segments — must not be handled as server slugs */
-const RESERVED_MCP_PATHS = new Set(['submit', 'all']);
+const RESERVED_MCP_PATHS = new Set(['submit', 'all', 'my-listings']);
 
 function isReservedMcpPath(slug) {
   return RESERVED_MCP_PATHS.has(String(slug || '').toLowerCase());
@@ -206,6 +207,7 @@ function registerMcpSubmissionRoutes(app) {
         return res.status(400).json({ error: errors.join(' ') });
       }
 
+      const authUser = await getOptionalAuthUser(req);
       const submittedAt = new Date().toISOString();
       const payload = {
         ...data,
@@ -213,6 +215,15 @@ function registerMcpSubmissionRoutes(app) {
         submittedAt,
         reviewStatus: 'pending',
       };
+      if (authUser?.id) {
+        payload.submitterUserId = authUser.id;
+        if (!payload.submitterEmail && authUser.email) {
+          payload.submitterEmail = authUser.email;
+        }
+        if (!payload.submitterName && authUser.name) {
+          payload.submitterName = authUser.name;
+        }
+      }
 
       const savedPath = persistSubmission(payload);
       const reference = path.basename(savedPath, '.json');
@@ -242,9 +253,11 @@ function registerMcpSubmissionRoutes(app) {
 
       return res.json({
         success: true,
-        message:
-          'Thanks! Your submission was received and will be reviewed shortly. You are also subscribed to Influzer Insights for listing updates and new MCP servers.',
+        message: authUser?.id
+          ? 'Thanks! Your submission was received and will be reviewed shortly. Once approved, you can edit your listing anytime from My MCP listings. You are also subscribed to Influzer Insights for listing updates.'
+          : 'Thanks! Your submission was received and will be reviewed shortly. Without an account, you will not be able to edit this listing after it is published — log in before submitting next time to unlock self-service edits. You are also subscribed to Influzer Insights for listing updates.',
         reference,
+        hasAccount: Boolean(authUser?.id),
       });
     } catch (error) {
       console.error('MCP submission error:', error);

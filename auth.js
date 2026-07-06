@@ -274,6 +274,31 @@ async function requireTier(minTier = 'free') {
   };
 }
 
+async function getOptionalAuthUser(req) {
+  if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+    return req.user;
+  }
+  if (req.session?.userId) {
+    try {
+      const db = await getDatabase();
+      return await db.getUserById(req.session.userId);
+    } catch (err) {
+      console.error('Error loading user from session:', err);
+    }
+  }
+  return null;
+}
+
+async function requireAuthPage(req, res, next) {
+  const user = await getOptionalAuthUser(req);
+  if (!user) {
+    const redirect = encodeURIComponent(req.originalUrl || '/');
+    return res.redirect(`/login?redirect=${redirect}`);
+  }
+  req.user = user;
+  return next();
+}
+
 module.exports = {
   initializeAuth,
   hashPassword,
@@ -281,5 +306,7 @@ module.exports = {
   requireAuth,
   requireVerified,
   requireTier,
+  getOptionalAuthUser,
+  requireAuthPage,
 };
 

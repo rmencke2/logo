@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-submit.css" />
+  </head>
+  <body>
+    <%- include('partials/site-header', { activeNav: 'mcp' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="mcp-submit-page">
+      <header class="mcp-submit-header">
+        <p class="mcp-submit-kicker">MCP Directory</p>
+        <h1><%= pageTitle %></h1>
+        <p class="mcp-submit-lead">
+          Published listings linked to your account can be updated anytime from this dashboard.
+        </p>
+        <p class="mcp-submit-back"><a href="/mcp">← Back to directory</a> · <a href="/mcp/submit">Submit another server</a></p>
+      </header>
+
+      <div id="mcpMyListingsRoot">
+        <div class="mcp-submit-status">Loading your listings…</div>
+      </div>
+    </main>
+
+    <script src="/js/mcp-my-listings.js" defer></script>
+  </body>
+</html>

@@ -24,6 +24,7 @@ const {
   isInTop100,
 } = require('./mcpDirectoryService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
+const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
@@ -720,6 +721,7 @@ ${itemsXml}
 
   // Before /mcp/:slug — otherwise "submit" is treated as a server slug
   registerMcpSubmissionRoutes(app);
+  registerMcpOwnerRoutes(app);
 
   const MCP_SLUG_ALIASES = {
     'xgr-network': 'xgr-mcp',
