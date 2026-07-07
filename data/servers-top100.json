@@ -1,11 +1,13 @@
 {
   "generated_at": "2026-07-06T10:09:53.429Z",
   "count": 100,
-  "total_catalog": 1579,
+  "total_catalog": 1580,
   "top100_slugs": [
     "webnode",
-    "github",
-    "slack",
+    "brave-search",
+    "postgres",
+    "google-drive",
+    "memory",
     "linear",
     "context7",
     "stripe",
@@ -14,7 +16,6 @@
     "playwright",
     "henry-ships-sparkforge",
     "googlesheets",
-    "gmail",
     "jina",
     "smithery-ai-national-weather-service",
     "ethanhenrickson-math-mcp",
@@ -33,7 +34,9 @@
     "e2b",
     "gitlab",
     "replit",
+    "gmail",
     "exa",
+    "outlook",
     "airtable",
     "asana",
     "aws",
@@ -84,6 +87,7 @@
     "terraform",
     "vercel",
     "zep",
+    "tavily",
     "amplitude",
     "box",
     "builder-fusion",
@@ -98,11 +102,7 @@
     "metabase",
     "metoro",
     "microsoft-mcp-gateway",
-    "mixpanel",
-    "new-relic",
-    "openrouter",
-    "perplexity",
-    "pipedream"
+    "mixpanel"
   ],
   "servers": [
     {
@@ -126,285 +126,132 @@
       "docs_url": "https://www.webnode.com",
       "stars": 500,
       "source": "manual",
-      "last_updated": "2026-07-06",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "browser",
-      "primary_url": "https://www.webnode.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.webnode.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.webnode.com for documentation and connection details.",
-      "featured": true
+      "mcp_endpoint": "https://mcp.webnode.com/_mcp",
+      "deployment_url": "https://mcp.webnode.com/_mcp"
     },
     {
-      "id": "github",
-      "slug": "github",
-      "name": "GitHub",
-      "description": "Repos, pull requests, issues, commits, and code search via the GitHub API.",
-      "category": "Dev Tools",
+      "id": "brave-search",
+      "slug": "brave-search",
+      "name": "Brave Search",
+      "description": "Web search via the Brave Search API for up-to-date information retrieval.",
+      "category": "Search & Web",
       "official": true,
       "transport": "stdio",
       "tools": [
         {
-          "name": "search_repositories",
-          "description": "Search GitHub repositories"
+          "name": "brave_web_search",
+          "description": "Search the web via Brave"
         },
         {
-          "name": "get_file_contents",
-          "description": "Read file contents from a repo"
-        },
-        {
-          "name": "create_issue",
-          "description": "Open a new issue"
-        },
-        {
-          "name": "create_pull_request",
-          "description": "Create a pull request"
-        },
-        {
-          "name": "list_commits",
-          "description": "List commits on a branch"
+          "name": "brave_local_search",
+          "description": "Search local businesses and places"
         }
       ],
       "github_url": "https://github.com/modelcontextprotocol/servers",
-      "install_command": "claude mcp add github -- npx -y @modelcontextprotocol/server-github",
-      "stars": 3800,
+      "install_command": "claude mcp add brave-search -- npx -y @modelcontextprotocol/server-brave-search",
+      "stars": 0,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-06",
-      "icon": "github"
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "search"
     },
     {
-      "id": "slack",
-      "slug": "slack",
-      "name": "Slack",
-      "description": "Slack is a channel-based messaging platform. With Slack, people can work together more effectively, connect all their software tools and services, and find the information they need to do their best work — all within a secure, enterprise-grade environment.",
-      "category": "Communication",
+      "id": "postgres",
+      "slug": "postgres",
+      "name": "PostgreSQL",
+      "description": "Full SQL access to PostgreSQL with schema inspection and query execution.",
+      "category": "Databases",
       "official": true,
-      "transport": "http",
+      "transport": "stdio",
       "tools": [
         {
-          "name": "SLACK_ACTIVATE_OR_MODIFY_DO_NOT_DISTURB_DURATION",
-          "description": "DEPRECATED: Turns on Do Not Disturb mode for the current user, or changes its duration. Use `set_dnd_duration` instead."
+          "name": "query",
+          "description": "Execute SQL queries"
         },
         {
-          "name": "SLACK_ADD_A_CUSTOM_EMOJI_TO_A_SLACK_TEAM",
-          "description": "DEPRECATED: Adds a custom emoji to a Slack workspace given a unique name and an image URL. Use `add_emoji` instead."
+          "name": "list_tables",
+          "description": "List tables in the database"
         },
         {
-          "name": "SLACK_ADD_AN_EMOJI_ALIAS_IN_SLACK",
-          "description": "Adds an alias for an existing custom emoji in a Slack Enterprise Grid organization."
-        },
-        {
-          "name": "SLACK_ADD_A_REMOTE_FILE_FROM_A_SERVICE",
-          "description": "Adds a reference to an external file (e.g., Google Drive, Dropbox) to Slack for discovery and sharing, requiring a unique `external_id` and an `external_url` accessible by Slack."
-        },
-        {
-          "name": "SLACK_ADD_A_STAR_TO_AN_ITEM",
-          "description": "Stars a channel, file, file comment, or a specific message in Slack."
-        },
-        {
-          "name": "SLACK_ADD_CALL_PARTICIPANTS",
-          "description": "Registers new participants added to a Slack call."
-        },
-        {
-          "name": "SLACK_ADD_EMOJI",
-          "description": "Adds a custom emoji to a Slack workspace given a unique name and an image URL; subject to workspace emoji limits."
-        },
-        {
-          "name": "SLACK_ADD_REACTION_TO_AN_ITEM",
-          "description": "Adds a specified emoji reaction to an existing message in a Slack channel, identified by its timestamp; does not remove or retrieve reactions."
-        },
-        {
-          "name": "SLACK_ARCHIVE_A_PUBLIC_OR_PRIVATE_CHANNEL",
-          "description": "Archives a Slack public or private channel, making it read-only; the primary 'general' channel cannot be archived."
-        },
-        {
-          "name": "SLACK_ARCHIVE_A_SLACK_CONVERSATION",
-          "description": "Archives a Slack conversation by its ID, rendering it read-only and hidden while retaining history, ideal for cleaning up inactive channels; be aware that some channels (like #general or certain DMs) cannot be archived and this may impact connected integrations."
-        },
-        {
-          "name": "SLACK_CHAT_POST_MESSAGE",
-          "description": "DEPRECATED: Posts a message to a Slack channel, direct message, or private channel. Use `send_message` instead."
-        },
-        {
-          "name": "SLACK_CLEAR_STATUS",
-          "description": "Clears the Slack status for the authenticated user, removing any custom text and emoji."
-        },
-        {
-          "name": "SLACK_CLOSE_DM_OR_MULTI_PERSON_DM",
-          "description": "Closes a Slack direct message (DM) or multi-person direct message (MPDM) channel, removing it from the user's sidebar without deleting history; this action affects only the calling user's view."
-        },
-        {
-          "name": "SLACK_CREATE_A_REMINDER",
-          "description": "Creates a Slack reminder with specified text and time; time accepts Unix timestamps, seconds from now, or natural language (e.g., 'in 15 minutes', 'every Thursday at 2pm')."
-        },
-        {
-          "name": "SLACK_CREATE_A_SLACK_USER_GROUP",
-          "description": "Creates a new User Group (often referred to as a subteam) in a Slack workspace."
-        },
-        {
-          "name": "SLACK_CREATE_CANVAS",
-          "description": "Creates a new Slack Canvas with the specified title and optional content."
-        },
-        {
-          "name": "SLACK_CREATE_CHANNEL",
-          "description": "Initiates a public or private channel-based conversation"
-        },
-        {
-          "name": "SLACK_CREATE_CHANNEL_BASED_CONVERSATION",
-          "description": "Creates a new public or private Slack channel with a unique name; the channel can be org-wide, or team-specific if `team_id` is given (required if `org_wide` is false or not provided)."
-        },
-        {
-          "name": "SLACK_CUSTOMIZE_URL_UNFURL",
-          "description": "Customizes URL previews (unfurling) in a specific Slack message using a URL-encoded JSON in `unfurls` to define custom content or remove existing previews."
-        },
-        {
-          "name": "SLACK_CUSTOMIZE_URL_UNFURLING_IN_MESSAGES",
-          "description": "DEPRECATED: Customizes URL previews (unfurling) in a specific Slack message. Use `customize_url_unfurl` instead."
-        },
-        {
-          "name": "SLACK_DELETE_A_COMMENT_ON_A_FILE",
-          "description": "Deletes a specific comment from a file in Slack; this action is irreversible."
-        },
-        {
-          "name": "SLACK_DELETE_A_FILE_BY_ID",
-          "description": "Permanently deletes an existing file from a Slack workspace using its unique file ID; this action is irreversible and also removes any associated comments or shares."
-        },
-        {
-          "name": "SLACK_DELETE_A_PUBLIC_OR_PRIVATE_CHANNEL",
-          "description": "Permanently and irreversibly deletes a specified public or private channel, including all its messages and files, within a Slack Enterprise Grid organization."
-        },
-        {
-          "name": "SLACK_DELETE_A_SCHEDULED_MESSAGE_IN_A_CHAT",
-          "description": "Deletes a pending, unsent scheduled message from the specified Slack channel, identified by its `scheduled_message_id`."
-        },
-        {
-          "name": "SLACK_DELETE_A_SLACK_REMINDER",
-          "description": "Deletes an existing Slack reminder, typically when it is no longer relevant or a task is completed; this operation is irreversible."
-        },
-        {
-          "name": "SLACK_DELETE_CANVAS",
-          "description": "Deletes a Slack Canvas permanently."
-        },
-        {
-          "name": "SLACK_DELETES_A_MESSAGE_FROM_A_CHAT",
-          "description": "Deletes a message, identified by its channel ID and timestamp, from a Slack channel, private group, or direct message conversation; the authenticated user or bot must be the original poster."
-        },
-        {
-          "name": "SLACK_DELETE_USER_PROFILE_PHOTO",
-          "description": "Deletes the Slack profile photo for the user identified by the token, reverting them to the default avatar; this action is irreversible and succeeds even if no custom photo was set."
-        },
-        {
-          "name": "SLACK_DISABLE_AN_EXISTING_SLACK_USER_GROUP",
-          "description": "Disables a specified, currently enabled Slack User Group by its unique ID, effectively archiving it by setting its 'date_delete' timestamp; the group is not permanently deleted and can be re-enabled."
-        },
-        {
-          "name": "SLACK_EDIT_CANVAS",
-          "description": "Edits a Slack Canvas with granular control over content placement. Supports replace, insert (before/after/start/end) operations for flexible content management."
-        },
-        {
-          "name": "SLACK_ENABLE_A_SPECIFIED_USER_GROUP",
-          "description": "Enables a disabled User Group in Slack using its ID, reactivating it for mentions and permissions; this action only changes the enabled status and cannot create new groups or modify other properties."
-        },
-        {
-          "name": "SLACK_ENABLE_PUBLIC_SHARING_OF_A_FILE",
-          "description": "Enables public sharing for an existing Slack file by generating a publicly accessible URL; this action does not create new files."
-        },
-        {
-          "name": "SLACK_END_A_CALL_WITH_DURATION_AND_ID",
-          "description": "Ends an ongoing Slack call, identified by its ID (obtained from `calls.add`), optionally specifying the call's duration."
-        },
-        {
-          "name": "SLACK_END_SNOOZE",
-          "description": "Ends the current user's snooze mode immediately."
-        },
-        {
-          "name": "SLACK_END_USER_DO_NOT_DISTURB_SESSION",
-          "description": "Ends the authenticated user's current Do Not Disturb (DND) session in Slack, affecting only DND status and making them available; if DND is not active, Slack acknowledges the request without changing status."
-        },
-        {
-          "name": "SLACK_END_USER_SNOOZE_MODE_IMMEDIATELY",
-          "description": "DEPRECATED: Ends the current user's snooze mode immediately. Use `end_snooze` instead."
-        },
-        {
-          "name": "SLACK_FETCH_BOT_USER_INFORMATION",
-          "description": "Fetches information for a specified, existing Slack bot user; will not work for regular user accounts or other integration types."
-        },
-        {
-          "name": "SLACK_FETCH_CONVERSATION_HISTORY",
-          "description": "Fetches a chronological list of messages and events from a specified Slack conversation, accessible by the authenticated user/bot, with options for pagination and time range filtering."
-        },
-        {
-          "name": "SLACK_FETCH_CURRENT_TEAM_INFO_WITH_OPTIONAL_TEAM_SCOPE",
-          "description": "DEPRECATED: Fetches comprehensive metadata about the current Slack team. Use `fetch_team_info` instead."
-        },
-        {
-          "name": "SLACK_FETCH_DND_STATUS_FOR_MULTIPLE_TEAM_MEMBERS",
-          "description": "DEPRECATED: Retrieves a user's current Do Not Disturb status. Use `get_team_dnd_status` instead."
-        },
-        {
-          "name": "SLACK_FETCH_ITEM_REACTIONS",
-          "description": "Fetches reactions for a Slack message, file, or file comment, requiring one of: channel and timestamp; file ID; or file comment ID."
-        },
-        {
-          "name": "SLACK_FETCH_MESSAGE_THREAD_FROM_A_CONVERSATION",
-          "description": "Retrieves replies to a specific parent message in a Slack conversation, using the channel ID and the parent message's timestamp (`ts`)."
-        },
-        {
-          "name": "SLACK_FETCH_TEAM_INFO",
-          "description": "Fetches comprehensive metadata about the current Slack team, or a specified team if the provided ID is accessible."
-        },
-        {
-          "name": "SLACK_FETCH_WORKSPACE_SETTINGS_INFORMATION",
-          "description": "Retrieves detailed settings for a specific Slack workspace, primarily for administrators in an Enterprise Grid organization to view or audit workspace configurations."
-        },
-        {
-          "name": "SLACK_FIND_CHANNELS",
-          "description": "Find channels in a Slack workspace by any criteria - name, topic, purpose, or description."
-        },
-        {
-          "name": "SLACK_FIND_USER_BY_EMAIL_ADDRESS",
-          "description": "Retrieves the Slack user object for an active user by their registered email address; fails with 'users_not_found' if the email is unregistered or the user is inactive."
-        },
-        {
-          "name": "SLACK_FIND_USERS",
-          "description": "Find users in a Slack workspace by any criteria - email, name, display name, or other text. Includes optimized email lookup for exact email matches."
-        },
-        {
-          "name": "SLACK_GET_CANVAS",
-          "description": "Retrieves a specific Slack Canvas by its ID, including its content and metadata."
-        },
-        {
-          "name": "SLACK_GET_CHANNEL_CONVERSATION_PREFERENCES",
-          "description": "Retrieves conversation preferences (e.g., who can post, who can thread) for a specified channel, primarily for use within Slack Enterprise Grid environments."
-        },
-        {
-          "name": "SLACK_GET_REMINDER_INFORMATION",
-          "description": "Retrieves detailed information for an existing Slack reminder specified by its ID; this is a read-only operation."
+          "name": "describe_table",
+          "description": "Get column definitions for a table"
         }
       ],
-      "docs_url": "https://smithery.ai/servers/slack",
-      "stars": 12489,
-      "source": "smithery",
-      "last_updated": "2026-07-06",
-      "icon": "message-square",
-      "smithery_qualified_name": "slack",
-      "smithery_page_url": "https://smithery.ai/servers/slack",
-      "mcp_endpoint": "https://slack.run.tools",
-      "deployment_url": "https://slack.run.tools",
-      "connection_url": "https://slack.run.tools",
-      "primary_url": "https://smithery.ai/servers/slack",
-      "setup_steps": [
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add postgres -- npx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost/db",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
+    },
+    {
+      "id": "google-drive",
+      "slug": "google-drive",
+      "name": "Google Drive",
+      "description": "File listing, search, and read access in Google Drive.",
+      "category": "Files & Docs",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
         {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/slack\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://slack.run.tools"
+          "name": "search",
+          "description": "Search files in Drive"
+        },
+        {
+          "name": "read_file",
+          "description": "Read file contents"
+        },
+        {
+          "name": "list_files",
+          "description": "List files in a folder"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/slack",
-      "featured": true
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add gdrive -- npx -y @modelcontextprotocol/server-gdrive",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "hard-drive"
+    },
+    {
+      "id": "memory",
+      "slug": "memory",
+      "name": "Memory",
+      "description": "Persistent agent memory with entities, relations, and facts across sessions.",
+      "category": "AI & Memory",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "create_entities",
+          "description": "Create new memory entities"
+        },
+        {
+          "name": "search_nodes",
+          "description": "Search the knowledge graph"
+        },
+        {
+          "name": "read_graph",
+          "description": "Read full memory graph"
+        }
+      ],
+      "github_url": "https://github.com/modelcontextprotocol/servers",
+      "install_command": "claude mcp add memory -- npx -y @modelcontextprotocol/server-memory",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "brain"
     },
     {
       "id": "linear",
@@ -436,17 +283,10 @@
       "docs_url": "https://linear.app/docs",
       "stars": 920,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "layout-list",
-      "primary_url": "https://linear.app/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/jerhadad/linear-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/jerhadad/linear-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "layout-list"
     },
     {
       "id": "context7",
@@ -471,7 +311,8 @@
       "stars": 2100,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-06",
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "book-open"
     },
     {
@@ -500,17 +341,10 @@
       "docs_url": "https://stripe.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "credit-card",
-      "primary_url": "https://stripe.com/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/stripe/agent-toolkit and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/stripe/agent-toolkit and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "credit-card"
     },
     {
       "id": "sentry",
@@ -538,17 +372,10 @@
       "docs_url": "https://docs.sentry.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "shield-alert",
-      "primary_url": "https://docs.sentry.io",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/getsentry/sentry-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/getsentry/sentry-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "shield-alert"
     },
     {
       "id": "notion",
@@ -576,17 +403,10 @@
       "docs_url": "https://developers.notion.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "file-text",
-      "primary_url": "https://developers.notion.com",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/makenotion/notion-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/makenotion/notion-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "file-text"
     },
     {
       "id": "playwright",
@@ -613,17 +433,10 @@
       "github_url": "https://github.com/executeautomation/mcp-playwright",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "monitor-play",
-      "primary_url": "https://github.com/executeautomation/mcp-playwright",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/executeautomation/mcp-playwright and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/executeautomation/mcp-playwright and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "monitor-play"
     },
     {
       "id": "henry-ships-sparkforge",
@@ -785,6 +598,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
+      "tools_validated_at": "2026-07-07T08:49:18.023Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -967,116 +782,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "featured": true
-    },
-    {
-      "id": "gmail",
-      "slug": "gmail",
-      "name": "Gmail",
-      "description": "Manage Gmail end-to-end: send, draft, reply, forward, and bulk-modify or delete messages and threads. Organize your inbox with labels, archiving, and trashing, and retrieve messages, attachments, and profile details on demand. Access and search contacts to autofill recipients and keep people data in sync.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GMAIL_ADD_LABEL_TO_EMAIL",
-          "description": "Adds and/or removes specified gmail labels for a message; ensure `message id` and all `label ids` are valid (use 'listlabels' for custom label ids)."
-        },
-        {
-          "name": "GMAIL_CREATE_EMAIL_DRAFT",
-          "description": "Creates a gmail email draft, supporting to/cc/bcc, subject, plain/html body (ensure `is html=true` for html), attachments, and threading."
-        },
-        {
-          "name": "GMAIL_CREATE_LABEL",
-          "description": "Creates a new label with a unique name in the specified user's gmail account."
-        },
-        {
-          "name": "GMAIL_DELETE_DRAFT",
-          "description": "Permanently deletes a specific gmail draft using its id; ensure the draft exists and the user has necessary permissions for the given `user id`."
-        },
-        {
-          "name": "GMAIL_DELETE_MESSAGE",
-          "description": "Permanently deletes a specific email message by its id from a gmail mailbox; for `user id`, use 'me' for the authenticated user or an email address to which the authenticated user has delegated access."
-        },
-        {
-          "name": "GMAIL_FETCH_EMAILS",
-          "description": "Fetches a list of email messages from a gmail account, supporting filtering, pagination, and optional full content retrieval."
-        },
-        {
-          "name": "GMAIL_FETCH_MESSAGE_BY_MESSAGE_ID",
-          "description": "Fetches a specific email message by its id, provided the `message id` exists and is accessible to the authenticated `user id`."
-        },
-        {
-          "name": "GMAIL_FETCH_MESSAGE_BY_THREAD_ID",
-          "description": "Retrieves messages from a gmail thread using its `thread id`, where the thread must be accessible by the specified `user id`."
-        },
-        {
-          "name": "GMAIL_GET_ATTACHMENT",
-          "description": "Retrieves a specific attachment by id from a message in a user's gmail mailbox, requiring valid message and attachment ids."
-        },
-        {
-          "name": "GMAIL_GET_CONTACTS",
-          "description": "Fetches contacts (connections) for the authenticated google account, allowing selection of specific data fields and pagination."
-        },
-        {
-          "name": "GMAIL_GET_PEOPLE",
-          "description": "Retrieves either a specific person's details (using `resource name`) or lists 'other contacts' (if `other contacts` is true), with `person fields` specifying the data to return."
-        },
-        {
-          "name": "GMAIL_GET_PROFILE",
-          "description": "Retrieves key gmail profile information (email address, message/thread totals, history id) for a user."
-        },
-        {
-          "name": "GMAIL_LIST_DRAFTS",
-          "description": "Retrieves a paginated list of email drafts from a user's gmail account. use verbose=true to get full draft details including subject, body, sender, and timestamp."
-        },
-        {
-          "name": "GMAIL_LIST_LABELS",
-          "description": "Retrieves a list of all system and user-created labels for the specified gmail account."
-        },
-        {
-          "name": "GMAIL_LIST_THREADS",
-          "description": "Retrieves a list of email threads from a gmail account, identified by `user id` (email address or 'me'), supporting filtering and pagination."
-        },
-        {
-          "name": "GMAIL_MODIFY_THREAD_LABELS",
-          "description": "Adds or removes specified existing label ids from a gmail thread, affecting all its messages; ensure the thread id is valid."
-        },
-        {
-          "name": "GMAIL_MOVE_TO_TRASH",
-          "description": "Moves an existing, non-deleted email message to the trash for the specified user."
-        },
-        {
-          "name": "GMAIL_PATCH_LABEL",
-          "description": "Patches the specified label."
-        },
-        {
-          "name": "GMAIL_REMOVE_LABEL",
-          "description": "Permanently deletes a specific, existing user-created gmail label by its id for a user; cannot delete system labels."
-        },
-        {
-          "name": "GMAIL_REPLY_TO_THREAD",
-          "description": "Sends a reply within a specific gmail thread using the original thread's subject, requiring a valid `thread id` and correctly formatted email addresses. supports attachments via the `attachment` parameter with valid `s3key`, `mimetype`, and `name`."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/gmail",
-      "stars": 45703,
-      "source": "smithery",
-      "last_updated": "2026-07-06",
-      "icon": "search",
-      "smithery_qualified_name": "gmail",
-      "smithery_page_url": "https://smithery.ai/servers/gmail",
-      "mcp_endpoint": "https://gmail.run.tools",
-      "deployment_url": "https://gmail.run.tools",
-      "connection_url": "https://gmail.run.tools",
-      "primary_url": "https://smithery.ai/servers/gmail",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/gmail\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gmail.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/gmail",
+      "tools_validated_at": "2026-07-07T08:49:18.332Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1191,6 +898,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jina",
+      "tools_validated_at": "2026-07-07T08:49:18.383Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1245,6 +954,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
+      "tools_validated_at": "2026-07-07T08:49:18.028Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1363,6 +1074,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "tools_validated_at": "2026-07-07T08:49:18.377Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1441,6 +1154,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "tools_validated_at": "2026-07-07T08:49:18.045Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1517,17 +1232,12 @@
       "docs_url": "https://xgr.network/docs/mcp_overview/",
       "stars": 3,
       "source": "manual",
-      "last_updated": "2026-07-06",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "globe",
-      "primary_url": "https://xgr.network/docs/mcp_overview/",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/xgr-network/xgr-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/xgr-network/xgr-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "mcp_endpoint": "https://mcp.xgr.network/mcp",
+      "deployment_url": "https://mcp.xgr.network/mcp"
     },
     {
       "id": "vercel-grep",
@@ -1561,6 +1271,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
+      "tools_validated_at": "2026-07-07T08:49:18.734Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1609,17 +1321,12 @@
       "docs_url": "https://api.llmpulse.ai/api-docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "globe",
-      "primary_url": "https://api.llmpulse.ai/api-docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/LLM-Pulse/llmpulse-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/LLM-Pulse/llmpulse-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
+      "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
     },
     {
       "id": "ignav-flights",
@@ -1643,17 +1350,12 @@
       "docs_url": "https://ignav.com/docs/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "globe",
-      "primary_url": "https://ignav.com/docs/mcp",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/gusgordon/ignav-skill and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/gusgordon/ignav-skill and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "mcp_endpoint": "https://ignav.com/mcp",
+      "deployment_url": "https://ignav.com/mcp"
     },
     {
       "id": "googlecalendar",
@@ -1799,6 +1501,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
+      "tools_validated_at": "2026-07-07T08:49:18.684Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1897,6 +1601,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
+      "tools_validated_at": "2026-07-07T08:49:19.430Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1937,6 +1643,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "tools_validated_at": "2026-07-07T08:49:18.664Z",
+      "tools_validation_method": "smithery_registry",
       "featured": true
     },
     {
@@ -2015,6 +1723,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway",
+      "tools_validated_at": "2026-07-07T08:49:19.034Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2065,6 +1775,8 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
+      "tools_validated_at": "2026-07-07T08:49:18.707Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2101,17 +1813,12 @@
       "docs_url": "https://mcp360.ai/docs",
       "stars": 22,
       "source": "manual",
-      "last_updated": "2026-07-06",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "globe",
-      "primary_url": "https://mcp360.ai/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/mcp360/unified-gateway-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/mcp360/unified-gateway-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
+      "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
     },
     {
       "id": "desktop-commander",
@@ -2142,17 +1849,10 @@
       "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "terminal",
-      "primary_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/wonderwhy-er/desktop-commander-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/wonderwhy-er/desktop-commander-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "terminal"
     },
     {
       "id": "e2b",
@@ -2184,17 +1884,10 @@
       "docs_url": "https://e2b.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "sandbox",
-      "primary_url": "https://e2b.dev/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/e2b-dev/mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/e2b-dev/mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "sandbox"
     },
     {
       "id": "gitlab",
@@ -2225,17 +1918,10 @@
       "github_url": "https://github.com/zereight/gitlab-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "gitlab",
-      "primary_url": "https://github.com/zereight/gitlab-mcp",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/zereight/gitlab-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/zereight/gitlab-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "gitlab"
     },
     {
       "id": "replit",
@@ -2266,17 +1952,40 @@
       "docs_url": "https://docs.replit.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud-code",
-      "primary_url": "https://docs.replit.com",
-      "setup_steps": [
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud-code"
+    },
+    {
+      "id": "gmail",
+      "slug": "gmail",
+      "name": "Gmail",
+      "description": "Read, compose, and search email via Gmail API.",
+      "category": "Communication",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
         {
-          "title": "Get started",
-          "text": "Open https://docs.replit.com for documentation and connection details."
+          "name": "search_messages",
+          "description": "Search inbox messages"
+        },
+        {
+          "name": "send_email",
+          "description": "Compose and send email"
+        },
+        {
+          "name": "read_thread",
+          "description": "Read an email thread"
         }
       ],
-      "setup_summary": "Open https://docs.replit.com for documentation and connection details.",
-      "featured": true
+      "github_url": "https://github.com/GongRzhe/Gmail-MCP-Server",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "mail"
     },
     {
       "id": "exa",
@@ -2305,8 +2014,39 @@
       "stars": 0,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-06",
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "search"
+    },
+    {
+      "id": "outlook",
+      "slug": "outlook",
+      "name": "Outlook",
+      "description": "Microsoft email and calendar access.",
+      "category": "Communication",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_messages",
+          "description": "List Outlook messages"
+        },
+        {
+          "name": "send_mail",
+          "description": "Send an email"
+        },
+        {
+          "name": "list_events",
+          "description": "List calendar events"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/graph",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "mail"
     },
     {
       "id": "airtable",
@@ -2333,17 +2073,10 @@
       "docs_url": "https://airtable.com/developers/web/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://airtable.com/developers/web/api",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://airtable.com/developers/web/api for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://airtable.com/developers/web/api for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "asana",
@@ -2370,17 +2103,10 @@
       "docs_url": "https://developers.asana.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "layout-list",
-      "primary_url": "https://developers.asana.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developers.asana.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developers.asana.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "layout-list"
     },
     {
       "id": "aws",
@@ -2408,17 +2134,10 @@
       "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud",
-      "primary_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/awslabs/mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/awslabs/mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud"
     },
     {
       "id": "azure",
@@ -2445,17 +2164,10 @@
       "docs_url": "https://learn.microsoft.com/azure",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud",
-      "primary_url": "https://learn.microsoft.com/azure",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://learn.microsoft.com/azure for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://learn.microsoft.com/azure for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud"
     },
     {
       "id": "bigquery",
@@ -2482,17 +2194,10 @@
       "docs_url": "https://cloud.google.com/bigquery/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://cloud.google.com/bigquery/docs",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://cloud.google.com/bigquery/docs for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://cloud.google.com/bigquery/docs for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "bluesky",
@@ -2519,17 +2224,10 @@
       "github_url": "https://github.com/bluesky-social/mcp-bluesky",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "globe",
-      "primary_url": "https://github.com/bluesky-social/mcp-bluesky",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/bluesky-social/mcp-bluesky and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/bluesky-social/mcp-bluesky and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "globe"
     },
     {
       "id": "canva",
@@ -2556,17 +2254,10 @@
       "docs_url": "https://www.canva.dev/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "image",
-      "primary_url": "https://www.canva.dev/docs",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.canva.dev/docs for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.canva.dev/docs for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "image"
     },
     {
       "id": "confluence",
@@ -2593,17 +2284,10 @@
       "docs_url": "https://developer.atlassian.com/cloud/confluence",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "file-text",
-      "primary_url": "https://developer.atlassian.com/cloud/confluence",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.atlassian.com/cloud/confluence for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.atlassian.com/cloud/confluence for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "file-text"
     },
     {
       "id": "datadog",
@@ -2630,17 +2314,10 @@
       "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "activity",
-      "primary_url": "https://github.com/GeLi2001/datadog-mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/GeLi2001/datadog-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/GeLi2001/datadog-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "activity"
     },
     {
       "id": "docker",
@@ -2667,17 +2344,10 @@
       "github_url": "https://github.com/docker/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://github.com/docker/mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/docker/mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/docker/mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "dropbox",
@@ -2704,17 +2374,10 @@
       "docs_url": "https://www.dropbox.com/developers/documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "hard-drive",
-      "primary_url": "https://www.dropbox.com/developers/documentation",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.dropbox.com/developers/documentation for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.dropbox.com/developers/documentation for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "hard-drive"
     },
     {
       "id": "figma",
@@ -2741,17 +2404,10 @@
       "github_url": "https://github.com/GLips/Figma-Context-MCP",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "figma",
-      "primary_url": "https://github.com/GLips/Figma-Context-MCP",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/GLips/Figma-Context-MCP and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/GLips/Figma-Context-MCP and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "figma"
     },
     {
       "id": "firecrawl",
@@ -2779,17 +2435,10 @@
       "docs_url": "https://docs.firecrawl.dev",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "flame",
-      "primary_url": "https://docs.firecrawl.dev",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/mendableai/firecrawl-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/mendableai/firecrawl-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "flame"
     },
     {
       "id": "google-calendar",
@@ -2816,17 +2465,10 @@
       "docs_url": "https://developers.google.com/calendar",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "calendar",
-      "primary_url": "https://developers.google.com/calendar",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developers.google.com/calendar for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developers.google.com/calendar for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "calendar"
     },
     {
       "id": "google-cloud",
@@ -2853,17 +2495,10 @@
       "docs_url": "https://cloud.google.com/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud",
-      "primary_url": "https://cloud.google.com/mcp",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://cloud.google.com/mcp for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://cloud.google.com/mcp for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud"
     },
     {
       "id": "google-sheets",
@@ -2890,17 +2525,10 @@
       "docs_url": "https://developers.google.com/sheets/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://developers.google.com/sheets/api",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developers.google.com/sheets/api for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developers.google.com/sheets/api for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "hubspot",
@@ -2927,17 +2555,10 @@
       "docs_url": "https://developers.hubspot.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://developers.hubspot.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developers.hubspot.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developers.hubspot.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "imessage",
@@ -2964,17 +2585,10 @@
       "github_url": "https://github.com/tylerwince/mcp-imessage",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "message-square",
-      "primary_url": "https://github.com/tylerwince/mcp-imessage",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/tylerwince/mcp-imessage and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/tylerwince/mcp-imessage and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "message-square"
     },
     {
       "id": "jira",
@@ -3001,17 +2615,10 @@
       "docs_url": "https://developer.atlassian.com/cloud/jira",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "layout-list",
-      "primary_url": "https://developer.atlassian.com/cloud/jira",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.atlassian.com/cloud/jira for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.atlassian.com/cloud/jira for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "layout-list"
     },
     {
       "id": "keboola",
@@ -3039,17 +2646,10 @@
       "docs_url": "https://developers.keboola.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://developers.keboola.com",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/keboola/mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/keboola/mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "kubernetes",
@@ -3076,17 +2676,10 @@
       "github_url": "https://github.com/Flux159/mcp-server-kubernetes",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://github.com/Flux159/mcp-server-kubernetes",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/Flux159/mcp-server-kubernetes and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/Flux159/mcp-server-kubernetes and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "mem0",
@@ -3114,17 +2707,10 @@
       "docs_url": "https://docs.mem0.ai",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "brain",
-      "primary_url": "https://docs.mem0.ai",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/mem0ai/mem0 and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/mem0ai/mem0 and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "brain"
     },
     {
       "id": "mercado-libre",
@@ -3151,17 +2737,10 @@
       "github_url": "https://github.com/mercadolibre/mcp-mercadolibre",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "credit-card",
-      "primary_url": "https://github.com/mercadolibre/mcp-mercadolibre",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/mercadolibre/mcp-mercadolibre and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/mercadolibre/mcp-mercadolibre and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "credit-card"
     },
     {
       "id": "mercado-pago",
@@ -3188,17 +2767,10 @@
       "docs_url": "https://www.mercadopago.com/developers",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "credit-card",
-      "primary_url": "https://www.mercadopago.com/developers",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.mercadopago.com/developers for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.mercadopago.com/developers for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "credit-card"
     },
     {
       "id": "microsoft-teams",
@@ -3225,17 +2797,10 @@
       "docs_url": "https://learn.microsoft.com/microsoftteams",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "message-square",
-      "primary_url": "https://learn.microsoft.com/microsoftteams",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://learn.microsoft.com/microsoftteams for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://learn.microsoft.com/microsoftteams for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "message-square"
     },
     {
       "id": "milvus",
@@ -3262,17 +2827,10 @@
       "github_url": "https://github.com/milvus-io/mcp-server-milvus",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://github.com/milvus-io/mcp-server-milvus",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/milvus-io/mcp-server-milvus and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/milvus-io/mcp-server-milvus and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "mindsdb",
@@ -3300,17 +2858,10 @@
       "docs_url": "https://docs.mindsdb.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://docs.mindsdb.com",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/mindsdb/mindsdb and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/mindsdb/mindsdb and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "monday",
@@ -3337,17 +2888,10 @@
       "docs_url": "https://developer.monday.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "layout-list",
-      "primary_url": "https://developer.monday.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.monday.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.monday.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "layout-list"
     },
     {
       "id": "mongodb",
@@ -3374,17 +2918,10 @@
       "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://github.com/mongodb-js/mongodb-mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/mongodb-js/mongodb-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/mongodb-js/mongodb-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "motherduck",
@@ -3412,17 +2949,10 @@
       "docs_url": "https://motherduck.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://motherduck.com/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/motherduckdb/mcp-server-motherduck and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/motherduckdb/mcp-server-motherduck and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "mysql",
@@ -3449,17 +2979,10 @@
       "github_url": "https://github.com/benborla/mcp-server-mysql",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://github.com/benborla/mcp-server-mysql",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/benborla/mcp-server-mysql and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/benborla/mcp-server-mysql and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "n8n",
@@ -3487,17 +3010,10 @@
       "docs_url": "https://docs.n8n.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://docs.n8n.io",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/n8n-io/n8n and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/n8n-io/n8n and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "neon",
@@ -3525,17 +3041,10 @@
       "docs_url": "https://neon.tech/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://neon.tech/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/neondatabase/mcp-server-neon and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/neondatabase/mcp-server-neon and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "netlify",
@@ -3562,17 +3071,10 @@
       "docs_url": "https://docs.netlify.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud",
-      "primary_url": "https://docs.netlify.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://docs.netlify.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://docs.netlify.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud"
     },
     {
       "id": "onedrive",
@@ -3599,17 +3101,10 @@
       "docs_url": "https://learn.microsoft.com/graph/onedrive",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "hard-drive",
-      "primary_url": "https://learn.microsoft.com/graph/onedrive",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://learn.microsoft.com/graph/onedrive for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://learn.microsoft.com/graph/onedrive for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "hard-drive"
     },
     {
       "id": "pagerduty",
@@ -3636,17 +3131,10 @@
       "docs_url": "https://developer.pagerduty.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "shield-alert",
-      "primary_url": "https://developer.pagerduty.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.pagerduty.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.pagerduty.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "shield-alert"
     },
     {
       "id": "redis",
@@ -3673,17 +3161,10 @@
       "github_url": "https://github.com/redis/mcp-redis",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://github.com/redis/mcp-redis",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/redis/mcp-redis and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/redis/mcp-redis and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "salesforce",
@@ -3710,17 +3191,10 @@
       "docs_url": "https://developer.salesforce.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://developer.salesforce.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.salesforce.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.salesforce.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "shopify",
@@ -3747,17 +3221,10 @@
       "docs_url": "https://shopify.dev/docs/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "credit-card",
-      "primary_url": "https://shopify.dev/docs/api",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://shopify.dev/docs/api for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://shopify.dev/docs/api for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "credit-card"
     },
     {
       "id": "shopsavvy",
@@ -3784,17 +3251,10 @@
       "github_url": "https://github.com/shopsavvy/mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "credit-card",
-      "primary_url": "https://github.com/shopsavvy/mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/shopsavvy/mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/shopsavvy/mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "credit-card"
     },
     {
       "id": "slidespeak",
@@ -3821,17 +3281,10 @@
       "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "file-text",
-      "primary_url": "https://github.com/SlideSpeak/slidespeak-mcp",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/SlideSpeak/slidespeak-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/SlideSpeak/slidespeak-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "file-text"
     },
     {
       "id": "snowflake",
@@ -3858,17 +3311,10 @@
       "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/isaacwasserman/mcp-snowflake-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/isaacwasserman/mcp-snowflake-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "sourcegraph-cody",
@@ -3896,17 +3342,10 @@
       "docs_url": "https://sourcegraph.com/cody",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "code",
-      "primary_url": "https://sourcegraph.com/cody",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/sourcegraph/cody and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/sourcegraph/cody and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "code"
     },
     {
       "id": "sqlite",
@@ -3934,7 +3373,8 @@
       "stars": 0,
       "source": "manual",
       "featured": true,
-      "last_updated": "2026-07-06",
+      "hidden": false,
+      "last_updated": "2026-07-07",
       "icon": "database"
     },
     {
@@ -3962,17 +3402,10 @@
       "docs_url": "https://developer.stackblitz.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "browser",
-      "primary_url": "https://developer.stackblitz.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.stackblitz.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.stackblitz.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "browser"
     },
     {
       "id": "supabase",
@@ -4000,17 +3433,10 @@
       "docs_url": "https://supabase.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "database",
-      "primary_url": "https://supabase.com/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/supabase-community/supabase-mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/supabase-community/supabase-mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "database"
     },
     {
       "id": "taskade",
@@ -4037,17 +3463,10 @@
       "docs_url": "https://www.taskade.com/api",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "brain",
-      "primary_url": "https://www.taskade.com/api",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.taskade.com/api for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.taskade.com/api for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "brain"
     },
     {
       "id": "terraform",
@@ -4074,17 +3493,10 @@
       "github_url": "https://github.com/hashicorp/terraform-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://github.com/hashicorp/terraform-mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/hashicorp/terraform-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/hashicorp/terraform-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "vercel",
@@ -4112,17 +3524,10 @@
       "docs_url": "https://vercel.com/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud",
-      "primary_url": "https://vercel.com/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/vercel/mcp-handler and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/vercel/mcp-handler and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud"
     },
     {
       "id": "zep",
@@ -4150,17 +3555,37 @@
       "docs_url": "https://docs.getzep.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "brain",
-      "primary_url": "https://docs.getzep.com",
-      "setup_steps": [
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "brain"
+    },
+    {
+      "id": "tavily",
+      "slug": "tavily",
+      "name": "Tavily",
+      "description": "Search API optimized for AI agents and research workflows.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
         {
-          "title": "GitHub",
-          "text": "Install from https://github.com/getzep/zep and add the server to your MCP client configuration (see repository README)."
+          "name": "search",
+          "description": "Agent-optimized web search"
+        },
+        {
+          "name": "extract",
+          "description": "Extract content from URLs"
         }
       ],
-      "setup_summary": "Install from https://github.com/getzep/zep and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "github_url": "https://github.com/tavily-ai/tavily-mcp",
+      "docs_url": "https://docs.tavily.com",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "search"
     },
     {
       "id": "amplitude",
@@ -4183,17 +3608,10 @@
       "docs_url": "https://www.docs.developers.amplitude.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://www.docs.developers.amplitude.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.docs.developers.amplitude.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.docs.developers.amplitude.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "box",
@@ -4216,17 +3634,10 @@
       "docs_url": "https://developer.box.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "hard-drive",
-      "primary_url": "https://developer.box.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.box.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.box.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "hard-drive"
     },
     {
       "id": "builder-fusion",
@@ -4249,17 +3660,10 @@
       "docs_url": "https://www.builder.io",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "figma",
-      "primary_url": "https://www.builder.io",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.builder.io for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.builder.io for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "figma"
     },
     {
       "id": "deepseek",
@@ -4282,17 +3686,10 @@
       "docs_url": "https://api-docs.deepseek.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "brain",
-      "primary_url": "https://api-docs.deepseek.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://api-docs.deepseek.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://api-docs.deepseek.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "brain"
     },
     {
       "id": "fal-ai",
@@ -4315,17 +3712,10 @@
       "docs_url": "https://fal.ai/docs",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "image",
-      "primary_url": "https://fal.ai/docs",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://fal.ai/docs for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://fal.ai/docs for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "image"
     },
     {
       "id": "gpt-researcher",
@@ -4348,17 +3738,10 @@
       "github_url": "https://github.com/assafelovic/gpt-researcher",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "book-open",
-      "primary_url": "https://github.com/assafelovic/gpt-researcher",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/assafelovic/gpt-researcher and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/assafelovic/gpt-researcher and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "book-open"
     },
     {
       "id": "grafana",
@@ -4381,17 +3764,10 @@
       "github_url": "https://github.com/grafana/mcp-grafana",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "activity",
-      "primary_url": "https://github.com/grafana/mcp-grafana",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/grafana/mcp-grafana and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/grafana/mcp-grafana and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "activity"
     },
     {
       "id": "hex",
@@ -4414,17 +3790,10 @@
       "docs_url": "https://learn.hex.tech",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://learn.hex.tech",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://learn.hex.tech for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://learn.hex.tech for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "jina-reader",
@@ -4447,17 +3816,10 @@
       "docs_url": "https://jina.ai/reader",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "globe",
-      "primary_url": "https://jina.ai/reader",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://jina.ai/reader for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://jina.ai/reader for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "globe"
     },
     {
       "id": "magic-ui",
@@ -4480,17 +3842,10 @@
       "github_url": "https://github.com/magicuidesign/mcp",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "figma",
-      "primary_url": "https://github.com/magicuidesign/mcp",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/magicuidesign/mcp and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/magicuidesign/mcp and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "figma"
     },
     {
       "id": "make",
@@ -4513,17 +3868,10 @@
       "docs_url": "https://www.make.com/en/api-documentation",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://www.make.com/en/api-documentation",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://www.make.com/en/api-documentation for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://www.make.com/en/api-documentation for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "metabase",
@@ -4546,17 +3894,10 @@
       "github_url": "https://github.com/metabase/mcp-metabase",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://github.com/metabase/mcp-metabase",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/metabase/mcp-metabase and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/metabase/mcp-metabase and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     },
     {
       "id": "metoro",
@@ -4579,17 +3920,10 @@
       "github_url": "https://github.com/metoro-io/metoro-mcp-server",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://github.com/metoro-io/metoro-mcp-server",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/metoro-io/metoro-mcp-server and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/metoro-io/metoro-mcp-server and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "boxes"
     },
     {
       "id": "microsoft-mcp-gateway",
@@ -4612,17 +3946,10 @@
       "docs_url": "https://learn.microsoft.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "cloud",
-      "primary_url": "https://learn.microsoft.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://learn.microsoft.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://learn.microsoft.com for documentation and connection details.",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "cloud"
     },
     {
       "id": "mixpanel",
@@ -4645,150 +3972,10 @@
       "docs_url": "https://developer.mixpanel.com",
       "stars": 0,
       "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "bar-chart",
-      "primary_url": "https://developer.mixpanel.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://developer.mixpanel.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://developer.mixpanel.com for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "new-relic",
-      "slug": "new-relic",
-      "name": "New Relic",
-      "description": "Observability platform for APM and infrastructure.",
-      "category": "Security & Monitoring",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query_nrql",
-          "description": "Run NRQL queries"
-        },
-        {
-          "name": "list_entities",
-          "description": "List monitored entities"
-        }
-      ],
-      "docs_url": "https://docs.newrelic.com",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "activity",
-      "primary_url": "https://docs.newrelic.com",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://docs.newrelic.com for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://docs.newrelic.com for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "openrouter",
-      "slug": "openrouter",
-      "name": "OpenRouter",
-      "description": "Multi-model API routing across LLM providers.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_models",
-          "description": "List available models"
-        },
-        {
-          "name": "chat_completion",
-          "description": "Route a chat completion request"
-        }
-      ],
-      "docs_url": "https://openrouter.ai/docs",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "brain",
-      "primary_url": "https://openrouter.ai/docs",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://openrouter.ai/docs for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://openrouter.ai/docs for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "perplexity",
-      "slug": "perplexity",
-      "name": "Perplexity",
-      "description": "AI-powered semantic search with cited answers from the web.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search",
-          "description": "Run a Perplexity search query"
-        },
-        {
-          "name": "ask",
-          "description": "Ask a question with web grounding"
-        }
-      ],
-      "docs_url": "https://docs.perplexity.ai",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "search",
-      "primary_url": "https://docs.perplexity.ai",
-      "setup_steps": [
-        {
-          "title": "Get started",
-          "text": "Open https://docs.perplexity.ai for documentation and connection details."
-        }
-      ],
-      "setup_summary": "Open https://docs.perplexity.ai for documentation and connection details.",
-      "featured": true
-    },
-    {
-      "id": "pipedream",
-      "slug": "pipedream",
-      "name": "Pipedream",
-      "description": "Connect with 2,500 APIs and 8,000+ prebuilt tools.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_actions",
-          "description": "List available actions"
-        },
-        {
-          "name": "run_action",
-          "description": "Execute a connected action"
-        }
-      ],
-      "github_url": "https://github.com/PipedreamHQ/pipedream",
-      "docs_url": "https://pipedream.com/docs",
-      "stars": 0,
-      "source": "manual",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "primary_url": "https://pipedream.com/docs",
-      "setup_steps": [
-        {
-          "title": "GitHub",
-          "text": "Install from https://github.com/PipedreamHQ/pipedream and add the server to your MCP client configuration (see repository README)."
-        }
-      ],
-      "setup_summary": "Install from https://github.com/PipedreamHQ/pipedream and add the server to your MCP client configuration (see repository README).",
-      "featured": true
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-07",
+      "icon": "bar-chart"
     }
   ]
 }
