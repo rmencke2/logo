@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-10T09:02:26.433Z",
+  "generated_at": "2026-07-11T07:32:05.227Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-07-09T09:05:40.369Z",
+  "catalog_generated_at": "2026-07-10T09:02:26.472Z",
   "summary": {
     "checked": 286,
     "skipped_manual": 91,
     "skipped_no_endpoint": 1200,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 284,
-    "tools_changed": 1,
+    "unchanged": 279,
+    "tools_changed": 7,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 1,
+    "auth_required_kept": 0,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 1486,
     "errors": 0,
-    "tools_added_total": 16,
-    "tools_removed_total": 16,
+    "tools_added_total": 5,
+    "tools_removed_total": 0,
     "catalog_total": 1577,
     "http_endpoints": 281,
     "with_tools_before": 372,
@@ -27,51 +27,122 @@
   },
   "changes": [
     {
-      "slug": "thebrierfox-the-stall",
-      "name": "The STALL",
+      "slug": "cyanheads-clinicaltrialsgov-mcp-server",
+      "name": "clinicaltrialsgov-mcp-server",
       "source": "smithery",
       "validationMethod": "live_mcp+smithery_fallback",
       "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [
-        "action-receipt",
-        "activist-investor-intel",
-        "address-intel",
-        "agriculture-brief",
-        "ai-pipeline-brief",
-        "analyst-upgrades",
-        "app-store-intel",
-        "balance-sheet",
-        "bonds-brief",
-        "capital-allocation-score",
-        "cash-flow-statement",
-        "cdp-market-depth",
-        "cot-positioning",
-        "cross-chain-bridge-status",
-        "crypto-brief",
-        "crypto-equity-brief"
-      ],
-      "removed": [
-        "citation-formatter",
-        "crypto-fear-greed",
-        "crypto-fiat-price",
-        "crypto-momentum-pack",
-        "crypto-news-impact",
-        "crypto-pulse",
-        "crypto-top-movers",
-        "currency-format",
-        "cve-intel",
-        "db-perf-intel",
-        "defi-market-pulse",
-        "defi-portfolio",
-        "defi-state-pack",
-        "defi-yield-strategies",
-        "defi-yields",
-        "defillama-coin-price"
-      ],
+      "beforeToolCount": 7,
+      "afterToolCount": 7,
+      "added": [],
+      "removed": [],
       "changed": [
-        "content-analyze"
+        "clinicaltrials_search_studies",
+        "clinicaltrials_get_study_record",
+        "clinicaltrials_get_study_count",
+        "clinicaltrials_get_field_definitions",
+        "clinicaltrials_get_study_results",
+        "clinicaltrials_find_eligible"
+      ]
+    },
+    {
+      "slug": "cyanheads-calculator-mcp-server",
+      "name": "calculator-mcp-server",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 1,
+      "afterToolCount": 1,
+      "added": [],
+      "removed": [],
+      "changed": [
+        "calculate"
+      ]
+    },
+    {
+      "slug": "cyanheads-pubmed-mcp-server",
+      "name": "pubmed-mcp-server",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 9,
+      "afterToolCount": 10,
+      "added": [
+        "pubmed_europepmc_search"
+      ],
+      "removed": [],
+      "changed": [
+        "pubmed_fetch_fulltext",
+        "pubmed_format_citations",
+        "pubmed_find_related",
+        "pubmed_lookup_mesh",
+        "pubmed_lookup_citation",
+        "pubmed_convert_ids"
+      ]
+    },
+    {
+      "slug": "cyanheads-openalex-mcp-server",
+      "name": "openalex-mcp-server",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 3,
+      "afterToolCount": 5,
+      "added": [
+        "openalex_get_citation_graph",
+        "openalex_describe_fields"
+      ],
+      "removed": [],
+      "changed": [
+        "openalex_resolve_name",
+        "openalex_search_entities"
+      ]
+    },
+    {
+      "slug": "cyanheads-arxiv-mcp-server",
+      "name": "arxiv-mcp-server",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 4,
+      "afterToolCount": 4,
+      "added": [],
+      "removed": [],
+      "changed": [
+        "arxiv_read_paper"
+      ]
+    },
+    {
+      "slug": "cyanheads-nws-weather-mcp-server",
+      "name": "nws-weather-mcp-server",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 5,
+      "afterToolCount": 7,
+      "added": [
+        "nws_get_office_discussion",
+        "nws_get_zone_forecast"
+      ],
+      "removed": [],
+      "changed": [
+        "nws_get_forecast"
+      ]
+    },
+    {
+      "slug": "mesquared-visibility",
+      "name": "MeSquared AI Search Visibility",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 3,
+      "afterToolCount": 3,
+      "added": [],
+      "removed": [],
+      "changed": [
+        "visibility_audit_info",
+        "scan_visibility",
+        "compare_visibility"
       ]
     }
   ],
