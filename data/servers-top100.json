@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-12T07:46:38.449Z",
+  "generated_at": "2026-07-13T09:17:31.352Z",
   "count": 100,
-  "total_catalog": 1580,
+  "total_catalog": 784,
   "top100_slugs": [
     "webnode",
     "brave-search",
@@ -14,26 +14,27 @@
     "sentry",
     "notion",
     "playwright",
-    "henry-ships-sparkforge",
-    "googlesheets",
     "jina",
+    "googlesheets",
     "smithery-ai-national-weather-service",
-    "ethanhenrickson-math-mcp",
     "hamid-vakilzadeh-mcpsemanticscholar",
+    "support-9ef4-wayforth",
     "xgr-mcp",
     "vercel-grep",
+    "googlecalendar",
     "llm-pulse",
     "ignav-flights",
-    "googlecalendar",
-    "support-9ef4-wayforth",
+    "ethanhenrickson-math-mcp",
+    "zev-lastlook-data",
     "mikechao-metmuseum-mcp",
     "theagenttimes-ucp-gateway",
-    "nitrofire-q-gread",
+    "googledrive",
     "mcp360-ai",
     "desktop-commander",
     "e2b",
     "gitlab",
     "replit",
+    "kiwi",
     "gmail",
     "exa",
     "outlook",
@@ -101,8 +102,7 @@
     "make",
     "metabase",
     "metoro",
-    "microsoft-mcp-gateway",
-    "mixpanel"
+    "microsoft-mcp-gateway"
   ],
   "servers": [
     {
@@ -439,167 +439,117 @@
       "icon": "monitor-play"
     },
     {
-      "id": "henry-ships-sparkforge",
-      "slug": "henry-ships-sparkforge",
-      "name": "SparkForge",
-      "description": "Access a versatile collection of tools for media generation, web scraping, and cryptocurrency research. Convert between data formats, summarize long documents, and extract text from images or PDFs with ease. Streamline your workflow by automating tasks like SEO metadata extraction, code reviews, and content creation.",
+      "id": "jina",
+      "slug": "jina",
+      "name": "Jina AI",
+      "description": "AI-powered search and retrieval platform. Search the web, read page content, extract structured data, and ground AI responses.",
       "category": "Search & Web",
-      "official": false,
+      "official": true,
       "transport": "http",
       "tools": [
         {
-          "name": "generate_image",
-          "description": "Generate an AI image from a text prompt using Flux models. Returns an image URL. Models: flux-schnell (fast, $0.02), flux-dev (quality, $0.03), flux-pro (best, $0.05)."
+          "name": "show_api_key",
+          "description": "Return the bearer token from the Authorization header of the MCP settings, which is used to debug."
         },
         {
-          "name": "take_screenshot",
-          "description": "Capture a screenshot of any webpage URL. Returns the screenshot as a base64-encoded PNG image."
+          "name": "primer",
+          "description": "Get up-to-date contextual information of the current session to provide localized, time-aware responses. Use this when you need to know the current time, user's location, or network environment to give more relevant and personalized information."
         },
         {
-          "name": "html_to_markdown",
-          "description": "Convert HTML content or fetch a URL and convert its HTML to clean Markdown."
+          "name": "guess_datetime_url",
+          "description": "Guess the last updated or published datetime of a web page. This tool examines HTTP headers, HTML metadata, Schema.org data, visible dates, JavaScript timestamps, HTML comments, Git information, RSS/Atom feeds, sitemaps, and international date formats to provide the most accurate update time with confidence scores. Returns the best guess timestamp and confidence level."
         },
         {
-          "name": "summarize_text",
-          "description": "Summarize long text using extractive summarization. Fast, algorithmic — no AI API call needed."
+          "name": "capture_screenshot_url",
+          "description": "Capture high-quality screenshots of web pages in base64 encoded JPEG format. Use this tool when you need to visually inspect a website, take a snapshot for analysis, or show users what a webpage looks like."
         },
         {
-          "name": "generate_qr_code",
-          "description": "Generate a QR code as a base64-encoded PNG image from any text or URL."
+          "name": "read_url",
+          "description": "Extract and convert web page content to clean, readable markdown format. Perfect for reading articles, documentation, blog posts, or any web content. Use this when you need to analyze text content from websites, bypass paywalls, or get structured data."
         },
         {
-          "name": "validate_json",
-          "description": "Validate and prettify JSON. Optionally validate against a JSON Schema."
+          "name": "search_web",
+          "description": "Search the entire web for current information, news, articles, and websites. Use this when you need up-to-date information, want to find specific websites, research topics, or get the latest news. Ideal for answering questions about recent events, finding resources, or discovering relevant content."
         },
         {
-          "name": "pdf_to_markdown",
-          "description": "Extract text from a PDF URL and convert to Markdown. Returns the text content with page count."
+          "name": "expand_query",
+          "description": "Expand and rewrite search queries based on an up-to-date query expansion model. This tool takes an initial query and returns multiple expanded queries that can be used for more diversed and deeper searches. Useful for improving deep research results by searching broader and deeper."
         },
         {
-          "name": "get_url_metadata",
-          "description": "Extract metadata from a URL — title, description, Open Graph tags, favicon, canonical URL."
+          "name": "search_arxiv",
+          "description": "Search academic papers and preprints on arXiv repository. Perfect for finding research papers, scientific studies, technical papers, and academic literature. Use this when researching scientific topics, looking for papers by specific authors, or finding the latest research in fields like AI, physics, mathematics, computer science, etc."
         },
         {
-          "name": "get_crypto_price",
-          "description": "Get current cryptocurrency price, 24h change, and market cap from CoinGecko."
+          "name": "search_ssrn",
+          "description": "Search academic papers and preprints on SSRN (Social Science Research Network). Perfect for finding research papers in social sciences, economics, law, finance, accounting, management, and humanities. Use this when researching social science topics, looking for working papers, or finding the latest research in business and economics fields."
         },
         {
-          "name": "detect_language",
-          "description": "Detect the language of a text string. Supports 10+ languages."
+          "name": "search_jina_blog",
+          "description": "Search Jina AI news and blog posts at jina.ai/news for articles about AI, machine learning, neural search, embeddings, and Jina products. Use this to find official Jina documentation, tutorials, product announcements, and technical deep-dives."
         },
         {
-          "name": "text_diff",
-          "description": "Compare two texts and show a unified diff with additions and removals."
+          "name": "search_images",
+          "description": "Search for images across the web, similar to Google Images. Use this when you need to find photos, illustrations, diagrams, charts, logos, or any visual content. Perfect for finding images to illustrate concepts, locating specific pictures, or discovering visual resources. Images are returned by default as small base64-encoded JPEG images."
         },
         {
-          "name": "btc_signal",
-          "description": "Get a BTC price direction prediction based on 10-indicator technical analysis consensus. Returns up/down/neutral with confidence score. Supports 1m, 5m, 15m, 1h timeframes."
+          "name": "parallel_search_web",
+          "description": "Run multiple web searches in parallel for comprehensive topic coverage and diverse perspectives. For best results, provide multiple search queries that explore different aspects of your topic. You can use expand_query to help generate diverse queries, or create them yourself."
         },
         {
-          "name": "scrape_webpage",
-          "description": "Scrape a webpage and return clean readable text/markdown. Strips scripts, styles, and HTML tags."
+          "name": "parallel_search_arxiv",
+          "description": "Run multiple arXiv searches in parallel for comprehensive research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
         },
         {
-          "name": "web_search",
-          "description": "Search the web using Brave Search API. Returns titles, URLs, and descriptions."
+          "name": "parallel_search_ssrn",
+          "description": "Run multiple SSRN searches in parallel for comprehensive social science research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
         },
         {
-          "name": "code_review",
-          "description": "Review code using Claude AI. Returns bugs, improvements, and best practice suggestions."
+          "name": "parallel_read_url",
+          "description": "Read multiple web pages in parallel to extract clean content efficiently. For best results, provide multiple URLs that you need to extract simultaneously. This is useful for comparing content across multiple sources or gathering information from multiple pages at once."
         },
         {
-          "name": "write_tweet",
-          "description": "Generate tweet text from a topic or prompt using Claude AI. Returns tweet-ready text under 280 chars."
+          "name": "classify_text",
+          "description": "Classify texts into user-defined labels using Jina embeddings. Use this when you need to categorize, tag, or sort text content into predefined categories. Perfect for sentiment analysis, topic classification, content moderation, or any text categorization task."
         },
         {
-          "name": "verify_email",
-          "description": "Validate email format and check MX records for the domain."
+          "name": "sort_by_relevance",
+          "description": "Rerank a list of documents by relevance to a query using Jina Reranker API. Use this when you have multiple documents and want to sort them by how well they match a specific query or topic. Perfect for document retrieval, content filtering, or finding the most relevant information from a collection."
         },
         {
-          "name": "check_domain",
-          "description": "Check domain availability and DNS info via lookup."
+          "name": "deduplicate_strings",
+          "description": "Get top-k semantically unique strings from a list using Jina embeddings and submodular optimization. Use this when you have many similar strings and want to select the most diverse subset that covers the semantic space. Perfect for removing duplicates, selecting representative samples, or finding diverse content."
         },
         {
-          "name": "token_research",
-          "description": "Research a crypto token — description, links, price, market cap, volume from CoinGecko."
+          "name": "deduplicate_images",
+          "description": "Get top-k semantically unique images (URLs or base64-encoded) using Jina CLIP v2 embeddings and submodular optimization. Use this when you have many visually similar images and want the most diverse subset."
         },
         {
-          "name": "wallet_analysis",
-          "description": "Analyze an Ethereum/Base wallet — ETH balance and recent transactions via Etherscan."
+          "name": "search_bibtex",
+          "description": "Search for academic papers and return BibTeX citations. Searches DBLP (computer science) and Semantic Scholar (broad academic coverage) for comprehensive results. Returns formatted BibTeX entries ready to use in LaTeX documents."
         },
         {
-          "name": "crypto_news_summary",
-          "description": "Get latest crypto news headlines from CryptoPanic."
-        },
-        {
-          "name": "generate_meme",
-          "description": "Generate a meme image using Imgflip API. Returns a meme image URL."
-        },
-        {
-          "name": "resize_image",
-          "description": "Fetch an image from a URL, resize it, and return as base64 PNG."
-        },
-        {
-          "name": "text_to_speech",
-          "description": "Convert text to speech using ElevenLabs. Returns audio as base64 MP3."
-        },
-        {
-          "name": "generate_video",
-          "description": "Generate a short AI video from a text prompt using fal.ai."
-        },
-        {
-          "name": "ocr",
-          "description": "Extract text from an image URL using Claude vision AI."
-        },
-        {
-          "name": "site_crawl",
-          "description": "Crawl a website starting from a URL, follow internal links, return pages as text."
-        },
-        {
-          "name": "smart_summarize",
-          "description": "AI-powered summarization in 4 modes: bullet_points, executive, technical, eli5."
-        },
-        {
-          "name": "store_data",
-          "description": "Key-value data storage. Operations: set, get, delete, list. Data persists per namespace."
-        },
-        {
-          "name": "extract_structured",
-          "description": "Extract structured JSON data from a URL using Claude AI and a provided JSON schema."
-        },
-        {
-          "name": "convert_format",
-          "description": "Convert between formats: csv→json, json→csv, markdown→html, html→text."
-        },
-        {
-          "name": "image_resize",
-          "description": "Fetch an image from a URL, resize it, and return as base64 PNG. Alias for resize_image."
-        },
-        {
-          "name": "list_services",
-          "description": "List all available SparkForge services with pricing, parameters, and demo URLs."
+          "name": "extract_pdf",
+          "description": "Extract figures, tables, and equations from PDF documents using layout detection. Perfect for extracting visual elements from academic papers on arXiv or any PDF URL. Returns base64-encoded images of detected elements with metadata."
         }
       ],
-      "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "stars": 62617,
+      "docs_url": "https://smithery.ai/servers/jina",
+      "stars": 79346,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "search",
-      "smithery_qualified_name": "henry-ships/sparkforge",
-      "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "mcp_endpoint": "https://sparkforge--henry-ships.run.tools",
-      "deployment_url": "https://sparkforge--henry-ships.run.tools",
-      "connection_url": "https://sparkforge--henry-ships.run.tools",
-      "primary_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "smithery_qualified_name": "jina",
+      "smithery_page_url": "https://smithery.ai/servers/jina",
+      "mcp_endpoint": "https://jina.run.tools",
+      "deployment_url": "https://jina.run.tools",
+      "connection_url": "https://jina.run.tools",
+      "primary_url": "https://smithery.ai/servers/jina",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/henry-ships/sparkforge\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://sparkforge--henry-ships.run.tools"
+          "text": "1. Open https://smithery.ai/servers/jina\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://jina.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-07-13T08:32:36.964Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/jina",
       "featured": true
     },
     {
@@ -765,9 +715,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 44540,
+      "stars": 48461,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "bar-chart",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -782,124 +732,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-07-13T08:32:37.372Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "jina",
-      "slug": "jina",
-      "name": "Jina AI",
-      "description": "AI-powered search and retrieval platform. Search the web, read page content, extract structured data, and ground AI responses.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "show_api_key",
-          "description": "Return the bearer token from the Authorization header of the MCP settings, which is used to debug."
-        },
-        {
-          "name": "primer",
-          "description": "Get up-to-date contextual information of the current session to provide localized, time-aware responses. Use this when you need to know the current time, user's location, or network environment to give more relevant and personalized information."
-        },
-        {
-          "name": "guess_datetime_url",
-          "description": "Guess the last updated or published datetime of a web page. This tool examines HTTP headers, HTML metadata, Schema.org data, visible dates, JavaScript timestamps, HTML comments, Git information, RSS/Atom feeds, sitemaps, and international date formats to provide the most accurate update time with confidence scores. Returns the best guess timestamp and confidence level."
-        },
-        {
-          "name": "capture_screenshot_url",
-          "description": "Capture high-quality screenshots of web pages in base64 encoded JPEG format. Use this tool when you need to visually inspect a website, take a snapshot for analysis, or show users what a webpage looks like."
-        },
-        {
-          "name": "read_url",
-          "description": "Extract and convert web page content to clean, readable markdown format. Perfect for reading articles, documentation, blog posts, or any web content. Use this when you need to analyze text content from websites, bypass paywalls, or get structured data."
-        },
-        {
-          "name": "search_web",
-          "description": "Search the entire web for current information, news, articles, and websites. Use this when you need up-to-date information, want to find specific websites, research topics, or get the latest news. Ideal for answering questions about recent events, finding resources, or discovering relevant content."
-        },
-        {
-          "name": "expand_query",
-          "description": "Expand and rewrite search queries based on an up-to-date query expansion model. This tool takes an initial query and returns multiple expanded queries that can be used for more diversed and deeper searches. Useful for improving deep research results by searching broader and deeper."
-        },
-        {
-          "name": "search_arxiv",
-          "description": "Search academic papers and preprints on arXiv repository. Perfect for finding research papers, scientific studies, technical papers, and academic literature. Use this when researching scientific topics, looking for papers by specific authors, or finding the latest research in fields like AI, physics, mathematics, computer science, etc."
-        },
-        {
-          "name": "search_ssrn",
-          "description": "Search academic papers and preprints on SSRN (Social Science Research Network). Perfect for finding research papers in social sciences, economics, law, finance, accounting, management, and humanities. Use this when researching social science topics, looking for working papers, or finding the latest research in business and economics fields."
-        },
-        {
-          "name": "search_jina_blog",
-          "description": "Search Jina AI news and blog posts at jina.ai/news for articles about AI, machine learning, neural search, embeddings, and Jina products. Use this to find official Jina documentation, tutorials, product announcements, and technical deep-dives."
-        },
-        {
-          "name": "search_images",
-          "description": "Search for images across the web, similar to Google Images. Use this when you need to find photos, illustrations, diagrams, charts, logos, or any visual content. Perfect for finding images to illustrate concepts, locating specific pictures, or discovering visual resources. Images are returned by default as small base64-encoded JPEG images."
-        },
-        {
-          "name": "parallel_search_web",
-          "description": "Run multiple web searches in parallel for comprehensive topic coverage and diverse perspectives. For best results, provide multiple search queries that explore different aspects of your topic. You can use expand_query to help generate diverse queries, or create them yourself."
-        },
-        {
-          "name": "parallel_search_arxiv",
-          "description": "Run multiple arXiv searches in parallel for comprehensive research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
-        },
-        {
-          "name": "parallel_search_ssrn",
-          "description": "Run multiple SSRN searches in parallel for comprehensive social science research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
-        },
-        {
-          "name": "parallel_read_url",
-          "description": "Read multiple web pages in parallel to extract clean content efficiently. For best results, provide multiple URLs that you need to extract simultaneously. This is useful for comparing content across multiple sources or gathering information from multiple pages at once."
-        },
-        {
-          "name": "classify_text",
-          "description": "Classify texts into user-defined labels using Jina embeddings. Use this when you need to categorize, tag, or sort text content into predefined categories. Perfect for sentiment analysis, topic classification, content moderation, or any text categorization task."
-        },
-        {
-          "name": "sort_by_relevance",
-          "description": "Rerank a list of documents by relevance to a query using Jina Reranker API. Use this when you have multiple documents and want to sort them by how well they match a specific query or topic. Perfect for document retrieval, content filtering, or finding the most relevant information from a collection."
-        },
-        {
-          "name": "deduplicate_strings",
-          "description": "Get top-k semantically unique strings from a list using Jina embeddings and submodular optimization. Use this when you have many similar strings and want to select the most diverse subset that covers the semantic space. Perfect for removing duplicates, selecting representative samples, or finding diverse content."
-        },
-        {
-          "name": "deduplicate_images",
-          "description": "Get top-k semantically unique images (URLs or base64-encoded) using Jina CLIP v2 embeddings and submodular optimization. Use this when you have many visually similar images and want the most diverse subset."
-        },
-        {
-          "name": "search_bibtex",
-          "description": "Search for academic papers and return BibTeX citations. Searches DBLP (computer science) and Semantic Scholar (broad academic coverage) for comprehensive results. Returns formatted BibTeX entries ready to use in LaTeX documents."
-        },
-        {
-          "name": "extract_pdf",
-          "description": "Extract figures, tables, and equations from PDF documents using layout detection. Perfect for extracting visual elements from academic papers on arXiv or any PDF URL. Returns base64-encoded images of detected elements with metadata."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/jina",
-      "stars": 45021,
-      "source": "smithery",
-      "last_updated": "2026-07-06",
-      "icon": "search",
-      "smithery_qualified_name": "jina",
-      "smithery_page_url": "https://smithery.ai/servers/jina",
-      "mcp_endpoint": "https://jina.run.tools",
-      "deployment_url": "https://jina.run.tools",
-      "connection_url": "https://jina.run.tools",
-      "primary_url": "https://smithery.ai/servers/jina",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/jina\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://jina.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/jina",
-      "tools_validated_at": "2026-07-13T08:32:36.413Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -937,9 +769,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "stars": 76573,
+      "stars": 111776,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "boxes",
       "smithery_qualified_name": "smithery-ai/national-weather-service",
       "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
@@ -954,128 +786,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-07-13T08:32:35.516Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "ethanhenrickson-math-mcp",
-      "slug": "ethanhenrickson-math-mcp",
-      "name": "Math-MCP",
-      "description": "Enable your LLMs to perform accurate numerical calculations with a simple API. Leverage basic arithmetic and statistical functions to enhance your applications. Simplify complex mathematical tasks effortlessly and improve your model's capabilities.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "add",
-          "description": "Adds two numbers together"
-        },
-        {
-          "name": "subtract",
-          "description": "Subtracts the second number from the first number"
-        },
-        {
-          "name": "multiply",
-          "description": "Multiplies two numbers together"
-        },
-        {
-          "name": "division",
-          "description": "Divides the first number by the second number"
-        },
-        {
-          "name": "sum",
-          "description": "Adds any number of numbers together"
-        },
-        {
-          "name": "modulo",
-          "description": "Divides two numbers and returns the remainder"
-        },
-        {
-          "name": "mean",
-          "description": "Calculates the arithmetic mean of a list of numbers"
-        },
-        {
-          "name": "median",
-          "description": "Calculates the median of a list of numbers"
-        },
-        {
-          "name": "mode",
-          "description": "Finds the most common number in a list of numbers"
-        },
-        {
-          "name": "min",
-          "description": "Finds the minimum value from a list of numbers"
-        },
-        {
-          "name": "max",
-          "description": "Finds the maximum value from a list of numbers"
-        },
-        {
-          "name": "floor",
-          "description": "Rounds a number down to the nearest integer"
-        },
-        {
-          "name": "ceiling",
-          "description": "Rounds a number up to the nearest integer"
-        },
-        {
-          "name": "round",
-          "description": "Rounds a number to the nearest integer"
-        },
-        {
-          "name": "sin",
-          "description": "Calculates the sine of a number in radians"
-        },
-        {
-          "name": "arcsin",
-          "description": "Calculates the arcsine of a number in radians"
-        },
-        {
-          "name": "cos",
-          "description": "Calculates the cosine of a number in radians"
-        },
-        {
-          "name": "arccos",
-          "description": "Calculates the arccosine of a number in radians"
-        },
-        {
-          "name": "tan",
-          "description": "Calculates the tangent of a number in radians"
-        },
-        {
-          "name": "arctan",
-          "description": "Calculates the arctangent of a number in radians"
-        },
-        {
-          "name": "radiansToDegrees",
-          "description": "Converts a radian value to its equivalent in degrees"
-        },
-        {
-          "name": "degreesToRadians",
-          "description": "Converts a degree value to its equivalent in radians"
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "stars": 45212,
-      "source": "smithery",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "smithery_qualified_name": "EthanHenrickson/math-mcp",
-      "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "mcp_endpoint": "https://math-mcp--ethanhenrickson.run.tools",
-      "deployment_url": "https://math-mcp--ethanhenrickson.run.tools",
-      "connection_url": "https://math-mcp--ethanhenrickson.run.tools",
-      "primary_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://math-mcp--ethanhenrickson.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-07-13T08:32:36.404Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1137,9 +847,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "stars": 45257,
+      "stars": 44820,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "search",
       "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
       "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
@@ -1154,8 +864,104 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-07-13T08:32:36.819Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "support-9ef4-wayforth",
+      "slug": "support-9ef4-wayforth",
+      "name": "Wayforth",
+      "description": "The API runtime for AI agents.\nOne tool call. Any API. No setup.\nSearch 4,974 verified APIs ranked by WayforthRank — the only ranking algorithm powered by real agent payment signals, not ads. Execute via 18 managed services with zero API keys. Self-healing: if a service fails, credits restore automatically.\nWhat your agent can do:\n\nSearch 4,974 APIs across 19 categories by intent\nExecute: inference, translation, image generation, speech-to-text, web search, financial data, weather, news, and more\nBring your own API keys (BYOK) for any service\nPay per query via x402 at $0.002 USDC\nQuery with WayforthQL: filter by tier, price, protocol, latency\n\nThree payment rails: Card · USDC on Base · x402\nGet started free: 100 calls · No card required\nuvx wayforth-mcp · wayforth.io",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "wayforth_run",
+          "description": "The Wayforth runtime. One call does everything: searches for the best API,\n    picks the top-ranked service by WayforthRank v2, maps your input to the\n    service's params, and executes it — returning the result directly.\n\n    Use this instead of wayforth_search + wayforth_execute when you just want the result.\n    Supports: translation, weather, news, stock prices, web search, image generation,\n    speech-to-text, text-to-speech, email, and 300+ more catalog services.\n\n    Optional: include age"
+        },
+        {
+          "name": "wayforth_execute",
+          "description": "Execute any API service instantly.\n    15 managed services run with zero API keys —\n    Wayforth holds the credentials.\n    The fastest way to add any API capability\n    to your agent.\n\n    Optional: include agent_id='my-agent-name' to tag this call for per-agent analytics\n    in your dashboard at wayforth.io/dashboard/agents.\n    "
+        },
+        {
+          "name": "wayforth_search",
+          "description": "Search 300+ verified APIs ranked by\n    WayforthRank — real agent payment signals,\n    not ads. Use this when you don't know\n    which service to execute.\n    "
+        },
+        {
+          "name": "wayforth_list",
+          "description": "Browse the Wayforth service catalog."
+        },
+        {
+          "name": "wayforth_stats",
+          "description": "Get current Wayforth catalog statistics."
+        },
+        {
+          "name": "wayforth_status",
+          "description": "Return API health and catalog statistics."
+        },
+        {
+          "name": "wayforth_query",
+          "description": "Structured service discovery using WayforthQL v2.\n    More precise than wayforth_search — supports price caps, protocol filters,\n    x402-only, provider filtering, and explicit sort order.\n    Use when you need deterministic filtering rather than pure semantic ranking.\n    "
+        },
+        {
+          "name": "wayforth_compare",
+          "description": "\n    Compare 2-5 API services side by side.\n    Returns WRI scores, response times, costs, signal counts and a plain-English recommendation.\n    Use this before committing to a service.\n    "
+        },
+        {
+          "name": "wayforth_similar",
+          "description": "Find services similar to or commonly used alongside a given service.\n    Returns co-usage patterns from real agent behavior.\n    "
+        },
+        {
+          "name": "wayforth_pay",
+          "description": "\n    Pay for a service through Wayforth.\n\n    Two payment tracks:\n\n    track='card' (default — no crypto needed):\n      - Deducts from your Wayforth credit balance\n      - Stripe Treasury processes the payment to the service\n      - Get credits at wayforth.io/dashboard → Billing → Card Track\n\n    track='crypto' (non-custodial — your wallet):\n      - Returns Base calldata for you to broadcast\n      - Your USDC, your wallet, fully on-chain\n      - Non-custodial — Wayforth never holds your funds\n\n "
+        },
+        {
+          "name": "wayforth_keys",
+          "description": "Manage BYOK (Bring Your Own Key) stored service keys.\n    Store encrypted API keys for any service and call them via wayforth_execute with key_source='byok'.\n    Keys are encrypted at rest with AES-128 and never returned in plaintext.\n    "
+        },
+        {
+          "name": "wayforth_remember",
+          "description": "Save a service to agent memory for quick access later."
+        },
+        {
+          "name": "wayforth_recall",
+          "description": "Recall services previously saved to memory."
+        },
+        {
+          "name": "wayforth_identity",
+          "description": "Get or create your agent identity on Wayforth.\n    Returns your trust score, reputation tier, and usage history.\n    "
+        },
+        {
+          "name": "wayforth_check_agent_identity",
+          "description": "\n    Look up an agent's identity and reputation on Wayforth.\n\n    Returns tier (unknown/emerging/established/trusted/elite), trust score (0-100),\n    call history, and cumulative spend.\n\n    Agents build reputation automatically through x402 pay-per-call usage. No signup required.\n    Tiers unlock higher rate limits:\n      unknown:     10 calls/min\n      emerging:    30 calls/min\n      established: 60 calls/min\n      trusted:     120 calls/min\n      elite:       unlimited\n    "
+        },
+        {
+          "name": "wayforth_set_wri_alert",
+          "description": "\n    Register a webhook to be notified when any API service crosses a WayforthRank WRI score threshold.\n\n    The webhook fires once per service per 24 hours when the score crosses upward through the threshold.\n    Payload is HMAC-SHA256 signed with X-Wayforth-Signature for verification.\n\n    Use this to automatically discover new high-quality services as they accumulate payment signals.\n    "
+        },
+        {
+          "name": "wayforth_quickstart",
+          "description": "\n    Get the Wayforth developer quickstart guide.\n    Returns step-by-step instructions for using Wayforth in an agent.\n    "
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "stars": 26884,
+      "source": "smithery",
+      "last_updated": "2026-07-13",
+      "icon": "search",
+      "smithery_qualified_name": "support-9ef4/Wayforth",
+      "smithery_page_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "mcp_endpoint": "https://wayforth--support-9ef4.run.tools",
+      "deployment_url": "https://wayforth--support-9ef4.run.tools",
+      "connection_url": "https://wayforth--support-9ef4.run.tools",
+      "primary_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://wayforth--support-9ef4.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
       "featured": true
     },
     {
@@ -1254,9 +1060,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/vercel/grep",
-      "stars": 20649,
+      "stars": 20770,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "search",
       "smithery_qualified_name": "vercel/grep",
       "smithery_page_url": "https://smithery.ai/servers/vercel/grep",
@@ -1271,91 +1077,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
-      "tools_validated_at": "2026-07-13T08:32:38.240Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
-    },
-    {
-      "id": "llm-pulse",
-      "slug": "llm-pulse",
-      "name": "LLM Pulse",
-      "description": "LLM Pulse exposes AI visibility analytics through MCP, including projects, competitors, prompts, mentions, citations, sources, sentiment, share of voice, recommendations, GEO Writer data, Search Console, and AI traffic where plan access allows.",
-      "category": "Data & Analytics",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "list_projects",
-          "description": "List accessible LLM Pulse projects"
-        },
-        {
-          "name": "get_project_details",
-          "description": "Retrieve project metadata"
-        },
-        {
-          "name": "get_timeseries",
-          "description": "Query AI visibility metrics over time"
-        },
-        {
-          "name": "get_summary",
-          "description": "Query aggregated metrics"
-        },
-        {
-          "name": "list_mentions",
-          "description": "List brand mentions"
-        },
-        {
-          "name": "list_citations",
-          "description": "List cited sources"
-        },
-        {
-          "name": "get_sov",
-          "description": "Query share of voice"
-        },
-        {
-          "name": "list_recommendations",
-          "description": "Inspect recommendation data"
-        }
-      ],
-      "github_url": "https://github.com/LLM-Pulse/llmpulse-mcp",
-      "docs_url": "https://api.llmpulse.ai/api-docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-13",
-      "icon": "globe",
-      "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
-      "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
-    },
-    {
-      "id": "ignav-flights",
-      "slug": "ignav-flights",
-      "name": "Ignav Flights",
-      "description": "Ignav Flights gives AI agents live flight prices and working booking links. Search one-way and round-trip fares between airports; results include booking URLs. Try without an account, rate-limited per IP; use X-Api-Key for authenticated usage.",
-      "category": "Data & Analytics",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "search_airports",
-          "description": "Resolve city, airport, metro, or IATA inputs into airport codes"
-        },
-        {
-          "name": "search_flights",
-          "description": "Search one-way and round-trip fares with booking URLs"
-        }
-      ],
-      "github_url": "https://github.com/gusgordon/ignav-skill",
-      "docs_url": "https://ignav.com/docs/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-13",
-      "icon": "globe",
-      "mcp_endpoint": "https://ignav.com/mcp",
-      "deployment_url": "https://ignav.com/mcp"
     },
     {
       "id": "googlecalendar",
@@ -1484,9 +1206,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 17238,
+      "stars": 18523,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "boxes",
       "smithery_qualified_name": "googlecalendar",
       "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
@@ -1501,108 +1223,256 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-07-13T08:32:38.497Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "support-9ef4-wayforth",
-      "slug": "support-9ef4-wayforth",
-      "name": "Wayforth",
-      "description": "The API runtime for AI agents.\nOne tool call. Any API. No setup.\nSearch 4,974 verified APIs ranked by WayforthRank — the only ranking algorithm powered by real agent payment signals, not ads. Execute via 18 managed services with zero API keys. Self-healing: if a service fails, credits restore automatically.\nWhat your agent can do:\n\nSearch 4,974 APIs across 19 categories by intent\nExecute: inference, translation, image generation, speech-to-text, web search, financial data, weather, news, and more\nBring your own API keys (BYOK) for any service\nPay per query via x402 at $0.002 USDC\nQuery with WayforthQL: filter by tier, price, protocol, latency\n\nThree payment rails: Card · USDC on Base · x402\nGet started free: 100 calls · No card required\nuvx wayforth-mcp · wayforth.io",
-      "category": "Search & Web",
+      "id": "llm-pulse",
+      "slug": "llm-pulse",
+      "name": "LLM Pulse",
+      "description": "LLM Pulse exposes AI visibility analytics through MCP, including projects, competitors, prompts, mentions, citations, sources, sentiment, share of voice, recommendations, GEO Writer data, Search Console, and AI traffic where plan access allows.",
+      "category": "Data & Analytics",
       "official": true,
       "transport": "http",
       "tools": [
         {
-          "name": "wayforth_run",
-          "description": "The Wayforth runtime. One call does everything: searches for the best API,\n    picks the top-ranked service by WayforthRank v2, maps your input to the\n    service's params, and executes it — returning the result directly.\n\n    Use this instead of wayforth_search + wayforth_execute when you just want the result.\n    Supports: translation, weather, news, stock prices, web search, image generation,\n    speech-to-text, text-to-speech, email, and 300+ more catalog services.\n\n    Optional: include age"
+          "name": "list_projects",
+          "description": "List accessible LLM Pulse projects"
         },
         {
-          "name": "wayforth_execute",
-          "description": "Execute any API service instantly.\n    15 managed services run with zero API keys —\n    Wayforth holds the credentials.\n    The fastest way to add any API capability\n    to your agent.\n\n    Optional: include agent_id='my-agent-name' to tag this call for per-agent analytics\n    in your dashboard at wayforth.io/dashboard/agents.\n    "
+          "name": "get_project_details",
+          "description": "Retrieve project metadata"
         },
         {
-          "name": "wayforth_search",
-          "description": "Search 300+ verified APIs ranked by\n    WayforthRank — real agent payment signals,\n    not ads. Use this when you don't know\n    which service to execute.\n    "
+          "name": "get_timeseries",
+          "description": "Query AI visibility metrics over time"
         },
         {
-          "name": "wayforth_list",
-          "description": "Browse the Wayforth service catalog."
+          "name": "get_summary",
+          "description": "Query aggregated metrics"
         },
         {
-          "name": "wayforth_stats",
-          "description": "Get current Wayforth catalog statistics."
+          "name": "list_mentions",
+          "description": "List brand mentions"
         },
         {
-          "name": "wayforth_status",
-          "description": "Return API health and catalog statistics."
+          "name": "list_citations",
+          "description": "List cited sources"
         },
         {
-          "name": "wayforth_query",
-          "description": "Structured service discovery using WayforthQL v2.\n    More precise than wayforth_search — supports price caps, protocol filters,\n    x402-only, provider filtering, and explicit sort order.\n    Use when you need deterministic filtering rather than pure semantic ranking.\n    "
+          "name": "get_sov",
+          "description": "Query share of voice"
         },
         {
-          "name": "wayforth_compare",
-          "description": "\n    Compare 2-5 API services side by side.\n    Returns WRI scores, response times, costs, signal counts and a plain-English recommendation.\n    Use this before committing to a service.\n    "
-        },
-        {
-          "name": "wayforth_similar",
-          "description": "Find services similar to or commonly used alongside a given service.\n    Returns co-usage patterns from real agent behavior.\n    "
-        },
-        {
-          "name": "wayforth_pay",
-          "description": "\n    Pay for a service through Wayforth.\n\n    Two payment tracks:\n\n    track='card' (default — no crypto needed):\n      - Deducts from your Wayforth credit balance\n      - Stripe Treasury processes the payment to the service\n      - Get credits at wayforth.io/dashboard → Billing → Card Track\n\n    track='crypto' (non-custodial — your wallet):\n      - Returns Base calldata for you to broadcast\n      - Your USDC, your wallet, fully on-chain\n      - Non-custodial — Wayforth never holds your funds\n\n "
-        },
-        {
-          "name": "wayforth_keys",
-          "description": "Manage BYOK (Bring Your Own Key) stored service keys.\n    Store encrypted API keys for any service and call them via wayforth_execute with key_source='byok'.\n    Keys are encrypted at rest with AES-128 and never returned in plaintext.\n    "
-        },
-        {
-          "name": "wayforth_remember",
-          "description": "Save a service to agent memory for quick access later."
-        },
-        {
-          "name": "wayforth_recall",
-          "description": "Recall services previously saved to memory."
-        },
-        {
-          "name": "wayforth_identity",
-          "description": "Get or create your agent identity on Wayforth.\n    Returns your trust score, reputation tier, and usage history.\n    "
-        },
-        {
-          "name": "wayforth_check_agent_identity",
-          "description": "\n    Look up an agent's identity and reputation on Wayforth.\n\n    Returns tier (unknown/emerging/established/trusted/elite), trust score (0-100),\n    call history, and cumulative spend.\n\n    Agents build reputation automatically through x402 pay-per-call usage. No signup required.\n    Tiers unlock higher rate limits:\n      unknown:     10 calls/min\n      emerging:    30 calls/min\n      established: 60 calls/min\n      trusted:     120 calls/min\n      elite:       unlimited\n    "
-        },
-        {
-          "name": "wayforth_set_wri_alert",
-          "description": "\n    Register a webhook to be notified when any API service crosses a WayforthRank WRI score threshold.\n\n    The webhook fires once per service per 24 hours when the score crosses upward through the threshold.\n    Payload is HMAC-SHA256 signed with X-Wayforth-Signature for verification.\n\n    Use this to automatically discover new high-quality services as they accumulate payment signals.\n    "
-        },
-        {
-          "name": "wayforth_quickstart",
-          "description": "\n    Get the Wayforth developer quickstart guide.\n    Returns step-by-step instructions for using Wayforth in an agent.\n    "
+          "name": "list_recommendations",
+          "description": "Inspect recommendation data"
         }
       ],
-      "docs_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
-      "stars": 17015,
+      "github_url": "https://github.com/LLM-Pulse/llmpulse-mcp",
+      "docs_url": "https://api.llmpulse.ai/api-docs",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-13",
+      "icon": "globe",
+      "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
+      "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
+    },
+    {
+      "id": "ignav-flights",
+      "slug": "ignav-flights",
+      "name": "Ignav Flights",
+      "description": "Ignav Flights gives AI agents live flight prices and working booking links. Search one-way and round-trip fares between airports; results include booking URLs. Try without an account, rate-limited per IP; use X-Api-Key for authenticated usage.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_airports",
+          "description": "Resolve city, airport, metro, or IATA inputs into airport codes"
+        },
+        {
+          "name": "search_flights",
+          "description": "Search one-way and round-trip fares with booking URLs"
+        }
+      ],
+      "github_url": "https://github.com/gusgordon/ignav-skill",
+      "docs_url": "https://ignav.com/docs/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-13",
+      "icon": "globe",
+      "mcp_endpoint": "https://ignav.com/mcp",
+      "deployment_url": "https://ignav.com/mcp"
+    },
+    {
+      "id": "ethanhenrickson-math-mcp",
+      "slug": "ethanhenrickson-math-mcp",
+      "name": "Math-MCP",
+      "description": "Enable your LLMs to perform accurate numerical calculations with a simple API. Leverage basic arithmetic and statistical functions to enhance your applications. Simplify complex mathematical tasks effortlessly and improve your model's capabilities.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "add",
+          "description": "Adds two numbers together"
+        },
+        {
+          "name": "subtract",
+          "description": "Subtracts the second number from the first number"
+        },
+        {
+          "name": "multiply",
+          "description": "Multiplies two numbers together"
+        },
+        {
+          "name": "division",
+          "description": "Divides the first number by the second number"
+        },
+        {
+          "name": "sum",
+          "description": "Adds any number of numbers together"
+        },
+        {
+          "name": "modulo",
+          "description": "Divides two numbers and returns the remainder"
+        },
+        {
+          "name": "mean",
+          "description": "Calculates the arithmetic mean of a list of numbers"
+        },
+        {
+          "name": "median",
+          "description": "Calculates the median of a list of numbers"
+        },
+        {
+          "name": "mode",
+          "description": "Finds the most common number in a list of numbers"
+        },
+        {
+          "name": "min",
+          "description": "Finds the minimum value from a list of numbers"
+        },
+        {
+          "name": "max",
+          "description": "Finds the maximum value from a list of numbers"
+        },
+        {
+          "name": "floor",
+          "description": "Rounds a number down to the nearest integer"
+        },
+        {
+          "name": "ceiling",
+          "description": "Rounds a number up to the nearest integer"
+        },
+        {
+          "name": "round",
+          "description": "Rounds a number to the nearest integer"
+        },
+        {
+          "name": "sin",
+          "description": "Calculates the sine of a number in radians"
+        },
+        {
+          "name": "arcsin",
+          "description": "Calculates the arcsine of a number in radians"
+        },
+        {
+          "name": "cos",
+          "description": "Calculates the cosine of a number in radians"
+        },
+        {
+          "name": "arccos",
+          "description": "Calculates the arccosine of a number in radians"
+        },
+        {
+          "name": "tan",
+          "description": "Calculates the tangent of a number in radians"
+        },
+        {
+          "name": "arctan",
+          "description": "Calculates the arctangent of a number in radians"
+        },
+        {
+          "name": "radiansToDegrees",
+          "description": "Converts a radian value to its equivalent in degrees"
+        },
+        {
+          "name": "degreesToRadians",
+          "description": "Converts a degree value to its equivalent in radians"
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "stars": 23265,
       "source": "smithery",
-      "last_updated": "2026-07-06",
-      "icon": "search",
-      "smithery_qualified_name": "support-9ef4/Wayforth",
-      "smithery_page_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
-      "mcp_endpoint": "https://wayforth--support-9ef4.run.tools",
-      "deployment_url": "https://wayforth--support-9ef4.run.tools",
-      "connection_url": "https://wayforth--support-9ef4.run.tools",
-      "primary_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
+      "last_updated": "2026-07-13",
+      "icon": "boxes",
+      "smithery_qualified_name": "EthanHenrickson/math-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "mcp_endpoint": "https://math-mcp--ethanhenrickson.run.tools",
+      "deployment_url": "https://math-mcp--ethanhenrickson.run.tools",
+      "connection_url": "https://math-mcp--ethanhenrickson.run.tools",
+      "primary_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://wayforth--support-9ef4.run.tools"
+          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://math-mcp--ethanhenrickson.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
-      "tools_validated_at": "2026-07-13T08:32:38.221Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
+      "featured": true
+    },
+    {
+      "id": "zev-lastlook-data",
+      "slug": "zev-lastlook-data",
+      "name": "LastLook Data",
+      "description": "LastLook Data gives AI agents real-time access to US financial market data: Treasury yields (2yr, 10yr, 30yr), mortgage rates, Fed funds rate, CPI, unemployment, GDP, WTI/Brent crude, natural gas, and G10 FX rates. Also includes derived indicators: yield curve spreads (2s10s, 3m10y) with inversion signal, Sahm Rule recession indicator, Fed policy spread (EFFR vs IORB), and upcoming FRED economic calendar. Data sourced from FRED and ECB. Pay per query via x402 on Base — no accounts, no API keys, no subscriptions.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_treasury_yield_current",
+          "description": "Returns the most recent 30-year US Treasury constant maturity yield (DGS30) from FRED. Use this specifically for the 30-year Treasury rate. For other series use get_series instead."
+        },
+        {
+          "name": "get_treasury_yield_by_date",
+          "description": "Returns the 30-year US Treasury yield for a specific date. Business days only. Use YYYY-MM-DD format."
+        },
+        {
+          "name": "get_series",
+          "description": "Returns recent observations for any supported FRED data series. Use this to get current and historical values for mortgage rates, Treasury yields, Fed funds rate, CPI, SOFR, unemployment, GDP, energy prices, and more. Common use cases:\n- Current 30-yr mortgage rate: series_id=MORTGAGE30US, days=30\n- Current 15-yr mortgage rate: series_id=MORTGAGE15US, days=30\n- Current Fed funds rate: series_id=FEDFUNDS, days=30\n- Current IORB (Interest on Reserve Balances): series_id=IORB, days=30\n- Current EFF"
+        },
+        {
+          "name": "get_fx_rate_current",
+          "description": "Returns the current exchange rate for a G10 currency pair. Source: European Central Bank. Supported: EURUSD, GBPUSD, USDJPY, USDCHF, USDCAD, AUDUSD, NZDUSD, USDSEK, USDNOK."
+        },
+        {
+          "name": "get_fx_rate_series",
+          "description": "Returns historical daily exchange rates for a G10 currency pair. Source: European Central Bank."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/zev/lastlook-data",
+      "stars": 18622,
+      "source": "smithery",
+      "last_updated": "2026-07-13",
+      "icon": "boxes",
+      "smithery_qualified_name": "zev/lastlook-data",
+      "smithery_page_url": "https://smithery.ai/servers/zev/lastlook-data",
+      "mcp_endpoint": "https://lastlook-data--zev.run.tools",
+      "deployment_url": "https://lastlook-data--zev.run.tools",
+      "connection_url": "https://lastlook-data--zev.run.tools",
+      "primary_url": "https://smithery.ai/servers/zev/lastlook-data",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/zev/lastlook-data\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://lastlook-data--zev.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/zev/lastlook-data",
       "featured": true
     },
     {
@@ -1629,9 +1499,9 @@
       ],
       "github_url": "https://github.com/mikechao/metmuseum-mcp",
       "docs_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "stars": 23042,
+      "stars": 22961,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "search",
       "smithery_qualified_name": "mikechao/metmuseum-mcp",
       "smithery_page_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
@@ -1643,8 +1513,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "tools_validated_at": "2026-07-13T08:32:37.288Z",
-      "tools_validation_method": "smithery_registry",
       "featured": true
     },
     {
@@ -1706,9 +1574,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "stars": 16917,
+      "stars": 16899,
       "source": "smithery",
-      "last_updated": "2026-07-06",
+      "last_updated": "2026-07-13",
       "icon": "search",
       "smithery_qualified_name": "theagenttimes/ucp-gateway",
       "smithery_page_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
@@ -1723,60 +1591,116 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "tools_validated_at": "2026-07-13T08:32:38.800Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "nitrofire-q-gread",
-      "slug": "nitrofire-q-gread",
-      "name": "Gread",
-      "description": "Gives your AI access to the source code of all public github repos.\n\n- Plug and Play: Compatible with all popular coding agents and MCP clients, ready to use out of the box\n- Skill and MCP: Both Skill and MCP are provided, connect with either option\n- Docs Integration: Automatically recognizes docs repo and provides them along with the main repo when accessed",
-      "category": "AI & Memory",
-      "official": false,
+      "id": "googledrive",
+      "slug": "googledrive",
+      "name": "Google Drive",
+      "description": "Upload, organize, and share files in the cloud. Manage folders, set permissions, and search across stored documents.",
+      "category": "Search & Web",
+      "official": true,
       "transport": "http",
       "tools": [
         {
-          "name": "search_repos",
-          "description": "Search for GitHub repositories by name, description, or topic keywords using the GitHub Search API."
+          "name": "GOOGLEDRIVE_ADD_FILE_SHARING_PREFERENCE",
+          "description": "Modifies sharing permissions for an existing google drive file, granting a specified role to a user, group, domain, or 'anyone'."
         },
         {
-          "name": "view_repo",
-          "description": "View repository basic information and its directory structure. Includes corresponding documentation repo if available."
+          "name": "GOOGLEDRIVE_COPY_FILE",
+          "description": "Duplicates an existing file in google drive, identified by its `file id`."
         },
         {
-          "name": "list_tree",
-          "description": "List the directory tree of a specific path in a repository with customizable depth and traversal limits."
+          "name": "GOOGLEDRIVE_CREATE_COMMENT",
+          "description": "Tool to create a comment on a file. use when you need to add a new comment to a specific file in google drive."
         },
         {
-          "name": "read_code",
-          "description": "Retrieve the raw source code of specified files from within a known repository."
+          "name": "GOOGLEDRIVE_CREATE_DRIVE",
+          "description": "Tool to create a new shared drive. use when you need to programmatically create a new shared drive for collaboration or storage."
         },
         {
-          "name": "search_code",
-          "description": "Perform a fast git grep inside the repository, allowing regex matching by default or substring search."
+          "name": "GOOGLEDRIVE_CREATE_FILE",
+          "description": "Creates a new file or folder with metadata. use to create empty files or folders, or files with content by providing it in the request body (though this action primarily focuses on metadata creation)."
+        },
+        {
+          "name": "GOOGLEDRIVE_CREATE_FILE_FROM_TEXT",
+          "description": "Creates a new file in google drive from provided text content (up to 10mb), supporting various formats including automatic conversion to google workspace types."
+        },
+        {
+          "name": "GOOGLEDRIVE_CREATE_FOLDER",
+          "description": "Creates a new folder in google drive, optionally within a parent folder specified by its id or name; if a parent name is provided but not found, the action will fail."
+        },
+        {
+          "name": "GOOGLEDRIVE_CREATE_REPLY",
+          "description": "Tool to create a reply to a comment in google drive. use when you need to respond to an existing comment on a file."
+        },
+        {
+          "name": "GOOGLEDRIVE_CREATE_SHORTCUT_TO_FILE",
+          "description": "Tool to create a shortcut to a file or folder in google drive. use when you need to link to an existing drive item from another location without duplicating it."
+        },
+        {
+          "name": "GOOGLEDRIVE_DELETE_COMMENT",
+          "description": "Deletes a comment from a file. use when you need to remove a specific comment from a google drive file."
+        },
+        {
+          "name": "GOOGLEDRIVE_DELETE_DRIVE",
+          "description": "Tool to permanently delete a shared drive. use when you need to remove a shared drive and its contents (if specified)."
+        },
+        {
+          "name": "GOOGLEDRIVE_DELETE_PERMISSION",
+          "description": "Deletes a permission from a file by permission id. use when you need to revoke access for a specific user or group from a file."
+        },
+        {
+          "name": "GOOGLEDRIVE_DELETE_REPLY",
+          "description": "Tool to delete a specific reply by reply id. use when you need to remove a reply from a comment on a file."
+        },
+        {
+          "name": "GOOGLEDRIVE_DOWNLOAD_FILE",
+          "description": "Downloads a file from google drive by its id. for google workspace documents (docs, sheets, slides), optionally exports to a specified `mime type`. for other file types, downloads in their native format regardless of mime type."
+        },
+        {
+          "name": "GOOGLEDRIVE_EDIT_FILE",
+          "description": "Updates an existing google drive file by overwriting its entire content with new text (max 10mb)."
+        },
+        {
+          "name": "GOOGLEDRIVE_EMPTY_TRASH",
+          "description": "Tool to permanently delete all of the user's trashed files. use when you want to empty the trash in google drive."
+        },
+        {
+          "name": "GOOGLEDRIVE_FILES_MODIFY_LABELS",
+          "description": "Modifies the set of labels applied to a file. returns a list of the labels that were added or modified. use when you need to programmatically change labels on a google drive file, such as adding, updating, or removing them."
+        },
+        {
+          "name": "GOOGLEDRIVE_FIND_FILE",
+          "description": "Tool to list or search for files and folders in google drive. use when you need to find specific files based on query criteria or list contents of a drive/folder."
+        },
+        {
+          "name": "GOOGLEDRIVE_FIND_FOLDER",
+          "description": "Tool to find a folder in google drive by its name and optionally a parent folder. use when you need to locate a specific folder to perform further actions like creating files in it or listing its contents."
+        },
+        {
+          "name": "GOOGLEDRIVE_GENERATE_IDS",
+          "description": "Generates a set of file ids which can be provided in create or copy requests. use when you need to pre-allocate ids for new files or copies."
         }
       ],
-      "docs_url": "https://smithery.ai/servers/nitrofire-q/gread",
-      "stars": 20772,
+      "docs_url": "https://smithery.ai/servers/googledrive",
+      "stars": 15538,
       "source": "smithery",
-      "last_updated": "2026-07-06",
-      "icon": "boxes",
-      "smithery_qualified_name": "nitrofire-q/gread",
-      "smithery_page_url": "https://smithery.ai/servers/nitrofire-q/gread",
-      "mcp_endpoint": "https://gread--nitrofire-q.run.tools",
-      "deployment_url": "https://gread--nitrofire-q.run.tools",
-      "connection_url": "https://gread--nitrofire-q.run.tools",
-      "primary_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "last_updated": "2026-07-13",
+      "icon": "search",
+      "smithery_qualified_name": "googledrive",
+      "smithery_page_url": "https://smithery.ai/servers/googledrive",
+      "mcp_endpoint": "https://googledrive.run.tools",
+      "deployment_url": "https://googledrive.run.tools",
+      "connection_url": "https://googledrive.run.tools",
+      "primary_url": "https://smithery.ai/servers/googledrive",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/nitrofire-q/gread\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gread--nitrofire-q.run.tools"
+          "text": "1. Open https://smithery.ai/servers/googledrive\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googledrive.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-07-13T08:32:37.867Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/googledrive",
       "featured": true
     },
     {
@@ -1956,6 +1880,44 @@
       "hidden": false,
       "last_updated": "2026-07-13",
       "icon": "cloud-code"
+    },
+    {
+      "id": "kiwi",
+      "slug": "kiwi",
+      "name": "Kiwi.com",
+      "description": "Search flights, compare prices, and manage travel bookings. Find the best routes, check availability, and track itineraries.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search-flight",
+          "description": "\n# Search for a flight\n\n## Description\n\nUses the Kiwi API to search for available flights between two locations on a specific date.\n\n## How it works\n\nThe tool will:\n1. Search for matching locations to resolve airport codes\n2. Find available flights for the specified route and date range\n\n## Method\n\nCall this tool whenever a user wants to search for flights, regardless of whether they provided exact airport codes or just city names.\n\nYou should display the returned results in a markdown table for"
+        },
+        {
+          "name": "feedback-to-devs",
+          "description": "Send feedback to the dev of the Kiwi MCP server."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/kiwi",
+      "stars": 15106,
+      "source": "smithery",
+      "last_updated": "2026-07-13",
+      "icon": "search",
+      "smithery_qualified_name": "kiwi",
+      "smithery_page_url": "https://smithery.ai/servers/kiwi",
+      "mcp_endpoint": "https://kiwi.run.tools",
+      "deployment_url": "https://kiwi.run.tools",
+      "connection_url": "https://kiwi.run.tools",
+      "primary_url": "https://smithery.ai/servers/kiwi",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/kiwi\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://kiwi.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/kiwi",
+      "featured": true
     },
     {
       "id": "gmail",
@@ -3950,32 +3912,6 @@
       "hidden": false,
       "last_updated": "2026-07-13",
       "icon": "cloud"
-    },
-    {
-      "id": "mixpanel",
-      "slug": "mixpanel",
-      "name": "Mixpanel",
-      "description": "Event analytics and funnel analysis.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query_insights",
-          "description": "Run insights queries"
-        },
-        {
-          "name": "export_report",
-          "description": "Export analytics report"
-        }
-      ],
-      "docs_url": "https://developer.mixpanel.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-13",
-      "icon": "bar-chart"
     }
   ]
 }
