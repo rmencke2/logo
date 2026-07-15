@@ -2562,6 +2562,190 @@
         }
       ],
       "github_url": "https://github.com/bluesky-social/mcp-bluesky"
+    },
+    {
+      "name": "Atlassian MCP Server",
+      "slug": "atlassian-mcp",
+      "category": "Communication",
+      "description": "Official Atlassian MCP server for connecting AI agents to Jira, Confluence, Opsgenie, and other Atlassian Cloud products.",
+      "official": true,
+      "transport": "http",
+      "icon": "message-square",
+      "tools": [
+        { "name": "search_issues", "description": "Search Jira issues across projects" },
+        { "name": "get_issue", "description": "Get Jira issue details by key" },
+        { "name": "create_issue", "description": "Create a new Jira issue" },
+        { "name": "search_pages", "description": "Search Confluence pages" },
+        { "name": "get_page", "description": "Read Confluence page content" }
+      ],
+      "docs_url": "https://developer.atlassian.com/cloud/mcp",
+      "stars": 920
+    },
+    {
+      "name": "Chrome DevTools MCP",
+      "slug": "chrome-devtools-mcp",
+      "category": "Dev Tools",
+      "description": "Official Chrome DevTools MCP server for controlling and inspecting a live Chrome browser from coding agents such as Gemini, Claude, Cursor, and Copilot.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "monitor",
+      "tools": [
+        { "name": "navigate_page", "description": "Navigate the browser to a URL" },
+        { "name": "take_screenshot", "description": "Capture a screenshot of the current page" },
+        { "name": "evaluate_script", "description": "Run JavaScript in the page context" },
+        { "name": "list_console_messages", "description": "Read console log output" },
+        { "name": "get_network_requests", "description": "Inspect network activity" }
+      ],
+      "github_url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "stars": 2100
+    },
+    {
+      "name": "Google MCP Servers",
+      "slug": "google-mcp-servers",
+      "category": "Dev Tools",
+      "description": "Collection of Google's official MCP servers for Maps, BigQuery, Kubernetes Engine, Compute, and other Google Cloud developer workflows.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "cloud",
+      "tools": [
+        { "name": "search_places", "description": "Search places via Google Maps" },
+        { "name": "run_query", "description": "Execute BigQuery SQL" },
+        { "name": "list_clusters", "description": "List GKE clusters" },
+        { "name": "get_instance", "description": "Describe Compute Engine instances" }
+      ],
+      "github_url": "https://github.com/google/mcp",
+      "docs_url": "https://cloud.google.com/mcp",
+      "stars": 1500
+    },
+    {
+      "name": "Cal.com MCP",
+      "slug": "cal-com-mcp",
+      "category": "Communication",
+      "description": "Connect AI clients to Cal.com scheduling through the Model Context Protocol using the hosted server at mcp.cal.com or a local instance.",
+      "official": true,
+      "transport": "http",
+      "icon": "calendar",
+      "tools": [
+        { "name": "list_event_types", "description": "List available Cal.com event types" },
+        { "name": "get_availability", "description": "Check scheduling availability" },
+        { "name": "create_booking", "description": "Book a meeting slot" }
+      ],
+      "docs_url": "https://mcp.cal.com",
+      "mcp_endpoint": "https://mcp.cal.com/mcp",
+      "stars": 680
+    },
+    {
+      "name": "Granola MCP",
+      "slug": "granola-mcp",
+      "category": "Communication",
+      "description": "Connect Claude, ChatGPT, and other AI tools to your Granola meeting notes via MCP. Query notes, search transcripts, and get meeting insights.",
+      "official": true,
+      "transport": "http",
+      "icon": "message-square",
+      "tools": [
+        { "name": "search_notes", "description": "Search meeting notes and transcripts" },
+        { "name": "get_meeting", "description": "Retrieve a specific meeting summary" },
+        { "name": "list_recent", "description": "List recent meetings" }
+      ],
+      "docs_url": "https://www.granola.ai/docs/mcp",
+      "stars": 420
+    },
+    {
+      "name": "MiniMax MCP",
+      "slug": "minimax-mcp",
+      "category": "Cloud & Infra",
+      "description": "Interact with MiniMax's Text-to-Speech, image, and video generation APIs through MCP tools.",
+      "official": true,
+      "transport": "http",
+      "icon": "image",
+      "tools": [
+        { "name": "text_to_speech", "description": "Generate speech audio from text" },
+        { "name": "generate_image", "description": "Create images from prompts" },
+        { "name": "generate_video", "description": "Create video from prompts" }
+      ],
+      "docs_url": "https://www.minimax.io/platform/document/mcp",
+      "stars": 310
+    },
+    {
+      "name": "Next.js DevTools MCP",
+      "slug": "nextjs-devtools-mcp",
+      "category": "Dev Tools",
+      "description": "MCP server that provides Next.js development tools and utilities for AI coding assistants like Claude and Cursor.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "code",
+      "tools": [
+        { "name": "get_project_info", "description": "Inspect Next.js project configuration" },
+        { "name": "list_routes", "description": "List application routes" },
+        { "name": "get_build_diagnostics", "description": "Read build and dev server diagnostics" }
+      ],
+      "github_url": "https://github.com/vercel/next-devtools-mcp",
+      "stars": 890
+    },
+    {
+      "name": "NotebookLM MCP Server",
+      "slug": "notebooklm-mcp",
+      "category": "AI & Memory",
+      "description": "Let CLI agents chat directly with NotebookLM for grounded answers based on your own notebooks and uploaded sources.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "book-open",
+      "tools": [
+        { "name": "ask_notebook", "description": "Query a NotebookLM notebook" },
+        { "name": "list_notebooks", "description": "List available notebooks" },
+        { "name": "add_source", "description": "Add a source document to a notebook" }
+      ],
+      "github_url": "https://github.com/jacob-bd/notebooklm-mcp",
+      "stars": 540
+    },
+    {
+      "name": "Proxyman MCP",
+      "slug": "proxyman-mcp",
+      "category": "Dev Tools",
+      "description": "Inspect HTTP traffic, create debugging rules, and control Proxyman through natural language MCP conversations.",
+      "official": true,
+      "transport": "stdio",
+      "icon": "activity",
+      "tools": [
+        { "name": "list_requests", "description": "List captured HTTP requests" },
+        { "name": "get_request_detail", "description": "Inspect a specific request and response" },
+        { "name": "create_breakpoint", "description": "Add a debugging breakpoint rule" }
+      ],
+      "docs_url": "https://docs.proxyman.io/mcp",
+      "stars": 380
+    },
+    {
+      "name": "Railway MCP",
+      "slug": "railway-mcp",
+      "category": "Cloud & Infra",
+      "description": "Natural language interaction with Railway projects — create projects, deploy templates, manage environments, pull variables, and redeploy services.",
+      "official": true,
+      "transport": "http",
+      "icon": "cloud",
+      "tools": [
+        { "name": "list_projects", "description": "List Railway projects" },
+        { "name": "deploy_service", "description": "Trigger a service deployment" },
+        { "name": "get_variables", "description": "Read environment variables" },
+        { "name": "create_project", "description": "Create a new Railway project" }
+      ],
+      "docs_url": "https://docs.railway.com/guides/mcp",
+      "stars": 760
+    },
+    {
+      "name": "XcodeBuildMCP",
+      "slug": "xcodebuildmcp",
+      "category": "Dev Tools",
+      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects — builds, simulators, and Xcode workflows.",
+      "official": false,
+      "transport": "stdio",
+      "icon": "monitor",
+      "tools": [
+        { "name": "build_project", "description": "Build an Xcode project or workspace" },
+        { "name": "run_simulator", "description": "Launch the iOS Simulator" },
+        { "name": "list_schemes", "description": "List available Xcode schemes" }
+      ],
+      "github_url": "https://github.com/cameroncooke/XcodeBuildMCP",
+      "stars": 620
     }
   ]
 }

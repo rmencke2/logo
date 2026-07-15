@@ -45,9 +45,9 @@ function getHomeSeoContent(heroStats) {
   const faqs = [
     {
       q: 'What is the Model Context Protocol (MCP)?',
-      a: 'The <strong>Model Context Protocol (MCP)</strong> is an open standard that lets AI assistants connect to external tools and data sources — databases, APIs, browsers, file systems, and SaaS apps — through a consistent protocol. Clients like <a href="/mcp?q=claude">Claude</a>, <a href="/mcp?q=cursor">Cursor</a>, and VS Code load MCP servers that expose callable tools.',
+      a: 'The <strong>Model Context Protocol (MCP)</strong> is an open standard (introduced by Anthropic in November 2024) that lets AI assistants connect to external tools and data through a consistent protocol. Read our full guide: <a href="/insights/what-is-model-context-protocol">What is MCP?</a> — or browse the <a href="/mcp">server directory</a>.',
       aPlain:
-        'The Model Context Protocol (MCP) is an open standard that lets AI assistants connect to external tools and data sources through a consistent protocol. Clients like Claude, Cursor, and VS Code load MCP servers that expose callable tools.',
+        'MCP is an open standard that lets AI assistants connect to external tools and data. See our What is MCP guide and server directory on Influzer.ai.',
     },
     {
       q: 'What is Influzer.ai?',
@@ -87,7 +87,15 @@ function getHomeSeoContent(heroStats) {
         links: [
           { href: '/mcp', label: 'Top 100 MCP servers', desc: 'Curated leaders with indexed tools' },
           { href: '/mcp/all', label: `Full directory (${registry})`, desc: 'Search every registered server' },
+          { href: '/mcp/topics', label: 'MCP topic guides', desc: 'Browser automation, RAG, PDF, and more' },
           { href: '/mcp/submit', label: 'Submit a server', desc: 'Suggest a listing we are missing' },
+        ],
+      },
+      {
+        title: 'Learn MCP',
+        links: [
+          { href: '/insights/what-is-model-context-protocol', label: 'What is MCP?', desc: 'Architecture, examples, MCP vs RAG' },
+          { href: '/insights/how-to-set-up-your-first-mcp-servers-in-cursor', label: 'First MCP setup', desc: 'Practical Cursor starter guide' },
         ],
       },
       {
@@ -170,7 +178,7 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         ]
       : [
           `Search all <strong>${registry} registered MCP servers</strong>. By default we show ${indexed} entries with indexed tool lists; uncheck the filter to see the entire registry.`,
-          `New to MCP? Start with the curated <a href="/mcp">Top 100</a> or read our <a href="/insights">AI insights</a> on agents and workflows.`,
+          `New to MCP? Read <a href="/insights/what-is-model-context-protocol">What is the Model Context Protocol?</a> or start with the curated <a href="/mcp">Top 100</a>. Browse <a href="/mcp/topics">topic guides</a> for browser automation, RAG, and coding-agent stacks.`,
         ],
     faqs,
     crossLinkGroups: [
@@ -179,6 +187,7 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         links: [
           { href: '/', label: 'Homepage', desc: 'Search and weekly digest' },
           { href: isTop ? '/mcp/all' : '/mcp', label: isTop ? `Full directory (${registry})` : 'Top 100 MCP servers', desc: isTop ? 'Every registered server' : 'Curated leaders' },
+          { href: '/mcp/topics', label: 'Topic guides', desc: 'Browser automation, RAG, PDF, coding agents' },
           { href: '/mcp/submit', label: 'Submit a server', desc: 'Add a missing integration' },
         ],
       },
@@ -189,6 +198,7 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
       {
         title: 'Related',
         links: [
+          { href: '/insights/what-is-model-context-protocol', label: 'What is MCP?', desc: 'Full primer — architecture and MCP vs RAG' },
           { href: '/insights', label: 'Insights', desc: 'Executive AI playbooks' },
           { href: '/mcp/webnode', label: 'Webnode MCP', desc: 'Create websites from your agent' },
         ],

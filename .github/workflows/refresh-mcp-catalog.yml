@@ -26,9 +26,11 @@ jobs:
       - name: Fetch and build catalog
         run: npm run refresh-data
         env:
-          GLAMA_TARGET: 800
+          GLAMA_TARGET: 2000
           GLAMA_DETAIL_DELAY_MS: 200
-          SMITHERY_MAX_PAGES: 60
+          SMITHERY_MAX_PAGES: 150
+          MCPSERVERS_MAX_PAGES: 120
+          MCPSERVERS_PAGE_DELAY_MS: 250
 
       - name: Commit updated data
         run: |

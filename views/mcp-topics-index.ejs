@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> - Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' - Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      ogImage: typeof ogImage !== 'undefined' ? ogImage : undefined,
+    }) %>
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify(jsonLd) %>
+      </script>
+    <% } %>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="stylesheet" href="/css/seo-content.css" />
+    <style>
+      .mcp-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
+      .mcp-topic-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin: 28px 0 40px; }
+      .mcp-topic-card {
+        display: block; padding: 20px; border-radius: 16px; text-decoration: none; color: inherit;
+        border: 1px solid var(--color-border); background: var(--color-paper);
+        box-shadow: 0 2px 12px rgba(45, 42, 38, 0.04);
+      }
+      .mcp-topic-card:hover { border-color: var(--color-terracotta); }
+      .mcp-topic-card h2 { margin: 0 0 8px; font-size: 1.1rem; }
+      .mcp-topic-card p { margin: 0; font-size: .92rem; color: var(--color-charcoal-light); line-height: 1.55; }
+      .mcp-topic-count { font-family: var(--font-ui); font-size: .78rem; color: var(--color-terracotta); font-weight: 600; margin-top: 10px; display: block; }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/site-header', { navPath: '/mcp' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="mcp-page">
+      <header class="mcp-header">
+        <p class="mcp-kicker">MCP topic guides</p>
+        <h1><%= pageTitle %></h1>
+        <p class="mcp-lead"><%= metaDescription %></p>
+      </header>
+
+      <div class="mcp-topic-grid">
+        <% topics.forEach(function(topic) { %>
+          <a class="mcp-topic-card" href="/mcp/topics/<%= topic.slug %>">
+            <h2><%= topic.shortTitle %></h2>
+            <p><%= topic.metaDescription %></p>
+            <span class="mcp-topic-count"><%= topic.matchCount %> matching servers</span>
+          </a>
+        <% }); %>
+      </div>
+
+      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent }) %>
+    </main>
+  </body>
+</html>

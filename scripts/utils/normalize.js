@@ -154,7 +154,7 @@ function inferIcon(category, name) {
  * @property {string} [github_url]
  * @property {string} [docs_url]
  * @property {number} stars
- * @property {'glama' | 'smithery' | 'awesome-mcp' | 'manual'} source
+ * @property {'glama' | 'smithery' | 'awesome-mcp' | 'mcpservers-org' | 'manual'} source
  * @property {string} last_updated
  * @property {string} icon
  */
@@ -192,6 +192,7 @@ function qualityScore(s) {
   if (s.source === 'manual') score += 500;
   if (s.source === 'smithery') score += 120;
   if (s.source === 'glama') score += 30;
+  if (s.source === 'mcpservers-org') score += 10;
   if (s.github_url) score += 20;
   return score;
 }

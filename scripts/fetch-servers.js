@@ -31,11 +31,14 @@ const SMITHERY_BASE = 'https://api.smithery.ai/servers';
 const AWESOME_README =
   'https://raw.githubusercontent.com/wong2/awesome-mcp-servers/main/README.md';
 
-const GLAMA_TARGET = Number(process.env.GLAMA_TARGET) || 800;
+const GLAMA_TARGET = Number(process.env.GLAMA_TARGET) || 2000;
 const GLAMA_PAGE_SIZE = 100;
 const GLAMA_DETAIL_DELAY_MS = Number(process.env.GLAMA_DETAIL_DELAY_MS) || 200;
 const SMITHERY_PAGE_SIZE = 100;
-const SMITHERY_MAX_PAGES = Number(process.env.SMITHERY_MAX_PAGES) || 60;
+const SMITHERY_MAX_PAGES = Number(process.env.SMITHERY_MAX_PAGES) || 150;
+const MCPSERVERS_BASE = 'https://mcpservers.org';
+const MCPSERVERS_MAX_PAGES = Number(process.env.MCPSERVERS_MAX_PAGES) || 100;
+const MCPSERVERS_PAGE_DELAY_MS = Number(process.env.MCPSERVERS_PAGE_DELAY_MS) || 250;
 const FETCH_TIMEOUT_MS = 30000;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -309,6 +312,113 @@ async function fetchAwesomeMcpServers() {
   return servers;
 }
 
+// ——— mcpservers.org (JSON-LD ItemList from /all pages) ———
+
+/**
+ * @param {string} html
+ * @returns {{ name: string; url: string }[]}
+ */
+function extractMcpserversItemList(html) {
+  const items = [];
+  const scriptRe = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = scriptRe.exec(html)) !== null) {
+    try {
+      const data = JSON.parse(match[1].trim());
+      const list = data?.mainEntity?.itemListElement;
+      if (!Array.isArray(list)) continue;
+      for (const entry of list) {
+        if (entry?.name && entry?.url) {
+          items.push({ name: String(entry.name).trim(), url: String(entry.url).trim() });
+        }
+      }
+    } catch {
+      /* skip malformed JSON-LD */
+    }
+  }
+  return items;
+}
+
+/**
+ * @param {string} pageUrl
+ */
+function slugFromMcpserversUrl(pageUrl) {
+  try {
+    const parts = new URL(pageUrl).pathname.split('/').filter(Boolean);
+    const idx = parts.indexOf('servers');
+    if (idx >= 0 && parts[idx + 1]) {
+      return slugify(parts.slice(idx + 1).join('-'));
+    }
+  } catch {
+    /* fall through */
+  }
+  return slugify(pageUrl);
+}
+
+async function fetchMcpserversOrgServers() {
+  console.log(`\n📡 mcpservers.org: listing servers (max ${MCPSERVERS_MAX_PAGES} pages)…`);
+  const seen = new Set();
+  const servers = [];
+
+  for (let page = 1; page <= MCPSERVERS_MAX_PAGES; page += 1) {
+    const url = page === 1 ? `${MCPSERVERS_BASE}/all` : `${MCPSERVERS_BASE}/all?page=${page}`;
+    let html;
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers: { Accept: 'text/html', 'User-Agent': 'InfluzerMcpCatalog/1.0' },
+      });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      html = await res.text();
+    } catch (err) {
+      console.error(`❌ mcpservers.org page ${page} failed:`, err.message);
+      break;
+    }
+
+    const batch = extractMcpserversItemList(html);
+    if (!batch.length) {
+      console.log(`   … page ${page}: no items — stopping`);
+      break;
+    }
+
+    let added = 0;
+    for (const item of batch) {
+      const slug = slugFromMcpserversUrl(item.url);
+      if (!slug || seen.has(slug)) continue;
+      seen.add(slug);
+      added += 1;
+      servers.push(
+        toCatalogServer({
+          id: slug,
+          slug,
+          name: item.name,
+          description: `${item.name} — listed on mcpservers.org. Open the server page for setup details.`,
+          category: mapCategory(item.name, ''),
+          official: false,
+          transport: 'unknown',
+          tools: [],
+          docs_url: item.url,
+          stars: 0,
+          source: 'mcpservers-org',
+        }),
+      );
+    }
+
+    if (page % 10 === 0 || page === 1) {
+      console.log(`   … page ${page} (+${added}, total ${servers.length})`);
+    }
+
+    if (batch.length < 20) break;
+    await sleep(MCPSERVERS_PAGE_DELAY_MS);
+  }
+
+  console.log(`✅ mcpservers.org: ${servers.length} unique servers`);
+  return servers;
+}
+
 // ——— Manual seed ———
 
 function loadManualServers() {
@@ -399,7 +509,14 @@ async function main() {
     console.error('❌ Awesome MCP error:', err.message);
   }
 
-  const combined = [...manual, ...glama, ...smithery, ...awesome];
+  let mcpservers = [];
+  try {
+    mcpservers = await fetchMcpserversOrgServers();
+  } catch (err) {
+    console.error('❌ mcpservers.org error:', err.message);
+  }
+
+  const combined = [...manual, ...glama, ...smithery, ...awesome, ...mcpservers];
   stats.fetched = combined.length;
 
   let servers = dedupeServers(combined);

@@ -243,6 +243,35 @@
       }
       .mcp-tools-only input { width: auto; margin: 0; }
 
+      .mcp-topics-strip {
+        margin: 0 0 24px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        background: var(--color-paper);
+        border: 1px solid var(--color-border);
+      }
+      .mcp-topics-strip h2 {
+        font-family: var(--font-ui);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--color-charcoal-light);
+        margin: 0 0 10px;
+      }
+      .mcp-topics-links { display: flex; flex-wrap: wrap; gap: 8px; }
+      .mcp-topics-links a {
+        font-family: var(--font-ui);
+        font-size: .82rem;
+        padding: 6px 12px;
+        border-radius: 999px;
+        text-decoration: none;
+        border: 1px solid var(--color-border);
+        color: var(--color-charcoal);
+      }
+      .mcp-topics-links a:hover { border-color: var(--color-terracotta); color: var(--color-terracotta); }
+      .mcp-topics-links a.mcp-topics-all { font-weight: 600; border-color: var(--color-terracotta-light); }
+
       @media (max-width: 640px) {
         .mcp-controls-top { flex-direction: column; align-items: stretch; }
         .mcp-sort-wrap { justify-content: space-between; }
@@ -292,6 +321,18 @@
       <%- include('partials/promo-strip', { promo: promo }) %>
 
       <%- include('partials/mcp-tier-banner') %>
+
+      <% if (typeof topicSummaries !== 'undefined' && topicSummaries && topicSummaries.length) { %>
+        <nav class="mcp-topics-strip" aria-label="MCP topic guides">
+          <h2>Topic guides</h2>
+          <div class="mcp-topics-links">
+            <a class="mcp-topics-all" href="/mcp/topics">All topics</a>
+            <% topicSummaries.forEach(function(t) { %>
+              <a href="/mcp/topics/<%= t.slug %>"><%= t.shortTitle %></a>
+            <% }); %>
+          </div>
+        </nav>
+      <% } %>
 
       <section class="mcp-controls" aria-label="Search and filters">
         <div class="mcp-controls-top">

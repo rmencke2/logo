@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> - Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' - Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      ogImage: typeof ogImage !== 'undefined' ? ogImage : undefined,
+    }) %>
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify(jsonLd) %>
+      </script>
+    <% } %>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="stylesheet" href="/css/seo-content.css" />
+    <style>
+      .mcp-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
+      .mcp-back { font-family: var(--font-ui); margin-bottom: 20px; display: inline-block; color: var(--color-charcoal); text-decoration: none; }
+      .mcp-back:hover { color: var(--color-terracotta); }
+      .mcp-topic-section { margin: 32px 0; }
+      .mcp-topic-section h2 { margin: 0 0 12px; font-size: 1.2rem; }
+      .mcp-topic-section ol, .mcp-topic-section ul { margin: 0; padding-left: 1.25rem; line-height: 1.7; color: var(--color-charcoal-light); }
+      .mcp-topic-section li { margin-bottom: 8px; }
+      .mcp-topic-related { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+      .mcp-topic-related a {
+        font-family: var(--font-ui); font-size: .85rem; padding: 8px 14px; border-radius: 999px;
+        text-decoration: none; border: 1px solid var(--color-border); color: var(--color-charcoal);
+      }
+      .mcp-topic-related a:hover { border-color: var(--color-terracotta); color: var(--color-terracotta); }
+      .mcp-search-cta {
+        margin: 24px 0; padding: 14px 18px; border-radius: 14px;
+        background: var(--color-cream-dark); border: 1px solid var(--color-border);
+        font-size: .95rem;
+      }
+      .mcp-search-cta a { color: var(--color-terracotta); font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/site-header', { navPath: '/mcp' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="mcp-page">
+      <a class="mcp-back" href="/mcp/topics">← All topic guides</a>
+
+      <header class="mcp-header">
+        <p class="mcp-kicker">MCP topic guide</p>
+        <h1><%= topic.title %></h1>
+        <p class="mcp-lead"><%= topic.intro %></p>
+      </header>
+
+      <p class="mcp-search-cta">
+        Showing <strong><%= servers.length %></strong> of <strong><%= totalMatches %></strong> matching servers from our catalog.
+        <a href="/mcp/all?q=<%= encodeURIComponent(topic.searchQuery) %>">Search full directory →</a>
+      </p>
+
+      <div class="mcp-grid">
+        <% servers.forEach(function(server) { %>
+          <%- include('partials/mcp-server-card', { server: server }) %>
+        <% }); %>
+      </div>
+
+      <% if (!servers.length) { %>
+        <p>No servers matched this topic yet. Try the <a href="/mcp/all">full directory</a> or <a href="/mcp/submit">submit a server</a>.</p>
+      <% } %>
+
+      <section class="mcp-topic-section">
+        <h2>Setup checklist</h2>
+        <ol>
+          <% topic.checklist.forEach(function(step) { %>
+            <li><%- step %></li>
+          <% }); %>
+        </ol>
+      </section>
+
+      <section class="mcp-topic-section">
+        <h2>How to choose</h2>
+        <ul>
+          <% topic.chooseTips.forEach(function(tip) { %>
+            <li><%= tip %></li>
+          <% }); %>
+        </ul>
+      </section>
+
+      <% if (relatedTopics && relatedTopics.length) { %>
+        <section class="mcp-topic-section">
+          <h2>Related topics</h2>
+          <div class="mcp-topic-related">
+            <% relatedTopics.forEach(function(rt) { %>
+              <a href="/mcp/topics/<%= rt.slug %>"><%= rt.shortTitle %></a>
+            <% }); %>
+          </div>
+        </section>
+      <% } %>
+
+      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent }) %>
+    </main>
+  </body>
+</html>

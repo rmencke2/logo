@@ -27,6 +27,9 @@ const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmiss
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
+const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
+const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
+const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
 const { getDisplayArticles } = require('./otherNewsService');
 
@@ -673,6 +676,7 @@ ${itemsXml}
       previewServers,
       promo: getSitePromo(),
       otherNews: getDisplayArticles(),
+      topicSummaries: getTopicSummaries(),
     });
   });
 
@@ -716,6 +720,75 @@ ${itemsXml}
       previewServers,
       promo: getSitePromo(),
       otherNews: getDisplayArticles(),
+      topicSummaries: getTopicSummaries(),
+    });
+  });
+
+  app.get('/mcp/topics', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const topics = getTopicSummaries();
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/topics`;
+    const metaDescription =
+      'MCP topic guides — browser automation, web scraping, RAG, PDF, OpenAPI, and coding-agent server comparisons with indexed tools.';
+    const seoContent = getMcpTopicsIndexSeoContent();
+    res.render('mcp-topics-index', {
+      pageTitle: 'MCP Topic Guides',
+      metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      topics,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'CollectionPage',
+              '@id': `${canonicalUrl}#webpage`,
+              url: canonicalUrl,
+              name: 'MCP Topic Guides',
+              description: metaDescription,
+            },
+          ],
+        },
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
+  app.get('/mcp/topics/:slug', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const { topic, servers, total } = getServersForTopic(req.params.slug);
+    if (!topic) {
+      return res.status(404).render('404', { title: 'Topic Not Found' });
+    }
+    const brandedServers = servers.map((s) => attachBranding(s));
+    const relatedTopics = (topic.relatedSlugs || [])
+      .map((slug) => getMcpTopicBySlug(slug))
+      .filter(Boolean);
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/topics/${topic.slug}`;
+    const seoContent = getMcpTopicSeoContent(topic, total);
+    res.render('mcp-topic', {
+      topic,
+      servers: brandedServers,
+      totalMatches: total,
+      relatedTopics,
+      pageTitle: topic.title,
+      metaDescription: topic.metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        buildMcpCollectionJsonLd({
+          pageUrl: canonicalUrl,
+          pageName: topic.title,
+          description: topic.metaDescription,
+          servers: brandedServers,
+        }),
+        seoContent.faqs,
+        canonicalUrl,
+      ),
     });
   });
 
@@ -814,6 +887,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
+      { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
@@ -839,7 +913,13 @@ ${itemsXml}
       changefreq: 'monthly',
       priority: '0.6',
     }));
-    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...mcpUrls];
+    const topicUrls = getTopicSummaries().map((t) => ({
+      loc: `${SITE_BASE_URL}/mcp/topics/${t.slug}`,
+      lastmod: latestPostDate,
+      changefreq: 'weekly',
+      priority: '0.75',
+    }));
+    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...mcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls
