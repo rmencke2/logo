@@ -2746,6 +2746,25 @@
       ],
       "github_url": "https://github.com/cameroncooke/XcodeBuildMCP",
       "stars": 620
+    },
+    {
+      "name": "Influzer MCP Discovery",
+      "slug": "influzer-mcp-discovery",
+      "category": "Search & Web",
+      "description": "Official Influzer.ai read-only MCP server — search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
+      "official": true,
+      "transport": "http",
+      "icon": "search",
+      "featured": true,
+      "tools": [
+        { "name": "search_mcp_servers", "description": "Search Influzer directory by name, category, or tool capability" },
+        { "name": "get_mcp_server", "description": "Get full setup details for one server by slug" },
+        { "name": "recommend_mcp_servers", "description": "Recommend servers for a workflow or topic guide" },
+        { "name": "list_mcp_topics", "description": "List topic guides (browser automation, RAG, coding agents, etc.)" }
+      ],
+      "docs_url": "https://www.influzer.ai/mcp/discovery",
+      "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
+      "stars": 0
     }
   ]
 }

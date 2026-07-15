@@ -25,6 +25,7 @@ const {
 } = require('./mcpDirectoryService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
+const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
@@ -636,6 +637,8 @@ ${itemsXml}
   });
 
   // MCP Server Directory (must be registered before /insights/:slug)
+  registerMcpDiscoveryRoutes(app);
+
   app.get('/mcp/all', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const totals = getMcpCatalogTotals();
