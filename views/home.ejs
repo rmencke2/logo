@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/seo-content.css" />
     <link rel="stylesheet" href="/css/promo-strip.css" />
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
     <link rel="stylesheet" href="/css/content-badges.css" />
     <link rel="stylesheet" href="/css/other-news.css" />
     <%- include('partials/seo-social', {
@@ -60,6 +61,8 @@
           <button type="submit">Search</button>
         </form>
       </section>
+
+      <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
 
       <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: true, seoShowCrossLinks: false, seoShowFaq: false }) %>
 

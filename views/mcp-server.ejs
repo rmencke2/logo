@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/site-header.css" />
     <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
     <% if (server) { %>
       <script type="application/ld+json">
         <%- JSON.stringify({
@@ -115,6 +116,13 @@
           </div>
         </div>
         <p class="mcp-detail-desc"><%= server.description %></p>
+
+        <% if (server.slug === 'influzer-mcp-discovery') { %>
+          <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
+          <p style="margin-bottom: 24px;">
+            <a class="mcp-btn mcp-btn-install" href="/mcp/discovery/setup">Full setup guide: Claude, ChatGPT, Cursor →</a>
+          </p>
+        <% } %>
 
         <%- include('partials/mcp-affiliate-cta', { server: server }) %>
 

@@ -27,6 +27,7 @@ const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmiss
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
+const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
@@ -346,6 +347,7 @@ function renderHomepage(req, res) {
     seoContent,
     jsonLd,
     promo: getSitePromo(),
+    discoveryPromo: getDiscoveryPromo(),
   });
 }
 
@@ -680,6 +682,7 @@ ${itemsXml}
       promo: getSitePromo(),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
+      discoveryPromo: getDiscoveryPromo(),
     });
   });
 
@@ -724,6 +727,7 @@ ${itemsXml}
       promo: getSitePromo(),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
+      discoveryPromo: getDiscoveryPromo(),
     });
   });
 
@@ -828,6 +832,7 @@ ${itemsXml}
       transportLabel: transportLabel(server.transport),
       inTop100: isInTop100(server.slug),
       catalogTotals: getMcpCatalogTotals(),
+      discoveryPromo: getDiscoveryPromo(),
     });
   });
 
@@ -891,6 +896,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
+      { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },

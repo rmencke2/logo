@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="/css/mcp-directory.css" />
     <link rel="stylesheet" href="/css/seo-content.css" />
     <link rel="stylesheet" href="/css/promo-strip.css" />
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
     <link rel="stylesheet" href="/css/content-badges.css" />
     <link rel="stylesheet" href="/css/other-news.css" />
     <style>
@@ -317,6 +318,8 @@
         <a href="/mcp/submit">Submit an MCP server</a>
         — we review every suggestion manually.
       </p>
+
+      <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
 
       <%- include('partials/promo-strip', { promo: promo }) %>
 

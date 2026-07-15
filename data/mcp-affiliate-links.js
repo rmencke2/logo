@@ -2,7 +2,15 @@
  * MCP server slug → affiliate program links.
  * Detail pages use full CTA; homepage/MCP directory use compact promo strip.
  */
+const { getDiscoveryPromo } = require('./mcp-discovery-promo');
+
 const MCP_AFFILIATE_LINKS = {
+  'influzer-mcp-discovery': {
+    ...getDiscoveryPromo(),
+    url: '/mcp/discovery/setup',
+    promoHref: '/mcp/discovery/setup',
+    cta: 'Connect in Claude, ChatGPT, or Cursor →',
+  },
   webnode: {
     url: 'https://www.webnode.com',
     promoHref: '/mcp/webnode',
@@ -28,7 +36,7 @@ const MCP_AFFILIATE_LINKS = {
 };
 
 /** Default promo shown on homepage and MCP directory */
-const DEFAULT_PROMO_SLUG = 'webnode';
+const DEFAULT_PROMO_SLUG = 'influzer-mcp-discovery';
 
 function getSitePromo(slug = DEFAULT_PROMO_SLUG) {
   const entry = MCP_AFFILIATE_LINKS[slug];

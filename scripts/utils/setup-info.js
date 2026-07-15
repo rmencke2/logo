@@ -6,6 +6,39 @@
  * @param {object} server
  */
 function attachSetupInfo(server) {
+  if (server.slug === 'influzer-mcp-discovery') {
+    const endpoint = server.mcp_endpoint || 'https://www.influzer.ai/mcp/discovery';
+    return {
+      ...server,
+      connection_url: endpoint,
+      primary_url: 'https://www.influzer.ai/mcp/discovery/setup',
+      setup_steps: [
+        {
+          title: 'Claude (Desktop or claude.ai)',
+          text:
+            'Settings → Connectors → Add custom connector → Web\n' +
+            `URL: ${endpoint}\n` +
+            'No OAuth required. Enable the connector in a new chat, then ask e.g. "Search Influzer for Postgres MCP servers."',
+        },
+        {
+          title: 'ChatGPT',
+          text:
+            'Settings → Apps & Connectors → Advanced → Developer mode ON\n' +
+            'Create connector → paste URL exactly:\n' +
+            `${endpoint}\n` +
+            'Auth: None. In a new chat: + → Developer mode → enable Influzer.',
+        },
+        {
+          title: 'Cursor',
+          text:
+            'Settings → MCP, or .cursor/mcp.json:\n' +
+            `{\n  "mcpServers": {\n    "influzer-discovery": {\n      "url": "${endpoint}"\n    }\n  }\n}`,
+        },
+      ],
+      setup_summary: `Remote MCP at ${endpoint} — see /mcp/discovery/setup for full guide`,
+    };
+  }
+
   const smitheryPage =
     server.smithery_page_url ||
     (server.smithery_qualified_name

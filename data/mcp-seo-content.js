@@ -29,6 +29,8 @@ function appendFaqToJsonLd(jsonLd, faqs, pageUrl) {
 
 function featuredServerLinks() {
   return [
+    { href: '/mcp/influzer-mcp-discovery', label: 'Influzer MCP Discovery', note: 'Search the directory from Claude or Cursor' },
+    { href: '/mcp/discovery/setup', label: 'Connect setup guide', note: 'Claude, ChatGPT, Cursor in 2 minutes' },
     { href: '/mcp/webnode', label: 'Webnode', note: 'Build websites via MCP' },
     { href: '/mcp/github', label: 'GitHub', note: 'Repos, PRs, and code search' },
     { href: '/mcp/slack', label: 'Slack', note: 'Team messaging' },
@@ -78,7 +80,7 @@ function getHomeSeoContent(heroStats) {
     introTitle: 'What is Influzer.ai?',
     introParagraphs: [
       `Influzer.ai helps developers and teams choose MCP servers for production AI workflows. Our directory lists <strong>${registry} Model Context Protocol servers</strong>, with <strong>${indexed}</strong> that include searchable tool indexes, setup instructions, and connection URLs.`,
-      'Use the homepage search or browse the <a href="/mcp">Top 100</a> to compare servers for Claude, Cursor, and other MCP clients. Read <a href="/insights">Insights</a> for leadership playbooks on agents, compliance, and ROI.',
+      'Use our <a href="/mcp/discovery/setup">official MCP Discovery server</a> in Claude, ChatGPT, or Cursor to search the catalog by tool capability — or browse the <a href="/mcp">Top 100</a> on the web.',
     ],
     faqs,
     crossLinkGroups: [

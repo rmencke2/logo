@@ -8,6 +8,7 @@
 
 const rateLimit = require('express-rate-limit');
 const { TOOL_DEFINITIONS, handleToolCall } = require('./mcpDiscoveryTools');
+const { getDiscoverySetupGuide, MCP_DISCOVERY_SETUP } = require('../data/mcp-discovery-promo');
 
 const PROTOCOL_VERSION = '2024-11-05';
 const SERVER_INFO = {
@@ -75,6 +76,15 @@ function parseJsonRpcBatch(req) {
 }
 
 function registerMcpDiscoveryRoutes(app) {
+  app.get('/mcp/discovery/setup', (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    const guide = getDiscoverySetupGuide();
+    res.render('mcp-discovery-setup', {
+      guide,
+      canonicalUrl: MCP_DISCOVERY_SETUP,
+    });
+  });
+
   app.options('/mcp/discovery', (req, res) => {
     setDiscoveryCors(res);
     res.status(204).end();
@@ -104,6 +114,7 @@ function registerMcpDiscoveryRoutes(app) {
         },
       },
       docs: 'https://www.influzer.ai/insights/what-is-model-context-protocol',
+      setup_guide: MCP_DISCOVERY_SETUP,
       directory: 'https://www.influzer.ai/mcp',
     });
   });

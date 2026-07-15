@@ -1,0 +1,22 @@
+<%#
+  Prominent Influzer MCP Discovery callout.
+  Expects discoveryPromo from getDiscoveryPromo() or pass discoveryPromo explicitly.
+%>
+<% const dp = typeof discoveryPromo !== 'undefined' ? discoveryPromo : null; %>
+<% if (dp) { %>
+  <aside class="discovery-banner" aria-label="Influzer MCP Discovery">
+    <p class="discovery-banner__eyebrow">Official · Remote MCP · No auth required</p>
+    <h2 class="discovery-banner__title"><%= dp.headline %></h2>
+    <p class="discovery-banner__text"><%= dp.blurb %></p>
+    <div class="discovery-banner__tools" aria-label="Available tools">
+      <% (dp.tools || []).forEach(function(tool) { %>
+        <span class="discovery-banner__tool"><%= tool %></span>
+      <% }); %>
+    </div>
+    <div class="discovery-banner__actions">
+      <a class="discovery-banner__btn discovery-banner__btn--primary" href="<%= dp.setupUrl %>"><%= dp.promoCta || dp.cta %></a>
+      <a class="discovery-banner__btn discovery-banner__btn--secondary" href="<%= dp.pageUrl %>">Directory listing</a>
+      <span class="discovery-banner__endpoint"><%= dp.endpoint %></span>
+    </div>
+  </aside>
+<% } %>
