@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-07-14T07:30:25.351Z",
+  "generated_at": "2026-07-15T07:34:31.210Z",
   "count": 100,
-  "total_catalog": 784,
+  "total_catalog": 795,
   "top100_slugs": [
+    "influzer-mcp-discovery",
     "webnode",
     "brave-search",
     "postgres",
@@ -14,21 +15,32 @@
     "sentry",
     "notion",
     "playwright",
+    "chrome-devtools-mcp",
+    "atlassian-mcp",
+    "google-mcp-servers",
+    "railway-mcp",
+    "cal-com-mcp",
     "jina",
     "googlesheets",
     "smithery-ai-national-weather-service",
     "hamid-vakilzadeh-mcpsemanticscholar",
     "support-9ef4-wayforth",
     "xgr-mcp",
+    "nextjs-devtools-mcp",
     "vercel-grep",
     "googlecalendar",
+    "granola-mcp",
     "llm-pulse",
+    "proxyman-mcp",
+    "minimax-mcp",
     "ignav-flights",
     "ethanhenrickson-math-mcp",
     "zev-lastlook-data",
     "mikechao-metmuseum-mcp",
     "theagenttimes-ucp-gateway",
     "googledrive",
+    "xcodebuildmcp",
+    "notebooklm-mcp",
     "mcp360-ai",
     "desktop-commander",
     "e2b",
@@ -90,21 +102,45 @@
     "zep",
     "tavily",
     "amplitude",
-    "box",
-    "builder-fusion",
-    "deepseek",
-    "fal-ai",
-    "gpt-researcher",
-    "grafana",
-    "hex",
-    "jina-reader",
-    "magic-ui",
-    "make",
-    "metabase",
-    "metoro",
-    "microsoft-mcp-gateway"
+    "box"
   ],
   "servers": [
+    {
+      "id": "influzer-mcp-discovery",
+      "slug": "influzer-mcp-discovery",
+      "name": "Influzer MCP Discovery",
+      "description": "Official Influzer.ai read-only MCP server — search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_mcp_servers",
+          "description": "Search Influzer directory by name, category, or tool capability"
+        },
+        {
+          "name": "get_mcp_server",
+          "description": "Get full setup details for one server by slug"
+        },
+        {
+          "name": "recommend_mcp_servers",
+          "description": "Recommend servers for a workflow or topic guide"
+        },
+        {
+          "name": "list_mcp_topics",
+          "description": "List topic guides (browser automation, RAG, coding agents, etc.)"
+        }
+      ],
+      "docs_url": "https://www.influzer.ai/mcp/discovery/setup",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "search",
+      "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
+      "deployment_url": "https://www.influzer.ai/mcp/discovery"
+    },
     {
       "id": "webnode",
       "slug": "webnode",
@@ -128,7 +164,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
       "deployment_url": "https://mcp.webnode.com/_mcp"
@@ -157,7 +193,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "search"
     },
     {
@@ -188,7 +224,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -219,7 +255,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "hard-drive"
     },
     {
@@ -250,7 +286,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "brain"
     },
     {
@@ -285,7 +321,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "layout-list"
     },
     {
@@ -312,7 +348,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "book-open"
     },
     {
@@ -343,7 +379,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "credit-card"
     },
     {
@@ -374,7 +410,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "shield-alert"
     },
     {
@@ -405,7 +441,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "file-text"
     },
     {
@@ -435,8 +471,185 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "monitor-play"
+    },
+    {
+      "id": "chrome-devtools-mcp",
+      "slug": "chrome-devtools-mcp",
+      "name": "Chrome DevTools MCP",
+      "description": "Official Chrome DevTools MCP server for controlling and inspecting a live Chrome browser from coding agents such as Gemini, Claude, Cursor, and Copilot.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "navigate_page",
+          "description": "Navigate the browser to a URL"
+        },
+        {
+          "name": "take_screenshot",
+          "description": "Capture a screenshot of the current page"
+        },
+        {
+          "name": "evaluate_script",
+          "description": "Run JavaScript in the page context"
+        },
+        {
+          "name": "list_console_messages",
+          "description": "Read console log output"
+        },
+        {
+          "name": "get_network_requests",
+          "description": "Inspect network activity"
+        }
+      ],
+      "github_url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "stars": 2100,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "monitor"
+    },
+    {
+      "id": "atlassian-mcp",
+      "slug": "atlassian-mcp",
+      "name": "Atlassian MCP Server",
+      "description": "Official Atlassian MCP server for connecting AI agents to Jira, Confluence, Opsgenie, and other Atlassian Cloud products.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_issues",
+          "description": "Search Jira issues across projects"
+        },
+        {
+          "name": "get_issue",
+          "description": "Get Jira issue details by key"
+        },
+        {
+          "name": "create_issue",
+          "description": "Create a new Jira issue"
+        },
+        {
+          "name": "search_pages",
+          "description": "Search Confluence pages"
+        },
+        {
+          "name": "get_page",
+          "description": "Read Confluence page content"
+        }
+      ],
+      "docs_url": "https://developer.atlassian.com/cloud/mcp",
+      "stars": 920,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "message-square"
+    },
+    {
+      "id": "google-mcp-servers",
+      "slug": "google-mcp-servers",
+      "name": "Google MCP Servers",
+      "description": "Collection of Google's official MCP servers for Maps, BigQuery, Kubernetes Engine, Compute, and other Google Cloud developer workflows.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "search_places",
+          "description": "Search places via Google Maps"
+        },
+        {
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
+        },
+        {
+          "name": "list_clusters",
+          "description": "List GKE clusters"
+        },
+        {
+          "name": "get_instance",
+          "description": "Describe Compute Engine instances"
+        }
+      ],
+      "github_url": "https://github.com/google/mcp",
+      "docs_url": "https://cloud.google.com/mcp",
+      "stars": 1500,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "cloud"
+    },
+    {
+      "id": "railway-mcp",
+      "slug": "railway-mcp",
+      "name": "Railway MCP",
+      "description": "Natural language interaction with Railway projects — create projects, deploy templates, manage environments, pull variables, and redeploy services.",
+      "category": "Cloud & Infra",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List Railway projects"
+        },
+        {
+          "name": "deploy_service",
+          "description": "Trigger a service deployment"
+        },
+        {
+          "name": "get_variables",
+          "description": "Read environment variables"
+        },
+        {
+          "name": "create_project",
+          "description": "Create a new Railway project"
+        }
+      ],
+      "docs_url": "https://docs.railway.com/guides/mcp",
+      "stars": 760,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "cloud"
+    },
+    {
+      "id": "cal-com-mcp",
+      "slug": "cal-com-mcp",
+      "name": "Cal.com MCP",
+      "description": "Connect AI clients to Cal.com scheduling through the Model Context Protocol using the hosted server at mcp.cal.com or a local instance.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_event_types",
+          "description": "List available Cal.com event types"
+        },
+        {
+          "name": "get_availability",
+          "description": "Check scheduling availability"
+        },
+        {
+          "name": "create_booking",
+          "description": "Book a meeting slot"
+        }
+      ],
+      "docs_url": "https://mcp.cal.com",
+      "stars": 680,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "calendar",
+      "mcp_endpoint": "https://mcp.cal.com/mcp",
+      "deployment_url": "https://mcp.cal.com/mcp"
     },
     {
       "id": "jina",
@@ -550,7 +763,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jina",
-      "tools_validated_at": "2026-07-15T07:29:15.010Z",
+      "tools_validated_at": "2026-07-16T07:35:59.897Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -734,7 +947,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-07-15T07:29:14.933Z",
+      "tools_validated_at": "2026-07-16T07:35:59.875Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -790,7 +1003,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-07-15T07:29:15.032Z",
+      "tools_validated_at": "2026-07-16T07:35:59.826Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -870,7 +1083,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-07-15T07:29:15.553Z",
+      "tools_validated_at": "2026-07-16T07:36:00.835Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -970,7 +1183,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
-      "tools_validated_at": "2026-07-15T07:29:15.868Z",
+      "tools_validated_at": "2026-07-16T07:36:00.922Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1050,10 +1263,40 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
       "deployment_url": "https://mcp.xgr.network/mcp"
+    },
+    {
+      "id": "nextjs-devtools-mcp",
+      "slug": "nextjs-devtools-mcp",
+      "name": "Next.js DevTools MCP",
+      "description": "MCP server that provides Next.js development tools and utilities for AI coding assistants like Claude and Cursor.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "get_project_info",
+          "description": "Inspect Next.js project configuration"
+        },
+        {
+          "name": "list_routes",
+          "description": "List application routes"
+        },
+        {
+          "name": "get_build_diagnostics",
+          "description": "Read build and dev server diagnostics"
+        }
+      ],
+      "github_url": "https://github.com/vercel/next-devtools-mcp",
+      "stars": 890,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "code"
     },
     {
       "id": "vercel-grep",
@@ -1087,7 +1330,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
-      "tools_validated_at": "2026-07-15T07:29:16.205Z",
+      "tools_validated_at": "2026-07-16T07:36:01.920Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1235,9 +1478,39 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-07-15T07:29:16.495Z",
+      "tools_validated_at": "2026-07-16T07:36:02.816Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "granola-mcp",
+      "slug": "granola-mcp",
+      "name": "Granola MCP",
+      "description": "Connect Claude, ChatGPT, and other AI tools to your Granola meeting notes via MCP. Query notes, search transcripts, and get meeting insights.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_notes",
+          "description": "Search meeting notes and transcripts"
+        },
+        {
+          "name": "get_meeting",
+          "description": "Retrieve a specific meeting summary"
+        },
+        {
+          "name": "list_recent",
+          "description": "List recent meetings"
+        }
+      ],
+      "docs_url": "https://www.granola.ai/docs/mcp",
+      "stars": 420,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "message-square"
     },
     {
       "id": "llm-pulse",
@@ -1287,10 +1560,70 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
       "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
+    },
+    {
+      "id": "proxyman-mcp",
+      "slug": "proxyman-mcp",
+      "name": "Proxyman MCP",
+      "description": "Inspect HTTP traffic, create debugging rules, and control Proxyman through natural language MCP conversations.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_requests",
+          "description": "List captured HTTP requests"
+        },
+        {
+          "name": "get_request_detail",
+          "description": "Inspect a specific request and response"
+        },
+        {
+          "name": "create_breakpoint",
+          "description": "Add a debugging breakpoint rule"
+        }
+      ],
+      "docs_url": "https://docs.proxyman.io/mcp",
+      "stars": 380,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "activity"
+    },
+    {
+      "id": "minimax-mcp",
+      "slug": "minimax-mcp",
+      "name": "MiniMax MCP",
+      "description": "Interact with MiniMax's Text-to-Speech, image, and video generation APIs through MCP tools.",
+      "category": "Cloud & Infra",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "text_to_speech",
+          "description": "Generate speech audio from text"
+        },
+        {
+          "name": "generate_image",
+          "description": "Create images from prompts"
+        },
+        {
+          "name": "generate_video",
+          "description": "Create video from prompts"
+        }
+      ],
+      "docs_url": "https://www.minimax.io/platform/document/mcp",
+      "stars": 310,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "image"
     },
     {
       "id": "ignav-flights",
@@ -1316,7 +1649,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
       "deployment_url": "https://ignav.com/mcp"
@@ -1437,7 +1770,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-07-15T07:29:15.689Z",
+      "tools_validated_at": "2026-07-16T07:36:01.897Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1489,7 +1822,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/zev/lastlook-data",
-      "tools_validated_at": "2026-07-15T07:29:16.369Z",
+      "tools_validated_at": "2026-07-16T07:36:02.203Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1531,7 +1864,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "tools_validated_at": "2026-07-15T07:29:16.006Z",
+      "tools_validated_at": "2026-07-16T07:36:01.307Z",
       "tools_validation_method": "smithery_registry",
       "featured": true
     },
@@ -1611,7 +1944,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "tools_validated_at": "2026-07-15T07:29:16.894Z",
+      "tools_validated_at": "2026-07-16T07:36:02.872Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1723,9 +2056,69 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googledrive",
-      "tools_validated_at": "2026-07-15T07:29:16.970Z",
+      "tools_validated_at": "2026-07-16T07:36:03.604Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "xcodebuildmcp",
+      "slug": "xcodebuildmcp",
+      "name": "XcodeBuildMCP",
+      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects — builds, simulators, and Xcode workflows.",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "build_project",
+          "description": "Build an Xcode project or workspace"
+        },
+        {
+          "name": "run_simulator",
+          "description": "Launch the iOS Simulator"
+        },
+        {
+          "name": "list_schemes",
+          "description": "List available Xcode schemes"
+        }
+      ],
+      "github_url": "https://github.com/cameroncooke/XcodeBuildMCP",
+      "stars": 620,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "monitor"
+    },
+    {
+      "id": "notebooklm-mcp",
+      "slug": "notebooklm-mcp",
+      "name": "NotebookLM MCP Server",
+      "description": "Let CLI agents chat directly with NotebookLM for grounded answers based on your own notebooks and uploaded sources.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "ask_notebook",
+          "description": "Query a NotebookLM notebook"
+        },
+        {
+          "name": "list_notebooks",
+          "description": "List available notebooks"
+        },
+        {
+          "name": "add_source",
+          "description": "Add a source document to a notebook"
+        }
+      ],
+      "github_url": "https://github.com/jacob-bd/notebooklm-mcp",
+      "stars": 540,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-16",
+      "icon": "book-open"
     },
     {
       "id": "mcp360-ai",
@@ -1763,7 +2156,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "globe",
       "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
       "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
@@ -1799,7 +2192,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "terminal"
     },
     {
@@ -1834,7 +2227,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "sandbox"
     },
     {
@@ -1868,7 +2261,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "gitlab"
     },
     {
@@ -1902,7 +2295,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "cloud-code"
     },
     {
@@ -1941,7 +2334,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/kiwi",
-      "tools_validated_at": "2026-07-15T07:29:17.499Z",
+      "tools_validated_at": "2026-07-16T07:36:03.688Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1972,7 +2365,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "mail"
     },
     {
@@ -2003,7 +2396,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "search"
     },
     {
@@ -2033,7 +2426,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "mail"
     },
     {
@@ -2063,7 +2456,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "bar-chart"
     },
     {
@@ -2093,7 +2486,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "layout-list"
     },
     {
@@ -2124,7 +2517,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "cloud"
     },
     {
@@ -2154,7 +2547,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "cloud"
     },
     {
@@ -2184,7 +2577,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "bar-chart"
     },
     {
@@ -2214,7 +2607,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "globe"
     },
     {
@@ -2244,7 +2637,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "image"
     },
     {
@@ -2274,7 +2667,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "file-text"
     },
     {
@@ -2304,7 +2697,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "activity"
     },
     {
@@ -2334,7 +2727,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "boxes"
     },
     {
@@ -2364,7 +2757,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "hard-drive"
     },
     {
@@ -2394,7 +2787,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "figma"
     },
     {
@@ -2425,7 +2818,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "flame"
     },
     {
@@ -2455,7 +2848,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "calendar"
     },
     {
@@ -2485,7 +2878,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "cloud"
     },
     {
@@ -2515,7 +2908,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "bar-chart"
     },
     {
@@ -2545,7 +2938,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "boxes"
     },
     {
@@ -2575,7 +2968,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "message-square"
     },
     {
@@ -2605,7 +2998,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "layout-list"
     },
     {
@@ -2636,7 +3029,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "bar-chart"
     },
     {
@@ -2666,7 +3059,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "boxes"
     },
     {
@@ -2697,7 +3090,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "brain"
     },
     {
@@ -2727,7 +3120,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "credit-card"
     },
     {
@@ -2757,7 +3150,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "credit-card"
     },
     {
@@ -2787,7 +3180,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "message-square"
     },
     {
@@ -2817,7 +3210,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -2848,7 +3241,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -2878,7 +3271,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "layout-list"
     },
     {
@@ -2908,7 +3301,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -2939,7 +3332,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -2969,7 +3362,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -3000,7 +3393,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "boxes"
     },
     {
@@ -3031,7 +3424,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -3061,7 +3454,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "cloud"
     },
     {
@@ -3091,7 +3484,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "hard-drive"
     },
     {
@@ -3121,7 +3514,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "shield-alert"
     },
     {
@@ -3151,7 +3544,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -3181,7 +3574,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "boxes"
     },
     {
@@ -3211,7 +3604,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "credit-card"
     },
     {
@@ -3241,7 +3634,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "credit-card"
     },
     {
@@ -3271,7 +3664,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "file-text"
     },
     {
@@ -3301,7 +3694,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "bar-chart"
     },
     {
@@ -3332,7 +3725,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "code"
     },
     {
@@ -3362,7 +3755,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -3392,7 +3785,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "browser"
     },
     {
@@ -3423,7 +3816,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "database"
     },
     {
@@ -3453,7 +3846,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "brain"
     },
     {
@@ -3483,7 +3876,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "boxes"
     },
     {
@@ -3514,7 +3907,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "cloud"
     },
     {
@@ -3545,7 +3938,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "brain"
     },
     {
@@ -3572,7 +3965,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "search"
     },
     {
@@ -3598,7 +3991,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "bar-chart"
     },
     {
@@ -3624,320 +4017,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-07-15",
+      "last_updated": "2026-07-16",
       "icon": "hard-drive"
-    },
-    {
-      "id": "builder-fusion",
-      "slug": "builder-fusion",
-      "name": "Builder Fusion",
-      "description": "Visual canvas with GitHub integration for design-to-code workflows.",
-      "category": "Design",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "sync_design",
-          "description": "Sync canvas to repository"
-        },
-        {
-          "name": "export_code",
-          "description": "Export generated code"
-        }
-      ],
-      "docs_url": "https://www.builder.io",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "figma"
-    },
-    {
-      "id": "deepseek",
-      "slug": "deepseek",
-      "name": "Deepseek",
-      "description": "Fallback model switching and Deepseek API access.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "chat",
-          "description": "Send a chat completion"
-        },
-        {
-          "name": "list_models",
-          "description": "List Deepseek models"
-        }
-      ],
-      "docs_url": "https://api-docs.deepseek.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "brain"
-    },
-    {
-      "id": "fal-ai",
-      "slug": "fal-ai",
-      "name": "Fal.ai",
-      "description": "Fast AI image and media generation.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "generate_image",
-          "description": "Generate an image from prompt"
-        },
-        {
-          "name": "get_result",
-          "description": "Poll generation job status"
-        }
-      ],
-      "docs_url": "https://fal.ai/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "image"
-    },
-    {
-      "id": "gpt-researcher",
-      "slug": "gpt-researcher",
-      "name": "GPT Researcher",
-      "description": "Deep research report generation from multi-source web investigation.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "conduct_research",
-          "description": "Run a deep research task"
-        },
-        {
-          "name": "generate_report",
-          "description": "Produce a structured research report"
-        }
-      ],
-      "github_url": "https://github.com/assafelovic/gpt-researcher",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "book-open"
-    },
-    {
-      "id": "grafana",
-      "slug": "grafana",
-      "name": "Grafana",
-      "description": "Dashboard and alert access for metrics visualization.",
-      "category": "Security & Monitoring",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_dashboards",
-          "description": "List Grafana dashboards"
-        },
-        {
-          "name": "query_datasource",
-          "description": "Query a Prometheus or Loki datasource"
-        }
-      ],
-      "github_url": "https://github.com/grafana/mcp-grafana",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "activity"
-    },
-    {
-      "id": "hex",
-      "slug": "hex",
-      "name": "Hex",
-      "description": "Collaborative data notebooks and SQL workspaces.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_cell",
-          "description": "Execute a notebook cell"
-        },
-        {
-          "name": "list_projects",
-          "description": "List Hex projects"
-        }
-      ],
-      "docs_url": "https://learn.hex.tech",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "bar-chart"
-    },
-    {
-      "id": "jina-reader",
-      "slug": "jina-reader",
-      "name": "Jina Reader",
-      "description": "Web content extraction optimized for readability and RAG pipelines.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "read_url",
-          "description": "Extract clean content from a URL"
-        },
-        {
-          "name": "search_web",
-          "description": "Search and read top results"
-        }
-      ],
-      "docs_url": "https://jina.ai/reader",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "globe"
-    },
-    {
-      "id": "magic-ui",
-      "slug": "magic-ui",
-      "name": "Magic UI",
-      "description": "React and Tailwind component library for rapid UI generation.",
-      "category": "Design",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_components",
-          "description": "Browse available UI components"
-        },
-        {
-          "name": "get_component_code",
-          "description": "Fetch component source code"
-        }
-      ],
-      "github_url": "https://github.com/magicuidesign/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "figma"
-    },
-    {
-      "id": "make",
-      "slug": "make",
-      "name": "Make",
-      "description": "Visual automation flows (Integromat) for multi-step integrations.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_scenarios",
-          "description": "List Make scenarios"
-        },
-        {
-          "name": "run_scenario",
-          "description": "Execute a scenario"
-        }
-      ],
-      "docs_url": "https://www.make.com/en/api-documentation",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "boxes"
-    },
-    {
-      "id": "metabase",
-      "slug": "metabase",
-      "name": "Metabase",
-      "description": "BI dashboard querying and question execution.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_question",
-          "description": "Run a saved Metabase question"
-        },
-        {
-          "name": "list_dashboards",
-          "description": "List dashboards"
-        }
-      ],
-      "github_url": "https://github.com/metabase/mcp-metabase",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "bar-chart"
-    },
-    {
-      "id": "metoro",
-      "slug": "metoro",
-      "name": "Metoro",
-      "description": "Query and interact with Kubernetes environments for observability.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query_cluster",
-          "description": "Query cluster metrics and state"
-        },
-        {
-          "name": "list_workloads",
-          "description": "List deployments and services"
-        }
-      ],
-      "github_url": "https://github.com/metoro-io/metoro-mcp-server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "boxes"
-    },
-    {
-      "id": "microsoft-mcp-gateway",
-      "slug": "microsoft-mcp-gateway",
-      "name": "Microsoft MCP Gateway",
-      "description": "Kubernetes-native reverse proxy for MCP routing in enterprise environments.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "register_server",
-          "description": "Register an upstream MCP server"
-        },
-        {
-          "name": "route_request",
-          "description": "Route client requests to backends"
-        }
-      ],
-      "docs_url": "https://learn.microsoft.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-15",
-      "icon": "cloud"
     }
   ]
 }
