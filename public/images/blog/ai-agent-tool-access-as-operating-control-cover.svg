@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="AI agent tool access operating controls">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fafaf8"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="80" y="90" width="420" height="450" rx="18" fill="#fff" stroke="#e6e4dd" stroke-width="2"/>
+  <rect x="110" y="130" width="180" height="28" rx="6" fill="#eef2ff"/>
+  <text x="120" y="150" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#4338ca">ALLOWLIST</text>
+  <rect x="110" y="180" width="360" height="44" rx="10" fill="#f4f3ee" stroke="#dddbd3"/>
+  <text x="130" y="208" font-family="ui-monospace,monospace" font-size="15" fill="#16181d"> Linear MCP</text>
+  <rect x="110" y="240" width="360" height="44" rx="10" fill="#f4f3ee" stroke="#dddbd3"/>
+  <text x="130" y="268" font-family="ui-monospace,monospace" font-size="15" fill="#16181d"> GitHub (read)</text>
+  <rect x="110" y="300" width="360" height="44" rx="10" fill="#f4f3ee" stroke="#dddbd3"/>
+  <text x="130" y="328" font-family="ui-monospace,monospace" font-size="15" fill="#16181d"> Influzer Discovery</text>
+  <rect x="110" y="360" width="360" height="44" rx="10" fill="#fafaf8" stroke="#dddbd3" stroke-dasharray="6 4"/>
+  <text x="130" y="388" font-family="ui-monospace,monospace" font-size="15" fill="#9a9ca3"> Arbitrary npx</text>
+  <rect x="110" y="420" width="360" height="44" rx="10" fill="#fafaf8" stroke="#dddbd3" stroke-dasharray="6 4"/>
+  <text x="130" y="448" font-family="ui-monospace,monospace" font-size="15" fill="#9a9ca3"> Unscoped write tools</text>
+  <circle cx="780" cy="250" r="90" fill="#16181d"/>
+  <text x="780" y="242" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18" font-weight="700" fill="#fff">AGENT</text>
+  <text x="780" y="272" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" fill="#a5b4fc">tools/call</text>
+  <rect x="700" y="380" width="280" height="120" rx="16" fill="#fff" stroke="#e6e4dd" stroke-width="2"/>
+  <text x="840" y="430" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#16181d">IdP · Audit · Liability</text>
+  <text x="840" y="460" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#6d707a">Operating control, not a plugin</text>
+  <path d="M520 250 H640" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <path d="M780 340 V380" stroke="#6366f1" stroke-width="3"/>
+</svg>
