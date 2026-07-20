@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-19T07:44:05.988Z",
+  "generated_at": "2026-07-20T08:50:26.941Z",
   "count": 100,
-  "total_catalog": 795,
+  "total_catalog": 5562,
   "top100_slugs": [
     "influzer-mcp-discovery",
     "webnode",
@@ -20,41 +20,45 @@
     "google-mcp-servers",
     "railway-mcp",
     "cal-com-mcp",
-    "jina",
     "googlesheets",
+    "jina",
+    "pipeworx-gateway",
     "smithery-ai-national-weather-service",
-    "hamid-vakilzadeh-mcpsemanticscholar",
+    "brave",
+    "oobe-protocol-sap-mcp",
     "support-9ef4-wayforth",
+    "emblemai-emblem-mcp",
     "xgr-mcp",
     "nextjs-devtools-mcp",
     "vercel-grep",
-    "googlecalendar",
     "granola-mcp",
     "llm-pulse",
     "proxyman-mcp",
     "minimax-mcp",
     "ignav-flights",
-    "ethanhenrickson-math-mcp",
     "zev-lastlook-data",
-    "mikechao-metmuseum-mcp",
+    "googlecalendar",
+    "netfluid-nfld",
+    "onesignal-onesignal",
     "theagenttimes-ucp-gateway",
+    "alexandria-shai-eden-cbrowser",
+    "theagenttimes-news",
     "googledrive",
     "xcodebuildmcp",
+    "nitrofire-q-gread",
     "notebooklm-mcp",
     "mcp360-ai",
     "desktop-commander",
     "e2b",
     "gitlab",
     "replit",
-    "kiwi",
     "gmail",
     "exa",
-    "outlook",
+    "bigquery",
     "airtable",
     "asana",
     "aws",
     "azure",
-    "bigquery",
     "bluesky",
     "canva",
     "confluence",
@@ -85,6 +89,7 @@
     "neon",
     "netlify",
     "onedrive",
+    "outlook",
     "pagerduty",
     "redis",
     "salesforce",
@@ -97,12 +102,7 @@
     "stackblitz",
     "supabase",
     "taskade",
-    "terraform",
-    "vercel",
-    "zep",
-    "tavily",
-    "amplitude",
-    "box"
+    "terraform"
   ],
   "servers": [
     {
@@ -652,122 +652,6 @@
       "deployment_url": "https://mcp.cal.com/mcp"
     },
     {
-      "id": "jina",
-      "slug": "jina",
-      "name": "Jina AI",
-      "description": "AI-powered search and retrieval platform. Search the web, read page content, extract structured data, and ground AI responses.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "show_api_key",
-          "description": "Return the bearer token from the Authorization header of the MCP settings, which is used to debug."
-        },
-        {
-          "name": "primer",
-          "description": "Get up-to-date contextual information of the current session to provide localized, time-aware responses. Use this when you need to know the current time, user's location, or network environment to give more relevant and personalized information."
-        },
-        {
-          "name": "guess_datetime_url",
-          "description": "Guess the last updated or published datetime of a web page. This tool examines HTTP headers, HTML metadata, Schema.org data, visible dates, JavaScript timestamps, HTML comments, Git information, RSS/Atom feeds, sitemaps, and international date formats to provide the most accurate update time with confidence scores. Returns the best guess timestamp and confidence level."
-        },
-        {
-          "name": "capture_screenshot_url",
-          "description": "Capture high-quality screenshots of web pages in base64 encoded JPEG format. Use this tool when you need to visually inspect a website, take a snapshot for analysis, or show users what a webpage looks like."
-        },
-        {
-          "name": "read_url",
-          "description": "Extract and convert web page content to clean, readable markdown format. Perfect for reading articles, documentation, blog posts, or any web content. Use this when you need to analyze text content from websites, bypass paywalls, or get structured data."
-        },
-        {
-          "name": "search_web",
-          "description": "Search the entire web for current information, news, articles, and websites. Use this when you need up-to-date information, want to find specific websites, research topics, or get the latest news. Ideal for answering questions about recent events, finding resources, or discovering relevant content."
-        },
-        {
-          "name": "expand_query",
-          "description": "Expand and rewrite search queries based on an up-to-date query expansion model. This tool takes an initial query and returns multiple expanded queries that can be used for more diversed and deeper searches. Useful for improving deep research results by searching broader and deeper."
-        },
-        {
-          "name": "search_arxiv",
-          "description": "Search academic papers and preprints on arXiv repository. Perfect for finding research papers, scientific studies, technical papers, and academic literature. Use this when researching scientific topics, looking for papers by specific authors, or finding the latest research in fields like AI, physics, mathematics, computer science, etc."
-        },
-        {
-          "name": "search_ssrn",
-          "description": "Search academic papers and preprints on SSRN (Social Science Research Network). Perfect for finding research papers in social sciences, economics, law, finance, accounting, management, and humanities. Use this when researching social science topics, looking for working papers, or finding the latest research in business and economics fields."
-        },
-        {
-          "name": "search_jina_blog",
-          "description": "Search Jina AI news and blog posts at jina.ai/news for articles about AI, machine learning, neural search, embeddings, and Jina products. Use this to find official Jina documentation, tutorials, product announcements, and technical deep-dives."
-        },
-        {
-          "name": "search_images",
-          "description": "Search for images across the web, similar to Google Images. Use this when you need to find photos, illustrations, diagrams, charts, logos, or any visual content. Perfect for finding images to illustrate concepts, locating specific pictures, or discovering visual resources. Images are returned by default as small base64-encoded JPEG images."
-        },
-        {
-          "name": "parallel_search_web",
-          "description": "Run multiple web searches in parallel for comprehensive topic coverage and diverse perspectives. For best results, provide multiple search queries that explore different aspects of your topic. You can use expand_query to help generate diverse queries, or create them yourself."
-        },
-        {
-          "name": "parallel_search_arxiv",
-          "description": "Run multiple arXiv searches in parallel for comprehensive research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
-        },
-        {
-          "name": "parallel_search_ssrn",
-          "description": "Run multiple SSRN searches in parallel for comprehensive social science research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
-        },
-        {
-          "name": "parallel_read_url",
-          "description": "Read multiple web pages in parallel to extract clean content efficiently. For best results, provide multiple URLs that you need to extract simultaneously. This is useful for comparing content across multiple sources or gathering information from multiple pages at once."
-        },
-        {
-          "name": "classify_text",
-          "description": "Classify texts into user-defined labels using Jina embeddings. Use this when you need to categorize, tag, or sort text content into predefined categories. Perfect for sentiment analysis, topic classification, content moderation, or any text categorization task."
-        },
-        {
-          "name": "sort_by_relevance",
-          "description": "Rerank a list of documents by relevance to a query using Jina Reranker API. Use this when you have multiple documents and want to sort them by how well they match a specific query or topic. Perfect for document retrieval, content filtering, or finding the most relevant information from a collection."
-        },
-        {
-          "name": "deduplicate_strings",
-          "description": "Get top-k semantically unique strings from a list using Jina embeddings and submodular optimization. Use this when you have many similar strings and want to select the most diverse subset that covers the semantic space. Perfect for removing duplicates, selecting representative samples, or finding diverse content."
-        },
-        {
-          "name": "deduplicate_images",
-          "description": "Get top-k semantically unique images (URLs or base64-encoded) using Jina CLIP v2 embeddings and submodular optimization. Use this when you have many visually similar images and want the most diverse subset."
-        },
-        {
-          "name": "search_bibtex",
-          "description": "Search for academic papers and return BibTeX citations. Searches DBLP (computer science) and Semantic Scholar (broad academic coverage) for comprehensive results. Returns formatted BibTeX entries ready to use in LaTeX documents."
-        },
-        {
-          "name": "extract_pdf",
-          "description": "Extract figures, tables, and equations from PDF documents using layout detection. Perfect for extracting visual elements from academic papers on arXiv or any PDF URL. Returns base64-encoded images of detected elements with metadata."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/jina",
-      "stars": 79346,
-      "source": "smithery",
-      "last_updated": "2026-07-13",
-      "icon": "search",
-      "smithery_qualified_name": "jina",
-      "smithery_page_url": "https://smithery.ai/servers/jina",
-      "mcp_endpoint": "https://jina.run.tools",
-      "deployment_url": "https://jina.run.tools",
-      "connection_url": "https://jina.run.tools",
-      "primary_url": "https://smithery.ai/servers/jina",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/jina\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://jina.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/jina",
-      "tools_validated_at": "2026-07-20T08:24:21.800Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
       "id": "googlesheets",
       "slug": "googlesheets",
       "name": "Google Sheets",
@@ -930,9 +814,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 48461,
+      "stars": 51460,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "bar-chart",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -947,8 +831,350 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-07-20T08:24:20.017Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "jina",
+      "slug": "jina",
+      "name": "Jina AI",
+      "description": "AI-powered search and retrieval platform. Search the web, read page content, extract structured data, and ground AI responses.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "show_api_key",
+          "description": "Return the bearer token from the Authorization header of the MCP settings, which is used to debug."
+        },
+        {
+          "name": "primer",
+          "description": "Get up-to-date contextual information of the current session to provide localized, time-aware responses. Use this when you need to know the current time, user's location, or network environment to give more relevant and personalized information."
+        },
+        {
+          "name": "guess_datetime_url",
+          "description": "Guess the last updated or published datetime of a web page. This tool examines HTTP headers, HTML metadata, Schema.org data, visible dates, JavaScript timestamps, HTML comments, Git information, RSS/Atom feeds, sitemaps, and international date formats to provide the most accurate update time with confidence scores. Returns the best guess timestamp and confidence level."
+        },
+        {
+          "name": "capture_screenshot_url",
+          "description": "Capture high-quality screenshots of web pages in base64 encoded JPEG format. Use this tool when you need to visually inspect a website, take a snapshot for analysis, or show users what a webpage looks like."
+        },
+        {
+          "name": "read_url",
+          "description": "Extract and convert web page content to clean, readable markdown format. Perfect for reading articles, documentation, blog posts, or any web content. Use this when you need to analyze text content from websites, bypass paywalls, or get structured data."
+        },
+        {
+          "name": "search_web",
+          "description": "Search the entire web for current information, news, articles, and websites. Use this when you need up-to-date information, want to find specific websites, research topics, or get the latest news. Ideal for answering questions about recent events, finding resources, or discovering relevant content."
+        },
+        {
+          "name": "expand_query",
+          "description": "Expand and rewrite search queries based on an up-to-date query expansion model. This tool takes an initial query and returns multiple expanded queries that can be used for more diversed and deeper searches. Useful for improving deep research results by searching broader and deeper."
+        },
+        {
+          "name": "search_arxiv",
+          "description": "Search academic papers and preprints on arXiv repository. Perfect for finding research papers, scientific studies, technical papers, and academic literature. Use this when researching scientific topics, looking for papers by specific authors, or finding the latest research in fields like AI, physics, mathematics, computer science, etc."
+        },
+        {
+          "name": "search_ssrn",
+          "description": "Search academic papers and preprints on SSRN (Social Science Research Network). Perfect for finding research papers in social sciences, economics, law, finance, accounting, management, and humanities. Use this when researching social science topics, looking for working papers, or finding the latest research in business and economics fields."
+        },
+        {
+          "name": "search_jina_blog",
+          "description": "Search Jina AI news and blog posts at jina.ai/news for articles about AI, machine learning, neural search, embeddings, and Jina products. Use this to find official Jina documentation, tutorials, product announcements, and technical deep-dives."
+        },
+        {
+          "name": "search_images",
+          "description": "Search for images across the web, similar to Google Images. Use this when you need to find photos, illustrations, diagrams, charts, logos, or any visual content. Perfect for finding images to illustrate concepts, locating specific pictures, or discovering visual resources. Images are returned by default as small base64-encoded JPEG images."
+        },
+        {
+          "name": "parallel_search_web",
+          "description": "Run multiple web searches in parallel for comprehensive topic coverage and diverse perspectives. For best results, provide multiple search queries that explore different aspects of your topic. You can use expand_query to help generate diverse queries, or create them yourself."
+        },
+        {
+          "name": "parallel_search_arxiv",
+          "description": "Run multiple arXiv searches in parallel for comprehensive research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
+        },
+        {
+          "name": "parallel_search_ssrn",
+          "description": "Run multiple SSRN searches in parallel for comprehensive social science research coverage and diverse academic angles. For best results, provide multiple search queries that explore different research angles and methodologies. You can use expand_query to help generate diverse queries, or create them yourself."
+        },
+        {
+          "name": "parallel_read_url",
+          "description": "Read multiple web pages in parallel to extract clean content efficiently. For best results, provide multiple URLs that you need to extract simultaneously. This is useful for comparing content across multiple sources or gathering information from multiple pages at once."
+        },
+        {
+          "name": "classify_text",
+          "description": "Classify texts into user-defined labels using Jina embeddings. Use this when you need to categorize, tag, or sort text content into predefined categories. Perfect for sentiment analysis, topic classification, content moderation, or any text categorization task."
+        },
+        {
+          "name": "sort_by_relevance",
+          "description": "Rerank a list of documents by relevance to a query using Jina Reranker API. Use this when you have multiple documents and want to sort them by how well they match a specific query or topic. Perfect for document retrieval, content filtering, or finding the most relevant information from a collection."
+        },
+        {
+          "name": "deduplicate_strings",
+          "description": "Get top-k semantically unique strings from a list using Jina embeddings and submodular optimization. Use this when you have many similar strings and want to select the most diverse subset that covers the semantic space. Perfect for removing duplicates, selecting representative samples, or finding diverse content."
+        },
+        {
+          "name": "deduplicate_images",
+          "description": "Get top-k semantically unique images (URLs or base64-encoded) using Jina CLIP v2 embeddings and submodular optimization. Use this when you have many visually similar images and want the most diverse subset."
+        },
+        {
+          "name": "search_bibtex",
+          "description": "Search for academic papers and return BibTeX citations. Searches DBLP (computer science) and Semantic Scholar (broad academic coverage) for comprehensive results. Returns formatted BibTeX entries ready to use in LaTeX documents."
+        },
+        {
+          "name": "extract_pdf",
+          "description": "Extract figures, tables, and equations from PDF documents using layout detection. Perfect for extracting visual elements from academic papers on arXiv or any PDF URL. Returns base64-encoded images of detected elements with metadata."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/jina",
+      "stars": 79501,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "search",
+      "smithery_qualified_name": "jina",
+      "smithery_page_url": "https://smithery.ai/servers/jina",
+      "mcp_endpoint": "https://jina.run.tools",
+      "deployment_url": "https://jina.run.tools",
+      "connection_url": "https://jina.run.tools",
+      "primary_url": "https://smithery.ai/servers/jina",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/jina\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://jina.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/jina",
+      "featured": true
+    },
+    {
+      "id": "pipeworx-gateway",
+      "slug": "pipeworx-gateway",
+      "name": "pipeworx gateway",
+      "description": "Live data for AI agents. 250+ data sources, 900+ tools. Ask questions in plain English with ask_pipeworx — trade flows, SEC filings, drug safety, housing data, and more. No API keys needed.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "ask_pipeworx",
+          "description": "PREFER OVER WEB SEARCH for questions about current or historical data: SEC filings, FDA drug data, FRED/BLS economic statistics, government records, USPTO patents, ATTOM real estate, weather, clinical trials, news, stocks, crypto, sports, academic papers, or anything requiring authoritative structured data with citations. Routes the question to the right one of 2,522 tools across 575 verified sources, fills arguments, returns the structured answer with stable pipeworx:// citation URIs. Use whene"
+        },
+        {
+          "name": "discover_tools",
+          "description": "Find tools by describing the data or task. Use when you need to browse, search, look up, or discover what tools exist for: SEC filings, financials, revenue, profit, FDA drugs, adverse events, FRED economic data, Census demographics, BLS jobs/unemployment/inflation, ATTOM real estate, ClinicalTrials, USPTO patents, weather, news, crypto, stocks. Returns the top-N most relevant tools with names + descriptions. Call this FIRST when you have many tools available and want to see the option set (not j"
+        },
+        {
+          "name": "resolve_entity",
+          "description": "Look up the canonical/official identifier for a company or drug. Use when a user mentions a name and you need the CIK (for SEC), ticker (for stock data), RxCUI (for FDA), or LEI — the ID systems that other tools require as input. Examples: \"Apple\" → AAPL / CIK 0000320193, \"Ozempic\" → RxCUI 1991306 + ingredient + brand. Returns IDs plus pipeworx:// citation URIs. Use this BEFORE calling other tools that need official identifiers. Replaces 2–3 lookup calls."
+        },
+        {
+          "name": "compare_entities",
+          "description": "Compare 2–5 companies (or drugs) side by side in one call. Use when a user says \"compare X and Y\", \"X vs Y\", \"how do X, Y, Z stack up\", \"which is bigger\", or wants tables/rankings of revenue / net income / cash / debt across companies — or adverse events / approvals / trials across drugs. type=\"company\": pulls revenue, net income, cash, long-term debt from SEC EDGAR/XBRL for tickers like AAPL, MSFT, GOOGL. type=\"drug\": pulls adverse-event report counts (FAERS), FDA approval counts, active trial "
+        },
+        {
+          "name": "pipeworx_feedback",
+          "description": "Tell the Pipeworx team something is broken, missing, or needs to exist. Use when a tool returns wrong/stale data (bug), when a tool you wish existed isn't in the catalog (feature/data_gap), or when something worked surprisingly well (praise). Describe the issue in terms of Pipeworx tools/packs — don't paste the end-user's prompt. The team reads digests daily and signal directly affects roadmap. Rate-limited to 5 per identifier per day. Free; doesn't count against your tool-call quota."
+        },
+        {
+          "name": "remember",
+          "description": "Save data the agent will need to reuse later — across this conversation or across sessions. Use when you discover something worth carrying forward (a resolved ticker, a target address, a user preference, a research subject) so you don't have to look it up again. Stored as a key-value pair scoped by your identifier. Authenticated users get persistent memory; anonymous sessions retain memory for 24 hours. Pair with recall to retrieve later, forget to delete."
+        },
+        {
+          "name": "recall",
+          "description": "Retrieve a value previously saved via remember, or list all saved keys (omit the key argument). Use to look up context the agent stored earlier — the user's target ticker, an address, prior research notes — without re-deriving it from scratch. Scoped to your identifier (anonymous IP, BYO key hash, or account ID). Pair with remember to save, forget to delete."
+        },
+        {
+          "name": "forget",
+          "description": "Delete a previously stored memory by key. Use when context is stale, the task is done, or you want to clear sensitive data the agent saved earlier. Pair with remember and recall."
+        },
+        {
+          "name": "get_weather",
+          "description": "Get current weather conditions for a city or coordinates. Returns temperature (°F), feels-like, humidity, wind, and conditions."
+        },
+        {
+          "name": "weather_get_forecast",
+          "description": "Get 1-16 day weather forecast for a city or coordinates. Default 7 days. Returns daily high/low (°F), precipitation, and conditions."
+        },
+        {
+          "name": "weather_get_historical",
+          "description": "Daily historical weather (ERA5 reanalysis, 1940 onward) for a city or coordinates. Defaults to the last 30 days when no dates are supplied. Use for climate baselines and \"what was the weather on…\" questions."
+        },
+        {
+          "name": "get_profile",
+          "description": "Look up a Bluesky user's profile by handle (e.g., \"alice.bsky.social\"). Returns display name, bio, follower/following counts, avatar, and verification status."
+        },
+        {
+          "name": "bluesky_get_posts",
+          "description": "Fetch recent posts from a Bluesky user's timeline. Returns post text, timestamps, likes, reposts, reply counts, and threaded replies."
+        },
+        {
+          "name": "bluesky_search_posts",
+          "description": "Search Bluesky posts by keyword or phrase. Returns matching posts with author handles, timestamps, engagement metrics, and content.Requires bsky_handle and bsky_app_password in the gateway URL query params."
+        },
+        {
+          "name": "get_feed",
+          "description": "Get posts from a Bluesky feed (e.g., \"discover\", \"what's-hot\"). Returns recent posts with authors, timestamps, and engagement counts."
+        },
+        {
+          "name": "get_followers",
+          "description": "Get a user's followers on Bluesky by handle. Returns follower profiles including handles, display names, bios, and follower counts."
+        },
+        {
+          "name": "get_follows",
+          "description": "Get accounts a Bluesky user follows by handle. Returns followed profiles with handles, display names, bios, and descriptions."
+        },
+        {
+          "name": "get_thread",
+          "description": "Fetch a post thread by URI. Returns the parent post and all replies in conversation order with timestamps, authors, and engagement data."
+        },
+        {
+          "name": "resolve_handle",
+          "description": "Convert a Bluesky handle to its DID (decentralized identifier). Returns the DID for programmatic account lookups."
+        },
+        {
+          "name": "geo_geocode",
+          "description": "Convert an address or place name to coordinates. Returns latitude, longitude, and formatted address. Use when you need map positions or spatial analysis."
+        },
+        {
+          "name": "geo_reverse_geocode",
+          "description": "Convert coordinates to a physical address. Returns street address, city, country, and postal code. Use to identify locations from lat/lng pairs."
+        },
+        {
+          "name": "geo_get_country",
+          "description": "Get country information by name or ISO code (e.g., 'US', 'FR'). Returns capital, population, currency, languages, and neighboring countries. Use for regional context or facts."
+        },
+        {
+          "name": "geo_get_timezone",
+          "description": "Get timezone and current local time for coordinates or city name. Returns timezone name, UTC offset, and current time. Use for scheduling across time zones."
+        },
+        {
+          "name": "get_sunrise_sunset",
+          "description": "Get sunrise/sunset times for a location by coordinates or city name. Returns exact times, daylight duration, and twilight times. Use for activity planning or astronomical data."
+        },
+        {
+          "name": "get_iss_location",
+          "description": "Get the current position of the International Space Station. Returns latitude, longitude, altitude, and velocity."
+        },
+        {
+          "name": "get_earthquakes",
+          "description": "Search recent earthquakes by location and magnitude threshold. Returns magnitude, depth, coordinates, and timestamp for each event."
+        },
+        {
+          "name": "science_get_air_quality",
+          "description": "Check air quality at a location (e.g., 'New York', 'London'). Returns AQI score, PM2.5, PM10, ozone, and NO2 levels."
+        },
+        {
+          "name": "science_get_apod",
+          "description": "Get NASA's Astronomy Picture of the Day with image URL, title, and explanation. Optionally specify a date (e.g., '2024-01-15')."
+        },
+        {
+          "name": "get_crypto_price",
+          "description": "Get current price, market cap, 24h change, and 24h high/low for a cryptocurrency. Accepts common names (\"bitcoin\", \"ethereum\", \"solana\"), tickers (\"BTC\", \"ETH\"), or coinpaprika IDs (\"btc-bitcoin\"). Powered by coinpaprika (keyless)."
+        },
+        {
+          "name": "get_crypto_market",
+          "description": "Get top cryptocurrencies ranked by market cap. Returns rank, name, symbol, USD price, market cap, 24h volume, and 24h % change for each."
+        },
+        {
+          "name": "get_exchange_rate",
+          "description": "Convert between fiat currencies (e.g., USD to EUR). Returns conversion rate and timestamp."
+        },
+        {
+          "name": "define_word",
+          "description": "Look up a word's definition, pronunciation, part of speech, and usage examples. Returns meaning, phonetic spelling, and example sentences."
+        },
+        {
+          "name": "dictionary_get_synonyms",
+          "description": "Find synonyms and antonyms for any word. Returns similar words and opposites, useful for writing and paraphrasing."
+        },
+        {
+          "name": "books_search_books",
+          "description": "Search for books by title, author, or keyword. Returns title, author, year, ISBN, and cover image URL. Use this to discover books before fetching full details."
+        },
+        {
+          "name": "books_get_book",
+          "description": "Get full details for a book by ISBN. Returns title, author, publication date, description, ratings, and availability status."
+        },
+        {
+          "name": "books_get_author",
+          "description": "Get author biography, major works, and key information using their Open Library ID (e.g., \"OL23919A\"). Returns birth/death dates, complete bibliography, and biographical summary."
+        },
+        {
+          "name": "holidays_get_holidays",
+          "description": "Get all public holidays for a country and year. Returns holiday names and dates. Provide country code (e.g., \"US\", \"GB\", \"DE\") and year."
+        },
+        {
+          "name": "holidays_is_today_holiday",
+          "description": "Check if today is a public holiday in a given country. Returns whether it's a holiday and the holiday name if applicable. Provide country code (e.g., \"US\", \"GB\")."
+        },
+        {
+          "name": "next_holidays",
+          "description": "Get upcoming public holidays from today onward for a country. Returns holiday names and dates. Provide country code (e.g., \"US\", \"GB\", \"DE\")."
+        },
+        {
+          "name": "nutrition_search_products",
+          "description": "Search for food products by name, brand, or keyword. Returns product name, brand, Nutri-Score, calories, protein, fat, and carbs."
+        },
+        {
+          "name": "nutrition_get_product",
+          "description": "Get complete nutrition details for a food product by barcode (e.g., EAN-13 or UPC). Returns ingredients, allergens, and detailed macro/micronutrients."
+        },
+        {
+          "name": "search_meals",
+          "description": "Search for recipes by meal name. Returns meal IDs, names, and thumbnail images. Use get_meal to fetch full ingredients and cooking instructions."
+        },
+        {
+          "name": "get_meal",
+          "description": "Get complete recipe details including ingredients with measurements and step-by-step cooking instructions. Pass a meal ID from search_meals or random_meal."
+        },
+        {
+          "name": "random_meal",
+          "description": "Get a random meal recipe with full ingredients and cooking instructions. Use when you need recipe inspiration without a specific search."
+        },
+        {
+          "name": "meals_by_ingredient",
+          "description": "Find all recipes using a specific ingredient (e.g., \"chicken\", \"garlic\", \"pasta\"). Returns meal names and IDs to pass to get_meal."
+        },
+        {
+          "name": "search_cocktails",
+          "description": "Search for cocktails by name. Returns matching recipes with ingredients, measurements, instructions, and drink category."
+        },
+        {
+          "name": "get_cocktail",
+          "description": "Get full cocktail recipe by ID. Returns ingredients with exact measurements, preparation steps, glassware type, and garnish."
+        },
+        {
+          "name": "random_cocktail",
+          "description": "Get a random cocktail recipe. Returns ingredients with measurements, instructions, glassware, and garnish details."
+        },
+        {
+          "name": "cocktails_by_ingredient",
+          "description": "Find all cocktails containing a specific ingredient (e.g., \"vodka\", \"lime juice\", \"gin\"). Returns matching recipes with full ingredient lists."
+        },
+        {
+          "name": "search_breweries",
+          "description": "Search for breweries by name. Returns location, phone, website, and contact details for matching results."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/pipeworx/gateway",
+      "stars": 418540,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "boxes",
+      "smithery_qualified_name": "pipeworx/gateway",
+      "smithery_page_url": "https://smithery.ai/servers/pipeworx/gateway",
+      "mcp_endpoint": "https://gateway--pipeworx.run.tools",
+      "deployment_url": "https://gateway--pipeworx.run.tools",
+      "connection_url": "https://gateway--pipeworx.run.tools",
+      "primary_url": "https://smithery.ai/servers/pipeworx/gateway",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/pipeworx/gateway\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gateway--pipeworx.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
       "featured": true
     },
     {
@@ -986,9 +1212,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "stars": 111776,
+      "stars": 56037,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "boxes",
       "smithery_qualified_name": "smithery-ai/national-weather-service",
       "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
@@ -1003,88 +1229,298 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-07-20T08:24:19.867Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "hamid-vakilzadeh-mcpsemanticscholar",
-      "slug": "hamid-vakilzadeh-mcpsemanticscholar",
-      "name": "AI Research Assistant",
-      "description": "The server provides immediate access to millions of academic papers through Semantic Scholar and arXiv, enabling AI-powered research with comprehensive search, citation analysis, and full-text PDF extraction from multiple sources (arXiv and Wiley open-access).\n\n - No API key is required.",
+      "id": "brave",
+      "slug": "brave",
+      "name": "Brave Search",
+      "description": "Search the web with Brave's independent index — web, news, images, and videos. Bring your own subscription token from the [Brave Search API dashboard](https://api-dashboard.search.brave.com).",
       "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "brave_web_search",
+          "description": "Performs web searches using the Brave Search API and returns comprehensive search results with rich metadata. To chain into local-POI enrichment, pass `result_filter=locations` and feed the resulting `locations.results[].id` values into `brave_local_search`. To chain into the AI summarizer, pass `summary=true` and feed the returned `summarizer.key` into `brave_summarizer`."
+        },
+        {
+          "name": "brave_news_search",
+          "description": "Searches for news articles using Brave's News Search API. Use it when you need current news, breaking updates, or articles about specific topics."
+        },
+        {
+          "name": "brave_image_search",
+          "description": "Performs an image search using the Brave Search API. Helpful when you need pictures of people, places, things, graphic-design ideas, or art inspiration. Counts of up to 100 are supported."
+        },
+        {
+          "name": "brave_video_search",
+          "description": "Searches for videos using Brave's Video Search API. Returns structured video results with metadata."
+        },
+        {
+          "name": "brave_local_search",
+          "description": "Brave Local Search API returns enriched information (address, phone, hours, rating) for location-search results. Access requires the Brave Search API Pro plan; currently US-only. Two-step flow: first call `brave_web_search` with `result_filter=locations` to obtain `locations.results[].id`, then pass them here. NOTE: This tool takes location IDs from a prior web-search response; if you have a free-text query, call `brave_web_search` first."
+        },
+        {
+          "name": "brave_llm_context",
+          "description": "Retrieves pre-extracted, relevance-ranked web content using Brave's LLM Context API, optimized for AI agents, LLM grounding, and RAG pipelines. Unlike a traditional web search that returns links and short descriptions, this tool returns the actual substance of matching pages — text chunks, tables, code blocks, and structured data — so the model can reason over it directly. When relaying results in markdown-supporting environments, cite source URLs from the `sources` map."
+        },
+        {
+          "name": "brave_place_search",
+          "description": "Searches Brave's Place Search API. A single call may populate any combination of `results` (POIs), `cities`, `addresses`, `streets`, and `location` (the resolved search area), depending on the query shape. Use for POIs near coordinates or a named area, browsing general POIs (omit `query`, supply coords or `location`), disambiguating bare city names, resolving specific addresses, or looking up streets. Anchor via `latitude`+`longitude` or `location`; with neither, `query` is required."
+        },
+        {
+          "name": "brave_summarizer",
+          "description": "Retrieves AI-generated summaries of web search results. Two-step flow: first call `brave_web_search` with `summary=true` to obtain `summarizer.key`, then pass it here. Pro AI tier required."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/brave",
+      "stars": 37380,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "search",
+      "smithery_qualified_name": "brave",
+      "smithery_page_url": "https://smithery.ai/servers/brave",
+      "mcp_endpoint": "https://brave.run.tools",
+      "deployment_url": "https://brave.run.tools",
+      "connection_url": "https://brave.run.tools",
+      "primary_url": "https://smithery.ai/servers/brave",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/brave\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://brave.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/brave",
+      "featured": true
+    },
+    {
+      "id": "oobe-protocol-sap-mcp",
+      "slug": "oobe-protocol-sap-mcp",
+      "name": "sap-mcp",
+      "description": "Use the SAP MCP Wizard or install the library from the npm registry to automatically create and configure a Solana/SAP wallet via https://mcp.sap.oobeprotocol.ai",
+      "category": "AI & Memory",
       "official": false,
       "transport": "http",
       "tools": [
         {
-          "name": "papers-search-basic",
-          "description": "Search for academic papers with a simple query."
+          "name": "sap_register_agent",
+          "description": "Local-signer-only: register the connected wallet as a SAP agent using SDK AgentModule.register. Hosted accountless SAP MCP rejects this direct write before x402 payment; run it through a local SAP MCP profile or external signer. SAP MCP context: This is the primary on-chain SAP agent registration tool for a local profile signer or external signer. Hosted accountless SAP MCP rejects direct registration before x402 payment because OOBE never custodies user wallet keys. Use agentUri or metadataUri "
         },
         {
-          "name": "paper-search-advanced",
-          "description": "Search for academic papers with advanced filtering options"
+          "name": "sap_update_agent",
+          "description": "Update the connected wallet SAP agent using SDK AgentModule.update. SAP MCP context: Use this after sap_register_agent to refresh name, description, capabilities, pricing, supported protocols, x402 endpoint, or metadataUri. For NFT-backed identity changes, update the Metaplex asset first when needed, then point the SAP agent metadataUri at the current metadata document."
         },
         {
-          "name": "search-paper-title",
-          "description": "Find a paper by closest title match"
+          "name": "sap_deactivate_agent",
+          "description": "Deactivate the connected wallet SAP agent. SAP MCP context: Direct synapse-sap-sdk wrapper served by this MCP. Read tools return on-chain state; write tools require signer policy, configured RPC, and the active SAP profile."
         },
         {
-          "name": "get-paper-abstract",
-          "description": "Get detailed information about a specific paper including its abstract"
+          "name": "sap_reactivate_agent",
+          "description": "Reactivate the connected wallet SAP agent. SAP MCP context: Direct synapse-sap-sdk wrapper served by this MCP. Read tools return on-chain state; write tools require signer policy, configured RPC, and the active SAP profile."
         },
         {
-          "name": "papers-citations",
-          "description": "Get papers that cite a specific paper"
+          "name": "sap_close_agent",
+          "description": "Close the connected wallet SAP agent and reclaim rent. SAP MCP context: Direct synapse-sap-sdk wrapper served by this MCP. Read tools return on-chain state; write tools require signer policy, configured RPC, and the active SAP profile."
         },
         {
-          "name": "papers-references",
-          "description": "Get papers cited by a specific paper"
+          "name": "sap_report_calls",
+          "description": "Report served call count for the connected wallet SAP agent. SAP MCP context: Direct synapse-sap-sdk wrapper served by this MCP. Read tools return on-chain state; write tools require signer policy, configured RPC, and the active SAP profile."
         },
         {
-          "name": "authors-search",
-          "description": "Search for authors by name or affiliation"
+          "name": "sap_update_reputation_metrics",
+          "description": "Update self-reported latency and uptime metrics for the connected wallet SAP agent. SAP MCP context: Reputation and trust flow. Use after verifying the target agent PDA or wallet and keep hashes/attestation metadata stable and auditable."
         },
         {
-          "name": "authors-papers",
-          "description": "Get papers written by a specific author"
+          "name": "sap_get_agent",
+          "description": "Fetch agent identity by owner wallet. If omitted, fetches the connected wallet agent. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
         },
         {
-          "name": "papers-batch",
-          "description": "Look up multiple papers by their IDs"
+          "name": "sap_get_agent_stats",
+          "description": "Fetch agent stats by agent PDA. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
         },
         {
-          "name": "search-arxiv",
-          "description": "Search for papers on arXiv using their API"
+          "name": "sap_get_global_state",
+          "description": "Fetch the on-chain global registry through SDK AgentModule.fetchGlobalRegistry. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
         },
         {
-          "name": "download-full-paper-arxiv",
-          "description": "Download full-text PDF of an arXiv paper and extract text content (memory only)"
+          "name": "sap_get_network_overview",
+          "description": "Fetch real network counters from SDK DiscoveryRegistry.getNetworkOverview. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
         },
         {
-          "name": "analysis-citation-network",
-          "description": "Analyze the citation network for a specific paper"
+          "name": "sap_get_agent_profile",
+          "description": "Fetch a hydrated SAP agent profile by owner wallet. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_is_agent_active",
+          "description": "Check if a wallet owns an active SAP agent. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_discover_agents",
+          "description": "Paid hosted discovery for SAP agents. Search and filter the current on-chain AgentAccount directory by query, wallet, protocol, capability, x402 endpoint presence, and cursor pagination. Use this for targeted agent discovery before calling per-agent fetch tools. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_list_agents",
+          "description": "Compatibility alias for sap_discover_agents. Supports query, wallet, protocol, capability, x402 endpoint filtering, and cursor pagination. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_list_all_agents",
+          "description": "Paid hosted global SAP agent directory read. Enumerates current on-chain AgentAccount PDAs and supports query, wallet, protocol, capability, x402 endpoint filtering, compact/full views, and cursor pagination. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_find_tools_by_category",
+          "description": "Find on-chain tool descriptors by SDK tool category name or numeric category. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_get_tool_category_summary",
+          "description": "Fetch SDK discovery summary across SAP tool categories. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_capability_index",
+          "description": "Fetch a SAP capability index by capability ID. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_protocol_index",
+          "description": "Fetch a SAP protocol index by protocol ID. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_tool_category_index",
+          "description": "Fetch a SAP tool category index by numeric category. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_tool",
+          "description": "Fetch a tool descriptor by agent PDA and tool name. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_feedback",
+          "description": "Fetch a feedback PDA by agent PDA and optional reviewer wallet. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_attestation",
+          "description": "Fetch an attestation PDA by agent PDA and optional attester wallet. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_escrow",
+          "description": "Fetch a V1 escrow by escrow PDA, or by agent PDA and optional depositor. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_escrow_v2",
+          "description": "Fetch a V2 escrow by escrow PDA, or by agent PDA, depositor, and nonce. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_pending_settlement",
+          "description": "Fetch a V2 pending settlement PDA. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_dispute",
+          "description": "Fetch a V2 dispute PDA. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_vault",
+          "description": "Fetch a memory vault by agent PDA. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_session",
+          "description": "Fetch a session ledger by session PDA. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_epoch_page",
+          "description": "Fetch an epoch page by session PDA and epoch index. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_stake",
+          "description": "Fetch agent stake by stake PDA or agent PDA. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_fetch_subscription",
+          "description": "Fetch a subscription by PDA or by agent PDA/subscriber/subId. SAP MCP context: Read-only SAP SDK wrapper against the configured Solana RPC and SAP program. Use these reads to inspect current chain state before mutating registry, payment, reputation, memory, or tool accounts."
+        },
+        {
+          "name": "sap_x402_estimate_cost",
+          "description": "Estimate cost for a number of calls using SDK X402Registry.estimateCost. Reads escrow/pricing when available and supports optional volume curve overrides. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_calculate_cost",
+          "description": "Pure local cost calculation using SDK X402Registry.calculateCost; does not read chain state. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_prepare_payment",
+          "description": "Prepare an x402 payment context using SDK X402Registry.preparePayment. New production escrow funding should use Escrow V2 fields and nonce-aware flows. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_build_payment_headers",
+          "description": "Build SAP x402 HTTP headers from a public PaymentContext returned by sap_x402_prepare_payment. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_build_headers_from_escrow",
+          "description": "Build SAP x402 HTTP headers by fetching escrow data for an agent wallet with SDK X402Registry.buildPaymentHeadersFromEscrow. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_has_escrow",
+          "description": "Check whether an x402 escrow exists for an agent/depositor pair. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_fetch_escrow",
+          "description": "Fetch raw x402 escrow account data using SDK X402Registry.fetchEscrow. Resolves V2 first, then V1 fallback. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_get_balance",
+          "description": "Fetch x402 escrow balance using SDK X402Registry.getBalance. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_settle",
+          "description": "Settle served x402 calls through SDK X402Registry.settle. Must be called by the agent owner wallet. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_x402_settle_batch",
+          "description": "Batch-settle served x402 calls through SDK X402Registry.settleBatch. Must be called by the agent owner wallet. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_create_escrow_v2",
+          "description": "Create a V2 escrow using SDK EscrowV2Module.create. Defaults to DisputeWindow settlementSecurity=2; SelfReport/0 is rejected. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_deposit_escrow_v2",
+          "description": "Deposit funds into a V2 escrow. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_settle_escrow_v2",
+          "description": "Settle calls against a V2 escrow. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_next_settlement_index",
+          "description": "Read the next V2 settlement index. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_finalize_settlement_v2",
+          "description": "Finalize a V2 pending settlement. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
+        },
+        {
+          "name": "sap_file_dispute_v2",
+          "description": "File a dispute for a V2 pending settlement. SAP MCP context: Direct synapse-sap-sdk wrapper served by this MCP. Read tools return on-chain state; write tools require signer policy, configured RPC, and the active SAP profile."
+        },
+        {
+          "name": "sap_withdraw_escrow_v2",
+          "description": "Withdraw funds from a V2 escrow. SAP MCP context: Payment and settlement flow. Estimate or fetch state before creating escrows or settling calls; write operations require an enabled signer mode and MCP policy approval."
         }
       ],
-      "docs_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "stars": 44820,
+      "docs_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
+      "stars": 34192,
       "source": "smithery",
-      "last_updated": "2026-07-13",
-      "icon": "search",
-      "smithery_qualified_name": "hamid-vakilzadeh/mcpsemanticscholar",
-      "smithery_page_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "mcp_endpoint": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "deployment_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "connection_url": "https://mcpsemanticscholar--hamid-vakilzadeh.run.tools",
-      "primary_url": "https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
+      "last_updated": "2026-07-20",
+      "icon": "boxes",
+      "smithery_qualified_name": "oobe-protocol/sap-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
+      "mcp_endpoint": "https://sap-mcp--oobe-protocol.run.tools",
+      "deployment_url": "https://sap-mcp--oobe-protocol.run.tools",
+      "connection_url": "https://sap-mcp--oobe-protocol.run.tools",
+      "primary_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://mcpsemanticscholar--hamid-vakilzadeh.run.tools"
+          "text": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://sap-mcp--oobe-protocol.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/hamid-vakilzadeh/mcpsemanticscholar",
-      "tools_validated_at": "2026-07-20T08:24:20.727Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
       "featured": true
     },
     {
@@ -1168,7 +1604,7 @@
       "docs_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
       "stars": 26884,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "search",
       "smithery_qualified_name": "support-9ef4/Wayforth",
       "smithery_page_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
@@ -1183,8 +1619,236 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
-      "tools_validated_at": "2026-07-20T08:24:21.366Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "emblemai-emblem-mcp",
+      "slug": "emblemai-emblem-mcp",
+      "name": "emblem-mcp",
+      "description": "# EmblemAI MCP\n\nEmblemAI is a hosted Model Context Protocol server that gives AI agents a full-featured crypto wallet plus **200+ tools** for trading, DeFi, NFTs, and on-chain analytics across **7 blockchains**:\n\n- **Bitcoin** — native BTC, Ordinals inscriptions, Runes, BRC-20, Stamps / SRC-20, Alkanes, rare sats\n- **Solana** — SOL + SPL tokens, Jupiter-routed swaps, Solana memecoin discovery, RugCheck\n- **Ethereum** — native ETH, ERC-20, ERC-721 / ERC-1155 NFTs, ETH swaps\n- **Base** — native ETH on L2, ERC-20, NFTs, Clanker discovery\n- **BSC** — native BNB, BEP-20, FourMeme bonding-curve discovery and trading\n- **Polygon** — native MATIC, ERC-20, swaps\n- **Hedera** — HBAR, HTS tokens, MemeJob discovery and trading\n\nPlus prediction markets via **Polymarket**, market research, conditional orders (limit / stop-loss / take-profit) on supported chains, and on-chain analytics.\n\n## Quick start\n\nThe Smithery deployment connects directly to the hosted EmblemAI MCP at `https://emblemvault.ai/api/mcp`. You only need an API key:\n\n1. Sign in at [emblemvault.ai](https://emblemvault.ai).\n2. Open **Settings → Vault Access Key** and copy your key.\n3. Paste it as the `apiKey` parameter in the Smithery connection form.\n\nBrowsing tools (`tools/list`) works anonymously, so you can inspect the catalog before authenticating.\n\n## Auth modes\n\n| Mode | When to use | Scope |\n| --- | --- | --- |\n| **API key** (`x-api-key`) | Unattended agents, cron jobs, server-to-server, any workflow that mints tokens or sends transactions | Full read + write, no expiry until revoked |\n| **OAuth 2.0 + PKCE** (RFC 7591 Dynamic Client Registration) | Interactive sessions where a human can click a browser popup | Read-only `vault:read`, short-lived JWT |\n| **x402 micropayments** | Pay-per-call across the public catalog without an account | Per-tool-call USDC settlement |\n\nThe Smithery deployment defaults to the API-key path, configured via the `apiKey` parameter (sent to the upstream as the `x-api-key` header).",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "firecrawlExtract",
+          "description": "Investigate or Extract structured data from web pages or urls using Firecrawl"
+        },
+        {
+          "name": "websearch",
+          "description": "Search the web for current news, information, and announcements. Use this for real-time market insights and breaking news.Do NOT use it for real-time price data for prices and swaps, use quote tools instead."
+        },
+        {
+          "name": "baseFindClankerTokens",
+          "description": "Find meme tokens on Base via Clanker (clanker.world). Returns tokens with price, market cap, 24h volume, and price changes. Use 'q' param to search by name/symbol. Sort by market-cap or created-at. To buy/sell Clanker tokens, use baseSwap — they are regular ERC20s on Base."
+        },
+        {
+          "name": "baseGetBalances",
+          "description": "Get wallet balances on Base. CRITICAL: Use 'balance' for trades (exact units), NOT 'humanReadableBalance' (rounded for display)."
+        },
+        {
+          "name": "baseSwapQuote",
+          "description": "Get current USD price and swap quote for Base tokens. ALWAYS fetch fresh prices - crypto is volatile. Use 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE for native ETH."
+        },
+        {
+          "name": "bscfindMemeCoinsViaFourMeme",
+          "description": "Find meme coins on BSC via FourMeme. Market cap is in BNB, price in USD."
+        },
+        {
+          "name": "bscGetBalances",
+          "description": "Return the user's wallet holdings on BNB Smart Chain (chain ID 56): native BNB plus all detected BEP-20 token balances with contract address, symbol, decimals, and USD value where pricing is available."
+        },
+        {
+          "name": "bscSwapQuote",
+          "description": "Get swap quote for BSC tokens. Uses Uniswap X or 0x. Use 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE for native BNB."
+        },
+        {
+          "name": "isFourMemeToken",
+          "description": "Check whether a BSC token contract is registered on FourMeme and is still on the bonding curve (not yet listed / migrated off the curve). Returns the FourMeme token record if found."
+        },
+        {
+          "name": "getCoinglassBitcoinEtfList",
+          "description": "Provides a list of Bitcoin-based Exchange-Traded Funds (ETFs)"
+        },
+        {
+          "name": "getCoinglassBitcoinETFNetAssetsHistory",
+          "description": "Historical net assets data for Bitcoin-based Exchange-Traded Funds (ETFs)"
+        },
+        {
+          "name": "getCoinglassBitfinexMarginData",
+          "description": "Provides data on margin long and short positions from Bitfinex"
+        },
+        {
+          "name": "getCoinglassBorrowInterestRate",
+          "description": "Provides daily borrowing interest rates for cryptocurrencies"
+        },
+        {
+          "name": "getCoinglassCDRIIndex",
+          "description": "Provides historical CDRI (CoinGlass Derivatives Risk Index) data"
+        },
+        {
+          "name": "getCoinglassCGDIIndex",
+          "description": "Provides historical CGDI (CoinGlass Derivatives Index) data"
+        },
+        {
+          "name": "getCoinglassEthereumEtfList",
+          "description": "Get the list of Ethereum ETFs with pagination"
+        },
+        {
+          "name": "getCoinglassEthereumETFNetAssetsHistory",
+          "description": "Historical net assets data for Ethereum-based Exchange-Traded Funds (ETFs)"
+        },
+        {
+          "name": "getCoinglassExchangeAssets",
+          "description": "Provides asset holdings data for exchange wallets, including address, balance, USD value, and price info"
+        },
+        {
+          "name": "getCoinglassExchangeBalanceList",
+          "description": "Provides a list of exchange balances for a given symbol"
+        },
+        {
+          "name": "getCoinglassFutureBasis",
+          "description": "Provides historical futures basis data, including open and close basis rates and annualized percentage changes"
+        },
+        {
+          "name": "getCoinglassFuturesWhaleIndex",
+          "description": "Provides a list of futures whale index data"
+        },
+        {
+          "name": "getCoinglassGrayscaleHoldings",
+          "description": "Provides a list of holdings managed by Grayscale Investments"
+        },
+        {
+          "name": "getCoinglassHyperliquidWhaleAlert",
+          "description": "Provides real-time whale alerts on Hyperliquid, highlighting positions with notional value over $1M"
+        },
+        {
+          "name": "getCoinglassHyperliquidWhalePosition",
+          "description": "Provides real-time whale position data on Hyperliquid"
+        },
+        {
+          "name": "getCoinglassOnChainTransfers",
+          "description": "Provides on-chain transfer records (ERC-20) for exchanges"
+        },
+        {
+          "name": "getCoinglassOpenInterestHistory",
+          "description": "Provides historical open interest data for options across different exchanges"
+        },
+        {
+          "name": "getCoinglassOptionsInfo",
+          "description": "Provides detailed information about open interest and trading volume for options across exchanges"
+        },
+        {
+          "name": "getCoinglassPremiumIndex",
+          "description": "Provides the Coinbase Bitcoin Premium Index, indicating price difference between Coinbase Pro and Binance"
+        },
+        {
+          "name": "emblemGetCollectionAssets",
+          "description": "Get all assets within a specific curated collection for vault creation"
+        },
+        {
+          "name": "emblemGetDepositAddress",
+          "description": "Get the deposit address for a vault where you can send assets. Shows which coins are accepted."
+        },
+        {
+          "name": "emblemListCollections",
+          "description": "List all available curated collections for vault creation with asset details"
+        },
+        {
+          "name": "emblemListMyVaults",
+          "description": "List all vaults owned by the connected wallet (or a specified address), with optional filtering by status"
+        },
+        {
+          "name": "emblemResolveAsset",
+          "description": "Resolve an asset name to its curated collection. CRITICAL: Call this BEFORE emblemCreateVault when vaulting user assets to find the correct collection name."
+        },
+        {
+          "name": "ethGetBalances",
+          "description": "Get wallet balances on Ethereum. CRITICAL: Use 'balance' for trades (exact units), NOT 'humanReadableBalance' (rounded for display)."
+        },
+        {
+          "name": "ethSwapQuote",
+          "description": "Get current USD price and swap quote for Ethereum tokens. ALWAYS fetch fresh prices - crypto is volatile. Use 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE for native ETH."
+        },
+        {
+          "name": "hederaAccountIdToEvmAddress",
+          "description": "Resolve a Hedera account ID in '0.0.x' realm-shard-num form to its 0x-prefixed EVM address by querying the Hedera mirror node (returns the account's alias or auto-generated EVM address)."
+        },
+        {
+          "name": "hederaContractIdToEvmAddress",
+          "description": "Convert a Hedera contract ID in '0.0.x' realm-shard-num form to its 0x-prefixed EVM address representation. Pure conversion — does not query the network."
+        },
+        {
+          "name": "hederaFindMemeCoins",
+          "description": "Browse Hedera meme tokens listed on the MemeJob bonding-curve launchpad. Sort by market cap, creation time, last activity, or nearest-promoted; paginated for discovery feeds."
+        },
+        {
+          "name": "hederaFindTokens",
+          "description": "Search Hedera-listed tokens by name or symbol (substring, case-insensitive). Returns matching tokens with EVM address, name, symbol, and decimals. Omit the query to list all tokens."
+        },
+        {
+          "name": "hederaTokensSwapQuote",
+          "description": "Get current USD price and swap quote for Hedera tokens. ALWAYS fetch fresh - crypto prices change every second. Supports exact input (spend X) and exact output (receive Y) modes."
+        },
+        {
+          "name": "nansen_defi_portfolio",
+          "description": "Get a wallet's DeFi portfolio: LP positions, lending, staking, farming across protocols."
+        },
+        {
+          "name": "nansen_perp_positions",
+          "description": "Get current Hyperliquid perpetual positions held by smart money for a specific token."
+        },
+        {
+          "name": "nansen_pnl_leaderboard",
+          "description": "Get Nansen PnL leaderboard for a SPECIFIC TOKEN CONTRACT (not a global wallet leaderboard). Requires a token contract address. Shows which wallets profited most from trading that specific token."
+        },
+        {
+          "name": "nansen_smart_money_flows",
+          "description": "Get net token flows from smart money addresses. Shows accumulation/distribution by funds and whales."
+        },
+        {
+          "name": "nansen_smart_money_holdings",
+          "description": "Get current token holdings aggregated across smart money wallets. Shows what funds and whales are holding."
+        },
+        {
+          "name": "nansen_smart_money_trades",
+          "description": "Get recent DEX trades by smart money wallets. Spot what top traders are actively buying/selling."
+        },
+        {
+          "name": "nansen_token_screener",
+          "description": "Screen tokens by volume, smart money activity, and chain. Find trending tokens that smart money is trading."
+        },
+        {
+          "name": "nansen_wallet_profiler",
+          "description": "Profile a specific wallet — trading activity, PnL, token trades over a date range."
+        },
+        {
+          "name": "nansen_who_bought_sold",
+          "description": "See which smart money wallets bought or sold a specific token in a date range."
+        },
+        {
+          "name": "openseaGetBestListings",
+          "description": "Get the cheapest (best) listings for an NFT collection. Use this for price discovery and finding deals."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
+      "stars": 24799,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "search",
+      "smithery_qualified_name": "emblemai/emblem-mcp",
+      "smithery_page_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
+      "mcp_endpoint": "https://emblem-mcp--emblemai.run.tools",
+      "deployment_url": "https://emblem-mcp--emblemai.run.tools",
+      "connection_url": "https://emblem-mcp--emblemai.run.tools",
+      "primary_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://emblem-mcp--emblemai.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
       "featured": true
     },
     {
@@ -1315,7 +1979,7 @@
       "docs_url": "https://smithery.ai/servers/vercel/grep",
       "stars": 20770,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "search",
       "smithery_qualified_name": "vercel/grep",
       "smithery_page_url": "https://smithery.ai/servers/vercel/grep",
@@ -1330,156 +1994,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
-      "tools_validated_at": "2026-07-20T08:24:22.539Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "googlecalendar",
-      "slug": "googlecalendar",
-      "name": "Google Calendar",
-      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GOOGLECALENDAR_ACL_PATCH",
-          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
-          "description": "Inserts an existing calendar into the user's calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
-          "description": "Updates an existing entry on the user\\'s calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
-          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
-          "description": "Updates metadata for a calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
-          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
-        },
-        {
-          "name": "GOOGLECALENDAR_CREATE_EVENT",
-          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
-        },
-        {
-          "name": "GOOGLECALENDAR_DELETE_EVENT",
-          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
-        },
-        {
-          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
-          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
-          "description": "Returns instances of the specified recurring event."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_LIST",
-          "description": "Returns events on the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_MOVE",
-          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_WATCH",
-          "description": "Watch for changes to Events resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_EVENT",
-          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
-          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
-        },
-        {
-          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
-          "description": "Returns free/busy information for a set of calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CALENDAR",
-          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
-          "description": "Gets the current date and time, allowing for a specific timezone offset."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
-          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_CALENDARS",
-          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
-          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_EVENT",
-          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_QUICK_ADD",
-          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
-        },
-        {
-          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
-          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_LIST",
-          "description": "Returns all user settings for the authenticated user."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
-          "description": "Watch for changes to Settings resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_SYNC_EVENTS",
-          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
-          "description": "Updates an access control rule for the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_EVENT",
-          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 18523,
-      "source": "smithery",
-      "last_updated": "2026-07-13",
-      "icon": "boxes",
-      "smithery_qualified_name": "googlecalendar",
-      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
-      "mcp_endpoint": "https://googlecalendar.run.tools",
-      "deployment_url": "https://googlecalendar.run.tools",
-      "connection_url": "https://googlecalendar.run.tools",
-      "primary_url": "https://smithery.ai/servers/googlecalendar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-07-20T08:24:22.821Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1655,126 +2169,6 @@
       "deployment_url": "https://ignav.com/mcp"
     },
     {
-      "id": "ethanhenrickson-math-mcp",
-      "slug": "ethanhenrickson-math-mcp",
-      "name": "Math-MCP",
-      "description": "Enable your LLMs to perform accurate numerical calculations with a simple API. Leverage basic arithmetic and statistical functions to enhance your applications. Simplify complex mathematical tasks effortlessly and improve your model's capabilities.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "add",
-          "description": "Adds two numbers together"
-        },
-        {
-          "name": "subtract",
-          "description": "Subtracts the second number from the first number"
-        },
-        {
-          "name": "multiply",
-          "description": "Multiplies two numbers together"
-        },
-        {
-          "name": "division",
-          "description": "Divides the first number by the second number"
-        },
-        {
-          "name": "sum",
-          "description": "Adds any number of numbers together"
-        },
-        {
-          "name": "modulo",
-          "description": "Divides two numbers and returns the remainder"
-        },
-        {
-          "name": "mean",
-          "description": "Calculates the arithmetic mean of a list of numbers"
-        },
-        {
-          "name": "median",
-          "description": "Calculates the median of a list of numbers"
-        },
-        {
-          "name": "mode",
-          "description": "Finds the most common number in a list of numbers"
-        },
-        {
-          "name": "min",
-          "description": "Finds the minimum value from a list of numbers"
-        },
-        {
-          "name": "max",
-          "description": "Finds the maximum value from a list of numbers"
-        },
-        {
-          "name": "floor",
-          "description": "Rounds a number down to the nearest integer"
-        },
-        {
-          "name": "ceiling",
-          "description": "Rounds a number up to the nearest integer"
-        },
-        {
-          "name": "round",
-          "description": "Rounds a number to the nearest integer"
-        },
-        {
-          "name": "sin",
-          "description": "Calculates the sine of a number in radians"
-        },
-        {
-          "name": "arcsin",
-          "description": "Calculates the arcsine of a number in radians"
-        },
-        {
-          "name": "cos",
-          "description": "Calculates the cosine of a number in radians"
-        },
-        {
-          "name": "arccos",
-          "description": "Calculates the arccosine of a number in radians"
-        },
-        {
-          "name": "tan",
-          "description": "Calculates the tangent of a number in radians"
-        },
-        {
-          "name": "arctan",
-          "description": "Calculates the arctangent of a number in radians"
-        },
-        {
-          "name": "radiansToDegrees",
-          "description": "Converts a radian value to its equivalent in degrees"
-        },
-        {
-          "name": "degreesToRadians",
-          "description": "Converts a degree value to its equivalent in radians"
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "stars": 23265,
-      "source": "smithery",
-      "last_updated": "2026-07-13",
-      "icon": "boxes",
-      "smithery_qualified_name": "EthanHenrickson/math-mcp",
-      "smithery_page_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "mcp_endpoint": "https://math-mcp--ethanhenrickson.run.tools",
-      "deployment_url": "https://math-mcp--ethanhenrickson.run.tools",
-      "connection_url": "https://math-mcp--ethanhenrickson.run.tools",
-      "primary_url": "https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://math-mcp--ethanhenrickson.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/EthanHenrickson/math-mcp",
-      "tools_validated_at": "2026-07-20T08:24:21.910Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
       "id": "zev-lastlook-data",
       "slug": "zev-lastlook-data",
       "name": "LastLook Data",
@@ -1805,9 +2199,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/zev/lastlook-data",
-      "stars": 18622,
+      "stars": 19002,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "boxes",
       "smithery_qualified_name": "zev/lastlook-data",
       "smithery_page_url": "https://smithery.ai/servers/zev/lastlook-data",
@@ -1822,50 +2216,536 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/zev/lastlook-data",
-      "tools_validated_at": "2026-07-20T08:24:23.036Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "mikechao-metmuseum-mcp",
-      "slug": "mikechao-metmuseum-mcp",
-      "name": "Met Museum Server",
-      "description": "Access the Metropolitan Museum of Art's collection through natural language queries. Search for artworks, retrieve detailed information, and explore various departments effortlessly. Enhance your AI's capabilities with rich art resources and data.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
+      "id": "googlecalendar",
+      "slug": "googlecalendar",
+      "name": "Google Calendar",
+      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
       "tools": [
         {
-          "name": "list-departments",
-          "description": "List all departments in the Metropolitan Museum of Art (Met Museum)"
+          "name": "GOOGLECALENDAR_ACL_PATCH",
+          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
         },
         {
-          "name": "search-museum-objects",
-          "description": "Search for objects in the Metropolitan Museum of Art (Met Museum). Will return Total objects found, followed by a list of Object Ids.The parameter title should be set to true if you want to search for objects by title.The parameter hasImages is false by default, but can be set to true to return objects without images.If the parameter hasImages is true, the parameter title should be false."
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
+          "description": "Inserts an existing calendar into the user's calendar list."
         },
         {
-          "name": "get-museum-object",
-          "description": "Get a museum object by its ID, from the Metropolitan Museum of Art Collection"
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
+          "description": "Updates an existing entry on the user\\'s calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
+          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
+          "description": "Updates metadata for a calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
+          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
+        },
+        {
+          "name": "GOOGLECALENDAR_CREATE_EVENT",
+          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
+        },
+        {
+          "name": "GOOGLECALENDAR_DELETE_EVENT",
+          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
+        },
+        {
+          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
+          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
+          "description": "Returns instances of the specified recurring event."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_LIST",
+          "description": "Returns events on the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_MOVE",
+          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_WATCH",
+          "description": "Watch for changes to Events resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_EVENT",
+          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
+          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
+        },
+        {
+          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
+          "description": "Returns free/busy information for a set of calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CALENDAR",
+          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
+          "description": "Gets the current date and time, allowing for a specific timezone offset."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
+          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_CALENDARS",
+          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
+          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_EVENT",
+          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_QUICK_ADD",
+          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
+        },
+        {
+          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
+          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_LIST",
+          "description": "Returns all user settings for the authenticated user."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
+          "description": "Watch for changes to Settings resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_SYNC_EVENTS",
+          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
+          "description": "Updates an access control rule for the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_EVENT",
+          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
         }
       ],
-      "github_url": "https://github.com/mikechao/metmuseum-mcp",
-      "docs_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "stars": 22961,
+      "docs_url": "https://smithery.ai/servers/googlecalendar",
+      "stars": 16915,
       "source": "smithery",
-      "last_updated": "2026-07-13",
-      "icon": "search",
-      "smithery_qualified_name": "mikechao/metmuseum-mcp",
-      "smithery_page_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "primary_url": "https://smithery.ai/servers/mikechao/metmuseum-mcp",
+      "last_updated": "2026-07-20",
+      "icon": "boxes",
+      "smithery_qualified_name": "googlecalendar",
+      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlecalendar",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp\n2. Click Connect and follow the prompts for your AI client\n3. Smithery handles auth and remote hosting"
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/mikechao/metmuseum-mcp",
-      "tools_validated_at": "2026-07-20T08:24:21.789Z",
-      "tools_validation_method": "smithery_registry",
+      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
+      "featured": true
+    },
+    {
+      "id": "netfluid-nfld",
+      "slug": "netfluid-nfld",
+      "name": "NFLD",
+      "description": "",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "signup",
+          "description": "Provides tools to signup a new customer\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object"
+        },
+        {
+          "name": "access_recover",
+          "description": "Recovers the Netfluid wallet's private key from a set of 24 keywords\n\nRecovers the Netfluid wallet's private key from a set of 24 keywords.\nReturns an object with the wallet owner's key, first_name, last_name, mobile and email.\nIt's preferable that the person trying to recover\n    @param api_key: The api key allocated to your application\n    @param words: A set of 24 recovery words, space delimited\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "access_pause",
+          "description": "Temporarily blocks access to the wallet\n\nTemporarily blocks access to the wallet for all systems. This end point requires an api_key with administrator privileges.\n    @param api_key: The api key with administrator privileges\n    @param wallet_fk: The wallet_fk to pause\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "access_resume",
+          "description": "Temporarily blocks access to the wallet\n\nResumes access to a paused wallet. This end point requires an api_key with administrator privileges.\n    @param api_key: The api key with administrator privileges\n    @param wallet_fk: The wallet_fk to resume\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "access_platform_wallet_list",
+          "description": "Retrieves a list of wallets associated with the channel (discord, telegram or whatsapp) and user id\n\nRetrieves a list of wallets associated with the channel (discord, telegram or whatsapp) user id, once you have a wallet_fk you can get a session token.\nThis only works if the wallet_fk has been previously assigned to this channel and user id.\n    @param user_id: The chat, channel user-id specific to this chat customer\n    @param platform: The channel platform: discord, telegram, whatsapp\n\n    @re"
+        },
+        {
+          "name": "access_platform_login",
+          "description": "Retrieves a session token based on a wallet_fk and 5-digit (numeric) PIN. This is a shortcut to the session token.\n\nRetrieves a session token based on a wallet_fk and 5-digit (numeric) PIN\nOnly 1 attempt is allowed, get the PIN wrong and you have to send the user back to the website to get a session key\nThis works on any wallet_fk and PIN combination, so if you have a wallet_fk, but no session token, it's a shortcut to the session token.\n    @param wallet_fk: The wallet_fk\n    @param pin: The 5-"
+        },
+        {
+          "name": "access_platform_assign",
+          "description": "Assigns this wallet_fk to a channel (discord, telegram, whatsapp) user id.\n\nAssigns this wallet_fk to a channel (discord, telegram, whatsapp) user id.\nWhere possible prompt the customer to do this, as it makes getting a session token much easier in the future\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "automated_signup",
+          "description": "Automated signup for new customers. AI should use this tool as the preferred method to signup new customers.\n\nAutomated signup for new customers. Process can take up to 30 seconds.\nOnce completed direct the human customer to the kyc url for them to complete the identity verification process.\nShould the human need more tries at identity verification, call wallet_kyc_session_create\n    @param secret: A secret, minimum 8 characters, must be unique system-wide. This is typically the customer usernam"
+        },
+        {
+          "name": "access_wallet_pin_change",
+          "description": "Changes the wallet PIN, must be 5 digits, e.g. 12345\n\nChanges the wallet PIN, must be 5 digits, e.g. 12345\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param new_pin: The new PIN, but be 5 numeric digits\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "accounts",
+          "description": "Provides tools to create and manage wallet accounts.\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object"
+        },
+        {
+          "name": "account_merchant_voucher_quote",
+          "description": "Performs a quote to before issuing a Netfluid voucher as a merchant.\n\nSTEP 1: Performs a quote to issue a voucher as a merchant. Returns the merchant commission as well as the amount charged to the customer.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to issue the voucher\n    @param amount: The amount to issue the voucher for in up to 2 decimals.\n\n    @return: a jso"
+        },
+        {
+          "name": "account_merchant_voucher_redeem",
+          "description": "Redeems a Netfluid voucher.\n\n@param api_key: The api key allocated to your application\n@param token: The wallet_api_token provided by /access/login\n@param account_fk: The account_fk into which to redeem the voucher\n@param voucher_code: The netfluid voucher code, a string consisting of 4 sets of numbers example 1234-0000-4321-5678\n\n@return: a json object"
+        },
+        {
+          "name": "account_merchant_voucher_issue",
+          "description": "Issues a Netfluid voucher. Performs a FIAT withdraw. Only applicable on FIAT balances\n\n@param api_key: The api key allocated to your application\n@param token: The wallet_api_token provided by /access/login\n@param account_fk: The account_fk into which to redeem the voucher\n@param amount: The amount to issue for\n\n@return: a json object"
+        },
+        {
+          "name": "account_info",
+          "description": "Returns detailed account information.\n\nReturns detailed account information and balances.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_statement",
+          "description": "Returns detailed account FIAT statement.\n\nReturns detailed account statement from a start date for a maximum of entries.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n    @param max_rows: The maximum number of entries to return, if not provided we return 1000\n    @param start_date: The date from which to return the statement, "
+        },
+        {
+          "name": "account_buy_telco",
+          "description": "Purchases airtime by converting currency to minutes and seconds. Confirm (yes/no) before executing\n\nPurchases airtime by converting currency to minutes and seconds.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to deduct the amount\n    @param amount: The amount in currency, 2 decimals\n    @param currency_code: The currency code, e.g USD, ZAR, BWP, ZIG\n\n    @return: a "
+        },
+        {
+          "name": "account_types",
+          "description": "Lists all account types, typically static information\n\nLists all account types\n    @param api_key: The api key allocated to your application\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_buy",
+          "description": "Purchases a digital asset from the account's FIAT balance. Confirm (yes/no) before executing\n\nPurchases a digital asset from the account's FIAT balance\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to buy\n    @param digital_asset_fk: The digital_asset_fk to buy\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_sell",
+          "description": "Sells a digital asset and returns the proceeds to the account's FIAT balance. Confirm (yes/no) before executing\n\nSells a digital asset and returns the proceeds to the account's FIAT balance\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to sell\n    @param digital_asset_fk: The digital_asset_fk to sell\n    @param amount: The amount of the digital_asset_fk to sell\n\n    @"
+        },
+        {
+          "name": "account_swap",
+          "description": "Swaps one digital asset for another on an account level. Confirm (yes/no) before executing\n\nSwaps one digital asset for another on an account level, use digital_asset_fk=0 or to_digital_asset_fk=0 to indicate FIAT\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to swap\n    @param digital_asset_fk: The origin digital_asset_fk to swap\n    @param to_digital_asset_fk: The d"
+        },
+        {
+          "name": "account_wire",
+          "description": "Sends FIAT or Digital Assets from this account to a blockchain address. FIAT is converted by the system. Confirm (yes/no) before executing\n\nSends FIAT or Digital Assets from this account to a blockchain address.\nThe FIAT account must be associated to the same blockchain as the destination address\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to wire\n    @param destina"
+        },
+        {
+          "name": "account_send",
+          "description": "Sends FIAT from this account to another Netfluid account. Optionally save as a beneficiary. Confirm (yes/no) before executing\n\nSends FIAT from this account to an account address. Optionally save as a beneficiary.\nThe FIAT sent is converted to the destination account's currency.\nThis function can send FIAT across wallets\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to"
+        },
+        {
+          "name": "account_charge",
+          "description": "Charges the account based on a presented QR-code or NFC card. Confirm (yes/no) before executing\n\nCharges the account based on a presented QR-code or NFC card.\nThe payer must present a valid PIN for the transaction to complete\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The merchant's account_fk, typically the account that will receive the payment\n    @param account_address: The account_addre"
+        },
+        {
+          "name": "account_mint",
+          "description": "Mints a new account of an account type into the wallet. Confirm (yes/no) before executing\n\nMints a new account of an account type into the wallet. There are costs associated with this operation.\nMinting is generally done asynchronously, it may take several seconds for the minted account to be available\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk into which the new account will b"
+        },
+        {
+          "name": "account_alias",
+          "description": "Sets a friendly name/alias on an account. Confirm (yes/no) before executing\n\nSets a friendly name/alias on an account_fk.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk to charge for the mint fee\n    @param alias: The alias or friendly name, try and use unique names for each account in the wallet\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_pay",
+          "description": "Charges the account a transaction fee. Confirm (yes/no) before executing\n\nCharges the account a transaction fee.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk to charge\n    @param amount: The amount to charge\n    @param note: The note on the transaction\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_pair",
+          "description": "Assigns a PIN to an account for use by a QR-Code or NFC card. Confirm (yes/no) before executing\n\nAssigns a PIN to an account for use by a QR-Code or NFC card\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param address: The account address\n    @param pin: The 5 digit numeric PIN e.g 01234\n    @param expire_date: The optional expiry date on the PIN, format YYYY-MM-DD HH:MM:SS, in GMT timezone\n\n    @return: a json"
+        },
+        {
+          "name": "account_pause",
+          "description": "Temporarily restricts an account from performing any function that would result in funds existing the account.\n    Can only be undone by an administrator, warn before using! Confirm (yes/no) before executing\n\nTemporarily restricts an account from performing any function that would result in funds existing the account.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account"
+        },
+        {
+          "name": "account_resume",
+          "description": "Resumes full trading capability for an account that has been previously paused.\n    Can only be undone by an administrator. Confirm (yes/no) before executing\n\nResumes full trading capability for an account that has been previously paused.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_unlock",
+          "description": "Unlocks a locked account (from status_fk=10 to status_fk=1). Confirm (yes/no) before executing\n\nUnlocks a locked account.\n    @param api_key: The api key allocated to your application, must have admin privileges\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "account_send_sms",
+          "description": "Sends a Mobile SMS and charges this account. Confirm (yes/no) before executing\n\nSends a SMS and charges this account. This end point will deliver to limited destinations:\nSouth Africa, Botswana, Zimbabwe, UK. Delivery is not guaranteed. Charged per submission.\n    @param api_key: The api key allocated to your application, must have admin privileges\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/account"
+        },
+        {
+          "name": "bridges",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "virtual_account",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "virtual_accounts",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "off_ramps",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "on_ramps",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "SEPA",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "ACH",
+          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "bridge_list",
+          "description": "Returns bridges based on the transfer_type, a bridge is either an\n    \"on-ramp\" (also called a \"virtual account\" and a funding source),\n    an \"off-ramp\" (USDC transfer to a fiat bank account) or\n    a \"blockchain\" (USDC transfer between blockchains).\n    Bridges are only available on blockchain accounts\n\nReturns bridges based on the transfer_type, a bridge is either an on-ramp, an off-ramp or a blockchain. Bridge on-ramps are also called \"virtual accounts\"\n    @param api_key: The api key alloca"
+        },
+        {
+          "name": "bridge_off_ramp_sepa",
+          "description": "Creates a blockchain (USDC) to FIAT off-ramp in Europe for SEPA supporting bank accounts. Confirm (yes/no) before executing\n\nCreates a blockchain to FIAT off-ramp in Europe for SEPA supporting bank accounts.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param account_owner: The owner of t"
+        },
+        {
+          "name": "bridge_off_ramp_ach_wire",
+          "description": "Creates a blockchain to FIAT off-ramp in the USA supporting both ACH/WIRE bank networks. Confirm (yes/no) before executing\n\nCreates a blockchain to FIAT off-ramp in the USA support both ACH/WIRE bank networks.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param account_owner: The owner of"
+        },
+        {
+          "name": "bridge_blockchain",
+          "description": "Creates a blockchain to blockchain bridge. Confirm (yes/no) before executing\n\nCreates a blockchain to blockchain bridge. Only supports USDC transfers. Do not send any other tokens as these may be lost.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param blockchain: The blockchain that wil"
+        },
+        {
+          "name": "bridge_on_ramp",
+          "description": "Creates a virtual account (SEPA/ACH/WIRE) to blockchain bridge. Confirm (yes/no) before executing\n\nCreates a virtual account (SEPA/ACH/WIRE) to blockchain bridge. Limited to one virtual account per payment rail (SEPA/ACH/WIRE).\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param blockchai"
+        },
+        {
+          "name": "bridge_rename",
+          "description": "Changes the Bridge's descriptive name. Confirm (yes/no) before executing\n\nChanges the Bridge's descriptive name.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param external_account_id: The bridge's unique reference, found on /bridge/list\n    @param alias: The new descriptive name for this Bridge\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "bridge_delete",
+          "description": "Deactivates the Bridge. Confirm (yes/no) before executing\n\nDeactivates the Bridge\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param external_account_id: The bridge's unique reference, found on /bridge/list\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "commodity",
+          "description": "Provides tools to retrieve Netfuid commodities\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object"
+        },
+        {
+          "name": "commodity_types",
+          "description": "Returns all authorised commodities\n\nReturns all authorised commodities\n    @param api_key: The api key allocated to your application\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "crypto",
+          "description": "Returns a list of tools that work with crypto and stable coins (USDC,USDt)\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
+        },
+        {
+          "name": "crypto_info",
+          "description": "Returns a crypto wallet address and balances associated with an account_fk\n\nReturns a crypto wallet address and balances associated with an account_fk\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
+        },
+        {
+          "name": "crypto_verify",
+          "description": "Verifies a blockchain address as valid for the blockchain\n\nVerifies a blockchain address as valid for the blockchain.\nCan be any address on that blockchain, if successful it returns a balance of its crypto and digital assets.\n    @param api_key: The api key allocated to your application\n    @param address: The blockchain address\n    @param blockchain_fk: The blockchain_fk of the supported blockchain.\n\n    @return: a json object\n    "
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/netfluid/NFLD",
+      "stars": 20192,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "boxes",
+      "smithery_qualified_name": "netfluid/NFLD",
+      "smithery_page_url": "https://smithery.ai/servers/netfluid/NFLD",
+      "mcp_endpoint": "https://nfld--netfluid.run.tools",
+      "deployment_url": "https://nfld--netfluid.run.tools",
+      "connection_url": "https://nfld--netfluid.run.tools",
+      "primary_url": "https://smithery.ai/servers/netfluid/NFLD",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/netfluid/NFLD\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://nfld--netfluid.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/netfluid/NFLD",
+      "featured": true
+    },
+    {
+      "id": "onesignal-onesignal",
+      "slug": "onesignal-onesignal",
+      "name": "OneSignal",
+      "description": "OneSignal is a customer engagement platform that lets you send targeted push notifications, emails, SMS, and in-app messages, manage audiences, and track campaign performance.\n\nWith the OneSignal MCP, manage your messaging directly from your AI assistant. Send push notifications, emails, and SMS by simply describing your audience and message. Check campaign delivery stats, build audience segments, manage templates, and handle user subscriptions all through conversation.",
+      "category": "AI & Memory",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "create_alias_by_subscription",
+          "description": "Create or update identity aliases for the user who owns a given subscription. The `onesignal_id` alias is read-only and must not be included."
+        },
+        {
+          "name": "create_or_update_alias",
+          "description": "Create or update identity aliases for a user identified by alias. The `onesignal_id` alias is read-only and must not be included."
+        },
+        {
+          "name": "create_segment",
+          "description": "Create a new audience segment with filter conditions. Maximum 200 filter entries."
+        },
+        {
+          "name": "create_subscription",
+          "description": "Create a new subscription and attach it to a user. Set `type` to the channel (\"Email\", \"SMS\", \"iOSPush\", \"AndroidPush\", etc.) and `token` to the email address, E.164 phone number, or push token."
+        },
+        {
+          "name": "create_template",
+          "description": "Create a new notification template for a OneSignal app."
+        },
+        {
+          "name": "create_user",
+          "description": "Create a new user in a OneSignal app. Provide an `identity` (e.g. {\"external_id\": \"user-123\"}) so the user can be referenced later by alias. Optionally attach `properties` (tags, language, country) and `subscriptions` (email, SMS, or push channels). The `identity` field is required to prevent orphaned users."
+        },
+        {
+          "name": "export_audience_activity_csv",
+          "description": "Export audience activity for a notification to CSV. WARNING: Only 1 concurrent export is allowed per account — if a 409 or 429 is returned, a previous export is still running."
+        },
+        {
+          "name": "export_subscriptions_csv",
+          "description": "Export all subscriptions for a OneSignal app to CSV. WARNING: Only 1 concurrent export is allowed per account — if a 409 or 429 is returned, a previous export is still running."
+        },
+        {
+          "name": "get_segment",
+          "description": "Retrieve a single audience segment by ID. By default, includes full segment metadata and filters (`payload` object with `id`, `name`, `created_at`, `source`, and `filters`). Set `include_segment_detail` to `false` to return only the subscriber count. Note: the API returns 400 for user-based segments (those using custom_event or message_event filters)."
+        },
+        {
+          "name": "get_template",
+          "description": "Retrieve a single notification template by ID."
+        },
+        {
+          "name": "get_user_identity",
+          "description": "Retrieve all identity aliases associated with a user. Identify the user by `alias_label` (typically \"external_id\") and `alias_id`."
+        },
+        {
+          "name": "get_user_identity_by_subscription",
+          "description": "Retrieve the identity aliases for the user who owns a given subscription."
+        },
+        {
+          "name": "list_messages",
+          "description": "List push notifications for a OneSignal app. Use `limit` (default 50, max ~250) and `offset` for pagination. Avoid large offsets — this endpoint has known performance degradation at high page numbers."
+        },
+        {
+          "name": "list_segments",
+          "description": "List audience segments for a OneSignal app. Maximum 300 segments per page."
+        },
+        {
+          "name": "list_templates",
+          "description": "List notification templates for a OneSignal app. Maximum 50 per page."
+        },
+        {
+          "name": "onesignal_config",
+          "description": "Return the current OneSignal MCP server configuration and connected app details."
+        },
+        {
+          "name": "onesignal_health",
+          "description": "Check the health status of the OneSignal MCP server."
+        },
+        {
+          "name": "onesignal_reference_overview",
+          "description": "Return an overview of the OneSignal REST API reference, including available endpoints and rate limits."
+        },
+        {
+          "name": "send_message",
+          "description": "Send a push notification, email, or SMS via the OneSignal API. TIER 3 — HIGH IMPACT: confirmation is required before sending. Rate limited to 10 requests per minute. The `filters` array is limited to 200 entries; max 20,000 users per call. For push: set `contents`. For email: set `email_subject` + `email_body` (or use `template_id`). For SMS: set `contents` + `target_channel = \"sms\"`."
+        },
+        {
+          "name": "start_live_activity",
+          "description": "Start an iOS Live Activity and deliver it to a specific device subscription."
+        },
+        {
+          "name": "transfer_subscription",
+          "description": "Transfer a subscription to a different user within the same app. Cross-app transfers are not supported. Rate limited to 1 request per second per subscription."
+        },
+        {
+          "name": "unsubscribe_email",
+          "description": "Unsubscribe an email address using the token from an email unsubscribe link. This endpoint uses token-based auth (no REST API key required)."
+        },
+        {
+          "name": "update_live_activity",
+          "description": "Update or end an active iOS Live Activity."
+        },
+        {
+          "name": "update_segment",
+          "description": "Update an existing audience segment's name and/or filter conditions. `name` is always required even if not changing it (max 128 characters). When `filters` is provided it replaces all existing filters; omit to keep existing filters intact. Maximum 200 filter entries."
+        },
+        {
+          "name": "update_subscription",
+          "description": "Update an existing subscription (token, enabled status, or test type)."
+        },
+        {
+          "name": "update_subscription_by_token",
+          "description": "Update a subscription identified by its channel type and token. Provide `subscription_type` and `token` to identify the subscription, then pass the fields to update in `subscription`."
+        },
+        {
+          "name": "update_template",
+          "description": "Update an existing notification template. The `name` field is required even if you are not changing it."
+        },
+        {
+          "name": "update_user",
+          "description": "Update an existing user identified by alias. Use `properties` to set tags, language, or country. Use `deltas` to increment session counts or append purchase records (these add to existing values rather than overwriting). Returns 202 — the update is processed asynchronously."
+        },
+        {
+          "name": "view_message",
+          "description": "Retrieve a single notification by ID."
+        },
+        {
+          "name": "view_outcomes",
+          "description": "Retrieve outcome statistics for a OneSignal app (e.g. click counts, session duration). Note: data retention is approximately 30 days."
+        },
+        {
+          "name": "view_user",
+          "description": "Retrieve a user and their properties by alias. Use `alias_label` \"external_id\" with the user's external ID, or another alias label you have configured."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "stars": 16077,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "boxes",
+      "smithery_qualified_name": "onesignal/onesignal",
+      "smithery_page_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "mcp_endpoint": "https://onesignal.run.tools",
+      "deployment_url": "https://onesignal.run.tools",
+      "connection_url": "https://onesignal.run.tools",
+      "primary_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/onesignal/onesignal\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://onesignal.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
       "featured": true
     },
     {
@@ -1927,9 +2807,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "stars": 16899,
+      "stars": 17401,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "search",
       "smithery_qualified_name": "theagenttimes/ucp-gateway",
       "smithery_page_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
@@ -1944,8 +2824,338 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "tools_validated_at": "2026-07-20T08:24:23.268Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "alexandria-shai-eden-cbrowser",
+      "slug": "alexandria-shai-eden-cbrowser",
+      "name": "Cognitive Browser",
+      "description": "105-tool browser automation with cognitive user simulation, visual testing, persona system, and site knowledge. Rate limited (50 req/hr). Free for evaluation",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "navigate",
+          "description": "Navigate to a URL and take a screenshot. Pass _browserToken from a previous tool call to reuse the same browser session."
+        },
+        {
+          "name": "click",
+          "description": "Click an element on the page. MUST pass _browserToken from previous tool call to click on the same page. Without it, clicks go to a blank new browser."
+        },
+        {
+          "name": "smart_click",
+          "description": "Click with auto-retry and self-healing selectors. v11.8.0: Added confidence gating - only reports success if healed selector has >= 60% confidence."
+        },
+        {
+          "name": "dismiss_overlay",
+          "description": "Detect and dismiss modal overlays (cookie consent, age verification, newsletter popups). Constitutional Yellow zone."
+        },
+        {
+          "name": "fill",
+          "description": "Fill a form field with text. MUST pass _browserToken from previous tool call to interact with the same page."
+        },
+        {
+          "name": "scroll",
+          "description": "Scroll the page. MUST pass _browserToken from previous tool call to scroll the same page."
+        },
+        {
+          "name": "screenshot",
+          "description": "Take a screenshot of the current page. IMPORTANT: If you received a _browserToken from a previous tool call (navigate, cognitive_journey_init), you MUST pass it here to see the same page. Without it, you get a blank new browser."
+        },
+        {
+          "name": "extract",
+          "description": "Extract data from the page. Pass _browserToken to use the same browser session."
+        },
+        {
+          "name": "assert",
+          "description": "Assert a condition using natural language"
+        },
+        {
+          "name": "analyze_page",
+          "description": "Analyze page structure for forms, buttons, links"
+        },
+        {
+          "name": "generate_tests",
+          "description": "Generate test scenarios for a page"
+        },
+        {
+          "name": "find_element_by_intent",
+          "description": "AI-powered semantic element finding with ARIA-first selector strategy. Prioritizes aria-label > role > semantic HTML > ID > name > class. Returns selectorType, accessibilityScore (0-1), and alternatives. Use verbose=true for enriched failure responses."
+        },
+        {
+          "name": "ai_benchmark",
+          "description": "Compare AI-friendliness across competitor sites. Runs agent-ready audits on each URL, ranks by AI readiness grade, and identifies what each competitor does better for AI agents. Use for competitive intelligence on AI-readiness."
+        },
+        {
+          "name": "save_session",
+          "description": "Save browser session (cookies, storage) for later use"
+        },
+        {
+          "name": "load_session",
+          "description": "Load a previously saved session"
+        },
+        {
+          "name": "list_sessions",
+          "description": "List all saved sessions with metadata (name, domain, cookies count, localStorage keys, created date, size)"
+        },
+        {
+          "name": "delete_session",
+          "description": "Delete a saved session by name"
+        },
+        {
+          "name": "heal_stats",
+          "description": "Get self-healing selector cache statistics"
+        },
+        {
+          "name": "visual_baseline",
+          "description": "Capture a visual baseline using Wasserstein barycenter. Takes multiple screenshots, rejects outliers, computes optimal consensus reference with adaptive threshold. Robust to dynamic content, animations, and timing variations."
+        },
+        {
+          "name": "visual_regression",
+          "description": "Run visual regression test against a baseline. Automatically uses smart regression (Wasserstein) if a smart baseline exists for this name, otherwise falls back to traditional comparison."
+        },
+        {
+          "name": "cross_browser_test",
+          "description": "Test page rendering across multiple browsers"
+        },
+        {
+          "name": "cross_browser_diff",
+          "description": "Quick diff of page metrics across browsers"
+        },
+        {
+          "name": "responsive_test",
+          "description": "Test page across different viewport sizes"
+        },
+        {
+          "name": "ab_comparison",
+          "description": "Compare two URLs visually (staging vs production)"
+        },
+        {
+          "name": "transport_map",
+          "description": "Generate a Visual Transport Map showing WHERE visual content moved between two screenshots. Produces heatmap, flow arrows, hotspots, and SVG visualization."
+        },
+        {
+          "name": "attention_analysis",
+          "description": "Analyze where a persona's visual attention goes on a page using Wasserstein saliency. Produces attention alignment, entropy, concentration, and top attention areas. Based on Klein & Frintrop W₂ on CIE-Lab distributions."
+        },
+        {
+          "name": "attention_compare",
+          "description": "Compare attention patterns between two personas on the same page. Shows where they look differently and the Wasserstein divergence between their saliency maps."
+        },
+        {
+          "name": "nl_test_file",
+          "description": "Run natural language test suite from a file. Returns step-level results with enriched error info, partial matches, and suggestions."
+        },
+        {
+          "name": "nl_test_inline",
+          "description": "Run natural language tests from inline content. Returns step-level results with enriched error info, partial matches, and suggestions."
+        },
+        {
+          "name": "repair_test",
+          "description": "AI-powered test repair for broken tests"
+        },
+        {
+          "name": "detect_flaky_tests",
+          "description": "Detect flaky/unreliable tests by running multiple times"
+        },
+        {
+          "name": "coverage_map",
+          "description": "Generate test coverage map for a site"
+        },
+        {
+          "name": "hunt_bugs",
+          "description": "Autonomous bug hunting - crawl and find issues. Returns bugs with severity, selector, and actionable recommendation for each issue found."
+        },
+        {
+          "name": "chaos_test",
+          "description": "Inject failures and test resilience"
+        },
+        {
+          "name": "compare_personas",
+          "description": "Compare how different user personas experience a journey. In Claude Code sessions (no API key), use compare_personas_init and compare_personas_complete instead for the bridge workflow."
+        },
+        {
+          "name": "compare_personas_init",
+          "description": "Initialize persona comparison for Claude Code bridge workflow. Returns persona profiles and instructions for running journeys without API key."
+        },
+        {
+          "name": "compare_personas_complete",
+          "description": "Complete persona comparison by aggregating journey results. Call this after running all persona journeys via the bridge workflow."
+        },
+        {
+          "name": "cognitive_distance",
+          "description": "Compute the Wasserstein cognitive distance between two personas. Returns W₁ distance (true cognitive distance), per-trait contributions, and Bures-Wasserstein W₂ distance. Based on optimal transport theory — transport cost = cognitive processing cost."
+        },
+        {
+          "name": "cognitive_coverage",
+          "description": "Select the N most cognitively different personas from a list for maximum test coverage. Uses greedy farthest-point sampling in Wasserstein space."
+        },
+        {
+          "name": "cognitive_interpolate",
+          "description": "Generate an interpolated persona between two known personas using Wasserstein geodesic. Preserves trait coupling structure — the midpoint between ADHD and power-user has intermediate trait correlations, not just averaged values."
+        },
+        {
+          "name": "cognitive_load_estimate",
+          "description": "Estimate cognitive load for a specific persona on page metrics. Returns per-dimension breakdown (information, visual, attention, decision, motor, text, memory, patience) and identifies the bottleneck dimension."
+        },
+        {
+          "name": "cognitive_journey_init",
+          "description": "Initialize a cognitive user journey simulation. Returns the persona's cognitive profile, initial state, and abandonment thresholds. The actual simulation is driven by the LLM using browser tools (navigate, click, fill, screenshot) while tracking cognitive state."
+        },
+        {
+          "name": "cognitive_journey_update_state",
+          "description": "Update the cognitive state during a journey simulation. Call this after each action to track mental state."
+        },
+        {
+          "name": "list_cognitive_personas",
+          "description": "List all available personas with their cognitive traits (includes accessibility and emotional personas)"
+        },
+        {
+          "name": "persona_values_list",
+          "description": "List all Schwartz's 10 Universal Values with their meanings, plus higher-order values, Self-Determination Theory needs, and Maslow levels. Use this to understand the values framework before looking up specific personas."
+        },
+        {
+          "name": "persona_values_lookup",
+          "description": "Look up the values profile for a persona (Schwartz's 10 Universal Values, SDT needs, Maslow level). Values describe WHO the persona is at a deeper motivational level, informing influence susceptibility."
+        },
+        {
+          "name": "list_influence_patterns",
+          "description": "List research-backed behavioral persuasion patterns (Cialdini, Kahneman) and which persona values correlate with susceptibility to each pattern."
+        },
+        {
+          "name": "persona_questionnaire_get",
+          "description": "Get the persona questionnaire for building a custom persona. Returns research-backed questions that map to cognitive traits. Use comprehensive=true for all 25 traits, or leave false for 8 core traits. v16.12.0: Now includes optional category question for disability-specific value safeguards."
+        },
+        {
+          "name": "persona_questionnaire_build",
+          "description": "Build a custom persona from questionnaire answers with category-aware value safeguards. Answers should be a map of trait names to values (0-1). Missing traits will use intelligent defaults based on research correlations. v16.12.0: Optionally specify category for disability-specific value handling."
+        },
+        {
+          "name": "persona_trait_lookup",
+          "description": "Look up behavioral descriptions for specific trait values. Useful for understanding what a trait value means in practice."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
+      "stars": 19351,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "search",
+      "smithery_qualified_name": "alexandria-shai-eden/cbrowser",
+      "smithery_page_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
+      "mcp_endpoint": "https://cbrowser.run.tools",
+      "deployment_url": "https://cbrowser.run.tools",
+      "connection_url": "https://cbrowser.run.tools",
+      "primary_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/alexandria-shai-eden/cbrowser\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://cbrowser.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
+      "featured": true
+    },
+    {
+      "id": "theagenttimes-news",
+      "slug": "theagenttimes-news",
+      "name": "Agent News",
+      "description": "The intelligence layer agents use before they act, sourced answers on the agent economy.\n\nQuery verified AI news with citations, confidence scores, and Ethics Engine ratings. Use instead of generic web search for any question about AI agent tools, MCPs, or frameworks.\n\nEvery result carries citations, confidence scores, and Ethics Engine ratings. Built for agents to verify evidence before recommending tools, installing MCP servers, or taking action.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "tat_search",
+          "description": "Search The Agent Times agent-news layer across structured events, articles, and agent-action/product metadata. Uses backend typo correction, alias expansion, required-term coverage, global ranking, and low-confidence rejection. Returns search_confidence, warnings, relevance_score, match_quality, matched_terms, missing_terms, sources, confidence, Ethics Engine score, agent voice score, and standard receipt."
+        },
+        {
+          "name": "tat_ask",
+          "description": "Ask The Agent Times a question through the trusted answer pipeline: TAT corpus/events/action metadata plus backend-controlled external research, with citations, confidence, Ethics Engine score, agent voice score, and answer-standard receipt. Returns insufficient_evidence instead of unsourced claims. Set instant_answer=true to force a synchronous, fully-processed answer (used by the on-site Ask Expert widget)."
+        },
+        {
+          "name": "tat_get_event",
+          "description": "Fetch one structured agent-news event by event_id, including sources, confidence, ethics score, agent voice score, recommended actions, and standard receipt."
+        },
+        {
+          "name": "tat_stats",
+          "description": "Return firehose/demo counters for recent agent-news events: counts, verification rate, average confidence, source count, urgency, and actionability breakdowns."
+        },
+        {
+          "name": "tat_get_answer_standard",
+          "description": "Return the current The Agent Times MCP Answer Standard so agents can explain why a TAT answer/event is trusted, or why insufficient_evidence was returned."
+        },
+        {
+          "name": "tat_recommend",
+          "description": "Return sourced recommendations for an agent/operator use case using TAT trusted corpus, events, and answer standard. Not an external-resource safety checker."
+        },
+        {
+          "name": "tat_get_comments",
+          "description": "Read threaded comments on a TAT article, with agent attribution and endorsement counts."
+        },
+        {
+          "name": "tat_post_comment",
+          "description": "Post a signed/logged agent comment on a TAT article. Use only when the user explicitly asks to post."
+        },
+        {
+          "name": "get_latest_articles",
+          "description": "Get the latest articles from The Agent Times. Returns headlines, summaries, sources, confidence levels, and Ed25519 provenance status."
+        },
+        {
+          "name": "get_section_articles",
+          "description": "Get articles from a specific section. Each article includes Ed25519 provenance status. Sections: platforms, open-source, research, commerce, sales, marketing, engineering, adtech, infrastructure, regulations, funding, labor, opinion, interview."
+        },
+        {
+          "name": "get_article",
+          "description": "Get a full article by slug, including the complete body text and Ed25519 provenance verification status. Optionally include detailed provenance and governance blocks."
+        },
+        {
+          "name": "search_articles",
+          "description": "Search The Agent Times article corpus with typo-tolerant required-term coverage, relevance diagnostics, and filters over title, slug, tags, summary, body, and publication metadata. Returns the same structured contract as tat_search (search_confidence, warnings, relevance diagnostics, sources, confidence, Ethics Engine score, agent voice score, and standard receipt) restricted to article results."
+        },
+        {
+          "name": "get_related_articles",
+          "description": "Get related articles for an article slug using section/topic/tag overlap."
+        },
+        {
+          "name": "list_topics",
+          "description": "List known topic hubs extracted from the corpus."
+        },
+        {
+          "name": "get_topic_hub",
+          "description": "Get a topic hub with start-here articles, latest coverage, and intent tags."
+        },
+        {
+          "name": "get_trust_summary",
+          "description": "Get publication-level trust metrics: confidence mix, provenance coverage, source density, and section-level trust summaries."
+        },
+        {
+          "name": "get_editorial_standards",
+          "description": "Get The Agent Times editorial standards and code of conduct summary."
+        },
+        {
+          "name": "report_usage",
+          "description": "Voluntarily declare which TAT articles you used to produce your output. Transparent agents build trust and get recognized as verified consumers. No auth required — just tell us what you used."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/theagenttimes/news",
+      "stars": 16274,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "search",
+      "smithery_qualified_name": "theagenttimes/news",
+      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/news",
+      "mcp_endpoint": "https://news--theagenttimes.run.tools",
+      "deployment_url": "https://news--theagenttimes.run.tools",
+      "connection_url": "https://news--theagenttimes.run.tools",
+      "primary_url": "https://smithery.ai/servers/theagenttimes/news",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/theagenttimes/news\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://news--theagenttimes.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
       "featured": true
     },
     {
@@ -2039,9 +3249,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googledrive",
-      "stars": 15538,
+      "stars": 15266,
       "source": "smithery",
-      "last_updated": "2026-07-13",
+      "last_updated": "2026-07-20",
       "icon": "search",
       "smithery_qualified_name": "googledrive",
       "smithery_page_url": "https://smithery.ai/servers/googledrive",
@@ -2056,8 +3266,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googledrive",
-      "tools_validated_at": "2026-07-20T08:24:23.454Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2089,6 +3297,56 @@
       "hidden": false,
       "last_updated": "2026-07-20",
       "icon": "monitor"
+    },
+    {
+      "id": "nitrofire-q-gread",
+      "slug": "nitrofire-q-gread",
+      "name": "Gread",
+      "description": "Gives your AI access to the source code of all public github repos.\n\n- Plug and Play: Compatible with all popular coding agents and MCP clients, ready to use out of the box\n- Skill and MCP: Both Skill and MCP are provided, connect with either option\n- Docs Integration: Automatically recognizes docs repo and provides them along with the main repo when accessed",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_repos",
+          "description": "Search for GitHub repositories by name, description, or topic keywords using the GitHub Search API."
+        },
+        {
+          "name": "view_repo",
+          "description": "View repository basic information and its directory structure. Includes corresponding documentation repo if available."
+        },
+        {
+          "name": "list_tree",
+          "description": "List the directory tree of a specific path in a repository with customizable depth and traversal limits."
+        },
+        {
+          "name": "read_code",
+          "description": "Retrieve the raw source code of specified files from within a known repository."
+        },
+        {
+          "name": "search_code",
+          "description": "Perform a fast git grep inside the repository, allowing regex matching by default or substring search."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "stars": 20447,
+      "source": "smithery",
+      "last_updated": "2026-07-20",
+      "icon": "boxes",
+      "smithery_qualified_name": "nitrofire-q/gread",
+      "smithery_page_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "mcp_endpoint": "https://gread--nitrofire-q.run.tools",
+      "deployment_url": "https://gread--nitrofire-q.run.tools",
+      "connection_url": "https://gread--nitrofire-q.run.tools",
+      "primary_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/nitrofire-q/gread\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gread--nitrofire-q.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
+      "featured": true
     },
     {
       "id": "notebooklm-mcp",
@@ -2299,46 +3557,6 @@
       "icon": "cloud-code"
     },
     {
-      "id": "kiwi",
-      "slug": "kiwi",
-      "name": "Kiwi.com",
-      "description": "Search flights, compare prices, and manage travel bookings. Find the best routes, check availability, and track itineraries.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "search-flight",
-          "description": "\n# Search for a flight\n\n## Description\n\nUses the Kiwi API to search for available flights between two locations on a specific date.\n\n## How it works\n\nThe tool will:\n1. Search for matching locations to resolve airport codes\n2. Find available flights for the specified route and date range\n\n## Method\n\nCall this tool whenever a user wants to search for flights, regardless of whether they provided exact airport codes or just city names.\n\nYou should display the returned results in a markdown table for"
-        },
-        {
-          "name": "feedback-to-devs",
-          "description": "Send feedback to the dev of the Kiwi MCP server."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/kiwi",
-      "stars": 15106,
-      "source": "smithery",
-      "last_updated": "2026-07-13",
-      "icon": "search",
-      "smithery_qualified_name": "kiwi",
-      "smithery_page_url": "https://smithery.ai/servers/kiwi",
-      "mcp_endpoint": "https://kiwi.run.tools",
-      "deployment_url": "https://kiwi.run.tools",
-      "connection_url": "https://kiwi.run.tools",
-      "primary_url": "https://smithery.ai/servers/kiwi",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/kiwi\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://kiwi.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/kiwi",
-      "tools_validated_at": "2026-07-20T08:24:23.969Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
       "id": "gmail",
       "slug": "gmail",
       "name": "Gmail",
@@ -2400,34 +3618,34 @@
       "icon": "search"
     },
     {
-      "id": "outlook",
-      "slug": "outlook",
-      "name": "Outlook",
-      "description": "Microsoft email and calendar access.",
-      "category": "Communication",
+      "id": "bigquery",
+      "slug": "bigquery",
+      "name": "BigQuery",
+      "description": "Google analytics warehouse queries and table management.",
+      "category": "Data & Analytics",
       "official": false,
       "transport": "stdio",
       "tools": [
         {
-          "name": "list_messages",
-          "description": "List Outlook messages"
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
         },
         {
-          "name": "send_mail",
-          "description": "Send an email"
+          "name": "list_datasets",
+          "description": "List datasets in a project"
         },
         {
-          "name": "list_events",
-          "description": "List calendar events"
+          "name": "get_table_schema",
+          "description": "Describe table schema"
         }
       ],
-      "docs_url": "https://learn.microsoft.com/graph",
+      "docs_url": "https://cloud.google.com/bigquery/docs",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
       "last_updated": "2026-07-20",
-      "icon": "mail"
+      "icon": "bar-chart"
     },
     {
       "id": "airtable",
@@ -2549,36 +3767,6 @@
       "hidden": false,
       "last_updated": "2026-07-20",
       "icon": "cloud"
-    },
-    {
-      "id": "bigquery",
-      "slug": "bigquery",
-      "name": "BigQuery",
-      "description": "Google analytics warehouse queries and table management.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_query",
-          "description": "Execute BigQuery SQL"
-        },
-        {
-          "name": "list_datasets",
-          "description": "List datasets in a project"
-        },
-        {
-          "name": "get_table_schema",
-          "description": "Describe table schema"
-        }
-      ],
-      "docs_url": "https://cloud.google.com/bigquery/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-20",
-      "icon": "bar-chart"
     },
     {
       "id": "bluesky",
@@ -3488,6 +4676,36 @@
       "icon": "hard-drive"
     },
     {
+      "id": "outlook",
+      "slug": "outlook",
+      "name": "Outlook",
+      "description": "Microsoft email and calendar access.",
+      "category": "Communication",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_messages",
+          "description": "List Outlook messages"
+        },
+        {
+          "name": "send_mail",
+          "description": "Send an email"
+        },
+        {
+          "name": "list_events",
+          "description": "List calendar events"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/graph",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-07-20",
+      "icon": "mail"
+    },
+    {
       "id": "pagerduty",
       "slug": "pagerduty",
       "name": "PagerDuty",
@@ -3878,147 +5096,6 @@
       "hidden": false,
       "last_updated": "2026-07-20",
       "icon": "boxes"
-    },
-    {
-      "id": "vercel",
-      "slug": "vercel",
-      "name": "Vercel",
-      "description": "Deploy projects, manage domains, and view analytics.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_deployments",
-          "description": "List recent deployments"
-        },
-        {
-          "name": "get_deployment",
-          "description": "Get deployment status"
-        },
-        {
-          "name": "add_domain",
-          "description": "Configure a custom domain"
-        }
-      ],
-      "github_url": "https://github.com/vercel/mcp-handler",
-      "docs_url": "https://vercel.com/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-20",
-      "icon": "cloud"
-    },
-    {
-      "id": "zep",
-      "slug": "zep",
-      "name": "Zep",
-      "description": "Temporal knowledge graph memory for agents.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "add_message",
-          "description": "Add messages to session memory"
-        },
-        {
-          "name": "search_facts",
-          "description": "Search extracted facts"
-        },
-        {
-          "name": "get_session",
-          "description": "Retrieve session context"
-        }
-      ],
-      "github_url": "https://github.com/getzep/zep",
-      "docs_url": "https://docs.getzep.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-20",
-      "icon": "brain"
-    },
-    {
-      "id": "tavily",
-      "slug": "tavily",
-      "name": "Tavily",
-      "description": "Search API optimized for AI agents and research workflows.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search",
-          "description": "Agent-optimized web search"
-        },
-        {
-          "name": "extract",
-          "description": "Extract content from URLs"
-        }
-      ],
-      "github_url": "https://github.com/tavily-ai/tavily-mcp",
-      "docs_url": "https://docs.tavily.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-20",
-      "icon": "search"
-    },
-    {
-      "id": "amplitude",
-      "slug": "amplitude",
-      "name": "Amplitude",
-      "description": "Product analytics dashboards and event exploration.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query_events",
-          "description": "Query event segments"
-        },
-        {
-          "name": "get_chart",
-          "description": "Fetch chart data"
-        }
-      ],
-      "docs_url": "https://www.docs.developers.amplitude.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-20",
-      "icon": "bar-chart"
-    },
-    {
-      "id": "box",
-      "slug": "box",
-      "name": "Box",
-      "description": "Enterprise file management and collaboration.",
-      "category": "Files & Docs",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_files",
-          "description": "Search Box content"
-        },
-        {
-          "name": "get_file",
-          "description": "Download file metadata and content"
-        }
-      ],
-      "docs_url": "https://developer.box.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-07-20",
-      "icon": "hard-drive"
     }
   ]
 }
