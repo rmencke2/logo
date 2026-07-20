@@ -130,6 +130,12 @@ function formatPostDate(dateString) {
   return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
+function formatPostDateShort(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+}
+
 function stripDuplicateCoverImage(contentHtml, coverImage) {
   if (!contentHtml || !coverImage) return contentHtml;
   const src = coverImage.startsWith('/') ? coverImage : `/${coverImage}`;
@@ -146,6 +152,7 @@ function mapPostForDisplay(post) {
     ...post,
     contentHtml,
     dateDisplay: formatPostDate(post.date),
+    dateShort: formatPostDateShort(post.date),
     readMinutes: estimateReadMinutes(contentHtml),
     coverImageAbsolute: toAbsoluteUrl(post.coverImage),
     articleUrl: `${SITE_BASE_URL}/insights/${post.slug}`,
@@ -317,16 +324,81 @@ function formatHomeToolCount(totalTools) {
   return totalTools.toLocaleString();
 }
 
+function homeTransportKind(transport) {
+  const t = String(transport || '').toLowerCase();
+  if (t === 'stdio' || t === 'local') return 'Local';
+  return 'Remote';
+}
+
+function mapHomeServerRow(server) {
+  const toolNames = (server.tools || [])
+    .map((tool) => (typeof tool === 'string' ? tool : tool.name || ''))
+    .filter(Boolean)
+    .join(' ');
+  const desc = String(server.description || '').replace(/\s+/g, ' ').trim();
+  const isOurs = server.slug === 'influzer-mcp-discovery';
+  return {
+    slug: server.slug,
+    name: server.name,
+    // Homepage highlights our Discovery server as OFFICIAL (matches design); catalog may mark many as official.
+    official: isOurs,
+    category: server.category || 'Dev Tools',
+    kind: homeTransportKind(server.transport),
+    initial: String(server.name || '?').charAt(0).toUpperCase(),
+    shortDesc: desc.length > 140 ? `${desc.slice(0, 137)}…` : desc,
+    searchText: [server.name, desc, server.category, toolNames, server.slug]
+      .join(' ')
+      .toLowerCase(),
+  };
+}
+
+function getHomeTopServers(limit = 6) {
+  const preview = getMcpHomepagePreview(limit).servers || [];
+  const discovery = findMcpServerBySlug('influzer-mcp-discovery');
+  const rest = preview.filter((s) => s.slug !== 'influzer-mcp-discovery');
+  const ordered = discovery ? [discovery, ...rest].slice(0, limit) : preview.slice(0, limit);
+  return ordered.map(mapHomeServerRow);
+}
+
+function formatBriefSourceTag(article) {
+  const source = String(article.source || 'NEWS').toUpperCase().slice(0, 10);
+  const date = article.published_at ? new Date(article.published_at) : null;
+  if (!date || Number.isNaN(date.getTime())) return source;
+  return `${source} · ${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+function getHomeAroundWeb(limit = 4) {
+  const payload = getDisplayArticles(limit);
+  return {
+    ...payload,
+    articles: (payload.articles || []).map((article) => ({
+      ...article,
+      sourceTag: formatBriefSourceTag(article),
+    })),
+  };
+}
+
 function renderHomepage(req, res) {
-  const preview = getMcpHomepagePreview(6);
+  const topServers = getHomeTopServers(6);
   const heroStats = getMcpHeroStats();
   const { featuredPost, morePosts } = getHomeBlogContent();
+  const insightPosts = [featuredPost, ...morePosts].filter(Boolean).slice(0, 2);
+  const indexingServers = [
+    'GitHub',
+    'Slack',
+    'PostgreSQL',
+    'Brave Search',
+    'Google Drive',
+    'Firecrawl',
+    'Context7',
+  ];
+  const indexingMore = Math.max(0, heroStats.totalServers - indexingServers.length);
   const seo = buildHomeSeo({ heroStats, featuredPost });
   const seoContent = getHomeSeoContent(heroStats);
   const jsonLd = appendFaqToJsonLd(
     buildHomeJsonLd({
       heroStats,
-      topServers: preview.servers,
+      topServers,
       featuredPost,
       morePosts,
     }),
@@ -339,10 +411,14 @@ function renderHomepage(req, res) {
   res.render('home', {
     heroStats,
     toolCountDisplay: formatHomeToolCount(heroStats.totalTools),
-    topServers: preview.servers,
+    topServers,
+    categories: ['Databases', 'Search & Web', 'Files & Docs', 'AI & Memory', 'Browser automation'],
+    indexingServers,
+    indexingMore,
     featuredPost,
     morePosts,
-    otherNews: getDisplayArticles(),
+    insightPosts,
+    otherNews: getHomeAroundWeb(4),
     seo,
     seoContent,
     jsonLd,

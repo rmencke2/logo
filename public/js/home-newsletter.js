@@ -6,20 +6,23 @@
   const submitEl = document.getElementById('homeNewsletterSubmit');
   const statusEl = document.getElementById('homeNewsletterStatus');
   const hpEl = document.getElementById('homeNewsletterWebsite');
-
-  const SUCCESS_MSG = "You're in! First issue arrives Thursday.";
+  const card = document.getElementById('newsletter');
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!emailEl || !submitEl || !statusEl) return;
+    if (!emailEl || !submitEl) return;
 
     const email = String(emailEl.value || '').trim();
-    statusEl.textContent = '';
-    statusEl.classList.remove('is-error', 'is-success');
+    if (statusEl) {
+      statusEl.textContent = '';
+      statusEl.classList.remove('is-error', 'is-success');
+    }
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      statusEl.textContent = 'Please enter a valid email address.';
-      statusEl.classList.add('is-error');
+      if (statusEl) {
+        statusEl.textContent = 'Please enter a valid email address.';
+        statusEl.classList.add('is-error');
+      }
       emailEl.focus();
       return;
     }
@@ -39,12 +42,13 @@
       if (!response.ok) {
         throw new Error(data.error || 'Subscription failed. Please try again.');
       }
-      statusEl.textContent = SUCCESS_MSG;
-      statusEl.classList.add('is-success');
+      if (card) card.classList.add('is-subscribed');
       emailEl.value = '';
     } catch (err) {
-      statusEl.textContent = err.message || 'Subscription failed. Please try again.';
-      statusEl.classList.add('is-error');
+      if (statusEl) {
+        statusEl.textContent = err.message || 'Subscription failed. Please try again.';
+        statusEl.classList.add('is-error');
+      }
     } finally {
       submitEl.disabled = false;
     }

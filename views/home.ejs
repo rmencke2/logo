@@ -10,15 +10,8 @@
     <link rel="canonical" href="https://www.influzer.ai/" />
     <link rel="alternate" type="application/rss+xml" title="Influzer.ai Insights" href="https://www.influzer.ai/insights/rss.xml" />
     <%- include('partials/favicon-links') %>
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/site-header.css" />
-    <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="/css/home.css" />
-    <link rel="stylesheet" href="/css/seo-content.css" />
-    <link rel="stylesheet" href="/css/promo-strip.css" />
-    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
-    <link rel="stylesheet" href="/css/content-badges.css" />
-    <link rel="stylesheet" href="/css/other-news.css" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
       ogDescription: seo.metaDescription,
@@ -32,158 +25,221 @@
   </head>
   <body class="home-page">
     <a class="skip-link" href="#main">Skip to main content</a>
-    <%- include('partials/site-header', { activeNav: 'home' }) %>
+    <%- include('partials/home-header') %>
 
-    <main id="main">
-      <section class="home-hero" aria-labelledby="homeHeroTitle">
-        <p class="home-hero__eyebrow">MCP Server Directory</p>
-        <h1 class="home-hero__title" id="homeHeroTitle">Find the right MCP server for your AI stack</h1>
-        <p class="home-hero__subtext">
-          <%= heroStats.totalServers.toLocaleString() %> MCP servers in our registry · <%= heroStats.serversWithIndexedTools.toLocaleString() %> with indexed tools you can search. Updated weekly.
-        </p>
-        <div class="home-hero__stats" aria-label="Directory statistics">
-          <div class="home-stat">
-            <span class="home-stat__value"><%= heroStats.totalServers.toLocaleString() %></span>
-            <span class="home-stat__label">servers</span>
-          </div>
-          <div class="home-stat">
-            <span class="home-stat__value"><%= toolCountDisplay %></span>
-            <span class="home-stat__label">tools</span>
-          </div>
-          <div class="home-stat">
-            <span class="home-stat__value"><%= heroStats.categoryCount %></span>
-            <span class="home-stat__label">categories</span>
-          </div>
-        </div>
-        <form class="home-hero__search" action="/mcp" method="get" role="search">
-          <label class="visually-hidden" for="homeMcpSearch">Search MCP servers</label>
-          <input id="homeMcpSearch" type="search" name="q" placeholder="Search servers, tools, categories…" autocomplete="off" />
+    <header class="home-hero">
+      <div class="home-hero__inner">
+        <p class="home-hero__eyebrow">The MCP server registry</p>
+        <h1 class="home-hero__title">Find the right MCP server<br />for your AI stack</h1>
+        <form class="home-hero__search" id="homeHeroSearch" action="/mcp" method="get" role="search">
+          <label class="visually-hidden" for="homeMcpSearch" style="position:absolute;left:-9999px;">Search MCP servers</label>
+          <input
+            id="homeMcpSearch"
+            type="search"
+            name="q"
+            placeholder='Search by tool — "postgres", "browser automation", "scrape URLs"…'
+            autocomplete="off"
+            enterkeyhint="search"
+          />
           <button type="submit">Search</button>
         </form>
-      </section>
-
-      <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
-
-      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: true, seoShowCrossLinks: false, seoShowFaq: false }) %>
-
-      <% if (featuredPost) { %>
-        <section class="home-section home-section--insights" aria-labelledby="homeFeaturedTitle">
-          <div class="home-section__head">
-            <div class="content-badge-row">
-              <%- include('partials/content-type-badge', { type: 'original' }) %>
-              <h2 class="home-section__title" id="homeFeaturedTitle">Featured insight</h2>
-            </div>
-            <a class="home-section__link" href="/insights">All original articles →</a>
+        <div class="home-hero__chips" role="list">
+          <% categories.forEach(function(cat) { %>
+            <button type="button" class="home-hero__chip" data-query="<%= cat %>" role="listitem"><%= cat %></button>
+          <% }); %>
+        </div>
+        <div class="home-hero__stats" aria-label="Directory statistics">
+          <span><b id="homeServerCount" data-target="<%= heroStats.totalServers %>"><%= heroStats.totalServers.toLocaleString() %></b> servers</span>
+          <span><b><%= toolCountDisplay %></b> indexed tools</span>
+          <span><b><%= heroStats.categoryCount %></b> categories</span>
+          <span><b>weekly</b> updates</span>
+        </div>
+        <div class="home-hero__indexing">
+          <span>Indexing</span>
+          <div class="home-hero__indexing-list">
+            <% indexingServers.forEach(function(name) { %>
+              <span class="home-hero__index-chip"><%= name %></span>
+            <% }); %>
+            <span class="home-hero__index-chip home-hero__index-chip--more">+<%= indexingMore.toLocaleString() %></span>
           </div>
-          <a class="home-featured" href="/insights/<%= featuredPost.slug %>">
-            <div class="home-featured__media">
-              <% if (featuredPost.coverImage) { %>
-                <img
-                  src="<%= featuredPost.coverImage %>"
-                  alt="<%= featuredPost.coverImageAlt %>"
-                  width="640"
-                  height="360"
-                  loading="eager"
-                  fetchpriority="high"
-                />
-              <% } else { %>
-                <div class="home-featured__media-placeholder" aria-hidden="true">Insights</div>
-              <% } %>
-            </div>
-            <div class="home-featured__body">
-              <p class="home-featured__label"><%= featuredPost.category %> · <%= featuredPost.dateDisplay %></p>
-              <h3 class="home-featured__title"><%= featuredPost.title %></h3>
-              <p class="home-featured__excerpt"><%= featuredPost.excerpt %></p>
-              <% if (featuredPost.tags && featuredPost.tags.length) { %>
-                <div class="home-featured__tags">
-                  <% featuredPost.tags.slice(0, 4).forEach(function(tag) { %>
-                    <span class="home-featured__tag"><%= tag %></span>
-                  <% }); %>
-                </div>
-              <% } %>
-              <span class="home-featured__cta">Read original article →</span>
-            </div>
-          </a>
-        </section>
-      <% } %>
+        </div>
+      </div>
+    </header>
 
-      <% if (morePosts && morePosts.length) { %>
-        <section class="home-section home-section--insights" aria-labelledby="homeInsightsTitle">
+    <main class="home-main" id="main">
+      <div class="home-col">
+        <section class="home-section" aria-labelledby="homeServersHeading">
           <div class="home-section__head">
-            <div class="content-badge-row">
-              <%- include('partials/content-type-badge', { type: 'original' }) %>
-              <h2 class="home-section__title" id="homeInsightsTitle">More from Insights</h2>
-            </div>
-            <a class="home-section__link" href="/insights">View all →</a>
+            <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
+            <a class="home-section__link" href="/mcp">Browse all <%= heroStats.totalServers.toLocaleString() %> →</a>
           </div>
-          <p class="home-section__intro">Long-form tutorials, stories, and strategy — written by Influzer, not aggregated from the web.</p>
-          <div class="home-insights-list">
-            <% morePosts.forEach(function(post) { %>
-              <a class="home-insight-row" href="/insights/<%= post.slug %>">
-                <% if (post.coverImage) { %>
-                  <img class="home-insight-thumb" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" width="120" height="72" />
-                <% } else { %>
-                  <div class="home-insight-thumb home-insight-thumb--placeholder" aria-hidden="true">Insights</div>
-                <% } %>
-                <div>
-                  <div class="content-badge-row" style="margin-bottom:6px;">
-                    <%- include('partials/content-type-badge', { type: 'original', badgeLabel: 'Original' }) %>
+          <div class="home-server-list" id="homeServerList">
+            <% topServers.forEach(function(server) { %>
+              <a
+                class="home-server-row"
+                href="/mcp/<%= server.slug %>"
+                data-search="<%= server.searchText %>"
+              >
+                <span class="home-server-row__icon<%= server.official ? ' home-server-row__icon--official' : '' %>" aria-hidden="true"><%= server.initial %></span>
+                <div class="home-server-row__body">
+                  <div class="home-server-row__name">
+                    <%= server.name %>
+                    <% if (server.official) { %><span class="home-server-row__official">OFFICIAL</span><% } %>
                   </div>
-                  <% if (post.tags && post.tags.length) { %>
-                    <div class="home-insight-tags">
-                      <% post.tags.slice(0, 3).forEach(function(tag) { %>
-                        <span class="home-insight-tag"><%= tag %></span>
-                      <% }); %>
-                    </div>
-                  <% } %>
-                  <h3 class="home-insight-title"><%= post.title %></h3>
-                  <p class="home-insight-meta"><%= post.dateDisplay %> · <%= post.readMinutes %> min read</p>
+                  <div class="home-server-row__desc"><%= server.shortDesc %></div>
+                </div>
+                <div class="home-server-row__meta">
+                  <div class="home-server-row__kind"><%= server.kind %></div>
+                  <div class="home-server-row__cat"><%= server.category %></div>
                 </div>
               </a>
             <% }); %>
+            <div class="home-server-empty" id="homeServerEmpty" role="status">
+              No servers match “<span id="homeEmptyQuery"></span>” in this preview — the live directory searches all <%= toolCountDisplay %> indexed tools. <a href="/mcp">Browse all →</a>
+            </div>
           </div>
         </section>
-      <% } %>
 
-      <section class="home-section" aria-labelledby="homeMcpServersTitle">
-        <div class="home-section__head">
-          <h2 class="home-section__title" id="homeMcpServersTitle">Top servers this week</h2>
-          <a class="home-section__link" href="/mcp">Browse all →</a>
+        <% if (insightPosts && insightPosts.length) { %>
+          <section class="home-section" aria-labelledby="homeInsightsHeading">
+            <div class="home-section__head">
+              <h2 class="home-section__title" id="homeInsightsHeading">
+                Latest from Insights
+                <span class="home-badge">ORIGINAL</span>
+              </h2>
+              <a class="home-section__link" href="/insights">All articles →</a>
+            </div>
+            <div class="home-insights-grid">
+              <% insightPosts.forEach(function(post) { %>
+                <a class="home-insight-card" href="/insights/<%= post.slug %>">
+                  <% if (post.coverImage) { %>
+                    <img
+                      class="home-insight-card__media"
+                      src="<%= post.coverImage %>"
+                      alt="<%= post.coverImageAlt %>"
+                      width="320"
+                      height="110"
+                      loading="lazy"
+                    />
+                  <% } else { %>
+                    <div class="home-insight-card__media" aria-hidden="true"></div>
+                  <% } %>
+                  <div class="home-insight-card__body">
+                    <div class="home-insight-card__title"><%= post.title %></div>
+                    <div class="home-insight-card__meta"><%= post.dateShort || post.dateDisplay %> · <%= post.readMinutes %> min read</div>
+                  </div>
+                </a>
+              <% }); %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (otherNews && otherNews.articles && otherNews.articles.length) { %>
+          <section class="home-section home-around" aria-labelledby="homeAroundHeading">
+            <div class="home-around__head">
+              <h2 class="home-section__title home-section__title--sm" id="homeAroundHeading">Around the web</h2>
+              <span class="home-section__note">community posts &amp; press — updated daily</span>
+            </div>
+            <div>
+              <% otherNews.articles.forEach(function(article) { %>
+                <a class="home-around__row" href="<%= article.outbound_url %>" target="_blank" rel="noopener noreferrer">
+                  <span class="home-around__source"><%= article.sourceTag %></span>
+                  <span><%= article.title %></span>
+                </a>
+              <% }); %>
+              <div class="home-around__more">
+                <a href="/news">All briefs →</a>
+              </div>
+            </div>
+          </section>
+        <% } %>
+      </div>
+
+      <aside class="home-aside">
+        <div class="home-nl" id="newsletter">
+          <div class="home-nl__eyebrow">EVERY THURSDAY</div>
+          <h2 class="home-nl__title">The MCP briefing 4,200+ builders read</h2>
+          <p class="home-nl__desc">Original analysis on MCP, agents, and what to connect next. No aggregated links.</p>
+          <form class="home-nl__form" id="homeNewsletterForm" novalidate>
+            <label class="visually-hidden" for="homeNewsletterEmail" style="position:absolute;left:-9999px;">Email address</label>
+            <input
+              id="homeNewsletterEmail"
+              class="home-nl__input"
+              type="email"
+              name="email"
+              placeholder="you@company.com"
+              maxlength="254"
+              autocomplete="email"
+              required
+            />
+            <button type="submit" class="home-nl__submit" id="homeNewsletterSubmit">Subscribe free</button>
+            <input
+              id="homeNewsletterWebsite"
+              class="home-nl__hp"
+              type="text"
+              name="website"
+              autocomplete="off"
+              tabindex="-1"
+              aria-hidden="true"
+            />
+            <p class="home-nl__status" id="homeNewsletterStatus" role="status" aria-live="polite"></p>
+          </form>
+          <div class="home-nl__success" id="homeNewsletterSuccess" role="status">✓ You're in — first briefing Thursday.</div>
+          <div class="home-nl__quote">
+            “The only MCP roundup I actually finish.”<br />
+            <cite>— Staff engineer, fintech</cite>
+          </div>
         </div>
-        <div class="home-mcp-grid mcp-grid">
-          <% topServers.forEach(function(server) { %>
-            <%- include('partials/mcp-server-card', { server: server, toolDisplayLimit: 3 }) %>
-          <% }); %>
+
+        <div class="home-aside-card">
+          <h3 class="home-aside-card__title">Search from inside your agent</h3>
+          <p class="home-aside-card__desc">Our official MCP server works in Claude, Cursor &amp; ChatGPT. No auth required.</p>
+          <div class="home-aside-card__code">influzer.ai/mcp/discovery</div>
+          <a class="home-aside-card__btn" href="<%= discoveryPromo && discoveryPromo.setupUrl ? discoveryPromo.setupUrl : '/mcp/discovery/setup' %>">Connect in 2 minutes</a>
         </div>
-        <%- include('partials/promo-strip', { promo: promo }) %>
-      </section>
 
-      <%- include('partials/home-newsletter-card') %>
-
-      <%- include('partials/other-news-section', { otherNews: otherNews }) %>
-
-      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent, seoShowIntro: false }) %>
+        <div class="home-aside-card">
+          <h3 class="home-aside-card__title">Built an MCP server?</h3>
+          <p class="home-aside-card__desc">Get listed and reach teams choosing their production stack.</p>
+          <a class="home-aside-card__btn" href="/mcp/submit">Submit a server</a>
+        </div>
+      </aside>
     </main>
 
-    <footer class="home-site-footer">
-      <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a> · <a href="/insights/rss.xml">RSS</a></span>
-      <label class="home-site-footer__lang">
-        <span class="visually-hidden">Language</span>
-        <select id="languageSelector" aria-label="Language">
-          <option value="en">English</option>
-          <option value="da">Dansk</option>
-          <option value="sv">Svenska</option>
-          <option value="de">Deutsch</option>
-          <option value="it">Italiano</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="nl">Nederlands</option>
-        </select>
-      </label>
+    <footer class="home-footer">
+      <div class="home-footer__inner">
+        <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a> · <a href="/insights/rss.xml">RSS</a></span>
+        <span class="home-footer__tools">
+          Free tools:
+          <a href="/favicon-generator">Favicon</a>
+          <a href="/video-to-gif">Video to GIF</a>
+          <a href="/video-converter">AVI to MP4</a>
+          <a href="/meme-generator">Meme generator</a>
+          <a href="/logo-generator">Logo</a>
+        </span>
+        <label class="home-footer__lang">
+          <span class="visually-hidden" style="position:absolute;left:-9999px;">Language</span>
+          <select id="homeLanguageSelector" aria-label="Language">
+            <option value="en">English</option>
+            <option value="da">Dansk</option>
+            <option value="sv">Svenska</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="nl">Nederlands</option>
+          </select>
+        </label>
+      </div>
     </footer>
 
-    <script src="/js/site-header.js" defer></script>
+    <script>
+      window.__HOME_HERO__ = {
+        toolCountDisplay: <%- JSON.stringify(toolCountDisplay) %>,
+        totalServers: <%= heroStats.totalServers %>
+      };
+    </script>
+    <script src="/js/home.js" defer></script>
     <script src="/js/home-newsletter.js" defer></script>
-    <script src="/js/mcp-cards.js" defer></script>
   </body>
 </html>

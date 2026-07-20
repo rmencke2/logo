@@ -1,0 +1,67 @@
+<%#
+  Homepage registry nav — Space Grotesk / indigo accent.
+  Reuses site-auth element IDs so /js/site-auth.js still works.
+%>
+<%
+  const path = typeof navPath !== 'undefined' ? navPath : '';
+%>
+<header class="home-nav" id="siteHeader">
+  <div class="home-nav__inner">
+    <div class="home-nav__left">
+      <button
+        type="button"
+        class="home-nav__menu-btn"
+        id="navMenuToggle"
+        aria-expanded="false"
+        aria-controls="mainSiteNav"
+        aria-label="Open menu"
+      >
+        <span class="home-nav__menu-bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+      <a href="/" class="home-nav__brand">influzer<span class="home-nav__brand-dot">.ai</span></a>
+      <nav class="home-nav__links" id="mainSiteNav" aria-label="Main">
+        <a href="/mcp" class="home-nav__link">Directory</a>
+        <a href="/mcp/discovery/setup" class="home-nav__link<%= path.startsWith('/mcp/discovery') ? ' is-active' : '' %>">Our MCP</a>
+        <a href="/insights" class="home-nav__link">Insights</a>
+        <a href="/news" class="home-nav__link">Briefs</a>
+      </nav>
+    </div>
+    <div class="home-nav__right">
+      <button type="button" class="home-nav__theme" id="homeThemeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">☾</button>
+      <div class="site-header-auth" id="siteHeaderAuth">
+        <div id="siteHeaderAuthGuest">
+          <a href="/login" class="home-nav__login" id="siteHeaderLoginLink">Log in</a>
+        </div>
+        <div id="siteHeaderAuthUser" class="site-header-user" hidden>
+          <div class="site-header-user-menu" id="siteHeaderUserMenu">
+            <button type="button" class="site-header-user-trigger" id="siteHeaderUserTrigger" aria-haspopup="true">
+              <span class="site-header-user-avatar" id="siteHeaderUserAvatar" aria-hidden="true">U</span>
+              <span id="siteHeaderUserName">Account</span>
+            </button>
+            <div class="site-header-user-panel" role="menu">
+              <div class="site-header-user-email" id="siteHeaderUserEmail"></div>
+              <a href="/mcp/my-listings" role="menuitem">My MCP listings</a>
+              <a href="/admin" id="siteHeaderAdminLink" role="menuitem" hidden>Admin dashboard</a>
+              <button type="button" id="siteHeaderLogoutBtn" role="menuitem">Log out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#newsletter" class="home-nav__subscribe">Subscribe</a>
+    </div>
+  </div>
+</header>
+<link rel="stylesheet" href="/css/site-auth.css" />
+<script src="/js/site-auth.js" defer></script>
+<select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;">
+  <option value="en">English</option>
+  <option value="da">Dansk</option>
+  <option value="sv">Svenska</option>
+  <option value="de">Deutsch</option>
+  <option value="it">Italiano</option>
+  <option value="es">Español</option>
+  <option value="fr">Français</option>
+  <option value="nl">Nederlands</option>
+</select>
