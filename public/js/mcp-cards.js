@@ -1,5 +1,7 @@
 /**
- * Client-side MCP server card HTML (matches views/partials/mcp-server-card.ejs).
+ * Client-side MCP server card HTML.
+ * - renderMcpServerCard: legacy editorial card (topic pages)
+ * - renderRegistryDirCard: registry directory grid card
  */
 (function (global) {
   function esc(s) {
@@ -10,7 +12,16 @@
       .replace(/"/g, '&quot;');
   }
 
-  function logoHtml(s) {
+  function fmtStars(n) {
+    const num = Number(n) || 0;
+    if (num >= 10000) return Math.round(num / 1000) + 'k';
+    if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return String(num);
+  }
+
+  function logoHtml(s, opts) {
+    const options = opts || {};
+    const registry = Boolean(options.registry);
     const cs = s.categoryStyle || {};
     const src = s.logoUrl || s.logoFallbackUrl || '';
     const dataFallback =
@@ -22,9 +33,34 @@
         esc(src) +
         '"' +
         dataFallback +
-        ' alt="" width="28" height="28" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(this.dataset.fallback&amp;&amp;!this.dataset.fallbackUsed){this.dataset.fallbackUsed=\'1\';this.src=this.dataset.fallback;return;}this.classList.add(\'is-hidden\');var f=this.parentElement.querySelector(\'.mcp-logo-fallback\');if(f)f.classList.add(\'is-visible\');">'
+        ' alt="" width="38" height="38" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(this.dataset.fallback&amp;&amp;!this.dataset.fallbackUsed){this.dataset.fallbackUsed=\'1\';this.src=this.dataset.fallback;return;}this.classList.add(\'is-hidden\');var f=this.parentElement.querySelector(\'.mcp-logo-fallback\');if(f)f.classList.add(\'is-visible\');">'
       : '';
     const fallbackVisible = src ? '' : ' is-visible';
+    const initial = esc(s.logoInitial || (s.name || '?').charAt(0).toUpperCase());
+
+    if (registry) {
+      const official = Boolean(s.official);
+      return (
+        '<div class="dir-card__icon' +
+        (official ? ' dir-card__icon--official' : '') +
+        '"' +
+        (official
+          ? ''
+          : ' style="background:' +
+            esc(cs.tileBg || '#f0efe9') +
+            ';color:' +
+            esc(cs.tileText || '#6d707a') +
+            '"') +
+        '>' +
+        img +
+        '<span class="mcp-logo-fallback' +
+        fallbackVisible +
+        '" aria-hidden="true">' +
+        initial +
+        '</span></div>'
+      );
+    }
+
     return (
       '<div class="mcp-logo-wrap"><div class="mcp-logo" style="--mcp-tile-bg:' +
       esc(cs.tileBg || '#3B82F6') +
@@ -39,21 +75,27 @@
       ';color:' +
       esc(cs.tileText || '#fff') +
       ';">' +
-      esc(s.logoInitial || '?') +
+      initial +
       '</span></div></div>'
     );
   }
 
-  /**
-   * @param {object} s — server with branding fields from API
-   */
   function renderMcpServerCard(s) {
     const cs = s.categoryStyle || {};
     const toolList = s.tools || [];
     const tools = toolList.slice(0, 4);
     const extra = toolList.length - tools.length;
     const toolHtml = toolList.length
-      ? tools.map((t) => '<span class="mcp-tool-pill" title="' + esc(t.description || t.name) + '">' + esc(t.name) + '</span>').join('') +
+      ? tools
+          .map(
+            (t) =>
+              '<span class="mcp-tool-pill" title="' +
+              esc(t.description || t.name) +
+              '">' +
+              esc(t.name) +
+              '</span>',
+          )
+          .join('') +
         (extra > 0 ? '<span class="mcp-tool-pill muted">+' + extra + ' more</span>' : '')
       : '<span class="mcp-tool-pill muted">Tools on detail page</span>';
     const stars =
@@ -105,5 +147,51 @@
     );
   }
 
+  function renderRegistryDirCard(s) {
+    const toolList = s.tools || [];
+    const shown = toolList.slice(0, 2);
+    const extra = toolList.length - shown.length;
+    const tags =
+      shown
+        .map((t) => '<span class="dir-card__tag">' + esc(t.name || t) + '</span>')
+        .join('') +
+      (extra > 0 ? '<span class="dir-card__tag dir-card__tag--more">+' + extra + '</span>' : '');
+    const starLabel =
+      s.stars > 0 ? '★ ' + fmtStars(s.stars) : 'Curated';
+    const transport = s.transportBadge || (s.isRemote ? 'Remote' : 'Local');
+
+    return (
+      '<a class="dir-card" href="/mcp/' +
+      esc(s.slug) +
+      '">' +
+      '<div class="dir-card__head">' +
+      logoHtml(s, { registry: true }) +
+      '<div class="dir-card__titles">' +
+      '<div class="dir-card__name-row">' +
+      '<span class="dir-card__name">' +
+      esc(s.name) +
+      '</span>' +
+      (s.official ? '<span class="dir-card__official">OFFICIAL</span>' : '') +
+      '</div>' +
+      '<div class="dir-card__cat">' +
+      esc(s.category || '') +
+      '</div>' +
+      '</div></div>' +
+      '<p class="dir-card__desc">' +
+      esc(s.description || '') +
+      '</p>' +
+      (tags ? '<div class="dir-card__tags">' + tags + '</div>' : '') +
+      '<div class="dir-card__foot">' +
+      '<span class="dir-card__stars">' +
+      esc(starLabel) +
+      '</span>' +
+      '<span class="dir-card__transport">' +
+      esc(transport) +
+      '</span>' +
+      '</div></a>'
+    );
+  }
+
   global.renderMcpServerCard = renderMcpServerCard;
+  global.renderRegistryDirCard = renderRegistryDirCard;
 })(typeof window !== 'undefined' ? window : globalThis);

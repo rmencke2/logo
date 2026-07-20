@@ -29,6 +29,20 @@
   --hp-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --hp-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
+  /* Bridge editorial SEO partials used on registry pages */
+  --font-display: var(--hp-font);
+  --font-ui: var(--hp-font);
+  --font-body: var(--hp-font);
+  --color-ink: var(--hp-text);
+  --color-charcoal: var(--hp-text);
+  --color-charcoal-light: var(--hp-muted);
+  --color-muted: var(--hp-muted2);
+  --color-terracotta: var(--hp-accent);
+  --color-border: var(--hp-border);
+  --color-paper: var(--hp-card);
+  --color-cream: var(--hp-bg);
+  --color-cream-dark: var(--hp-bg2);
+
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -911,6 +925,54 @@ body.registry-page.site-header-active {
 .home-nl__quote cite {
   color: #9599a2;
   font-style: normal;
+}
+
+.home-nl--band {
+  position: static;
+  border-radius: 14px;
+  padding: 28px 30px;
+  margin: 36px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 28px;
+}
+
+.home-nl--band .home-nl__copy {
+  flex: 1;
+  min-width: min(100%, 280px);
+}
+
+.home-nl--band .home-nl__title {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.home-nl--band .home-nl__form {
+  flex: 1;
+  min-width: min(100%, 260px);
+  max-width: 420px;
+}
+
+.home-nl--band .home-nl__success {
+  width: 100%;
+}
+
+.home-nl__form--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.home-nl__form--row .home-nl__input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.home-nl__form--row .home-nl__submit {
+  flex: none;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .home-aside-card {

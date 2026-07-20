@@ -18,578 +18,143 @@
       </script>
     <% } %>
     <%- include('partials/favicon-links') %>
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/site-header.css" />
-    <link rel="stylesheet" href="/css/mcp-directory.css" />
-    <link rel="stylesheet" href="/css/seo-content.css" />
-    <link rel="stylesheet" href="/css/promo-strip.css" />
-    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
-    <link rel="stylesheet" href="/css/content-badges.css" />
-    <link rel="stylesheet" href="/css/other-news.css" />
-    <style>
-      /* Scoped overrides — global button/input rules are form-sized and full-width */
-      .mcp-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
-      .mcp-page button { width: auto; margin-top: 0; }
-      .mcp-page input[type='search'],
-      .mcp-page select {
-        width: auto;
-        margin-top: 0;
-        font-family: var(--font-body);
-      }
-
-      .mcp-header { margin-bottom: 28px; }
-      .mcp-header .mcp-kicker {
-        font-family: var(--font-ui);
-        font-size: .72rem;
-        font-weight: 600;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        color: var(--color-terracotta);
-        margin: 0 0 10px 0;
-      }
-      .mcp-header h1 { margin: 0 0 12px 0; }
-      .mcp-header .mcp-lead { max-width: 720px; margin: 0; color: var(--color-charcoal-light); font-size: 1.08rem; line-height: 1.65; }
-
-      .mcp-controls {
-        background: var(--color-paper);
-        border: 1px solid var(--color-border);
-        border-radius: 18px;
-        padding: 20px;
-        margin-bottom: 28px;
-        box-shadow: 0 2px 14px rgba(45, 42, 38, 0.04);
-      }
-      .mcp-controls-top {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-        margin-bottom: 16px;
-      }
-      .mcp-search-wrap { flex: 1; min-width: min(100%, 280px); position: relative; }
-      .mcp-search-wrap input[type='search'] {
-        width: 100%;
-        padding: 12px 16px 12px 42px;
-        font-size: 1rem;
-        background: var(--color-cream);
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        color: var(--color-charcoal);
-      }
-      .mcp-search-wrap input[type='search']:focus {
-        outline: none;
-        border-color: var(--color-terracotta);
-        background: var(--color-paper);
-        box-shadow: 0 0 0 3px var(--color-terracotta-light);
-      }
-      .mcp-search-icon {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1rem;
-        color: var(--color-muted);
-        pointer-events: none;
-      }
-      .mcp-sort-wrap {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-shrink: 0;
-      }
-      .mcp-sort-wrap label {
-        font-family: var(--font-ui);
-        font-size: .85rem;
-        color: var(--color-muted);
-        white-space: nowrap;
-      }
-      .mcp-sort-wrap select {
-        padding: 10px 32px 10px 12px;
-        font-size: .9rem;
-        background: var(--color-cream);
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        color: var(--color-charcoal);
-        cursor: pointer;
-      }
-
-      .mcp-filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .mcp-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        border: 1px solid var(--color-border);
-        background: var(--color-cream);
-        color: var(--color-charcoal);
-        font-family: var(--font-ui);
-        font-size: .8rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background .15s ease, border-color .15s ease, color .15s ease;
-      }
-      .mcp-chip:hover {
-        border-color: var(--color-border-strong);
-        background: var(--color-cream-dark);
-      }
-      .mcp-chip.active {
-        background: var(--color-charcoal);
-        border-color: var(--color-charcoal);
-        color: #fff;
-      }
-      .mcp-chip-count {
-        font-size: .72rem;
-        font-weight: 600;
-        padding: 1px 6px;
-        border-radius: 999px;
-        background: rgba(45, 42, 38, 0.08);
-        color: var(--color-charcoal-light);
-      }
-      .mcp-chip.active .mcp-chip-count {
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-      }
-
-      .mcp-meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 20px;
-      }
-      .mcp-count {
-        font-family: var(--font-ui);
-        font-size: .88rem;
-        color: var(--color-muted);
-        margin: 0;
-      }
-      .mcp-clear-link {
-        font-family: var(--font-ui);
-        font-size: .85rem;
-        color: var(--color-terracotta);
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        text-decoration: underline;
-        font-weight: 500;
-      }
-      .mcp-clear-link:hover { color: var(--color-terracotta-hover); background: transparent; transform: none; }
-
-      .mcp-empty {
-        text-align: center;
-        padding: 48px 24px;
-        background: var(--color-paper);
-        border: 1px dashed var(--color-border-strong);
-        border-radius: 16px;
-      }
-      .mcp-empty p { margin: 0 0 12px 0; color: var(--color-charcoal-light); }
-      .mcp-loading, .mcp-footer-note {
-        font-family: var(--font-ui);
-        font-size: .88rem;
-        color: var(--color-muted);
-        text-align: center;
-      }
-      .mcp-footer-note { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--color-border); }
-      .mcp-tier-banner {
-        display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
-        margin-bottom: 24px; padding: 12px 16px; border-radius: 14px;
-        background: var(--color-cream-dark); border: 1px solid var(--color-border);
-      }
-      .mcp-tier-tab {
-        font-family: var(--font-ui); font-size: .85rem; font-weight: 600;
-        padding: 8px 14px; border-radius: 999px; text-decoration: none;
-        color: var(--color-charcoal); border: 1px solid var(--color-border); background: var(--color-paper);
-      }
-      .mcp-tier-tab.active { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
-      .mcp-tier-meta { font-family: var(--font-ui); font-size: .85rem; color: var(--color-charcoal-light); flex: 1; min-width: 200px; }
-      .mcp-submit-cta {
-        margin: 0 0 20px;
-        padding: 12px 16px;
-        border-radius: 12px;
-        background: #eef2ff;
-        border: 1px solid #c7d2fe;
-        font-family: var(--font-ui);
-        font-size: 0.9rem;
-        color: #4338ca;
-      }
-      .mcp-submit-cta a { color: #6366f1; font-weight: 600; text-decoration: none; }
-      .mcp-submit-cta a:hover { text-decoration: underline; }
-      .mcp-tier-meta a { color: var(--color-terracotta); font-weight: 600; }
-      .mcp-load-more {
-        display: block;
-        margin: 24px auto 0;
-        padding: 10px 20px;
-        border-radius: 999px;
-        border: 1px solid var(--color-border);
-        background: var(--color-paper);
-        font-family: var(--font-ui);
-        cursor: pointer;
-        color: var(--color-charcoal);
-      }
-      .mcp-load-more:hover { border-color: var(--color-border-strong); background: var(--color-cream); }
-      .mcp-tools-only {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 14px;
-        font-family: var(--font-ui);
-        font-size: .85rem;
-        color: var(--color-charcoal-light);
-      }
-      .mcp-tools-only input { width: auto; margin: 0; }
-
-      .mcp-topics-strip {
-        margin: 0 0 24px;
-        padding: 16px 18px;
-        border-radius: 14px;
-        background: var(--color-paper);
-        border: 1px solid var(--color-border);
-      }
-      .mcp-topics-strip h2 {
-        font-family: var(--font-ui);
-        font-size: .78rem;
-        font-weight: 600;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        color: var(--color-charcoal-light);
-        margin: 0 0 10px;
-      }
-      .mcp-topics-links { display: flex; flex-wrap: wrap; gap: 8px; }
-      .mcp-topics-links a {
-        font-family: var(--font-ui);
-        font-size: .82rem;
-        padding: 6px 12px;
-        border-radius: 999px;
-        text-decoration: none;
-        border: 1px solid var(--color-border);
-        color: var(--color-charcoal);
-      }
-      .mcp-topics-links a:hover { border-color: var(--color-terracotta); color: var(--color-terracotta); }
-      .mcp-topics-links a.mcp-topics-all { font-weight: 600; border-color: var(--color-terracotta-light); }
-
-      @media (max-width: 640px) {
-        .mcp-controls-top { flex-direction: column; align-items: stretch; }
-        .mcp-sort-wrap { justify-content: space-between; }
-        .mcp-sort-wrap select { flex: 1; }
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/seo-content.css?v=<%= assetVersion %>" />
   </head>
-  <body>
-    <%- include('partials/site-header', { navPath: '/mcp' }) %>
-    <script src="/js/site-header.js" defer></script>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
 
-    <main class="mcp-page">
-      <header class="mcp-header">
-        <p class="mcp-kicker">Model Context Protocol</p>
-        <h1><%= pageTitle %></h1>
+    <header class="dir-hero">
+      <div class="dir-hero__inner">
+        <p class="dir-hero__eyebrow">Model Context Protocol</p>
+        <h1 class="dir-hero__title"><%= catalogScope === 'top' ? 'Top 100 MCP Servers' : 'Full MCP Server Directory' %></h1>
         <% if (typeof heroStats !== 'undefined' && heroStats) { %>
-          <div class="mcp-hero">
-            <p class="mcp-hero-tagline">
-              <%= heroStats.totalServers.toLocaleString() %> servers in the registry · <%= heroStats.serversWithIndexedTools.toLocaleString() %> with indexed tools searchable
-            </p>
-            <div class="mcp-hero-stats">
-              <div>
-                <span class="mcp-stat-value mcp-stat-value--primary"><%= heroStats.totalServers.toLocaleString() %></span>
-                <span class="mcp-stat-label">servers</span>
-              </div>
-              <div>
-                <span class="mcp-stat-value"><%= heroStats.totalTools.toLocaleString() %></span>
-                <span class="mcp-stat-label">tools indexed</span>
-              </div>
-              <div>
-                <span class="mcp-stat-value"><%= heroStats.categoryCount %></span>
-                <span class="mcp-stat-label">categories</span>
-              </div>
-            </div>
+          <p class="dir-hero__lead">
+            <% if (catalogScope === 'top') { %>
+              Curated leaders with indexed tools, transport, and setup steps.
+              <b><%= totalCatalog.toLocaleString() %></b> servers in the full registry ·
+              <b><%= (typeof totalWithTools !== 'undefined' ? totalWithTools : heroStats.serversWithIndexedTools).toLocaleString() %></b> with searchable tools.
+            <% } else { %>
+              Search the full registry — connect URLs, tool indexes, and setup steps.
+              <b><%= totalCatalog.toLocaleString() %></b> servers ·
+              <b><%= (typeof totalWithTools !== 'undefined' ? totalWithTools : heroStats.serversWithIndexedTools).toLocaleString() %></b> with searchable tools.
+            <% } %>
+          </p>
+          <div class="dir-hero__stats" aria-label="Directory stats">
+            <span><b><%= totalCatalog.toLocaleString() %></b> servers</span>
+            <span aria-hidden="true">·</span>
+            <span><b><%= heroStats.totalTools.toLocaleString() %></b> tools indexed</span>
+            <span aria-hidden="true">·</span>
+            <span><b><%= heroStats.categoryCount %></b> categories</span>
           </div>
-        <% } else { %>
-          <p class="mcp-lead"><%= metaDescription %></p>
         <% } %>
-      </header>
+      </div>
+    </header>
 
-      <p class="mcp-submit-cta">
-        Know a server we should list?
-        <a href="/mcp/submit">Submit an MCP server</a>
-        — we review every suggestion manually.
-      </p>
-
-      <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
-
-      <%- include('partials/promo-strip', { promo: promo }) %>
-
-      <%- include('partials/mcp-tier-banner') %>
-
-      <% if (typeof topicSummaries !== 'undefined' && topicSummaries && topicSummaries.length) { %>
-        <nav class="mcp-topics-strip" aria-label="MCP topic guides">
-          <h2>Topic guides</h2>
-          <div class="mcp-topics-links">
-            <a class="mcp-topics-all" href="/mcp/topics">All topics</a>
-            <% topicSummaries.forEach(function(t) { %>
-              <a href="/mcp/topics/<%= t.slug %>"><%= t.shortTitle %></a>
-            <% }); %>
+    <main class="dir-shell" id="main">
+      <% if (typeof featuredPromo !== 'undefined' && featuredPromo) { %>
+        <aside class="dir-featured" aria-label="Featured server">
+          <div class="dir-featured__icon" aria-hidden="true"><%= (featuredPromo.provider || 'W').charAt(0) %></div>
+          <div class="dir-featured__body">
+            <div class="dir-featured__name-row">
+              <span class="dir-featured__name"><%= featuredPromo.provider %></span>
+              <span class="dir-featured__badge">FEATURED</span>
+            </div>
+            <p class="dir-featured__desc"><%= featuredPromo.blurb %></p>
           </div>
-        </nav>
+          <a class="dir-featured__cta" href="<%= featuredPromo.url %>"<%= featuredPromo.external ? ' target="_blank" rel="noopener noreferrer sponsored"' : '' %>><%= featuredPromo.cta %> →</a>
+        </aside>
       <% } %>
 
-      <section class="mcp-controls" aria-label="Search and filters">
-        <div class="mcp-controls-top">
-          <div class="mcp-search-wrap">
-            <span class="mcp-search-icon" aria-hidden="true">⌕</span>
-            <input type="search" id="mcpSearch" placeholder="Search servers, tools, categories…" aria-label="Search MCP servers" autocomplete="off" />
-          </div>
-          <div class="mcp-sort-wrap">
-            <label for="mcpSort">Sort by</label>
-            <select id="mcpSort">
-              <option value="stars"<%= catalogScope === 'all' ? ' selected' : '' %>>Most popular</option>
-              <option value="name">Name A–Z</option>
-              <option value="tools"<%= catalogScope === 'top' ? ' selected' : '' %>>Most tools</option>
-              <option value="official">Official first</option>
-            </select>
-          </div>
+      <div class="dir-controls">
+        <nav class="dir-tabs" aria-label="Directory scope">
+          <a href="/mcp" class="<%= catalogScope === 'top' ? 'is-active' : '' %>">Top 100</a>
+          <a href="/mcp/all" class="<%= catalogScope === 'all' ? 'is-active' : '' %>">Full directory (<%= totalCatalog.toLocaleString() %>)</a>
+        </nav>
+        <div class="dir-search">
+          <span class="dir-search__glyph" aria-hidden="true">⌕</span>
+          <input type="search" id="mcpSearch" placeholder="Search servers or tools…" aria-label="Search MCP servers" autocomplete="off" />
         </div>
-        <div class="mcp-filters" id="mcpFilters" role="group" aria-label="Filter by category"></div>
-        <% if (catalogScope === 'all') { %>
-          <label class="mcp-tools-only">
-            <input type="checkbox" id="mcpToolsOnly" <%= defaultToolsOnly !== false ? 'checked' : '' %> />
-            Only show servers with indexed tools (<%= typeof totalWithTools !== 'undefined' ? totalWithTools : '—' %> of <%= totalCatalog.toLocaleString() %>)
-          </label>
-        <% } %>
-      </section>
+        <div class="dir-sort">
+          <label class="visually-hidden" for="mcpSort" style="position:absolute;left:-9999px;">Sort</label>
+          <select id="mcpSort">
+            <option value="stars" selected>Most popular</option>
+            <option value="name">Name A–Z</option>
+            <option value="tools">Most tools</option>
+            <option value="official">Official first</option>
+          </select>
+        </div>
+      </div>
 
-      <div class="mcp-meta">
-        <p class="mcp-count" id="mcpCount" aria-live="polite"></p>
-        <button type="button" class="mcp-clear-link" id="mcpClear" hidden>Clear filters</button>
+      <div class="dir-pills" id="mcpFilters" role="group" aria-label="Filter by category"></div>
+
+      <% if (catalogScope === 'all') { %>
+        <label class="dir-tools-only">
+          <input type="checkbox" id="mcpToolsOnly" <%= defaultToolsOnly !== false ? 'checked' : '' %> />
+          Only show servers with indexed tools (<%= typeof totalWithTools !== 'undefined' ? totalWithTools.toLocaleString() : '—' %> of <%= totalCatalog.toLocaleString() %>)
+        </label>
+      <% } %>
+
+      <div class="dir-meta">
+        <p class="dir-meta__count" id="mcpCount" aria-live="polite"></p>
+        <button type="button" id="mcpClear" hidden>Clear filters</button>
       </div>
 
       <% if (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) { %>
         <script id="mcpCatalogData" type="application/json"><%- inlineCatalogJson %></script>
       <% } %>
-      <p class="mcp-loading" id="mcpLoading"<%= (typeof previewServers !== 'undefined' && previewServers && previewServers.length) || (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) ? ' hidden' : '' %>>Loading MCP server catalog…</p>
-      <div class="mcp-grid" id="mcpGrid"<%= (typeof previewServers !== 'undefined' && previewServers && previewServers.length) ? '' : ' hidden' %>>
-        <% if (typeof previewServers !== 'undefined' && previewServers) { %>
-          <% previewServers.forEach(function(server) { %>
-            <%- include('partials/mcp-server-card', { server: server }) %>
-          <% }); %>
+
+      <p class="dir-loading" id="mcpLoading"<%= (typeof previewServers !== 'undefined' && previewServers && previewServers.length) || (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) ? ' hidden' : '' %>>Loading MCP server catalog…</p>
+
+      <div
+        class="dir-grid"
+        id="mcpGrid"
+        data-scope="<%= catalogScope %>"
+        data-tools-only="<%= defaultToolsOnly !== false ? '1' : '0' %>"
+        data-preferred-cats="Dev Tools|Search & Web|Communication|Databases|Data & Analytics"
+        hidden
+      ></div>
+
+      <button type="button" class="dir-load-more" id="mcpLoadMore" hidden>Show more servers</button>
+
+      <div class="dir-empty" id="mcpEmpty" hidden>
+        <p data-empty-tip>No servers match your search or filters.</p>
+        <button type="button" id="mcpClearEmpty" style="margin-top:12px;background:none;border:none;color:var(--hp-link);font-family:var(--hp-font);font-weight:600;cursor:pointer;">Clear filters</button>
+      </div>
+
+      <div class="dir-bottom">
+        <% if (catalogScope === 'top') { %>
+          <a class="dir-bottom__cta" href="/mcp/all">Browse all <%= totalCatalog.toLocaleString() %> servers →</a>
+        <% } else { %>
+          <a class="dir-bottom__cta" href="/mcp">← Back to Top 100</a>
+        <% } %>
+        <% if (lastUpdated) { %>
+          <p class="dir-bottom__note">Data last refreshed <%= lastUpdated %> · tool indexes re-validated daily</p>
         <% } %>
       </div>
-      <button type="button" class="mcp-load-more" id="mcpLoadMore" hidden>Show more servers</button>
-      <div class="mcp-empty" id="mcpEmpty" hidden>
-        <p>No servers match your search or filters.</p>
-        <button type="button" class="mcp-clear-link" id="mcpClearEmpty">Clear filters</button>
-      </div>
-      <% if (lastUpdated) { %>
-        <p class="mcp-footer-note">
-          Data last refreshed: <%= lastUpdated %> ·
-          <% if (catalogScope === 'top') { %>
-            Top <%= totalInView %> curated servers (<%= typeof totalWithTools !== 'undefined' ? totalWithTools : totalInView %> with indexed tools in full catalog)
-          <% } else { %>
-            <%= totalInView %> shown · <%= totalCatalog.toLocaleString() %> total in registry
-          <% } %>
-        </p>
+
+      <p style="margin-top:18px;font-size:13px;color:var(--hp-muted2);">
+        Know a server we should list?
+        <a href="/mcp/submit">Submit an MCP server</a>
+        · <a href="/mcp/topics">Topic guides</a>
+        · <a href="/mcp/discovery/setup">Our MCP</a>
+      </p>
+
+      <% if (typeof seoContent !== 'undefined' && seoContent) { %>
+        <div class="dir-seo">
+          <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent }) %>
+        </div>
       <% } %>
-
-      <%- include('partials/other-news-section', { otherNews: typeof otherNews !== 'undefined' ? otherNews : null }) %>
-
-      <%- include('partials/seo-faq-crosslinks', { seoContent: typeof seoContent !== 'undefined' ? seoContent : null }) %>
     </main>
 
-    <script src="/js/mcp-cards.js"></script>
-    <script>
-      (function () {
-        const PAGE_SIZE = 60;
-        let data = { categories: [], servers: [] };
-        let servers = [];
-        let categories = ['All'];
-        let visibleCount = PAGE_SIZE;
-        const grid = document.getElementById('mcpGrid');
-        const countEl = document.getElementById('mcpCount');
-        const emptyEl = document.getElementById('mcpEmpty');
-        const filtersEl = document.getElementById('mcpFilters');
-        const clearBtn = document.getElementById('mcpClear');
-        const clearEmptyBtn = document.getElementById('mcpClearEmpty');
-        const loadingEl = document.getElementById('mcpLoading');
-        const loadMoreBtn = document.getElementById('mcpLoadMore');
-        const catalogScope = '<%= catalogScope %>';
-        let query = '';
-        let category = 'All';
-        let sort = catalogScope === 'top' ? 'tools' : 'stars';
-        let toolsOnly = catalogScope === 'top' || <%= defaultToolsOnly !== false ? 'true' : 'false' %>;
-        let filteredList = [];
-        const toolsOnlyToggle = document.getElementById('mcpToolsOnly');
+    <%- include('partials/registry-footer') %>
 
-        function esc(s) {
-          return String(s)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-        }
-
-        function counts() {
-          const c = {};
-          for (const cat of data.categories) {
-            c[cat] = servers.filter((s) => s.category === cat).length;
-          }
-          return c;
-        }
-
-        function buildFilters() {
-          filtersEl.innerHTML = '';
-          const catCounts = counts();
-          categories.forEach((cat) => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          const n = cat === 'All' ? servers.length : catCounts[cat] || 0;
-          btn.className = 'mcp-chip' + (cat === 'All' ? ' active' : '');
-          btn.dataset.category = cat;
-          btn.innerHTML =
-            '<span>' + esc(cat) + '</span><span class="mcp-chip-count">' + n + '</span>';
-          btn.addEventListener('click', () => {
-            category = cat;
-            filtersEl.querySelectorAll('.mcp-chip').forEach((b) =>
-              b.classList.toggle('active', b.dataset.category === cat),
-            );
-            render(true);
-          });
-          filtersEl.appendChild(btn);
-          });
-        }
-
-        function matches(s) {
-          const q = query.trim().toLowerCase();
-          if (category !== 'All' && s.category !== category) return false;
-          if (toolsOnly && !(s.tools && s.tools.length)) return false;
-          if (!q) return true;
-          if (s.name.toLowerCase().includes(q)) return true;
-          if (s.description.toLowerCase().includes(q)) return true;
-          if (s.category.toLowerCase().includes(q)) return true;
-          return (s.tools || []).some(
-            (t) =>
-              t.name.toLowerCase().includes(q) || (t.description || '').toLowerCase().includes(q),
-          );
-        }
-
-        function sortList(list) {
-          const copy = [...list];
-          if (sort === 'stars') {
-            return copy.sort((a, b) => (b.stars || 0) - (a.stars || 0) || a.name.localeCompare(b.name));
-          }
-          if (sort === 'tools') return copy.sort((a, b) => (b.tools?.length || 0) - (a.tools?.length || 0));
-          if (sort === 'official') {
-            return copy.sort((a, b) => {
-              if (a.official !== b.official) return a.official ? -1 : 1;
-              return a.name.localeCompare(b.name);
-            });
-          }
-          return copy.sort((a, b) => a.name.localeCompare(b.name));
-        }
-
-        function hasActiveFilters() {
-          return query.trim() !== '' || category !== 'All';
-        }
-
-        function clearFilters() {
-          query = '';
-          category = 'All';
-          document.getElementById('mcpSearch').value = '';
-          filtersEl.querySelectorAll('.mcp-chip').forEach((b) =>
-            b.classList.toggle('active', b.dataset.category === 'All'),
-          );
-          render(true);
-        }
-
-        function render(resetVisible) {
-          if (resetVisible) visibleCount = PAGE_SIZE;
-          filteredList = sortList(servers.filter(matches));
-          const list = filteredList.slice(0, visibleCount);
-          const filtered = hasActiveFilters();
-          countEl.textContent =
-            'Showing ' + list.length + ' of ' + filteredList.length +
-            (filteredList.length === 1 ? ' server' : ' servers');
-          clearBtn.hidden = !filtered;
-          emptyEl.hidden = filteredList.length > 0;
-          grid.hidden = filteredList.length === 0;
-          loadMoreBtn.hidden = visibleCount >= filteredList.length;
-          if (loadingEl) loadingEl.hidden = true;
-
-          grid.innerHTML = list.map((s) => window.renderMcpServerCard(s)).join('');
-        }
-
-        document.getElementById('mcpSearch').addEventListener('input', (e) => {
-          query = e.target.value;
-          render(true);
-        });
-        document.getElementById('mcpSort').addEventListener('change', (e) => {
-          sort = e.target.value;
-          render(true);
-        });
-        clearBtn.addEventListener('click', clearFilters);
-        clearEmptyBtn.addEventListener('click', clearFilters);
-        loadMoreBtn.addEventListener('click', () => {
-          visibleCount += PAGE_SIZE;
-          render(false);
-        });
-
-        function catalogUrl() {
-          let url = '/api/mcp/catalog?scope=' + catalogScope;
-          if (catalogScope === 'all' && !toolsOnly) url += '&tools_only=0';
-          return url;
-        }
-
-        function applyCatalog(payload) {
-          data = payload;
-          servers = payload.servers || [];
-          categories = ['All', ...(payload.categories || [])];
-          buildFilters();
-          render(true);
-        }
-
-        function loadCatalog() {
-          if (loadingEl) loadingEl.hidden = false;
-          return fetch(catalogUrl(), { headers: { Accept: 'application/json' } })
-            .then((res) => {
-              if (!res.ok) throw new Error('Catalog unavailable');
-              return res.json();
-            })
-            .then(applyCatalog)
-            .catch(() => {
-              if (loadingEl) {
-                loadingEl.hidden = false;
-                loadingEl.textContent = 'Could not load catalog. Please try again later.';
-              }
-            });
-        }
-
-        if (toolsOnlyToggle) {
-          toolsOnlyToggle.addEventListener('change', () => {
-            toolsOnly = toolsOnlyToggle.checked;
-            loadCatalog();
-          });
-        }
-
-        const bootEl = document.getElementById('mcpCatalogData');
-        if (bootEl && bootEl.textContent) {
-          try {
-            applyCatalog(JSON.parse(bootEl.textContent));
-          } catch (err) {
-            if (loadingEl) loadingEl.textContent = 'Could not read catalog data.';
-          }
-        } else if (catalogScope === 'all') {
-          loadCatalog();
-        } else if (grid.children.length) {
-          if (loadingEl) loadingEl.hidden = true;
-          grid.hidden = false;
-          loadCatalog();
-        } else {
-          loadCatalog();
-        }
-      })();
-    </script>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-cards.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-directory-page.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

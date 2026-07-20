@@ -5,212 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>Insights - Influzer.ai</title>
     <meta name="description" content="Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive." />
-    <link rel="canonical" href="<%= selectedCategory ? `https://www.influzer.ai/insights?category=${encodeURIComponent(selectedCategory)}` : 'https://www.influzer.ai/insights' %>" />
+    <link rel="canonical" href="https://www.influzer.ai/insights" />
     <%- include('partials/seo-social', {
       ogTitle: 'Insights - Influzer.ai',
       ogDescription: 'Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive.',
-      ogUrl: selectedCategory ? `https://www.influzer.ai/insights?category=${encodeURIComponent(selectedCategory)}` : 'https://www.influzer.ai/insights',
+      ogUrl: 'https://www.influzer.ai/insights',
       ogImage: featuredPost && featuredPost.coverImage ? `https://www.influzer.ai${featuredPost.coverImage}` : undefined,
       ogType: 'website',
     }) %>
     <%- include('partials/favicon-links') %>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/site-header.css">
-    <link rel="stylesheet" href="/css/content-badges.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/insights-index.css?v=<%= assetVersion %>" />
     <script type="application/ld+json">
       <%- JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Blog',
         name: 'Influzer.ai Insights',
-        description:
-          'Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive.',
-        url: selectedCategory
-          ? `https://www.influzer.ai/insights?category=${encodeURIComponent(selectedCategory)}`
-          : 'https://www.influzer.ai/insights',
+        description: 'Insights on AI, leadership, product strategy, and scaling teams from an experienced technology executive.',
+        url: 'https://www.influzer.ai/insights',
       }) %>
     </script>
-    <style>
-      .insights-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
-      .insights-header { margin-bottom: 24px; }
-      .insights-header p { max-width: 760px; }
-      .category-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-      .category-chip { text-decoration: none; font-family: var(--font-ui); font-size: .8rem; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--color-border); color: var(--color-charcoal); background: var(--color-paper); }
-      .category-chip.active { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
-      .featured-card { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; border: 1px solid var(--color-border); background: var(--color-paper); border-radius: 18px; overflow: hidden; margin-bottom: 24px; text-decoration: none; color: inherit; }
-      .featured-media { min-height: 260px; background: var(--color-cream-dark); }
-      .featured-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .featured-content { padding: 28px; display: flex; flex-direction: column; justify-content: center; }
-      .featured-label { font-family: var(--font-ui); letter-spacing: .08em; font-size: .72rem; text-transform: uppercase; color: var(--color-muted); margin-bottom: 10px; }
-      .featured-title { font-family: var(--font-display); font-size: 2rem; line-height: 1.15; margin-bottom: 10px; }
-      .featured-excerpt { color: var(--color-charcoal-light); margin-bottom: 14px; }
-      .featured-cta { font-family: var(--font-ui); font-weight: 600; }
-      .insights-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-      .insight-card { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: transform .2s ease, box-shadow .2s ease; }
-      .insight-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-medium); }
-      .insight-cover { width: 100%; height: 180px; object-fit: cover; background: var(--color-cream-dark); }
-      .insight-content { padding: 20px; }
-      .insight-meta { font-family: var(--font-ui); font-size: .8rem; color: var(--color-muted); margin-bottom: 8px; }
-      .insight-title { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 8px; }
-      .insight-excerpt { font-size: .98rem; color: var(--color-charcoal-light); }
-      .insight-tags { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-      .insight-tag { font-family: var(--font-ui); font-size: .75rem; padding: 4px 8px; border-radius: 999px; background: var(--color-terracotta-light); color: var(--color-charcoal); }
-      .empty-state { background: var(--color-paper); border: 1px dashed var(--color-border-strong); border-radius: 16px; padding: 24px; }
-      .newsletter-card { margin-top: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-cream-dark); padding: 18px; }
-      .newsletter-card h2 { margin: 0 0 8px 0; font-size: 1.4rem; }
-      .newsletter-card p { margin: 0 0 10px 0; color: var(--color-charcoal-light); }
-      .newsletter-form { display: grid; gap: 8px; }
-      .newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
-      .newsletter-input { flex: 1; min-width: 220px; border: 1px solid var(--color-border); border-radius: 999px; padding: 10px 14px; font: inherit; }
-      .newsletter-submit { border: 0; border-radius: 999px; background: var(--color-charcoal); color: #fff; padding: 10px 14px; font-family: var(--font-ui); font-weight: 600; cursor: pointer; }
-      .newsletter-submit:disabled { opacity: .65; cursor: not-allowed; }
-      .newsletter-hp { display: none !important; }
-      .newsletter-status { font-family: var(--font-ui); font-size: .84rem; min-height: 1.1em; color: var(--color-muted); }
-      .newsletter-status.error { color: #b3261e; }
-      .newsletter-status.success { color: #0f6f4f; }
-      .partner-lumipact { margin-top: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-paper); padding: 18px 20px; }
-      .partner-lumipact-title { margin: 0 0 8px 0; font-family: var(--font-display); font-size: 1.35rem; }
-      .partner-lumipact-lead { margin: 0 0 10px 0; color: var(--color-charcoal-light); line-height: 1.65; }
-      .partner-lumipact-lead a, .partner-lumipact-link { color: var(--color-terracotta); font-weight: 600; }
-      .partner-lumipact-cta { margin: 0; }
-      @media (max-width: 900px) {
-        .featured-card { grid-template-columns: 1fr; }
-        .featured-title { font-size: 1.65rem; }
-      }
-    </style>
   </head>
-  <body>
-    <%- include('partials/site-header') %>
-    <script src="/js/site-header.js" defer></script>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
 
-    <main class="insights-page">
-      <header class="insights-header">
-        <div class="content-badge-row">
-          <%- include('partials/content-type-badge', { type: 'original' }) %>
-        </div>
-        <h1>Insights</h1>
-        <p class="subtitle">Original long-form articles — tutorials, stories, and strategy written by Influzer. Not republished from Dev.to or Hacker News.</p>
-        <p class="subtitle" style="margin-top:8px;font-size:.92rem;">Quick ecosystem takes → <a href="/news">Briefs</a> · Community links → <a href="/#aroundWebTitle">From around the web</a> on the homepage.</p>
-      </header>
-      <% if (categories && categories.length) { %>
-        <nav class="category-filter" aria-label="Insight categories">
-          <a href="/insights" class="category-chip <%= selectedCategory ? '' : 'active' %>">All</a>
-          <% categories.forEach((category) => { %>
-            <a href="/insights?category=<%= encodeURIComponent(category) %>" class="category-chip <%= selectedCategory === category ? 'active' : '' %>"><%= category %></a>
-          <% }) %>
-        </nav>
-      <% } %>
+    <header class="insights-hero">
+      <div class="insights-hero__inner">
+        <p class="insights-hero__eyebrow">Original writing</p>
+        <h1 class="insights-hero__title">Insights</h1>
+        <p class="insights-hero__standfirst">
+          Thoughts on AI, leadership, scaling teams, and building product-led companies — written by Influzer, not aggregated.
+        </p>
+      </div>
+    </header>
 
-      <% if (!posts || posts.length === 0) { %>
-        <section class="empty-state">
-          <h2 style="margin-bottom: 8px;">No posts published yet</h2>
-          <p>Add a JSON file in <code>content/blog/</code> to publish your first insight.</p>
-        </section>
-      <% } else { %>
-        <% if (featuredPost) { %>
-          <a class="featured-card" href="/insights/<%= featuredPost.slug %>">
-            <div class="featured-media">
-              <% if (featuredPost.coverImage) { %>
-                <img src="<%= featuredPost.coverImage %>" alt="<%= featuredPost.coverImageAlt %>" />
-              <% } %>
-            </div>
-            <div class="featured-content">
-              <div class="content-badge-row" style="margin-bottom:10px;">
-                <%- include('partials/content-type-badge', { type: 'original' }) %>
-                <span class="featured-label">Featured</span>
-              </div>
-              <h2 class="featured-title"><%= featuredPost.title %></h2>
-              <p class="featured-excerpt"><%= featuredPost.excerpt %></p>
-              <span class="featured-cta">Read article →</span>
-            </div>
-          </a>
-        <% } %>
-        <section class="insights-grid">
-          <% posts.forEach((post) => { %>
-            <% if (!(featuredPost && post.slug === featuredPost.slug)) { %>
-              <a class="insight-card" href="/insights/<%= post.slug %>">
-                <% if (post.coverImage) { %>
-                  <img class="insight-cover" src="<%= post.coverImage %>" alt="<%= post.coverImageAlt %>" loading="lazy" />
-                <% } %>
-                <div class="insight-content">
-                  <div class="content-badge-row" style="margin-bottom:8px;">
-                    <%- include('partials/content-type-badge', { type: 'original' }) %>
-                    <span class="insight-meta"><%= post.date %></span>
-                  </div>
-                  <h2 class="insight-title"><%= post.title %></h2>
-                  <p class="insight-excerpt"><%= post.excerpt %></p>
-                  <% if (post.tags && post.tags.length) { %>
-                    <div class="insight-tags">
-                      <% post.tags.forEach((tag) => { %>
-                        <span class="insight-tag"><%= tag %></span>
-                      <% }) %>
-                    </div>
-                  <% } %>
-                </div>
-              </a>
+    <main class="insights-shell" id="main">
+      <div class="insights-pills" id="insightsFilters" role="group" aria-label="Filter by topic">
+        <% const filterCats = typeof filterCategories !== 'undefined' ? filterCategories : ['AI', 'Growth', 'Leadership']; %>
+        <button type="button" class="insights-pill is-active" data-cat="All">All</button>
+        <% filterCats.forEach(function(cat) { %>
+          <button type="button" class="insights-pill" data-cat="<%= cat %>"><%= cat %></button>
+        <% }); %>
+      </div>
+
+      <% if (featuredPost) { %>
+        <a class="insights-featured" href="/insights/<%= featuredPost.slug %>">
+          <div class="insights-featured__cover">
+            <% if (featuredPost.coverImage) { %>
+              <img src="<%= featuredPost.coverImage %>" alt="<%= featuredPost.coverImageAlt || '' %>" loading="lazy" />
+            <% } else { %>
+              <span class="insights-featured__cover-label">featured cover image</span>
             <% } %>
-          <% }) %>
-        </section>
-        <%- include('partials/partner-lumipact', { partnerVariant: 'full' }) %>
-        <section class="newsletter-card" aria-label="Subscribe to the newsletter">
-          <h2>Get new Insights in your inbox</h2>
-          <p>Original articles only — not Briefs or external links. One email per week.</p>
-          <form class="newsletter-form" id="newsletterForm" novalidate>
-            <div class="newsletter-row">
-              <input class="newsletter-input" type="email" id="newsletterEmail" placeholder="Enter your email" maxlength="254" required />
-              <button class="newsletter-submit" id="newsletterSubmit" type="submit">Subscribe</button>
-            </div>
-            <input class="newsletter-hp" type="text" id="newsletterWebsite" autocomplete="off" tabindex="-1" aria-hidden="true" />
-            <span class="newsletter-status" id="newsletterStatus" role="status" aria-live="polite"></span>
-          </form>
-        </section>
+          </div>
+          <div class="insights-featured__body">
+            <div class="insights-featured__badge">FEATURED INSIGHT</div>
+            <h2 class="insights-featured__title"><%= featuredPost.title %></h2>
+            <p class="insights-featured__excerpt"><%= featuredPost.excerpt %></p>
+            <span class="insights-featured__cta">Read article →</span>
+          </div>
+        </a>
       <% } %>
+
+      <% const gridPosts = (posts || []).filter(function(p) { return !featuredPost || p.slug !== featuredPost.slug; }); %>
+      <div class="insights-grid" id="insightsGrid">
+        <% if (!gridPosts.length) { %>
+          <div class="insights-empty">No articles yet.</div>
+        <% } else { %>
+          <% gridPosts.forEach(function(post) { %>
+            <%
+              const tagList = (post.tags || []).slice(0, 3);
+              const cats = [];
+              (post.tags || []).forEach(function(t) {
+                const key = String(t);
+                if (/^ai$/i.test(key) || /ai\b/i.test(key)) cats.push('AI');
+                if (/growth/i.test(key) || /roi|saas|ebitda|margin/i.test(key)) cats.push('Growth');
+                if (/leadership|governance|execution|operating/i.test(key)) cats.push('Leadership');
+              });
+              const uniqueCats = [...new Set(cats)];
+            %>
+            <a
+              class="insights-card"
+              href="/insights/<%= post.slug %>"
+              data-cats="<%= uniqueCats.join(',') %>"
+            >
+              <div class="insights-card__cover">
+                <% if (post.coverImage) { %>
+                  <img src="<%= post.coverImage %>" alt="<%= post.coverImageAlt || '' %>" loading="lazy" />
+                <% } %>
+              </div>
+              <div class="insights-card__body">
+                <div class="insights-card__date"><%= post.date %></div>
+                <h2 class="insights-card__title"><%= post.title %></h2>
+                <p class="insights-card__excerpt"><%= post.excerpt %></p>
+                <% if (tagList.length) { %>
+                  <div class="insights-card__tags">
+                    <% tagList.forEach(function(tag) { %>
+                      <span class="insights-card__tag"><%= tag %></span>
+                    <% }); %>
+                  </div>
+                <% } %>
+              </div>
+            </a>
+          <% }); %>
+        <% } %>
+        <div class="insights-empty" id="insightsEmpty" hidden>No articles in this category.</div>
+      </div>
+
+      <%- include('partials/registry-newsletter', {
+        newsletterVariant: 'band',
+        newsletterSource: 'insights_index',
+        newsletterId: 'newsletter',
+        newsletterEyebrow: 'ONE EMAIL PER WEEK',
+        newsletterTitle: 'Get weekly executive AI insights',
+        newsletterDesc: 'Practical frameworks you can apply immediately. Join 4,200+ leaders.',
+        newsletterSuccess: "✓ You're in — first email this week.",
+      }) %>
     </main>
-    <script>
-      (function () {
-        const form = document.getElementById('newsletterForm');
-        const emailEl = document.getElementById('newsletterEmail');
-        const submitEl = document.getElementById('newsletterSubmit');
-        const statusEl = document.getElementById('newsletterStatus');
-        const hpEl = document.getElementById('newsletterWebsite');
-        if (!form || !emailEl || !submitEl || !statusEl || !hpEl) return;
 
-        function setStatus(message, type) {
-          statusEl.textContent = message || '';
-          statusEl.classList.remove('error', 'success');
-          if (type) statusEl.classList.add(type);
-        }
+    <%- include('partials/registry-footer') %>
 
-        form.addEventListener('submit', async (event) => {
-          event.preventDefault();
-          const email = String(emailEl.value || '').trim();
-          const website = String(hpEl.value || '').trim();
-          if (!email) {
-            setStatus('Please enter your email address.', 'error');
-            return;
-          }
-          submitEl.disabled = true;
-          setStatus('Subscribing...', '');
-          try {
-            const response = await fetch('/api/newsletter/subscribe', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-              body: JSON.stringify({ email, source: 'insights_index', website }),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-              setStatus(data?.error || 'Could not subscribe right now.', 'error');
-            } else {
-              setStatus(data?.message || 'Thanks! You are subscribed.', 'success');
-              form.reset();
-            }
-          } catch {
-            setStatus('Network error. Please try again.', 'error');
-          } finally {
-            submitEl.disabled = false;
-          }
-        });
-      })();
-    </script>
-
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/insights-index.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

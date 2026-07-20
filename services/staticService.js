@@ -384,6 +384,10 @@ function getHomeAssetVersion() {
       'home.css',
       'mcp-server-page.css',
       'article-page.css',
+      'mcp-directory-page.css',
+      'insights-index.css',
+      'mcp-setup-page.css',
+      'briefs-page.css',
       'site-header.css',
     ];
     let latest = 0;
@@ -696,7 +700,10 @@ function initializeStaticService(app) {
       ...item,
       displayDate: formatNewsDate(item.date),
     }));
-    res.render('news-index', { items });
+    res.render('news-index', {
+      items,
+      assetVersion: getHomeAssetVersion(),
+    });
   });
 
   app.get('/news/:slug', (req, res) => {
@@ -726,21 +733,14 @@ function initializeStaticService(app) {
   app.get('/insights', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const allPosts = getAllBlogPosts();
-    const selectedCategory = req.query.category ? String(req.query.category) : '';
-    const categories = [...new Set(allPosts.map((post) => post.category))].sort((a, b) =>
-      a.localeCompare(b),
-    );
-    const posts = selectedCategory
-      ? allPosts.filter((post) => post.category === selectedCategory)
-      : allPosts;
-    const featuredPost = posts.find((post) => post.featured) || null;
+    const featuredPost = allPosts.find((post) => post.featured) || null;
 
     res.render('blog-index', {
       title: 'Insights',
-      posts,
+      posts: allPosts,
       featuredPost,
-      categories,
-      selectedCategory,
+      filterCategories: ['AI', 'Growth', 'Leadership'],
+      assetVersion: getHomeAssetVersion(),
     });
   });
 
@@ -841,9 +841,11 @@ ${itemsXml}
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),
+      featuredPromo: getSitePromo('webnode'),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
       discoveryPromo: getDiscoveryPromo(),
+      assetVersion: getHomeAssetVersion(),
     });
   });
 
@@ -886,9 +888,11 @@ ${itemsXml}
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),
+      featuredPromo: getSitePromo('webnode'),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
       discoveryPromo: getDiscoveryPromo(),
+      assetVersion: getHomeAssetVersion(),
     });
   });
 

@@ -1,25 +1,49 @@
 <%#
   Shared registry newsletter card (dark ink — same in both themes).
-  Optional: newsletterVariant = 'aside' | 'inline' (default aside)
-  Optional: newsletterSource for analytics
+  Optional locals:
+    newsletterVariant = 'aside' | 'inline' | 'band' (default aside)
+    newsletterSource, newsletterId
+    newsletterEyebrow, newsletterTitle, newsletterDesc, newsletterSuccess
+    newsletterSubmitLabel
 %>
 <%
   const nlVariant = typeof newsletterVariant !== 'undefined' ? newsletterVariant : 'aside';
   const nlSource = typeof newsletterSource !== 'undefined' ? newsletterSource : 'registry-newsletter';
   const nlId = typeof newsletterId !== 'undefined' ? newsletterId : 'newsletter';
   const isInline = nlVariant === 'inline';
+  const isBand = nlVariant === 'band';
+  const eyebrow = typeof newsletterEyebrow !== 'undefined' && newsletterEyebrow
+    ? newsletterEyebrow
+    : (isInline ? 'GET PRACTICAL AI PLAYBOOKS WEEKLY' : isBand ? 'ONE EMAIL PER WEEK' : 'EVERY THURSDAY');
+  const title = typeof newsletterTitle !== 'undefined' && newsletterTitle
+    ? newsletterTitle
+    : (isInline ? 'One clear email each Thursday' : isBand ? 'Get weekly executive AI insights' : 'The MCP briefing 4,200+ builders read');
+  const desc = typeof newsletterDesc !== 'undefined' && newsletterDesc
+    ? newsletterDesc
+    : (isInline
+      ? 'Actionable frameworks on AI execution, agents, and MCP. Join 4,200+ builders.'
+      : isBand
+        ? 'Practical frameworks you can apply immediately. Join 4,200+ leaders.'
+        : 'Original analysis on MCP, agents, and what to connect next. No aggregated links.');
+  const success = typeof newsletterSuccess !== 'undefined' && newsletterSuccess
+    ? newsletterSuccess
+    : (isBand ? "✓ You're in — first email this week." : "✓ You're in — first briefing Thursday.");
+  const submitLabel = typeof newsletterSubmitLabel !== 'undefined' && newsletterSubmitLabel
+    ? newsletterSubmitLabel
+    : (isInline || isBand ? 'Subscribe' : 'Subscribe free');
+  const formRow = isInline || isBand;
 %>
-<div class="home-nl<%= isInline ? ' home-nl--inline' : '' %>" id="<%= nlId %>" data-newsletter-source="<%= nlSource %>">
-  <% if (isInline) { %>
-    <div class="home-nl__eyebrow">GET PRACTICAL AI PLAYBOOKS WEEKLY</div>
-    <h2 class="home-nl__title">One clear email each Thursday</h2>
-    <p class="home-nl__desc">Actionable frameworks on AI execution, agents, and MCP. Join 4,200+ builders.</p>
-  <% } else { %>
-    <div class="home-nl__eyebrow">EVERY THURSDAY</div>
-    <h2 class="home-nl__title">The MCP briefing 4,200+ builders read</h2>
-    <p class="home-nl__desc">Original analysis on MCP, agents, and what to connect next. No aggregated links.</p>
-  <% } %>
-  <form class="home-nl__form<%= isInline ? ' home-nl__form--row' : '' %>" data-newsletter-form novalidate>
+<div
+  class="home-nl<%= isInline ? ' home-nl--inline' : '' %><%= isBand ? ' home-nl--band' : '' %>"
+  id="<%= nlId %>"
+  data-newsletter-source="<%= nlSource %>"
+>
+  <div class="home-nl__copy">
+    <div class="home-nl__eyebrow"><%= eyebrow %></div>
+    <h2 class="home-nl__title"><%= title %></h2>
+    <p class="home-nl__desc"><%= desc %></p>
+  </div>
+  <form class="home-nl__form<%= formRow ? ' home-nl__form--row' : '' %>" data-newsletter-form novalidate>
     <label class="visually-hidden" for="<%= nlId %>Email" style="position:absolute;left:-9999px;">Email address</label>
     <input
       id="<%= nlId %>Email"
@@ -31,7 +55,7 @@
       autocomplete="email"
       required
     />
-    <button type="submit" class="home-nl__submit"><%= isInline ? 'Subscribe' : 'Subscribe free' %></button>
+    <button type="submit" class="home-nl__submit"><%= submitLabel %></button>
     <input
       class="home-nl__hp"
       type="text"
@@ -42,8 +66,8 @@
     />
     <p class="home-nl__status" data-newsletter-status role="status" aria-live="polite"></p>
   </form>
-  <div class="home-nl__success" data-newsletter-success role="status">✓ You're in — first briefing Thursday.</div>
-  <% if (!isInline) { %>
+  <div class="home-nl__success" data-newsletter-success role="status"><%= success %></div>
+  <% if (!isInline && !isBand) { %>
     <div class="home-nl__quote">
       “The only MCP roundup I actually finish.”<br />
       <cite>— Staff engineer, fintech</cite>

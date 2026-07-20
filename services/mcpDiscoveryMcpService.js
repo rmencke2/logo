@@ -7,8 +7,26 @@
  */
 
 const rateLimit = require('express-rate-limit');
+const fs = require('fs');
+const path = require('path');
 const { TOOL_DEFINITIONS, handleToolCall } = require('./mcpDiscoveryTools');
 const { getDiscoverySetupGuide, MCP_DISCOVERY_SETUP } = require('../data/mcp-discovery-promo');
+
+function getSetupAssetVersion() {
+  try {
+    const files = ['home.css', 'mcp-setup-page.css'];
+    let latest = 0;
+    for (const file of files) {
+      latest = Math.max(
+        latest,
+        fs.statSync(path.join(__dirname, '..', 'public', 'css', file)).mtimeMs,
+      );
+    }
+    return String(Math.floor(latest));
+  } catch {
+    return String(Date.now());
+  }
+}
 
 const PROTOCOL_VERSION = '2024-11-05';
 const SERVER_INFO = {
@@ -82,6 +100,7 @@ function registerMcpDiscoveryRoutes(app) {
     res.render('mcp-discovery-setup', {
       guide,
       canonicalUrl: MCP_DISCOVERY_SETUP,
+      assetVersion: getSetupAssetVersion(),
     });
   });
 

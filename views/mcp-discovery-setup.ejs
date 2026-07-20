@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>Connect Influzer MCP Discovery — Claude, ChatGPT, Cursor - Influzer.ai</title>
-    <meta name="description" content="Add Influzer MCP Discovery to Claude, ChatGPT, or Cursor in minutes. Search 795+ MCP servers by tool capability from inside your AI client." />
+    <meta name="description" content="Add Influzer MCP Discovery to Claude, ChatGPT, or Cursor in minutes. Search MCP servers by tool capability from inside your AI client." />
     <link rel="canonical" href="<%= canonicalUrl %>" />
     <%- include('partials/seo-social', {
       ogTitle: 'Connect Influzer MCP Discovery — Claude, ChatGPT, Cursor',
@@ -12,77 +12,105 @@
       ogUrl: canonicalUrl,
     }) %>
     <%- include('partials/favicon-links') %>
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/site-header.css" />
-    <link rel="stylesheet" href="/css/mcp-directory.css" />
-    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
   </head>
-  <body>
-    <%- include('partials/site-header', { navPath: '/mcp' }) %>
-    <script src="/js/site-header.js" defer></script>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
 
-    <main class="setup-page">
-      <a class="mcp-back" href="/mcp/influzer-mcp-discovery">← Influzer MCP Discovery</a>
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="<%= guide.pageUrl %>">← Influzer MCP Discovery</a>
 
-      <h1>Connect Influzer MCP Discovery</h1>
+      <p class="setup-eyebrow">Official · Remote · No auth</p>
+      <h1 class="setup-title">Connect Influzer MCP Discovery</h1>
       <p class="setup-lead">
-        Our official remote MCP server lets Claude, ChatGPT, and Cursor <strong>search the Influzer directory by capability</strong> —
-        tool names, categories, setup steps, and topic guides — without opening the website.
+        Our official remote MCP server lets Claude, ChatGPT, and Cursor
+        <strong>search the Influzer directory by capability</strong>
+        — tool names, categories, setup steps, and topic guides — without opening the website.
       </p>
 
       <div class="setup-endpoint">
-        <strong>MCP endpoint (copy exactly)</strong>
-        <code id="setupEndpoint"><%= guide.endpoint %></code>
-        <button type="button" class="mcp-copy" id="copyEndpoint" style="margin-top: 10px;">Copy URL</button>
+        <p class="setup-endpoint__label">MCP ENDPOINT — COPY EXACTLY</p>
+        <div class="setup-endpoint__row">
+          <code class="setup-endpoint__url" id="setupEndpoint"><%= guide.endpoint %></code>
+          <button type="button" class="setup-endpoint__copy" id="copyEndpoint">Copy URL</button>
+        </div>
       </div>
 
-      <% guide.clients.forEach(function(client) { %>
-        <section class="setup-client" id="setup-<%= client.id %>">
-          <h2><%= client.name %></h2>
-          <p><%= client.summary %></p>
-          <ol>
-            <% client.steps.forEach(function(step) { %>
-              <li><%= step %></li>
+      <div class="setup-tabs" role="tablist" aria-label="MCP client">
+        <% guide.clients.forEach(function(client, i) { %>
+          <button
+            type="button"
+            class="setup-tab<%= i === 0 ? ' is-active' : '' %>"
+            role="tab"
+            aria-selected="<%= i === 0 ? 'true' : 'false' %>"
+            aria-controls="setup-panel-<%= client.id %>"
+            id="setup-tab-<%= client.id %>"
+            data-tab="<%= client.id %>"
+          ><%= client.tab || client.name %></button>
+        <% }); %>
+      </div>
+
+      <% guide.clients.forEach(function(client, i) { %>
+        <%
+          let codeBlock = '';
+          if (client.codeKey === 'cursor') codeBlock = guide.cursorConfigJson;
+          if (client.codeKey === 'claude-code') codeBlock = guide.claudeCodeCommand;
+        %>
+        <section
+          class="setup-panel"
+          id="setup-panel-<%= client.id %>"
+          role="tabpanel"
+          aria-labelledby="setup-tab-<%= client.id %>"
+          <%= i === 0 ? '' : 'hidden' %>
+        >
+          <div class="setup-panel__head">
+            <h2 class="setup-panel__title"><%= client.name %></h2>
+            <% if (client.docsUrl) { %>
+              <a class="setup-panel__docs" href="<%= client.docsUrl %>" target="_blank" rel="noopener noreferrer">Official docs ↗</a>
+            <% } %>
+          </div>
+          <p class="setup-panel__intro"><%= client.summary %></p>
+          <ol class="setup-steps">
+            <% client.steps.forEach(function(step, si) { %>
+              <li class="setup-step">
+                <span class="setup-step__num" aria-hidden="true"><%= si + 1 %></span>
+                <span><%= step %></span>
+              </li>
             <% }); %>
           </ol>
-          <% if (client.configLabel && guide.cursorConfigJson) { %>
-            <p><strong><%= client.configLabel %></strong></p>
-            <pre><%= guide.cursorConfigJson %></pre>
+          <% if (codeBlock) { %>
+            <p class="setup-code-label"><%= client.configLabel || 'Config' %></p>
+            <pre class="setup-code"><code><%= codeBlock %></code></pre>
           <% } %>
           <% if (client.note) { %>
             <p class="setup-note"><%= client.note %></p>
           <% } %>
-          <% if (client.docsUrl) { %>
-            <p><a href="<%= client.docsUrl %>" target="_blank" rel="noopener noreferrer">Official docs →</a></p>
-          <% } %>
         </section>
       <% }); %>
 
-      <section class="setup-prompts">
-        <h2>Example prompts</h2>
-        <ul>
-          <% guide.examplePrompts.forEach(function(prompt) { %>
-            <li><em><%= prompt %></em></li>
+      <section class="setup-prompts" aria-label="Example prompts">
+        <h2 class="setup-prompts__title">Example prompts</h2>
+        <div class="setup-prompts__grid">
+          <% (guide.examplePrompts || []).forEach(function(prompt) { %>
+            <blockquote class="setup-prompt">“<%= prompt %>”</blockquote>
           <% }); %>
-        </ul>
+        </div>
       </section>
 
-      <p style="margin-top: 32px;">
-        <a href="/mcp/influzer-mcp-discovery">View directory listing</a>
+      <p class="setup-links">
+        <a href="<%= guide.pageUrl %>">View directory listing</a>
         · <a href="/mcp">Browse Top 100</a>
         · <a href="/insights/what-is-model-context-protocol">What is MCP?</a>
       </p>
     </main>
 
-    <script>
-      document.getElementById('copyEndpoint').addEventListener('click', function () {
-        const url = document.getElementById('setupEndpoint').textContent.trim();
-        navigator.clipboard.writeText(url).then(function () {
-          const btn = document.getElementById('copyEndpoint');
-          btn.textContent = 'Copied';
-          setTimeout(function () { btn.textContent = 'Copy URL'; }, 2000);
-        });
-      });
-    </script>
+    <%- include('partials/registry-footer') %>
+
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-setup-page.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>
