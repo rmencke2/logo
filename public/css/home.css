@@ -3,7 +3,8 @@
    Scoped to .home-page so other routes keep editorial theme
    ================================ */
 
-.home-page {
+.home-page,
+.registry-page {
   --hp-bg: #fafaf8;
   --hp-bg2: #f2f1ec;
   --hp-card: #fff;
@@ -39,7 +40,8 @@
 }
 
 @supports (color: oklch(0.52 0.19 264)) {
-  .home-page {
+  .home-page,
+  .registry-page {
     --hp-accent: oklch(0.52 0.19 264);
     --hp-accent-hover: oklch(0.45 0.19 264);
     --hp-accent-deep: oklch(0.35 0.1 264);
@@ -50,7 +52,8 @@
   }
 }
 
-.home-page.dark {
+.home-page.dark,
+.registry-page.dark {
   --hp-bg: #0f1115;
   --hp-bg2: #14171d;
   --hp-card: #1a1d24;
@@ -67,26 +70,32 @@
 }
 
 .home-page.theme-anim,
-.home-page.theme-anim * {
+.home-page.theme-anim *,
+.registry-page.theme-anim,
+.registry-page.theme-anim * {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.home-page ::selection {
+.home-page ::selection,
+.registry-page ::selection {
   background: #e0e7ff;
   color: #16181d;
 }
 
-.home-page a {
+.home-page a,
+.registry-page a {
   color: var(--hp-link);
   text-decoration: none;
 }
 
-.home-page a:hover {
+.home-page a:hover,
+.registry-page a:hover {
   color: var(--hp-link-hover);
 }
 
-/* Override global site-header body padding on homepage */
-body.home-page.site-header-active {
+/* Override global site-header body padding on registry pages */
+body.home-page.site-header-active,
+body.registry-page.site-header-active {
   padding-top: 0;
 }
 

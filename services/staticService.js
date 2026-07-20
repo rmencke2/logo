@@ -387,6 +387,71 @@ function getHomeAssetVersion() {
   }
 }
 
+function slugifyHeading(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, 'and')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 64);
+}
+
+/**
+ * Ensure h2 elements have ids and return TOC entries for the article aside.
+ */
+function enrichArticleContentWithToc(contentHtml) {
+  const toc = [];
+  const used = new Set();
+  const html = String(contentHtml || '').replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/gi, (match, attrs, inner) => {
+    const label = stripHtml(inner).trim();
+    if (!label) return match;
+    const existingId = attrs && attrs.match(/\bid=["']([^"']+)["']/i);
+    let id = existingId ? existingId[1] : slugifyHeading(label);
+    if (!id) id = `section-${toc.length + 1}`;
+    let unique = id;
+    let n = 2;
+    while (used.has(unique)) {
+      unique = `${id}-${n++}`;
+    }
+    used.add(unique);
+    toc.push({ label, href: `#${unique}` });
+    if (existingId) {
+      return match.replace(/\bid=["'][^"']+["']/i, `id="${unique}"`);
+    }
+    const attrStr = attrs || '';
+    return `<h2${attrStr} id="${unique}">${inner}</h2>`;
+  });
+  return { contentHtml: html, toc };
+}
+
+function getRelatedMcpServers(server, limit = 4) {
+  if (!server) return [];
+  const category = server.category;
+  const others = getAllMcpServers()
+    .filter((s) => s.slug !== server.slug && s.category === category)
+    .slice(0, limit);
+  const fallback =
+    others.length >= limit
+      ? others
+      : [
+          ...others,
+          ...getAllMcpServers()
+            .filter((s) => s.slug !== server.slug && !others.some((o) => o.slug === s.slug))
+            .slice(0, limit - others.length),
+        ];
+  return fallback.slice(0, limit).map((s) => {
+    const desc = String(s.description || '').replace(/\s+/g, ' ').trim();
+    return {
+      slug: s.slug,
+      name: s.name,
+      initial: String(s.name || '?').charAt(0).toUpperCase(),
+      desc: desc.length > 48 ? `${desc.slice(0, 45)}…` : desc,
+    };
+  });
+}
+
 function renderHomepage(req, res) {
   const topServers = getHomeTopServers(6);
   const heroStats = getMcpHeroStats();
@@ -905,11 +970,17 @@ ${itemsXml}
       return res.status(404).render('404', { title: 'Page Not Found' });
     }
     const server = findMcpServerBySlug(req.params.slug);
+    const assetVersion = getHomeAssetVersion();
     if (!server) {
       return res.status(404).render('mcp-server', {
         server: null,
         iconEmoji: '',
         transportLabel: '',
+        catalogTotals: getMcpCatalogTotals(),
+        relatedServers: [],
+        discoveryPromo: getDiscoveryPromo(),
+        assetVersion,
+        navPath: req.path,
       });
     }
     return res.render('mcp-server', {
@@ -918,7 +989,10 @@ ${itemsXml}
       transportLabel: transportLabel(server.transport),
       inTop100: isInTop100(server.slug),
       catalogTotals: getMcpCatalogTotals(),
+      relatedServers: getRelatedMcpServers(server, 4),
       discoveryPromo: getDiscoveryPromo(),
+      assetVersion,
+      navPath: req.path,
     });
   });
 
@@ -926,22 +1000,32 @@ ${itemsXml}
   app.get('/insights/:slug', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const raw = findBlogPostBySlug(req.params.slug);
+    const assetVersion = getHomeAssetVersion();
 
     if (!raw) {
       return res.status(404).render('blog-post', {
         title: 'Post Not Found',
         post: null,
+        relatedPosts: [],
+        toc: [],
         turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
+        assetVersion,
+        navPath: req.path,
       });
     }
 
     const post = mapPostForDisplay(raw);
+    const enriched = enrichArticleContentWithToc(post.contentHtml);
+    post.contentHtml = enriched.contentHtml;
 
     return res.render('blog-post', {
       title: post.title,
       post,
       relatedPosts: getRelatedBlogPosts(raw, 3),
+      toc: enriched.toc,
       turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
+      assetVersion,
+      navPath: req.path,
     });
   });
 

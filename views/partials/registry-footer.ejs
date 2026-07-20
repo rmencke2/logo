@@ -1,0 +1,28 @@
+<footer class="home-footer">
+  <div class="home-footer__inner">
+    <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a> · <a href="/insights/rss.xml">RSS</a></span>
+    <span class="home-footer__tools">
+      Free tools:
+      <a href="/favicon-generator">Favicon</a>
+      <a href="/video-to-gif">Video to GIF</a>
+      <a href="/video-converter">AVI to MP4</a>
+      <a href="/meme-generator">Meme generator</a>
+      <a href="/logo-generator">Logo</a>
+    </span>
+    <% if (typeof showFooterLang !== 'undefined' && showFooterLang) { %>
+      <label class="home-footer__lang">
+        <span class="visually-hidden" style="position:absolute;left:-9999px;">Language</span>
+        <select id="homeLanguageSelector" aria-label="Language">
+          <option value="en">English</option>
+          <option value="da">Dansk</option>
+          <option value="sv">Svenska</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    <% } %>
+  </div>
+</footer>

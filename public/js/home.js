@@ -2,9 +2,8 @@
  * Homepage registry interactions:
  * - live filter of top-server rows
  * - category chips
- * - server count-up (DOM-only, no React-style re-renders)
- * - light/dark theme toggle
- * - mobile nav
+ * - server count-up (DOM-only)
+ * Theme/nav live in registry.js
  */
 (function () {
   const body = document.body;
@@ -16,9 +15,6 @@
   const emptyEl = document.getElementById('homeServerEmpty');
   const emptyQuery = document.getElementById('homeEmptyQuery');
   const countEl = document.getElementById('homeServerCount');
-  const themeBtn = document.getElementById('homeThemeToggle');
-  const nav = document.getElementById('siteHeader');
-  const navToggle = document.getElementById('navMenuToggle');
   const defaultHeading = heading ? heading.textContent : 'Top servers this week';
 
   function filterServers(query) {
@@ -70,49 +66,6 @@
       if (t < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
-  }
-
-  // Theme toggle with short-lived transition class
-  let themeAnimTimer = null;
-  const THEME_KEY = 'influzer-home-theme';
-  try {
-    if (localStorage.getItem(THEME_KEY) === 'dark') {
-      body.classList.add('dark');
-      if (themeBtn) themeBtn.textContent = '☀';
-    }
-  } catch (_) {
-    /* ignore */
-  }
-
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      body.classList.add('theme-anim');
-      const dark = body.classList.toggle('dark');
-      themeBtn.textContent = dark ? '☀' : '☾';
-      try {
-        localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
-      } catch (_) {
-        /* ignore */
-      }
-      clearTimeout(themeAnimTimer);
-      themeAnimTimer = setTimeout(() => body.classList.remove('theme-anim'), 350);
-    });
-  }
-
-  // Mobile nav
-  if (nav && navToggle) {
-    navToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const open = !nav.classList.contains('is-open');
-      nav.classList.toggle('is-open', open);
-      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    document.addEventListener('click', (e) => {
-      if (nav.classList.contains('is-open') && !nav.contains(e.target)) {
-        nav.classList.remove('is-open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
   }
 
   // Sync footer language selector with hidden i18n select if present

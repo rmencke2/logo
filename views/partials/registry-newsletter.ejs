@@ -1,0 +1,52 @@
+<%#
+  Shared registry newsletter card (dark ink — same in both themes).
+  Optional: newsletterVariant = 'aside' | 'inline' (default aside)
+  Optional: newsletterSource for analytics
+%>
+<%
+  const nlVariant = typeof newsletterVariant !== 'undefined' ? newsletterVariant : 'aside';
+  const nlSource = typeof newsletterSource !== 'undefined' ? newsletterSource : 'registry-newsletter';
+  const nlId = typeof newsletterId !== 'undefined' ? newsletterId : 'newsletter';
+  const isInline = nlVariant === 'inline';
+%>
+<div class="home-nl<%= isInline ? ' home-nl--inline' : '' %>" id="<%= nlId %>" data-newsletter-source="<%= nlSource %>">
+  <% if (isInline) { %>
+    <div class="home-nl__eyebrow">GET PRACTICAL AI PLAYBOOKS WEEKLY</div>
+    <h2 class="home-nl__title">One clear email each Thursday</h2>
+    <p class="home-nl__desc">Actionable frameworks on AI execution, agents, and MCP. Join 4,200+ builders.</p>
+  <% } else { %>
+    <div class="home-nl__eyebrow">EVERY THURSDAY</div>
+    <h2 class="home-nl__title">The MCP briefing 4,200+ builders read</h2>
+    <p class="home-nl__desc">Original analysis on MCP, agents, and what to connect next. No aggregated links.</p>
+  <% } %>
+  <form class="home-nl__form<%= isInline ? ' home-nl__form--row' : '' %>" data-newsletter-form novalidate>
+    <label class="visually-hidden" for="<%= nlId %>Email" style="position:absolute;left:-9999px;">Email address</label>
+    <input
+      id="<%= nlId %>Email"
+      class="home-nl__input"
+      type="email"
+      name="email"
+      placeholder="you@company.com"
+      maxlength="254"
+      autocomplete="email"
+      required
+    />
+    <button type="submit" class="home-nl__submit"><%= isInline ? 'Subscribe' : 'Subscribe free' %></button>
+    <input
+      class="home-nl__hp"
+      type="text"
+      name="website"
+      autocomplete="off"
+      tabindex="-1"
+      aria-hidden="true"
+    />
+    <p class="home-nl__status" data-newsletter-status role="status" aria-live="polite"></p>
+  </form>
+  <div class="home-nl__success" data-newsletter-success role="status">✓ You're in — first briefing Thursday.</div>
+  <% if (!isInline) { %>
+    <div class="home-nl__quote">
+      “The only MCP roundup I actually finish.”<br />
+      <cite>— Staff engineer, fintech</cite>
+    </div>
+  <% } %>
+</div>

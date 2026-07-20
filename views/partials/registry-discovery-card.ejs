@@ -1,0 +1,16 @@
+<%
+  const discoveryHref =
+    typeof discoveryPromo !== 'undefined' && discoveryPromo && discoveryPromo.setupUrl
+      ? discoveryPromo.setupUrl
+      : '/mcp/discovery/setup';
+  const discoveryBlurb =
+    typeof discoveryCardBlurb !== 'undefined' && discoveryCardBlurb
+      ? discoveryCardBlurb
+      : 'Our official MCP server works in Claude, Cursor & ChatGPT. No auth required.';
+%>
+<div class="home-aside-card">
+  <h3 class="home-aside-card__title">Search from inside your agent</h3>
+  <p class="home-aside-card__desc"><%= discoveryBlurb %></p>
+  <div class="home-aside-card__code">influzer.ai/mcp/discovery</div>
+  <a class="home-aside-card__btn" href="<%= discoveryHref %>">Connect in 2 minutes</a>
+</div>

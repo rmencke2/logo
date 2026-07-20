@@ -158,40 +158,7 @@
       </div>
 
       <aside class="home-aside">
-        <div class="home-nl" id="newsletter">
-          <div class="home-nl__eyebrow">EVERY THURSDAY</div>
-          <h2 class="home-nl__title">The MCP briefing 4,200+ builders read</h2>
-          <p class="home-nl__desc">Original analysis on MCP, agents, and what to connect next. No aggregated links.</p>
-          <form class="home-nl__form" id="homeNewsletterForm" novalidate>
-            <label class="visually-hidden" for="homeNewsletterEmail" style="position:absolute;left:-9999px;">Email address</label>
-            <input
-              id="homeNewsletterEmail"
-              class="home-nl__input"
-              type="email"
-              name="email"
-              placeholder="you@company.com"
-              maxlength="254"
-              autocomplete="email"
-              required
-            />
-            <button type="submit" class="home-nl__submit" id="homeNewsletterSubmit">Subscribe free</button>
-            <input
-              id="homeNewsletterWebsite"
-              class="home-nl__hp"
-              type="text"
-              name="website"
-              autocomplete="off"
-              tabindex="-1"
-              aria-hidden="true"
-            />
-            <p class="home-nl__status" id="homeNewsletterStatus" role="status" aria-live="polite"></p>
-          </form>
-          <div class="home-nl__success" id="homeNewsletterSuccess" role="status">✓ You're in — first briefing Thursday.</div>
-          <div class="home-nl__quote">
-            “The only MCP roundup I actually finish.”<br />
-            <cite>— Staff engineer, fintech</cite>
-          </div>
-        </div>
+        <%- include('partials/registry-newsletter', { newsletterSource: 'home-newsletter-card', newsletterId: 'newsletter' }) %>
 
         <div class="home-aside-card">
           <h3 class="home-aside-card__title">Search from inside your agent</h3>
@@ -208,32 +175,7 @@
       </aside>
     </main>
 
-    <footer class="home-footer">
-      <div class="home-footer__inner">
-        <span>© 2026 Influzer.ai · <a href="/privacy">Privacy</a> · <a href="/insights/rss.xml">RSS</a></span>
-        <span class="home-footer__tools">
-          Free tools:
-          <a href="/favicon-generator">Favicon</a>
-          <a href="/video-to-gif">Video to GIF</a>
-          <a href="/video-converter">AVI to MP4</a>
-          <a href="/meme-generator">Meme generator</a>
-          <a href="/logo-generator">Logo</a>
-        </span>
-        <label class="home-footer__lang">
-          <span class="visually-hidden" style="position:absolute;left:-9999px;">Language</span>
-          <select id="homeLanguageSelector" aria-label="Language">
-            <option value="en">English</option>
-            <option value="da">Dansk</option>
-            <option value="sv">Svenska</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="nl">Nederlands</option>
-          </select>
-        </label>
-      </div>
-    </footer>
+    <%- include('partials/registry-footer', { showFooterLang: true }) %>
 
     <script>
       window.__HOME_HERO__ = {
@@ -241,6 +183,7 @@
         totalServers: <%= heroStats.totalServers %>
       };
     </script>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
     <script src="/js/home.js?v=<%= assetVersion %>" defer></script>
     <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
   </body>

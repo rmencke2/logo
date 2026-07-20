@@ -1,9 +1,13 @@
 <%#
-  Homepage registry nav — Space Grotesk / indigo accent.
+  Shared registry nav — Space Grotesk / indigo accent.
   Reuses site-auth element IDs so /js/site-auth.js still works.
 %>
 <%
   const path = typeof navPath !== 'undefined' ? navPath : '';
+  const activeDirectory = path === '/mcp' || (path.startsWith('/mcp/') && !path.startsWith('/mcp/discovery') && !path.startsWith('/mcp/submit') && !path.startsWith('/mcp/topics') && !path.startsWith('/mcp/my-listings'));
+  const activeOurMcp = path.startsWith('/mcp/discovery');
+  const activeInsights = path.startsWith('/insights') || path.startsWith('/blog');
+  const activeBriefs = path.startsWith('/news');
 %>
 <header class="home-nav" id="siteHeader">
   <div class="home-nav__inner">
@@ -22,10 +26,10 @@
       </button>
       <a href="/" class="home-nav__brand">influzer<span class="home-nav__brand-dot">.ai</span></a>
       <nav class="home-nav__links" id="mainSiteNav" aria-label="Main">
-        <a href="/mcp" class="home-nav__link">Directory</a>
-        <a href="/mcp/discovery/setup" class="home-nav__link<%= path.startsWith('/mcp/discovery') ? ' is-active' : '' %>">Our MCP</a>
-        <a href="/insights" class="home-nav__link">Insights</a>
-        <a href="/news" class="home-nav__link">Briefs</a>
+        <a href="/mcp" class="home-nav__link<%= activeDirectory ? ' is-active' : '' %>">Directory</a>
+        <a href="/mcp/discovery/setup" class="home-nav__link<%= activeOurMcp ? ' is-active' : '' %>">Our MCP</a>
+        <a href="/insights" class="home-nav__link<%= activeInsights ? ' is-active' : '' %>">Insights</a>
+        <a href="/news" class="home-nav__link<%= activeBriefs ? ' is-active' : '' %>">Briefs</a>
       </nav>
     </div>
     <div class="home-nav__right">
