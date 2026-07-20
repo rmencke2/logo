@@ -381,7 +381,7 @@ function getHomeAroundWeb(limit = 4) {
 function getHomeAssetVersion() {
   try {
     const cssPath = path.join(__dirname, '..', 'public', 'css', 'home.css');
-    return String(fs.statSync(cssPath).mtimeMs | 0);
+    return String(Math.floor(fs.statSync(cssPath).mtimeMs));
   } catch {
     return String(Date.now());
   }
