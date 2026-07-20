@@ -380,8 +380,18 @@ function getHomeAroundWeb(limit = 4) {
 
 function getHomeAssetVersion() {
   try {
-    const cssPath = path.join(__dirname, '..', 'public', 'css', 'home.css');
-    return String(Math.floor(fs.statSync(cssPath).mtimeMs));
+    const cssFiles = [
+      'home.css',
+      'mcp-server-page.css',
+      'article-page.css',
+      'site-header.css',
+    ];
+    let latest = 0;
+    for (const file of cssFiles) {
+      const cssPath = path.join(__dirname, '..', 'public', 'css', file);
+      latest = Math.max(latest, fs.statSync(cssPath).mtimeMs);
+    }
+    return String(Math.floor(latest));
   } catch {
     return String(Date.now());
   }
