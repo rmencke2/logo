@@ -10,8 +10,10 @@
     <link rel="canonical" href="https://www.influzer.ai/" />
     <link rel="alternate" type="application/rss+xml" title="Influzer.ai Insights" href="https://www.influzer.ai/insights/rss.xml" />
     <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="/css/home.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
       ogDescription: seo.metaDescription,
@@ -239,7 +241,7 @@
         totalServers: <%= heroStats.totalServers %>
       };
     </script>
-    <script src="/js/home.js" defer></script>
-    <script src="/js/home-newsletter.js" defer></script>
+    <script src="/js/home.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

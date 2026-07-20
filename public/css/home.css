@@ -3,8 +3,6 @@
    Scoped to .home-page so other routes keep editorial theme
    ================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
 .home-page {
   --hp-bg: #fafaf8;
   --hp-bg2: #f2f1ec;
@@ -19,15 +17,16 @@
   --hp-faint: #9a9ca3;
   --hp-near: #33363e;
   --hp-navbg: rgba(250, 250, 248, 0.92);
-  --hp-accent: oklch(0.52 0.19 264);
-  --hp-accent-hover: oklch(0.45 0.19 264);
-  --hp-accent-deep: oklch(0.35 0.1 264);
-  --hp-accent-tint: oklch(0.93 0.03 264);
-  --hp-accent-fg: oklch(0.45 0.19 264);
-  --hp-link: oklch(0.62 0.17 264);
-  --hp-link-hover: oklch(0.72 0.15 264);
-  --hp-font: 'Space Grotesk', sans-serif;
-  --hp-mono: 'IBM Plex Mono', monospace;
+  /* Hex first for broad support; oklch where available */
+  --hp-accent: #4f46e5;
+  --hp-accent-hover: #4338ca;
+  --hp-accent-deep: #312e81;
+  --hp-accent-tint: #eef2ff;
+  --hp-accent-fg: #4338ca;
+  --hp-link: #4f46e5;
+  --hp-link-hover: #6366f1;
+  --hp-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --hp-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   margin: 0;
   min-height: 100vh;
@@ -36,6 +35,19 @@
   background: var(--hp-bg);
   font-family: var(--hp-font);
   color: var(--hp-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+@supports (color: oklch(0.52 0.19 264)) {
+  .home-page {
+    --hp-accent: oklch(0.52 0.19 264);
+    --hp-accent-hover: oklch(0.45 0.19 264);
+    --hp-accent-deep: oklch(0.35 0.1 264);
+    --hp-accent-tint: oklch(0.93 0.03 264);
+    --hp-accent-fg: oklch(0.45 0.19 264);
+    --hp-link: oklch(0.62 0.17 264);
+    --hp-link-hover: oklch(0.72 0.15 264);
+  }
 }
 
 .home-page.dark {
@@ -60,7 +72,7 @@
 }
 
 .home-page ::selection {
-  background: oklch(0.9 0.05 264);
+  background: #e0e7ff;
   color: #16181d;
 }
 
@@ -727,7 +739,7 @@ body.home-page.site-header-active {
 }
 
 .home-around__row:hover {
-  color: oklch(0.42 0.19 264);
+  color: #4338ca;
 }
 
 .home-around__source {
@@ -768,7 +780,7 @@ body.home-page.site-header-active {
   font-family: var(--hp-mono);
   font-size: 11px;
   letter-spacing: 0.12em;
-  color: oklch(0.75 0.12 264);
+  color: #a5b4fc;
   margin-bottom: 10px;
 }
 
@@ -851,8 +863,8 @@ body.home-page.site-header-active {
 
 .home-nl__success {
   display: none;
-  background: oklch(0.3 0.08 264);
-  border: 1px solid oklch(0.45 0.12 264);
+  background: #312e81;
+  border: 1px solid #6366f1;
   border-radius: 8px;
   padding: 14px;
   font-size: 13.5px;

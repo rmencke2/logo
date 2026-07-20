@@ -378,6 +378,15 @@ function getHomeAroundWeb(limit = 4) {
   };
 }
 
+function getHomeAssetVersion() {
+  try {
+    const cssPath = path.join(__dirname, '..', 'public', 'css', 'home.css');
+    return String(fs.statSync(cssPath).mtimeMs | 0);
+  } catch {
+    return String(Date.now());
+  }
+}
+
 function renderHomepage(req, res) {
   const topServers = getHomeTopServers(6);
   const heroStats = getMcpHeroStats();
@@ -424,6 +433,7 @@ function renderHomepage(req, res) {
     jsonLd,
     promo: getSitePromo(),
     discoveryPromo: getDiscoveryPromo(),
+    assetVersion: getHomeAssetVersion(),
   });
 }
 
