@@ -774,6 +774,13 @@ body.registry-page.site-header-active {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-self: start;
+  position: sticky;
+  top: 76px;
+  width: 100%;
+  max-width: 348px;
+  min-width: 0;
+  z-index: 0;
 }
 
 .home-nl {
@@ -781,8 +788,10 @@ body.registry-page.site-header-active {
   color: #fff;
   border-radius: 12px;
   padding: 26px 24px;
-  position: sticky;
-  top: 76px;
+  /* Sticky is on the aside column — not the card — so it can't paint over the main column */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .home-nl__eyebrow {
@@ -1011,6 +1020,11 @@ body.registry-page.site-header-active {
 
   .home-nl {
     position: static;
+  }
+
+  .home-aside {
+    position: static;
+    max-width: none;
   }
 
   .home-nav__links {

@@ -40,6 +40,8 @@
 
 .mcp-detail-col {
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .mcp-detail-header {
@@ -373,6 +375,13 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-self: start;
+  position: sticky;
+  top: 76px;
+  width: 100%;
+  max-width: 348px;
+  min-width: 0;
+  z-index: 0;
 }
 
 .mcp-glance {
@@ -424,8 +433,9 @@
 }
 
 .mcp-aside .home-nl {
-  position: sticky;
-  top: 76px;
+  position: static;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .home-nl--inline {
@@ -459,6 +469,11 @@
 
   .mcp-crumb {
     padding: 16px 20px 0;
+  }
+
+  .mcp-aside {
+    position: static;
+    max-width: none;
   }
 
   .mcp-aside .home-nl {
