@@ -1,0 +1,12 @@
+{
+  "slug": "tools-indexed-beats-star-count-mcp",
+  "title": "“Tools indexed” beats star count for MCP servers",
+  "date": "2026-07-18",
+  "excerpt": "A quiet 200-star server with a clean tools/list often beats a famous repo with zero indexed tools — agents call capabilities, not GitHub popularity.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Tools", "Directory", "Agents", "Developers"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/mcp",
+  "relatedInsightSlug": "mcp-server-audit-seven-questions-before-you-connect-another-tool",
+  "contentHtml": "<p>GitHub stars still dominate how people browse MCP lists. Agents do not care. They call <strong>tool names</strong> — <code>scrape_url</code>, <code>run_query</code>, <code>create_issue</code> — and fail loudly when the server exposes nothing useful via <code>tools/list</code>.</p><p>In Influzer’s registry, the useful signal is whether tools are <strong>indexed and re-validated</strong>, not whether the repo is famous:</p><ul><li>Star count → social proof for humans</li><li>Tool index → runtime proof for agents</li><li>Transport + auth notes → whether you can actually connect from Claude, ChatGPT, or Cursor</li></ul><p>A smaller server with three crisp tools and a remote URL often wins a coding-agent stack over a viral local demo with an empty or undocumented tool surface.</p><p><strong>Why it matters:</strong> search and recommend flows (including <a href=\"/mcp/discovery/setup\">Influzer MCP Discovery</a>) rank by capability. Authors who ship discoverable tools get found; authors who only ship a README get starred and skipped.</p><p>Start with the <a href=\"/mcp\">Top 100</a> (curated, tools-first) or search the <a href=\"/mcp/all\">full directory</a> by tool name. Audit any server before production with the questions in our deeper guide: <a href=\"/insights/mcp-server-audit-seven-questions-before-you-connect-another-tool\">seven questions before you connect another tool</a>.</p>"
+}

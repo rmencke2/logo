@@ -1,0 +1,12 @@
+{
+  "slug": "remote-vs-local-mcp-is-the-real-split",
+  "title": "Remote vs local is the real MCP split now",
+  "date": "2026-07-19",
+  "excerpt": "ChatGPT and Claude connectors cannot hit localhost. The market split is no longer “MCP vs REST” — it is public HTTPS servers versus local stdio for secrets and air-gapped work.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Remote", "Local", "stdio", "ChatGPT", "Claude"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/mcp",
+  "relatedInsightSlug": "mcp-builders-stdio-http-hosting-and-secrets",
+  "contentHtml": "<p>For a year, MCP demos lived on <strong>stdio</strong> — spin up a process next to the IDE, paste env vars, ship. That still works. It is no longer the whole market.</p><p>Claude custom connectors and ChatGPT Developer Mode connectors reach your server from <strong>their cloud</strong>. Localhost will not work. If the product surface is chat, the MCP must be public HTTPS.</p><p>Two lanes, not one:</p><ul><li><strong>Local / stdio</strong> — secrets stay on the machine, air-gapped repos, Cursor project configs, developer velocity</li><li><strong>Remote / HTTP</strong> — team chat, org connectors, managed auth, anything an end user enables without installing Node</li></ul><p><strong>Why it matters:</strong> “Works in Cursor” is no longer proof it works for the company. Server authors need a remote story (or a clear “desktop-only” label). Buyers need to ask which lane a listing actually supports.</p><p>Filter by transport in the <a href=\"/mcp\">Top 100</a> and <a href=\"/mcp/all\">full directory</a>. For a remote example you can attach today, use <a href=\"/mcp/discovery/setup\">Influzer MCP Discovery</a>.</p>"
+}

@@ -1,0 +1,12 @@
+{
+  "slug": "mcp-2026-07-28-stateless-spec-what-breaks",
+  "title": "MCP 2026-07-28 goes final: sessions die, HTTP wins",
+  "date": "2026-07-20",
+  "excerpt": "The largest MCP revision since launch ships a stateless core — no session handshake, ordinary HTTP scaling, and a deprecation clock for anything still assuming sticky sessions.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Spec", "HTTP", "Remote", "Developers"],
+  "sourceName": "Model Context Protocol",
+  "sourceUrl": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/",
+  "relatedInsightSlug": "mcp-builders-stdio-http-hosting-and-secrets",
+  "contentHtml": "<p>July 28, 2026 is the date that matters for anyone hosting a remote MCP server. Spec revision <strong>2026-07-28</strong> — the biggest change since launch — makes the protocol <strong>stateless at the core</strong>: self-contained requests, no initialize handshake as the default path, and no reliance on session affinity to keep agents talking.</p><p>What that unlocks:</p><ul><li>Load-balance MCP like any other HTTPS API</li><li>Run discovery and tool calls on commodity HTTP infra</li><li>Align auth more closely with OAuth / OIDC deployments</li></ul><p><strong>What might break:</strong> sticky-session setups, clients that still assume a long-lived <code>Mcp-Session-Id</code>, and experimental patterns that lived outside the new extensions model. Deprecated pieces keep working for a while — but “a while” is not a migration plan.</p><p><strong>Why it matters:</strong> ChatGPT, Claude connectors, and hosted agents already prefer public HTTPS. A stateless spec is how MCP stops feeling like a desktop plugin protocol and starts feeling like platform plumbing.</p><p>If you ship a remote server, validate against the new SDKs before your next release train. Browse production-ready remotes in the <a href=\"/mcp\">directory</a>, or connect Influzer’s own discovery endpoint via the <a href=\"/mcp/discovery/setup\">setup guide</a>.</p>"
+}
