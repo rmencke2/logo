@@ -33,15 +33,36 @@ async function initializeCore(app) {
     })
   );
 
-  // Global rate limiter with bypass for specific users
+  // Global rate limiter — protects APIs/auth; skip static assets and light page browsing.
+  // Previously max:100 counted every CSS/JS request and blocked the whole site after ~1–2 pages.
   const globalRateLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 800,
     standardHeaders: true,
     legacyHeaders: false,
+    message: 'Too many requests, please try again later.',
     skip: async (req) => {
+      // Never rate-limit static assets or health checks
+      const p = req.path || '';
+      if (
+        p.startsWith('/css/') ||
+        p.startsWith('/js/') ||
+        p.startsWith('/images/') ||
+        p.startsWith('/fonts/') ||
+        p.startsWith('/generated_img/') ||
+        p === '/favicon.svg' ||
+        p === '/favicon.ico' ||
+        p === '/favicon-32x32.png' ||
+        p === '/apple-touch-icon.png' ||
+        p === '/health' ||
+        p === '/robots.txt' ||
+        p === '/sitemap.xml'
+      ) {
+        return true;
+      }
+
       const bypassEmails = ['rasmusmencke', 'mencke'];
-      
+
       try {
         // Check Passport authenticated user
         if (req.isAuthenticated && req.isAuthenticated() && req.user) {
@@ -53,7 +74,7 @@ async function initializeCore(app) {
             }
           }
         }
-        
+
         // Check session-based auth (for local auth)
         if (req.session && req.session.userId) {
           const db = await getDatabase();
@@ -71,7 +92,7 @@ async function initializeCore(app) {
       } catch (err) {
         console.error('Error checking rate limit bypass:', err);
       }
-      
+
       return false;
     },
   });
