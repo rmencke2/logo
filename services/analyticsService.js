@@ -85,6 +85,101 @@ function createTransporter() {
 }
 
 /**
+ * Format a Date as YYYY-MM-DD in local time (server TZ).
+ */
+function formatGaDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/**
+ * Fetch human traffic from GA4 Data API (service account).
+ * Requires GA4_PROPERTY_ID + GOOGLE_APPLICATION_CREDENTIALS.
+ * Soft-fails so the daily email still sends if GA is misconfigured.
+ */
+async function fetchGaReport(days = 1) {
+  const propertyId = String(process.env.GA4_PROPERTY_ID || '').trim();
+  const credsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+  if (!propertyId || !credsPath) {
+    return {
+      configured: false,
+      error: 'Set GA4_PROPERTY_ID and GOOGLE_APPLICATION_CREDENTIALS to enable GA metrics.',
+    };
+  }
+
+  try {
+    const fs = require('fs');
+    if (!fs.existsSync(credsPath)) {
+      return { configured: false, error: `Credentials file not found: ${credsPath}` };
+    }
+
+    const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+    const client = new BetaAnalyticsDataClient();
+
+    const end = new Date();
+    end.setHours(0, 0, 0, 0);
+    end.setDate(end.getDate() - 1); // yesterday
+    const start = new Date(end);
+    start.setDate(start.getDate() - (Math.max(1, days) - 1));
+    const startDate = formatGaDate(start);
+    const endDate = formatGaDate(end);
+
+    const property = `properties/${propertyId}`;
+
+    const [summary] = await client.runReport({
+      property,
+      dateRanges: [{ startDate, endDate }],
+      metrics: [
+        { name: 'activeUsers' },
+        { name: 'newUsers' },
+        { name: 'sessions' },
+        { name: 'screenPageViews' },
+      ],
+    });
+
+    const metricValues = summary.rows?.[0]?.metricValues || [];
+    const activeUsers = Number(metricValues[0]?.value || 0);
+    const newUsers = Number(metricValues[1]?.value || 0);
+    const sessions = Number(metricValues[2]?.value || 0);
+    const pageViews = Number(metricValues[3]?.value || 0);
+
+    const [pages] = await client.runReport({
+      property,
+      dateRanges: [{ startDate, endDate }],
+      dimensions: [{ name: 'pagePath' }],
+      metrics: [{ name: 'screenPageViews' }],
+      orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+      limit: 10,
+    });
+
+    const topPages = (pages.rows || []).map((row) => ({
+      path: row.dimensionValues?.[0]?.value || '/',
+      views: Number(row.metricValues?.[0]?.value || 0),
+    }));
+
+    return {
+      configured: true,
+      startDate,
+      endDate,
+      activeUsers,
+      newUsers,
+      sessions,
+      pageViews,
+      topPages,
+    };
+  } catch (error) {
+    console.error('GA4 report failed:', error.message);
+    return {
+      configured: true,
+      error: error.message,
+    };
+  }
+}
+
+/**
  * Initialize analytics tables in database
  */
 async function initializeAnalyticsTables(db) {
@@ -479,6 +574,8 @@ async function getAnalytics(days = 1) {
     analytics.newsletter.sources = [];
   }
 
+  analytics.ga = await fetchGaReport(days);
+
   return analytics;
 }
 
@@ -661,7 +758,60 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
                   <div class="stat-label">Failed Services</div>
                 </div>
               </div>
-              <p style="text-align: center; color: #666;">Total Users: ${analytics.totalUsers} | Total Page Views: ${analytics.totalPageViews}</p>
+              <p style="text-align: center; color: #666;">Total Users: ${analytics.totalUsers} | Total Page Views: ${analytics.totalPageViews} <span style="opacity:.7">(server IPs — includes bots)</span></p>
+            </div>
+
+            <div class="section">
+              <div class="section-title">Google Analytics (humans)</div>
+              ${analytics.ga && analytics.ga.configured && !analytics.ga.error ? `
+              <p style="color:#666;font-size:13px;margin:0 0 12px;">
+                ${analytics.ga.startDate === analytics.ga.endDate
+                  ? `Calendar day ${analytics.ga.endDate}`
+                  : `${analytics.ga.startDate} → ${analytics.ga.endDate}`}
+                · Measurement via GA4 property ${process.env.GA4_PROPERTY_ID || ''}
+              </p>
+              <div class="stat-grid">
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.ga.activeUsers}</div>
+                  <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.ga.newUsers}</div>
+                  <div class="stat-label">New Users</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.ga.sessions}</div>
+                  <div class="stat-label">Sessions</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.ga.pageViews}</div>
+                  <div class="stat-label">Page Views</div>
+                </div>
+              </div>
+              ${(analytics.ga.topPages || []).length ? `
+              <table style="margin-top:12px;">
+                <thead>
+                  <tr>
+                    <th>Top pages (GA)</th>
+                    <th style="text-align:center;">Views</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${analytics.ga.topPages.map((p) => `
+                    <tr>
+                      <td style="padding:6px 8px;border-bottom:1px solid #eee;">${p.path}</td>
+                      <td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center;">${p.views}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>` : ''}
+              ` : `
+              <p style="color:#666;">
+                ${analytics.ga?.error
+                  ? `GA not available: ${analytics.ga.error}`
+                  : 'GA not configured. Set GA4_PROPERTY_ID and GOOGLE_APPLICATION_CREDENTIALS on the server.'}
+              </p>
+              `}
             </div>
 
             <div class="section">
@@ -789,9 +939,21 @@ OVERVIEW
 Unique Visitors: ${analytics.uniqueVisitors}
 New Sign-ups: ${analytics.newSignups}
 Total Users: ${analytics.totalUsers}
-Total Page Views: ${analytics.totalPageViews}
+Total Page Views: ${analytics.totalPageViews} (server IPs — includes bots)
 Successful Services: ${analytics.totalSuccessful}
 Failed Services: ${analytics.totalFailed}
+
+GOOGLE ANALYTICS (HUMANS)
+=========================
+${analytics.ga && analytics.ga.configured && !analytics.ga.error
+  ? `Period: ${analytics.ga.startDate} → ${analytics.ga.endDate}
+Active Users: ${analytics.ga.activeUsers}
+New Users: ${analytics.ga.newUsers}
+Sessions: ${analytics.ga.sessions}
+Page Views: ${analytics.ga.pageViews}
+Top pages:
+${(analytics.ga.topPages || []).map((p) => `${p.path}: ${p.views}`).join('\n') || '(none)'}`
+  : (analytics.ga?.error || 'Not configured')}
 
 SERVICE USAGE
 =============
