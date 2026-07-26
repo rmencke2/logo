@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-07-25T20:40:07.000Z",
+  "lastRunAt": "2026-07-26T09:50:17.859Z",
   "configVersion": {
     "recencyDays": 14,
     "maxDisplay": 12,
@@ -135,9 +135,9 @@
   },
   "sourceErrors": [],
   "stats": {
-    "fetched": 198,
+    "fetched": 200,
     "deduped": 171,
-    "published": 27
+    "published": 29
   },
   "articles": [
     {
@@ -155,7 +155,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "model context protocol pii redaction local data sanitization for cursor and claude desktop",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -165,15 +165,15 @@
       "source": "GitHub",
       "author": "livetennisapi",
       "published_at": "2026-07-18T23:17:55Z",
-      "score_signal": 210,
+      "score_signal": 213,
       "raw_summary": "MCP server for the Live Tennis API — give Claude, Cursor and other LLM agents real-time tennis scores, odds and model win-probability",
-      "relevance_score": 0.8262141227648847,
+      "relevance_score": 0.8265206886674596,
       "editorial_blurb": "MCP server for the Live Tennis API — give Claude, Cursor and other LLM agents real-time tennis scores, odds and model win-probability",
       "status": "published",
       "matched_server_slug": "livetennisapi-mcp",
       "matched_server_name": "livetennisapi-mcp",
       "title_normalized": "github livetennisapi livetennisapi mcp mcp server for the live tennis api give claude cursor and other llm agents real time tennis scores odds and model win probability",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
     },
     {
@@ -191,26 +191,26 @@
       "matched_server_slug": "atilaahmettaner-tradingview-mcp",
       "matched_server_name": "Tradingview MCP Server",
       "title_normalized": "github pueschel88 tradingview mcp tradingview mcp server for controlling tradingview desktop from claude code via chrome devtools protocol",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T09:46:16.694Z"
     },
     {
-      "title": "Building an MCP server in Python (and connecting it to Claude Code)",
-      "url": "https://dev.to/dsplce-co/building-an-mcp-server-in-python-and-connecting-it-to-claude-code-4ibk",
-      "canonical_url": "https://dev.to/dsplce-co/building-an-mcp-server-in-python-and-connecting-it-to-claude-code-4ibk",
+      "title": "Building MCP servers for Claude & Cursor? Here's a starting point.",
+      "url": "https://dev.to/qmmughal/building-mcp-servers-for-claude-cursor-heres-a-starting-point-2flm",
+      "canonical_url": "https://dev.to/qmmughal/building-mcp-servers-for-claude-cursor-heres-a-starting-point-2flm",
       "source": "Dev.to",
-      "author": "@dsplce.co",
-      "published_at": "2026-07-25T15:46:57Z",
+      "author": "@Qaiser Mehmood",
+      "published_at": "2026-07-26T06:21:09Z",
       "score_signal": 0,
-      "raw_summary": "An MCP server is a small app that extends an AI model's capabilities by giving it access to custom...",
+      "raw_summary": "Most MCP servers I see in the wild start as a quick script and stay that way — no validation, no...",
       "relevance_score": 0.7100000000000001,
-      "editorial_blurb": "An MCP server is a small app that extends an AI model's capabilities by giving it access to custom...",
+      "editorial_blurb": "Most MCP servers I see in the wild start as a quick script and stay that way — no validation, no...",
       "status": "published",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "building an mcp server in python and connecting it to claude code",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
+      "matched_server_slug": "mcp-servers",
+      "matched_server_name": "mcp-servers",
+      "title_normalized": "building mcp servers for claude cursor here s a starting point",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "MCP Server Setup: Connect Claude Code in 13 Steps [2026] - tech-insider.org",
@@ -227,7 +227,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mcp server setup connect claude code in 13 steps 2026 tech insider org",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -237,15 +237,15 @@
       "source": "GitHub",
       "author": "illiahaidar",
       "published_at": "2026-07-13T16:18:48Z",
-      "score_signal": 134,
+      "score_signal": 157,
       "raw_summary": "Security scanner for MCP (Model Context Protocol) servers — reads the real published npm/PyPI source, not just metadata, to catch tool poisoning, prompt injection, toxic flows & supply-chain risk. Offline, deterministic A–F Trust Score, SARIF + CI gates.",
-      "relevance_score": 0.6665166884247504,
+      "relevance_score": 0.6699328543477212,
       "editorial_blurb": "Security scanner for MCP (Model Context Protocol) servers — reads the real published npm/PyPI source, not just metadata, to catch tool poisoning, prompt inject…",
       "status": "published",
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "github illiahaidar mcptrustchecker security scanner for mcp model context protocol servers reads the real published npm pypi source not just metadata to catch tool poisoning prompt injection toxic flows supply chain risk offline deterministic a f trust score sarif ci gates",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-18T09:15:10.629Z"
     },
     {
@@ -263,26 +263,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mastering node js transport layers in mcp stdio vs server sent events sse",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "I Connected 3 MCP Servers to One Agent. It Got Scary Fast.",
-      "url": "https://dev.to/debashish_ghosal/i-connected-3-mcp-servers-to-one-agent-it-got-scary-fast-4loe",
-      "canonical_url": "https://dev.to/debashish_ghosal/i-connected-3-mcp-servers-to-one-agent-it-got-scary-fast-4loe",
-      "source": "Dev.to",
-      "author": "@Debashish Ghosal",
-      "published_at": "2026-07-25T13:10:45Z",
-      "score_signal": 5,
-      "raw_summary": "I looked at my terminal last week and realized my AI agent had the same access to deploy production...",
-      "relevance_score": 0.6289075625191822,
-      "editorial_blurb": "I looked at my terminal last week and realized my AI agent had the same access to deploy production...",
-      "status": "published",
-      "matched_server_slug": "mcp-servers",
-      "matched_server_name": "mcp-servers",
-      "title_normalized": "i connected 3 mcp servers to one agent it got scary fast",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
       "title": "GitHub: risa-labs-inc/BossConsole — Open-source, multi-platform harness for AI agents — a native, multi-threaded operator's console (JVM, not Electron) to run Claude Code, Codex, Gemini or OpenCode with a real browser, terminal, editor, secrets & 100+ MCP tools. Built for enterprises, science & research.",
@@ -291,15 +273,15 @@
       "source": "GitHub",
       "author": "risa-labs-inc",
       "published_at": "2026-07-21T01:01:05Z",
-      "score_signal": 185,
+      "score_signal": 194,
       "raw_summary": "Open-source, multi-platform harness for AI agents — a native, multi-threaded operator's console (JVM, not Electron) to run Claude Code, Codex, Gemini or OpenCode with a real browser, terminal, editor, secrets & 100+ MCP tools. Built for enterprises, science & research.",
-      "relevance_score": 0.6234756472108959,
+      "relevance_score": 0.624501730568126,
       "editorial_blurb": "Open-source, multi-platform harness for AI agents — a native, multi-threaded operator's console (JVM, not Electron) to run Claude Code, Codex, Gemini or OpenCo…",
       "status": "published",
       "matched_server_slug": "harness",
       "matched_server_name": "Harness",
       "title_normalized": "github risa labs inc bossconsole open source multi platform harness for ai agents a native multi threaded operator s console jvm not electron to run claude code codex gemini or opencode with a real browser terminal editor secrets 100 mcp tools built for enterprises science research",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T15:25:32.817Z"
     },
     {
@@ -317,7 +299,7 @@
       "matched_server_slug": "mcp-servers",
       "matched_server_name": "mcp-servers",
       "title_normalized": "i had ai write 69 mcp servers here s how far they drifted from their manifests after six months in production",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -335,7 +317,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "wisesheets launches financial data api and mcp server bringing sec sourced fundamentals to ai agents and developers ai magazine",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -353,7 +335,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "why i gave my ai agent read only access to my spreadsheets",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -371,7 +353,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "system1 launches dogpile fetch a new search mcp server from the internet s original metasearch engine giving ai agents a wider view of the web business wire",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -389,7 +371,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "guideline launches its ad intelligence mcp server to power ai agents with its leading global advertising data pr newswire",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T15:25:32.817Z"
     },
     {
@@ -407,8 +389,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "axonius launches ai agent and mcp server to seamlessly connect asset intelligence to enterprise ai the manila times",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T20:54:44.554Z"
+    },
+    {
+      "title": "Axonius Launches AI Agent and MCP Server to Seamlessly Connect Asset Intelligence to Enterprise AI - Yahoo Finance",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPOG1QTTJJSTdkbnltTXg3NGQtNE5qRmMzUWY4djF6Z0I4VF9LczVKX1lUSW81dC04Ukt5VXJocXZJMFVWZS1tdkhMVjM4M1g4blY5RlNGQXVJOGJDWVFnUWF4c0RFaFZ3NWx0S24wY1RYSG1ESEdmekhoRmx6Mzk2NDh5SFZmWkRCU0U0NFBFS3pRNGdHS1NNeg?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPOG1QTTJJSTdkbnltTXg3NGQtNE5qRmMzUWY4djF6Z0I4VF9LczVKX1lUSW81dC04Ukt5VXJocXZJMFVWZS1tdkhMVjM4M1g4blY5RlNGQXVJOGJDWVFnUWF4c0RFaFZ3NWx0S24wY1RYSG1ESEdmekhoRmx6Mzk2NDh5SFZmWkRCU0U0NFBFS3pRNGdHS1NNeg?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-21T13:00:00.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxPOG1QTTJJSTdkbnltTXg3NGQtNE5qRmMzUWY4djF6Z0I4VF9LczVKX1lUSW81dC04Ukt5VXJocXZJMFVWZS1tdkhMVjM4M1g4blY5RlNGQXVJOGJDWVFnUWF4c0RFaFZ3NWx0S24wY1RYSG1ESEdmekhoRmx6Mzk2NDh5SFZmWkRCU0U0NFBFS3pRNGdHS1NNeg?oc=5\" target=\"_blank\"&gt;Axonius Launches AI Agent and MCP Server to Seamlessly Connect Asset Intelligence to Enterprise AI&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;Yahoo Finance&lt;/font&gt;",
+      "relevance_score": 0.5900000000000001,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxPOG1QTTJJSTdkbnltTXg3NGQtNE5qRmMzUWY4djF6Z0I4VF9LczVKX1lUSW81dC04Ukt5VXJocXZJMFVWZS1tdkhMVjM4M1…",
+      "status": "published",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "axonius launches ai agent and mcp server to seamlessly connect asset intelligence to enterprise ai yahoo finance",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Leading AI Video Generation Platform Revid.ai Launches MCP Server and Command-Line Tool, Giving AI Agents Direct Access to Video Production - markets.businessinsider.com",
@@ -425,7 +425,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "leading ai video generation platform revid ai launches mcp server and command line tool giving ai agents direct access to video production markets businessinsider com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T15:20:17.952Z"
     },
     {
@@ -443,7 +443,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "privado vpn unveils an mcp server on windows and macos to let your ai agent manage your connection techradar",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-15T20:49:26.577Z"
     },
     {
@@ -461,7 +461,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "6sense launches mcp server bringing proprietary gtm intelligence into any ai agent yahoo finance",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-18T09:15:10.629Z"
     },
     {
@@ -479,7 +479,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "featured announced the launch of mcp server brings ai agents to pr agencies martech cube",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T20:50:35.122Z"
     },
     {
@@ -497,7 +497,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "claude code sends 33k tokens before reading the prompt opencode sends 7k",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-13T10:49:21.627Z"
     },
     {
@@ -515,7 +515,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "model context protocol adopts stateless architecture",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -533,7 +533,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "2026 model context protocol server and ai agent hackathon gsa gov",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-14T15:15:53.321Z"
     },
     {
@@ -551,7 +551,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "how to secure model context protocol mcp deployments against quantum computing threats security boulevard",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T15:28:42.208Z"
     },
     {
@@ -569,8 +569,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mcp model context protocol for infrastructure connected world",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-14T15:15:53.321Z"
+    },
+    {
+      "title": "Antigravity vs Cursor vs Claude Code: Free vs $200 [2026] - tech-insider.org",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5Wd0JTUktyVXFWQ0lFNXZBSFlGa1k2bUtIUGRMTTN0OE9UUkNRWkgzN3J4eGFlLXVNOGxwN3RabWZvdUJDMXdaaVRlOXNpeFpnUEd0UlBIbGNWb1VaN19jbVIwTG56cldLVno5YXczX2JhejVqOUE?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5Wd0JTUktyVXFWQ0lFNXZBSFlGa1k2bUtIUGRMTTN0OE9UUkNRWkgzN3J4eGFlLXVNOGxwN3RabWZvdUJDMXdaaVRlOXNpeFpnUEd0UlBIbGNWb1VaN19jbVIwTG56cldLVno5YXczX2JhejVqOUE?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-23T14:52:01.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMidkFVX3lxTE5Wd0JTUktyVXFWQ0lFNXZBSFlGa1k2bUtIUGRMTTN0OE9UUkNRWkgzN3J4eGFlLXVNOGxwN3RabWZvdUJDMXdaaVRlOXNpeFpnUEd0UlBIbGNWb1VaN19jbVIwTG56cldLVno5YXczX2JhejVqOUE?oc=5\" target=\"_blank\"&gt;Antigravity vs Cursor vs Claude Code: Free vs $200 [2026]&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;tech-insider.org&lt;/font&gt;",
+      "relevance_score": 0.55,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMidkFVX3lxTE5Wd0JTUktyVXFWQ0lFNXZBSFlGa1k2bUtIUGRMTTN0OE9UUkNRWkgzN3J4eGFlLXVNOGxwN3RabWZvdUJDMXdaaVRlOXNpeF…",
+      "status": "published",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "antigravity vs cursor vs claude code free vs 200 2026 tech insider org",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "MengTo/Skills has no tagged releases — pin the commit",
@@ -587,8 +605,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mengto skills has no tagged releases pin the commit",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
+    },
+    {
+      "title": "Building my first MCP server: Spain's weather API and its two-step catch",
+      "url": "https://dev.to/mmillan76/building-my-first-mcp-server-spains-weather-api-and-its-two-step-catch-44fj",
+      "canonical_url": "https://dev.to/mmillan76/building-my-first-mcp-server-spains-weather-api-and-its-two-step-catch-44fj",
+      "source": "Dev.to",
+      "author": "@Manuel Millan",
+      "published_at": "2026-07-25T22:40:20Z",
+      "score_signal": 1,
+      "raw_summary": "I'm a backend engineer (Java/Spring, Kubernetes, that world) moving toward AI engineering, and I...",
+      "relevance_score": 0.5250514997831991,
+      "editorial_blurb": "I'm a backend engineer (Java/Spring, Kubernetes, that world) moving toward AI engineering, and I...",
+      "status": "published",
+      "matched_server_slug": "kubernetes",
+      "matched_server_name": "Kubernetes",
+      "title_normalized": "building my first mcp server spain s weather api and its two step catch",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "GitHub: MemTensor/memmy-agent — 🍙 A personal AI Agent & local memory hub for all AI Agent and tools like Claude Code, Codex, OpenClaw and Hermes Agent. Gives every AI one shared, full-controlled memory  and persistent context — all AI remember the same you.",
@@ -597,16 +633,70 @@
       "source": "GitHub",
       "author": "MemTensor",
       "published_at": "2026-07-16T07:57:45Z",
-      "score_signal": 70,
+      "score_signal": 72,
       "raw_summary": "🍙 A personal AI Agent & local memory hub for all AI Agent and tools like Claude Code, Codex, OpenClaw and Hermes Agent. Gives every AI one shared, full-controlled memory and persistent context — all AI remember the same you.",
-      "relevance_score": 0.5225629174359537,
+      "relevance_score": 0.5231661430060228,
       "editorial_blurb": "🍙 A personal AI Agent & local memory hub for all AI Agent and tools like Claude Code, Codex, OpenClaw and Hermes Agent. Gives every AI one shared, full-contro…",
       "status": "published",
       "matched_server_slug": "memory",
       "matched_server_name": "Memory",
       "title_normalized": "github memtensor memmy agent a personal ai agent local memory hub for all ai agent and tools like claude code codex openclaw and hermes agent gives every ai one shared full controlled memory and persistent context all ai remember the same you",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
+    },
+    {
+      "title": "Engineering an Autonomous Support Loop with Aidbase and MCP",
+      "url": "https://dev.to/renato_marinho/engineering-an-autonomous-support-loop-with-aidbase-and-mcp-4ki2",
+      "canonical_url": "https://dev.to/renato_marinho/engineering-an-autonomous-support-loop-with-aidbase-and-mcp-4ki2",
+      "source": "Dev.to",
+      "author": "@Renato Marinho",
+      "published_at": "2026-07-26T09:23:43Z",
+      "score_signal": 0,
+      "raw_summary": "Moving beyond read-only RAG: How the Aidbase MCP server enables autonomous knowledge management and support orchestration.",
+      "relevance_score": 0.51,
+      "editorial_blurb": "Moving beyond read-only RAG: How the Aidbase MCP server enables autonomous knowledge management and support orchestration.",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "engineering an autonomous support loop with aidbase and mcp",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Are your MCP server's safety labels honest? A one-command check (and what it found on 31 popular servers)",
+      "url": "https://dev.to/formael/are-your-mcp-servers-safety-labels-honest-a-one-command-check-and-what-it-found-on-31-popular-1ml3",
+      "canonical_url": "https://dev.to/formael/are-your-mcp-servers-safety-labels-honest-a-one-command-check-and-what-it-found-on-31-popular-1ml3",
+      "source": "Dev.to",
+      "author": "@Dilan Srilal (dilansri)",
+      "published_at": "2026-07-26T07:34:04Z",
+      "score_signal": 0,
+      "raw_summary": "MCP tools declare readOnlyHint, destructiveHint, and openWorldHint, and clients act on them. actlint is a static linter that checks those labels against what each tool's schema says it can do. We ran it on 31 popular servers.",
+      "relevance_score": 0.51,
+      "editorial_blurb": "MCP tools declare readOnlyHint, destructiveHint, and openWorldHint, and clients act on them. actlint is a static linter that checks those labels against what e…",
+      "status": "hidden",
+      "matched_server_slug": "mcp-tools",
+      "matched_server_name": "mcp-tools",
+      "title_normalized": "are your mcp server s safety labels honest a one command check and what it found on 31 popular servers",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Snap gains MCP server and creator AI matching across 950 million users - PPC Land",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNS3JxbEU2NkxwYUJiMGVURjZJdXB0MGIxWVpISmE0M09FRGVvXzJuQXhNdU9jOXNwb1Y1T1lhclh3YjRmY3pvekI4dG9waVhQSUFDVVMtQW9zUl9aTWtwMHZXSFZMbjNuUkM5RFNEMFFkakdBMWpHck5jVGFJbmw4NnZzeHBHNGM2S2lGNncxWVA0UQ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNS3JxbEU2NkxwYUJiMGVURjZJdXB0MGIxWVpISmE0M09FRGVvXzJuQXhNdU9jOXNwb1Y1T1lhclh3YjRmY3pvekI4dG9waVhQSUFDVVMtQW9zUl9aTWtwMHZXSFZMbjNuUkM5RFNEMFFkakdBMWpHck5jVGFJbmw4NnZzeHBHNGM2S2lGNncxWVA0UQ?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-26T06:00:45.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxNS3JxbEU2NkxwYUJiMGVURjZJdXB0MGIxWVpISmE0M09FRGVvXzJuQXhNdU9jOXNwb1Y1T1lhclh3YjRmY3pvekI4dG9waVhQSUFDVVMtQW9zUl9aTWtwMHZXSFZMbjNuUkM5RFNEMFFkakdBMWpHck5jVGFJbmw4NnZzeHBHNGM2S2lGNncxWVA0UQ?oc=5\" target=\"_blank\"&gt;Snap gains MCP server and creator AI matching across 950 million users&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;PPC Land&lt;/font&gt;",
+      "relevance_score": 0.51,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxNS3JxbEU2NkxwYUJiMGVURjZJdXB0MGIxWVpISmE0M09FRGVvXzJuQXhNdU9jOXNwb1Y1T1lhclh3YjRmY3pvekI4dG9waV…",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "snap gains mcp server and creator ai matching across 950 million users ppc land",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Giving Claude live Polymarket data with an MCP server",
@@ -623,7 +713,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "giving claude live polymarket data with an mcp server",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
     },
     {
@@ -641,44 +731,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "wanted claude to read my onenote notebooks grabbed an mcp server hit a silent 401 on every call wrote up the full debugging check it out",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "Violet Audio dMix 128 Adds MCP Server, Unlocking A.I.-Powered Mixing &amp; Smarter Workflows - Music Connection Magazine",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQeW1mQ3U4eTJQUTJ5UkNFSUMwbHVfcU8wM2FtX2FkanNmVHV6eThkZW1BcTkyM1dILWRiR05rcXpZNWFxSzlLQUN1UkI0TnFMZDVPaEpOTVFMTE0tcFRtMk9keGk3TGJybFBMMXBlVm5SRktLVHQwTk5VUjF2SUcwRVJicTlFV3dhOVU2VXgwNHZiOVNYeWUxWXh0UVB2a1pvV29QRmV3YUNEZFlVTG9xVzZZRlBBV1lX?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQeW1mQ3U4eTJQUTJ5UkNFSUMwbHVfcU8wM2FtX2FkanNmVHV6eThkZW1BcTkyM1dILWRiR05rcXpZNWFxSzlLQUN1UkI0TnFMZDVPaEpOTVFMTE0tcFRtMk9keGk3TGJybFBMMXBlVm5SRktLVHQwTk5VUjF2SUcwRVJicTlFV3dhOVU2VXgwNHZiOVNYeWUxWXh0UVB2a1pvV29QRmV3YUNEZFlVTG9xVzZZRlBBV1lX?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-24T16:56:02.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxQeW1mQ3U4eTJQUTJ5UkNFSUMwbHVfcU8wM2FtX2FkanNmVHV6eThkZW1BcTkyM1dILWRiR05rcXpZNWFxSzlLQUN1UkI0TnFMZDVPaEpOTVFMTE0tcFRtMk9keGk3TGJybFBMMXBlVm5SRktLVHQwTk5VUjF2SUcwRVJicTlFV3dhOVU2VXgwNHZiOVNYeWUxWXh0UVB2a1pvV29QRmV3YUNEZFlVTG9xVzZZRlBBV1lX?oc=5\" target=\"_blank\"&gt;Violet Audio dMix 128 Adds MCP Server, Unlocking A.I.-Powered Mixing &amp; Smarter Workflows&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;Music Connection Magaz…",
-      "relevance_score": 0.51,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxQeW1mQ3U4eTJQUTJ5UkNFSUMwbHVfcU8wM2FtX2FkanNmVHV6eThkZW1BcTkyM1dILWRiR05rcXpZNWFxSzlLQUN1UkI0Tn…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "violet audio dmix 128 adds mcp server unlocking a i powered mixing amp smarter workflows music connection magazine",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-24T20:54:44.554Z"
-    },
-    {
-      "title": "Violet Audio Expands dMix 128 with Integrated MCP Server - Content + Technology",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNNG9EVmt1YjN3aTQwenV6ZmE2cnE5eU1zTE93Z3hxaE01Z2l0NHNlbGlhaW9DMUpPRlU2WGtBeWJ5MlhRNHRqUl9IVjJUXzl0d0NRS0hZNDczM1hhT0s3MFlqWUJBRjZWeVo2QjBxcVdIeFByQ09iQ0oyNU1qWkd2NjZYTFdmRTRHU1ZNd0R2Y2F1c2lXdlJ1d0VRclFBZW5GcDNfRzJCUEprZ3dwclBHcg?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNNG9EVmt1YjN3aTQwenV6ZmE2cnE5eU1zTE93Z3hxaE01Z2l0NHNlbGlhaW9DMUpPRlU2WGtBeWJ5MlhRNHRqUl9IVjJUXzl0d0NRS0hZNDczM1hhT0s3MFlqWUJBRjZWeVo2QjBxcVdIeFByQ09iQ0oyNU1qWkd2NjZYTFdmRTRHU1ZNd0R2Y2F1c2lXdlJ1d0VRclFBZW5GcDNfRzJCUEprZ3dwclBHcg?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-24T05:01:47.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxNNG9EVmt1YjN3aTQwenV6ZmE2cnE5eU1zTE93Z3hxaE01Z2l0NHNlbGlhaW9DMUpPRlU2WGtBeWJ5MlhRNHRqUl9IVjJUXzl0d0NRS0hZNDczM1hhT0s3MFlqWUJBRjZWeVo2QjBxcVdIeFByQ09iQ0oyNU1qWkd2NjZYTFdmRTRHU1ZNd0R2Y2F1c2lXdlJ1d0VRclFBZW5GcDNfRzJCUEprZ3dwclBHcg?oc=5\" target=\"_blank\"&gt;Violet Audio Expands dMix 128 with Integrated MCP Server&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;Content + Technology&lt;/font&gt;",
-      "relevance_score": 0.51,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxNNG9EVmt1YjN3aTQwenV6ZmE2cnE5eU1zTE93Z3hxaE01Z2l0NHNlbGlhaW9DMUpPRlU2WGtBeWJ5MlhRNHRqUl9IVjJUXz…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "violet audio expands dmix 128 with integrated mcp server content technology",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
       "title": "Lumonic Launches MCP Server, Bringing Audit-Ready Portfolio Data to Leading AI Assistants - Yahoo Finance",
@@ -695,7 +749,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "lumonic launches mcp server bringing audit ready portfolio data to leading ai assistants yahoo finance",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T20:54:44.554Z"
     },
     {
@@ -713,7 +767,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "the growing momentum behind the arm mcp server shows how agentic ai is transforming developer workflows arm newsroom",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T20:54:49.057Z"
     },
     {
@@ -731,7 +785,7 @@
       "matched_server_slug": "mcp-servers",
       "matched_server_name": "mcp-servers",
       "title_normalized": "agentbaiting campaign uses 800 fake ai skills and mcp servers to deliver smartloader malware cybersecuritynews",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -749,25 +803,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "toronto s d1g1t lays foundation for ai roadmap with launch of mcp server fintech ca",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-21T15:28:42.208Z"
-    },
-    {
-      "title": "AgentBaiting Uses Fake AI Skills and MCP Servers to Deliver SmartLoader and StealC Malware - gbhackers.com",
-      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBZbi12Sk1GWTZxbktFdjhGSU9ERXZPTG11aUtGb1dVOUVPOTdQVEZFcXR0U0tETmw4MktOLTJQOUFjclhLeFMxeUQxLXlHaWpYUGlmTDlwTmR5ZW15dTdaazgxUTR6UdIBa0FVX3lxTFA2RC10NUdJUDhKYmRPa3dQdV9LU1RkOWNXWnY3QkVYZ0NrWHFIcjVQSW1xN1JsOVd2Q2RrUGpodzFKUnZDdjZTanNiZnZ0WXlrM2NIaFVrNk80N05Mc3JpazNnS1Q4YmQta25B?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBZbi12Sk1GWTZxbktFdjhGSU9ERXZPTG11aUtGb1dVOUVPOTdQVEZFcXR0U0tETmw4MktOLTJQOUFjclhLeFMxeUQxLXlHaWpYUGlmTDlwTmR5ZW15dTdaazgxUTR6UdIBa0FVX3lxTFA2RC10NUdJUDhKYmRPa3dQdV9LU1RkOWNXWnY3QkVYZ0NrWHFIcjVQSW1xN1JsOVd2Q2RrUGpodzFKUnZDdjZTanNiZnZ0WXlrM2NIaFVrNk80N05Mc3JpazNnS1Q4YmQta25B?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-21T07:34:19.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMiZkFVX3lxTFBZbi12Sk1GWTZxbktFdjhGSU9ERXZPTG11aUtGb1dVOUVPOTdQVEZFcXR0U0tETmw4MktOLTJQOUFjclhLeFMxeUQxLXlHaWpYUGlmTDlwTmR5ZW15dTdaazgxUTR6UdIBa0FVX3lxTFA2RC10NUdJUDhKYmRPa3dQdV9LU1RkOWNXWnY3QkVYZ0NrWHFIcjVQSW1xN1JsOVd2Q2RrUGpodzFKUnZDdjZTanNiZnZ0WXlrM2NIaFVrNk80N05Mc3JpazNnS1Q4YmQta25B?oc=5\" target=\"_blank\"&gt;AgentBaiting Uses Fake AI Skills and MCP Servers to Deliver SmartLoader and StealC Malware&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"…",
-      "relevance_score": 0.51,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMiZkFVX3lxTFBZbi12Sk1GWTZxbktFdjhGSU9ERXZPTG11aUtGb1dVOUVPOTdQVEZFcXR0U0tETmw4MktOLTJQOUFjclhLeFMxeUQxLXlHaW…",
-      "status": "hidden",
-      "matched_server_slug": "mcp-servers",
-      "matched_server_name": "mcp-servers",
-      "title_normalized": "agentbaiting uses fake ai skills and mcp servers to deliver smartloader and stealc malware gbhackers com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T15:28:42.208Z"
     },
     {
@@ -785,26 +821,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "workable expands mcp server to 94 tools extending ai assistant access across the full hiring and hr lifecycle globenewswire",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
-    },
-    {
-      "title": "d1g1t Launches MCP Server to Bring AI-Powered Intelligence Directly into Financial Advisor Workflows - The Globe and Mail",
-      "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxQSnRwNWdDZE1WdVpPU3NVNHc3a0FXOUk4Tkg1LUF1N2dVakVkMnpPOHU2ZW5feW15QVJ6TmNUSjZXV3NibHA5YTZVZVBTeGlzT1k2bnphUno2V1FRZjZoSHVTVmU4by1DN3R3MjRNVmdPRWViUW1PQ21yb0NDeUI2NEFvOHpPSHdZWXdtQUthVENoOGxqejNDMk5yYU5WX240S3pEYlZiWXg5YTZSTjJGQl93Y0FIb0dPLUpudk91U0JEbEVrTXJoSzBjbkF4WVl3akt4SEtKR0JtdFBoWi15azE3ejlCOWhJZ1BkVTFpMUV6V19WaXhMX0V4Sk1jRnRtSmJtSU9UU3dGbG0tSklxbkRBaw?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxQSnRwNWdDZE1WdVpPU3NVNHc3a0FXOUk4Tkg1LUF1N2dVakVkMnpPOHU2ZW5feW15QVJ6TmNUSjZXV3NibHA5YTZVZVBTeGlzT1k2bnphUno2V1FRZjZoSHVTVmU4by1DN3R3MjRNVmdPRWViUW1PQ21yb0NDeUI2NEFvOHpPSHdZWXdtQUthVENoOGxqejNDMk5yYU5WX240S3pEYlZiWXg5YTZSTjJGQl93Y0FIb0dPLUpudk91U0JEbEVrTXJoSzBjbkF4WVl3akt4SEtKR0JtdFBoWi15azE3ejlCOWhJZ1BkVTFpMUV6V19WaXhMX0V4Sk1jRnRtSmJtSU9UU3dGbG0tSklxbkRBaw?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-20T13:08:56.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMikwJBVV95cUxQSnRwNWdDZE1WdVpPU3NVNHc3a0FXOUk4Tkg1LUF1N2dVakVkMnpPOHU2ZW5feW15QVJ6TmNUSjZXV3NibHA5YTZVZVBTeGlzT1k2bnphUno2V1FRZjZoSHVTVmU4by1DN3R3MjRNVmdPRWViUW1PQ21yb0NDeUI2NEFvOHpPSHdZWXdtQUthVENoOGxqejNDMk5yYU5WX240S3pEYlZiWXg5YTZSTjJGQl93Y0FIb0dPLUpudk91U0JEbEVrTXJoSzBjbkF4WVl3akt4SEtKR0JtdFBoWi15azE3ejlCOWhJZ1BkVTFpMUV6V19WaXhMX0V4Sk1jRnRtSmJtSU9UU3dGbG0tSklxbkRBaw?oc=5\" target=\"_blank\"&gt;d1g1t Launches MCP Server to Bring AI-Powered Inte…",
-      "relevance_score": 0.51,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMikwJBVV95cUxQSnRwNWdDZE1WdVpPU3NVNHc3a0FXOUk4Tkg1LUF1N2dVakVkMnpPOHU2ZW5feW15QVJ6TmNUSjZXV3NibHA5YTZVZVBTeG…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "d1g1t launches mcp server to bring ai powered intelligence directly into financial advisor workflows the globe and mail",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
       "title": "d1g1t Launches MCP Server to Bring AI-Powered Intelligence Directly into Financial Advisor Workflows - Yahoo Finance",
@@ -821,26 +839,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "d1g1t launches mcp server to bring ai powered intelligence directly into financial advisor workflows yahoo finance",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
-    },
-    {
-      "title": "Top 5 MCP Servers for High-Performance Agentic Development - KDnuggets",
-      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOdGZRNklDaDJQSlBPSFQwcmtmSjR6WkdZeFVfd1R0ZEJOWHQwNlpnLVI5Mm83X21wNVpRMThmZnlyd001NE84SnZRV25sdWhQS0g3eGY0TUZURlRaTFFBaTFJLU4wUlFJZnNBRGFLWGc3bG45SGQ3THFGLTNsclpEZnByOFZQQW15V3RLRA?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOdGZRNklDaDJQSlBPSFQwcmtmSjR6WkdZeFVfd1R0ZEJOWHQwNlpnLVI5Mm83X21wNVpRMThmZnlyd001NE84SnZRV25sdWhQS0g3eGY0TUZURlRaTFFBaTFJLU4wUlFJZnNBRGFLWGc3bG45SGQ3THFGLTNsclpEZnByOFZQQW15V3RLRA?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-20T12:19:25.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxOdGZRNklDaDJQSlBPSFQwcmtmSjR6WkdZeFVfd1R0ZEJOWHQwNlpnLVI5Mm83X21wNVpRMThmZnlyd001NE84SnZRV25sdWhQS0g3eGY0TUZURlRaTFFBaTFJLU4wUlFJZnNBRGFLWGc3bG45SGQ3THFGLTNsclpEZnByOFZQQW15V3RLRA?oc=5\" target=\"_blank\"&gt;Top 5 MCP Servers for High-Performance Agentic Development&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;KDnuggets&lt;/font&gt;",
-      "relevance_score": 0.51,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxOdGZRNklDaDJQSlBPSFQwcmtmSjR6WkdZeFVfd1R0ZEJOWHQwNlpnLVI5Mm83X21wNVpRMThmZnlyd001NE84SnZRV25sdW…",
-      "status": "hidden",
-      "matched_server_slug": "mcp-servers",
-      "matched_server_name": "mcp-servers",
-      "title_normalized": "top 5 mcp servers for high performance agentic development kdnuggets",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
       "title": "How Smartsheet built a remote MCP server on AWS | Amazon Web Services - Amazon Web Services (AWS)",
@@ -857,7 +857,7 @@
       "matched_server_slug": "remote-mcp-server",
       "matched_server_name": "remote-mcp-server",
       "title_normalized": "how smartsheet built a remote mcp server on aws amazon web services amazon web services aws",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T20:42:32.521Z"
     },
     {
@@ -875,8 +875,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "symmetry unveils mcp server to power agentic ai in payroll tax calculations ff news",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-16T15:25:18.310Z"
+    },
+    {
+      "title": "Symmetry Launches an MCP Server for Its Payroll Tax Engine, Bringing Payroll Platforms Into the Agentic AI Era - HRTech Series",
+      "url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxOLTNIVHI1em1xaWhJYmJ1ZlZQbl8yT1FobXBWRmFEY0phUGtreFdDd3J2QUw2bjduMHB3NDNkRDhOcHZlaTdCMkkxRkdZaXY5SGtROXo3S3AyYU9Jcm1vVEh6TWNHclFsc1NxOWc1VUR1c0RhZlU1bV9lWGpTQ1pHOWpHeWtiZVdkNDRlSTl0d001N1VUc3hhTF9oQUhrcXg5TXhHRWpwaEJUckxELXpNbXZlVExDQ3JZRkpRN09jelRWY01ham5kd1Q3TDlGazl0SmFJQ2JkZUFPZzdwakZCRTBVUkdBWHItZmFLbkpodTU4MWkxSFpIeVNEQnQ3eVE?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxOLTNIVHI1em1xaWhJYmJ1ZlZQbl8yT1FobXBWRmFEY0phUGtreFdDd3J2QUw2bjduMHB3NDNkRDhOcHZlaTdCMkkxRkdZaXY5SGtROXo3S3AyYU9Jcm1vVEh6TWNHclFsc1NxOWc1VUR1c0RhZlU1bV9lWGpTQ1pHOWpHeWtiZVdkNDRlSTl0d001N1VUc3hhTF9oQUhrcXg5TXhHRWpwaEJUckxELXpNbXZlVExDQ3JZRkpRN09jelRWY01ham5kd1Q3TDlGazl0SmFJQ2JkZUFPZzdwakZCRTBVUkdBWHItZmFLbkpodTU4MWkxSFpIeVNEQnQ3eVE?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-16T08:26:24.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMi_wFBVV95cUxOLTNIVHI1em1xaWhJYmJ1ZlZQbl8yT1FobXBWRmFEY0phUGtreFdDd3J2QUw2bjduMHB3NDNkRDhOcHZlaTdCMkkxRkdZaXY5SGtROXo3S3AyYU9Jcm1vVEh6TWNHclFsc1NxOWc1VUR1c0RhZlU1bV9lWGpTQ1pHOWpHeWtiZVdkNDRlSTl0d001N1VUc3hhTF9oQUhrcXg5TXhHRWpwaEJUckxELXpNbXZlVExDQ3JZRkpRN09jelRWY01ham5kd1Q3TDlGazl0SmFJQ2JkZUFPZzdwakZCRTBVUkdBWHItZmFLbkpodTU4MWkxSFpIeVNEQnQ3eVE?oc=5\" target=\"_blank\"&gt;Symmetry Launches an MCP Server for Its Payroll Tax Engine, Bringing Payroll…",
+      "relevance_score": 0.51,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMi_wFBVV95cUxOLTNIVHI1em1xaWhJYmJ1ZlZQbl8yT1FobXBWRmFEY0phUGtreFdDd3J2QUw2bjduMHB3NDNkRDhOcHZlaTdCMkkxRkdZaX…",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "symmetry launches an mcp server for its payroll tax engine bringing payroll platforms into the agentic ai era hrtech series",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Legatics’ New MCP Server Connects Your AI Tools - Artificial Lawyer",
@@ -893,7 +911,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "legatics new mcp server connects your ai tools artificial lawyer",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-15T09:49:35.106Z"
     },
     {
@@ -911,7 +929,7 @@
       "matched_server_slug": "mcp-servers",
       "matched_server_name": "mcp-servers",
       "title_normalized": "agentic vision building visual intelligence with amazon bedrock and mcp servers amazon web services amazon web services aws",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-18T14:43:16.312Z"
     },
     {
@@ -929,7 +947,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "ians launches the first cybersecurity mcp server delivering practitioner validated intelligence directly into clients native ai tools yahoo finance",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -947,44 +965,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "rafay systems introduces a managed mcp server offering to bring governed ai assistance to infrastructure operations pr newswire",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-15T15:17:48.512Z"
     },
     {
-      "title": "Claude Code uses Bun written in Rust now",
-      "url": "https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust/",
-      "canonical_url": "https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust",
-      "source": "Hacker News",
-      "author": "tosh",
-      "published_at": "2026-07-19T10:03:23Z",
-      "score_signal": 608,
-      "raw_summary": "Claude Code uses Bun written in Rust now",
-      "relevance_score": 0.4892308646316438,
-      "editorial_blurb": "Worth a scan if you are wiring MCP tools or AI agents into your stack.",
+      "title": "Internet-Wide Scans Target MCP Servers, Claude Credentials, and Exposed AI Models - CyberSecurityNews",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQM3U4SURwRkh0NThaYTY1VEEzVEFFbnZ1Qnd3ODhpbUdnNGU1LVNmRDdjM1FsWVNzRFdQOVZ2YlVuMFpPNHZoVDZPOXBBY0YyWEV2LTBHUGpIYmJJR2RCYkp2S0h0dHpmX1UyVU5RdnRVMVZWenE1MXJPaDZubVd2a2VaQ1MzeG1Nd3daOTN3OTIzUdIBlwFBVV95cUxQSU9rM0FRYVp1aG14M1A2YmhpMVpFQnZsVS1qc3Fha0ptUV81VUtmOE5pOHdGTktVZFp4eFhfUnRTR0ZTZXZyX1ZyM3pESW9Oc005cm01eG11SDFWc2lNS3hPZjdaa1BuY00tR1NDV1EwR20xaGVBN1BqdE5Oa0Mta19jOFhPdTJjWkJwaFp3ODJRbUpZZ1lZ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQM3U4SURwRkh0NThaYTY1VEEzVEFFbnZ1Qnd3ODhpbUdnNGU1LVNmRDdjM1FsWVNzRFdQOVZ2YlVuMFpPNHZoVDZPOXBBY0YyWEV2LTBHUGpIYmJJR2RCYkp2S0h0dHpmX1UyVU5RdnRVMVZWenE1MXJPaDZubVd2a2VaQ1MzeG1Nd3daOTN3OTIzUdIBlwFBVV95cUxQSU9rM0FRYVp1aG14M1A2YmhpMVpFQnZsVS1qc3Fha0ptUV81VUtmOE5pOHdGTktVZFp4eFhfUnRTR0ZTZXZyX1ZyM3pESW9Oc005cm01eG11SDFWc2lNS3hPZjdaa1BuY00tR1NDV1EwR20xaGVBN1BqdE5Oa0Mta19jOFhPdTJjWkJwaFp3ODJRbUpZZ1lZ?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-13T07:00:00.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxQM3U4SURwRkh0NThaYTY1VEEzVEFFbnZ1Qnd3ODhpbUdnNGU1LVNmRDdjM1FsWVNzRFdQOVZ2YlVuMFpPNHZoVDZPOXBBY0YyWEV2LTBHUGpIYmJJR2RCYkp2S0h0dHpmX1UyVU5RdnRVMVZWenE1MXJPaDZubVd2a2VaQ1MzeG1Nd3daOTN3OTIzUdIBlwFBVV95cUxQSU9rM0FRYVp1aG14M1A2YmhpMVpFQnZsVS1qc3Fha0ptUV81VUtmOE5pOHdGTktVZFp4eFhfUnRTR0ZTZXZyX1ZyM3pESW9Oc005cm01eG11SDFWc2lNS3hPZjdaa1BuY00tR1NDV1EwR20xaGVBN1BqdE5Oa0Mta19jOFhPdTJjWkJwaFp3ODJRbUpZZ1lZ?oc=5\" target=\"_blank\"&gt;Internet-Wide Sc…",
+      "relevance_score": 0.51,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxQM3U4SURwRkh0NThaYTY1VEEzVEFFbnZ1Qnd3ODhpbUdnNGU1LVNmRDdjM1FsWVNzRFdQOVZ2YlVuMFpPNHZoVDZPOXBBY0…",
       "status": "hidden",
-      "matched_server_slug": "mcp-tools",
-      "matched_server_name": "mcp-tools",
-      "title_normalized": "claude code uses bun written in rust now",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-20T10:39:59.041Z"
-    },
-    {
-      "title": "How to structure CLAUDE.md, Skills and Agents",
-      "url": "https://dev.to/hash01/how-to-structure-claudemd-skills-and-agents-2p7a",
-      "canonical_url": "https://dev.to/hash01/how-to-structure-claudemd-skills-and-agents-2p7a",
-      "source": "Dev.to",
-      "author": "@Hamid Shoja",
-      "published_at": "2026-07-25T09:00:00Z",
-      "score_signal": 7,
-      "raw_summary": "Hi friends Here's a tip for when you're setting up Claude Code (or any coding agent) in a real...",
-      "relevance_score": 0.4751544993495972,
-      "editorial_blurb": "Hi friends Here's a tip for when you're setting up Claude Code (or any coding agent) in a real...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "how to structure claude md skills and agents",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T14:54:18.284Z"
+      "matched_server_slug": "mcp-servers",
+      "matched_server_name": "mcp-servers",
+      "title_normalized": "internet wide scans target mcp servers claude credentials and exposed ai models cybersecuritynews",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Model Context Protocol is going stateless to make scaling simpler - InfoWorld",
@@ -1001,7 +1001,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "model context protocol is going stateless to make scaling simpler infoworld",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T20:54:44.554Z"
     },
     {
@@ -1019,7 +1019,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "lumonic unveils model context protocol server for enhanced data access gurufocus",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T20:50:35.122Z"
     },
     {
@@ -1037,7 +1037,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "model context protocol prepares to break with its stateful past the register",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T20:50:35.122Z"
     },
     {
@@ -1055,7 +1055,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "what model context protocol actually does tech insider org",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T10:13:58.099Z"
     },
     {
@@ -1073,7 +1073,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "model context protocol moves to sessionless architecture next week arcade says",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
     },
     {
@@ -1091,7 +1091,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "model context protocol gets easier unlocking ai integration the tech buzz",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
     },
     {
@@ -1109,8 +1109,44 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "securing model context protocol the future proof blueprint for 2026 security boulevard",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
+    },
+    {
+      "title": "Claude Code uses Bun written in Rust now",
+      "url": "https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust/",
+      "canonical_url": "https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust",
+      "source": "Hacker News",
+      "author": "tosh",
+      "published_at": "2026-07-19T10:03:23Z",
+      "score_signal": 608,
+      "raw_summary": "Claude Code uses Bun written in Rust now",
+      "relevance_score": 0.4892308646316438,
+      "editorial_blurb": "Worth a scan if you are wiring MCP tools or AI agents into your stack.",
+      "status": "hidden",
+      "matched_server_slug": "mcp-tools",
+      "matched_server_name": "mcp-tools",
+      "title_normalized": "claude code uses bun written in rust now",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-20T10:39:59.041Z"
+    },
+    {
+      "title": "GitHub: extrasmall0/dear-hiring-manager — A Claude Code plugin that fills your job applications from your profile, drafts the cover letter, and leaves Submit to you. Locally.",
+      "url": "https://github.com/extrasmall0/dear-hiring-manager",
+      "canonical_url": "https://github.com/extrasmall0/dear-hiring-manager",
+      "source": "GitHub",
+      "author": "extrasmall0",
+      "published_at": "2026-07-14T07:55:13Z",
+      "score_signal": 68,
+      "raw_summary": "A Claude Code plugin that fills your job applications from your profile, drafts the cover letter, and leaves Submit to you. Locally.",
+      "relevance_score": 0.44194245453686276,
+      "editorial_blurb": "A Claude Code plugin that fills your job applications from your profile, drafts the cover letter, and leaves Submit to you. Locally.",
+      "status": "hidden",
+      "matched_server_slug": "claude-code-plugin",
+      "matched_server_name": "UseMyContext",
+      "title_normalized": "github extrasmall0 dear hiring manager a claude code plugin that fills your job applications from your profile drafts the cover letter and leaves submit to you locally",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "GitHub: vshulcz/deja-vu — Your agents already solved this. deja finds it — memory operations for sixteen coding agents: retroactive search and MCP recall (84.9% hit@1 on LongMemEval-S, no LLM), search by when it happened, a local memory viewer, trust scopes, curated notes with tags. One zero-dep binary, fully local.",
@@ -1119,34 +1155,16 @@
       "source": "GitHub",
       "author": "vshulcz",
       "published_at": "2026-07-14T07:45:44Z",
-      "score_signal": 476,
+      "score_signal": 477,
       "raw_summary": "Your agents already solved this. deja finds it — memory operations for sixteen coding agents: retroactive search and MCP recall (84.9% hit@1 on LongMemEval-S, no LLM), search by when it happened, a local memory viewer, trust scopes, curated notes with tags. One zero-dep binary, fully local.",
-      "relevance_score": 0.4439259189520057,
+      "relevance_score": 0.44397139483060594,
       "editorial_blurb": "Your agents already solved this. deja finds it — memory operations for sixteen coding agents: retroactive search and MCP recall (84.9% hit@1 on LongMemEval-S,…",
       "status": "published",
       "matched_server_slug": "deja-vu",
       "matched_server_name": "vshulcz/deja-vu",
       "title_normalized": "github vshulcz deja vu your agents already solved this deja finds it memory operations for sixteen coding agents retroactive search and mcp recall 84 9 hit 1 on longmemeval s no llm search by when it happened a local memory viewer trust scopes curated notes with tags one zero dep binary fully local",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-15T20:49:26.577Z"
-    },
-    {
-      "title": "GitHub: nhevers/project-r0x — Official SDK, Claude Code plugin and facilitator docs for r0x, the x402 facilitator for Robinhood Chain.",
-      "url": "https://github.com/nhevers/project-r0x",
-      "canonical_url": "https://github.com/nhevers/project-r0x",
-      "source": "GitHub",
-      "author": "nhevers",
-      "published_at": "2026-07-11T10:12:16Z",
-      "score_signal": 92,
-      "raw_summary": "Official SDK, Claude Code plugin and facilitator docs for r0x, the x402 facilitator for Robinhood Chain.",
-      "relevance_score": 0.44842414742769676,
-      "editorial_blurb": "Official SDK, Claude Code plugin and facilitator docs for r0x, the x402 facilitator for Robinhood Chain.",
-      "status": "hidden",
-      "matched_server_slug": "claude-code-plugin",
-      "matched_server_name": "UseMyContext",
-      "title_normalized": "github nhevers project r0x official sdk claude code plugin and facilitator docs for r0x the x402 facilitator for robinhood chain",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
       "title": "Anthropic Turns Claude Code's Throwaway Dashboards Into Live Internal Tools - Startup Fortune",
@@ -1163,7 +1181,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "anthropic turns claude code s throwaway dashboards into live internal tools startup fortune",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T09:46:16.694Z"
     },
     {
@@ -1173,16 +1191,34 @@
       "source": "GitHub",
       "author": "Get-Concord-AI",
       "published_at": "2026-07-14T16:30:00Z",
-      "score_signal": 79,
+      "score_signal": 129,
       "raw_summary": "Shared work-state for coding agents: claim work, leave handoffs, and generate review packets before PRs, over MCP.",
-      "relevance_score": 0.4051544993495972,
+      "relevance_score": 0.41569716761534187,
       "editorial_blurb": "Shared work-state for coding agents: claim work, leave handoffs, and generate review packets before PRs, over MCP.",
       "status": "hidden",
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "github get concord ai concord mcp shared work state for coding agents claim work leave handoffs and generate review packets before prs over mcp",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
+    },
+    {
+      "title": "We Built a Flight Recorder for AI Coding Agents: Here's What SigNoz Taught Us About Watching Them Think",
+      "url": "https://dev.to/hussain_jamal_/we-built-a-flight-recorder-for-ai-coding-agents-heres-what-signoz-taught-us-about-watching-them-28mc",
+      "canonical_url": "https://dev.to/hussain_jamal_/we-built-a-flight-recorder-for-ai-coding-agents-heres-what-signoz-taught-us-about-watching-them-28mc",
+      "source": "Dev.to",
+      "author": "@hussain jamal",
+      "published_at": "2026-07-26T07:15:43Z",
+      "score_signal": 0,
+      "raw_summary": "We Built an AI Agent... Then Realized We Had No Idea What It Was Doing Our AI agent was...",
+      "relevance_score": 0.39,
+      "editorial_blurb": "We Built an AI Agent... Then Realized We Had No Idea What It Was Doing Our AI agent was...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "we built a flight recorder for ai coding agents here s what signoz taught us about watching them think",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Built an MVP with Replit, Cursor, or Loveable? What's the Hardest Part of Getting It to Production?",
@@ -1199,7 +1235,7 @@
       "matched_server_slug": "replit",
       "matched_server_name": "Replit",
       "title_normalized": "built an mvp with replit cursor or loveable what s the hardest part of getting it to production",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -1217,7 +1253,7 @@
       "matched_server_slug": "replit",
       "matched_server_name": "Replit",
       "title_normalized": "stop cursor ai from writing broken code",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -1235,7 +1271,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "show hn forall an ai coding agent that generates machine checkable proofs",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T09:46:16.694Z"
     },
     {
@@ -1245,15 +1281,15 @@
       "source": "GitHub",
       "author": "0xsline",
       "published_at": "2026-07-15T02:49:42Z",
-      "score_signal": 489,
+      "score_signal": 513,
       "raw_summary": "Local-first conversational AI video editor with a professional multi-track timeline, Agent Skills, MCP integration, and Remotion-powered rendering.",
-      "relevance_score": 0.3645098040014257,
+      "relevance_score": 0.36554815594976375,
       "editorial_blurb": "Local-first conversational AI video editor with a professional multi-track timeline, Agent Skills, MCP integration, and Remotion-powered rendering.",
       "status": "hidden",
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "github 0xsline openchatcut local first conversational ai video editor with a professional multi track timeline agent skills mcp integration and remotion powered rendering",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -1263,52 +1299,16 @@
       "source": "GitHub",
       "author": "icebird1998",
       "published_at": "2026-07-12T12:02:27Z",
-      "score_signal": 664,
+      "score_signal": 684,
       "raw_summary": "Live MCP control of the visible draw.io canvas for step-by-step scientific illustration in Codex.",
-      "relevance_score": 0.3711410822651552,
+      "relevance_score": 0.3717845285746213,
       "editorial_blurb": "Live MCP control of the visible draw.io canvas for step-by-step scientific illustration in Codex.",
       "status": "hidden",
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "github icebird1998 drawio scientific illustrator live mcp control of the visible draw io canvas for step by step scientific illustration in codex",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
-    },
-    {
-      "title": "Two coding agents editing the same issue, no merge conflict. Here is how git refs make that work",
-      "url": "https://dev.to/dipankar_sarkar/two-coding-agents-editing-the-same-issue-no-merge-conflict-here-is-how-git-refs-make-that-work-325k",
-      "canonical_url": "https://dev.to/dipankar_sarkar/two-coding-agents-editing-the-same-issue-no-merge-conflict-here-is-how-git-refs-make-that-work-325k",
-      "source": "Dev.to",
-      "author": "@Dipankar Sarkar",
-      "published_at": "2026-07-25T15:24:15Z",
-      "score_signal": 4,
-      "raw_summary": "Run two AI coding agents on the same repo and the first thing that breaks is not the code. It is...",
-      "relevance_score": 0.34494850021680096,
-      "editorial_blurb": "Run two AI coding agents on the same repo and the first thing that breaks is not the code. It is...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "two coding agents editing the same issue no merge conflict here is how git refs make that work",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "MCP rug-pulls: how a \"safe\" AI tool turns malicious after you approve it",
-      "url": "https://dev.to/wesellistools/mcp-rug-pulls-how-a-safe-ai-tool-turns-malicious-after-you-approve-it-1224",
-      "canonical_url": "https://dev.to/wesellistools/mcp-rug-pulls-how-a-safe-ai-tool-turns-malicious-after-you-approve-it-1224",
-      "source": "Dev.to",
-      "author": "@Wes Ellis",
-      "published_at": "2026-07-25T02:08:25Z",
-      "score_signal": 3,
-      "raw_summary": "Your AI agent trusts its tools completely. That trust is the vulnerability. When you connect an MCP...",
-      "relevance_score": 0.3401029995663981,
-      "editorial_blurb": "Your AI agent trusts its tools completely. That trust is the vulnerability. When you connect an MCP...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "mcp rug pulls how a safe ai tool turns malicious after you approve it",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
       "title": "7 Best Claude Code Alternatives for CLI Agentic Coding - KDnuggets",
@@ -1325,7 +1325,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "7 best claude code alternatives for cli agentic coding kdnuggets",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -1343,7 +1343,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "cursor router cost vs balance vs intelligence rollout guide",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -1361,7 +1361,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "what is claude code and why install it in 2026 tech insider org",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T15:25:32.817Z"
     },
     {
@@ -1379,7 +1379,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "wing python 12 adds claude code tool i programmer info",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
     },
     {
@@ -1397,7 +1397,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "how to structure cursor agent mode prompts for full stack app generation a practical guide",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
     },
     {
@@ -1415,7 +1415,7 @@
       "matched_server_slug": "figma",
       "matched_server_name": "Figma",
       "title_normalized": "how to create a skill in claude code for your design system figma",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
     },
     {
@@ -1425,15 +1425,15 @@
       "source": "GitHub",
       "author": "TryCaspian",
       "published_at": "2026-07-20T10:47:56Z",
-      "score_signal": 236,
+      "score_signal": 242,
       "raw_summary": "One identity for your AI agent across Slack, Discord, Telegram, WhatsApp, Instagram, email, SMS, X — a single on_message handler. Open-source channel adapters + bot SDK (Python & TypeScript) + CLI.",
-      "relevance_score": 0.34873741730050517,
+      "relevance_score": 0.3492803136799156,
       "editorial_blurb": "One identity for your AI agent across Slack, Discord, Telegram, WhatsApp, Instagram, email, SMS, X — a single on_message handler. Open-source channel adapters…",
       "status": "hidden",
       "matched_server_slug": "email",
       "matched_server_name": "Email",
       "title_normalized": "github trycaspian caspian sdk one identity for your ai agent across slack discord telegram whatsapp instagram email sms x a single on_message handler open source channel adapters bot sdk python typescript cli",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -1451,7 +1451,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "cursor patched a silent repo poisoning zero day with no advisory and no cve tech times",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T15:05:13.701Z"
     },
     {
@@ -1469,7 +1469,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "snaplogic launches snapcode for claude code integration it brief uk",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-18T14:43:16.312Z"
     },
     {
@@ -1487,7 +1487,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "2 click cursor exploit enables dev environment takeover dark reading",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-16T20:45:17.768Z"
     },
     {
@@ -1505,7 +1505,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "claude code burns 33 000 tokens before first command 4 7x more than open source rival finance biggo com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -1515,15 +1515,15 @@
       "source": "Dev.to",
       "author": "@Sylwia Laskowska",
       "published_at": "2026-07-23T07:03:51Z",
-      "score_signal": 101,
+      "score_signal": 106,
       "raw_summary": "For quite a while now, I've had the feeling that AI agents are surrounded by this mystical aura....",
-      "relevance_score": 0.33043000858809585,
+      "relevance_score": 0.33146918888426047,
       "editorial_blurb": "For quite a while now, I've had the feeling that AI agents are surrounded by this mystical aura....",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "the dirty secret behind ai agents demo",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T10:10:52.785Z"
     },
     {
@@ -1541,62 +1541,44 @@
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "github dabberman456 finance mcp app finance mcp app designed to manage personal finances for goal tracking expense management and financial insights in a clean and user friendly interface",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
-      "title": "What Really Concerns Me is One of the Biggest Issues with AI Coding Agents: Context Isolation and Task Coordination",
-      "url": "https://dev.to/ahlimosagif/what-really-concerns-me-is-one-of-the-biggest-issues-with-ai-coding-agents-context-isolation-and-40kd",
-      "canonical_url": "https://dev.to/ahlimosagif/what-really-concerns-me-is-one-of-the-biggest-issues-with-ai-coding-agents-context-isolation-and-40kd",
-      "source": "Dev.to",
-      "author": "@ahlimosa-gif",
-      "published_at": "2026-07-25T19:51:26Z",
+      "title": "How MCP Is Changing AI Agent Development - HackerNoon",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE84OFBKQUIyY19paVVhRHZuRWxtSTIzaE14dTB0cHUyYTNiQkpSWTNhWExyN2hIY3BaWk0yQk5rSF80NkstSVQ1SzNNRjJXbjNybjNWN2M1UDVyUGtVTjhQRFJ1VDJRaUF6WlFJVWhWV1A?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE84OFBKQUIyY19paVVhRHZuRWxtSTIzaE14dTB0cHUyYTNiQkpSWTNhWExyN2hIY3BaWk0yQk5rSF80NkstSVQ1SzNNRjJXbjNybjNWN2M1UDVyUGtVTjhQRFJ1VDJRaUF6WlFJVWhWV1A?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-26T08:48:51.000Z",
       "score_signal": 0,
-      "raw_summary": "What Really Concerns Me is One of the Biggest Issues with AI Coding Agents: Context...",
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE84OFBKQUIyY19paVVhRHZuRWxtSTIzaE14dTB0cHUyYTNiQkpSWTNhWExyN2hIY3BaWk0yQk5rSF80NkstSVQ1SzNNRjJXbjNybjNWN2M1UDVyUGtVTjhQRFJ1VDJRaUF6WlFJVWhWV1A?oc=5\" target=\"_blank\"&gt;How MCP Is Changing AI Agent Development&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;HackerNoon&lt;/font&gt;",
       "relevance_score": 0.31,
-      "editorial_blurb": "What Really Concerns Me is One of the Biggest Issues with AI Coding Agents: Context...",
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE84OFBKQUIyY19paVVhRHZuRWxtSTIzaE14dTB0cHUyYTNiQkpSWTNhWExyN2hIY3BaWk0yQk5rSF80NkstSVQ1SzNNRjJXbj…",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
-      "title_normalized": "what really concerns me is one of the biggest issues with ai coding agents context isolation and task coordination",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
+      "title_normalized": "how mcp is changing ai agent development hackernoon",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
-      "title": "The Oversight Ladder: the five levels of AI coding autonomy",
-      "url": "https://dev.to/dominik_ddd/the-oversight-ladder-the-five-levels-of-ai-coding-autonomy-1d94",
-      "canonical_url": "https://dev.to/dominik_ddd/the-oversight-ladder-the-five-levels-of-ai-coding-autonomy-1d94",
+      "title": "Beyond the Snapshot: Integrating 30-Day Environmental Intelligence into AI Agents",
+      "url": "https://dev.to/renato_marinho/beyond-the-snapshot-integrating-30-day-environmental-intelligence-into-ai-agents-iaa",
+      "canonical_url": "https://dev.to/renato_marinho/beyond-the-snapshot-integrating-30-day-environmental-intelligence-into-ai-agents-iaa",
       "source": "Dev.to",
-      "author": "@Dominik ",
-      "published_at": "2026-07-25T19:28:06Z",
+      "author": "@Renato Marinho",
+      "published_at": "2026-07-26T02:16:34Z",
       "score_signal": 0,
-      "raw_summary": "Originally published on ddd.consulting. TL;DR. \"AI coding agent\" describes five very different...",
+      "raw_summary": "Stop building reactive AI agents. Learn how to leverage the Google Air Quality MCP to provide 30 days of environmental context and temporal reasoning to your LLM workflows.",
       "relevance_score": 0.31,
-      "editorial_blurb": "Originally published on ddd.consulting. TL;DR. \"AI coding agent\" describes five very different...",
+      "editorial_blurb": "Stop building reactive AI agents. Learn how to leverage the Google Air Quality MCP to provide 30 days of environmental context and temporal reasoning to your L…",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
-      "title_normalized": "the oversight ladder the five levels of ai coding autonomy",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "Building a Project Intelligence Layer for AI Coding Agents",
-      "url": "https://dev.to/evanlin2026/building-a-project-intelligence-layer-for-ai-coding-agents-140i",
-      "canonical_url": "https://dev.to/evanlin2026/building-a-project-intelligence-layer-for-ai-coding-agents-140i",
-      "source": "Dev.to",
-      "author": "@EvanLin | Contorium",
-      "published_at": "2026-07-25T14:26:52Z",
-      "score_signal": 0,
-      "raw_summary": "AI coding agents already have access to a lot of context. They can index repositories, search files,...",
-      "relevance_score": 0.31,
-      "editorial_blurb": "AI coding agents already have access to a lot of context. They can index repositories, search files,...",
-      "status": "hidden",
-      "matched_server_slug": "files",
-      "matched_server_name": "Files",
-      "title_normalized": "building a project intelligence layer for ai coding agents",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T14:54:18.284Z"
+      "title_normalized": "beyond the snapshot integrating 30 day environmental intelligence into ai agents",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Building Self-Evolving AI Agents with OpenSpace Using Skills, MCP, Lineage, and Low-Cost Reuse - MarkTechPost",
@@ -1613,7 +1595,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "building self evolving ai agents with openspace using skills mcp lineage and low cost reuse marktechpost",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
     },
     {
@@ -1631,7 +1613,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "kakao s playmcp draws 80 000 daily calls from ai agents seoul economic daily",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -1649,7 +1631,7 @@
       "matched_server_slug": "xytom-coding-tools-mcp",
       "matched_server_name": "Coding Tools",
       "title_normalized": "yellow launches sdk mcp bringing non custodial settlement primitives into ai coding tools yellow com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T15:25:32.817Z"
     },
     {
@@ -1667,7 +1649,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "druva expands ai resilience across copilot claude and mcp virtualization review",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T15:20:17.952Z"
     },
     {
@@ -1685,62 +1667,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mcp update prepares ai agents for widespread deployment techzine global",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
-    },
-    {
-      "title": "We instrumented an AI agent swarm with SigNoz, and its own telemetry told us we were wrong about almost everything",
-      "url": "https://dev.to/himanshu_748/we-instrumented-an-ai-agent-swarm-with-signoz-and-its-own-telemetry-told-us-we-were-wrong-about-3fip",
-      "canonical_url": "https://dev.to/himanshu_748/we-instrumented-an-ai-agent-swarm-with-signoz-and-its-own-telemetry-told-us-we-were-wrong-about-3fip",
-      "source": "Dev.to",
-      "author": "@Himanshu Kumar",
-      "published_at": "2026-07-25T15:01:20Z",
-      "score_signal": 9,
-      "raw_summary": "Built for the WeMakeDevs Agents of SigNoz hackathon, July 2026. Mission Control. The graph is the...",
-      "relevance_score": 0.27999999999999997,
-      "editorial_blurb": "Built for the WeMakeDevs Agents of SigNoz hackathon, July 2026. Mission Control. The graph is the...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "we instrumented an ai agent swarm with signoz and its own telemetry told us we were wrong about almost everything",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "AI vs Generative AI vs AI Agents vs Agentic AI",
-      "url": "https://dev.to/darshanraval/ai-vs-generative-ai-vs-ai-agents-vs-agentic-ai-4daf",
-      "canonical_url": "https://dev.to/darshanraval/ai-vs-generative-ai-vs-ai-agents-vs-agentic-ai-4daf",
-      "source": "Dev.to",
-      "author": "@Darshan Raval",
-      "published_at": "2026-07-25T20:24:13Z",
-      "score_signal": 5,
-      "raw_summary": "If you've been following AI over the past year, you've probably seen these terms...",
-      "relevance_score": 0.2689075625191822,
-      "editorial_blurb": "If you've been following AI over the past year, you've probably seen these terms...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "ai vs generative ai vs ai agents vs agentic ai",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "389 Tests Passed. NIST Still Caught the Bug.",
-      "url": "https://dev.to/copyleftdev/389-tests-passed-nist-still-caught-the-bug-37jh",
-      "canonical_url": "https://dev.to/copyleftdev/389-tests-passed-nist-still-caught-the-bug-37jh",
-      "source": "Dev.to",
-      "author": "@Don Johnson",
-      "published_at": "2026-07-25T06:17:51Z",
-      "score_signal": 4,
-      "raw_summary": "What stress-testing a calculator for AI agents taught me about independent reference data, mutation gates, and sources of truth whose authority can be revoked by evidence.",
-      "relevance_score": 0.26494850021680094,
-      "editorial_blurb": "What stress-testing a calculator for AI agents taught me about independent reference data, mutation gates, and sources of truth whose authority can be revoked…",
-      "status": "hidden",
-      "matched_server_slug": "calculator",
-      "matched_server_name": "Calculator",
-      "title_normalized": "389 tests passed nist still caught the bug",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
       "title": "GitHub: JesusRS1/stock-trade-finance-api — Stock Trade MCP server in Tiingo with stock prices, news, forex, and fundamentals programmatically via the MCP",
@@ -1757,8 +1685,62 @@
       "matched_server_slug": "stock-trade-finance-api",
       "matched_server_name": "Stock Trade MCP Server",
       "title_normalized": "github jesusrs1 stock trade finance api stock trade mcp server in tiingo with stock prices news forex and fundamentals programmatically via the mcp",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T10:39:59.041Z"
+    },
+    {
+      "title": "Building an Autonomy Error Budget Gateway with SigNoz and OpenTelemetry",
+      "url": "https://dev.to/vaibhav_shukla_20/building-an-autonomy-error-budget-gateway-with-signoz-and-opentelemetry-4ia3",
+      "canonical_url": "https://dev.to/vaibhav_shukla_20/building-an-autonomy-error-budget-gateway-with-signoz-and-opentelemetry-4ia3",
+      "source": "Dev.to",
+      "author": "@Vaibhav Shukla",
+      "published_at": "2026-07-26T05:38:53Z",
+      "score_signal": 2,
+      "raw_summary": "I built an AI agent that's allowed to run database migrations and clean up staging tables on its own....",
+      "relevance_score": 0.2538560627359831,
+      "editorial_blurb": "I built an AI agent that's allowed to run database migrations and clean up staging tables on its own....",
+      "status": "hidden",
+      "matched_server_slug": "haymon-ai-database",
+      "matched_server_name": "Database",
+      "title_normalized": "building an autonomy error budget gateway with signoz and opentelemetry",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Your Authz Checks the Caller. The Model Picked the Tenant.",
+      "url": "https://dev.to/alex_spinov/your-authz-checks-the-caller-the-model-picked-the-tenant-3bao",
+      "canonical_url": "https://dev.to/alex_spinov/your-authz-checks-the-caller-the-model-picked-the-tenant-3bao",
+      "source": "Dev.to",
+      "author": "@Alexey Spinov",
+      "published_at": "2026-07-26T03:51:45Z",
+      "score_signal": 2,
+      "raw_summary": "A confused deputy in an AI agent is not a broken authorization check. It is an authz check aimed at...",
+      "relevance_score": 0.2538560627359831,
+      "editorial_blurb": "A confused deputy in an AI agent is not a broken authorization check. It is an authz check aimed at...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "your authz checks the caller the model picked the tenant",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Building AI Agents for Regulated Industries: The Architecture of \"Prepare, Don't Decide\"",
+      "url": "https://dev.to/ritik_makhija_4a77a468ef1/building-ai-agents-for-regulated-industries-the-architecture-of-prepare-dont-decide-10a9",
+      "canonical_url": "https://dev.to/ritik_makhija_4a77a468ef1/building-ai-agents-for-regulated-industries-the-architecture-of-prepare-dont-decide-10a9",
+      "source": "Dev.to",
+      "author": "@Ritik Makhija",
+      "published_at": "2026-07-26T03:41:24Z",
+      "score_signal": 1,
+      "raw_summary": "Most tutorials on AI agents assume the agent should get more autonomous over time — more tools, more...",
+      "relevance_score": 0.24505149978319904,
+      "editorial_blurb": "Most tutorials on AI agents assume the agent should get more autonomous over time — more tools, more...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "building ai agents for regulated industries the architecture of prepare don t decide",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "From ChatGPT to AI Agents: What Actually Changed Between 2022 and 2026",
@@ -1775,7 +1757,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "from chatgpt to ai agents what actually changed between 2022 and 2026",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -1793,7 +1775,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "your ai agent can now pay for almost anything here s what it still can t settle",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -1811,7 +1793,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "elastic cloud mcp let claude query your elasticsearch data in real time",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T15:28:42.208Z"
     },
     {
@@ -1829,7 +1811,7 @@
       "matched_server_slug": "dropbox",
       "matched_server_name": "Dropbox",
       "title_normalized": "dropbox mcp give claude direct access to your file storage and document workflows",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T15:05:13.701Z"
     },
     {
@@ -1847,8 +1829,152 @@
       "matched_server_slug": "twilio",
       "matched_server_name": "Twilio",
       "title_normalized": "twilio mcp control sms voice and chat from your ai workflows",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T20:42:32.521Z"
+    },
+    {
+      "title": "I thought giving my group chat AI assistant Google Calendar would take 5 minutes, and then OAuth humbled me",
+      "url": "https://dev.to/lars_winstand/i-thought-giving-my-group-chat-ai-assistant-google-calendar-would-take-5-minutes-and-then-oauth-93d",
+      "canonical_url": "https://dev.to/lars_winstand/i-thought-giving-my-group-chat-ai-assistant-google-calendar-would-take-5-minutes-and-then-oauth-93d",
+      "source": "Dev.to",
+      "author": "@Lars Winstand",
+      "published_at": "2026-07-26T09:12:27Z",
+      "score_signal": 0,
+      "raw_summary": "Giving an AI agent Google Calendar access is easy in demo mode and surprisingly tricky in production. For self-hosted setups like OpenClaw, n8n, and c",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "Giving an AI agent Google Calendar access is easy in demo mode and surprisingly tricky in production. For self-hosted setups like OpenClaw, n8n, and c",
+      "status": "hidden",
+      "matched_server_slug": "google-calendar",
+      "matched_server_name": "Google Calendar",
+      "title_normalized": "i thought giving my group chat ai assistant google calendar would take 5 minutes and then oauth humbled me",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "How to Connect Claude to the dev.to API and Build a Reusable Skill",
+      "url": "https://dev.to/malcolmlow/how-to-connect-claude-to-the-devto-api-and-build-a-reusable-skill-1jn8",
+      "canonical_url": "https://dev.to/malcolmlow/how-to-connect-claude-to-the-devto-api-and-build-a-reusable-skill-1jn8",
+      "source": "Dev.to",
+      "author": "@Malcolm Low",
+      "published_at": "2026-07-26T08:49:17Z",
+      "score_signal": 0,
+      "raw_summary": "How to connect Claude to dev.to's REST API when no MCP connector exists, turn the workflow into a reusable Claude skill, and why you should never let an AI store your API key.",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "How to connect Claude to dev.to's REST API when no MCP connector exists, turn the workflow into a reusable Claude skill, and why you should never let an AI sto…",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "how to connect claude to the dev to api and build a reusable skill",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Managing Vulnerability Debt in the Age of AI Coding Assistants",
+      "url": "https://dev.to/instasla/managing-vulnerability-debt-in-the-age-of-ai-coding-assistants-jem",
+      "canonical_url": "https://dev.to/instasla/managing-vulnerability-debt-in-the-age-of-ai-coding-assistants-jem",
+      "source": "Dev.to",
+      "author": "@InstaSLA",
+      "published_at": "2026-07-26T08:48:32Z",
+      "score_signal": 0,
+      "raw_summary": "Managing Vulnerability Debt in the Age of AI Coding Assistants Back to blog The Anatomy of...",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "Managing Vulnerability Debt in the Age of AI Coding Assistants Back to blog The Anatomy of...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "managing vulnerability debt in the age of ai coding assistants",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "I Opened a GitHub Issue and Four AI Agents Fixed It Without Me Touching a Single Line of Code",
+      "url": "https://dev.to/sowaiba01/i-opened-a-github-issue-and-four-ai-agents-fixed-it-without-me-touching-a-single-line-of-code-1pg5",
+      "canonical_url": "https://dev.to/sowaiba01/i-opened-a-github-issue-and-four-ai-agents-fixed-it-without-me-touching-a-single-line-of-code-1pg5",
+      "source": "Dev.to",
+      "author": "@Sowaiba Arshad",
+      "published_at": "2026-07-26T07:30:52Z",
+      "score_signal": 0,
+      "raw_summary": "I want to be honest with you. When I started this project I did not actually believe it would...",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "I want to be honest with you. When I started this project I did not actually believe it would...",
+      "status": "hidden",
+      "matched_server_slug": "goreleaser-mcp",
+      "matched_server_name": "Github",
+      "title_normalized": "i opened a github issue and four ai agents fixed it without me touching a single line of code",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Six Checks Before You Trust an AI Agent Skill",
+      "url": "https://dev.to/skyestrela/six-checks-before-you-trust-an-ai-agent-skill-4nm9",
+      "canonical_url": "https://dev.to/skyestrela/six-checks-before-you-trust-an-ai-agent-skill-4nm9",
+      "source": "Dev.to",
+      "author": "@skyestrela",
+      "published_at": "2026-07-26T07:10:00Z",
+      "score_signal": 0,
+      "raw_summary": "Agent skills are becoming a convenient way to reuse instructions across coding sessions. Instead of...",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "Agent skills are becoming a convenient way to reuse instructions across coding sessions. Instead of...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "six checks before you trust an ai agent skill",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Sybil-Resistant Reputation for AI Agents: A Reference Implementation published: false tags: ai, blockchain, ethereum, opensource",
+      "url": "https://dev.to/kenji_moto_7516ae44b1bdac/sybil-resistant-reputation-for-ai-agents-a-reference-implementation-published-false-tags-ai-3h5o",
+      "canonical_url": "https://dev.to/kenji_moto_7516ae44b1bdac/sybil-resistant-reputation-for-ai-agents-a-reference-implementation-published-false-tags-ai-3h5o",
+      "source": "Dev.to",
+      "author": "@Kenji Moto",
+      "published_at": "2026-07-26T06:37:45Z",
+      "score_signal": 0,
+      "raw_summary": "The problem, in one sentence If creating a fake AI agent identity costs nothing, and reputation is...",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "The problem, in one sentence If creating a fake AI agent identity costs nothing, and reputation is...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "sybil resistant reputation for ai agents a reference implementation published false tags ai blockchain ethereum opensource",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Dual-Tier Memory Architecture for AI Agents: How Local Vector Search Scales to 14,726 Memories Without Pinecone",
+      "url": "https://dev.to/hypernexus/dual-tier-memory-architecture-for-ai-agents-how-local-vector-search-scales-to-14726-memories-2617",
+      "canonical_url": "https://dev.to/hypernexus/dual-tier-memory-architecture-for-ai-agents-how-local-vector-search-scales-to-14726-memories-2617",
+      "source": "Dev.to",
+      "author": "@HyperNexus",
+      "published_at": "2026-07-26T04:19:40Z",
+      "score_signal": 0,
+      "raw_summary": "Dual-Tier Memory Architecture for AI Agents: How Local Vector Search Scales to 14,726 Memories...",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "Dual-Tier Memory Architecture for AI Agents: How Local Vector Search Scales to 14,726 Memories...",
+      "status": "hidden",
+      "matched_server_slug": "memory",
+      "matched_server_name": "Memory",
+      "title_normalized": "dual tier memory architecture for ai agents how local vector search scales to 14 726 memories without pinecone",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "AI Agent Safety and Compliance Tools: A 2026 Comparison",
+      "url": "https://dev.to/comikii/ai-agent-safety-and-compliance-tools-a-2026-comparison-eb0",
+      "canonical_url": "https://dev.to/comikii/ai-agent-safety-and-compliance-tools-a-2026-comparison-eb0",
+      "source": "Dev.to",
+      "author": "@Collin obey",
+      "published_at": "2026-07-25T21:09:09Z",
+      "score_signal": 0,
+      "raw_summary": "Three categories of AI agent safety tooling: observability, security guardrails, and compliance...",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "Three categories of AI agent safety tooling: observability, security guardrails, and compliance...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "ai agent safety and compliance tools a 2026 comparison",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Your Database MCP Is Lying to You",
@@ -1865,61 +1991,7 @@
       "matched_server_slug": "database-haymon-ai",
       "matched_server_name": "Database MCP",
       "title_normalized": "your database mcp is lying to you",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "My AI Agent Refunded a Customer Twice, and Every Status Code Was 200",
-      "url": "https://dev.to/animaregem/my-ai-agent-refunded-a-customer-twice-and-every-status-code-was-200-2d2k",
-      "canonical_url": "https://dev.to/animaregem/my-ai-agent-refunded-a-customer-twice-and-every-status-code-was-200-2d2k",
-      "source": "Dev.to",
-      "author": "@Monarch",
-      "published_at": "2026-07-25T19:43:54Z",
-      "score_signal": 0,
-      "raw_summary": "Last weekend, during the Agents of SigNoz hackathon, I wanted to avoid building yet another...",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "Last weekend, during the Agents of SigNoz hackathon, I wanted to avoid building yet another...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "my ai agent refunded a customer twice and every status code was 200",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "How We Solved Agent Auth Without a Single PAT",
-      "url": "https://dev.to/m_v2n2x/how-we-solved-agent-auth-without-a-single-pat-1fnd",
-      "canonical_url": "https://dev.to/m_v2n2x/how-we-solved-agent-auth-without-a-single-pat-1fnd",
-      "source": "Dev.to",
-      "author": "@Mohamed Sherif",
-      "published_at": "2026-07-25T17:12:48Z",
-      "score_signal": 0,
-      "raw_summary": "A TOFU-based authorization model for headless AI agents By Mohamed Sherif If you’ve built an AI...",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "A TOFU-based authorization model for headless AI agents By Mohamed Sherif If you’ve built an AI...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "how we solved agent auth without a single pat",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "I built a production AI agent as a Honda service advisor. Then I read the textbook.",
-      "url": "https://dev.to/andersonasprilla/i-built-a-production-ai-agent-as-a-honda-service-advisor-then-i-read-the-textbook-a72",
-      "canonical_url": "https://dev.to/andersonasprilla/i-built-a-production-ai-agent-as-a-honda-service-advisor-then-i-read-the-textbook-a72",
-      "source": "Dev.to",
-      "author": "@Anderson",
-      "published_at": "2026-07-25T16:22:26Z",
-      "score_signal": 0,
-      "raw_summary": "Shipping an LLM agent to real customers taught me one rule the hard way — the model classifies, code guarantees. Then I read AI Engineering and found out half of what I'd built already had names, and one big thing was missing.",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "Shipping an LLM agent to real customers taught me one rule the hard way — the model classifies, code guarantees. Then I read AI Engineering and found out half…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "i built a production ai agent as a honda service advisor then i read the textbook",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
     },
     {
@@ -1937,7 +2009,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "what if mcp could manage your entire development runtime",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
     },
     {
@@ -1955,7 +2027,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "how to track what hedge funds are buying directly from your ai agent",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
     },
     {
@@ -1973,25 +2045,7 @@
       "matched_server_slug": "routine",
       "matched_server_name": "Routine",
       "title_normalized": "mcp 2026 07 28 a migration checklist for stateless servers and safer agent tools",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T14:54:18.284Z"
-    },
-    {
-      "title": "Transport, Surface, Skin: Building MCP Plugins That Survive the Spec",
-      "url": "https://dev.to/quotentiroler/transport-surface-skin-building-mcp-plugins-that-survive-the-spec-5dln",
-      "canonical_url": "https://dev.to/quotentiroler/transport-surface-skin-building-mcp-plugins-that-survive-the-spec-5dln",
-      "source": "Dev.to",
-      "author": "@Maximilian Nussbaumer",
-      "published_at": "2026-07-25T12:57:57Z",
-      "score_signal": 0,
-      "raw_summary": "Software engineering is dead. That is what they say. Partially true. Some traditional elements of...",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "Software engineering is dead. That is what they say. Partially true. Some traditional elements of...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "transport surface skin building mcp plugins that survive the spec",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -2009,44 +2063,8 @@
       "matched_server_slug": "memory",
       "matched_server_name": "Memory",
       "title_normalized": "my ai agent kept compressing the same conversation here s how i fixed the anti thrashing bug",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
-    },
-    {
-      "title": "Cross-Harness Tool Parity: Write One Custom MCP Tool, Deploy It Everywhere",
-      "url": "https://dev.to/robertpelloni/cross-harness-tool-parity-write-one-custom-mcp-tool-deploy-it-everywhere-1elo",
-      "canonical_url": "https://dev.to/robertpelloni/cross-harness-tool-parity-write-one-custom-mcp-tool-deploy-it-everywhere-1elo",
-      "source": "Dev.to",
-      "author": "@Robert Pelloni",
-      "published_at": "2026-07-25T00:02:29Z",
-      "score_signal": 0,
-      "raw_summary": "Cross-Harness Tool Parity: Write One Custom MCP Tool, Deploy It Everywhere Achieving true tool...",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "Cross-Harness Tool Parity: Write One Custom MCP Tool, Deploy It Everywhere Achieving true tool...",
-      "status": "hidden",
-      "matched_server_slug": "harness",
-      "matched_server_name": "Harness",
-      "title_normalized": "cross harness tool parity write one custom mcp tool deploy it everywhere",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
-    },
-    {
-      "title": "Beyond The Single-Agent Ceiling: Scale Out With MCP Agent Teams",
-      "url": "https://dev.to/aws-heroes/beyond-the-single-agent-ceiling-scale-out-with-mcp-agent-teams-80b",
-      "canonical_url": "https://dev.to/aws-heroes/beyond-the-single-agent-ceiling-scale-out-with-mcp-agent-teams-80b",
-      "source": "Dev.to",
-      "author": "@Guy",
-      "published_at": "2026-07-24T22:10:08Z",
-      "score_signal": 0,
-      "raw_summary": "Most people's experience with AI is a conversation with one assistant. ChatGPT, Claude, and similar...",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "Most people's experience with AI is a conversation with one assistant. ChatGPT, Claude, and similar...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "beyond the single agent ceiling scale out with mcp agent teams",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
       "title": "Two Juejin reviews of AI coding tools, two top-eights that share one name",
@@ -2063,7 +2081,7 @@
       "matched_server_slug": "xytom-coding-tools-mcp",
       "matched_server_name": "Coding Tools",
       "title_normalized": "two juejin reviews of ai coding tools two top eights that share one name",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T20:54:44.554Z"
     },
     {
@@ -2081,7 +2099,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "ibm cloud mcp control ibm cloud infrastructure and watson ai directly from claude",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -2099,44 +2117,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "multi agent ai for production security operations an a2a and mcp architecture in a 5g core infoq com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T10:10:52.785Z"
-    },
-    {
-      "title": "How to Set Up GitHub Copilot: 13 Steps, 60 Min [2026] - tech-insider.org",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XWE5ySGdHU2tlcHJCeFgxUTR6Z3hlaDhJRW1kMXlDcElPUWV4TTJ0ZWgxQ0RkZm9qenVDNjh5S09ZWWtRVkU1ZWpjem11N094YVQ2eHNEaDY5a1dlLTZGdXhlNDA?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XWE5ySGdHU2tlcHJCeFgxUTR6Z3hlaDhJRW1kMXlDcElPUWV4TTJ0ZWgxQ0RkZm9qenVDNjh5S09ZWWtRVkU1ZWpjem11N094YVQ2eHNEaDY5a1dlLTZGdXhlNDA?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-24T08:50:21.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XWE5ySGdHU2tlcHJCeFgxUTR6Z3hlaDhJRW1kMXlDcElPUWV4TTJ0ZWgxQ0RkZm9qenVDNjh5S09ZWWtRVkU1ZWpjem11N094YVQ2eHNEaDY5a1dlLTZGdXhlNDA?oc=5\" target=\"_blank\"&gt;How to Set Up GitHub Copilot: 13 Steps, 60 Min [2026]&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;tech-insider.org&lt;/font&gt;",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XWE5ySGdHU2tlcHJCeFgxUTR6Z3hlaDhJRW1kMXlDcElPUWV4TTJ0ZWgxQ0RkZm9qenVDNjh5S09ZWWtRVkU1ZWpjem11N0…",
-      "status": "hidden",
-      "matched_server_slug": "goreleaser-mcp",
-      "matched_server_name": "Github",
-      "title_normalized": "how to set up github copilot 13 steps 60 min 2026 tech insider org",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
-    },
-    {
-      "title": "JAMS Launches AI for Enterprise Job Scheduling: JAX and JAMS MCP, on the Model You Choose - PR Newswire UK",
-      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOR215UENBN2Y5T2JFb3VkQVlwcmpldGloQk5PY2ZnaFlJSkFLeVlieHVIb0FXODJvRG9nbnR3b2hSNThYa2M0RjBuanhMQk1Xa1RYdXhXSzFOQWZtQWpFUVQ0NWJlS0lxclVxX2NxOUtZUVZGN0xURGxkUXdFSHFSdFZvQVFjWVctMk1aSU4yMUhIbFZCNDdENHp3NmhodUF5bFRMR21hMzRhbkJiZENBYmRDc21OdmJPV05HUnljQWd1VXprS3duekZKU0R5bUNUckIxYVFxanVXUGluTHc?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOR215UENBN2Y5T2JFb3VkQVlwcmpldGloQk5PY2ZnaFlJSkFLeVlieHVIb0FXODJvRG9nbnR3b2hSNThYa2M0RjBuanhMQk1Xa1RYdXhXSzFOQWZtQWpFUVQ0NWJlS0lxclVxX2NxOUtZUVZGN0xURGxkUXdFSHFSdFZvQVFjWVctMk1aSU4yMUhIbFZCNDdENHp3NmhodUF5bFRMR21hMzRhbkJiZENBYmRDc21OdmJPV05HUnljQWd1VXprS3duekZKU0R5bUNUckIxYVFxanVXUGluTHc?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-24T08:30:00.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMi3gFBVV95cUxOR215UENBN2Y5T2JFb3VkQVlwcmpldGloQk5PY2ZnaFlJSkFLeVlieHVIb0FXODJvRG9nbnR3b2hSNThYa2M0RjBuanhMQk1Xa1RYdXhXSzFOQWZtQWpFUVQ0NWJlS0lxclVxX2NxOUtZUVZGN0xURGxkUXdFSHFSdFZvQVFjWVctMk1aSU4yMUhIbFZCNDdENHp3NmhodUF5bFRMR21hMzRhbkJiZENBYmRDc21OdmJPV05HUnljQWd1VXprS3duekZKU0R5bUNUckIxYVFxanVXUGluTHc?oc=5\" target=\"_blank\"&gt;JAMS Launches AI for Enterprise Job Scheduling: JAX and JAMS MCP, on the Model You Choose&lt;/a&gt;&amp;nbsp;&amp;nbsp;&l…",
-      "relevance_score": 0.22999999999999998,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMi3gFBVV95cUxOR215UENBN2Y5T2JFb3VkQVlwcmpldGloQk5PY2ZnaFlJSkFLeVlieHVIb0FXODJvRG9nbnR3b2hSNThYa2M0RjBuanhMQk…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "jams launches ai for enterprise job scheduling jax and jams mcp on the model you choose pr newswire uk",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-24T20:54:44.554Z"
     },
     {
       "title": "What Is the Planet MCP and How Do I Install and Use It? - Planet Labs",
@@ -2153,7 +2135,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "what is the planet mcp and how do i install and use it planet labs",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T20:50:35.122Z"
     },
     {
@@ -2171,7 +2153,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "rocketreach launches rocketreach mcp giving ai assistants direct access to 700m verified contacts yahoo finance",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -2189,8 +2171,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "glg launches mcp connector advances frontier of expert research pr newswire",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
+    },
+    {
+      "title": "Fake GitHub projects lure AI agents into malware - Techzine Global",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQUHBLcmIzc3VyeTlXaDNHeGZRaDI4dW1IUnhNdmRKeC1HUGF5TWtLTHh0QlJNbGZ6MTYxUmhZT3pPSmQ0bnotMFlDMkVnMS1aTWJ6NHRGUEdjX0Z3V2pRQ0JyZ2JGbzI0YjAxa0tLNFVjQ3hUNGhNc0lCeFpDZTVfTFM4M2VycEIwN2YtWXBTeFJpNW1uVk40?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQUHBLcmIzc3VyeTlXaDNHeGZRaDI4dW1IUnhNdmRKeC1HUGF5TWtLTHh0QlJNbGZ6MTYxUmhZT3pPSmQ0bnotMFlDMkVnMS1aTWJ6NHRGUEdjX0Z3V2pRQ0JyZ2JGbzI0YjAxa0tLNFVjQ3hUNGhNc0lCeFpDZTVfTFM4M2VycEIwN2YtWXBTeFJpNW1uVk40?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-22T11:23:44.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxQUHBLcmIzc3VyeTlXaDNHeGZRaDI4dW1IUnhNdmRKeC1HUGF5TWtLTHh0QlJNbGZ6MTYxUmhZT3pPSmQ0bnotMFlDMkVnMS1aTWJ6NHRGUEdjX0Z3V2pRQ0JyZ2JGbzI0YjAxa0tLNFVjQ3hUNGhNc0lCeFpDZTVfTFM4M2VycEIwN2YtWXBTeFJpNW1uVk40?oc=5\" target=\"_blank\"&gt;Fake GitHub projects lure AI agents into malware&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;Techzine Global&lt;/font&gt;",
+      "relevance_score": 0.22999999999999998,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxQUHBLcmIzc3VyeTlXaDNHeGZRaDI4dW1IUnhNdmRKeC1HUGF5TWtLTHh0QlJNbGZ6MTYxUmhZT3pPSmQ0bnotMFlDMkVnMS…",
+      "status": "hidden",
+      "matched_server_slug": "goreleaser-mcp",
+      "matched_server_name": "Github",
+      "title_normalized": "fake github projects lure ai agents into malware techzine global",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Microsoft Azure DevOps MCP Flaw Lets Hidden PR Comments Hijack AI Review Agents - The Hacker News",
@@ -2207,7 +2207,7 @@
       "matched_server_slug": "azure-devops",
       "matched_server_name": "Azure DevOps",
       "title_normalized": "microsoft azure devops mcp flaw lets hidden pr comments hijack ai review agents the hacker news",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T10:13:58.099Z"
     },
     {
@@ -2225,7 +2225,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mcp hits 10 000 servers as biggest update ships 2026 tech insider org",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-22T10:13:58.099Z"
     },
     {
@@ -2243,7 +2243,7 @@
       "matched_server_slug": "webflow",
       "matched_server_name": "Webflow",
       "title_normalized": "webflow mcp 2 0 adds brand controls for ai websites cmswire",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
     },
     {
@@ -2261,7 +2261,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "what we learned building enterprise mcp at bloomberg bloomberg com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
     },
     {
@@ -2279,7 +2279,7 @@
       "matched_server_slug": "figma",
       "matched_server_name": "Figma",
       "title_normalized": "mcp for designers what it is and how to use it figma",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T10:14:29.946Z"
     },
     {
@@ -2297,7 +2297,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "ai agents expand creative tools to millions nvidia at siggraph gamesbeat",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -2315,7 +2315,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "turn your ai coding assistant into a video director i found this open source gem",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -2333,7 +2333,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "mcp for marketers what to connect first amp why your data wins search engine journal",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -2351,7 +2351,7 @@
       "matched_server_slug": "mongodb",
       "matched_server_name": "MongoDB",
       "title_normalized": "mongodb mcp let ai query and manage your nosql data",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -2369,7 +2369,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "the secret problem in ai infrastructure why mcp security starts with secrets cybersecurity dive",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -2387,7 +2387,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "ai s new usb port what the mcp standard means for the music industry music ally",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T10:39:59.041Z"
     },
     {
@@ -2405,7 +2405,7 @@
       "matched_server_slug": "snowflake",
       "matched_server_name": "Snowflake",
       "title_normalized": "snowflake mcp query your data warehouse directly from claude",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-19T14:46:07.275Z"
     },
     {
@@ -2423,7 +2423,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "zendesk mcp let claude handle your support tickets",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T10:39:59.041Z"
     },
     {
@@ -2441,7 +2441,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "the mcp debate has a context problem the new stack",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T10:10:52.785Z"
     },
     {
@@ -2459,7 +2459,7 @@
       "matched_server_slug": "salesforce",
       "matched_server_name": "Salesforce",
       "title_normalized": "integration as intelligence amazon connect customer integrates with salesforce via mcp amazon web services aws",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-14T15:15:53.321Z"
     },
     {
@@ -2469,15 +2469,15 @@
       "source": "GitHub",
       "author": "cporter202",
       "published_at": "2026-07-22T03:35:56Z",
-      "score_signal": 79,
+      "score_signal": 89,
       "raw_summary": "An unofficial, categorized directory of 118 CoreClaw Worker APIs for web scraping, automation, lead generation, e-commerce, social data, and more.",
-      "relevance_score": 0.04515449934959717,
+      "relevance_score": 0.047712125471966224,
       "editorial_blurb": "An unofficial, categorized directory of 118 CoreClaw Worker APIs for web scraping, automation, lead generation, e-commerce, social data, and more.",
       "status": "hidden",
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "github cporter202 coreclaw api directory an unofficial categorized directory of 118 coreclaw worker apis for web scraping automation lead generation e commerce social data and more",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -2487,178 +2487,250 @@
       "source": "GitHub",
       "author": "ddyy",
       "published_at": "2026-07-20T23:58:28Z",
-      "score_signal": 76,
+      "score_signal": 82,
       "raw_summary": "Full-stack ecommerce on Cloudflare Workers, D1, and R2 - with admin, Stripe, OpenNode, Lightning payments, and agent-ready APIs.",
-      "relevance_score": 0.04432453625862408,
+      "relevance_score": 0.04595390461880369,
       "editorial_blurb": "Full-stack ecommerce on Cloudflare Workers, D1, and R2 - with admin, Stripe, OpenNode, Lightning payments, and agent-ready APIs.",
       "status": "hidden",
       "matched_server_slug": "cloudflare",
       "matched_server_name": "Cloudflare",
       "title_normalized": "github ddyy minshop full stack ecommerce on cloudflare workers d1 and r2 with admin stripe opennode lightning payments and agent ready apis",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
-      "title": "I Built an Autonomous Earning Loop on OpenClaw — Here's the Blueprint",
-      "url": "https://dev.to/hamo_e38ec2422de5ab43c6c6/i-built-an-autonomous-earning-loop-on-openclaw-heres-the-blueprint-460h",
-      "canonical_url": "https://dev.to/hamo_e38ec2422de5ab43c6c6/i-built-an-autonomous-earning-loop-on-openclaw-heres-the-blueprint-460h",
+      "title": "What 14 Years of a Code-Download Site Taught Us About Demand in the AI Era",
+      "url": "https://dev.to/zuidaima/what-14-years-of-a-code-download-site-taught-us-about-demand-in-the-ai-era-1al0",
+      "canonical_url": "https://dev.to/zuidaima/what-14-years-of-a-code-download-site-taught-us-about-demand-in-the-ai-era-1al0",
       "source": "Dev.to",
-      "author": "@Hamo",
-      "published_at": "2026-07-25T20:32:30Z",
+      "author": "@zuidaima",
+      "published_at": "2026-07-26T08:52:50Z",
       "score_signal": 0,
-      "raw_summary": "Three lanes, one cron tick, $30-60/month in compute. Not $1000/day fantasy — just persistent 24/7 execution of content, bounties, and signals. Here's the exact architecture and what it actually earns.",
+      "raw_summary": "I run Zuidaima (“Most Code”), a Chinese source-code sharing site that launched in 2012. At its peak...",
       "relevance_score": 0,
-      "editorial_blurb": "Three lanes, one cron tick, $30-60/month in compute. Not $1000/day fantasy — just persistent 24/7 execution of content, bounties, and signals. Here's the exact…",
+      "editorial_blurb": "I run Zuidaima (“Most Code”), a Chinese source-code sharing site that launched in 2012. At its peak...",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
-      "title_normalized": "i built an autonomous earning loop on openclaw here s the blueprint",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
+      "title_normalized": "what 14 years of a code download site taught us about demand in the ai era",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
-      "title": "\"Take the Well-Maintained Road Over Risky Shortcuts\": Ditching Web Scraping for an AI App Powered by Official RSS & Gemini (Lessons from Logistics)",
-      "url": "https://dev.to/tosane932/take-the-well-maintained-road-over-risky-shortcuts-ditching-web-scraping-for-an-ai-app-powered-3gn4",
-      "canonical_url": "https://dev.to/tosane932/take-the-well-maintained-road-over-risky-shortcuts-ditching-web-scraping-for-an-ai-app-powered-3gn4",
-      "source": "Dev.to",
-      "author": "@tosane932",
-      "published_at": "2026-07-25T20:11:43Z",
-      "score_signal": 0,
-      "raw_summary": "Design Philosophy and Practical Solutions of \"Puoppo,\" an Automated AI Trend Analysis System...",
-      "relevance_score": 0,
-      "editorial_blurb": "Design Philosophy and Practical Solutions of \"Puoppo,\" an Automated AI Trend Analysis System...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "take the well maintained road over risky shortcuts ditching web scraping for an ai app powered by official rss gemini lessons from logistics",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "I built a tool to prove my multi-agent harness was worth it. It told me it wasn't.",
-      "url": "https://dev.to/agentdev9/i-built-a-tool-to-prove-my-multi-agent-harness-was-worth-it-it-told-me-it-wasnt-do",
-      "canonical_url": "https://dev.to/agentdev9/i-built-a-tool-to-prove-my-multi-agent-harness-was-worth-it-it-told-me-it-wasnt-do",
-      "source": "Dev.to",
-      "author": "@Erik Hill",
-      "published_at": "2026-07-25T20:06:31Z",
-      "score_signal": 0,
-      "raw_summary": "I spend most of my time on agentic systems, and I had absorbed the same idea everyone else has: a...",
-      "relevance_score": 0,
-      "editorial_blurb": "I spend most of my time on agentic systems, and I had absorbed the same idea everyone else has: a...",
-      "status": "hidden",
-      "matched_server_slug": "harness",
-      "matched_server_name": "Harness",
-      "title_normalized": "i built a tool to prove my multi agent harness was worth it it told me it wasn t",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "From Policy to Pipeline: Making Compliance an Engineering Property",
-      "url": "https://dev.to/anusha_mukka/from-policy-to-pipeline-making-compliance-an-engineering-property-35ap",
-      "canonical_url": "https://dev.to/anusha_mukka/from-policy-to-pipeline-making-compliance-an-engineering-property-35ap",
-      "source": "Dev.to",
-      "author": "@Anusha Mukka",
-      "published_at": "2026-07-25T19:41:30Z",
-      "score_signal": 0,
-      "raw_summary": "Part 4 of \"Trust the Machine\" —&gt; a series on building AI infrastructure that is secure, compliant,...",
-      "relevance_score": 0,
-      "editorial_blurb": "Part 4 of \"Trust the Machine\" —&gt; a series on building AI infrastructure that is secure, compliant,...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "from policy to pipeline making compliance an engineering property",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "Why I built a Trust Control Plane for AI instead of another cost router",
-      "url": "https://dev.to/ajhydra/why-i-built-a-trust-control-plane-for-ai-instead-of-another-cost-router-1bc5",
-      "canonical_url": "https://dev.to/ajhydra/why-i-built-a-trust-control-plane-for-ai-instead-of-another-cost-router-1bc5",
-      "source": "Dev.to",
-      "author": "@Ankit",
-      "published_at": "2026-07-25T19:34:58Z",
-      "score_signal": 0,
-      "raw_summary": "Every AI router I tried optimized for one thing: cost. None could answer the question I actually...",
-      "relevance_score": 0,
-      "editorial_blurb": "Every AI router I tried optimized for one thing: cost. None could answer the question I actually...",
-      "status": "hidden",
-      "matched_server_slug": "controlplane-com-ai-plugin",
-      "matched_server_name": "Control Plane",
-      "title_normalized": "why i built a trust control plane for ai instead of another cost router",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "1,377 frames in, 60 out, and none of them knew what time it was",
-      "url": "https://dev.to/huangchihhungleo/1377-frames-in-60-out-and-none-of-them-knew-what-time-it-was-29a5",
-      "canonical_url": "https://dev.to/huangchihhungleo/1377-frames-in-60-out-and-none-of-them-knew-what-time-it-was-29a5",
+      "title": "The Underrated AI Tool That Lets Any LLM Watch Videos",
+      "url": "https://dev.to/huangchihhungleo/the-underrated-ai-tool-that-lets-any-llm-watch-videos-2ahb",
+      "canonical_url": "https://dev.to/huangchihhungleo/the-underrated-ai-tool-that-lets-any-llm-watch-videos-2ahb",
       "source": "Dev.to",
       "author": "@Leo Huang",
-      "published_at": "2026-07-25T19:12:34Z",
+      "published_at": "2026-07-26T08:51:12Z",
       "score_signal": 0,
-      "raw_summary": "A user opened an issue on my open-source video tool last week that named a gap I had been shipping...",
+      "raw_summary": "I spent this month testing the ways people actually get an LLM to \"watch\" a video. One of them got a...",
       "relevance_score": 0,
-      "editorial_blurb": "A user opened an issue on my open-source video tool last week that named a gap I had been shipping...",
+      "editorial_blurb": "I spent this month testing the ways people actually get an LLM to \"watch\" a video. One of them got a...",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
-      "title_normalized": "1 377 frames in 60 out and none of them knew what time it was",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
+      "title_normalized": "the underrated ai tool that lets any llm watch videos",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
-      "title": "Kmemo: a semantic cache for LLM calls that refuses to serve you the wrong answer",
-      "url": "https://dev.to/tonytonycoder11/kmemo-a-semantic-cache-for-llm-calls-that-refuses-to-serve-you-the-wrong-answer-54h7",
-      "canonical_url": "https://dev.to/tonytonycoder11/kmemo-a-semantic-cache-for-llm-calls-that-refuses-to-serve-you-the-wrong-answer-54h7",
+      "title": "Building a GitHub App That Reviews Its Own Code: Lessons in Security Hardening",
+      "url": "https://dev.to/shweta_mishra_b3c97874de9/building-a-github-app-that-reviews-its-own-code-lessons-in-security-hardening-4ha7",
+      "canonical_url": "https://dev.to/shweta_mishra_b3c97874de9/building-a-github-app-that-reviews-its-own-code-lessons-in-security-hardening-4ha7",
       "source": "Dev.to",
-      "author": "@AS",
-      "published_at": "2026-07-25T18:50:51Z",
-      "score_signal": 1,
-      "raw_summary": "Semantic caching cuts LLM cost and latency, and it will happily hand back the answer to a question nobody asked. Kmemo treats that failure as the main problem rather than a footnote.",
-      "relevance_score": 0,
-      "editorial_blurb": "Semantic caching cuts LLM cost and latency, and it will happily hand back the answer to a question nobody asked. Kmemo treats that failure as the main problem…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "kmemo a semantic cache for llm calls that refuses to serve you the wrong answer",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "From One-Shot LLM to Multi-Turn Agent: How I Rebuilt My Text-to-Diagram Tool",
-      "url": "https://dev.to/_94be737e156beb4d74df2/from-one-shot-llm-to-multi-turn-agent-how-i-rebuilt-my-text-to-diagram-tool-204l",
-      "canonical_url": "https://dev.to/_94be737e156beb4d74df2/from-one-shot-llm-to-multi-turn-agent-how-i-rebuilt-my-text-to-diagram-tool-204l",
-      "source": "Dev.to",
-      "author": "@Zhengxin",
-      "published_at": "2026-07-25T16:57:24Z",
-      "score_signal": 1,
-      "raw_summary": "The problem: one LLM call isn't enough I built an AI tool that turns natural language into...",
-      "relevance_score": 0,
-      "editorial_blurb": "The problem: one LLM call isn't enough I built an AI tool that turns natural language into...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "from one shot llm to multi turn agent how i rebuilt my text to diagram tool",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "We Asked SigNoz How to Flag a Hallucinating Agent. They Said \"We Haven't Figured That Out.\" So We Did.",
-      "url": "https://dev.to/emmanuel_joshua_b3935fe49/we-asked-signoz-how-to-flag-a-hallucinating-agent-they-said-we-havent-figured-that-out-so-we-105c",
-      "canonical_url": "https://dev.to/emmanuel_joshua_b3935fe49/we-asked-signoz-how-to-flag-a-hallucinating-agent-they-said-we-havent-figured-that-out-so-we-105c",
-      "source": "Dev.to",
-      "author": "@Emmanuel Joshua",
-      "published_at": "2026-07-25T15:49:16Z",
+      "author": "@Shweta Mishra",
+      "published_at": "2026-07-26T08:44:16Z",
       "score_signal": 0,
-      "raw_summary": "By Team ThunderBoltz · Agents of SigNoz Hackathon · Track 1: AI &amp; Agent Observability In the...",
+      "raw_summary": "How I turned 27 silent failures into logged ones, closed three real attack surfaces, and pushed test...",
       "relevance_score": 0,
-      "editorial_blurb": "By Team ThunderBoltz · Agents of SigNoz Hackathon · Track 1: AI &amp; Agent Observability In the...",
+      "editorial_blurb": "How I turned 27 silent failures into logged ones, closed three real attack surfaces, and pushed test...",
+      "status": "hidden",
+      "matched_server_slug": "goreleaser-mcp",
+      "matched_server_name": "Github",
+      "title_normalized": "building a github app that reviews its own code lessons in security hardening",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "AI made novel exploits cheap. Your signature stack didn't get the memo.",
+      "url": "https://dev.to/c_k_eaa0d8cd25e182343052e/ai-made-novel-exploits-cheap-your-signature-stack-didnt-get-the-memo-8pd",
+      "canonical_url": "https://dev.to/c_k_eaa0d8cd25e182343052e/ai-made-novel-exploits-cheap-your-signature-stack-didnt-get-the-memo-8pd",
+      "source": "Dev.to",
+      "author": "@Christopher Karatzinis",
+      "published_at": "2026-07-26T08:24:24Z",
+      "score_signal": 0,
+      "raw_summary": "In October 2024 a Google research agent called Big Sleep read the SQLite source and found a...",
+      "relevance_score": 0,
+      "editorial_blurb": "In October 2024 a Google research agent called Big Sleep read the SQLite source and found a...",
+      "status": "hidden",
+      "matched_server_slug": "sqlite",
+      "matched_server_name": "SQLite",
+      "title_normalized": "ai made novel exploits cheap your signature stack didn t get the memo",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Fail Closed, Not Open: Designing an AI Gateway for Regulated Enterprises",
+      "url": "https://dev.to/abhijat_chaturvedi/fail-closed-not-open-designing-an-ai-gateway-for-regulated-enterprises-3ife",
+      "canonical_url": "https://dev.to/abhijat_chaturvedi/fail-closed-not-open-designing-an-ai-gateway-for-regulated-enterprises-3ife",
+      "source": "Dev.to",
+      "author": "@Abhijat Chaturvedi",
+      "published_at": "2026-07-26T07:46:29Z",
+      "score_signal": 0,
+      "raw_summary": "\"Why did this request go to that model?\" If your company uses LLMs across more than one team,...",
+      "relevance_score": 0,
+      "editorial_blurb": "\"Why did this request go to that model?\" If your company uses LLMs across more than one team,...",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
-      "title_normalized": "we asked signoz how to flag a hallucinating agent they said we haven t figured that out so we did",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T20:40:06.998Z"
+      "title_normalized": "fail closed not open designing an ai gateway for regulated enterprises",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Building Responsible AI Ecosystems for Public Sector Transformation",
+      "url": "https://dev.to/katul1512/building-responsible-ai-ecosystems-for-public-sector-transformation-15kc",
+      "canonical_url": "https://dev.to/katul1512/building-responsible-ai-ecosystems-for-public-sector-transformation-15kc",
+      "source": "Dev.to",
+      "author": "@Atul Kumar",
+      "published_at": "2026-07-26T06:54:22Z",
+      "score_signal": 5,
+      "raw_summary": "A private company can release a flawed AI feature, roll it back, apologise, and move on. A government...",
+      "relevance_score": 0,
+      "editorial_blurb": "A private company can release a flawed AI feature, roll it back, apologise, and move on. A government...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "building responsible ai ecosystems for public sector transformation",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "What I Learned Building a One-Photo AI Photoshoot Workflow",
+      "url": "https://dev.to/ionmosnoi/what-i-learned-building-a-one-photo-ai-photoshoot-workflow-c30",
+      "canonical_url": "https://dev.to/ionmosnoi/what-i-learned-building-a-one-photo-ai-photoshoot-workflow-c30",
+      "source": "Dev.to",
+      "author": "@Moșnoi Ion",
+      "published_at": "2026-07-26T06:45:24Z",
+      "score_signal": 0,
+      "raw_summary": "Product and engineering lessons from building a pack-based AI photo workflow around a single reference portrait.",
+      "relevance_score": 0,
+      "editorial_blurb": "Product and engineering lessons from building a pack-based AI photo workflow around a single reference portrait.",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "what i learned building a one photo ai photoshoot workflow",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Day 16/30: Supervisor Pattern",
+      "url": "https://dev.to/yashwanth_kasi/day-1630-supervisor-pattern-3ghc",
+      "canonical_url": "https://dev.to/yashwanth_kasi/day-1630-supervisor-pattern-3ghc",
+      "source": "Dev.to",
+      "author": "@Kasi Yaswanth",
+      "published_at": "2026-07-26T05:51:16Z",
+      "score_signal": 0,
+      "raw_summary": "Improve bot performance with the Supervisor pattern and specialized worker agents",
+      "relevance_score": 0,
+      "editorial_blurb": "Improve bot performance with the Supervisor pattern and specialized worker agents",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "day 16 30 supervisor pattern",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "A changed payTo address is not a honeypot: 272 payTo changes, 13 lookalikes, zero proof",
+      "url": "https://dev.to/jiangw2718i/a-changed-payto-address-is-not-a-honeypot-272-payto-changes-13-lookalikes-zero-proof-1jb",
+      "canonical_url": "https://dev.to/jiangw2718i/a-changed-payto-address-is-not-a-honeypot-272-payto-changes-13-lookalikes-zero-proof-1jb",
+      "source": "Dev.to",
+      "author": "@Jiangw2718i",
+      "published_at": "2026-07-26T05:17:44Z",
+      "score_signal": 0,
+      "raw_summary": "In my last post I listed the ways an x402 payment can go wrong. Vector number one was the dynamic...",
+      "relevance_score": 0,
+      "editorial_blurb": "In my last post I listed the ways an x402 payment can go wrong. Vector number one was the dynamic...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "a changed payto address is not a honeypot 272 payto changes 13 lookalikes zero proof",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "I couldn't find a simple agent framework, so I wrote one",
+      "url": "https://dev.to/anmarhaniv1/i-couldnt-find-a-simple-agent-framework-so-i-wrote-one-39jp",
+      "canonical_url": "https://dev.to/anmarhaniv1/i-couldnt-find-a-simple-agent-framework-so-i-wrote-one-39jp",
+      "source": "Dev.to",
+      "author": "@Anmar Hani",
+      "published_at": "2026-07-26T03:43:08Z",
+      "score_signal": 1,
+      "raw_summary": "I keep finding a new agent skill I want to add to my library. Each one is a good addition on its own,...",
+      "relevance_score": 0,
+      "editorial_blurb": "I keep finding a new agent skill I want to add to my library. Each one is a good addition on its own,...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "i couldn t find a simple agent framework so i wrote one",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Open-Weight AI Is Having Its Kubernetes Moment — And Developers Need to Pay Attention",
+      "url": "https://dev.to/jamilxt/open-weight-ai-is-having-its-kubernetes-moment-and-developers-need-to-pay-attention-3n4",
+      "canonical_url": "https://dev.to/jamilxt/open-weight-ai-is-having-its-kubernetes-moment-and-developers-need-to-pay-attention-3n4",
+      "source": "Dev.to",
+      "author": "@jamilxt",
+      "published_at": "2026-07-26T02:09:39Z",
+      "score_signal": 0,
+      "raw_summary": "In 2015, if you were building a distributed system, you faced a choice. Apache Mesos was mature,...",
+      "relevance_score": 0,
+      "editorial_blurb": "In 2015, if you were building a distributed system, you faced a choice. Apache Mesos was mature,...",
+      "status": "hidden",
+      "matched_server_slug": "kubernetes",
+      "matched_server_name": "Kubernetes",
+      "title_normalized": "open weight ai is having its kubernetes moment and developers need to pay attention",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "Your AI database audit log should not become a second database",
+      "url": "https://dev.to/mads_hansen_27b33ebfee4c9/your-ai-database-audit-log-should-not-become-a-second-database-4bnl",
+      "canonical_url": "https://dev.to/mads_hansen_27b33ebfee4c9/your-ai-database-audit-log-should-not-become-a-second-database-4bnl",
+      "source": "Dev.to",
+      "author": "@Mads Hansen",
+      "published_at": "2026-07-26T01:21:58Z",
+      "score_signal": 2,
+      "raw_summary": "An audit log should explain what happened. It should not quietly become a second database containing...",
+      "relevance_score": 0,
+      "editorial_blurb": "An audit log should explain what happened. It should not quietly become a second database containing...",
+      "status": "hidden",
+      "matched_server_slug": "haymon-ai-database",
+      "matched_server_name": "Database",
+      "title_normalized": "your ai database audit log should not become a second database",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
+    },
+    {
+      "title": "When Your AI Code Reviewers Disagree: Inside the 'AI Debate' That Finds Hidden Bugs",
+      "url": "https://dev.to/hypernexus/when-your-ai-code-reviewers-disagree-inside-the-ai-debate-that-finds-hidden-bugs-4l10",
+      "canonical_url": "https://dev.to/hypernexus/when-your-ai-code-reviewers-disagree-inside-the-ai-debate-that-finds-hidden-bugs-4l10",
+      "source": "Dev.to",
+      "author": "@HyperNexus",
+      "published_at": "2026-07-26T00:19:39Z",
+      "score_signal": 0,
+      "raw_summary": "When Your AI Code Reviewers Disagree: Inside the 'AI Debate' That Finds Hidden Bugs Discover how a...",
+      "relevance_score": 0,
+      "editorial_blurb": "When Your AI Code Reviewers Disagree: Inside the 'AI Debate' That Finds Hidden Bugs Discover how a...",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "when your ai code reviewers disagree inside the ai debate that finds hidden bugs",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "My Scripts Say dev.to Blocks \"the Default urllib User-Agent.\" That's Not the Actual Rule.",
@@ -2675,43 +2747,7 @@
       "matched_server_slug": "carry",
       "matched_server_name": "carry",
       "title_normalized": "my scripts say dev to blocks the default urllib user agent that s not the actual rule",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T14:54:18.284Z"
-    },
-    {
-      "title": "Proving your agent did what it claimed: a receipts-based approach",
-      "url": "https://dev.to/maximehoule/proving-your-agent-did-what-it-claimed-a-receipts-based-approach-3app",
-      "canonical_url": "https://dev.to/maximehoule/proving-your-agent-did-what-it-claimed-a-receipts-based-approach-3app",
-      "source": "Dev.to",
-      "author": "@Maxime Houle",
-      "published_at": "2026-07-25T11:44:43Z",
-      "score_signal": 0,
-      "raw_summary": "TL;DR: Your agent said \"done.\" A dependency bumped last week. You cannot actually prove the agent...",
-      "relevance_score": 0,
-      "editorial_blurb": "TL;DR: Your agent said \"done.\" A dependency bumped last week. You cannot actually prove the agent...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "proving your agent did what it claimed a receipts based approach",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T14:54:18.284Z"
-    },
-    {
-      "title": "AppFunctions, revisited",
-      "url": "https://dev.to/tkuenneth/appfunctions-revisited-4n90",
-      "canonical_url": "https://dev.to/tkuenneth/appfunctions-revisited-4n90",
-      "source": "Dev.to",
-      "author": "@Thomas Künneth",
-      "published_at": "2026-07-25T11:36:27Z",
-      "score_signal": 0,
-      "raw_summary": "In Agentic interaction using AppFunctions I showed how Be nice publishes createAppPair for agents,...",
-      "relevance_score": 0,
-      "editorial_blurb": "In Agentic interaction using AppFunctions I showed how Be nice publishes createAppPair for agents,...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "appfunctions revisited",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -2729,26 +2765,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "alexa is about to get smarter forbes",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T20:40:06.998Z"
-    },
-    {
-      "title": "The LLM Waterfall Pattern: Never Let a Rate Limit Kill Your Workflow",
-      "url": "https://dev.to/robertpelloni/the-llm-waterfall-pattern-never-let-a-rate-limit-kill-your-workflow-1ja4",
-      "canonical_url": "https://dev.to/robertpelloni/the-llm-waterfall-pattern-never-let-a-rate-limit-kill-your-workflow-1ja4",
-      "source": "Dev.to",
-      "author": "@Robert Pelloni",
-      "published_at": "2026-07-25T06:16:20Z",
-      "score_signal": 0,
-      "raw_summary": "The LLM Waterfall Pattern: Never Let a Rate Limit Kill Your Workflow Implementing a provider...",
-      "relevance_score": 0,
-      "editorial_blurb": "The LLM Waterfall Pattern: Never Let a Rate Limit Kill Your Workflow Implementing a provider...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "the llm waterfall pattern never let a rate limit kill your workflow",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
       "title": "Day 15/30: Specialist Agents Over Giant Prompts",
@@ -2765,25 +2783,7 @@
       "matched_server_slug": "tasks",
       "matched_server_name": "Tasks",
       "title_normalized": "day 15 30 specialist agents over giant prompts",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-25T09:26:58.994Z"
-    },
-    {
-      "title": "Unlocking Atomic AI: How SKILL.md and the 5,776-Module Skill Registry are Engineering the Future of Developer Workflows",
-      "url": "https://dev.to/robertpelloni/unlocking-atomic-ai-how-skillmd-and-the-5776-module-skill-registry-are-engineering-the-future-of-og0",
-      "canonical_url": "https://dev.to/robertpelloni/unlocking-atomic-ai-how-skillmd-and-the-5776-module-skill-registry-are-engineering-the-future-of-og0",
-      "source": "Dev.to",
-      "author": "@Robert Pelloni",
-      "published_at": "2026-07-25T04:02:07Z",
-      "score_signal": 0,
-      "raw_summary": "Unlocking Atomic AI: How SKILL.md and the 5,776-Module Skill Registry are Engineering the Future of...",
-      "relevance_score": 0,
-      "editorial_blurb": "Unlocking Atomic AI: How SKILL.md and the 5,776-Module Skill Registry are Engineering the Future of...",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "unlocking atomic ai how skill md and the 5 776 module skill registry are engineering the future of developer workflows",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -2801,26 +2801,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "i turned a photo of my handwriting into a real font then open sourced the whole pipeline",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
-      "title": "Microsoft Dynamics 365: An agent-ready business applications platform - Microsoft",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPN3hpRkViUmxaMEhCWHgwdzI2aHlkZjFWa2tEQmFNRktYb2Vya2V0M19sODRtVlhjbF91c08wNEZsVUJJM2dhVWtiMGhmU0FJOUFibXRTeENXMlNIQUdvMU9KQXVRMnRvR2hrenZxQVhmQjkwb1dhTklXalYzcjZ2ZUgweHJvc1VsdWx1SXF4c2RXWElqQUhBN1paV3d4Wk13eFlxOUdDRDlELWtwWnZhNVJSUmVfYWNwMWFWdDVYbnpzZURhbll0a2RYMTVzNFNFTTVGUEVEaUZCQ01nNWQw?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPN3hpRkViUmxaMEhCWHgwdzI2aHlkZjFWa2tEQmFNRktYb2Vya2V0M19sODRtVlhjbF91c08wNEZsVUJJM2dhVWtiMGhmU0FJOUFibXRTeENXMlNIQUdvMU9KQXVRMnRvR2hrenZxQVhmQjkwb1dhTklXalYzcjZ2ZUgweHJvc1VsdWx1SXF4c2RXWElqQUhBN1paV3d4Wk13eFlxOUdDRDlELWtwWnZhNVJSUmVfYWNwMWFWdDVYbnpzZURhbll0a2RYMTVzNFNFTTVGUEVEaUZCQ01nNWQw?oc=5",
+      "title": "Vidmob360 Looks to Bring Creative Intelligence Into the AI Advertising Era - Demand Gen Report",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQR0QzUTJrZFJiOWg2M3FYTU56T2pJaXlRaU5Md1ZTX2U1NEczMzVLMlVkTm5Pc0ZNcTg4clVpT2JWdEhlMldpYzZkdmtoU1JNWkxPYTU5QUxXVnlIY2VQUFBTOXdZRC1XN2RhVG1ZZjJRWXFCSXB2WUt4dWZuMThyZWNicGdnU2hWN2d3cWFFZ0tPYjlnQjZXUWI2aDBudFlqckpmWTVULXluT0NuaFNqc09DbXhjQjg3dGFPZldnY2FTZE56QXhTNEFPM1prZW5qaTJsVg?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQR0QzUTJrZFJiOWg2M3FYTU56T2pJaXlRaU5Md1ZTX2U1NEczMzVLMlVkTm5Pc0ZNcTg4clVpT2JWdEhlMldpYzZkdmtoU1JNWkxPYTU5QUxXVnlIY2VQUFBTOXdZRC1XN2RhVG1ZZjJRWXFCSXB2WUt4dWZuMThyZWNicGdnU2hWN2d3cWFFZ0tPYjlnQjZXUWI2aDBudFlqckpmWTVULXluT0NuaFNqc09DbXhjQjg3dGFPZldnY2FTZE56QXhTNEFPM1prZW5qaTJsVg?oc=5",
       "source": "Google News",
       "author": "",
-      "published_at": "2026-07-23T16:00:00.000Z",
+      "published_at": "2026-07-23T19:00:45.000Z",
       "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxPN3hpRkViUmxaMEhCWHgwdzI2aHlkZjFWa2tEQmFNRktYb2Vya2V0M19sODRtVlhjbF91c08wNEZsVUJJM2dhVWtiMGhmU0FJOUFibXRTeENXMlNIQUdvMU9KQXVRMnRvR2hrenZxQVhmQjkwb1dhTklXalYzcjZ2ZUgweHJvc1VsdWx1SXF4c2RXWElqQUhBN1paV3d4Wk13eFlxOUdDRDlELWtwWnZhNVJSUmVfYWNwMWFWdDVYbnpzZURhbll0a2RYMTVzNFNFTTVGUEVEaUZCQ01nNWQw?oc=5\" target=\"_blank\"&gt;Microsoft Dynamics 365: An agent-ready business applications platform&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f…",
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMi1AFBVV95cUxQR0QzUTJrZFJiOWg2M3FYTU56T2pJaXlRaU5Md1ZTX2U1NEczMzVLMlVkTm5Pc0ZNcTg4clVpT2JWdEhlMldpYzZkdmtoU1JNWkxPYTU5QUxXVnlIY2VQUFBTOXdZRC1XN2RhVG1ZZjJRWXFCSXB2WUt4dWZuMThyZWNicGdnU2hWN2d3cWFFZ0tPYjlnQjZXUWI2aDBudFlqckpmWTVULXluT0NuaFNqc09DbXhjQjg3dGFPZldnY2FTZE56QXhTNEFPM1prZW5qaTJsVg?oc=5\" target=\"_blank\"&gt;Vidmob360 Looks to Bring Creative Intelligence Into the AI Advertising Era&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;De…",
       "relevance_score": 0,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxPN3hpRkViUmxaMEhCWHgwdzI2aHlkZjFWa2tEQmFNRktYb2Vya2V0M19sODRtVlhjbF91c08wNEZsVUJJM2dhVWtiMGhmU0…",
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMi1AFBVV95cUxQR0QzUTJrZFJiOWg2M3FYTU56T2pJaXlRaU5Md1ZTX2U1NEczMzVLMlVkTm5Pc0ZNcTg4clVpT2JWdEhlMldpYzZkdmtoU1…",
       "status": "hidden",
       "matched_server_slug": "",
       "matched_server_name": "",
-      "title_normalized": "microsoft dynamics 365 an agent ready business applications platform microsoft",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-24T15:20:17.952Z"
+      "title_normalized": "vidmob360 looks to bring creative intelligence into the ai advertising era demand gen report",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "Automate CI/CD troubleshooting with AWS DevOps Agent and GitHub - Amazon Web Services (AWS)",
@@ -2837,7 +2837,7 @@
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "automate ci cd troubleshooting with aws devops agent and github amazon web services aws",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -2855,7 +2855,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "four juejin pieces four definitions of ai no shared bridge",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -2873,8 +2873,26 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "lemonade 11 5 local ai server released with completed lemonade router phoronix",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T10:10:52.785Z"
+    },
+    {
+      "title": "Why Soundcharts is betting on music’s ‘other AI revolution’ - Music Business Worldwide",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPUFdzTUN2Z3ZDLW5lLThaSWd2eUFJQ2ZkaWRTb2otV3R6Tkd3UW9VdkJwVWE1d2pwZDlFdUdGX19IbUl6YTZQcnVlcTZGdGV4Qjd5Y283M1l5Mk5RVkJFanl5Ymx1M3Z6QWVSUEFjMmpFUHhlclZ0dmFWandyZ0RQY2FtTi1vTHdmQ3lodm1sQTRUZmpOclloQmM3UWo?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPUFdzTUN2Z3ZDLW5lLThaSWd2eUFJQ2ZkaWRTb2otV3R6Tkd3UW9VdkJwVWE1d2pwZDlFdUdGX19IbUl6YTZQcnVlcTZGdGV4Qjd5Y283M1l5Mk5RVkJFanl5Ymx1M3Z6QWVSUEFjMmpFUHhlclZ0dmFWandyZ0RQY2FtTi1vTHdmQ3lodm1sQTRUZmpOclloQmM3UWo?oc=5",
+      "source": "Google News",
+      "author": "",
+      "published_at": "2026-07-22T14:57:32.000Z",
+      "score_signal": 0,
+      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxPUFdzTUN2Z3ZDLW5lLThaSWd2eUFJQ2ZkaWRTb2otV3R6Tkd3UW9VdkJwVWE1d2pwZDlFdUdGX19IbUl6YTZQcnVlcTZGdGV4Qjd5Y283M1l5Mk5RVkJFanl5Ymx1M3Z6QWVSUEFjMmpFUHhlclZ0dmFWandyZ0RQY2FtTi1vTHdmQ3lodm1sQTRUZmpOclloQmM3UWo?oc=5\" target=\"_blank\"&gt;Why Soundcharts is betting on music’s ‘other AI revolution’&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&gt;Music Business Worldwide&lt;/font&gt;",
+      "relevance_score": 0,
+      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxPUFdzTUN2Z3ZDLW5lLThaSWd2eUFJQ2ZkaWRTb2otV3R6Tkd3UW9VdkJwVWE1d2pwZDlFdUdGX19IbUl6YTZQcnVlcTZGdG…",
+      "status": "hidden",
+      "matched_server_slug": "",
+      "matched_server_name": "",
+      "title_normalized": "why soundcharts is betting on music s other ai revolution music business worldwide",
+      "updated_at": "2026-07-26T09:50:17.857Z",
+      "fetched_at": "2026-07-26T09:50:17.857Z"
     },
     {
       "title": "AppViewX Arms Enterprise CLM Teams for Post-Quantum Migration and AI Adoption in Latest Product Release - NextBigFuture.com",
@@ -2891,7 +2909,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "appviewx arms enterprise clm teams for post quantum migration and ai adoption in latest product release nextbigfuture com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-24T10:07:07.634Z"
     },
     {
@@ -2909,7 +2927,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "four juejin 2025 rankings four scorecards one winner",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-23T15:47:20.466Z"
     },
     {
@@ -2927,7 +2945,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "robinhood agentic trading opens to crypto with mcp based ai agent support genfinity io",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -2945,7 +2963,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "three juejin roundups three scorecards no shared bridge",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-21T20:57:43.616Z"
     },
     {
@@ -2963,26 +2981,8 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "at siggraph nvidia advances graphics and simulation with agentic and physical ai nvidia blog",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
-    },
-    {
-      "title": "Introducing the Amazon GuardDuty investigation agent: on-demand AI-powered threat assessment - Amazon Web Services (AWS)",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPRGJpOVVNZXAzUGVfNzNBN25qMVdhRnVvZU1iNVNDZ1BYaVA4Y1kwaUpuZjI5cExkOHMyRU5abXhVazJJSHNzaTRMX0hrcmVHWHJCTk9jWFg4bF9TTk92aEVReHZ2WmtaT1RfSFdDcDQ1UFo1LTg5dWJVX0V3V2cyTlM1NGJzc0daVldiTTkzQWpCazZSYkV2Ti1rbGMyMFlOOFB5cUtmVnhQc0RrdVN0dTg1TjlqVHkyWEpPeHQwMmpxMWJVZHVIN1R3?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPRGJpOVVNZXAzUGVfNzNBN25qMVdhRnVvZU1iNVNDZ1BYaVA4Y1kwaUpuZjI5cExkOHMyRU5abXhVazJJSHNzaTRMX0hrcmVHWHJCTk9jWFg4bF9TTk92aEVReHZ2WmtaT1RfSFdDcDQ1UFo1LTg5dWJVX0V3V2cyTlM1NGJzc0daVldiTTkzQWpCazZSYkV2Ti1rbGMyMFlOOFB5cUtmVnhQc0RrdVN0dTg1TjlqVHkyWEpPeHQwMmpxMWJVZHVIN1R3?oc=5",
-      "source": "Google News",
-      "author": "",
-      "published_at": "2026-07-20T21:59:00.000Z",
-      "score_signal": 0,
-      "raw_summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMiygFBVV95cUxPRGJpOVVNZXAzUGVfNzNBN25qMVdhRnVvZU1iNVNDZ1BYaVA4Y1kwaUpuZjI5cExkOHMyRU5abXhVazJJSHNzaTRMX0hrcmVHWHJCTk9jWFg4bF9TTk92aEVReHZ2WmtaT1RfSFdDcDQ1UFo1LTg5dWJVX0V3V2cyTlM1NGJzc0daVldiTTkzQWpCazZSYkV2Ti1rbGMyMFlOOFB5cUtmVnhQc0RrdVN0dTg1TjlqVHkyWEpPeHQwMmpxMWJVZHVIN1R3?oc=5\" target=\"_blank\"&gt;Introducing the Amazon GuardDuty investigation agent: on-demand AI-powered threat assessment&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color=\"#6f6f6f\"&g…",
-      "relevance_score": 0,
-      "editorial_blurb": "&lt;a href=\"https://news.google.com/rss/articles/CBMiygFBVV95cUxPRGJpOVVNZXAzUGVfNzNBN25qMVdhRnVvZU1iNVNDZ1BYaVA4Y1kwaUpuZjI5cExkOHMyRU5abXhVazJJSHNzaTRMX0hrcm…",
-      "status": "hidden",
-      "matched_server_slug": "",
-      "matched_server_name": "",
-      "title_normalized": "introducing the amazon guardduty investigation agent on demand ai powered threat assessment amazon web services aws",
-      "updated_at": "2026-07-25T20:40:06.998Z",
-      "fetched_at": "2026-07-23T10:10:52.785Z"
     },
     {
       "title": "AI’s most important protocol is getting a little bit easier to use - TechCrunch",
@@ -2999,7 +2999,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "ai s most important protocol is getting a little bit easier to use techcrunch",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T21:00:24.452Z"
     },
     {
@@ -3017,7 +3017,7 @@
       "matched_server_slug": "goreleaser-mcp",
       "matched_server_name": "Github",
       "title_normalized": "fakegit campaign uses 7 600 github repositories to spread smartloader malware the hacker news",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T21:00:24.452Z"
     },
     {
@@ -3035,7 +3035,7 @@
       "matched_server_slug": "mypeople-memory-cloudflare",
       "matched_server_name": "Second Brain",
       "title_normalized": "build a self improving second brain on oracle ai database oracle blogs",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -3053,7 +3053,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "the november juejin roundups have crossed into a content commerce funnel",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T15:44:44.520Z"
     },
     {
@@ -3071,7 +3071,7 @@
       "matched_server_slug": "openai",
       "matched_server_name": "OpenAI",
       "title_normalized": "openai quietly cut codex s context window 27 and most harnesses still don t know",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T10:39:59.041Z"
     },
     {
@@ -3089,7 +3089,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "when the google recap and the juejin picking roundup disagree on what counts as ai",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T10:39:59.041Z"
     },
     {
@@ -3107,7 +3107,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "seven ranking frameworks one search page zero translation tables",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-20T10:39:59.041Z"
     },
     {
@@ -3125,7 +3125,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "the picking roundups are mixing at least three billing models into one column",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T20:42:32.521Z"
     },
     {
@@ -3143,7 +3143,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "voc est otimizando o custo da ia do jeito errado",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-17T20:42:32.521Z"
     },
     {
@@ -3161,7 +3161,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "open protocols with the strands agents sdk amazon web services aws",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T09:26:58.994Z"
     },
     {
@@ -3179,7 +3179,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "i stopped using cad software and let claude design my 3d parts instead makeuseof",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-19T20:37:28.778Z"
     },
     {
@@ -3197,7 +3197,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "acst launches mp mcp giving churches a secure way to use ai with their ministryplatform data yahoo finance",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-25T14:54:18.284Z"
     },
     {
@@ -3215,7 +3215,7 @@
       "matched_server_slug": "",
       "matched_server_name": "",
       "title_normalized": "create your own ai job search assistant dice com",
-      "updated_at": "2026-07-25T20:40:06.998Z",
+      "updated_at": "2026-07-26T09:50:17.857Z",
       "fetched_at": "2026-07-14T15:15:53.321Z"
     }
   ]
