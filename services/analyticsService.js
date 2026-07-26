@@ -5,6 +5,7 @@
 const { getDatabase } = require('../database');
 const nodemailer = require('nodemailer');
 const https = require('https');
+const fs = require('fs');
 
 // Simple IP to country lookup cache
 const ipCountryCache = new Map();
@@ -94,30 +95,87 @@ function formatGaDate(d) {
   return `${y}-${m}-${day}`;
 }
 
-/**
- * Fetch human traffic from GA4 Data API (service account).
- * Requires GA4_PROPERTY_ID + GOOGLE_APPLICATION_CREDENTIALS.
- * Soft-fails so the daily email still sends if GA is misconfigured.
- */
-async function fetchGaReport(days = 1) {
-  const propertyId = String(process.env.GA4_PROPERTY_ID || '').trim();
-  const credsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-
-  if (!propertyId || !credsPath) {
+function parseGaCredentialsJson(rawJson, sourceLabel) {
+  try {
+    return { credentials: JSON.parse(rawJson) };
+  } catch (error) {
     return {
-      configured: false,
+      error: `Could not parse GA4 credentials from ${sourceLabel}: ${error.message}`,
+    };
+  }
+}
+
+function loadGaCredentials(propertyId) {
+  const credentialsJson =
+    process.env.GA4_CREDENTIALS_JSON ||
+    process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+  const credentialsPath = String(process.env.GOOGLE_APPLICATION_CREDENTIALS || '').trim();
+
+  let parsed;
+  if (credentialsJson) {
+    parsed = parseGaCredentialsJson(credentialsJson.trim(), 'GA4_CREDENTIALS_JSON');
+  } else if (credentialsPath) {
+    if (!fs.existsSync(credentialsPath)) {
+      return { error: `Credentials file not found: ${credentialsPath}` };
+    }
+
+    parsed = parseGaCredentialsJson(fs.readFileSync(credentialsPath, 'utf8'), credentialsPath);
+  } else {
+    return {
       error: 'Set GA4_PROPERTY_ID and GOOGLE_APPLICATION_CREDENTIALS to enable GA metrics.',
     };
   }
 
+  if (parsed.error) {
+    return parsed;
+  }
+
+  const { credentials } = parsed;
+  if (credentials?.installed || credentials?.web) {
+    return {
+      error: `GA4 Data API requires a service account JSON key, not an OAuth client_secret JSON file. Create a service account, grant it Viewer access to GA4 property ${propertyId}, and set GOOGLE_APPLICATION_CREDENTIALS to that key file.`,
+    };
+  }
+
+  if (
+    credentials?.type !== 'service_account' ||
+    !credentials.client_email ||
+    !credentials.private_key
+  ) {
+    return {
+      error: 'GA4 credentials JSON must be a service account key with client_email and private_key.',
+    };
+  }
+
+  return { credentials };
+}
+
+/**
+ * Fetch human traffic from GA4 Data API (service account).
+ * Requires GA4_PROPERTY_ID plus service account credentials.
+ * Soft-fails so the daily email still sends if GA is misconfigured.
+ */
+async function fetchGaReport(days = 1) {
+  const propertyId = String(process.env.GA4_PROPERTY_ID || '').trim();
+
+  if (!propertyId) {
+    return {
+      configured: false,
+      error: 'Set GA4_PROPERTY_ID to enable GA metrics.',
+    };
+  }
+
   try {
-    const fs = require('fs');
-    if (!fs.existsSync(credsPath)) {
-      return { configured: false, error: `Credentials file not found: ${credsPath}` };
+    const loadedCredentials = loadGaCredentials(propertyId);
+    if (loadedCredentials.error) {
+      return { configured: false, error: loadedCredentials.error };
     }
 
     const { BetaAnalyticsDataClient } = require('@google-analytics/data');
-    const client = new BetaAnalyticsDataClient();
+    const client = new BetaAnalyticsDataClient({
+      credentials: loadedCredentials.credentials,
+      projectId: loadedCredentials.credentials.project_id,
+    });
 
     const end = new Date();
     end.setHours(0, 0, 0, 0);
