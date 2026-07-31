@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-07-30T08:25:04.301Z",
+  "generated_at": "2026-07-31T08:47:59.998Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-07-29T08:57:03.164Z",
+  "catalog_generated_at": "2026-07-30T08:25:04.373Z",
   "summary": {
     "checked": 275,
     "skipped_manual": 105,
     "skipped_no_endpoint": 5180,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 275,
-    "tools_changed": 0,
+    "unchanged": 274,
+    "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,13 +18,30 @@
     "live_ok": 0,
     "smithery_fallback": 5455,
     "errors": 0,
-    "tools_added_total": 0,
+    "tools_added_total": 3,
     "tools_removed_total": 0,
     "catalog_total": 5560,
     "http_endpoints": 276,
     "with_tools_before": 375,
     "with_tools_after": 375
   },
-  "changes": [],
+  "changes": [
+    {
+      "slug": "onesignal-onesignal",
+      "name": "OneSignal",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 31,
+      "afterToolCount": 34,
+      "added": [
+        "create_custom_events",
+        "get_custom_events",
+        "list_apps"
+      ],
+      "removed": [],
+      "changed": []
+    }
+  ],
   "errors": []
 }
