@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-02T08:14:23.788Z",
+  "generated_at": "2026-08-03T09:34:58.724Z",
   "count": 100,
-  "total_catalog": 5562,
+  "total_catalog": 5933,
   "top100_slugs": [
     "influzer-mcp-discovery",
     "webnode",
@@ -22,12 +22,23 @@
     "cal-com-mcp",
     "googlesheets",
     "jina",
-    "pipeworx-gateway",
-    "smithery-ai-national-weather-service",
     "brave",
+    "pipeworx-gateway",
+    "henry-ships-sparkforge",
+    "bouch-uk-due-diligence",
+    "adamamer20-paper-search-mcp-openai",
+    "smithery-ai-national-weather-service",
+    "theagenttimes-news",
+    "fenglucc-ko-financial-data",
     "oobe-protocol-sap-mcp",
+    "jordan-s648-polymarketscan",
+    "pubmed",
+    "nitrofire-q-gread",
+    "onesignal-onesignal",
     "support-9ef4-wayforth",
+    "googlecalendar",
     "emblemai-emblem-mcp",
+    "googletasks",
     "xgr-mcp",
     "nextjs-devtools-mcp",
     "vercel-grep",
@@ -36,29 +47,25 @@
     "proxyman-mcp",
     "minimax-mcp",
     "ignav-flights",
-    "zev-lastlook-data",
-    "googlecalendar",
     "netfluid-nfld",
-    "onesignal-onesignal",
-    "theagenttimes-ucp-gateway",
+    "zev-lastlook-data",
     "alexandria-shai-eden-cbrowser",
-    "theagenttimes-news",
     "googledrive",
     "xcodebuildmcp",
-    "nitrofire-q-gread",
     "notebooklm-mcp",
     "mcp360-ai",
     "desktop-commander",
     "e2b",
     "gitlab",
     "replit",
+    "creativelead-unclick",
     "gmail",
     "exa",
-    "bigquery",
     "airtable",
     "asana",
     "aws",
     "azure",
+    "bigquery",
     "bluesky",
     "canva",
     "confluence",
@@ -95,14 +102,7 @@
     "salesforce",
     "shopify",
     "shopsavvy",
-    "slidespeak",
-    "snowflake",
-    "sourcegraph-cody",
-    "sqlite",
-    "stackblitz",
-    "supabase",
-    "taskade",
-    "terraform"
+    "slidespeak"
   ],
   "servers": [
     {
@@ -814,9 +814,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 51460,
+      "stars": 63663,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "bar-chart",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -831,8 +831,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-08-03T08:48:22.919Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -930,9 +928,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/jina",
-      "stars": 79501,
+      "stars": 76715,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
       "smithery_qualified_name": "jina",
       "smithery_page_url": "https://smithery.ai/servers/jina",
@@ -947,8 +945,68 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jina",
-      "tools_validated_at": "2026-08-03T08:48:22.683Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "brave",
+      "slug": "brave",
+      "name": "Brave Search",
+      "description": "Search the web with Brave's independent index — web, news, images, and videos. Bring your own subscription token from the [Brave Search API dashboard](https://api-dashboard.search.brave.com).",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "brave_web_search",
+          "description": "Performs web searches using the Brave Search API and returns comprehensive search results with rich metadata. To chain into local-POI enrichment, pass `result_filter=locations` and feed the resulting `locations.results[].id` values into `brave_local_search`. To chain into the AI summarizer, pass `summary=true` and feed the returned `summarizer.key` into `brave_summarizer`."
+        },
+        {
+          "name": "brave_news_search",
+          "description": "Searches for news articles using Brave's News Search API. Use it when you need current news, breaking updates, or articles about specific topics."
+        },
+        {
+          "name": "brave_image_search",
+          "description": "Performs an image search using the Brave Search API. Helpful when you need pictures of people, places, things, graphic-design ideas, or art inspiration. Counts of up to 100 are supported."
+        },
+        {
+          "name": "brave_video_search",
+          "description": "Searches for videos using Brave's Video Search API. Returns structured video results with metadata."
+        },
+        {
+          "name": "brave_local_search",
+          "description": "Brave Local Search API returns enriched information (address, phone, hours, rating) for location-search results. Access requires the Brave Search API Pro plan; currently US-only. Two-step flow: first call `brave_web_search` with `result_filter=locations` to obtain `locations.results[].id`, then pass them here. NOTE: This tool takes location IDs from a prior web-search response; if you have a free-text query, call `brave_web_search` first."
+        },
+        {
+          "name": "brave_llm_context",
+          "description": "Retrieves pre-extracted, relevance-ranked web content using Brave's LLM Context API, optimized for AI agents, LLM grounding, and RAG pipelines. Unlike a traditional web search that returns links and short descriptions, this tool returns the actual substance of matching pages — text chunks, tables, code blocks, and structured data — so the model can reason over it directly. When relaying results in markdown-supporting environments, cite source URLs from the `sources` map."
+        },
+        {
+          "name": "brave_place_search",
+          "description": "Searches Brave's Place Search API. A single call may populate any combination of `results` (POIs), `cities`, `addresses`, `streets`, and `location` (the resolved search area), depending on the query shape. Use for POIs near coordinates or a named area, browsing general POIs (omit `query`, supply coords or `location`), disambiguating bare city names, resolving specific addresses, or looking up streets. Anchor via `latitude`+`longitude` or `location`; with neither, `query` is required."
+        },
+        {
+          "name": "brave_summarizer",
+          "description": "Retrieves AI-generated summaries of web search results. Two-step flow: first call `brave_web_search` with `summary=true` to obtain `summarizer.key`, then pass it here. Pro AI tier required."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/brave",
+      "stars": 60204,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "search",
+      "smithery_qualified_name": "brave",
+      "smithery_page_url": "https://smithery.ai/servers/brave",
+      "mcp_endpoint": "https://brave.run.tools",
+      "deployment_url": "https://brave.run.tools",
+      "connection_url": "https://brave.run.tools",
+      "primary_url": "https://smithery.ai/servers/brave",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/brave\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://brave.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/brave",
       "featured": true
     },
     {
@@ -1162,9 +1220,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/pipeworx/gateway",
-      "stars": 418540,
+      "stars": 418975,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "boxes",
       "smithery_qualified_name": "pipeworx/gateway",
       "smithery_page_url": "https://smithery.ai/servers/pipeworx/gateway",
@@ -1179,8 +1237,393 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-08-03T08:48:23.044Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "henry-ships-sparkforge",
+      "slug": "henry-ships-sparkforge",
+      "name": "SparkForge",
+      "description": "Access a versatile collection of tools for media generation, web scraping, and cryptocurrency research. Convert between data formats, summarize long documents, and extract text from images or PDFs with ease. Streamline your workflow by automating tasks like SEO metadata extraction, code reviews, and content creation.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "generate_image",
+          "description": "Generate an AI image from a text prompt using Flux models. Returns an image URL. Models: flux-schnell (fast, $0.02), flux-dev (quality, $0.03), flux-pro (best, $0.05)."
+        },
+        {
+          "name": "take_screenshot",
+          "description": "Capture a screenshot of any webpage URL. Returns the screenshot as a base64-encoded PNG image."
+        },
+        {
+          "name": "html_to_markdown",
+          "description": "Convert HTML content or fetch a URL and convert its HTML to clean Markdown."
+        },
+        {
+          "name": "summarize_text",
+          "description": "Summarize long text using extractive summarization. Fast, algorithmic — no AI API call needed."
+        },
+        {
+          "name": "generate_qr_code",
+          "description": "Generate a QR code as a base64-encoded PNG image from any text or URL."
+        },
+        {
+          "name": "validate_json",
+          "description": "Validate and prettify JSON. Optionally validate against a JSON Schema."
+        },
+        {
+          "name": "pdf_to_markdown",
+          "description": "Extract text from a PDF URL and convert to Markdown. Returns the text content with page count."
+        },
+        {
+          "name": "get_url_metadata",
+          "description": "Extract metadata from a URL — title, description, Open Graph tags, favicon, canonical URL."
+        },
+        {
+          "name": "get_crypto_price",
+          "description": "Get current cryptocurrency price, 24h change, and market cap from CoinGecko."
+        },
+        {
+          "name": "detect_language",
+          "description": "Detect the language of a text string. Supports 10+ languages."
+        },
+        {
+          "name": "text_diff",
+          "description": "Compare two texts and show a unified diff with additions and removals."
+        },
+        {
+          "name": "btc_signal",
+          "description": "Get a BTC price direction prediction based on 10-indicator technical analysis consensus. Returns up/down/neutral with confidence score. Supports 1m, 5m, 15m, 1h timeframes."
+        },
+        {
+          "name": "scrape_webpage",
+          "description": "Scrape a webpage and return clean readable text/markdown. Strips scripts, styles, and HTML tags."
+        },
+        {
+          "name": "web_search",
+          "description": "Search the web using Brave Search API. Returns titles, URLs, and descriptions."
+        },
+        {
+          "name": "code_review",
+          "description": "Review code using Claude AI. Returns bugs, improvements, and best practice suggestions."
+        },
+        {
+          "name": "write_tweet",
+          "description": "Generate tweet text from a topic or prompt using Claude AI. Returns tweet-ready text under 280 chars."
+        },
+        {
+          "name": "verify_email",
+          "description": "Validate email format and check MX records for the domain."
+        },
+        {
+          "name": "check_domain",
+          "description": "Check domain availability and DNS info via lookup."
+        },
+        {
+          "name": "token_research",
+          "description": "Research a crypto token — description, links, price, market cap, volume from CoinGecko."
+        },
+        {
+          "name": "wallet_analysis",
+          "description": "Analyze an Ethereum/Base wallet — ETH balance and recent transactions via Etherscan."
+        },
+        {
+          "name": "crypto_news_summary",
+          "description": "Get latest crypto news headlines from CryptoPanic."
+        },
+        {
+          "name": "generate_meme",
+          "description": "Generate a meme image using Imgflip API. Returns a meme image URL."
+        },
+        {
+          "name": "resize_image",
+          "description": "Fetch an image from a URL, resize it, and return as base64 PNG."
+        },
+        {
+          "name": "text_to_speech",
+          "description": "Convert text to speech using ElevenLabs. Returns audio as base64 MP3."
+        },
+        {
+          "name": "generate_video",
+          "description": "Generate a short AI video from a text prompt using fal.ai."
+        },
+        {
+          "name": "ocr",
+          "description": "Extract text from an image URL using Claude vision AI."
+        },
+        {
+          "name": "site_crawl",
+          "description": "Crawl a website starting from a URL, follow internal links, return pages as text."
+        },
+        {
+          "name": "smart_summarize",
+          "description": "AI-powered summarization in 4 modes: bullet_points, executive, technical, eli5."
+        },
+        {
+          "name": "store_data",
+          "description": "Key-value data storage. Operations: set, get, delete, list. Data persists per namespace."
+        },
+        {
+          "name": "extract_structured",
+          "description": "Extract structured JSON data from a URL using Claude AI and a provided JSON schema."
+        },
+        {
+          "name": "convert_format",
+          "description": "Convert between formats: csv→json, json→csv, markdown→html, html→text."
+        },
+        {
+          "name": "image_resize",
+          "description": "Fetch an image from a URL, resize it, and return as base64 PNG. Alias for resize_image."
+        },
+        {
+          "name": "list_services",
+          "description": "List all available SparkForge services with pricing, parameters, and demo URLs."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "stars": 121247,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "search",
+      "smithery_qualified_name": "henry-ships/sparkforge",
+      "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "mcp_endpoint": "https://sparkforge--henry-ships.run.tools",
+      "deployment_url": "https://sparkforge--henry-ships.run.tools",
+      "connection_url": "https://sparkforge--henry-ships.run.tools",
+      "primary_url": "https://smithery.ai/servers/henry-ships/sparkforge",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/henry-ships/sparkforge\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://sparkforge--henry-ships.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
+      "featured": true
+    },
+    {
+      "id": "bouch-uk-due-diligence",
+      "slug": "bouch-uk-due-diligence",
+      "name": "uk-due-diligence",
+      "description": "Tools across five UK public registers. All official APIs.\n\nGive an agent a company name and it pulls corporate status, filing compliance, director networks, beneficial ownership chains, disqualification checks, insolvency notices, VAT validation, and property transactions.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "company_search",
+          "description": "Search the Companies House register by company name or keyword.\n\nReturns a paginated list of matching companies with name, number,\nstatus, SIC codes, incorporation date, and registered address.\nUse company_profile for the full record once you have the company\nnumber. Re-call with start_index=start_index+items_per_page to\nfetch the next page."
+        },
+        {
+          "name": "company_profile",
+          "description": "Fetch the full Companies House profile for a company number.\n\nReturns status, registered address, SIC codes, filing compliance\n(overdue accounts and confirmation statement flags), and whether\nthe company has outstanding charges. Use company_search first to\nfind the company number."
+        },
+        {
+          "name": "company_officers",
+          "description": "Fetch active officers for a Companies House company number.\n\nReturns directors, secretaries, and other active officers with\nappointment dates, nationality, and country of residence.\nResigned officers are excluded. Pagination is handled internally —\ndo NOT pass items_per_page or start_index; this tool takes only\ncompany_number."
+        },
+        {
+          "name": "company_psc",
+          "description": "Fetch Persons with Significant Control (beneficial ownership) for a company.\n\nReturns PSC entries with natures of control, nationality, and\ncountry of residence. Flags overseas corporate PSC entries as a\nbeneficial ownership risk signal. Returns an explanatory note for\nwidely-held PLCs with no registrable PSC."
+        },
+        {
+          "name": "charity_search",
+          "description": "Search the Charity Commission register of England and Wales by name or keyword.\n\nReturns matching charities with registration number, status, and\nregistration date. Use charity_profile for full details once you\nhave the charity number. The upstream `searchCharityName` endpoint\nreturns the full list in one shot — pagination is applied\nclient-side via offset/limit."
+        },
+        {
+          "name": "charity_profile",
+          "description": "Fetch the full Charity Commission profile for a charity number.\n\nReturns trustees, latest income/expenditure, insolvency flags,\ngoverning document type, classifications, and countries of operation.\nUse charity_search first to find the charity number."
+        },
+        {
+          "name": "disqualified_search",
+          "description": "Check whether a named individual is banned from acting as a UK company director.\n\nUse this tool when asked to check disqualified, banned, or barred directors.\nQuery must be an individual's name (e.g. \"Richard Howson\") — NOT a company\nname, which always returns zero results.\n\nReturns names, dates of birth, disqualification period snippets, and\nofficer IDs that can be used with disqualified_profile for full details."
+        },
+        {
+          "name": "disqualified_profile",
+          "description": "Fetch the full disqualification record for a director by officer ID.\n\nReturns all disqualification orders: reason, Act/section cited,\ndisqualification period, and associated company names. Use\ndisqualified_search first to find the officer ID."
+        },
+        {
+          "name": "land_title_search",
+          "description": "Search HM Land Registry Price Paid Index by postcode or address.\n\nReturns up to 10 recent sale transactions for the postcode: price,\ndate, address, property type, and tenure (Freehold/Leasehold).\nCovers England and Wales only. Postcode gives the most reliable\nresults — a full address is also accepted and the postcode is\nextracted automatically."
+        },
+        {
+          "name": "gazette_notice",
+          "description": "Fetch the full legal wording of a Gazette notice by numeric notice ID.\n\nReturns the complete JSON-LD linked-data record for the notice: parties,\nlegal basis, court, and full text. Use gazette_insolvency first to find\nnotice_numeric_id values."
+        },
+        {
+          "name": "gazette_insolvency",
+          "description": "Search The Gazette's insolvency notice index by entity name.\n\nSearches the Gazette's insolvency endpoint which covers corporate\nnotice codes: winding-up orders (2443), administration orders (2448),\nliquidator appointments (2452), striking-off notices (2460), and more.\nResults are sorted by severity — winding-up orders and administration\norders appear first.\n\nEach result includes a notice_numeric_id. Read the full legal wording\nvia the notice://{notice_numeric_id} resource.\n\nThe Gazette is the of"
+        },
+        {
+          "name": "vat_validate",
+          "description": "Validate a UK VAT number against the HMRC register.\n\nReturns the trading name and address as registered with HMRC for VAT\npurposes. The VAT-registered trading address often differs from the\nCompanies House registered address — that discrepancy is a due\ndiligence signal worth noting."
+        },
+        {
+          "name": "search",
+          "description": "Search across all UK due diligence registers simultaneously.\n\nSearches Companies House, Charity Commission, disqualified directors,\nand Gazette insolvency notices in parallel. Returns a list of result\nIDs — use fetch with each ID to retrieve the full record."
+        },
+        {
+          "name": "fetch",
+          "description": "Fetch the full record for an ID returned by search.\n\nRoutes by prefix to the appropriate register:\n- company:{number} → Companies House full profile\n- charity:{number} → Charity Commission full profile\n- disqualification:{officer_id} → Disqualified director full record\n- notice:{notice_id} → Gazette notice full legal text"
+        },
+        {
+          "name": "list_prompts",
+          "description": "List all available prompts.\n\nReturns JSON with prompt metadata including name, description,\nand optional arguments."
+        },
+        {
+          "name": "get_prompt",
+          "description": "Get a prompt by name with optional arguments.\n\nReturns the rendered prompt as JSON with a messages array.\nArguments should be provided as a dict mapping argument names\nto values."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/bouch/uk-due-diligence",
+      "stars": 54973,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "bouch/uk-due-diligence",
+      "smithery_page_url": "https://smithery.ai/servers/bouch/uk-due-diligence",
+      "mcp_endpoint": "https://uk-due-diligence--bouch.run.tools",
+      "deployment_url": "https://uk-due-diligence--bouch.run.tools",
+      "connection_url": "https://uk-due-diligence--bouch.run.tools",
+      "primary_url": "https://smithery.ai/servers/bouch/uk-due-diligence",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://uk-due-diligence--bouch.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
+      "featured": true
+    },
+    {
+      "id": "adamamer20-paper-search-mcp-openai",
+      "slug": "adamamer20-paper-search-mcp-openai",
+      "name": "Paper Search",
+      "description": "Search and download academic papers from arXiv, PubMed, bioRxiv, medRxiv, Google Scholar, Semantic Scholar, and IACR. Fetch PDFs and extract full text to accelerate literature reviews. Get consistent metadata for easier filtering, citation, and analysis.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Deep Research compatible search tool aggregating across sources."
+        },
+        {
+          "name": "fetch",
+          "description": "Fetch full document content for a search result."
+        },
+        {
+          "name": "search_arxiv",
+          "description": "Search academic papers from arXiv.\n\n    Args:\n        query: Search query string (e.g., 'machine learning').\n        max_results: Maximum number of papers to return (default: 10).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "search_pubmed",
+          "description": "Search academic papers from PubMed.\n\n    Args:\n        query: Search query string (e.g., 'machine learning').\n        max_results: Maximum number of papers to return (default: 10).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "search_biorxiv",
+          "description": "Search academic papers from bioRxiv.\n\n    Args:\n        query: Search query string (e.g., 'machine learning').\n        max_results: Maximum number of papers to return (default: 10).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "search_medrxiv",
+          "description": "Search academic papers from medRxiv.\n\n    Args:\n        query: Search query string (e.g., 'machine learning').\n        max_results: Maximum number of papers to return (default: 10).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "search_google_scholar",
+          "description": "Search academic papers from Google Scholar.\n\n    Args:\n        query: Search query string (e.g., 'machine learning').\n        max_results: Maximum number of papers to return (default: 10).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "search_iacr",
+          "description": "Search academic papers from IACR ePrint Archive.\n\n    Args:\n        query: Search query string (e.g., 'cryptography', 'secret sharing').\n        max_results: Maximum number of papers to return (default: 10).\n        fetch_details: Whether to fetch detailed information for each paper (default: True).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "download_arxiv",
+          "description": "Download PDF of an arXiv paper.\n\n    Args:\n        paper_id: arXiv paper ID (e.g., '2106.12345').\n        save_path: Directory to save the PDF (default: './downloads').\n    Returns:\n        Path to the downloaded PDF file.\n    "
+        },
+        {
+          "name": "download_pubmed",
+          "description": "Attempt to download PDF of a PubMed paper.\n\n    Args:\n        paper_id: PubMed ID (PMID).\n        save_path: Directory to save the PDF (default: './downloads').\n    Returns:\n        str: Message indicating that direct PDF download is not supported.\n    "
+        },
+        {
+          "name": "download_biorxiv",
+          "description": "Download PDF of a bioRxiv paper.\n\n    Args:\n        paper_id: bioRxiv DOI.\n        save_path: Directory to save the PDF (default: './downloads').\n    Returns:\n        Path to the downloaded PDF file.\n    "
+        },
+        {
+          "name": "download_medrxiv",
+          "description": "Download PDF of a medRxiv paper.\n\n    Args:\n        paper_id: medRxiv DOI.\n        save_path: Directory to save the PDF (default: './downloads').\n    Returns:\n        Path to the downloaded PDF file.\n    "
+        },
+        {
+          "name": "download_iacr",
+          "description": "Download PDF of an IACR ePrint paper.\n\n    Args:\n        paper_id: IACR paper ID (e.g., '2009/101').\n        save_path: Directory to save the PDF (default: './downloads').\n    Returns:\n        Path to the downloaded PDF file.\n    "
+        },
+        {
+          "name": "read_arxiv_paper",
+          "description": "Read and extract text content from an arXiv paper PDF.\n\n    Args:\n        paper_id: arXiv paper ID (e.g., '2106.12345').\n        save_path: Directory where the PDF is/will be saved (default: './downloads').\n    Returns:\n        str: The extracted text content of the paper.\n    "
+        },
+        {
+          "name": "read_pubmed_paper",
+          "description": "Read and extract text content from a PubMed paper.\n\n    Args:\n        paper_id: PubMed ID (PMID).\n        save_path: Directory where the PDF would be saved (unused).\n    Returns:\n        str: Message indicating that direct paper reading is not supported.\n    "
+        },
+        {
+          "name": "read_biorxiv_paper",
+          "description": "Read and extract text content from a bioRxiv paper PDF.\n\n    Args:\n        paper_id: bioRxiv DOI.\n        save_path: Directory where the PDF is/will be saved (default: './downloads').\n    Returns:\n        str: The extracted text content of the paper.\n    "
+        },
+        {
+          "name": "read_medrxiv_paper",
+          "description": "Read and extract text content from a medRxiv paper PDF.\n\n    Args:\n        paper_id: medRxiv DOI.\n        save_path: Directory where the PDF is/will be saved (default: './downloads').\n    Returns:\n        str: The extracted text content of the paper.\n    "
+        },
+        {
+          "name": "read_iacr_paper",
+          "description": "Read and extract text content from an IACR ePrint paper PDF.\n\n    Args:\n        paper_id: IACR paper ID (e.g., '2009/101').\n        save_path: Directory where the PDF is/will be saved (default: './downloads').\n    Returns:\n        str: The extracted text content of the paper.\n    "
+        },
+        {
+          "name": "search_semantic",
+          "description": "Search academic papers from Semantic Scholar.\n\n    Args:\n        query: Search query string (e.g., 'machine learning').\n        year: Optional year filter (e.g., '2019', '2016-2020', '2010-', '-2015').\n        max_results: Maximum number of papers to return (default: 10).\n    Returns:\n        List of paper metadata in dictionary format.\n    "
+        },
+        {
+          "name": "download_semantic",
+          "description": "Download PDF of a Semantic Scholar paper.    \n\n    Args:\n        paper_id: Semantic Scholar paper ID, Paper identifier in one of the following formats:\n            - Semantic Scholar ID (e.g., \"649def34f8be52c8b66281af98ae884c09aef38b\")\n            - DOI:<doi> (e.g., \"DOI:10.18653/v1/N18-3011\")\n            - ARXIV:<id> (e.g., \"ARXIV:2106.15928\")\n            - MAG:<id> (e.g., \"MAG:112218234\")\n            - ACL:<id> (e.g., \"ACL:W12-3903\")\n            - PMID:<id> (e.g., \"PMID:19872477\")\n           "
+        },
+        {
+          "name": "read_semantic_paper",
+          "description": "Read and extract text content from a Semantic Scholar paper. \n\n    Args:\n        paper_id: Semantic Scholar paper ID, Paper identifier in one of the following formats:\n            - Semantic Scholar ID (e.g., \"649def34f8be52c8b66281af98ae884c09aef38b\")\n            - DOI:<doi> (e.g., \"DOI:10.18653/v1/N18-3011\")\n            - ARXIV:<id> (e.g., \"ARXIV:2106.15928\")\n            - MAG:<id> (e.g., \"MAG:112218234\")\n            - ACL:<id> (e.g., \"ACL:W12-3903\")\n            - PMID:<id> (e.g., \"PMID:198724"
+        },
+        {
+          "name": "search_crossref",
+          "description": "Search academic papers from CrossRef database.\n    \n    CrossRef is a scholarly infrastructure organization that provides \n    persistent identifiers (DOIs) for scholarly content and metadata.\n    It's one of the largest citation databases covering millions of \n    academic papers, journals, books, and other scholarly content.\n\n    Args:\n        query: Search query string (e.g., 'machine learning', 'climate change').\n        max_results: Maximum number of papers to return (default: 10, max: 1000"
+        },
+        {
+          "name": "get_crossref_paper_by_doi",
+          "description": "Get a specific paper from CrossRef by its DOI.\n\n    Args:\n        doi: Digital Object Identifier (e.g., '10.1038/nature12373').\n    Returns:\n        Paper metadata in dictionary format, or empty dict if not found.\n        \n    Example:\n        get_crossref_paper_by_doi(\"10.1038/nature12373\")\n    "
+        },
+        {
+          "name": "download_crossref",
+          "description": "Attempt to download PDF of a CrossRef paper.\n\n    Args:\n        paper_id: CrossRef DOI (e.g., '10.1038/nature12373').\n        save_path: Directory to save the PDF (default: './downloads').\n    Returns:\n        str: Message indicating that direct PDF download is not supported.\n        \n    Note:\n        CrossRef is a citation database and doesn't provide direct PDF downloads.\n        Use the DOI to access the paper through the publisher's website.\n    "
+        },
+        {
+          "name": "read_crossref_paper",
+          "description": "Attempt to read and extract text content from a CrossRef paper.\n\n    Args:\n        paper_id: CrossRef DOI (e.g., '10.1038/nature12373').\n        save_path: Directory where the PDF is/will be saved (default: './downloads').\n    Returns:\n        str: Message indicating that direct paper reading is not supported.\n        \n    Note:\n        CrossRef is a citation database and doesn't provide direct paper content.\n        Use the DOI to access the paper through the publisher's website.\n    "
+        }
+      ],
+      "github_url": "https://github.com/adamamer20/paper-search-mcp-openai",
+      "docs_url": "https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
+      "stars": 49098,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "search",
+      "smithery_qualified_name": "adamamer20/paper-search-mcp-openai",
+      "smithery_page_url": "https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
+      "mcp_endpoint": "https://paper-search-mcp-openai--adamamer20.run.tools",
+      "deployment_url": "https://paper-search-mcp-openai--adamamer20.run.tools",
+      "connection_url": "https://paper-search-mcp-openai--adamamer20.run.tools",
+      "primary_url": "https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://paper-search-mcp-openai--adamamer20.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
       "featured": true
     },
     {
@@ -1218,9 +1661,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "stars": 56037,
+      "stars": 60939,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "boxes",
       "smithery_qualified_name": "smithery-ai/national-weather-service",
       "smithery_page_url": "https://smithery.ai/servers/smithery-ai/national-weather-service",
@@ -1235,72 +1678,234 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-08-03T08:48:22.671Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "brave",
-      "slug": "brave",
-      "name": "Brave Search",
-      "description": "Search the web with Brave's independent index — web, news, images, and videos. Bring your own subscription token from the [Brave Search API dashboard](https://api-dashboard.search.brave.com).",
+      "id": "theagenttimes-news",
+      "slug": "theagenttimes-news",
+      "name": "Agent News",
+      "description": "The intelligence layer agents use before they act, sourced answers on the agent economy.\n\nQuery verified AI news with citations, confidence scores, and Ethics Engine ratings. Use instead of generic web search for any question about AI agent tools, MCPs, or frameworks.\n\nEvery result carries citations, confidence scores, and Ethics Engine ratings. Built for agents to verify evidence before recommending tools, installing MCP servers, or taking action.",
       "category": "Search & Web",
       "official": true,
       "transport": "http",
       "tools": [
         {
-          "name": "brave_web_search",
-          "description": "Performs web searches using the Brave Search API and returns comprehensive search results with rich metadata. To chain into local-POI enrichment, pass `result_filter=locations` and feed the resulting `locations.results[].id` values into `brave_local_search`. To chain into the AI summarizer, pass `summary=true` and feed the returned `summarizer.key` into `brave_summarizer`."
+          "name": "tat_search",
+          "description": "Search The Agent Times agent-news layer across structured events, articles, and agent-action/product metadata. Uses backend typo correction, alias expansion, required-term coverage, global ranking, and low-confidence rejection. Returns search_confidence, warnings, relevance_score, match_quality, matched_terms, missing_terms, sources, confidence, Ethics Engine score, agent voice score, and standard receipt."
         },
         {
-          "name": "brave_news_search",
-          "description": "Searches for news articles using Brave's News Search API. Use it when you need current news, breaking updates, or articles about specific topics."
+          "name": "tat_ask",
+          "description": "Ask The Agent Times a question through the trusted answer pipeline: TAT corpus/events/action metadata plus backend-controlled external research, with citations, confidence, Ethics Engine score, agent voice score, and answer-standard receipt. Returns insufficient_evidence instead of unsourced claims. Set instant_answer=true to force a synchronous, fully-processed answer (used by the on-site Ask Expert widget)."
         },
         {
-          "name": "brave_image_search",
-          "description": "Performs an image search using the Brave Search API. Helpful when you need pictures of people, places, things, graphic-design ideas, or art inspiration. Counts of up to 100 are supported."
+          "name": "tat_get_event",
+          "description": "Fetch one structured agent-news event by event_id, including sources, confidence, ethics score, agent voice score, recommended actions, and standard receipt."
         },
         {
-          "name": "brave_video_search",
-          "description": "Searches for videos using Brave's Video Search API. Returns structured video results with metadata."
+          "name": "tat_stats",
+          "description": "Return firehose/demo counters for recent agent-news events: counts, verification rate, average confidence, source count, urgency, and actionability breakdowns."
         },
         {
-          "name": "brave_local_search",
-          "description": "Brave Local Search API returns enriched information (address, phone, hours, rating) for location-search results. Access requires the Brave Search API Pro plan; currently US-only. Two-step flow: first call `brave_web_search` with `result_filter=locations` to obtain `locations.results[].id`, then pass them here. NOTE: This tool takes location IDs from a prior web-search response; if you have a free-text query, call `brave_web_search` first."
+          "name": "tat_get_answer_standard",
+          "description": "Return the current The Agent Times MCP Answer Standard so agents can explain why a TAT answer/event is trusted, or why insufficient_evidence was returned."
         },
         {
-          "name": "brave_llm_context",
-          "description": "Retrieves pre-extracted, relevance-ranked web content using Brave's LLM Context API, optimized for AI agents, LLM grounding, and RAG pipelines. Unlike a traditional web search that returns links and short descriptions, this tool returns the actual substance of matching pages — text chunks, tables, code blocks, and structured data — so the model can reason over it directly. When relaying results in markdown-supporting environments, cite source URLs from the `sources` map."
+          "name": "tat_recommend",
+          "description": "Return sourced recommendations for an agent/operator use case using TAT trusted corpus, events, and answer standard. Not an external-resource safety checker."
         },
         {
-          "name": "brave_place_search",
-          "description": "Searches Brave's Place Search API. A single call may populate any combination of `results` (POIs), `cities`, `addresses`, `streets`, and `location` (the resolved search area), depending on the query shape. Use for POIs near coordinates or a named area, browsing general POIs (omit `query`, supply coords or `location`), disambiguating bare city names, resolving specific addresses, or looking up streets. Anchor via `latitude`+`longitude` or `location`; with neither, `query` is required."
+          "name": "tat_get_comments",
+          "description": "Read threaded comments on a TAT article, with agent attribution and endorsement counts."
         },
         {
-          "name": "brave_summarizer",
-          "description": "Retrieves AI-generated summaries of web search results. Two-step flow: first call `brave_web_search` with `summary=true` to obtain `summarizer.key`, then pass it here. Pro AI tier required."
+          "name": "tat_post_comment",
+          "description": "Post a signed/logged agent comment on a TAT article. Use only when the user explicitly asks to post."
+        },
+        {
+          "name": "get_latest_articles",
+          "description": "Get the latest articles from The Agent Times. Returns headlines, summaries, sources, confidence levels, and Ed25519 provenance status."
+        },
+        {
+          "name": "get_section_articles",
+          "description": "Get articles from a specific section. Each article includes Ed25519 provenance status. Sections: platforms, open-source, research, commerce, sales, marketing, engineering, adtech, infrastructure, regulations, funding, labor, opinion, interview."
+        },
+        {
+          "name": "get_article",
+          "description": "Get a full article by slug, including the complete body text and Ed25519 provenance verification status. Optionally include detailed provenance and governance blocks."
+        },
+        {
+          "name": "search_articles",
+          "description": "Search The Agent Times article corpus with typo-tolerant required-term coverage, relevance diagnostics, and filters over title, slug, tags, summary, body, and publication metadata. Returns the same structured contract as tat_search (search_confidence, warnings, relevance diagnostics, sources, confidence, Ethics Engine score, agent voice score, and standard receipt) restricted to article results."
+        },
+        {
+          "name": "get_related_articles",
+          "description": "Get related articles for an article slug using section/topic/tag overlap."
+        },
+        {
+          "name": "list_topics",
+          "description": "List known topic hubs extracted from the corpus."
+        },
+        {
+          "name": "get_topic_hub",
+          "description": "Get a topic hub with start-here articles, latest coverage, and intent tags."
+        },
+        {
+          "name": "get_trust_summary",
+          "description": "Get publication-level trust metrics: confidence mix, provenance coverage, source density, and section-level trust summaries."
+        },
+        {
+          "name": "get_editorial_standards",
+          "description": "Get The Agent Times editorial standards and code of conduct summary."
+        },
+        {
+          "name": "report_usage",
+          "description": "Voluntarily declare which TAT articles you used to produce your output. Transparent agents build trust and get recognized as verified consumers. No auth required — just tell us what you used."
         }
       ],
-      "docs_url": "https://smithery.ai/servers/brave",
-      "stars": 37380,
+      "docs_url": "https://smithery.ai/servers/theagenttimes/news",
+      "stars": 39417,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
-      "smithery_qualified_name": "brave",
-      "smithery_page_url": "https://smithery.ai/servers/brave",
-      "mcp_endpoint": "https://brave.run.tools",
-      "deployment_url": "https://brave.run.tools",
-      "connection_url": "https://brave.run.tools",
-      "primary_url": "https://smithery.ai/servers/brave",
+      "smithery_qualified_name": "theagenttimes/news",
+      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/news",
+      "mcp_endpoint": "https://news--theagenttimes.run.tools",
+      "deployment_url": "https://news--theagenttimes.run.tools",
+      "connection_url": "https://news--theagenttimes.run.tools",
+      "primary_url": "https://smithery.ai/servers/theagenttimes/news",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/brave\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://brave.run.tools"
+          "text": "1. Open https://smithery.ai/servers/theagenttimes/news\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://news--theagenttimes.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-08-03T08:48:23.158Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
+      "featured": true
+    },
+    {
+      "id": "fenglucc-ko-financial-data",
+      "slug": "fenglucc-ko-financial-data",
+      "name": "ko-financial-data",
+      "description": "Real SEC, 13F, insider, congress & macro data your AI agent can cite. 24 tools — institutional 13F holdings (85M+ rows), insider & congress trades, spot-Bitcoin-ETF ownership, company financials, and Treasury/Fed/BLS macro series. Every answer traces back to the original SEC filing. Free tier: 200 calls/day.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_institution_holdings",
+          "description": "Get current stock holdings of an institutional investor (hedge fund, mutual fund, pension fund) from their latest SEC 13F filing. Returns top positions with share counts, values, and quarter-over-quarter changes."
+        },
+        {
+          "name": "list_institutions",
+          "description": "List top institutional investors (hedge funds, mutual funds, etc.) tracked in the SEC 13F database. Supports search by name and pagination."
+        },
+        {
+          "name": "get_stock_profile",
+          "description": "Get a company's profile — sector, market cap, price, P/E ratio, 52-week range, beta, dividend yield, and other key financials."
+        },
+        {
+          "name": "get_stock_holders",
+          "description": "Get top institutional holders of a stock from SEC 13F filings. Shows which hedge funds, mutual funds, and pension funds own the most shares, with quarter-over-quarter changes."
+        },
+        {
+          "name": "get_stock_activity",
+          "description": "Get institutional buying/selling activity trend for a stock over multiple quarters. Shows how many institutions are buying vs selling, net share changes, and value flows — useful for detecting accumulation or distribution patterns."
+        },
+        {
+          "name": "get_stock_price",
+          "description": "Get historical daily stock prices (OHLC). Returns a summary by default; set series=true to get the full daily price series (for backtesting / charting)."
+        },
+        {
+          "name": "get_insider_trades",
+          "description": "Get insider/executive stock trades (SEC Form 4) for a company. Shows CEO, CFO, directors, and other officers buying or selling their own company's stock — a key signal for institutional investors."
+        },
+        {
+          "name": "list_insider_traders",
+          "description": "List executives/insiders who have recently traded their company stock. Filter by role (CEO only or all executives). Useful for finding notable insider buying/selling activity across the market."
+        },
+        {
+          "name": "get_congress_trades",
+          "description": "Get stock trades made by U.S. Congress members (House & Senate). Data sourced from mandatory financial disclosures. Filter by chamber, party, state, date range, or specific stock ticker."
+        },
+        {
+          "name": "get_congress_member",
+          "description": "Get detailed trading history of a specific U.S. Congress member. Shows individual trades with transaction types, amounts, and disclosure dates."
+        },
+        {
+          "name": "search",
+          "description": "Search across institutions, stocks, and insider traders in the ko.io SEC database. Use this first when you have a name but need the CIK number, ticker, or slug to use with other tools."
+        },
+        {
+          "name": "get_form144_notices",
+          "description": "Get SEC Form 144 filings — notices of proposed sale of restricted/controlled securities by insiders. Filed before selling, these signal upcoming insider sales. Complements Form 4 (post-trade) with pre-trade intent."
+        },
+        {
+          "name": "sec_list_filings",
+          "description": "List an entity's SEC filings from EDGAR (most recent first), each with its accession number. Provide the company's CIK (use search or get_stock_profile to find it). Returns accession numbers to pass to sec_get_filing_index / sec_get_filing_document."
+        },
+        {
+          "name": "sec_get_filing_index",
+          "description": "Enumerate every file in a single SEC filing (primary document, exhibits, images, XBRL, the full .txt submission). Pass a file name from here to sec_get_filing_document."
+        },
+        {
+          "name": "sec_get_filing_document",
+          "description": "Get a source document from a SEC filing, served by ko.io. Returns a ko.io LINK to the rendered document (open in a browser) plus, optionally, an extracted text excerpt. Never returns the whole file — for full content, open the link or request a specific section."
+        },
+        {
+          "name": "get_stock_financials",
+          "description": "Get quarterly or annual financial statements for a company (revenue, net income, EPS, margins, cash flow, debt ratios) from SEC 10-K/10-Q filings."
+        },
+        {
+          "name": "get_treasury_yields",
+          "description": "Get U.S. Treasury yield curve data — daily yields for maturities from 1-month to 30-year. Essential for understanding interest rate environment and yield curve shape."
+        },
+        {
+          "name": "get_fed_rates",
+          "description": "Get Federal Reserve interest rates — Fed Funds Rate, SOFR, Prime Rate, Discount Rate, and Treasury yields. Key indicators for monetary policy."
+        },
+        {
+          "name": "get_economic_indicators",
+          "description": "Get U.S. economic indicators from BLS — CPI (inflation), PPI (producer prices), Non-farm Payrolls (employment), Unemployment Rate, JOLTS. Filter by category."
+        },
+        {
+          "name": "get_ftd_data",
+          "description": "Get SEC Failures-to-Deliver (FTD) data for a stock. High FTD quantities may indicate naked short selling or settlement issues."
+        },
+        {
+          "name": "get_financial_stress",
+          "description": "Get the OFR Financial Stress Index — a daily indicator of stress in global financial markets. Values above 0 indicate above-average stress."
+        },
+        {
+          "name": "get_crypto_exposure",
+          "description": "Get a market-wide summary of institutional exposure to US spot crypto ETFs (Bitcoin ETF complex: IBIT, FBTC, GBTC, etc.) from the latest quarter of SEC 13F filings. Returns total institutional USD held, quarter-over-quarter change, and a per-ETF breakdown (holders, USD, QoQ)."
+        },
+        {
+          "name": "get_crypto_holders",
+          "description": "List institutional investors holding US spot crypto ETFs (Bitcoin ETF complex), ranked by total USD held, from the latest quarter of SEC 13F filings. Optionally filter to holders of a specific ETF via the `product` parameter (e.g. 'IBIT')."
+        },
+        {
+          "name": "get_crypto_holder",
+          "description": "Get one institution's spot crypto-ETF holdings (Bitcoin ETF complex): its per-ETF positions in the latest filed quarter (shares, USD, QoQ change, action) plus its rank among all crypto-ETF holders. Use a CIK number (find it with get_crypto_holders or the search tool)."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/fenglucc/ko-financial-data",
+      "stars": 37081,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "fenglucc/ko-financial-data",
+      "smithery_page_url": "https://smithery.ai/servers/fenglucc/ko-financial-data",
+      "mcp_endpoint": "https://ko-financial-data--fenglucc.run.tools",
+      "deployment_url": "https://ko-financial-data--fenglucc.run.tools",
+      "connection_url": "https://ko-financial-data--fenglucc.run.tools",
+      "primary_url": "https://smithery.ai/servers/fenglucc/ko-financial-data",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://ko-financial-data--fenglucc.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
       "featured": true
     },
     {
@@ -1514,9 +2119,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "stars": 34192,
+      "stars": 34350,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "boxes",
       "smithery_qualified_name": "oobe-protocol/sap-mcp",
       "smithery_page_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
@@ -1531,8 +2136,342 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-08-03T08:48:24.004Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "jordan-s648-polymarketscan",
+      "slug": "jordan-s648-polymarketscan",
+      "name": "Polymarket Data by PolymarketScan",
+      "description": "Real-time Polymarket analytics for AI agents. Query live prediction market data including whale trades, market odds, trader profiles, and leaderboards.\n\n**Available tools:**\n- `get_whale_trades` — large trades above a size threshold\n- `get_market_odds` — current prices and implied probability for any market\n- `get_trader_profile` — PnL, win rate, ROI for any wallet\n- `get_leaderboard` — top traders ranked by PnL, ROI, or win rate\n- `get_market_summary` — AI-citable summary paragraph for any market\n- `search_markets` — full-text search across all active markets\n- `get_market_movers` — biggest price movements in the last 24 hours\n- `get_site_stats` — aggregate platform statistics\n\nNo API key required. Data provided by PolymarketScan (polymarketscan.org).",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_whale_trades",
+          "description": "Returns recent large Polymarket trades above a USD size threshold. Useful for detecting whale activity and smart-money flow."
+        },
+        {
+          "name": "get_market_odds",
+          "description": "Returns current prices, implied probability, volume, liquidity, and metadata for a specific Polymarket market by slug."
+        },
+        {
+          "name": "get_trader_profile",
+          "description": "Returns performance data for any Polymarket wallet — PnL, ROI, win rate, trade count, classification, and leaderboard rank."
+        },
+        {
+          "name": "get_leaderboard",
+          "description": "Returns top Polymarket traders ranked by PnL, ROI, win rate, or volume."
+        },
+        {
+          "name": "get_market_summary",
+          "description": "Returns a pre-formatted, AI-citable summary paragraph for any Polymarket market, plus raw data fields."
+        },
+        {
+          "name": "search_markets",
+          "description": "Full-text search across all active Polymarket markets. Supports natural language queries."
+        },
+        {
+          "name": "get_market_movers",
+          "description": "Returns Polymarket markets with the largest price movements in the last 24 hours."
+        },
+        {
+          "name": "get_site_stats",
+          "description": "Returns aggregate PolymarketScan platform statistics. Call this first to establish context before querying specific data."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/jordan-s648/PolymarketScan",
+      "stars": 35862,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "search",
+      "smithery_qualified_name": "jordan-s648/PolymarketScan",
+      "smithery_page_url": "https://smithery.ai/servers/jordan-s648/PolymarketScan",
+      "mcp_endpoint": "https://polymarketscan--jordan-s648.run.tools",
+      "deployment_url": "https://polymarketscan--jordan-s648.run.tools",
+      "connection_url": "https://polymarketscan--jordan-s648.run.tools",
+      "primary_url": "https://smithery.ai/servers/jordan-s648/PolymarketScan",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://polymarketscan--jordan-s648.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
+      "featured": true
+    },
+    {
+      "id": "pubmed",
+      "slug": "pubmed",
+      "name": "PubMed",
+      "description": "Search biomedical literature across 36 million citations. Find papers, abstracts, and related articles from MEDLINE and life science journals.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_articles",
+          "description": "Search PubMed for biomedical and life sciences research articles matching a given query.\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiolo"
+        },
+        {
+          "name": "get_article_metadata",
+          "description": "Retrieve detailed article metadata from PubMed.\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiology, anatomy\n- Biomedical engineering, med"
+        },
+        {
+          "name": "find_related_articles",
+          "description": "Find related articles and resources in PubMed.\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiology, anatomy\n- Biomedical engineering, medi"
+        },
+        {
+          "name": "lookup_article_by_citation",
+          "description": "Lookup articles by citation details in PubMed.\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiology, anatomy\n- Biomedical engineering, medi"
+        },
+        {
+          "name": "convert_article_ids",
+          "description": "Convert between various ID formats, including PMID, PMCID, and DOI.\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiology, anatomy\n- Biomedi"
+        },
+        {
+          "name": "get_full_text_article",
+          "description": "Retrieve full-text articles from PubMed Central (PMC).\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiology, anatomy\n- Biomedical engineeri"
+        },
+        {
+          "name": "get_copyright_status",
+          "description": "Get copyright information for articles in PubMed.\n\nIMPORTANT - PubMed Database Scope: This server provides access to PubMed, which ONLY indexes biomedical and life sciences literature including:\n- Medicine, clinical research, public health, epidemiology\n- Biology, molecular biology, genetics, genomics\n- Biochemistry, cell biology, developmental biology\n- Pharmacology, toxicology, drug development\n- Microbiology, virology, immunology\n- Neuroscience, physiology, anatomy\n- Biomedical engineering, m"
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/pubmed",
+      "stars": 30134,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "search",
+      "smithery_qualified_name": "pubmed",
+      "smithery_page_url": "https://smithery.ai/servers/pubmed",
+      "mcp_endpoint": "https://pubmed.run.tools",
+      "deployment_url": "https://pubmed.run.tools",
+      "connection_url": "https://pubmed.run.tools",
+      "primary_url": "https://smithery.ai/servers/pubmed",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/pubmed\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://pubmed.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
+      "featured": true
+    },
+    {
+      "id": "nitrofire-q-gread",
+      "slug": "nitrofire-q-gread",
+      "name": "Gread",
+      "description": "Gives your AI access to the source code of all public github repos.\n\n- Plug and Play: Compatible with all popular coding agents and MCP clients, ready to use out of the box\n- Skill and MCP: Both Skill and MCP are provided, connect with either option\n- Docs Integration: Automatically recognizes docs repo and provides them along with the main repo when accessed",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_repos",
+          "description": "Search for GitHub repositories by name, description, or topic keywords using the GitHub Search API."
+        },
+        {
+          "name": "view_repo",
+          "description": "View repository basic information and its directory structure. Includes corresponding documentation repo if available."
+        },
+        {
+          "name": "list_tree",
+          "description": "List the directory tree of a specific path in a repository with customizable depth and traversal limits."
+        },
+        {
+          "name": "read_code",
+          "description": "Retrieve the raw source code of specified files from within a known repository."
+        },
+        {
+          "name": "search_code",
+          "description": "Perform a fast git grep inside the repository, allowing regex matching by default or substring search."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "stars": 34533,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "nitrofire-q/gread",
+      "smithery_page_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "mcp_endpoint": "https://gread--nitrofire-q.run.tools",
+      "deployment_url": "https://gread--nitrofire-q.run.tools",
+      "connection_url": "https://gread--nitrofire-q.run.tools",
+      "primary_url": "https://smithery.ai/servers/nitrofire-q/gread",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/nitrofire-q/gread\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gread--nitrofire-q.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
+      "featured": true
+    },
+    {
+      "id": "onesignal-onesignal",
+      "slug": "onesignal-onesignal",
+      "name": "OneSignal",
+      "description": "OneSignal is a customer engagement platform that lets you send targeted push notifications, emails, SMS, and in-app messages, manage audiences, and track campaign performance.\n\nWith the OneSignal MCP, manage your messaging directly from your AI assistant. Send push notifications, emails, and SMS by simply describing your audience and message. Check campaign delivery stats, build audience segments, manage templates, and handle user subscriptions all through conversation.",
+      "category": "AI & Memory",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "create_alias_by_subscription",
+          "description": "Create or update identity aliases for the user who owns a given subscription. The `onesignal_id` alias is read-only and must not be included."
+        },
+        {
+          "name": "create_custom_events",
+          "description": "Record custom events for OneSignal users, such as purchases, content views, or milestones. Use these to enter users into Journeys or trigger Wait Until nodes. Each event must set at least one of `external_id` or `onesignal_id`."
+        },
+        {
+          "name": "create_or_update_alias",
+          "description": "Create or update identity aliases for a user identified by alias. The `onesignal_id` alias is read-only and must not be included."
+        },
+        {
+          "name": "create_segment",
+          "description": "Create a new audience segment with filter conditions. Maximum 200 filter entries."
+        },
+        {
+          "name": "create_subscription",
+          "description": "Create a new subscription and attach it to a user. Set `type` to the channel (\"Email\", \"SMS\", \"iOSPush\", \"AndroidPush\", etc.) and `token` to the email address, E.164 phone number, or push token."
+        },
+        {
+          "name": "create_template",
+          "description": "Create a new notification template for a OneSignal app."
+        },
+        {
+          "name": "create_user",
+          "description": "Create a new user in a OneSignal app. Provide an `identity` (e.g. {\"external_id\": \"user-123\"}) so the user can be referenced later by alias. Optionally attach `properties` (tags, language, country) and `subscriptions` (email, SMS, or push channels). The `identity` field is required to prevent orphaned users."
+        },
+        {
+          "name": "export_audience_activity_csv",
+          "description": "Export audience activity for a notification to CSV. WARNING: Only 1 concurrent export is allowed per account — if a 409 or 429 is returned, a previous export is still running."
+        },
+        {
+          "name": "export_subscriptions_csv",
+          "description": "Export all subscriptions for a OneSignal app to CSV. WARNING: Only 1 concurrent export is allowed per account — if a 409 or 429 is returned, a previous export is still running."
+        },
+        {
+          "name": "get_custom_events",
+          "description": "List the custom event definitions indexed for a OneSignal app, including each event's properties, sources, most recent occurrence, usage locations (segment/journey), storage and total counts, and retention duration. Requires OAuth authentication."
+        },
+        {
+          "name": "get_segment",
+          "description": "Retrieve a single audience segment by ID. By default, includes full segment metadata and filters (`payload` object with `id`, `name`, `created_at`, `source`, and `filters`). Set `include_segment_detail` to `false` to return only the subscriber count. Note: the API returns 400 for user-based segments (those using custom_event or message_event filters)."
+        },
+        {
+          "name": "get_template",
+          "description": "Retrieve a single notification template by ID."
+        },
+        {
+          "name": "get_user_identity",
+          "description": "Retrieve all identity aliases associated with a user. Identify the user by `alias_label` (typically \"external_id\") and `alias_id`."
+        },
+        {
+          "name": "get_user_identity_by_subscription",
+          "description": "Retrieve the identity aliases for the user who owns a given subscription."
+        },
+        {
+          "name": "list_apps",
+          "description": "List OneSignal apps accessible to the authenticated user. Returns app names, IDs, and organization info. Supports pagination via limit and offset parameters."
+        },
+        {
+          "name": "list_messages",
+          "description": "List push notifications for a OneSignal app. Use `limit` (default 50, max ~250) and `offset` for pagination. Avoid large offsets — this endpoint has known performance degradation at high page numbers."
+        },
+        {
+          "name": "list_segments",
+          "description": "List audience segments for a OneSignal app. Maximum 300 segments per page."
+        },
+        {
+          "name": "list_templates",
+          "description": "List notification templates for a OneSignal app. Maximum 50 per page."
+        },
+        {
+          "name": "onesignal_config",
+          "description": "Return the current OneSignal MCP server configuration and connected app details."
+        },
+        {
+          "name": "onesignal_health",
+          "description": "Check the health status of the OneSignal MCP server."
+        },
+        {
+          "name": "onesignal_reference_overview",
+          "description": "Return an overview of the OneSignal REST API reference, including available endpoints and rate limits."
+        },
+        {
+          "name": "send_message",
+          "description": "Send a push notification, email, or SMS via the OneSignal API. TIER 3 — HIGH IMPACT: confirmation is required before sending. Rate limited to 10 requests per minute. The `filters` array is limited to 200 entries; max 20,000 users per call. For push: set `contents`. For email: set `email_subject` + `email_body` (or use `template_id`). For SMS: set `contents` + `target_channel = \"sms\"`."
+        },
+        {
+          "name": "start_live_activity",
+          "description": "Start an iOS Live Activity and deliver it to a specific device subscription."
+        },
+        {
+          "name": "transfer_subscription",
+          "description": "Transfer a subscription to a different user within the same app. Cross-app transfers are not supported. Rate limited to 1 request per second per subscription."
+        },
+        {
+          "name": "unsubscribe_email",
+          "description": "Unsubscribe an email address using the token from an email unsubscribe link. This endpoint uses token-based auth (no REST API key required)."
+        },
+        {
+          "name": "update_live_activity",
+          "description": "Update or end an active iOS Live Activity."
+        },
+        {
+          "name": "update_segment",
+          "description": "Update an existing audience segment's name and/or filter conditions. `name` is always required even if not changing it (max 128 characters). When `filters` is provided it replaces all existing filters; omit to keep existing filters intact. Maximum 200 filter entries."
+        },
+        {
+          "name": "update_subscription",
+          "description": "Update an existing subscription (token, enabled status, or test type)."
+        },
+        {
+          "name": "update_subscription_by_token",
+          "description": "Update a subscription identified by its channel type and token. Provide `subscription_type` and `token` to identify the subscription, then pass the fields to update in `subscription`."
+        },
+        {
+          "name": "update_template",
+          "description": "Update an existing notification template. The `name` field is required even if you are not changing it."
+        },
+        {
+          "name": "update_user",
+          "description": "Update an existing user identified by alias. Use `properties` to set tags, language, or country. Use `deltas` to increment session counts or append purchase records (these add to existing values rather than overwriting). Returns 202 — the update is processed asynchronously."
+        },
+        {
+          "name": "view_message",
+          "description": "Retrieve a single notification by ID."
+        },
+        {
+          "name": "view_outcomes",
+          "description": "Retrieve outcome statistics for a OneSignal app (e.g. click counts, session duration). Note: data retention is approximately 30 days."
+        },
+        {
+          "name": "view_user",
+          "description": "Retrieve a user and their properties by alias. Use `alias_label` \"external_id\" with the user's external ID, or another alias label you have configured."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "stars": 26566,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "onesignal/onesignal",
+      "smithery_page_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "mcp_endpoint": "https://onesignal.run.tools",
+      "deployment_url": "https://onesignal.run.tools",
+      "connection_url": "https://onesignal.run.tools",
+      "primary_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/onesignal/onesignal\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://onesignal.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
       "featured": true
     },
     {
@@ -1614,9 +2553,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
-      "stars": 26884,
+      "stars": 26093,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
       "smithery_qualified_name": "support-9ef4/Wayforth",
       "smithery_page_url": "https://smithery.ai/servers/support-9ef4/Wayforth",
@@ -1631,8 +2570,152 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
-      "tools_validated_at": "2026-08-03T08:48:24.009Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "googlecalendar",
+      "slug": "googlecalendar",
+      "name": "Google Calendar",
+      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "GOOGLECALENDAR_ACL_PATCH",
+          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
+          "description": "Inserts an existing calendar into the user's calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
+          "description": "Updates an existing entry on the user\\'s calendar list."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
+          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
+          "description": "Updates metadata for a calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
+          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
+        },
+        {
+          "name": "GOOGLECALENDAR_CREATE_EVENT",
+          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
+        },
+        {
+          "name": "GOOGLECALENDAR_DELETE_EVENT",
+          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
+        },
+        {
+          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
+          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
+          "description": "Returns instances of the specified recurring event."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_LIST",
+          "description": "Returns events on the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_MOVE",
+          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
+        },
+        {
+          "name": "GOOGLECALENDAR_EVENTS_WATCH",
+          "description": "Watch for changes to Events resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_EVENT",
+          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
+        },
+        {
+          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
+          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
+        },
+        {
+          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
+          "description": "Returns free/busy information for a set of calendars."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CALENDAR",
+          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
+        },
+        {
+          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
+          "description": "Gets the current date and time, allowing for a specific timezone offset."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
+          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
+        },
+        {
+          "name": "GOOGLECALENDAR_LIST_CALENDARS",
+          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
+          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
+        },
+        {
+          "name": "GOOGLECALENDAR_PATCH_EVENT",
+          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_QUICK_ADD",
+          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
+        },
+        {
+          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
+          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_LIST",
+          "description": "Returns all user settings for the authenticated user."
+        },
+        {
+          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
+          "description": "Watch for changes to Settings resources."
+        },
+        {
+          "name": "GOOGLECALENDAR_SYNC_EVENTS",
+          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
+          "description": "Updates an access control rule for the specified calendar."
+        },
+        {
+          "name": "GOOGLECALENDAR_UPDATE_EVENT",
+          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googlecalendar",
+      "stars": 22255,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "googlecalendar",
+      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlecalendar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
       "featured": true
     },
     {
@@ -1846,9 +2929,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
-      "stars": 24799,
+      "stars": 25091,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
       "smithery_qualified_name": "emblemai/emblem-mcp",
       "smithery_page_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
@@ -1863,8 +2946,92 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-08-03T08:48:24.163Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "googletasks",
+      "slug": "googletasks",
+      "name": "Google Tasks",
+      "description": "Google Tasks provides a simple to-do list and task management system integrated into Gmail and Google Calendar for quick and easy tracking",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "GOOGLETASKS_CLEAR_TASKS",
+          "description": "Permanently clears all completed tasks from a specified Google Tasks list; this action is destructive and idempotent."
+        },
+        {
+          "name": "GOOGLETASKS_CREATE_TASK_LIST",
+          "description": "Creates a new task list with the specified title."
+        },
+        {
+          "name": "GOOGLETASKS_DELETE_TASK",
+          "description": "Deletes a specified task from a given task list in Google Tasks."
+        },
+        {
+          "name": "GOOGLETASKS_DELETE_TASK_LIST",
+          "description": "Permanently deletes an existing Google Task list, identified by `tasklist_id`, along with all its tasks; this operation is irreversible."
+        },
+        {
+          "name": "GOOGLETASKS_GET_TASK",
+          "description": "Use to retrieve a specific Google Task if its `task_id` and parent `tasklist_id` are known."
+        },
+        {
+          "name": "GOOGLETASKS_GET_TASK_LIST",
+          "description": "Retrieves a specific task list from the user's Google Tasks if the `tasklist_id` exists for the authenticated user."
+        },
+        {
+          "name": "GOOGLETASKS_INSERT_TASK",
+          "description": "Creates a new task in a given `tasklist_id`, optionally as a subtask of an existing `task_parent` or positioned after an existing `task_previous` sibling, where both `task_parent` and `task_previous` must belong to the same `tasklist_id` if specified. IMPORTANT: Date fields (due, completed) accept various formats like '28 Sep 2025', '11:59 PM, 22 Sep 2025', or ISO format '2025-09-21T15:30:00Z' and will automatically convert them to RFC3339 format required by the API."
+        },
+        {
+          "name": "GOOGLETASKS_LIST_TASK_LISTS",
+          "description": "Fetches the authenticated user's task lists from Google Tasks; results may be paginated."
+        },
+        {
+          "name": "GOOGLETASKS_LIST_TASKS",
+          "description": "Retrieves tasks from a Google Tasks list; all date/time strings must be RFC3339 UTC, and `showCompleted` must be true if `completedMin` or `completedMax` are specified."
+        },
+        {
+          "name": "GOOGLETASKS_MOVE_TASK",
+          "description": "Moves the specified task to another position in the destination task list."
+        },
+        {
+          "name": "GOOGLETASKS_PATCH_TASK",
+          "description": "Partially updates an existing task (identified by `task_id`) within a specific Google Task list (identified by `tasklist_id`), modifying only the provided attributes from `TaskInput` (e.g., `title`, `notes`, `due` date, `status`) and requiring both the task and list to exist."
+        },
+        {
+          "name": "GOOGLETASKS_PATCH_TASK_LIST",
+          "description": "Updates the title of an existing Google Tasks task list."
+        },
+        {
+          "name": "GOOGLETASKS_UPDATE_TASK",
+          "description": "Updates the specified task."
+        },
+        {
+          "name": "GOOGLETASKS_UPDATE_TASK_LIST",
+          "description": "Updates the authenticated user's specified task list."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googletasks",
+      "stars": 21211,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "googletasks",
+      "smithery_page_url": "https://smithery.ai/servers/googletasks",
+      "mcp_endpoint": "https://googletasks.run.tools",
+      "deployment_url": "https://googletasks.run.tools",
+      "connection_url": "https://googletasks.run.tools",
+      "primary_url": "https://smithery.ai/servers/googletasks",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googletasks\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googletasks.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googletasks",
       "featured": true
     },
     {
@@ -1993,9 +3160,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/vercel/grep",
-      "stars": 20770,
+      "stars": 20743,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
       "smithery_qualified_name": "vercel/grep",
       "smithery_page_url": "https://smithery.ai/servers/vercel/grep",
@@ -2010,8 +3177,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
-      "tools_validated_at": "2026-08-03T08:48:23.987Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2185,206 +3350,6 @@
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
       "deployment_url": "https://ignav.com/mcp"
-    },
-    {
-      "id": "zev-lastlook-data",
-      "slug": "zev-lastlook-data",
-      "name": "LastLook Data",
-      "description": "LastLook Data gives AI agents real-time access to US financial market data: Treasury yields (2yr, 10yr, 30yr), mortgage rates, Fed funds rate, CPI, unemployment, GDP, WTI/Brent crude, natural gas, and G10 FX rates. Also includes derived indicators: yield curve spreads (2s10s, 3m10y) with inversion signal, Sahm Rule recession indicator, Fed policy spread (EFFR vs IORB), and upcoming FRED economic calendar. Data sourced from FRED and ECB. Pay per query via x402 on Base — no accounts, no API keys, no subscriptions.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "get_treasury_yield_current",
-          "description": "Returns the most recent 30-year US Treasury constant maturity yield (DGS30) from FRED. Use this specifically for the 30-year Treasury rate. For other series use get_series instead."
-        },
-        {
-          "name": "get_treasury_yield_by_date",
-          "description": "Returns the 30-year US Treasury yield for a specific date. Business days only. Use YYYY-MM-DD format."
-        },
-        {
-          "name": "get_series",
-          "description": "Returns recent observations for any supported FRED data series. Use this to get current and historical values for mortgage rates, Treasury yields, Fed funds rate, CPI, SOFR, unemployment, GDP, energy prices, and more. Common use cases:\n- Current 30-yr mortgage rate: series_id=MORTGAGE30US, days=30\n- Current 15-yr mortgage rate: series_id=MORTGAGE15US, days=30\n- Current Fed funds rate: series_id=FEDFUNDS, days=30\n- Current IORB (Interest on Reserve Balances): series_id=IORB, days=30\n- Current EFF"
-        },
-        {
-          "name": "get_fx_rate_current",
-          "description": "Returns the current exchange rate for a G10 currency pair. Source: European Central Bank. Supported: EURUSD, GBPUSD, USDJPY, USDCHF, USDCAD, AUDUSD, NZDUSD, USDSEK, USDNOK."
-        },
-        {
-          "name": "get_fx_rate_series",
-          "description": "Returns historical daily exchange rates for a G10 currency pair. Source: European Central Bank."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/zev/lastlook-data",
-      "stars": 19002,
-      "source": "smithery",
-      "last_updated": "2026-07-20",
-      "icon": "boxes",
-      "smithery_qualified_name": "zev/lastlook-data",
-      "smithery_page_url": "https://smithery.ai/servers/zev/lastlook-data",
-      "mcp_endpoint": "https://lastlook-data--zev.run.tools",
-      "deployment_url": "https://lastlook-data--zev.run.tools",
-      "connection_url": "https://lastlook-data--zev.run.tools",
-      "primary_url": "https://smithery.ai/servers/zev/lastlook-data",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/zev/lastlook-data\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://lastlook-data--zev.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/zev/lastlook-data",
-      "tools_validated_at": "2026-08-03T08:48:24.874Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "googlecalendar",
-      "slug": "googlecalendar",
-      "name": "Google Calendar",
-      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GOOGLECALENDAR_ACL_PATCH",
-          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
-          "description": "Inserts an existing calendar into the user's calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
-          "description": "Updates an existing entry on the user\\'s calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
-          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
-          "description": "Updates metadata for a calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
-          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
-        },
-        {
-          "name": "GOOGLECALENDAR_CREATE_EVENT",
-          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
-        },
-        {
-          "name": "GOOGLECALENDAR_DELETE_EVENT",
-          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
-        },
-        {
-          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
-          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
-          "description": "Returns instances of the specified recurring event."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_LIST",
-          "description": "Returns events on the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_MOVE",
-          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_WATCH",
-          "description": "Watch for changes to Events resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_EVENT",
-          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
-          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
-        },
-        {
-          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
-          "description": "Returns free/busy information for a set of calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CALENDAR",
-          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
-          "description": "Gets the current date and time, allowing for a specific timezone offset."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
-          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_CALENDARS",
-          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
-          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_EVENT",
-          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_QUICK_ADD",
-          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
-        },
-        {
-          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
-          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_LIST",
-          "description": "Returns all user settings for the authenticated user."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
-          "description": "Watch for changes to Settings resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_SYNC_EVENTS",
-          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
-          "description": "Updates an access control rule for the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_EVENT",
-          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 16915,
-      "source": "smithery",
-      "last_updated": "2026-07-20",
-      "icon": "boxes",
-      "smithery_qualified_name": "googlecalendar",
-      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
-      "mcp_endpoint": "https://googlecalendar.run.tools",
-      "deployment_url": "https://googlecalendar.run.tools",
-      "connection_url": "https://googlecalendar.run.tools",
-      "primary_url": "https://smithery.ai/servers/googlecalendar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-08-03T08:48:25.676Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
     },
     {
       "id": "netfluid-nfld",
@@ -2597,9 +3562,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/netfluid/NFLD",
-      "stars": 20192,
+      "stars": 20242,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "boxes",
       "smithery_qualified_name": "netfluid/NFLD",
       "smithery_page_url": "https://smithery.ai/servers/netfluid/NFLD",
@@ -2614,256 +3579,56 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/netfluid/NFLD",
-      "tools_validated_at": "2026-08-03T08:48:25.457Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
-      "id": "onesignal-onesignal",
-      "slug": "onesignal-onesignal",
-      "name": "OneSignal",
-      "description": "OneSignal is a customer engagement platform that lets you send targeted push notifications, emails, SMS, and in-app messages, manage audiences, and track campaign performance.\n\nWith the OneSignal MCP, manage your messaging directly from your AI assistant. Send push notifications, emails, and SMS by simply describing your audience and message. Check campaign delivery stats, build audience segments, manage templates, and handle user subscriptions all through conversation.",
-      "category": "AI & Memory",
+      "id": "zev-lastlook-data",
+      "slug": "zev-lastlook-data",
+      "name": "LastLook Data",
+      "description": "LastLook Data gives AI agents real-time access to US financial market data: Treasury yields (2yr, 10yr, 30yr), mortgage rates, Fed funds rate, CPI, unemployment, GDP, WTI/Brent crude, natural gas, and G10 FX rates. Also includes derived indicators: yield curve spreads (2s10s, 3m10y) with inversion signal, Sahm Rule recession indicator, Fed policy spread (EFFR vs IORB), and upcoming FRED economic calendar. Data sourced from FRED and ECB. Pay per query via x402 on Base — no accounts, no API keys, no subscriptions.",
+      "category": "Communication",
       "official": true,
       "transport": "http",
       "tools": [
         {
-          "name": "create_alias_by_subscription",
-          "description": "Create or update identity aliases for the user who owns a given subscription. The `onesignal_id` alias is read-only and must not be included."
+          "name": "get_treasury_yield_current",
+          "description": "Returns the most recent 30-year US Treasury constant maturity yield (DGS30) from FRED. Use this specifically for the 30-year Treasury rate. For other series use get_series instead."
         },
         {
-          "name": "create_custom_events",
-          "description": "Record custom events for OneSignal users, such as purchases, content views, or milestones. Use these to enter users into Journeys or trigger Wait Until nodes. Each event must set at least one of `external_id` or `onesignal_id`."
+          "name": "get_treasury_yield_by_date",
+          "description": "Returns the 30-year US Treasury yield for a specific date. Business days only. Use YYYY-MM-DD format."
         },
         {
-          "name": "create_or_update_alias",
-          "description": "Create or update identity aliases for a user identified by alias. The `onesignal_id` alias is read-only and must not be included."
+          "name": "get_series",
+          "description": "Returns recent observations for any supported FRED data series. Use this to get current and historical values for mortgage rates, Treasury yields, Fed funds rate, CPI, SOFR, unemployment, GDP, energy prices, and more. Common use cases:\n- Current 30-yr mortgage rate: series_id=MORTGAGE30US, days=30\n- Current 15-yr mortgage rate: series_id=MORTGAGE15US, days=30\n- Current Fed funds rate: series_id=FEDFUNDS, days=30\n- Current IORB (Interest on Reserve Balances): series_id=IORB, days=30\n- Current EFF"
         },
         {
-          "name": "create_segment",
-          "description": "Create a new audience segment with filter conditions. Maximum 200 filter entries."
+          "name": "get_fx_rate_current",
+          "description": "Returns the current exchange rate for a G10 currency pair. Source: European Central Bank. Supported: EURUSD, GBPUSD, USDJPY, USDCHF, USDCAD, AUDUSD, NZDUSD, USDSEK, USDNOK."
         },
         {
-          "name": "create_subscription",
-          "description": "Create a new subscription and attach it to a user. Set `type` to the channel (\"Email\", \"SMS\", \"iOSPush\", \"AndroidPush\", etc.) and `token` to the email address, E.164 phone number, or push token."
-        },
-        {
-          "name": "create_template",
-          "description": "Create a new notification template for a OneSignal app."
-        },
-        {
-          "name": "create_user",
-          "description": "Create a new user in a OneSignal app. Provide an `identity` (e.g. {\"external_id\": \"user-123\"}) so the user can be referenced later by alias. Optionally attach `properties` (tags, language, country) and `subscriptions` (email, SMS, or push channels). The `identity` field is required to prevent orphaned users."
-        },
-        {
-          "name": "export_audience_activity_csv",
-          "description": "Export audience activity for a notification to CSV. WARNING: Only 1 concurrent export is allowed per account — if a 409 or 429 is returned, a previous export is still running."
-        },
-        {
-          "name": "export_subscriptions_csv",
-          "description": "Export all subscriptions for a OneSignal app to CSV. WARNING: Only 1 concurrent export is allowed per account — if a 409 or 429 is returned, a previous export is still running."
-        },
-        {
-          "name": "get_custom_events",
-          "description": "List the custom event definitions indexed for a OneSignal app, including each event's properties, sources, most recent occurrence, usage locations (segment/journey), storage and total counts, and retention duration. Requires OAuth authentication."
-        },
-        {
-          "name": "get_segment",
-          "description": "Retrieve a single audience segment by ID. By default, includes full segment metadata and filters (`payload` object with `id`, `name`, `created_at`, `source`, and `filters`). Set `include_segment_detail` to `false` to return only the subscriber count. Note: the API returns 400 for user-based segments (those using custom_event or message_event filters)."
-        },
-        {
-          "name": "get_template",
-          "description": "Retrieve a single notification template by ID."
-        },
-        {
-          "name": "get_user_identity",
-          "description": "Retrieve all identity aliases associated with a user. Identify the user by `alias_label` (typically \"external_id\") and `alias_id`."
-        },
-        {
-          "name": "get_user_identity_by_subscription",
-          "description": "Retrieve the identity aliases for the user who owns a given subscription."
-        },
-        {
-          "name": "list_apps",
-          "description": "List OneSignal apps accessible to the authenticated user. Returns app names, IDs, and organization info. Supports pagination via limit and offset parameters."
-        },
-        {
-          "name": "list_messages",
-          "description": "List push notifications for a OneSignal app. Use `limit` (default 50, max ~250) and `offset` for pagination. Avoid large offsets — this endpoint has known performance degradation at high page numbers."
-        },
-        {
-          "name": "list_segments",
-          "description": "List audience segments for a OneSignal app. Maximum 300 segments per page."
-        },
-        {
-          "name": "list_templates",
-          "description": "List notification templates for a OneSignal app. Maximum 50 per page."
-        },
-        {
-          "name": "onesignal_config",
-          "description": "Return the current OneSignal MCP server configuration and connected app details."
-        },
-        {
-          "name": "onesignal_health",
-          "description": "Check the health status of the OneSignal MCP server."
-        },
-        {
-          "name": "onesignal_reference_overview",
-          "description": "Return an overview of the OneSignal REST API reference, including available endpoints and rate limits."
-        },
-        {
-          "name": "send_message",
-          "description": "Send a push notification, email, or SMS via the OneSignal API. TIER 3 — HIGH IMPACT: confirmation is required before sending. Rate limited to 10 requests per minute. The `filters` array is limited to 200 entries; max 20,000 users per call. For push: set `contents`. For email: set `email_subject` + `email_body` (or use `template_id`). For SMS: set `contents` + `target_channel = \"sms\"`."
-        },
-        {
-          "name": "start_live_activity",
-          "description": "Start an iOS Live Activity and deliver it to a specific device subscription."
-        },
-        {
-          "name": "transfer_subscription",
-          "description": "Transfer a subscription to a different user within the same app. Cross-app transfers are not supported. Rate limited to 1 request per second per subscription."
-        },
-        {
-          "name": "unsubscribe_email",
-          "description": "Unsubscribe an email address using the token from an email unsubscribe link. This endpoint uses token-based auth (no REST API key required)."
-        },
-        {
-          "name": "update_live_activity",
-          "description": "Update or end an active iOS Live Activity."
-        },
-        {
-          "name": "update_segment",
-          "description": "Update an existing audience segment's name and/or filter conditions. `name` is always required even if not changing it (max 128 characters). When `filters` is provided it replaces all existing filters; omit to keep existing filters intact. Maximum 200 filter entries."
-        },
-        {
-          "name": "update_subscription",
-          "description": "Update an existing subscription (token, enabled status, or test type)."
-        },
-        {
-          "name": "update_subscription_by_token",
-          "description": "Update a subscription identified by its channel type and token. Provide `subscription_type` and `token` to identify the subscription, then pass the fields to update in `subscription`."
-        },
-        {
-          "name": "update_template",
-          "description": "Update an existing notification template. The `name` field is required even if you are not changing it."
-        },
-        {
-          "name": "update_user",
-          "description": "Update an existing user identified by alias. Use `properties` to set tags, language, or country. Use `deltas` to increment session counts or append purchase records (these add to existing values rather than overwriting). Returns 202 — the update is processed asynchronously."
-        },
-        {
-          "name": "view_message",
-          "description": "Retrieve a single notification by ID."
-        },
-        {
-          "name": "view_outcomes",
-          "description": "Retrieve outcome statistics for a OneSignal app (e.g. click counts, session duration). Note: data retention is approximately 30 days."
-        },
-        {
-          "name": "view_user",
-          "description": "Retrieve a user and their properties by alias. Use `alias_label` \"external_id\" with the user's external ID, or another alias label you have configured."
+          "name": "get_fx_rate_series",
+          "description": "Returns historical daily exchange rates for a G10 currency pair. Source: European Central Bank."
         }
       ],
-      "docs_url": "https://smithery.ai/servers/onesignal/onesignal",
-      "stars": 16077,
+      "docs_url": "https://smithery.ai/servers/zev/lastlook-data",
+      "stars": 18358,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "boxes",
-      "smithery_qualified_name": "onesignal/onesignal",
-      "smithery_page_url": "https://smithery.ai/servers/onesignal/onesignal",
-      "mcp_endpoint": "https://onesignal.run.tools",
-      "deployment_url": "https://onesignal.run.tools",
-      "connection_url": "https://onesignal.run.tools",
-      "primary_url": "https://smithery.ai/servers/onesignal/onesignal",
+      "smithery_qualified_name": "zev/lastlook-data",
+      "smithery_page_url": "https://smithery.ai/servers/zev/lastlook-data",
+      "mcp_endpoint": "https://lastlook-data--zev.run.tools",
+      "deployment_url": "https://lastlook-data--zev.run.tools",
+      "connection_url": "https://lastlook-data--zev.run.tools",
+      "primary_url": "https://smithery.ai/servers/zev/lastlook-data",
       "setup_steps": [
         {
           "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/onesignal/onesignal\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://onesignal.run.tools"
+          "text": "1. Open https://smithery.ai/servers/zev/lastlook-data\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://lastlook-data--zev.run.tools"
         }
       ],
-      "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-08-03T08:48:26.394Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "theagenttimes-ucp-gateway",
-      "slug": "theagenttimes-ucp-gateway",
-      "name": "UCP Gateway",
-      "description": "AI Shopping tools for product search, comparison, and safe checkout\n\nCommerce Gateway — an infrastructure layer that enables open-source AI agents to participate in agentic commerce through the Universal Commerce Protocol.\n\nOur platform gives agents a hosted UCP profile registry, a secure MCP gateway, and access to commerce flows without requiring every agent to own a domain, GitHub account, or Shopify credentials.\n\nWith this solution, agents can discover products, recommend options, build carts, validate them with the user, and generate checkout handoff links where the buyer completes payment safely on Shopping platform.\n\nThe value is simple: we make AI commerce accessible to open-source agents while keeping payments secure, merchants protected, and user confirmation at the center of every transaction.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "register_ucp_profile",
-          "description": "Register a public hosted UCP agent profile and receive agent_id/profile_url. Default path: send agent_name plus public_key_jwk and the gateway builds the canonical UCP profile with default Shopping capabilities. Re-registering the same public_key_jwk in the same namespace is idempotent and returns the existing agent_id. Do not build a capability map for normal registration. Create local ./.ucpgateway/ files; keep private_key.jwk local and save returned agent_id/profile_url/profile_json to ./.ucp"
-        },
-        {
-          "name": "get_ucp_profile",
-          "description": "Fetch one registered UCP profile by namespace and agent_id."
-        },
-        {
-          "name": "shopping_product_search",
-          "description": "Search the product catalog through The Agent Times UCP Gateway."
-        },
-        {
-          "name": "shopping_product_get",
-          "description": "Get product details by provider product or variant ID."
-        },
-        {
-          "name": "shopping_cart_create",
-          "description": "Create a merchant cart after the buyer/operator confirms selected variants."
-        },
-        {
-          "name": "shopping_cart_get",
-          "description": "Refresh a merchant cart state."
-        },
-        {
-          "name": "shopping_cart_update",
-          "description": "Replace a merchant cart with the full desired cart state."
-        },
-        {
-          "name": "shopping_cart_cancel",
-          "description": "Cancel a merchant cart using an idempotency key."
-        },
-        {
-          "name": "shopping_checkout_create",
-          "description": "Create a merchant checkout handoff URL after operator confirmation. Does not accept payment credentials. Buyer phone should be E.164 and country must be ISO-2."
-        },
-        {
-          "name": "shopping_checkout_get",
-          "description": "Refresh merchant checkout state."
-        },
-        {
-          "name": "shopping_checkout_update",
-          "description": "Update checkout with a full desired checkout object; use sparingly after checkout exists. Buyer phone should be E.164 and country must be ISO-2."
-        },
-        {
-          "name": "shopping_checkout_cancel",
-          "description": "Cancel an active merchant checkout using an idempotency key."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "stars": 17401,
-      "source": "smithery",
-      "last_updated": "2026-07-20",
-      "icon": "search",
-      "smithery_qualified_name": "theagenttimes/ucp-gateway",
-      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "mcp_endpoint": "https://ucp-gateway--theagenttimes.run.tools",
-      "deployment_url": "https://ucp-gateway--theagenttimes.run.tools",
-      "connection_url": "https://ucp-gateway--theagenttimes.run.tools",
-      "primary_url": "https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://ucp-gateway--theagenttimes.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/ucp-gateway",
-      "tools_validated_at": "2026-08-03T08:48:25.632Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "setup_summary": "1. Open https://smithery.ai/servers/zev/lastlook-data",
       "featured": true
     },
     {
@@ -3077,9 +3842,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "stars": 19351,
+      "stars": 19546,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
       "smithery_qualified_name": "alexandria-shai-eden/cbrowser",
       "smithery_page_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
@@ -3094,112 +3859,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "tools_validated_at": "2026-08-03T08:48:24.749Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "theagenttimes-news",
-      "slug": "theagenttimes-news",
-      "name": "Agent News",
-      "description": "The intelligence layer agents use before they act, sourced answers on the agent economy.\n\nQuery verified AI news with citations, confidence scores, and Ethics Engine ratings. Use instead of generic web search for any question about AI agent tools, MCPs, or frameworks.\n\nEvery result carries citations, confidence scores, and Ethics Engine ratings. Built for agents to verify evidence before recommending tools, installing MCP servers, or taking action.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "tat_search",
-          "description": "Search The Agent Times agent-news layer across structured events, articles, and agent-action/product metadata. Uses backend typo correction, alias expansion, required-term coverage, global ranking, and low-confidence rejection. Returns search_confidence, warnings, relevance_score, match_quality, matched_terms, missing_terms, sources, confidence, Ethics Engine score, agent voice score, and standard receipt."
-        },
-        {
-          "name": "tat_ask",
-          "description": "Ask The Agent Times a question through the trusted answer pipeline: TAT corpus/events/action metadata plus backend-controlled external research, with citations, confidence, Ethics Engine score, agent voice score, and answer-standard receipt. Returns insufficient_evidence instead of unsourced claims. Set instant_answer=true to force a synchronous, fully-processed answer (used by the on-site Ask Expert widget)."
-        },
-        {
-          "name": "tat_get_event",
-          "description": "Fetch one structured agent-news event by event_id, including sources, confidence, ethics score, agent voice score, recommended actions, and standard receipt."
-        },
-        {
-          "name": "tat_stats",
-          "description": "Return firehose/demo counters for recent agent-news events: counts, verification rate, average confidence, source count, urgency, and actionability breakdowns."
-        },
-        {
-          "name": "tat_get_answer_standard",
-          "description": "Return the current The Agent Times MCP Answer Standard so agents can explain why a TAT answer/event is trusted, or why insufficient_evidence was returned."
-        },
-        {
-          "name": "tat_recommend",
-          "description": "Return sourced recommendations for an agent/operator use case using TAT trusted corpus, events, and answer standard. Not an external-resource safety checker."
-        },
-        {
-          "name": "tat_get_comments",
-          "description": "Read threaded comments on a TAT article, with agent attribution and endorsement counts."
-        },
-        {
-          "name": "tat_post_comment",
-          "description": "Post a signed/logged agent comment on a TAT article. Use only when the user explicitly asks to post."
-        },
-        {
-          "name": "get_latest_articles",
-          "description": "Get the latest articles from The Agent Times. Returns headlines, summaries, sources, confidence levels, and Ed25519 provenance status."
-        },
-        {
-          "name": "get_section_articles",
-          "description": "Get articles from a specific section. Each article includes Ed25519 provenance status. Sections: platforms, open-source, research, commerce, sales, marketing, engineering, adtech, infrastructure, regulations, funding, labor, opinion, interview."
-        },
-        {
-          "name": "get_article",
-          "description": "Get a full article by slug, including the complete body text and Ed25519 provenance verification status. Optionally include detailed provenance and governance blocks."
-        },
-        {
-          "name": "search_articles",
-          "description": "Search The Agent Times article corpus with typo-tolerant required-term coverage, relevance diagnostics, and filters over title, slug, tags, summary, body, and publication metadata. Returns the same structured contract as tat_search (search_confidence, warnings, relevance diagnostics, sources, confidence, Ethics Engine score, agent voice score, and standard receipt) restricted to article results."
-        },
-        {
-          "name": "get_related_articles",
-          "description": "Get related articles for an article slug using section/topic/tag overlap."
-        },
-        {
-          "name": "list_topics",
-          "description": "List known topic hubs extracted from the corpus."
-        },
-        {
-          "name": "get_topic_hub",
-          "description": "Get a topic hub with start-here articles, latest coverage, and intent tags."
-        },
-        {
-          "name": "get_trust_summary",
-          "description": "Get publication-level trust metrics: confidence mix, provenance coverage, source density, and section-level trust summaries."
-        },
-        {
-          "name": "get_editorial_standards",
-          "description": "Get The Agent Times editorial standards and code of conduct summary."
-        },
-        {
-          "name": "report_usage",
-          "description": "Voluntarily declare which TAT articles you used to produce your output. Transparent agents build trust and get recognized as verified consumers. No auth required — just tell us what you used."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/theagenttimes/news",
-      "stars": 16274,
-      "source": "smithery",
-      "last_updated": "2026-07-20",
-      "icon": "search",
-      "smithery_qualified_name": "theagenttimes/news",
-      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/news",
-      "mcp_endpoint": "https://news--theagenttimes.run.tools",
-      "deployment_url": "https://news--theagenttimes.run.tools",
-      "connection_url": "https://news--theagenttimes.run.tools",
-      "primary_url": "https://smithery.ai/servers/theagenttimes/news",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/theagenttimes/news\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://news--theagenttimes.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-08-03T08:48:25.729Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -3293,9 +3952,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googledrive",
-      "stars": 15266,
+      "stars": 16246,
       "source": "smithery",
-      "last_updated": "2026-07-20",
+      "last_updated": "2026-08-03",
       "icon": "search",
       "smithery_qualified_name": "googledrive",
       "smithery_page_url": "https://smithery.ai/servers/googledrive",
@@ -3310,8 +3969,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googledrive",
-      "tools_validated_at": "2026-08-03T08:48:26.352Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -3343,58 +4000,6 @@
       "hidden": false,
       "last_updated": "2026-08-03",
       "icon": "monitor"
-    },
-    {
-      "id": "nitrofire-q-gread",
-      "slug": "nitrofire-q-gread",
-      "name": "Gread",
-      "description": "Gives your AI access to the source code of all public github repos.\n\n- Plug and Play: Compatible with all popular coding agents and MCP clients, ready to use out of the box\n- Skill and MCP: Both Skill and MCP are provided, connect with either option\n- Docs Integration: Automatically recognizes docs repo and provides them along with the main repo when accessed",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "search_repos",
-          "description": "Search for GitHub repositories by name, description, or topic keywords using the GitHub Search API."
-        },
-        {
-          "name": "view_repo",
-          "description": "View repository basic information and its directory structure. Includes corresponding documentation repo if available."
-        },
-        {
-          "name": "list_tree",
-          "description": "List the directory tree of a specific path in a repository with customizable depth and traversal limits."
-        },
-        {
-          "name": "read_code",
-          "description": "Retrieve the raw source code of specified files from within a known repository."
-        },
-        {
-          "name": "search_code",
-          "description": "Perform a fast git grep inside the repository, allowing regex matching by default or substring search."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/nitrofire-q/gread",
-      "stars": 20447,
-      "source": "smithery",
-      "last_updated": "2026-07-20",
-      "icon": "boxes",
-      "smithery_qualified_name": "nitrofire-q/gread",
-      "smithery_page_url": "https://smithery.ai/servers/nitrofire-q/gread",
-      "mcp_endpoint": "https://gread--nitrofire-q.run.tools",
-      "deployment_url": "https://gread--nitrofire-q.run.tools",
-      "connection_url": "https://gread--nitrofire-q.run.tools",
-      "primary_url": "https://smithery.ai/servers/nitrofire-q/gread",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/nitrofire-q/gread\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://gread--nitrofire-q.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-08-03T08:48:24.809Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
     },
     {
       "id": "notebooklm-mcp",
@@ -3605,6 +4210,236 @@
       "icon": "cloud-code"
     },
     {
+      "id": "creativelead-unclick",
+      "slug": "creativelead-unclick",
+      "name": "UnClick",
+      "description": "AI agent tool marketplace. 60+ tools for social, e-commerce, accounting, messaging, media, and more. Search and call tools for Slack, Reddit, Discord, Shopify, Xero, Bluesky, TMDB, Steam, and 50+ more services.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "unclick_search",
+          "description": "Search the UnClick tool marketplace by keyword or description. Use this to discover which tools are available for a task. Example: 'I need to resize an image' → returns the image tool with its endpoints."
+        },
+        {
+          "name": "unclick_browse",
+          "description": "Browse all available UnClick tools, optionally filtered by category. Returns a list of tools with their slugs and descriptions."
+        },
+        {
+          "name": "unclick_tool_info",
+          "description": "Get detailed information about a specific UnClick tool including all its endpoints, required parameters, and response shapes. Use this after unclick_search to understand exactly how to call a tool."
+        },
+        {
+          "name": "unclick_call",
+          "description": "Call any UnClick tool endpoint. Specify the endpoint ID and parameters. Use unclick_search or unclick_tool_info to discover endpoint IDs and required params. Example: endpoint_id='image.resize', params={image: '<base64>', width: 800, height: 600}"
+        },
+        {
+          "name": "unclick_shorten_url",
+          "description": "Shorten a URL using UnClick. Returns a short URL and its code."
+        },
+        {
+          "name": "unclick_generate_qr",
+          "description": "Generate a QR code from text or a URL. Returns base64-encoded PNG or SVG."
+        },
+        {
+          "name": "unclick_hash",
+          "description": "Compute a cryptographic hash (MD5, SHA1, SHA256, SHA512) of text."
+        },
+        {
+          "name": "unclick_transform_text",
+          "description": "Transform text case: upper, lower, title, sentence, camelCase, snake_case, kebab-case, PascalCase."
+        },
+        {
+          "name": "unclick_validate_email",
+          "description": "Validate an email address format."
+        },
+        {
+          "name": "unclick_validate_url",
+          "description": "Validate a URL format, optionally check if it's reachable."
+        },
+        {
+          "name": "unclick_resize_image",
+          "description": "Resize an image (provided as base64) to specified dimensions."
+        },
+        {
+          "name": "unclick_parse_csv",
+          "description": "Parse a CSV string into a JSON array of rows."
+        },
+        {
+          "name": "unclick_json_format",
+          "description": "Format / pretty-print a JSON string."
+        },
+        {
+          "name": "unclick_encode",
+          "description": "Encode or decode text. Supports base64, URL, HTML, and hex."
+        },
+        {
+          "name": "unclick_generate_uuid",
+          "description": "Generate one or more random UUIDs (v4)."
+        },
+        {
+          "name": "unclick_random_password",
+          "description": "Generate a secure random password."
+        },
+        {
+          "name": "unclick_cron_parse",
+          "description": "Convert a cron expression to a human-readable description and get next occurrences."
+        },
+        {
+          "name": "unclick_ip_parse",
+          "description": "Parse an IP address — get decimal, binary, hex, and type (private/loopback/multicast)."
+        },
+        {
+          "name": "unclick_color_convert",
+          "description": "Convert a color between hex, RGB, HSL, and HSV formats."
+        },
+        {
+          "name": "unclick_regex_test",
+          "description": "Test a regex pattern against text and get all matches with groups."
+        },
+        {
+          "name": "unclick_timestamp_convert",
+          "description": "Convert a timestamp (ISO, Unix seconds, or Unix ms) to all common formats."
+        },
+        {
+          "name": "unclick_diff_text",
+          "description": "Compare two strings and return a unified diff showing what changed."
+        },
+        {
+          "name": "unclick_kv_set",
+          "description": "Store a value in the UnClick key-value store with optional TTL."
+        },
+        {
+          "name": "unclick_kv_get",
+          "description": "Retrieve a value from the UnClick key-value store."
+        },
+        {
+          "name": "report_bug",
+          "description": "Report a bug or unexpected behavior encountered while using an UnClick tool. Call this whenever a tool returns an error, behaves unexpectedly, or fails silently. Severity is auto-classified from the error message: 500/fatal → critical, timeout/503 → high, 4xx/invalid → low, everything else → medium."
+        },
+        {
+          "name": "rawg_search_games",
+          "description": "Search for video games on RAWG."
+        },
+        {
+          "name": "rawg_get_game",
+          "description": "Get details for a specific game by RAWG ID or slug."
+        },
+        {
+          "name": "rawg_game_screenshots",
+          "description": "Get screenshots for a RAWG game."
+        },
+        {
+          "name": "rawg_list_genres",
+          "description": "List all game genres on RAWG."
+        },
+        {
+          "name": "rawg_list_platforms",
+          "description": "List all gaming platforms on RAWG."
+        },
+        {
+          "name": "rawg_upcoming_games",
+          "description": "Get upcoming game releases from RAWG."
+        },
+        {
+          "name": "riot_summoner",
+          "description": "Get a League of Legends summoner by name."
+        },
+        {
+          "name": "riot_ranked",
+          "description": "Get ranked stats for a League of Legends summoner."
+        },
+        {
+          "name": "riot_match_history",
+          "description": "Get match history for a LoL/Riot account by PUUID."
+        },
+        {
+          "name": "riot_get_match",
+          "description": "Get details for a specific Riot match by match ID."
+        },
+        {
+          "name": "riot_valorant_account",
+          "description": "Get a Valorant account by game name and tag line."
+        },
+        {
+          "name": "bungie_search_player",
+          "description": "Search for a Destiny 2 player by display name."
+        },
+        {
+          "name": "bungie_get_profile",
+          "description": "Get a Destiny 2 player profile."
+        },
+        {
+          "name": "bungie_get_manifest",
+          "description": "Get the Destiny 2 manifest definition."
+        },
+        {
+          "name": "bungie_search_entities",
+          "description": "Search Destiny 2 manifest entities."
+        },
+        {
+          "name": "coc_player",
+          "description": "Get a Clash of Clans player by tag."
+        },
+        {
+          "name": "coc_clan",
+          "description": "Get a Clash of Clans clan by tag."
+        },
+        {
+          "name": "coc_clan_members",
+          "description": "Get members of a Clash of Clans clan."
+        },
+        {
+          "name": "cr_player",
+          "description": "Get a Clash Royale player by tag."
+        },
+        {
+          "name": "cr_top_players",
+          "description": "Get top Clash Royale players globally or by location."
+        },
+        {
+          "name": "bs_player",
+          "description": "Get a Brawl Stars player by tag."
+        },
+        {
+          "name": "bs_club",
+          "description": "Get a Brawl Stars club by tag."
+        },
+        {
+          "name": "lego_search_sets",
+          "description": "Search LEGO sets by name/theme (Rebrickable)."
+        },
+        {
+          "name": "lego_get_set",
+          "description": "Get details for a specific LEGO set by set number."
+        },
+        {
+          "name": "lego_set_parts",
+          "description": "Get the parts list for a LEGO set."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/creativelead/unclick",
+      "stars": 16262,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "search",
+      "smithery_qualified_name": "creativelead/unclick",
+      "smithery_page_url": "https://smithery.ai/servers/creativelead/unclick",
+      "mcp_endpoint": "https://unclick--creativelead.run.tools",
+      "deployment_url": "https://unclick--creativelead.run.tools",
+      "connection_url": "https://unclick--creativelead.run.tools",
+      "primary_url": "https://smithery.ai/servers/creativelead/unclick",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/creativelead/unclick\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://unclick--creativelead.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
+      "featured": true
+    },
+    {
       "id": "gmail",
       "slug": "gmail",
       "name": "Gmail",
@@ -3664,36 +4499,6 @@
       "hidden": false,
       "last_updated": "2026-08-03",
       "icon": "search"
-    },
-    {
-      "id": "bigquery",
-      "slug": "bigquery",
-      "name": "BigQuery",
-      "description": "Google analytics warehouse queries and table management.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_query",
-          "description": "Execute BigQuery SQL"
-        },
-        {
-          "name": "list_datasets",
-          "description": "List datasets in a project"
-        },
-        {
-          "name": "get_table_schema",
-          "description": "Describe table schema"
-        }
-      ],
-      "docs_url": "https://cloud.google.com/bigquery/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "bar-chart"
     },
     {
       "id": "airtable",
@@ -3815,6 +4620,36 @@
       "hidden": false,
       "last_updated": "2026-08-03",
       "icon": "cloud"
+    },
+    {
+      "id": "bigquery",
+      "slug": "bigquery",
+      "name": "BigQuery",
+      "description": "Google analytics warehouse queries and table management.",
+      "category": "Data & Analytics",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
+        },
+        {
+          "name": "list_datasets",
+          "description": "List datasets in a project"
+        },
+        {
+          "name": "get_table_schema",
+          "description": "Describe table schema"
+        }
+      ],
+      "docs_url": "https://cloud.google.com/bigquery/docs",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-08-03",
+      "icon": "bar-chart"
     },
     {
       "id": "bluesky",
@@ -4932,218 +5767,6 @@
       "hidden": false,
       "last_updated": "2026-08-03",
       "icon": "file-text"
-    },
-    {
-      "id": "snowflake",
-      "slug": "snowflake",
-      "name": "Snowflake",
-      "description": "Cloud data warehouse SQL and schema inspection.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_query",
-          "description": "Execute a SQL query"
-        },
-        {
-          "name": "list_databases",
-          "description": "List available databases"
-        },
-        {
-          "name": "describe_table",
-          "description": "Show table columns and types"
-        }
-      ],
-      "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "bar-chart"
-    },
-    {
-      "id": "sourcegraph-cody",
-      "slug": "sourcegraph-cody",
-      "name": "Sourcegraph Cody",
-      "description": "Semantic codebase search and navigation across large repositories.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_code",
-          "description": "Semantic search across codebases"
-        },
-        {
-          "name": "find_references",
-          "description": "Find symbol references"
-        },
-        {
-          "name": "explain_symbol",
-          "description": "Explain a function or type in context"
-        }
-      ],
-      "github_url": "https://github.com/sourcegraph/cody",
-      "docs_url": "https://sourcegraph.com/cody",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "code"
-    },
-    {
-      "id": "sqlite",
-      "slug": "sqlite",
-      "name": "SQLite",
-      "description": "Local SQLite database operations with schema discovery.",
-      "category": "Databases",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "read_query",
-          "description": "Run SELECT queries"
-        },
-        {
-          "name": "write_query",
-          "description": "Run INSERT/UPDATE/DELETE"
-        },
-        {
-          "name": "list_tables",
-          "description": "List all tables"
-        }
-      ],
-      "github_url": "https://github.com/modelcontextprotocol/servers",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "database"
-    },
-    {
-      "id": "stackblitz",
-      "slug": "stackblitz",
-      "name": "StackBlitz",
-      "description": "Browser-based dev environments with instant Node and web project bootstrapping.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "open_project",
-          "description": "Open or create a StackBlitz project"
-        },
-        {
-          "name": "run_dev_server",
-          "description": "Start the development server"
-        },
-        {
-          "name": "edit_file",
-          "description": "Update project files"
-        }
-      ],
-      "docs_url": "https://developer.stackblitz.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "browser"
-    },
-    {
-      "id": "supabase",
-      "slug": "supabase",
-      "name": "Supabase",
-      "description": "Postgres plus auth, storage, and edge functions for Supabase projects.",
-      "category": "Databases",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_projects",
-          "description": "List Supabase projects"
-        },
-        {
-          "name": "execute_sql",
-          "description": "Run SQL against a project"
-        },
-        {
-          "name": "list_tables",
-          "description": "List tables in a schema"
-        }
-      ],
-      "github_url": "https://github.com/supabase-community/supabase-mcp",
-      "docs_url": "https://supabase.com/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "database"
-    },
-    {
-      "id": "taskade",
-      "slug": "taskade",
-      "name": "Taskade",
-      "description": "Workspace memory plus agent automation for tasks.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "create_task",
-          "description": "Create a workspace task"
-        },
-        {
-          "name": "run_agent",
-          "description": "Trigger an automation agent"
-        },
-        {
-          "name": "search_workspace",
-          "description": "Search workspace content"
-        }
-      ],
-      "docs_url": "https://www.taskade.com/api",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "brain"
-    },
-    {
-      "id": "terraform",
-      "slug": "terraform",
-      "name": "Terraform",
-      "description": "Infrastructure-as-code plan, apply, and state operations.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "plan",
-          "description": "Run terraform plan"
-        },
-        {
-          "name": "apply",
-          "description": "Apply infrastructure changes"
-        },
-        {
-          "name": "show_state",
-          "description": "Inspect Terraform state"
-        }
-      ],
-      "github_url": "https://github.com/hashicorp/terraform-mcp-server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-03",
-      "icon": "boxes"
     }
   ]
 }
