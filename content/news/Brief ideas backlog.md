@@ -6,7 +6,7 @@ tags:
   - content-pipeline
 status: backlog
 created: 2026-07-20
-updated: 2026-07-20
+updated: 2026-08-05
 ---
 
 # Influzer MCP Briefs — idea backlog
@@ -17,7 +17,14 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 ---
 
-## Shipped this batch (2026-07-18 → 2026-07-20)
+## Shipped this batch (2026-08-05)
+
+| Date | Slug | Title | Status |
+|------|------|-------|--------|
+| 2026-08-05 | `mcp-rip-out-list-before-deprecation-clock` | What to rip out before the MCP deprecation clock starts | ✅ Drafted JSON |
+| 2026-08-05 | Insight: `mcp-deprecation-clock-what-to-rip-out-before-it-hits` | What to Rip Out of Your MCP Stack Before the Deprecation Clock Hits | ✅ Featured Insight |
+
+## Shipped previous batch (2026-07-18 → 2026-07-20)
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
@@ -43,8 +50,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 #### 1. What to rip out before the deprecation clock starts
 - **Angle:** Practical “stop relying on X” checklist after 2026-07-28 (session affinity, old Tasks experiments, auth shortcuts).
 - **Source:** Influzer.ai (operator take)
-- **Pairs with:** shipped spec brief · Insight: `mcp-builders-stdio-http-hosting-and-secrets`
-- **Status:** ⬜todo
+- **Pairs with:** shipped spec brief · Insight: `mcp-deprecation-clock-what-to-rip-out-before-it-hits`
+- **Status:** ✅ shipped 2026-08-05 (`mcp-rip-out-list-before-deprecation-clock`)
 
 #### 2. New MCP headers are a security footgun
 - **Angle:** Routable / `Mcp-Method`-style headers help ops — and can leak secrets into proxies/logs if teams map tokens into headers.
