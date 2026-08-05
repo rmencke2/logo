@@ -12,7 +12,7 @@ const {
   findMcpServerBySlug,
   isInTop100,
 } = require('./mcpDirectoryService');
-const { sendMcpApprovalEmail } = require('../emailService');
+const { sendMcpApprovalEmail, sendMcpDismissalEmail } = require('../emailService');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -368,7 +368,7 @@ function markSubmission(id, status, meta = {}) {
   data.reviewedAt = new Date().toISOString();
   if (meta.approvedSlug) data.approvedSlug = meta.approvedSlug;
   if (meta.reviewedBy) data.reviewedBy = meta.reviewedBy;
-  if (meta.note) data.reviewNote = meta.note;
+  if (meta.note !== undefined) data.reviewNote = meta.note;
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
@@ -471,13 +471,41 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     }
   });
 
-  app.post('/admin/api/mcp/submissions/:id/dismiss', requireAuth, requireAdmin, (req, res) => {
+  app.post('/admin/api/mcp/submissions/:id/dismiss', requireAuth, requireAdmin, async (req, res) => {
     try {
+      const sub = readSubmissionFile(req.params.id);
+      if (!sub) throw new Error('Submission not found');
+
+      const note = String(req.body?.note || '').trim();
+      const emailSubmitter = req.body?.emailSubmitter !== false && note.length > 0;
+
       markSubmission(req.params.id, 'dismissed', {
         reviewedBy: req.user?.email || 'admin',
-        note: req.body?.note || '',
+        note,
       });
-      res.json({ success: true, message: 'Submission dismissed' });
+
+      let emailSent = false;
+      let emailError = null;
+      if (emailSubmitter) {
+        try {
+          await sendMcpDismissalEmail({ submission: sub, note });
+          emailSent = true;
+        } catch (err) {
+          emailError = err.message || 'Failed to send feedback email';
+          console.error('MCP dismissal notification failed:', emailError);
+        }
+      }
+
+      let message = 'Submission dismissed';
+      if (emailSent) {
+        message += '. Feedback email sent to submitter.';
+      } else if (emailError) {
+        message += `. Warning: feedback email failed (${emailError}).`;
+      } else if (note) {
+        message += '. Note saved (email not sent).';
+      }
+
+      res.json({ success: true, message, emailSent, emailError });
     } catch (err) {
       console.error('MCP dismiss error:', err);
       res.status(400).json({ error: err.message || 'Failed to dismiss submission' });

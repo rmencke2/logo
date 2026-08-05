@@ -345,6 +345,77 @@ async function sendMcpSubmissionEmail(submission) {
   }
 }
 
+async function sendMcpDismissalEmail({ submission, note }) {
+  ensureMcpEmailTransportReady();
+
+  const to = String(submission.submitterEmail || '').trim();
+  if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    throw new Error('Submitter email is missing or invalid');
+  }
+
+  const feedback = String(note || '').trim();
+  if (!feedback) {
+    throw new Error('Dismissal note is required to email the submitter');
+  }
+
+  const base = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
+  const resubmitUrl = `${base}/mcp/submit`;
+  const fromAddress = getFromAddress();
+  const greeting = submission.submitterName || 'there';
+  const serverName = submission.serverName || 'your MCP server';
+
+  const mailOptions = {
+    from: fromAddress,
+    to,
+    replyTo: process.env.MCP_SUBMISSION_EMAIL || process.env.EMAIL_USER || undefined,
+    subject: `Update on your MCP directory submission — ${serverName}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+        <body style="font-family:Arial,sans-serif;line-height:1.6;color:#333;">
+          <div style="max-width:600px;margin:0 auto;padding:20px;">
+            <h2 style="margin:0 0 12px;">About your MCP submission</h2>
+            <p>Hi ${escapeHtml(greeting)},</p>
+            <p>Thanks for submitting <strong>${escapeHtml(serverName)}</strong> to the Influzer.ai MCP directory. We reviewed it and are not publishing it yet.</p>
+            <div style="margin:20px 0;padding:16px;background:#f5f5f5;border-radius:8px;font-size:14px;white-space:pre-wrap;">${escapeHtml(feedback).replace(/\n/g, '<br>')}</div>
+            <p style="margin:24px 0;">
+              <a href="${escapeHtml(resubmitUrl)}" style="display:inline-block;padding:12px 24px;background:#6366f1;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;">Submit again</a>
+            </p>
+            <p style="word-break:break-all;font-size:14px;color:#555;">${escapeHtml(resubmitUrl)}</p>
+            <p style="font-size:14px;color:#666;">Reply to this email if you have questions — we're happy to help you get listed.</p>
+            <p style="margin-top:28px;font-size:13px;color:#888;">— Influzer.ai MCP Directory</p>
+          </div>
+        </body>
+      </html>
+    `,
+    text: [
+      `Hi ${greeting},`,
+      '',
+      `Thanks for submitting ${serverName} to the Influzer.ai MCP directory. We reviewed it and are not publishing it yet.`,
+      '',
+      feedback,
+      '',
+      `Submit again: ${resubmitUrl}`,
+      '',
+      'Reply to this email if you have questions.',
+      '',
+      '— Influzer.ai MCP Directory',
+    ].join('\n'),
+  };
+
+  try {
+    const info = await getTransporter().sendMail(mailOptions);
+    console.log('✅ MCP dismissal feedback email sent to submitter');
+    console.log('   To:', to);
+    console.log('   Message ID:', info.messageId || '(none)');
+    return { success: true, messageId: info.messageId, to };
+  } catch (error) {
+    console.error('❌ MCP dismissal email failed:', error.message);
+    if (error.response) console.error('   SMTP response:', error.response);
+    throw error;
+  }
+}
+
 async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
   ensureMcpEmailTransportReady();
 
@@ -579,6 +650,7 @@ module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendMcpSubmissionEmail,
+  sendMcpDismissalEmail,
   sendMcpApprovalEmail,
   sendBlogNewsletterEmail,
   buildBlogNewsletterHtml,

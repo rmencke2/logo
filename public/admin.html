@@ -657,6 +657,15 @@
           <label>Setup instructions (read-only)</label>
           <div class="mcp-tools-preview" id="mcpSetupNotes"></div>
         </div>
+        <div class="form-group" style="border-top:1px solid #e5e5ea;padding-top:16px;margin-top:8px;">
+          <label for="mcpDismissNote">Message to submitter (optional)</label>
+          <p style="margin:0 0 8px;font-size:12px;color:#8e8e93;">Explain why you're not publishing — e.g. missing tools. They'll get this by email if you check the box below.</p>
+          <textarea id="mcpDismissNote" placeholder="We couldn't approve this listing because no MCP tools were documented. Please resubmit with at least one tool per line: tool_name — short description." style="min-height:100px;font-size:13px;"></textarea>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+            <label style="font-size:13px;font-weight:normal;"><input type="checkbox" id="mcpDismissEmailSubmitter" checked /> Email this message to submitter</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="fillMcpMissingToolsTemplate()">Use missing-tools template</button>
+          </div>
+        </div>
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="closeModal('mcpReviewModal')">Cancel</button>
           <button type="button" class="btn btn-danger" onclick="handleMcpDismiss()">Dismiss</button>
@@ -1817,6 +1826,15 @@
         document.getElementById('mcpSetupNotes').textContent =
           [sub.setupInstructions, sub.additionalNotes].filter(Boolean).join('\n\n') || '(none)';
 
+        const toolCount = Array.isArray(sub.tools) ? sub.tools.length : (preview.tools || []).length;
+        const dismissNote = document.getElementById('mcpDismissNote');
+        const dismissEmail = document.getElementById('mcpDismissEmailSubmitter');
+        dismissNote.value = '';
+        dismissEmail.checked = true;
+        if (toolCount === 0) {
+          fillMcpMissingToolsTemplate();
+        }
+
         const approveBtn = document.getElementById('mcpApproveBtn');
         if (sub.reviewStatus === 'approved') {
           approveBtn.textContent = 'Update catalog entry';
@@ -1880,18 +1898,40 @@
       }
     }
 
+    function fillMcpMissingToolsTemplate() {
+      const el = document.getElementById('mcpDismissNote');
+      if (!el) return;
+      el.value =
+        "We weren't able to approve this listing because no MCP tools were included.\n\n" +
+        'Every server in our directory needs at least one documented tool (name + short description). ' +
+        'Please resubmit at https://www.influzer.ai/mcp/submit with your tools listed — one per line, e.g.:\n\n' +
+        'search_docs — Search project documentation\n' +
+        'run_query — Execute a read-only SQL query';
+      const emailCb = document.getElementById('mcpDismissEmailSubmitter');
+      if (emailCb) emailCb.checked = true;
+    }
+
     async function handleMcpDismiss() {
       const id = document.getElementById('mcpReviewId').value;
-      if (!confirm('Dismiss this submission?')) return;
+      const note = document.getElementById('mcpDismissNote').value.trim();
+      const emailSubmitter = document.getElementById('mcpDismissEmailSubmitter').checked;
+      let confirmMsg = 'Dismiss this submission?';
+      if (note && emailSubmitter) {
+        confirmMsg += '\n\nThe submitter will receive your message by email.';
+      } else if (note) {
+        confirmMsg += '\n\nYour note will be saved but no email will be sent.';
+      }
+      if (!confirm(confirmMsg)) return;
       try {
         const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}/dismiss`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({}),
+          body: JSON.stringify({ note, emailSubmitter }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Dismiss failed');
         closeModal('mcpReviewModal');
+        alert(data.message || 'Submission dismissed');
         loadMcpSubmissions();
       } catch (err) {
         alert(err.message);
@@ -2059,6 +2099,8 @@
       if (modalId === 'mcpReviewModal') {
         document.getElementById('mcpReviewForm').reset();
         document.getElementById('mcpReviewAlert').innerHTML = '';
+        document.getElementById('mcpDismissNote').value = '';
+        document.getElementById('mcpDismissEmailSubmitter').checked = true;
       }
       if (modalId === 'mcpCatalogEditModal') {
         document.getElementById('mcpCatalogEditForm').reset();
