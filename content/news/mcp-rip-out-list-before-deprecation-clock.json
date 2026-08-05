@@ -1,0 +1,12 @@
+{
+  "slug": "mcp-rip-out-list-before-deprecation-clock",
+  "title": "What to rip out before the MCP deprecation clock starts",
+  "date": "2026-08-05",
+  "excerpt": "After 2026-07-28, sticky sessions are already wrong — and Roots, Sampling, Logging, DCR, and legacy HTTP+SSE are on a twelve-month clock. Here is the stop-relying-on-X list.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Spec", "Migration", "HTTP", "Security", "Developers"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+  "relatedInsightSlug": "mcp-deprecation-clock-what-to-rip-out-before-it-hits",
+  "contentHtml": "<p>Spec <strong>2026-07-28</strong> did two different things at once: it made the protocol <strong>stateless now</strong>, and it started a formal <strong>twelve-month deprecation window</strong> for a pile of habits teams still ship.</p><p><strong>Rip out immediately</strong> (not “when we get to it”):</p><ul><li>Sticky sessions / <code>Mcp-Session-Id</code> assumptions</li><li>Servers that refuse traffic until <code>initialize</code> completes</li><li>Elicitation / sampling flows that need a held-open bidirectional stream (use MRTR instead)</li></ul><p><strong>Stop new adoption; schedule removal</strong> inside the twelve-month window:</p><ul><li>Roots, Sampling, Logging</li><li>Legacy HTTP+SSE transport</li><li>Dynamic Client Registration (move toward CIMD)</li></ul><p><strong>Why it matters:</strong> Claude, ChatGPT, and hosted agents already prefer ordinary HTTPS. Session-shaped infra will fail first under round-robin. Deprecated APIs will fail second — right when you are busiest.</p><p>Full operator checklist (30-day plan, auth hardening, header footguns): <a href=\"/insights/mcp-deprecation-clock-what-to-rip-out-before-it-hits\">What to rip out before the deprecation clock hits</a>. Browse remotes worth keeping in the <a href=\"/mcp\">directory</a>.</p>"
+}
