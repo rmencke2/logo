@@ -314,6 +314,10 @@
       background: #2a2a2a;
       color: #8e8e93;
     }
+    .badge.changes_requested {
+      background: #b45309;
+      color: #fff;
+    }
     .mcp-tools-preview {
       background: #1f1f1f;
       border: 1px solid #2a2a2a;
@@ -492,7 +496,8 @@
         </p>
         <div class="search-bar">
           <select id="mcpStatusFilter">
-            <option value="pending">Pending</option>
+            <option value="pending">Pending (incl. awaiting reply)</option>
+            <option value="changes_requested">Awaiting reply only</option>
             <option value="approved">Approved</option>
             <option value="dismissed">Dismissed</option>
             <option value="all">All</option>
@@ -657,8 +662,18 @@
           <label>Setup instructions (read-only)</label>
           <div class="mcp-tools-preview" id="mcpSetupNotes"></div>
         </div>
-        <div class="form-actions">
+        <div class="form-group" style="border-top:1px solid #e5e5ea;padding-top:16px;margin-top:8px;">
+          <label for="mcpFeedbackNote">Ask submitter for more info</label>
+          <p style="margin:0 0 8px;font-size:12px;color:#8e8e93;">Sends an email and keeps this submission in the pending queue so you can approve later. Use Dismiss only to drop it.</p>
+          <textarea id="mcpFeedbackNote" placeholder="Please reply with your MCP tools (one per line: tool_name — description) so we can approve the listing." style="min-height:100px;font-size:13px;"></textarea>
+          <div style="margin-top:8px;">
+            <button type="button" class="btn btn-sm btn-secondary" onclick="fillMcpMissingToolsTemplate()">Use missing-tools template</button>
+          </div>
+          <div id="mcpPriorFeedback" style="display:none;margin-top:10px;font-size:12px;color:#fbbf24;"></div>
+        </div>
+        <div class="form-actions" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-secondary" onclick="closeModal('mcpReviewModal')">Cancel</button>
+          <button type="button" class="btn btn-secondary" id="mcpRequestChangesBtn" onclick="handleMcpRequestChanges()">Send message &amp; wait</button>
           <button type="button" class="btn btn-danger" onclick="handleMcpDismiss()">Dismiss</button>
           <button type="submit" class="btn btn-primary" id="mcpApproveBtn">Approve &amp; publish</button>
         </div>
@@ -1817,6 +1832,25 @@
         document.getElementById('mcpSetupNotes').textContent =
           [sub.setupInstructions, sub.additionalNotes].filter(Boolean).join('\n\n') || '(none)';
 
+        const toolCount = Array.isArray(sub.tools) ? sub.tools.length : (preview.tools || []).length;
+        const feedbackNote = document.getElementById('mcpFeedbackNote');
+        const priorFeedback = document.getElementById('mcpPriorFeedback');
+        feedbackNote.value = sub.reviewNote || '';
+        if (!feedbackNote.value && toolCount === 0) {
+          fillMcpMissingToolsTemplate();
+        }
+        if (sub.reviewStatus === 'changes_requested' && sub.reviewNote) {
+          priorFeedback.style.display = 'block';
+          priorFeedback.textContent =
+            `Already asked for info${sub.feedbackSentAt ? ` on ${new Date(sub.feedbackSentAt).toLocaleString()}` : ''}. You can send another message or approve when ready.`;
+        } else {
+          priorFeedback.style.display = 'none';
+          priorFeedback.textContent = '';
+        }
+
+        const requestBtn = document.getElementById('mcpRequestChangesBtn');
+        requestBtn.disabled = sub.reviewStatus === 'approved' || sub.reviewStatus === 'dismissed';
+
         const approveBtn = document.getElementById('mcpApproveBtn');
         if (sub.reviewStatus === 'approved') {
           approveBtn.textContent = 'Update catalog entry';
@@ -1824,7 +1858,10 @@
             `<div class="success">Already approved as <a href="/mcp/${escapeHtml(sub.approvedSlug || preview.slug)}" style="color:#10a37f;">/mcp/${escapeHtml(sub.approvedSlug || preview.slug)}</a>. Saving again will update the manual entry.</div>`;
         } else {
           approveBtn.textContent = 'Approve & publish';
-          if (data.alreadyInCatalog) {
+          if (sub.reviewStatus === 'changes_requested') {
+            document.getElementById('mcpReviewAlert').innerHTML =
+              '<div class="success">Awaiting submitter reply — still in the pending queue.</div>';
+          } else if (data.alreadyInCatalog) {
             document.getElementById('mcpReviewAlert').innerHTML =
               '<div class="error">A server with this slug already exists in the catalog. Adjust the slug before approving.</div>';
           }
@@ -1880,18 +1917,59 @@
       }
     }
 
+    function fillMcpMissingToolsTemplate() {
+      const el = document.getElementById('mcpFeedbackNote');
+      if (!el) return;
+      el.value =
+        "Thanks for the submission — we need your MCP tool list before we can approve it.\n\n" +
+        'Please reply to this email with at least one tool (name + short description), one per line, e.g.:\n\n' +
+        'search_docs — Search project documentation\n' +
+        'run_query — Execute a read-only SQL query\n\n' +
+        "We'll update your existing submission and publish once that's in place.";
+    }
+
+    async function handleMcpRequestChanges() {
+      const id = document.getElementById('mcpReviewId').value;
+      const note = document.getElementById('mcpFeedbackNote').value.trim();
+      if (!note) {
+        alert('Write a short message asking for tools (or click the missing-tools template).');
+        return;
+      }
+      if (!confirm('Email this message to the submitter?\n\nThe submission will stay in the pending queue.')) return;
+      const btn = document.getElementById('mcpRequestChangesBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}/request-changes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ note }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to send message');
+        closeModal('mcpReviewModal');
+        alert(data.message || 'Message sent');
+        loadMcpSubmissions();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     async function handleMcpDismiss() {
       const id = document.getElementById('mcpReviewId').value;
-      if (!confirm('Dismiss this submission?')) return;
+      if (!confirm('Dismiss this submission?\n\nIt will leave the pending queue. Prefer "Send message & wait" if you just need tools.')) return;
       try {
+        const note = document.getElementById('mcpFeedbackNote').value.trim();
         const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}/dismiss`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({}),
+          body: JSON.stringify({ note }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Dismiss failed');
         closeModal('mcpReviewModal');
+        alert(data.message || 'Submission dismissed');
         loadMcpSubmissions();
       } catch (err) {
         alert(err.message);
@@ -2059,6 +2137,10 @@
       if (modalId === 'mcpReviewModal') {
         document.getElementById('mcpReviewForm').reset();
         document.getElementById('mcpReviewAlert').innerHTML = '';
+        document.getElementById('mcpFeedbackNote').value = '';
+        const prior = document.getElementById('mcpPriorFeedback');
+        prior.style.display = 'none';
+        prior.textContent = '';
       }
       if (modalId === 'mcpCatalogEditModal') {
         document.getElementById('mcpCatalogEditForm').reset();

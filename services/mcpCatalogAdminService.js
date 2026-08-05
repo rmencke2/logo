@@ -12,7 +12,7 @@ const {
   findMcpServerBySlug,
   isInTop100,
 } = require('./mcpDirectoryService');
-const { sendMcpApprovalEmail } = require('../emailService');
+const { sendMcpApprovalEmail, sendMcpFeedbackEmail } = require('../emailService');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -73,11 +73,17 @@ function listSubmissions({ status } = {}) {
         reviewStatus: full.reviewStatus || 'pending',
         approvedSlug: full.approvedSlug || null,
         toolCount: Array.isArray(full.tools) ? full.tools.length : 0,
+        reviewNote: full.reviewNote || null,
+        feedbackSentAt: full.feedbackSentAt || null,
       };
     })
     .sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
 
   if (!status || status === 'all') return items;
+  // Default "pending" queue keeps items awaiting action, including those we asked for more info.
+  if (status === 'pending') {
+    return items.filter((s) => s.reviewStatus === 'pending' || s.reviewStatus === 'changes_requested');
+  }
   return items.filter((s) => s.reviewStatus === status);
 }
 
@@ -368,7 +374,8 @@ function markSubmission(id, status, meta = {}) {
   data.reviewedAt = new Date().toISOString();
   if (meta.approvedSlug) data.approvedSlug = meta.approvedSlug;
   if (meta.reviewedBy) data.reviewedBy = meta.reviewedBy;
-  if (meta.note) data.reviewNote = meta.note;
+  if (meta.note !== undefined) data.reviewNote = meta.note;
+  if (meta.feedbackSentAt) data.feedbackSentAt = meta.feedbackSentAt;
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
@@ -471,13 +478,48 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     }
   });
 
+  app.post('/admin/api/mcp/submissions/:id/request-changes', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const sub = readSubmissionFile(req.params.id);
+      if (!sub) throw new Error('Submission not found');
+      if (sub.reviewStatus === 'approved') {
+        throw new Error('This submission is already approved');
+      }
+      if (sub.reviewStatus === 'dismissed') {
+        throw new Error('This submission was dismissed — reopen is not supported; ask them to resubmit');
+      }
+
+      const note = String(req.body?.note || '').trim();
+      if (!note) {
+        throw new Error('Write a message for the submitter (e.g. ask them to add tools)');
+      }
+
+      await sendMcpFeedbackEmail({ submission: sub, note });
+
+      markSubmission(req.params.id, 'changes_requested', {
+        reviewedBy: req.user?.email || 'admin',
+        note,
+        feedbackSentAt: new Date().toISOString(),
+      });
+
+      res.json({
+        success: true,
+        message: 'Message sent. Submission stays in the pending queue until you approve or dismiss it.',
+        emailSent: true,
+      });
+    } catch (err) {
+      console.error('MCP request-changes error:', err);
+      res.status(400).json({ error: err.message || 'Failed to send feedback' });
+    }
+  });
+
   app.post('/admin/api/mcp/submissions/:id/dismiss', requireAuth, requireAdmin, (req, res) => {
     try {
       markSubmission(req.params.id, 'dismissed', {
         reviewedBy: req.user?.email || 'admin',
-        note: req.body?.note || '',
+        note: String(req.body?.note || '').trim(),
       });
-      res.json({ success: true, message: 'Submission dismissed' });
+      res.json({ success: true, message: 'Submission dismissed (removed from pending queue)' });
     } catch (err) {
       console.error('MCP dismiss error:', err);
       res.status(400).json({ error: err.message || 'Failed to dismiss submission' });
