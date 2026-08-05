@@ -15,6 +15,132 @@
   ],
   "servers": [
     {
+      "name": "LooperTask",
+      "slug": "loopertask-com",
+      "category": "Dev Tools",
+      "description": "LooperTask is a Kanban board built for AI agents. Agents like Claude Code and Cursor connect via MCP and create, update, and move tasks as native tool calls. Human review gates keep you in control, real-time updates keep the board live, and MCP tool calls are unlimited on every plan.",
+      "official": true,
+      "transport": "unknown",
+      "icon": "globe",
+      "featured": false,
+      "docs_url": "https://loopertask.com/docs/quickstart",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List all loopertask projects visible to your API token"
+        },
+        {
+          "name": "my_today",
+          "description": "Your open assigned tasks across every project, grouped by project, each flagged overdue / due-today / needs-attention"
+        },
+        {
+          "name": "list_columns",
+          "description": "List a project's kanban columns (id, name, ai_blocked flag)"
+        },
+        {
+          "name": "list_types_and_priorities",
+          "description": "List a project's task types and priorities"
+        },
+        {
+          "name": "list_tasks",
+          "description": "List tasks in a project with optional filters (column, assignee, tags, free-text search)"
+        },
+        {
+          "name": "get_task",
+          "description": "Full detail for one task, including its comments, attachments and activity log"
+        },
+        {
+          "name": "create_task",
+          "description": "Create a new task in a project"
+        },
+        {
+          "name": "update_task",
+          "description": "Patch an existing task's fields (title, description, type, priority, assignee, deadline)"
+        },
+        {
+          "name": "move_task",
+          "description": "Move a task to another column and/or reorder it"
+        },
+        {
+          "name": "add_task_blocker",
+          "description": "Mark a task as blocked by (depending on) another task"
+        },
+        {
+          "name": "remove_task_blocker",
+          "description": "Remove a task-to-task dependency"
+        },
+        {
+          "name": "add_comment",
+          "description": "Post a Markdown comment (supports @-mentions) on a task"
+        },
+        {
+          "name": "upload_attachment",
+          "description": "Attach a file (base64) to a task"
+        },
+        {
+          "name": "claim_next_task",
+          "description": "Claim the next queued task assigned to you — the core AI worker loop"
+        },
+        {
+          "name": "request_human_review",
+          "description": "Move a task to the «Needs Human» column with a comment"
+        }
+      ],
+      "owner_user_id": 35
+    },
+    {
+      "name": "BGPT",
+      "slug": "bgpt",
+      "category": "Search & Web",
+      "description": "BGPT searches scientific papers and returns the raw evidence behind each claim: experiments, exact results, limitations, falsification criteria, conflicts of interest, and source provenance, each linked to the original paper. For researchers and AI agents doing literature review, systematic review, and evidence synthesis. Free tier: 50 searches, no key required.",
+      "official": false,
+      "transport": "sse",
+      "icon": "globe",
+      "featured": false,
+      "github_url": "https://github.com/connerlambden/bgpt-mcp",
+      "docs_url": "https://bgpt.pro/mcp/",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "search_papers",
+          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper — Look up a single paper by identifier or DOI and return its full evidence record"
+        }
+      ],
+      "mcp_endpoint": "https://bgpt.pro/mcp/"
+    },
+    {
+      "name": "Corvid",
+      "slug": "corvid",
+      "category": "AI & Memory",
+      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP — no install, no repo, works from any MCP client.",
+      "official": false,
+      "transport": "http",
+      "icon": "globe",
+      "featured": false,
+      "docs_url": "https://corvid.perch-app.workers.dev/docs",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "remember",
+          "description": "Store a durable memory (a fact, preference, decision, or note) so it persists across sessions. Call this whenever the user tells you something worth remembering long-term."
+        },
+        {
+          "name": "recall",
+          "description": "Semantic search over your stored memories — finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
+        },
+        {
+          "name": "list_recent",
+          "description": "List the most recently stored/updated memories in this space."
+        },
+        {
+          "name": "forget",
+          "description": "Delete a memory by its id (from a previous recall/list result)."
+        }
+      ],
+      "mcp_endpoint": "https://corvid.perch-app.workers.dev/mcp"
+    },
+    {
       "name": "MCP360",
       "slug": "mcp360-ai",
       "category": "Dev Tools",
@@ -2572,11 +2698,26 @@
       "transport": "http",
       "icon": "message-square",
       "tools": [
-        { "name": "search_issues", "description": "Search Jira issues across projects" },
-        { "name": "get_issue", "description": "Get Jira issue details by key" },
-        { "name": "create_issue", "description": "Create a new Jira issue" },
-        { "name": "search_pages", "description": "Search Confluence pages" },
-        { "name": "get_page", "description": "Read Confluence page content" }
+        {
+          "name": "search_issues",
+          "description": "Search Jira issues across projects"
+        },
+        {
+          "name": "get_issue",
+          "description": "Get Jira issue details by key"
+        },
+        {
+          "name": "create_issue",
+          "description": "Create a new Jira issue"
+        },
+        {
+          "name": "search_pages",
+          "description": "Search Confluence pages"
+        },
+        {
+          "name": "get_page",
+          "description": "Read Confluence page content"
+        }
       ],
       "docs_url": "https://developer.atlassian.com/cloud/mcp",
       "stars": 920
@@ -2590,11 +2731,26 @@
       "transport": "stdio",
       "icon": "monitor",
       "tools": [
-        { "name": "navigate_page", "description": "Navigate the browser to a URL" },
-        { "name": "take_screenshot", "description": "Capture a screenshot of the current page" },
-        { "name": "evaluate_script", "description": "Run JavaScript in the page context" },
-        { "name": "list_console_messages", "description": "Read console log output" },
-        { "name": "get_network_requests", "description": "Inspect network activity" }
+        {
+          "name": "navigate_page",
+          "description": "Navigate the browser to a URL"
+        },
+        {
+          "name": "take_screenshot",
+          "description": "Capture a screenshot of the current page"
+        },
+        {
+          "name": "evaluate_script",
+          "description": "Run JavaScript in the page context"
+        },
+        {
+          "name": "list_console_messages",
+          "description": "Read console log output"
+        },
+        {
+          "name": "get_network_requests",
+          "description": "Inspect network activity"
+        }
       ],
       "github_url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
       "stars": 2100
@@ -2608,10 +2764,22 @@
       "transport": "stdio",
       "icon": "cloud",
       "tools": [
-        { "name": "search_places", "description": "Search places via Google Maps" },
-        { "name": "run_query", "description": "Execute BigQuery SQL" },
-        { "name": "list_clusters", "description": "List GKE clusters" },
-        { "name": "get_instance", "description": "Describe Compute Engine instances" }
+        {
+          "name": "search_places",
+          "description": "Search places via Google Maps"
+        },
+        {
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
+        },
+        {
+          "name": "list_clusters",
+          "description": "List GKE clusters"
+        },
+        {
+          "name": "get_instance",
+          "description": "Describe Compute Engine instances"
+        }
       ],
       "github_url": "https://github.com/google/mcp",
       "docs_url": "https://cloud.google.com/mcp",
@@ -2626,9 +2794,18 @@
       "transport": "http",
       "icon": "calendar",
       "tools": [
-        { "name": "list_event_types", "description": "List available Cal.com event types" },
-        { "name": "get_availability", "description": "Check scheduling availability" },
-        { "name": "create_booking", "description": "Book a meeting slot" }
+        {
+          "name": "list_event_types",
+          "description": "List available Cal.com event types"
+        },
+        {
+          "name": "get_availability",
+          "description": "Check scheduling availability"
+        },
+        {
+          "name": "create_booking",
+          "description": "Book a meeting slot"
+        }
       ],
       "docs_url": "https://mcp.cal.com",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
@@ -2643,9 +2820,18 @@
       "transport": "http",
       "icon": "message-square",
       "tools": [
-        { "name": "search_notes", "description": "Search meeting notes and transcripts" },
-        { "name": "get_meeting", "description": "Retrieve a specific meeting summary" },
-        { "name": "list_recent", "description": "List recent meetings" }
+        {
+          "name": "search_notes",
+          "description": "Search meeting notes and transcripts"
+        },
+        {
+          "name": "get_meeting",
+          "description": "Retrieve a specific meeting summary"
+        },
+        {
+          "name": "list_recent",
+          "description": "List recent meetings"
+        }
       ],
       "docs_url": "https://www.granola.ai/docs/mcp",
       "stars": 420
@@ -2659,9 +2845,18 @@
       "transport": "http",
       "icon": "image",
       "tools": [
-        { "name": "text_to_speech", "description": "Generate speech audio from text" },
-        { "name": "generate_image", "description": "Create images from prompts" },
-        { "name": "generate_video", "description": "Create video from prompts" }
+        {
+          "name": "text_to_speech",
+          "description": "Generate speech audio from text"
+        },
+        {
+          "name": "generate_image",
+          "description": "Create images from prompts"
+        },
+        {
+          "name": "generate_video",
+          "description": "Create video from prompts"
+        }
       ],
       "docs_url": "https://www.minimax.io/platform/document/mcp",
       "stars": 310
@@ -2675,9 +2870,18 @@
       "transport": "stdio",
       "icon": "code",
       "tools": [
-        { "name": "get_project_info", "description": "Inspect Next.js project configuration" },
-        { "name": "list_routes", "description": "List application routes" },
-        { "name": "get_build_diagnostics", "description": "Read build and dev server diagnostics" }
+        {
+          "name": "get_project_info",
+          "description": "Inspect Next.js project configuration"
+        },
+        {
+          "name": "list_routes",
+          "description": "List application routes"
+        },
+        {
+          "name": "get_build_diagnostics",
+          "description": "Read build and dev server diagnostics"
+        }
       ],
       "github_url": "https://github.com/vercel/next-devtools-mcp",
       "stars": 890
@@ -2691,9 +2895,18 @@
       "transport": "stdio",
       "icon": "book-open",
       "tools": [
-        { "name": "ask_notebook", "description": "Query a NotebookLM notebook" },
-        { "name": "list_notebooks", "description": "List available notebooks" },
-        { "name": "add_source", "description": "Add a source document to a notebook" }
+        {
+          "name": "ask_notebook",
+          "description": "Query a NotebookLM notebook"
+        },
+        {
+          "name": "list_notebooks",
+          "description": "List available notebooks"
+        },
+        {
+          "name": "add_source",
+          "description": "Add a source document to a notebook"
+        }
       ],
       "github_url": "https://github.com/jacob-bd/notebooklm-mcp",
       "stars": 540
@@ -2707,9 +2920,18 @@
       "transport": "stdio",
       "icon": "activity",
       "tools": [
-        { "name": "list_requests", "description": "List captured HTTP requests" },
-        { "name": "get_request_detail", "description": "Inspect a specific request and response" },
-        { "name": "create_breakpoint", "description": "Add a debugging breakpoint rule" }
+        {
+          "name": "list_requests",
+          "description": "List captured HTTP requests"
+        },
+        {
+          "name": "get_request_detail",
+          "description": "Inspect a specific request and response"
+        },
+        {
+          "name": "create_breakpoint",
+          "description": "Add a debugging breakpoint rule"
+        }
       ],
       "docs_url": "https://docs.proxyman.io/mcp",
       "stars": 380
@@ -2723,10 +2945,22 @@
       "transport": "http",
       "icon": "cloud",
       "tools": [
-        { "name": "list_projects", "description": "List Railway projects" },
-        { "name": "deploy_service", "description": "Trigger a service deployment" },
-        { "name": "get_variables", "description": "Read environment variables" },
-        { "name": "create_project", "description": "Create a new Railway project" }
+        {
+          "name": "list_projects",
+          "description": "List Railway projects"
+        },
+        {
+          "name": "deploy_service",
+          "description": "Trigger a service deployment"
+        },
+        {
+          "name": "get_variables",
+          "description": "Read environment variables"
+        },
+        {
+          "name": "create_project",
+          "description": "Create a new Railway project"
+        }
       ],
       "docs_url": "https://docs.railway.com/guides/mcp",
       "stars": 760
@@ -2740,9 +2974,18 @@
       "transport": "stdio",
       "icon": "monitor",
       "tools": [
-        { "name": "build_project", "description": "Build an Xcode project or workspace" },
-        { "name": "run_simulator", "description": "Launch the iOS Simulator" },
-        { "name": "list_schemes", "description": "List available Xcode schemes" }
+        {
+          "name": "build_project",
+          "description": "Build an Xcode project or workspace"
+        },
+        {
+          "name": "run_simulator",
+          "description": "Launch the iOS Simulator"
+        },
+        {
+          "name": "list_schemes",
+          "description": "List available Xcode schemes"
+        }
       ],
       "github_url": "https://github.com/cameroncooke/XcodeBuildMCP",
       "stars": 620
@@ -2757,10 +3000,22 @@
       "icon": "search",
       "featured": true,
       "tools": [
-        { "name": "search_mcp_servers", "description": "Search Influzer directory by name, category, or tool capability" },
-        { "name": "get_mcp_server", "description": "Get full setup details for one server by slug" },
-        { "name": "recommend_mcp_servers", "description": "Recommend servers for a workflow or topic guide" },
-        { "name": "list_mcp_topics", "description": "List topic guides (browser automation, RAG, coding agents, etc.)" }
+        {
+          "name": "search_mcp_servers",
+          "description": "Search Influzer directory by name, category, or tool capability"
+        },
+        {
+          "name": "get_mcp_server",
+          "description": "Get full setup details for one server by slug"
+        },
+        {
+          "name": "recommend_mcp_servers",
+          "description": "Recommend servers for a workflow or topic guide"
+        },
+        {
+          "name": "list_mcp_topics",
+          "description": "List topic guides (browser automation, RAG, coding agents, etc.)"
+        }
       ],
       "docs_url": "https://www.influzer.ai/mcp/discovery/setup",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
