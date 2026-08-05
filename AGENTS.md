@@ -14,5 +14,7 @@ Single Node/Express app (`npm start` → `server.js`) on **port 4000**. SQLite (
 ### Gotchas
 - Native modules (`canvas`, `sharp`, `sqlite3`, `bcrypt`) must be built for the current Linux arch. If you see `invalid ELF header` or sharp platform errors, wipe `node_modules` and re-run `npm ci` (the startup update script). System packages for canvas (`libcairo2-dev`, `libpango1.0-dev`, etc.) are assumed present on the snapshot; the update script does not reinstall OS packages.
 - Core smoke checks without a browser: `GET /health`, `POST /generate-logo`, `POST /auth/register` + `/auth/login`, `GET /api/mcp/catalog`.
+- Logo generation is abuse-protected (free tier daily/hourly limits). Repeated local demos can return HTTP 429; delete `logo_generator.db` and restart, or wait for the window to reset.
+- UI `/logo-generator` expects a logged-in session for the full form; anonymous `POST /generate-logo` still works for API smoke tests.
 - Expo mobile sources under `app/` / `src/` are incomplete relative to this `package.json` (no Expo deps); do not expect `npx expo start` to work without restoring a separate mobile dependency set.
 - Python `main.py` / `requirements.txt` is an unused FastAPI stub; the live product is the Node server.
