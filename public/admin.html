@@ -653,6 +653,10 @@
         <div class="form-group">
           <label>Tools (one per line: <code>tool_name — description</code>)</label>
           <textarea id="mcpTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+            <button type="button" class="btn btn-sm btn-secondary" id="mcpRefreshToolsBtn" onclick="refreshMcpToolsFromLive('review')">Refresh tools from live endpoint</button>
+            <span id="mcpRefreshToolsStatus" style="font-size:12px;color:#8e8e93;"></span>
+          </div>
         </div>
         <div class="form-group">
           <label>Submitter</label>
@@ -745,6 +749,10 @@
         <div class="form-group">
           <label>Tools (one per line: <code>tool_name — description</code>)</label>
           <textarea id="mcpEditTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+            <button type="button" class="btn btn-sm btn-secondary" id="mcpEditRefreshToolsBtn" onclick="refreshMcpToolsFromLive('edit')">Refresh tools from live endpoint</button>
+            <span id="mcpEditRefreshToolsStatus" style="font-size:12px;color:#8e8e93;"></span>
+          </div>
         </div>
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="closeModal('mcpCatalogEditModal')">Cancel</button>
@@ -1695,6 +1703,70 @@
         });
     }
 
+    function looksLikeMangledMcpTools(tools) {
+      if (!Array.isArray(tools) || !tools.length) return false;
+      const names = tools.map((t) => String(t.name || ''));
+      return names.some((name, idx) => {
+        if (/^[—\-–]\s/.test(name)) return true;
+        if (!name.trim()) return true;
+        // Next tool name glued onto this name/description blob
+        const next = names[idx + 1];
+        if (next && /^[a-zA-Z][\w.-]*$/.test(next) && name.endsWith(next)) return true;
+        return names.some(
+          (other, j) =>
+            j !== idx &&
+            /^[a-zA-Z][\w.-]*$/.test(other) &&
+            name.length > other.length + 8 &&
+            name.endsWith(other),
+        );
+      });
+    }
+
+    async function refreshMcpToolsFromLive(mode) {
+      const isEdit = mode === 'edit';
+      const endpointEl = document.getElementById(isEdit ? 'mcpEditEndpoint' : 'mcpEndpoint');
+      const toolsEl = document.getElementById(isEdit ? 'mcpEditTools' : 'mcpTools');
+      const statusEl = document.getElementById(isEdit ? 'mcpEditRefreshToolsStatus' : 'mcpRefreshToolsStatus');
+      const btn = document.getElementById(isEdit ? 'mcpEditRefreshToolsBtn' : 'mcpRefreshToolsBtn');
+      const endpoint = (endpointEl?.value || '').trim();
+
+      if (!endpoint) {
+        alert('Set the MCP endpoint URL first (http/sse remote servers only).');
+        endpointEl?.focus();
+        return;
+      }
+
+      const existing = (toolsEl.value || '').trim();
+      if (existing && !confirm('Replace the tools textarea with tools/list from the live endpoint?')) {
+        return;
+      }
+
+      btn.disabled = true;
+      statusEl.textContent = 'Probing endpoint…';
+      statusEl.style.color = '#8e8e93';
+      try {
+        const res = await fetch('/admin/api/mcp/probe-tools', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Probe failed');
+        toolsEl.value = toolsToText(data.tools || []);
+        statusEl.textContent = data.message || `Loaded ${data.toolCount || 0} tool(s).`;
+        statusEl.style.color = '#10a37f';
+        if (!(data.tools || []).length) {
+          statusEl.style.color = '#fbbf24';
+        }
+      } catch (err) {
+        statusEl.textContent = err.message || 'Probe failed';
+        statusEl.style.color = '#ef4444';
+        alert(err.message || 'Could not refresh tools from live endpoint');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     async function loadOtherNewsItems() {
       const container = document.getElementById('otherNewsTableContainer');
       container.innerHTML = '<div class="loading">Loading articles...</div>';
@@ -1827,12 +1899,14 @@
         document.getElementById('mcpFeatured').checked = Boolean(preview.featured);
         document.getElementById('mcpPinTop100').checked = false;
         document.getElementById('mcpTools').value = toolsToText(preview.tools || sub.tools || []);
+        document.getElementById('mcpRefreshToolsStatus').textContent = '';
         document.getElementById('mcpSubmitterMeta').textContent =
           `${sub.submitterName || ''} · ${sub.submitterEmail || ''} · ${sub.submittedAt || ''}`;
         document.getElementById('mcpSetupNotes').textContent =
           [sub.setupInstructions, sub.additionalNotes].filter(Boolean).join('\n\n') || '(none)';
 
-        const toolCount = Array.isArray(sub.tools) ? sub.tools.length : (preview.tools || []).length;
+        const loadedTools = preview.tools || sub.tools || [];
+        const toolCount = Array.isArray(sub.tools) ? sub.tools.length : loadedTools.length;
         const feedbackNote = document.getElementById('mcpFeedbackNote');
         const priorFeedback = document.getElementById('mcpPriorFeedback');
         feedbackNote.value = sub.reviewNote || '';
@@ -1852,19 +1926,26 @@
         requestBtn.disabled = sub.reviewStatus === 'approved' || sub.reviewStatus === 'dismissed';
 
         const approveBtn = document.getElementById('mcpApproveBtn');
+        const alertEl = document.getElementById('mcpReviewAlert');
         if (sub.reviewStatus === 'approved') {
           approveBtn.textContent = 'Update catalog entry';
-          document.getElementById('mcpReviewAlert').innerHTML =
+          alertEl.innerHTML =
             `<div class="success">Already approved as <a href="/mcp/${escapeHtml(sub.approvedSlug || preview.slug)}" style="color:#10a37f;">/mcp/${escapeHtml(sub.approvedSlug || preview.slug)}</a>. Saving again will update the manual entry.</div>`;
         } else {
           approveBtn.textContent = 'Approve & publish';
           if (sub.reviewStatus === 'changes_requested') {
-            document.getElementById('mcpReviewAlert').innerHTML =
+            alertEl.innerHTML =
               '<div class="success">Awaiting submitter reply — still in the pending queue.</div>';
           } else if (data.alreadyInCatalog) {
-            document.getElementById('mcpReviewAlert').innerHTML =
+            alertEl.innerHTML =
               '<div class="error">A server with this slug already exists in the catalog. Adjust the slug before approving.</div>';
+          } else {
+            alertEl.innerHTML = '';
           }
+        }
+        if (looksLikeMangledMcpTools(loadedTools)) {
+          alertEl.innerHTML +=
+            '<div class="error">Tools look mangled (names/descriptions glued together). Use <strong>Refresh tools from live endpoint</strong> if the MCP URL is reachable.</div>';
         }
 
         document.getElementById('mcpReviewModal').classList.add('active');
@@ -2058,12 +2139,18 @@
         document.getElementById('mcpEditFeatured').checked = Boolean(server.featured);
         document.getElementById('mcpEditPinTop100').checked = Boolean(server.pinnedToTop100);
         document.getElementById('mcpEditTools').value = toolsToText(server.tools || []);
+        document.getElementById('mcpEditRefreshToolsStatus').textContent = '';
 
         const sourceNote = server.inManual
           ? 'This listing has a manual override.'
           : 'This listing comes from the generated catalog. Saving will create a manual override.';
-        document.getElementById('mcpCatalogEditAlert').innerHTML =
+        let alertHtml =
           `<div class="success">${escapeHtml(sourceNote)} Live at <a href="${escapeHtml(server.pageUrl)}" style="color:#10a37f;">${escapeHtml(server.pageUrl)}</a>.</div>`;
+        if (looksLikeMangledMcpTools(server.tools || [])) {
+          alertHtml +=
+            '<div class="error">Tools look mangled (names/descriptions glued together). Use <strong>Refresh tools from live endpoint</strong> if the MCP URL is reachable.</div>';
+        }
+        document.getElementById('mcpCatalogEditAlert').innerHTML = alertHtml;
 
         document.getElementById('mcpCatalogEditModal').classList.add('active');
       } catch (err) {

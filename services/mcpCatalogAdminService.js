@@ -13,6 +13,7 @@ const {
   isInTop100,
 } = require('./mcpDirectoryService');
 const { sendMcpApprovalEmail, sendMcpFeedbackEmail } = require('../emailService');
+const { fetchLiveMcpTools } = require('../scripts/utils/mcp-live-client');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -523,6 +524,53 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     } catch (err) {
       console.error('MCP dismiss error:', err);
       res.status(400).json({ error: err.message || 'Failed to dismiss submission' });
+    }
+  });
+
+  app.post('/admin/api/mcp/probe-tools', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const endpoint = String(req.body?.endpoint || '').trim();
+      if (!endpoint || !/^https?:\/\//i.test(endpoint)) {
+        return res.status(400).json({
+          error: 'Enter a valid http(s) MCP endpoint URL first (remote servers only).',
+        });
+      }
+
+      const live = await fetchLiveMcpTools(endpoint, {
+        timeoutMs: Number(process.env.MCP_ADMIN_PROBE_TIMEOUT_MS) || 20000,
+      });
+
+      if (live.status === 'ok' || live.status === 'ok_empty') {
+        return res.json({
+          success: true,
+          status: live.status,
+          tools: live.tools || [],
+          toolCount: (live.tools || []).length,
+          serverInfo: live.serverInfo || null,
+          endpoint,
+          message:
+            live.status === 'ok_empty'
+              ? 'Endpoint responded but returned 0 tools.'
+              : `Loaded ${(live.tools || []).length} tool(s) from the live endpoint.`,
+        });
+      }
+
+      const statusCode =
+        live.status === 'auth_required' ? 401 : live.status === 'unreachable' ? 502 : 400;
+      return res.status(statusCode).json({
+        error:
+          live.reason ||
+          (live.status === 'auth_required'
+            ? 'Endpoint requires authentication — paste tools manually or use a public URL.'
+            : `Could not load tools (${live.status})`),
+        status: live.status,
+        tools: [],
+        endpoint,
+        httpStatus: live.httpStatus || null,
+      });
+    } catch (err) {
+      console.error('MCP probe-tools error:', err);
+      res.status(500).json({ error: err.message || 'Failed to probe MCP endpoint' });
     }
   });
 
