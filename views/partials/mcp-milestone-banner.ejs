@@ -1,0 +1,19 @@
+<% if (typeof milestonePromo !== 'undefined' && milestonePromo) { %>
+  <aside class="mcp-milestone" aria-label="Directory milestone">
+    <div class="mcp-milestone__inner">
+      <p class="mcp-milestone__eyebrow"><%= milestonePromo.eyebrow %></p>
+      <div class="mcp-milestone__copy">
+        <p class="mcp-milestone__headline"><%= milestonePromo.headline %></p>
+        <p class="mcp-milestone__blurb">
+          <b><%= milestonePromo.serverCountLabel %></b> servers in the live registry.
+          <%= milestonePromo.blurb %>
+        </p>
+      </div>
+      <div class="mcp-milestone__actions">
+        <a class="mcp-milestone__btn mcp-milestone__btn--primary" href="<%= milestonePromo.primaryHref %>"><%= milestonePromo.primaryCta %></a>
+        <a class="mcp-milestone__btn" href="<%= milestonePromo.secondaryHref %>"><%= milestonePromo.secondaryCta %></a>
+        <a class="mcp-milestone__btn mcp-milestone__btn--ghost" href="<%= milestonePromo.tertiaryHref %>"><%= milestonePromo.tertiaryCta %></a>
+      </div>
+    </div>
+  </aside>
+<% } %>
