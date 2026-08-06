@@ -28,6 +28,7 @@ const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
+const { getMilestonePromo } = require('../data/mcp-milestone-promo');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
@@ -512,6 +513,7 @@ function renderHomepage(req, res) {
     jsonLd,
     promo: getSitePromo(),
     discoveryPromo: getDiscoveryPromo(),
+    milestonePromo: getMilestonePromo(heroStats.totalServers),
     assetVersion: getHomeAssetVersion(),
   });
 }
@@ -845,6 +847,7 @@ ${itemsXml}
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
       discoveryPromo: getDiscoveryPromo(),
+      milestonePromo: getMilestonePromo(totals.total),
       assetVersion: getHomeAssetVersion(),
     });
   });
@@ -892,6 +895,7 @@ ${itemsXml}
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
       discoveryPromo: getDiscoveryPromo(),
+      milestonePromo: getMilestonePromo(totals.total),
       assetVersion: getHomeAssetVersion(),
     });
   });

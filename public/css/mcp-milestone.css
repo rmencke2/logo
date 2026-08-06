@@ -1,0 +1,114 @@
+/* Temporary ~6k MCP milestone celebration strip */
+
+.mcp-milestone {
+  background:
+    radial-gradient(1200px 280px at 12% -20%, rgba(16, 185, 129, 0.16), transparent 55%),
+    linear-gradient(105deg, #0f1f1a 0%, #13241e 48%, #1a2e24 100%);
+  color: #ecfdf5;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.mcp-milestone__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px 28px;
+  align-items: center;
+}
+
+.mcp-milestone__eyebrow {
+  margin: 0;
+  font-family: var(--hp-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+}
+
+.mcp-milestone__headline {
+  margin: 0 0 4px;
+  font-family: var(--hp-sans, "Space Grotesk", system-ui, sans-serif);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.mcp-milestone__blurb {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(236, 253, 245, 0.82);
+  max-width: 54ch;
+}
+
+.mcp-milestone__blurb b {
+  color: #fff;
+  font-weight: 700;
+}
+
+.mcp-milestone__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.mcp-milestone__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  color: #ecfdf5;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mcp-milestone__btn:hover {
+  background: rgba(110, 231, 183, 0.12);
+  border-color: rgba(110, 231, 183, 0.55);
+}
+
+.mcp-milestone__btn--primary {
+  background: #10b981;
+  border-color: #10b981;
+  color: #042f1e;
+}
+
+.mcp-milestone__btn--primary:hover {
+  background: #34d399;
+  border-color: #34d399;
+  color: #042f1e;
+}
+
+.mcp-milestone__btn--ghost {
+  border-color: transparent;
+  color: #a7f3d0;
+}
+
+.mcp-milestone__btn--ghost:hover {
+  background: transparent;
+  color: #ecfdf5;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .mcp-milestone__inner {
+    grid-template-columns: 1fr;
+    padding: 16px 20px;
+    gap: 10px;
+  }
+
+  .mcp-milestone__actions {
+    justify-content: flex-start;
+  }
+}
