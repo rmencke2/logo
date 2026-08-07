@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05T08:51:22.509Z",
+  "generated_at": "2026-08-06T08:28:49.420Z",
   "count": 100,
   "total_catalog": 5936,
   "top100_slugs": [
@@ -20,8 +20,8 @@
     "google-mcp-servers",
     "railway-mcp",
     "cal-com-mcp",
-    "googlesheets",
     "jina",
+    "googlesheets",
     "brave",
     "pipeworx-gateway",
     "henry-ships-sparkforge",
@@ -36,8 +36,8 @@
     "nitrofire-q-gread",
     "onesignal-onesignal",
     "support-9ef4-wayforth",
-    "googlecalendar",
     "emblemai-emblem-mcp",
+    "googlecalendar",
     "googletasks",
     "xgr-mcp",
     "loopertask-com",
@@ -136,7 +136,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "search",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
       "deployment_url": "https://www.influzer.ai/mcp/discovery"
@@ -164,7 +164,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
       "deployment_url": "https://mcp.webnode.com/_mcp"
@@ -193,7 +193,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "search"
     },
     {
@@ -224,7 +224,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -255,7 +255,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "hard-drive"
     },
     {
@@ -286,7 +286,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "brain"
     },
     {
@@ -321,7 +321,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "layout-list"
     },
     {
@@ -348,7 +348,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "book-open"
     },
     {
@@ -379,7 +379,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "credit-card"
     },
     {
@@ -410,7 +410,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "shield-alert"
     },
     {
@@ -441,7 +441,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "file-text"
     },
     {
@@ -471,7 +471,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "monitor-play"
     },
     {
@@ -509,7 +509,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "monitor"
     },
     {
@@ -547,7 +547,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "message-square"
     },
     {
@@ -582,7 +582,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud"
     },
     {
@@ -616,7 +616,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud"
     },
     {
@@ -646,194 +646,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "calendar",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
       "deployment_url": "https://mcp.cal.com/mcp"
-    },
-    {
-      "id": "googlesheets",
-      "slug": "googlesheets",
-      "name": "Google Sheets",
-      "description": "Read, write, and format spreadsheet data. Manage sheets, run formulas, and collaborate on structured data in real time.",
-      "category": "Data & Analytics",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GOOGLESHEETS_ADD_SHEET",
-          "description": "Adds a new sheet (worksheet) to a spreadsheet. Use this tool to create a new tab within an existing Google Sheet, optionally specifying its title, index, size, and other properties. IMPORTANT: - Always provide the spreadsheetId. Use 'Search Spreadsheets' action if you need to find it by name - Sheet names must be unique within the spreadsheet - For tab colors, use EITHER rgbColor OR themeColor, never both - Index must be less than or equal to the current number of sheets - CONCURRENCY WARNING: D"
-        },
-        {
-          "name": "GOOGLESHEETS_AGGREGATE_COLUMN_DATA",
-          "description": "Searches for rows where a specific column matches a value and performs mathematical operations on data from another column."
-        },
-        {
-          "name": "GOOGLESHEETS_APPEND_DIMENSION",
-          "description": "Tool to append new rows or columns to a sheet, increasing its size. Use when you need to add empty rows or columns to an existing sheet."
-        },
-        {
-          "name": "GOOGLESHEETS_BATCH_GET",
-          "description": "Retrieves data from specified cell ranges in a Google Spreadsheet."
-        },
-        {
-          "name": "GOOGLESHEETS_BATCH_UPDATE",
-          "description": "Updates a specified range in a Google Sheet with given values, or appends them as new rows if `first_cell_location` is omitted. Auto-expands grid for large datasets, preventing range errors. Requirements: Target sheet must exist and spreadsheet must contain at least one worksheet."
-        },
-        {
-          "name": "GOOGLESHEETS_BATCH_UPDATE_VALUES_BY_DATA_FILTER",
-          "description": "Tool to update values in ranges matching data filters. Use when you need to update specific data in a Google Sheet based on criteria rather than fixed cell ranges."
-        },
-        {
-          "name": "GOOGLESHEETS_CLEAR_BASIC_FILTER",
-          "description": "Tool to clear the basic filter from a sheet. Use when you need to remove an existing basic filter from a specific sheet within a Google Spreadsheet."
-        },
-        {
-          "name": "GOOGLESHEETS_CLEAR_VALUES",
-          "description": "Clears cell content (preserving formatting and notes) from a specified A1 notation range in a Google Spreadsheet; the range must correspond to an existing sheet and cells."
-        },
-        {
-          "name": "GOOGLESHEETS_CREATE_CHART",
-          "description": "Create a chart in a Google Sheets spreadsheet using the specified data range and chart type. Conditional requirements: - Provide either a simple chart via chart_type + data_range (basicChart), OR supply a full chart_spec supporting all chart types. Exactly one approach should be used. - When using chart_spec, set exactly one of the union fields (basicChart | pieChart | bubbleChart | candlestickChart | histogramChart | waterfallChart | treemapChart | orgChart | scorecardChart)."
-        },
-        {
-          "name": "GOOGLESHEETS_CREATE_GOOGLE_SHEET1",
-          "description": "Creates a new Google Spreadsheet in Google Drive using the provided title."
-        },
-        {
-          "name": "GOOGLESHEETS_CREATE_SPREADSHEET_COLUMN",
-          "description": "Creates a new column in a Google Spreadsheet, requiring a valid `spreadsheet_id` and an existing `sheet_id`; an out-of-bounds `insert_index` may append/prepend the column."
-        },
-        {
-          "name": "GOOGLESHEETS_CREATE_SPREADSHEET_ROW",
-          "description": "Inserts a new, empty row into a specified sheet of a Google Spreadsheet at a given index, optionally inheriting formatting from the row above."
-        },
-        {
-          "name": "GOOGLESHEETS_DELETE_DIMENSION",
-          "description": "Tool to delete specified rows or columns from a sheet in a Google Spreadsheet. Use when you need to remove a range of rows or columns."
-        },
-        {
-          "name": "GOOGLESHEETS_DELETE_SHEET",
-          "description": "Tool to delete a sheet (worksheet) from a spreadsheet. Use when you need to remove a specific sheet from a Google Sheet document."
-        },
-        {
-          "name": "GOOGLESHEETS_EXECUTE_SQL",
-          "description": "Execute SQL queries against Google Sheets tables. Supports SELECT, INSERT, UPDATE, and DELETE operations with familiar SQL syntax. Tables are automatically detected and mapped from the spreadsheet structure."
-        },
-        {
-          "name": "GOOGLESHEETS_FIND_REPLACE",
-          "description": "Tool to find and replace text in a Google Spreadsheet. Use when you need to fix formula errors, update values, or perform bulk text replacements across cells. Common use cases: - Fix #ERROR! cells by replacing with empty string or correct formula - Update old values with new ones across multiple cells - Fix formula references or patterns - Clean up data formatting issues"
-        },
-        {
-          "name": "GOOGLESHEETS_FIND_WORKSHEET_BY_TITLE",
-          "description": "Finds a worksheet by its exact, case-sensitive title within a Google Spreadsheet; returns a boolean indicating if found and the complete metadata of the entire spreadsheet, regardless of whether the target worksheet is found."
-        },
-        {
-          "name": "GOOGLESHEETS_FORMAT_CELL",
-          "description": "Applies text and background cell formatting to a specified range in a Google Sheets worksheet."
-        },
-        {
-          "name": "GOOGLESHEETS_GET_SHEET_NAMES",
-          "description": "Lists all worksheet names from a specified Google Spreadsheet (which must exist), useful for discovering sheets before further operations."
-        },
-        {
-          "name": "GOOGLESHEETS_GET_SPREADSHEET_BY_DATA_FILTER",
-          "description": "Returns the spreadsheet at the given ID, filtered by the specified data filters. Use this tool when you need to retrieve specific subsets of data from a Google Sheet based on criteria like A1 notation, developer metadata, or grid ranges."
-        },
-        {
-          "name": "GOOGLESHEETS_GET_SPREADSHEET_INFO",
-          "description": "Retrieves comprehensive metadata for a Google Spreadsheet using its ID, excluding cell data."
-        },
-        {
-          "name": "GOOGLESHEETS_GET_TABLE_SCHEMA",
-          "description": "This action is used to get the schema of a table in a Google Spreadsheet, call this action to get the schema of a table in a spreadsheet BEFORE YOU QUERY THE TABLE. Analyze table structure and infer column names, types, and constraints. Uses statistical analysis of sample data to determine the most likely data type for each column. Call this action after calling the LIST_TABLES action to get the schema of a table in a spreadsheet."
-        },
-        {
-          "name": "GOOGLESHEETS_INSERT_DIMENSION",
-          "description": "Tool to insert new rows or columns into a sheet at a specified location. Use when you need to add empty rows or columns within an existing Google Sheet."
-        },
-        {
-          "name": "GOOGLESHEETS_LIST_TABLES",
-          "description": "This action is used to list all tables in a Google Spreadsheet, call this action to get the list of tables in a spreadsheet. Discover all tables in a Google Spreadsheet by analyzing sheet structure and detecting data patterns. Uses heuristic analysis to find header rows, data boundaries, and table structures."
-        },
-        {
-          "name": "GOOGLESHEETS_LOOKUP_SPREADSHEET_ROW",
-          "description": "Finds the first row in a Google Spreadsheet where a cell's entire content exactly matches the query string, searching within a specified A1 notation range or the first sheet by default."
-        },
-        {
-          "name": "GOOGLESHEETS_QUERY_TABLE",
-          "description": "This action is used to query a table in a Google Spreadsheet, call this action to query a table in a spreadsheet. Execute SQL-like SELECT queries against spreadsheet tables. Supports WHERE conditions, ORDER BY, LIMIT clauses. Call this action after calling the GET_TABLE_SCHEMA action to query a table in a spreadsheet."
-        },
-        {
-          "name": "GOOGLESHEETS_SEARCH_DEVELOPER_METADATA",
-          "description": "Tool to search for developer metadata in a spreadsheet. Use when you need to find specific metadata entries based on filters."
-        },
-        {
-          "name": "GOOGLESHEETS_SEARCH_SPREADSHEETS",
-          "description": "Search for Google Spreadsheets using various filters including name, content, date ranges, and more."
-        },
-        {
-          "name": "GOOGLESHEETS_SET_BASIC_FILTER",
-          "description": "Tool to set a basic filter on a sheet in a Google Spreadsheet. Use when you need to filter or sort data within a specific range on a sheet."
-        },
-        {
-          "name": "GOOGLESHEETS_SHEET_FROM_JSON",
-          "description": "Creates a new Google Spreadsheet and populates its first worksheet from `sheet_json`, which must be non-empty as its first item's keys establish the headers."
-        },
-        {
-          "name": "GOOGLESHEETS_SPREADSHEETS_SHEETS_COPY_TO",
-          "description": "Tool to copy a single sheet from a spreadsheet to another spreadsheet. Use when you need to duplicate a sheet into a different spreadsheet."
-        },
-        {
-          "name": "GOOGLESHEETS_SPREADSHEETS_VALUES_APPEND",
-          "description": "Tool to append values to a spreadsheet. Use when you need to add new data to the end of an existing table in a Google Sheet."
-        },
-        {
-          "name": "GOOGLESHEETS_SPREADSHEETS_VALUES_BATCH_CLEAR",
-          "description": "Tool to clear one or more ranges of values from a spreadsheet. Use when you need to remove data from specific cells or ranges while keeping formatting and other properties intact."
-        },
-        {
-          "name": "GOOGLESHEETS_SPREADSHEETS_VALUES_BATCH_CLEAR_BY_DATA_FILTER",
-          "description": "Clears one or more ranges of values from a spreadsheet using data filters. The caller must specify the spreadsheet ID and one or more DataFilters. Ranges matching any of the specified data filters will be cleared. Only values are cleared -- all other properties of the cell (such as formatting, data validation, etc..) are kept."
-        },
-        {
-          "name": "GOOGLESHEETS_SPREADSHEETS_VALUES_BATCH_GET_BY_DATA_FILTER",
-          "description": "Tool to return one or more ranges of values from a spreadsheet that match the specified data filters. Use when you need to retrieve specific data sets based on filtering criteria rather than entire sheets or fixed ranges."
-        },
-        {
-          "name": "GOOGLESHEETS_UPDATE_SHEET_PROPERTIES",
-          "description": "Tool to update properties of a sheet (worksheet) within a Google Spreadsheet, such as its title, index, visibility, tab color, or grid properties. Use this when you need to modify the metadata or appearance of a specific sheet."
-        },
-        {
-          "name": "GOOGLESHEETS_UPDATE_SPREADSHEET_PROPERTIES",
-          "description": "Tool to update properties of a spreadsheet, such as its title, locale, or auto-recalculation settings. Use when you need to modify the overall configuration of a Google Sheet."
-        },
-        {
-          "name": "GOOGLESHEETS_UPSERT_ROWS",
-          "description": "Upsert rows - update existing rows by key, append new ones. Automatically handles column mapping and partial updates. Use for: CRM syncs (match Lead ID), transaction imports (match Transaction ID), inventory updates (match SKU), calendar syncs (match Event ID). Features: - Auto-adds missing columns to sheet - Partial column updates (only update Phone + Status, preserve other columns) - Column order doesn't matter (auto-maps by header name) - Prevents duplicates by matching key column Example inp"
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 63663,
-      "source": "smithery",
-      "last_updated": "2026-08-03",
-      "icon": "bar-chart",
-      "smithery_qualified_name": "googlesheets",
-      "smithery_page_url": "https://smithery.ai/servers/googlesheets",
-      "mcp_endpoint": "https://googlesheets.run.tools",
-      "deployment_url": "https://googlesheets.run.tools",
-      "connection_url": "https://googlesheets.run.tools",
-      "primary_url": "https://smithery.ai/servers/googlesheets",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlesheets\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlesheets.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-08-06T08:01:03.712Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
     },
     {
       "id": "jina",
@@ -947,7 +763,91 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jina",
-      "tools_validated_at": "2026-08-06T08:01:03.549Z",
+      "tools_validated_at": "2026-08-07T06:46:48.745Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "googlesheets",
+      "slug": "googlesheets",
+      "name": "Google Sheets",
+      "description": "Read, write, and format spreadsheet data. Manage sheets, run formulas, and collaborate on structured data in real time.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "Arcade_ListApps",
+          "description": "See the apps the current caller can act on and whether they are connected. Returns each app's id, name, connected state, and (when connected) the account it is connected as. Call this to answer \"what apps do I have?\" or when the caller's connection state may have changed since the session started."
+        },
+        {
+          "name": "GoogleSheets_CheckSpreadsheetAccess",
+          "description": "Check whether this app can already read each of several spreadsheets, in one\nbatched pre-flight call, before attempting to read them.\n\nUse this when the user references multiple spreadsheets so any that are not yet\naccessible can be granted together in a single picker step, instead of hitting a\nseparate access error and grant prompt for each one. Each input may be a bare file id\nor a full Google Sheets/Drive URL.\n\nReturns ``spreadsheets`` (a per-id list with ``accessible``, the ``title`` and\n``m"
+        },
+        {
+          "name": "GoogleSheets_CommentOnSpreadsheet",
+          "description": "Create a comment on a spreadsheet, edit a comment's body, or resolve/reopen it.\n\nComments are created at the file level: the Drive API cannot anchor a NEW Sheets comment to a\nspecific cell or range. Cell/range-anchored comments made in the Sheets UI are still readable\nvia list_spreadsheet_comments (which returns their anchor). Editing a comment's body is\nallowed only for the comment's author."
+        },
+        {
+          "name": "GoogleSheets_CreateOrEditSpreadsheet",
+          "description": "Create a new spreadsheet or batch-edit an existing one.\n\nOmit `spreadsheet_id` to create; provide it to edit. All writes flow through\n`requests[]` — typed operations like updateCells, addSheet, sortRange,\naddConditionalFormatRule, autoResizeDimensions, and more.\n\nFor updateCells use ExtendedValue with an explicit type field (stringValue,\nnumberValue, boolValue, formulaValue).\n\nBy default, build clean, professional-looking tables with restrained, consistent\nformatting and plain-text tab names/hea"
+        },
+        {
+          "name": "GoogleSheets_DeleteComment",
+          "description": "Delete a comment from a spreadsheet.\n\nOnly the comment's author can delete it (enforced by Google Drive); deleting marks the\nwhole thread (the comment and its replies) as deleted."
+        },
+        {
+          "name": "GoogleSheets_GenerateGoogleFilePickerUrl",
+          "description": "Generate a URL where the user can grant this app access to spreadsheets.\n\nOpens Google's first-party Drive picker, filtered to Google Sheets, where the user\nbrowses and selects which spreadsheets to share with this application — it is not a\nsign-in or credential prompt.\n\nUse this when a prior tool reported that a file was not found or access was denied, and\nthe user expects the file to exist. After the user completes the picker flow, retry the\nprior operation."
+        },
+        {
+          "name": "GoogleSheets_GetSpreadsheetEditHistory",
+          "description": "Report who edited a spreadsheet and when, from Google Drive revisions.\n\nReports the \"who\" and \"when\" only — not which cells changed, and it can't revert.\n\n'summary' (default) answers \"who last edited this and when\" (read from the file's head,\nso always accurate), plus per-window aggregates (revisions read, contributors, first\nedit) and a preview of recent edits — computed over a bounded window of history per call.\nThese aggregates describe the whole history only when `is_incomplete` is false; it"
+        },
+        {
+          "name": "GoogleSheets_InspectSpreadsheet",
+          "description": "Inspect a Google Sheets spreadsheet's structure or read a range of cells.\n\nUse the default 'structure' mode to understand a workbook cheaply before reading.\nSwitch to 'read' mode to pull a range as a grid of rows, optionally with\nper-cell annotations and a rendered markdown/csv/tsv export.\n\nIn 'read' mode the response's per-tab 'sheets' block reports only tab identity and\nthe allocated grid; its scan-derived fields (used_range, populated_cell_count,\nformula_cell_count, first_row, table_regions) "
+        },
+        {
+          "name": "GoogleSheets_ListSpreadsheetComments",
+          "description": "List a spreadsheet's comment threads, or the full replies of a single comment.\n\nIn 'comments' mode each comment includes up to a few trimmed reply previews plus the total reply_count; use 'thread' mode for a comment's complete reply list. Without filters/ordering, pagination walks every comment. Client-side filters (has_replies, resolved) and order_by are applied only within a bounded scan of the first 500 comments, so on larger sheets drop them and page through everything with the native (unbou"
+        },
+        {
+          "name": "GoogleSheets_ReplyToComment",
+          "description": "Add a reply to an existing comment on a spreadsheet.\n\nTo resolve or reopen the comment instead, use comment_on_spreadsheet with a status."
+        },
+        {
+          "name": "GoogleSheets_ScanForDataIssues",
+          "description": "Deterministically flag 'weird'/bad cells in spreadsheet data.\n\nNo LLM judgement: the same input always returns the same flags. Each cell-level finding\ncarries a coord, a 0-based row_index/column_index (ready for a Sheets GridRange), the rule,\na severity (high -> red, medium/low -> yellow), and a note-ready reason — so the output\ndrops straight into an annotate/format recipe. In the default `mode='grouped'` these are\naggregated per rule+column within each table into `groups` (with A1 `coords`); u"
+        },
+        {
+          "name": "GoogleSheets_SearchSpreadsheets",
+          "description": "Searches for spreadsheets in the user's Google Drive based on the titles and content and\nreturns the title, ID, and URL for each matching spreadsheet.\n\nDoes not return the content/data of the sheets in the spreadsheets - only the metadata.\nExcludes spreadsheets that are in the trash."
+        },
+        {
+          "name": "GoogleSheets_WhoAmI",
+          "description": "Get comprehensive user profile and Google Sheets environment information.\n\nThis tool provides detailed information about the authenticated user including\ntheir name, email, profile picture, Google Sheets access permissions, and other\nimportant profile details from Google services."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googlesheets",
+      "stars": 63663,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "bar-chart",
+      "smithery_qualified_name": "googlesheets",
+      "smithery_page_url": "https://smithery.ai/servers/googlesheets",
+      "mcp_endpoint": "https://googlesheets.run.tools",
+      "deployment_url": "https://googlesheets.run.tools",
+      "connection_url": "https://googlesheets.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlesheets",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googlesheets\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlesheets.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
+      "tools_validated_at": "2026-08-07T06:46:48.886Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1011,7 +911,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-08-06T08:01:04.475Z",
+      "tools_validated_at": "2026-08-07T06:46:49.376Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1243,7 +1143,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-08-06T08:01:03.924Z",
+      "tools_validated_at": "2026-08-07T06:46:49.039Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1407,7 +1307,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-08-06T08:01:03.649Z",
+      "tools_validated_at": "2026-08-07T06:46:48.799Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1503,7 +1403,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-08-06T08:01:04.879Z",
+      "tools_validated_at": "2026-08-07T06:46:49.773Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1636,7 +1536,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-08-06T08:01:04.839Z",
+      "tools_validated_at": "2026-08-07T06:46:49.800Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1692,7 +1592,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/smithery-ai/national-weather-service",
-      "tools_validated_at": "2026-08-06T08:01:04.143Z",
+      "tools_validated_at": "2026-08-07T06:46:49.267Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1796,7 +1696,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-08-06T08:01:05.077Z",
+      "tools_validated_at": "2026-08-07T06:46:49.852Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1924,7 +1824,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-08-06T08:01:05.270Z",
+      "tools_validated_at": "2026-08-07T06:46:49.994Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2156,7 +2056,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-08-06T08:01:05.962Z",
+      "tools_validated_at": "2026-08-07T06:46:50.742Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2220,7 +2120,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-08-06T08:01:05.413Z",
+      "tools_validated_at": "2026-08-07T06:46:50.351Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2280,7 +2180,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-08-06T08:01:05.817Z",
+      "tools_validated_at": "2026-08-07T06:46:50.515Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2332,7 +2232,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-08-06T08:01:05.935Z",
+      "tools_validated_at": "2026-08-07T06:46:50.390Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2500,7 +2400,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-08-06T08:01:05.887Z",
+      "tools_validated_at": "2026-08-07T06:46:51.034Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2600,155 +2500,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/support-9ef4/Wayforth",
-      "tools_validated_at": "2026-08-06T08:01:06.557Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "googlecalendar",
-      "slug": "googlecalendar",
-      "name": "Google Calendar",
-      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "GOOGLECALENDAR_ACL_PATCH",
-          "description": "Updates an access control rule for a calendar using patch semantics (partial update). This allows modifying specific fields without affecting other properties. Note: Each patch request consumes three quota units. For domain-type ACL rules, if PATCH fails with 500 error, this action will automatically fallback to UPDATE method."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_INSERT",
-          "description": "Inserts an existing calendar into the user's calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDAR_LIST_UPDATE",
-          "description": "Updates an existing entry on the user\\'s calendar list."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_DELETE",
-          "description": "Deletes a secondary calendar. Use calendars.clear for clearing all events on primary calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
-          "description": "Updates metadata for a calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_CLEAR_CALENDAR",
-          "description": "Clears a primary calendar. This operation deletes all events associated with the primary calendar of an account."
-        },
-        {
-          "name": "GOOGLECALENDAR_CREATE_EVENT",
-          "description": "Create a Google Calendar event using `start_datetime` plus `event_duration_hour` and `event_duration_minutes` fields to derive the end time. Requires calendar write access. The organizer is added as an attendee unless `exclude_organizer` is True. Example request to create event for 1 hour 30 minutes: { \"calendar_id\": \"primary\", \"start_datetime\": \"2025-01-16T13:00:00\", \"timezone\": \"America/New_York\", \"event_duration_hour\": 1, \"event_duration_minutes\": 30, \"summary\": \"Client sync\", \"attendees\": [{"
-        },
-        {
-          "name": "GOOGLECALENDAR_DELETE_EVENT",
-          "description": "Deletes a specified event by `event_id` from a Google Calendar (`calendar_id`); this action is idempotent and raises a 404 error if the event is not found."
-        },
-        {
-          "name": "GOOGLECALENDAR_DUPLICATE_CALENDAR",
-          "description": "Creates a new, empty Google Calendar with the specified title (summary)."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_INSTANCES",
-          "description": "Returns instances of the specified recurring event."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_LIST",
-          "description": "Returns events on the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_MOVE",
-          "description": "Moves an event to another calendar, i.e., changes an event's organizer."
-        },
-        {
-          "name": "GOOGLECALENDAR_EVENTS_WATCH",
-          "description": "Watch for changes to Events resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_EVENT",
-          "description": "Finds events in a specified Google Calendar using text query, time ranges (event start/end, last modification), and event types; ensure `timeMin` is not chronologically after `timeMax` if both are provided."
-        },
-        {
-          "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
-          "description": "Finds both free and busy time slots in Google Calendars for specified calendars within a defined time range (defaults to the current day UTC if `time_min`/`time_max` are omitted). Returns busy intervals enriched with event details and calculates free slots by finding gaps between busy periods; `time_min` must precede `time_max` if both are provided. This action retrieves free and busy time slots for the specified calendars over a given time period. It analyzes the busy intervals from the calenda"
-        },
-        {
-          "name": "GOOGLECALENDAR_FREE_BUSY_QUERY",
-          "description": "Returns free/busy information for a set of calendars."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CALENDAR",
-          "description": "Retrieves a specific Google Calendar, identified by `calendar_id`, to which the authenticated user has access."
-        },
-        {
-          "name": "GOOGLECALENDAR_GET_CURRENT_DATE_TIME",
-          "description": "Gets the current date and time, allowing for a specific timezone offset."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_ACL_RULES",
-          "description": "Retrieves the list of access control rules (ACLs) for a specified calendar, providing the necessary 'rule_id' values required for updating specific ACL rules."
-        },
-        {
-          "name": "GOOGLECALENDAR_LIST_CALENDARS",
-          "description": "Retrieves a paginated list of calendars from the user's calendar list, with optional filtering and sync capabilities."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_CALENDAR",
-          "description": "Partially updates (PATCHes) an existing Google Calendar, modifying only the fields provided; `summary` is mandatory and cannot be an empty string, and an empty string for `description` or `location` clears them."
-        },
-        {
-          "name": "GOOGLECALENDAR_PATCH_EVENT",
-          "description": "Update specified fields of an existing event in a Google Calendar using patch semantics (array fields like `attendees` are fully replaced if provided); ensure the `calendar_id` and `event_id` are valid and the user has write access to the calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_QUICK_ADD",
-          "description": "Parses natural language text to quickly create a basic Google Calendar event with its title, date, and time, suitable for simple scheduling; does not support direct attendee addition or recurring events, and `calendar_id` must be valid if not 'primary'."
-        },
-        {
-          "name": "GOOGLECALENDAR_REMOVE_ATTENDEE",
-          "description": "Removes an attendee from a specified event in a Google Calendar; the calendar and event must exist."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_LIST",
-          "description": "Returns all user settings for the authenticated user."
-        },
-        {
-          "name": "GOOGLECALENDAR_SETTINGS_WATCH",
-          "description": "Watch for changes to Settings resources."
-        },
-        {
-          "name": "GOOGLECALENDAR_SYNC_EVENTS",
-          "description": "Synchronizes Google Calendar events, performing a full sync if no `sync_token` is provided or if a 410 GONE error (due to an expired token) necessitates it, otherwise performs an incremental sync for events changed since the `sync_token` was issued."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_ACL_RULE",
-          "description": "Updates an access control rule for the specified calendar."
-        },
-        {
-          "name": "GOOGLECALENDAR_UPDATE_EVENT",
-          "description": "Updates an existing event by `event_id` in a Google Calendar; this is a full PUT replacement, so provide all desired fields as unspecified ones may be cleared or reset."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 22255,
-      "source": "smithery",
-      "last_updated": "2026-08-03",
-      "icon": "boxes",
-      "smithery_qualified_name": "googlecalendar",
-      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
-      "mcp_endpoint": "https://googlecalendar.run.tools",
-      "deployment_url": "https://googlecalendar.run.tools",
-      "connection_url": "https://googlecalendar.run.tools",
-      "primary_url": "https://smithery.ai/servers/googlecalendar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-08-06T08:01:06.700Z",
+      "tools_validated_at": "2026-08-07T06:46:51.239Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2980,7 +2732,75 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-08-06T08:01:06.577Z",
+      "tools_validated_at": "2026-08-07T06:46:51.323Z",
+      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "googlecalendar",
+      "slug": "googlecalendar",
+      "name": "Google Calendar",
+      "description": "Schedule events, check availability, and manage calendars. Create meetings, set reminders, and coordinate across time zones.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "Arcade_ListApps",
+          "description": "See the apps the current caller can act on and whether they are connected. Returns each app's id, name, connected state, and (when connected) the account it is connected as. Call this to answer \"what apps do I have?\" or when the caller's connection state may have changed since the session started."
+        },
+        {
+          "name": "GoogleCalendar_CreateEvent",
+          "description": "Create a new event/meeting/sync/meetup in the specified calendar.\n\nPass `recurrence` to create a repeating event."
+        },
+        {
+          "name": "GoogleCalendar_DeleteEvent",
+          "description": "Delete an event from Google Calendar."
+        },
+        {
+          "name": "GoogleCalendar_FindTimeSlotsWhenEveryoneIsFree",
+          "description": "Provides time slots when everyone is free within a given date range and time boundaries."
+        },
+        {
+          "name": "GoogleCalendar_ListCalendars",
+          "description": "List all calendars accessible by the user."
+        },
+        {
+          "name": "GoogleCalendar_ListEvents",
+          "description": "List events from the specified calendar within the given datetime range.\n\nmin_end_datetime serves as the lower bound (exclusive) for an event's end time.\nmax_start_datetime serves as the upper bound (exclusive) for an event's start time.\n\nFor example:\nIf min_end_datetime is set to 2024-09-15T09:00:00 and max_start_datetime\nis set to 2024-09-16T17:00:00, the function will return events that:\n1. End after 09:00 on September 15, 2024 (exclusive)\n2. Start before 17:00 on September 16, 2024 (exclusiv"
+        },
+        {
+          "name": "GoogleCalendar_RespondToEvent",
+          "description": "Accept or decline (RSVP to) a meeting invitation on the authenticated user's behalf.\n\nSets the user's responseStatus for an event they were invited to."
+        },
+        {
+          "name": "GoogleCalendar_UpdateEvent",
+          "description": "Update an existing event in the specified calendar with the provided details.\nOnly the provided fields will be updated; others will remain unchanged.\n\n`updated_start_datetime` and `updated_end_datetime` are\nindependent and can be provided separately."
+        },
+        {
+          "name": "GoogleCalendar_WhoAmI",
+          "description": "Get comprehensive user profile and Google Calendar environment information.\n\nThis tool provides detailed information about the authenticated user including\ntheir name, email, profile picture, Google Calendar access permissions, and other\nimportant profile details from Google services."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googlecalendar",
+      "stars": 22255,
+      "source": "smithery",
+      "last_updated": "2026-08-03",
+      "icon": "boxes",
+      "smithery_qualified_name": "googlecalendar",
+      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlecalendar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
+      "tools_validated_at": "2026-08-07T06:46:51.445Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3068,7 +2888,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googletasks",
-      "tools_validated_at": "2026-08-06T08:01:06.588Z",
+      "tools_validated_at": "2026-08-07T06:46:51.633Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3148,7 +2968,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
       "deployment_url": "https://mcp.xgr.network/mcp"
@@ -3228,7 +3048,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe"
     },
     {
@@ -3258,7 +3078,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "code"
     },
     {
@@ -3293,7 +3113,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/vercel/grep",
-      "tools_validated_at": "2026-08-06T08:01:07.300Z",
+      "tools_validated_at": "2026-08-07T06:46:52.031Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3324,7 +3144,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "message-square"
     },
     {
@@ -3375,7 +3195,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
       "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
@@ -3407,7 +3227,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "activity"
     },
     {
@@ -3437,7 +3257,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "image"
     },
     {
@@ -3464,7 +3284,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
       "deployment_url": "https://ignav.com/mcp"
@@ -3697,7 +3517,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/netfluid/NFLD",
-      "tools_validated_at": "2026-08-06T08:01:07.285Z",
+      "tools_validated_at": "2026-08-07T06:46:51.959Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3749,7 +3569,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/zev/lastlook-data",
-      "tools_validated_at": "2026-08-06T08:01:07.740Z",
+      "tools_validated_at": "2026-08-07T06:46:52.574Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3981,7 +3801,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "tools_validated_at": "2026-08-06T08:01:07.387Z",
+      "tools_validated_at": "2026-08-07T06:46:52.290Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3995,84 +3815,76 @@
       "transport": "http",
       "tools": [
         {
-          "name": "GOOGLEDRIVE_ADD_FILE_SHARING_PREFERENCE",
-          "description": "Modifies sharing permissions for an existing google drive file, granting a specified role to a user, group, domain, or 'anyone'."
+          "name": "Arcade_ListApps",
+          "description": "See the apps the current caller can act on and whether they are connected. Returns each app's id, name, connected state, and (when connected) the account it is connected as. Call this to answer \"what apps do I have?\" or when the caller's connection state may have changed since the session started."
         },
         {
-          "name": "GOOGLEDRIVE_COPY_FILE",
-          "description": "Duplicates an existing file in google drive, identified by its `file id`."
+          "name": "GoogleDrive_CheckFileAccess",
+          "description": "Check whether this app can already read each of several Drive files, in one batched\npre-flight call, before attempting to read them.\n\nUse this when the user references multiple files so any that are not yet accessible can\nbe granted together in a single picker step, instead of hitting a separate access error\nand grant prompt for each one. Each input may be a bare file id or a full Google\nDrive/Workspace URL (documents, spreadsheets, slides, PDFs, images, folders — any type).\n\nReturns ``files`` ("
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_COMMENT",
-          "description": "Tool to create a comment on a file. use when you need to add a new comment to a specific file in google drive."
+          "name": "GoogleDrive_CreateFolder",
+          "description": "Create a new folder in Google Drive.\n\nBy default, parent folder paths are resolved in My Drive. For shared drives, use folder IDs\nor provide shared_drive_id."
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_DRIVE",
-          "description": "Tool to create a new shared drive. use when you need to programmatically create a new shared drive for collaboration or storage."
+          "name": "GoogleDrive_DownloadFile",
+          "description": "Download a blob file (non-workspace file) from Google Drive as base64 encoded content.\n\nFor small files (under ~5MB raw), returns the file content directly in the response as base64.\nFor large files, returns metadata with requires_chunked_download=True - use download_file_chunk\nto retrieve the file in parts.\n\nBy default, paths are resolved in My Drive. For shared drives, use file IDs or provide\nshared_drive_id."
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_FILE",
-          "description": "Creates a new file or folder with metadata. use to create empty files or folders, or files with content by providing it in the request body (though this action primarily focuses on metadata creation)."
+          "name": "GoogleDrive_DownloadFileChunk",
+          "description": "Download a specific byte range of a file from Google Drive.\n\nUse this for large files that require chunked download (when download_file returns\nrequires_chunked_download=True). Call repeatedly with increasing start_byte values\nto retrieve the complete file.\n\nReturns the chunk content as base64, along with progress information including\nwhether this is the final chunk."
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_FILE_FROM_TEXT",
-          "description": "Creates a new file in google drive from provided text content (up to 10mb), supporting various formats including automatic conversion to google workspace types."
+          "name": "GoogleDrive_GenerateGoogleFilePickerUrl",
+          "description": "Generate a URL where the user can grant this app access to specific Drive files.\n\nOpens Google's first-party Drive picker. The user selects which files to share\nwith this application — it is not a sign-in or credential prompt. By default the picker\nshows files of all types; pass ``file_types`` to restrict it to specific types.\n\nUse this when a prior tool reported that a file was not found or access was denied,\nand the user expects the file to exist. After the user completes the picker flow,\nretr"
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_FOLDER",
-          "description": "Creates a new folder in google drive, optionally within a parent folder specified by its id or name; if a parent name is provided but not found, the action will fail."
+          "name": "GoogleDrive_GetFileTreeStructure",
+          "description": "Get the file/folder tree structure of the user's entire Google Drive.\nVery inefficient for large drives. Use with caution."
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_REPLY",
-          "description": "Tool to create a reply to a comment in google drive. use when you need to respond to an existing comment on a file."
+          "name": "GoogleDrive_ListFilePermissions",
+          "description": "List permissions on a Google Drive file or folder.\n\nReturns the individual people (and groups) with access and the current General access\n(link sharing) state. `general_access` is computed across the ENTIRE file regardless of\nfiltering -- so \"is this doc public?\" is always answered authoritatively.\n\nWhen `roles` is provided, `people` and `total_people` reflect only collaborators whose\nrole matches the filter. Truncated collaborators beyond `limit` are not returned;\n`has_more` indicates whether t"
         },
         {
-          "name": "GOOGLEDRIVE_CREATE_SHORTCUT_TO_FILE",
-          "description": "Tool to create a shortcut to a file or folder in google drive. use when you need to link to an existing drive item from another location without duplicating it."
+          "name": "GoogleDrive_MoveFile",
+          "description": "Move a file or folder to a different folder within the same Google Drive.\n\nCan move to a folder (keeping name), or move and rename in one operation. By default, paths\nare resolved in My Drive. For shared drives, use file IDs or provide shared_drive_id."
         },
         {
-          "name": "GOOGLEDRIVE_DELETE_COMMENT",
-          "description": "Deletes a comment from a file. use when you need to remove a specific comment from a google drive file."
+          "name": "GoogleDrive_RemoveAllCollaborators",
+          "description": "Remove all user collaborators (and optionally groups) from a Google Drive file.\n\nThe file owner and the calling user are always preserved. Groups are preserved by default\nbecause the Drive API cannot verify group membership -- pass include_groups=True to opt in.\nInherited shared-drive permissions are never removable from the file level and are skipped.\n\nUse except_people to preserve additional people or groups by email or name. Ambiguous or\nunmatched except_people entries raise an error to avoid"
         },
         {
-          "name": "GOOGLEDRIVE_DELETE_DRIVE",
-          "description": "Tool to permanently delete a shared drive. use when you need to remove a shared drive and its contents (if specified)."
+          "name": "GoogleDrive_RenameFile",
+          "description": "Rename a file or folder in Google Drive.\n\nBy default, paths are resolved in My Drive. For files in shared drives, either use the file ID\ndirectly or provide the shared_drive_id parameter."
         },
         {
-          "name": "GOOGLEDRIVE_DELETE_PERMISSION",
-          "description": "Deletes a permission from a file by permission id. use when you need to revoke access for a specific user or group from a file."
+          "name": "GoogleDrive_RevokeFileAccess",
+          "description": "Revoke access for specific people or groups on a Google Drive file.\n\nIdentifies matches by email (exact, case-insensitive) or display name. When an input\nmatches multiple people, the clear matches are still revoked and the ambiguous input is\nsurfaced in the `ambiguous` response field with candidate details so the agent can\nre-prompt the user for just the uncertain ones. Inputs that don't match any collaborator\nare returned in `not_found`. Pending-owner matches (mid-ownership-transfer) are skippe"
         },
         {
-          "name": "GOOGLEDRIVE_DELETE_REPLY",
-          "description": "Tool to delete a specific reply by reply id. use when you need to remove a reply from a comment on a file."
+          "name": "GoogleDrive_SearchDrive",
+          "description": "Search the user's entire Google Drive, including files they created or\nreceived directly in Drive — not only files created through this app.\n\nReads across the user's whole Drive, so it requires broad read access to\ntheir files. The provided 'query' should contain only the search terms; the\ntool builds the full Drive query for you, matching file names and contents."
         },
         {
-          "name": "GOOGLEDRIVE_DOWNLOAD_FILE",
-          "description": "Downloads a file from google drive by its id. for google workspace documents (docs, sheets, slides), optionally exports to a specified `mime type`. for other file types, downloads in their native format regardless of mime type."
+          "name": "GoogleDrive_SearchFiles",
+          "description": "Search for files in Google Drive.\n\nThe provided 'query' should only contain the search terms.\nThe tool will construct the full search query for you."
         },
         {
-          "name": "GOOGLEDRIVE_EDIT_FILE",
-          "description": "Updates an existing google drive file by overwriting its entire content with new text (max 10mb)."
+          "name": "GoogleDrive_SetGeneralAccess",
+          "description": "Change the 'General access' (link sharing) setting on a Google Drive file.\n\nIdempotent: calling with the same state as the current configuration is a no-op. When access\nis 'domain', the link is scoped to the caller's email domain -- NOT the file owner's domain.\nFor cross-org collaboration (e.g., editing a file owned by another organization), confirm\nwith the user which domain they intend before calling. Google will reject domain sharing\nfor personal accounts (gmail.com, outlook.com, etc.) -- the"
         },
         {
-          "name": "GOOGLEDRIVE_EMPTY_TRASH",
-          "description": "Tool to permanently delete all of the user's trashed files. use when you want to empty the trash in google drive."
+          "name": "GoogleDrive_ShareFile",
+          "description": "Share a file or folder in Google Drive with specific people by granting them permissions.\n\nIf a user already has permission on the file, their role will be updated to the new role.\nBy default, paths are resolved in My Drive. For shared drives, use file IDs or provide\nshared_drive_id."
         },
         {
-          "name": "GOOGLEDRIVE_FILES_MODIFY_LABELS",
-          "description": "Modifies the set of labels applied to a file. returns a list of the labels that were added or modified. use when you need to programmatically change labels on a google drive file, such as adding, updating, or removing them."
+          "name": "GoogleDrive_UploadFile",
+          "description": "Upload a file to Google Drive from a URL.\n\nFetches the file content from the provided URL and uploads it to Google Drive.\nSupports files of any size - uses resumable upload internally for large files.\n\nCANNOT upload Google Workspace files (Google Docs, Sheets, Slides)\nCANNOT upload files larger than 25MB"
         },
         {
-          "name": "GOOGLEDRIVE_FIND_FILE",
-          "description": "Tool to list or search for files and folders in google drive. use when you need to find specific files based on query criteria or list contents of a drive/folder."
-        },
-        {
-          "name": "GOOGLEDRIVE_FIND_FOLDER",
-          "description": "Tool to find a folder in google drive by its name and optionally a parent folder. use when you need to locate a specific folder to perform further actions like creating files in it or listing its contents."
-        },
-        {
-          "name": "GOOGLEDRIVE_GENERATE_IDS",
-          "description": "Generates a set of file ids which can be provided in create or copy requests. use when you need to pre-allocate ids for new files or copies."
+          "name": "GoogleDrive_WhoAmI",
+          "description": "Get comprehensive user profile and Google Drive environment information.\n\nThis tool provides detailed information about the authenticated user including\ntheir name, email, profile picture, Google Drive storage information, the shared\ndrives (and their IDs) the user has access to, and other\nimportant profile details from Google services."
         }
       ],
       "docs_url": "https://smithery.ai/servers/googledrive",
@@ -4093,7 +3905,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googledrive",
-      "tools_validated_at": "2026-08-06T08:01:08.142Z",
+      "tools_validated_at": "2026-08-07T06:46:52.767Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -4124,7 +3936,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "monitor"
     },
     {
@@ -4154,7 +3966,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "book-open"
     },
     {
@@ -4193,7 +4005,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe",
       "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
       "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
@@ -4229,7 +4041,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "terminal"
     },
     {
@@ -4263,7 +4075,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe",
       "mcp_endpoint": "https://corvid.perch-app.workers.dev/mcp",
       "deployment_url": "https://corvid.perch-app.workers.dev/mcp"
@@ -4300,7 +4112,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "sandbox"
     },
     {
@@ -4334,7 +4146,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "gitlab"
     },
     {
@@ -4368,7 +4180,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud-code"
     },
     {
@@ -4599,7 +4411,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-08-06T08:01:08.019Z",
+      "tools_validated_at": "2026-08-07T06:46:52.668Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -4630,7 +4442,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "mail"
     },
     {
@@ -4661,7 +4473,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "search"
     },
     {
@@ -4691,7 +4503,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "bar-chart"
     },
     {
@@ -4721,7 +4533,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "layout-list"
     },
     {
@@ -4752,7 +4564,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud"
     },
     {
@@ -4782,7 +4594,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud"
     },
     {
@@ -4812,7 +4624,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "bar-chart"
     },
     {
@@ -4842,7 +4654,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "globe"
     },
     {
@@ -4872,7 +4684,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "image"
     },
     {
@@ -4902,7 +4714,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "file-text"
     },
     {
@@ -4932,7 +4744,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "activity"
     },
     {
@@ -4962,7 +4774,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "boxes"
     },
     {
@@ -4992,7 +4804,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "hard-drive"
     },
     {
@@ -5022,7 +4834,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "figma"
     },
     {
@@ -5053,7 +4865,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "flame"
     },
     {
@@ -5083,7 +4895,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "calendar"
     },
     {
@@ -5113,7 +4925,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud"
     },
     {
@@ -5143,7 +4955,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "bar-chart"
     },
     {
@@ -5173,7 +4985,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "boxes"
     },
     {
@@ -5203,7 +5015,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "message-square"
     },
     {
@@ -5233,7 +5045,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "layout-list"
     },
     {
@@ -5264,7 +5076,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "bar-chart"
     },
     {
@@ -5294,7 +5106,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "boxes"
     },
     {
@@ -5325,7 +5137,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "brain"
     },
     {
@@ -5355,7 +5167,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "credit-card"
     },
     {
@@ -5385,7 +5197,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "credit-card"
     },
     {
@@ -5415,7 +5227,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "message-square"
     },
     {
@@ -5445,7 +5257,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5476,7 +5288,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5506,7 +5318,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "layout-list"
     },
     {
@@ -5536,7 +5348,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5567,7 +5379,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5597,7 +5409,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5628,7 +5440,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "boxes"
     },
     {
@@ -5659,7 +5471,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5689,7 +5501,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "cloud"
     },
     {
@@ -5719,7 +5531,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "hard-drive"
     },
     {
@@ -5749,7 +5561,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "mail"
     },
     {
@@ -5779,7 +5591,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "shield-alert"
     },
     {
@@ -5809,7 +5621,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "database"
     },
     {
@@ -5839,7 +5651,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "boxes"
     },
     {
@@ -5869,7 +5681,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-08-06",
+      "last_updated": "2026-08-07",
       "icon": "credit-card"
     }
   ]
