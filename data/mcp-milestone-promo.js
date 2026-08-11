@@ -10,13 +10,13 @@ const MILESTONE = {
   maxServers: 6999,
   /** Hard stop date (UTC), even if still under maxServers. */
   endsOn: '2026-09-30',
-  eyebrow: 'Milestone',
-  headline: '6,000+ MCP servers',
+  eyebrow: 'We hit it',
+  headline: '6,000 MCP servers. This is huge.',
   blurb:
-    'We just crossed six thousand listings in the Influzer registry — browse the full catalog or submit the next one.',
-  primaryCta: 'Read the brief',
+    'From 1,500 in June to six thousand now — the MCP registry just crossed a line you cannot unsee. Browse the catalog, or submit the next one.',
+  primaryCta: 'Read the story',
   primaryHref: '/news/mcp-directory-passes-6000-servers',
-  secondaryCta: 'Browse full directory',
+  secondaryCta: 'Browse all 6,000+',
   secondaryHref: '/mcp/all',
   tertiaryCta: 'Submit a server',
   tertiaryHref: '/mcp/submit',
@@ -34,6 +34,7 @@ function getMilestonePromo(totalServers, now = new Date()) {
     ...MILESTONE,
     serverCount: n,
     serverCountLabel: n.toLocaleString(),
+    secondaryCta: `Browse all ${n.toLocaleString()}`,
   };
 }
 
