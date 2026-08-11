@@ -21,10 +21,11 @@ const MCP_AFFILIATE_LINKS = {
     provider: 'Webnode',
     promoBlurb: 'Create Webnode websites from Claude, Cursor, or any MCP client.',
     promoCta: 'View setup guide',
-    featured: true,
+    featured: false,
   },
   firecrawl: {
     url: 'https://firecrawl.link/rasmus-mencke',
+    promoHref: '/mcp/firecrawl',
     headline: 'Use Firecrawl at scale',
     description:
       'This directory entry covers the Firecrawl MCP server. For hosted scrape, crawl, search, and monitor APIs (1,000 free credits/month), sign up on Firecrawl.',
@@ -32,6 +33,7 @@ const MCP_AFFILIATE_LINKS = {
     provider: 'Firecrawl',
     promoBlurb: 'Scrape, crawl, and search the web for your agents — 1,000 free credits/month.',
     promoCta: 'Try Firecrawl free',
+    featured: true,
   },
 };
 

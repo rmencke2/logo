@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-10T07:22:25.003Z",
+  "generated_at": "2026-08-11T07:08:31.243Z",
   "count": 100,
   "total_catalog": 6010,
   "top100_slugs": [
     "influzer-mcp-discovery",
-    "webnode",
+    "firecrawl",
     "brave-search",
     "postgres",
     "google-drive",
@@ -38,6 +38,7 @@
     "loopertask-com",
     "nextjs-devtools-mcp",
     "googlecalendar",
+    "webnode",
     "granola-mcp",
     "llm-pulse",
     "proxyman-mcp",
@@ -69,7 +70,6 @@
     "docker",
     "dropbox",
     "figma",
-    "firecrawl",
     "google-calendar",
     "google-cloud",
     "google-sheets",
@@ -142,32 +142,35 @@
       "deployment_url": "https://www.influzer.ai/mcp/discovery"
     },
     {
-      "id": "webnode",
-      "slug": "webnode",
-      "name": "Webnode",
-      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building — list templates by language and spin up new projects.",
-      "category": "Design",
-      "official": true,
-      "transport": "http",
+      "id": "firecrawl",
+      "slug": "firecrawl",
+      "name": "Firecrawl",
+      "description": "URL-to-clean-Markdown scraping for LLM-ready web content extraction.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "stdio",
       "tools": [
         {
-          "name": "get_project_branches",
-          "description": "List available project templates (branches) for a language — call before create_project"
+          "name": "scrape_url",
+          "description": "Scrape a single URL to markdown"
         },
         {
-          "name": "create_project",
-          "description": "Create a new Webnode website from a description, language, and optional site name"
+          "name": "crawl_site",
+          "description": "Crawl a site with depth limits"
+        },
+        {
+          "name": "map_site",
+          "description": "Discover URLs on a domain"
         }
       ],
-      "docs_url": "https://www.webnode.com",
-      "stars": 500,
+      "github_url": "https://github.com/mendableai/firecrawl-mcp-server",
+      "docs_url": "https://docs.firecrawl.dev",
+      "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
       "last_updated": "2026-08-11",
-      "icon": "browser",
-      "mcp_endpoint": "https://mcp.webnode.com/_mcp",
-      "deployment_url": "https://mcp.webnode.com/_mcp"
+      "icon": "flame"
     },
     {
       "id": "brave-search",
@@ -2902,6 +2905,34 @@
       "featured": true
     },
     {
+      "id": "webnode",
+      "slug": "webnode",
+      "name": "Webnode",
+      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building — list templates by language and spin up new projects.",
+      "category": "Design",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_project_branches",
+          "description": "List available project templates (branches) for a language — call before create_project"
+        },
+        {
+          "name": "create_project",
+          "description": "Create a new Webnode website from a description, language, and optional site name"
+        }
+      ],
+      "docs_url": "https://www.webnode.com",
+      "stars": 500,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-08-11",
+      "icon": "browser",
+      "mcp_endpoint": "https://mcp.webnode.com/_mcp",
+      "deployment_url": "https://mcp.webnode.com/_mcp"
+    },
+    {
       "id": "granola-mcp",
       "slug": "granola-mcp",
       "name": "Granola MCP",
@@ -4408,37 +4439,6 @@
       "hidden": false,
       "last_updated": "2026-08-11",
       "icon": "figma"
-    },
-    {
-      "id": "firecrawl",
-      "slug": "firecrawl",
-      "name": "Firecrawl",
-      "description": "URL-to-clean-Markdown scraping for LLM-ready web content extraction.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "scrape_url",
-          "description": "Scrape a single URL to markdown"
-        },
-        {
-          "name": "crawl_site",
-          "description": "Crawl a site with depth limits"
-        },
-        {
-          "name": "map_site",
-          "description": "Discover URLs on a domain"
-        }
-      ],
-      "github_url": "https://github.com/mendableai/firecrawl-mcp-server",
-      "docs_url": "https://docs.firecrawl.dev",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-11",
-      "icon": "flame"
     },
     {
       "id": "google-calendar",
