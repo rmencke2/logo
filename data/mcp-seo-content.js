@@ -31,11 +31,11 @@ function featuredServerLinks() {
   return [
     { href: '/mcp/influzer-mcp-discovery', label: 'Influzer MCP Discovery', note: 'Search the directory from Claude or Cursor' },
     { href: '/mcp/discovery/setup', label: 'Connect setup guide', note: 'Claude, ChatGPT, Cursor in 2 minutes' },
-    { href: '/mcp/webnode', label: 'Webnode', note: 'Build websites via MCP' },
+    { href: '/mcp/firecrawl', label: 'Firecrawl', note: 'Web scraping for agents' },
     { href: '/mcp/github', label: 'GitHub', note: 'Repos, PRs, and code search' },
     { href: '/mcp/slack', label: 'Slack', note: 'Team messaging' },
     { href: '/mcp/filesystem', label: 'Filesystem', note: 'Local file access' },
-    { href: '/mcp/firecrawl', label: 'Firecrawl', note: 'Web scraping for agents' },
+    { href: '/mcp/postgres', label: 'PostgreSQL', note: 'SQL for agents' },
     { href: '/mcp/context7', label: 'Context7', note: 'Live library docs' },
   ];
 }
@@ -131,7 +131,7 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         },
         {
           q: 'How do I connect an MCP server to my AI client?',
-          a: 'Open any server page (for example <a href="/mcp/webnode">Webnode</a> or <a href="/mcp/github">GitHub</a>) for install commands, remote MCP URLs, or GitHub README links. Local servers typically use <code>npx</code> or Docker; hosted servers provide an HTTPS endpoint to paste into your client settings.',
+          a: 'Open any server page (for example <a href="/mcp/firecrawl">Firecrawl</a> or <a href="/mcp/github">GitHub</a>) for install commands, remote MCP URLs, or GitHub README links. Local servers typically use <code>npx</code> or Docker; hosted servers provide an HTTPS endpoint to paste into your client settings.',
           aPlain:
             'Open a server detail page for install commands, remote MCP URLs, or GitHub README links.',
         },
@@ -202,7 +202,7 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         links: [
           { href: '/insights/what-is-model-context-protocol', label: 'What is MCP?', desc: 'Full primer — architecture and MCP vs RAG' },
           { href: '/insights', label: 'Insights', desc: 'Executive AI playbooks' },
-          { href: '/mcp/webnode', label: 'Webnode MCP', desc: 'Create websites from your agent' },
+          { href: '/mcp/firecrawl', label: 'Firecrawl MCP', desc: 'Scrape and crawl the web for agents' },
         ],
       },
     ],
