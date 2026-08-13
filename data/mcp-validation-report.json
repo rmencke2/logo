@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-12T07:26:07.256Z",
+  "generated_at": "2026-08-13T07:49:36.779Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-08-11T07:08:31.243Z",
+  "catalog_generated_at": "2026-08-12T07:26:07.333Z",
   "summary": {
     "checked": 306,
     "skipped_manual": 109,
     "skipped_no_endpoint": 5593,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 304,
-    "tools_changed": 2,
+    "unchanged": 305,
+    "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,8 +18,8 @@
     "live_ok": 0,
     "smithery_fallback": 5899,
     "errors": 0,
-    "tools_added_total": 17,
-    "tools_removed_total": 17,
+    "tools_added_total": 6,
+    "tools_removed_total": 6,
     "catalog_total": 6008,
     "http_endpoints": 306,
     "with_tools_before": 411,
@@ -35,59 +35,24 @@
       "beforeToolCount": 50,
       "afterToolCount": 50,
       "added": [
-        "calculate_dividend_income_goal",
-        "calculate_fator_r",
-        "calculate_optimal_prolabore",
-        "calculate_cdi_yield",
-        "calculate_tesouro_selic",
-        "calculate_tesouro_prefixado",
-        "calculate_ipca_plus",
-        "calculate_lci_lca",
-        "calculate_iof_resgate",
-        "calculate_first_million",
-        "calculate_net_worth_benchmark",
-        "calculate_life_insurance_need",
-        "calculate_darf",
-        "convert_currency",
-        "check_irpf_obligation"
+        "calculate_rent_adjustment",
+        "compare_pgbl_vgbl",
+        "calculate_pj_invoice",
+        "calculate_come_cotas",
+        "calculate_average_price",
+        "calculate_import_tax"
       ],
       "removed": [
-        "calculate_overtime",
-        "calculate_opportunity_cost",
-        "calculate_installment",
-        "get_cost_of_living",
-        "get_average_salary",
-        "list_top_professions",
-        "get_current_rates",
-        "get_inss_table",
-        "get_irpf_table",
-        "get_minimum_wage_history",
-        "get_bank_holidays",
-        "get_rates_history",
-        "search_calculator",
-        "get_falazuki_info",
-        "advise_investment"
-      ],
-      "changed": []
-    },
-    {
-      "slug": "lanchuske-local-mcp",
-      "name": "Local MCP",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [
-        "agent_ack",
-        "agent_sent"
-      ],
-      "removed": [
-        "get_config",
-        "get_contact"
+        "calculate_debt_payoff",
+        "calculate_budget",
+        "calculate_employee_cost",
+        "simulate_income_tax",
+        "check_irpf_obligation",
+        "compare_loans"
       ],
       "changed": [
-        "connect_todoist"
+        "calculate_net_salary",
+        "convert_currency"
       ]
     }
   ],
