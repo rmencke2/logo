@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-14T07:29:29.368Z",
+  "generated_at": "2026-08-15T06:50:09.276Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-08-13T07:49:36.864Z",
+  "catalog_generated_at": "2026-08-14T07:29:29.448Z",
   "summary": {
     "checked": 306,
     "skipped_manual": 109,
@@ -10,43 +10,35 @@
     "skipped_stdio": 0,
     "skipped_other": 0,
     "unchanged": 303,
-    "tools_changed": 1,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 2,
-    "live_failed": 0,
+    "live_failed": 1,
     "live_ok": 0,
     "smithery_fallback": 5899,
     "errors": 0,
-    "tools_added_total": 2,
-    "tools_removed_total": 2,
+    "tools_added_total": 0,
+    "tools_removed_total": 0,
     "catalog_total": 6008,
     "http_endpoints": 306,
     "with_tools_before": 411,
     "with_tools_after": 411
   },
-  "changes": [
+  "changes": [],
+  "errors": [
     {
-      "slug": "lanchuske-local-mcp",
-      "name": "Local MCP",
+      "slug": "synapselayer-synapse-protocol",
       "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [
-        "get_config",
-        "get_contact"
-      ],
-      "removed": [
-        "agent_ack",
-        "agent_sent"
-      ],
-      "changed": [
-        "chrome_read_tab",
-        "create_draft"
-      ]
+      "status": "live_failed_kept",
+      "validationMethod": "live_failed+smithery_fallback",
+      "error": "Server not found",
+      "liveProbe": {
+        "status": "error",
+        "reason": "Server not found",
+        "httpStatus": 404,
+        "serverInfo": null
+      }
     }
-  ],
-  "errors": []
+  ]
 }
