@@ -24,6 +24,7 @@ const { initializeBlogFeedbackService } = require('./services/blogFeedbackServic
 const { initializeNewsletterService } = require('./services/newsletterService');
 const { initializeOtherNewsService } = require('./services/otherNewsService');
 const { initializeMcpSubmissionService } = require('./services/mcpSubmissionService');
+const { registerWebmcpRoutes } = require('./services/webmcpDirectoryService');
 const { isEmailConfigured, getTransporter } = require('./emailService');
 
 const app = express();
@@ -58,6 +59,10 @@ const PORT = process.env.PORT || 4000;
     } else {
       console.warn('⚠️  MCP submission notifications: email NOT configured — submissions save to disk only');
     }
+
+    // 3e. WebMCP Directory (sites, tools, ecosystem, public API)
+    registerWebmcpRoutes(app);
+    console.log('✅ WebMCP Directory routes registered');
 
     // 4. Logo generation service
     initializeLogoService(app);

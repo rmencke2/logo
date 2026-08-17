@@ -1,0 +1,39 @@
+# Refresh Influzer-owned WebMCP catalog snapshot from the public discovery API.
+name: Refresh WebMCP catalog
+
+on:
+  schedule:
+    - cron: '30 7 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: webmcp-catalog-main-commits
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh WebMCP catalog
+        run: npm run refresh-webmcp
+
+      - name: Commit updated data
+        run: |
+          chmod +x scripts/ci-commit-push.sh
+          scripts/ci-commit-push.sh "chore: weekly WebMCP catalog refresh" \
+            data/webmcp-sites.json \
+            data/webmcp-meta.json \
+            data/webmcp-categories.json

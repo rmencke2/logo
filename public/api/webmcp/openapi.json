@@ -1,0 +1,55 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Influzer WebMCP Directory API",
+    "version": "1.0.0",
+    "description": "Read-only JSON API for the Influzer WebMCP Directory. Discover websites that expose WebMCP tools, inspect schemas, and look up hosts. Does not execute tools or trigger scans."
+  },
+  "servers": [{ "url": "https://www.influzer.ai" }],
+  "paths": {
+    "/api/webmcp/v1/stats": {
+      "get": {
+        "summary": "Aggregate directory statistics",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/webmcp/v1/sites": {
+      "get": {
+        "summary": "List published WebMCP websites",
+        "parameters": [
+          { "name": "q", "in": "query", "schema": { "type": "string" } },
+          { "name": "category", "in": "query", "schema": { "type": "string" } },
+          { "name": "type", "in": "query", "schema": { "type": "string", "enum": ["live", "demo"] } },
+          { "name": "kind", "in": "query", "schema": { "type": "string", "enum": ["answer", "act", "transact"] } },
+          { "name": "verified", "in": "query", "schema": { "type": "string", "enum": ["verified", "unverified"] } },
+          { "name": "implementation", "in": "query", "schema": { "type": "string" } },
+          { "name": "min_tools", "in": "query", "schema": { "type": "integer" } },
+          { "name": "sort", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "maximum": 100 } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/webmcp/v1/sites/{host}": {
+      "get": {
+        "summary": "Site detail with tools",
+        "parameters": [{ "name": "host", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      }
+    },
+    "/api/webmcp/v1/tools": {
+      "get": {
+        "summary": "Search tools across sites",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/webmcp/v1/lookup": {
+      "get": {
+        "summary": "Look up whether a URL host is indexed (does not scan)",
+        "parameters": [{ "name": "url", "in": "query", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" }, "400": { "description": "url_required" } }
+      }
+    }
+  }
+}

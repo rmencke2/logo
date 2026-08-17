@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell" style="padding:2rem 1rem;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
+      <h1>WebMCP ecosystem & compatibility</h1>
+      <p class="webmcp-prose">Evidence-based status for browsers, agents, and frameworks. Every claim has a checked date — compatibility changes quickly.</p>
+      <% const groups = ['browsers', 'agents', 'frameworks']; %>
+      <% groups.forEach(function(group) {
+        const rows = entries.filter(function(e) { return e.group === group; });
+        if (!rows.length) return; %>
+        <h2 style="text-transform:capitalize;"><%= group %></h2>
+        <div class="webmcp-grid">
+          <% rows.forEach(function(e) { %>
+            <article class="webmcp-card" style="cursor:default;">
+              <h3 class="webmcp-card__name"><%= e.name %></h3>
+              <div class="webmcp-badges"><span class="webmcp-badge"><%= e.support_status %></span></div>
+              <p class="webmcp-card__desc"><%= e.summary %></p>
+              <% if (e.version_or_flag) { %><p class="webmcp-note"><%= e.version_or_flag %></p><% } %>
+              <p class="webmcp-note">Checked <%= e.verified_at %> · <a href="<%= e.evidence_url %>" rel="noopener noreferrer">Evidence</a></p>
+            </article>
+          <% }) %>
+        </div>
+      <% }) %>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

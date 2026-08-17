@@ -5,6 +5,7 @@
 <%
   const path = typeof navPath !== 'undefined' ? navPath : '';
   const activeDirectory = path === '/mcp' || (path.startsWith('/mcp/') && !path.startsWith('/mcp/discovery') && !path.startsWith('/mcp/submit') && !path.startsWith('/mcp/topics') && !path.startsWith('/mcp/my-listings'));
+  const activeWebmcp = path === '/webmcp' || path.startsWith('/webmcp/');
   const activeOurMcp = path.startsWith('/mcp/discovery');
   const activeInsights = path.startsWith('/insights') || path.startsWith('/blog');
   const activeBriefs = path.startsWith('/news');
@@ -26,7 +27,8 @@
       </button>
       <a href="/" class="home-nav__brand">influzer<span class="home-nav__brand-dot">.ai</span></a>
       <nav class="home-nav__links" id="mainSiteNav" aria-label="Main">
-        <a href="/mcp" class="home-nav__link<%= activeDirectory ? ' is-active' : '' %>">Directory</a>
+        <a href="/mcp" class="home-nav__link<%= activeDirectory ? ' is-active' : '' %>">MCP Servers</a>
+        <a href="/webmcp" class="home-nav__link<%= activeWebmcp ? ' is-active' : '' %>">WebMCP</a>
         <a href="/mcp/discovery/setup" class="home-nav__link<%= activeOurMcp ? ' is-active' : '' %>">Our MCP</a>
         <a href="/insights" class="home-nav__link<%= activeInsights ? ' is-active' : '' %>">Insights</a>
         <a href="/news" class="home-nav__link<%= activeBriefs ? ' is-active' : '' %>">Briefs</a>

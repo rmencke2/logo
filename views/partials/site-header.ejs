@@ -4,7 +4,12 @@
 %>
 <%
   const path = typeof navPath !== 'undefined' ? navPath : '';
-  const activeMcp = typeof activeNav !== 'undefined' ? activeNav === 'mcp' : path.startsWith('/mcp');
+  const activeMcp =
+    typeof activeNav !== 'undefined'
+      ? activeNav === 'mcp'
+      : path === '/mcp' || (path.startsWith('/mcp/') && !path.startsWith('/mcp/discovery'));
+  const activeWebmcp =
+    typeof activeNav !== 'undefined' ? activeNav === 'webmcp' : path === '/webmcp' || path.startsWith('/webmcp/');
   const activeInsights =
     typeof activeNav !== 'undefined'
       ? activeNav === 'insights'
@@ -32,7 +37,8 @@
       <a href="/" class="site-header-brand">Influzer.ai</a>
     </div>
     <nav class="site-header-nav" id="mainSiteNav" aria-label="Main">
-      <a href="/mcp" class="site-header-link<%= activeMcp ? ' is-active' : '' %>">MCP Directory</a>
+      <a href="/mcp" class="site-header-link<%= activeMcp ? ' is-active' : '' %>">MCP Servers</a>
+      <a href="/webmcp" class="site-header-link<%= activeWebmcp ? ' is-active' : '' %>">WebMCP</a>
       <a href="/mcp/discovery/setup" class="site-header-link<%= path.startsWith('/mcp/discovery') ? ' is-active' : '' %>">Our MCP</a>
       <a href="/insights" class="site-header-link<%= activeInsights ? ' is-active' : '' %>">Insights</a>
       <a href="/news" class="site-header-link<%= activeNews ? ' is-active' : '' %>">Briefs</a>

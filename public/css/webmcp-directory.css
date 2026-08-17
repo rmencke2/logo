@@ -1,0 +1,90 @@
+/* WebMCP Directory — extends registry look with teal accent to separate from MCP indigo */
+.webmcp-page .dir-hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(13, 148, 136, 0.14), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(15, 23, 42, 0.04), transparent 50%);
+}
+.webmcp-page .dir-hero__eyebrow { color: #0f766e; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.75rem; font-weight: 600; }
+.webmcp-diff {
+  display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem;
+  font-size: 0.9rem; color: #334155;
+}
+.webmcp-diff a { color: #0f766e; font-weight: 600; }
+.webmcp-metrics {
+  display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin-top: 1rem; font-size: 0.92rem; color: #475569;
+}
+.webmcp-metrics b { color: #0f172a; }
+.webmcp-card {
+  display: flex; flex-direction: column; gap: 0.65rem; padding: 1.1rem 1.15rem;
+  border: 1px solid #e2e8f0; border-radius: 14px; background: #fff;
+  text-decoration: none; color: inherit; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.webmcp-card:hover { border-color: #99f6e4; box-shadow: 0 8px 24px rgba(15, 118, 110, 0.08); }
+.webmcp-card__top { display: flex; gap: 0.75rem; align-items: flex-start; }
+.webmcp-card__favicon { width: 36px; height: 36px; border-radius: 8px; background: #f8fafc; object-fit: contain; }
+.webmcp-card__host { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: #64748b; }
+.webmcp-card__name { font-weight: 650; font-size: 1.05rem; margin: 0; color: #0f172a; }
+.webmcp-card__desc { margin: 0; color: #475569; font-size: 0.92rem; line-height: 1.45; }
+.webmcp-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.webmcp-badge {
+  font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 999px;
+  background: #f1f5f9; color: #334155;
+}
+.webmcp-badge--live { background: #ccfbf1; color: #115e59; }
+.webmcp-badge--demo { background: #fef3c7; color: #92400e; }
+.webmcp-badge--verified { background: #dbeafe; color: #1e40af; }
+.webmcp-badge--unverified { background: #f8fafc; color: #64748b; }
+.webmcp-badge--transact { background: #ffe4e6; color: #9f1239; }
+.webmcp-card__tools { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.webmcp-chip {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; padding: 0.15rem 0.4rem;
+  border-radius: 6px; background: #f8fafc; color: #0f766e; border: 1px solid #e2e8f0;
+}
+.webmcp-card__meta { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem; color: #64748b; }
+.webmcp-filters {
+  display: grid; gap: 0.75rem; margin: 1rem 0 1.25rem;
+}
+@media (min-width: 900px) {
+  .webmcp-filters { grid-template-columns: 1.4fr repeat(4, 1fr) auto; align-items: end; }
+}
+.webmcp-filters label { display: grid; gap: 0.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; }
+.webmcp-filters input, .webmcp-filters select {
+  border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.55rem 0.7rem; font: inherit; background: #fff;
+}
+.webmcp-grid {
+  display: grid; gap: 0.9rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) { .webmcp-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .webmcp-grid { grid-template-columns: repeat(3, 1fr); } }
+.webmcp-pager { display: flex; gap: 0.75rem; align-items: center; justify-content: center; margin: 1.5rem 0; }
+.webmcp-pager a, .webmcp-pager span { font-size: 0.9rem; }
+.webmcp-site-layout { display: grid; gap: 1.25rem; }
+@media (min-width: 960px) {
+  .webmcp-site-layout { grid-template-columns: 280px 1fr; align-items: start; }
+}
+.webmcp-tool-list { border: 1px solid #e2e8f0; border-radius: 14px; background: #fff; max-height: 70vh; overflow: auto; }
+.webmcp-tool-list a {
+  display: block; padding: 0.7rem 0.85rem; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: #0f172a;
+}
+.webmcp-tool-list a.is-active, .webmcp-tool-list a:hover { background: #f0fdfa; }
+.webmcp-tool-detail { border: 1px solid #e2e8f0; border-radius: 14px; background: #fff; padding: 1.1rem 1.2rem; }
+.webmcp-schema-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 0.75rem 0; }
+.webmcp-schema-table th, .webmcp-schema-table td { border: 1px solid #e2e8f0; padding: 0.45rem 0.55rem; text-align: left; vertical-align: top; }
+.webmcp-schema-table th { background: #f8fafc; }
+.webmcp-code {
+  background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 0.9rem 1rem; overflow: auto;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; line-height: 1.45;
+}
+.webmcp-cta-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.9rem; }
+.webmcp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
+  padding: 0.55rem 0.9rem; border-radius: 999px; font-weight: 600; font-size: 0.9rem; text-decoration: none;
+  border: 1px solid transparent;
+}
+.webmcp-btn--primary { background: #0f766e; color: #fff; }
+.webmcp-btn--ghost { background: #fff; color: #0f766e; border-color: #99f6e4; }
+.webmcp-note { font-size: 0.85rem; color: #64748b; }
+.webmcp-prose { max-width: 720px; line-height: 1.6; color: #334155; }
+.webmcp-prose h2 { color: #0f172a; margin-top: 1.6rem; }
+.webmcp-empty { padding: 2rem 1rem; text-align: center; color: #64748b; border: 1px dashed #cbd5e1; border-radius: 14px; }
