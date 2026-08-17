@@ -21,15 +21,30 @@ function hasConstrainedInput(schema) {
 }
 
 function gradeFromScore(score) {
-  if (score >= 92) return { grade: 'A+', label: 'Excellent' };
-  if (score >= 86) return { grade: 'A', label: 'Excellent' };
-  if (score >= 80) return { grade: 'A-', label: 'Very good' };
-  if (score >= 74) return { grade: 'B+', label: 'Good' };
-  if (score >= 68) return { grade: 'B', label: 'Good' };
-  if (score >= 60) return { grade: 'B-', label: 'Fair' };
-  if (score >= 50) return { grade: 'C', label: 'Needs work' };
-  if (score >= 35) return { grade: 'D', label: 'Weak' };
-  return { grade: 'F', label: 'Not ready' };
+  // Influzer Agent Readiness levels (not letter grades).
+  // `grade` kept as the short badge code for existing UI fields.
+  if (score >= 92) {
+    return { grade: 'R5', readiness: 'R5', level: 5, label: 'Agent-native', blurb: 'Schema-complete and ready for reliable agent use.' };
+  }
+  if (score >= 80) {
+    return { grade: 'R4', readiness: 'R4', level: 4, label: 'Production-ready', blurb: 'Strong tool surface — a few upgrades unlock top-tier reliability.' };
+  }
+  if (score >= 68) {
+    return { grade: 'R3', readiness: 'R3', level: 3, label: 'Solid foundation', blurb: 'Useful tools are live; tighten schemas and coverage next.' };
+  }
+  if (score >= 50) {
+    return { grade: 'R2', readiness: 'R2', level: 2, label: 'Emerging', blurb: 'Detected tools, but agents still have to guess too much.' };
+  }
+  if (score >= 35) {
+    return { grade: 'R1', readiness: 'R1', level: 1, label: 'Early', blurb: 'Starting point — expand tools and constraints before promoting.' };
+  }
+  return {
+    grade: 'R0',
+    readiness: 'R0',
+    level: 0,
+    label: 'Not ready',
+    blurb: 'No usable WebMCP surface detected yet.',
+  };
 }
 
 function buildScorecard({ tools = [], pagesScanned = 0, crashes = 0, host }) {
@@ -106,17 +121,27 @@ function buildScorecard({ tools = [], pagesScanned = 0, crashes = 0, host }) {
   }
 
   score = Math.max(0, Math.min(100, Math.round(score)));
-  const { grade, label } = gradeFromScore(score);
+  const band = gradeFromScore(score);
   const stars = Math.max(1, Math.min(5, Math.round(score / 20)));
   const toolNotes = buildPerToolNotes(tools);
   const nextActions = buildNextActions({ tools, withOutput, pagesWithTools, pagesScanned, crashes });
-  const summary = buildSummary({ grade, label, toolCount, withOutput, pagesWithTools, host });
+  const summary = buildSummary({
+    grade: band.grade,
+    label: band.label,
+    toolCount,
+    withOutput,
+    pagesWithTools,
+    host,
+  });
 
   return {
     host: host || null,
     score,
-    grade,
-    label,
+    grade: band.grade,
+    readiness: band.readiness,
+    readiness_level: band.level,
+    label: band.label,
+    blurb: band.blurb,
     stars,
     summary,
     findings,
@@ -213,7 +238,7 @@ function buildSummary({ grade, label, toolCount, withOutput, pagesWithTools, hos
     withOutput === 0
       ? 'The biggest gap: no output schemas — agents must guess return shapes.'
       : withOutput < toolCount
-        ? `Output schemas cover ${withOutput}/${toolCount} tools — finish the rest for A-tier reliability.`
+        ? `Output schemas cover ${withOutput}/${toolCount} tools — finish the rest for R5 reliability.`
         : 'Output schemas look complete — strong agent ergonomics.';
   const coverageBit =
     pagesWithTools <= 1

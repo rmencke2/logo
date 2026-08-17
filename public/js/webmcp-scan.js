@@ -60,10 +60,10 @@
     report.hidden = false;
     const card = scan.scorecard || {};
     const result = scan.result || {};
-    document.getElementById('scanGrade').textContent = card.grade || '—';
+    document.getElementById('scanGrade').textContent = card.readiness || card.grade || '—';
     document.getElementById('scanGradeLabel').textContent = card.label || 'Scan complete';
     document.getElementById('scanGradeMeta').textContent =
-      `${result.tool_count || 0} tools · ${result.pages_scanned || 0} pages · graded ${card.graded_at || 'today'}`;
+      `${card.score != null ? `${card.score}/100 · ` : ''}${result.tool_count || 0} tools · ${result.pages_scanned || 0} pages · scored ${card.graded_at || 'today'}`;
 
     const banner = document.getElementById('scanBanner');
     if (scan.status === 'failed') {

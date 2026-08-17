@@ -225,8 +225,8 @@ button.webmcp-btn--ghost:hover,
 .webmcp-scan__stats span { font-size: 0.78rem; color: #64748b; }
 .webmcp-scan__grade { display: flex; gap: 0.9rem; align-items: center; }
 .webmcp-scan__grade-mark {
-  width: 64px; height: 64px; border-radius: 14px; background: #ccfbf1; color: #115e59;
-  display: grid; place-items: center; font-weight: 700; font-size: 1.35rem;
+  width: 72px; height: 72px; border-radius: 14px; background: #115e59; color: #fff;
+  display: grid; place-items: center; font-weight: 700; font-size: 1.25rem;
   font-family: "Space Grotesk", sans-serif;
 }
 .webmcp-scan__grade-label { margin: 0; font-weight: 700; color: #0f172a; font-size: 1.1rem; }

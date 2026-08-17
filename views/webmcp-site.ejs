@@ -43,10 +43,10 @@
       <% if (sc && sc.grade) { %>
         <section class="webmcp-site-scorecard" aria-label="Influzer scorecard">
           <div class="webmcp-site-scorecard__top">
-            <div class="webmcp-scan__grade-mark"><%= sc.grade %></div>
+            <div class="webmcp-scan__grade-mark"><%= sc.readiness || sc.grade %></div>
             <div>
               <p class="webmcp-scan__grade-label"><%= sc.label || 'Scorecard' %></p>
-              <p class="webmcp-note"><%= sc.score %>/100 · graded <%= sc.graded_at || '—' %></p>
+              <p class="webmcp-note"><%= sc.score %>/100<%= sc.blurb ? ` · ${sc.blurb}` : '' %> · scored <%= sc.graded_at || '—' %></p>
             </div>
           </div>
           <% if (sc.findings && sc.findings.length) { %>
