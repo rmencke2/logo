@@ -52,10 +52,11 @@ async function main() {
   const scored = buildScorecard({ tools, pagesScanned: 3, crashes: 0, host: 'example.com' });
   assert.ok(scored.score >= 60);
   assert.ok(scored.grade);
+  assert.ok(['R5', 'R4', 'R3', 'R2', 'R1', 'R0'].includes(scored.readiness || scored.grade));
   assert.ok(suggestJourneys(tools, 'example.com').length >= 1);
 
   console.log('webmcp scan unit tests OK');
-  console.log(`  sample grade ${scored.grade} (${scored.score})`);
+  console.log(`  sample readiness ${scored.readiness || scored.grade} (${scored.score}) — ${scored.label}`);
 }
 
 main().catch((err) => {
