@@ -116,5 +116,5 @@ Catalog refresh always re-injects the Influzer showcase from `data/influzer-webm
 4. Auto-publish when ≥1 tool is found (`verification_status: verified`, provenance `influzer-scan`)
 
 APIs: `POST /api/webmcp/v1/scans`, `GET /api/webmcp/v1/scans/:id`  
-Store: SQLite `webmcp_scans` · SSRF https-only + private IP DNS block · Rate limit 5 scans/IP/hour
+Store: SQLite `webmcp_scans` · SSRF https-only + private IP DNS block · Rate limit 30 scans/IP/hour (`WEBMCP_SCAN_RATE_LIMIT`)
 

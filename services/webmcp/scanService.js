@@ -19,7 +19,9 @@ const {
 const { subscribeToNewsletter } = require('../newsletterService');
 const { sendWebmcpScanReportEmail } = require('../../emailService');
 
-const RATE_LIMIT_PER_HOUR = Number(process.env.WEBMCP_SCAN_RATE_LIMIT || 5);
+// Public submit flow is intentionally generous — enough for real testing without
+// opening the door to unbounded Chromium jobs. Override via WEBMCP_SCAN_RATE_LIMIT.
+const RATE_LIMIT_PER_HOUR = Number(process.env.WEBMCP_SCAN_RATE_LIMIT || 30);
 const running = new Set();
 
 function publicScanView(scan) {
@@ -76,8 +78,11 @@ async function startWebmcpScan({
 
   const recent = await countRecentScansByIp(ip);
   if (recent >= RATE_LIMIT_PER_HOUR) {
-    const err = new Error('Too many scans from this IP. Please try again later.');
+    const err = new Error(
+      `Too many scans from this IP (${RATE_LIMIT_PER_HOUR}/hour). Please try again in a bit.`
+    );
     err.code = 'RATE_LIMIT';
+    err.retryAfterSec = 3600;
     throw err;
   }
 

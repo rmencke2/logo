@@ -397,6 +397,7 @@ function registerWebmcpRoutes(app) {
       res.status(202).json({ ok: true, scan: publicScanView(scan) });
     } catch (err) {
       const status = err.code === 'RATE_LIMIT' ? 429 : 400;
+      if (err.retryAfterSec) res.set('Retry-After', String(err.retryAfterSec));
       res.status(status).json({ ok: false, error: err.code || 'scan_start_failed', message: err.message });
     }
   });
