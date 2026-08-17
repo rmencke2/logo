@@ -88,3 +88,31 @@
 .webmcp-prose { max-width: 720px; line-height: 1.6; color: #334155; }
 .webmcp-prose h2 { color: #0f172a; margin-top: 1.6rem; }
 .webmcp-empty { padding: 2rem 1rem; text-align: center; color: #64748b; border: 1px dashed #cbd5e1; border-radius: 14px; }
+
+/* Influzer first-party WebMCP demo console */
+.webmcp-demo__hero { margin-bottom: 1.5rem; max-width: 46rem; }
+.webmcp-demo__hero h1 { font-family: "Space Grotesk", sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); margin: 0.35rem 0 0.6rem; color: #0f172a; }
+.webmcp-demo__panel {
+  display: grid; gap: 1.25rem; margin: 1.5rem 0 2rem;
+}
+@media (min-width: 960px) {
+  .webmcp-demo__panel { grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.15fr); align-items: start; }
+}
+.webmcp-demo__controls, .webmcp-demo__results {
+  border: 1px solid #e2e8f0; border-radius: 16px; background: #fff; padding: 1.1rem 1.2rem;
+}
+.webmcp-demo__controls h2, .webmcp-demo__results h3 { margin: 0 0 0.55rem; color: #0f172a; font-family: "Space Grotesk", sans-serif; }
+.webmcp-demo__controls label {
+  display: grid; gap: 0.35rem; margin: 0.85rem 0; font-size: 0.78rem; font-weight: 650; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.webmcp-demo__controls select,
+.webmcp-demo__controls textarea {
+  width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.65rem 0.75rem;
+  font: 500 0.86rem/1.45 "IBM Plex Mono", ui-monospace, monospace; background: #f8fafc; color: #0f172a;
+}
+.webmcp-demo__presets { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.35rem 0 0.25rem; }
+#webmcp-demo-status[data-state="ok"] { color: #0f766e; }
+#webmcp-demo-status[data-state="warn"] { color: #b45309; }
+.webmcp-demo__log { max-height: 160px; }
+.webmcp-demo__howto { margin-top: 0.5rem; }
+.webmcp-demo__howto code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.86em; }

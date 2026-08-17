@@ -85,4 +85,22 @@ Revert catalog JSON commits on `main`.
 ### Tests
 ```bash
 node scripts/test-webmcp-normalize.js
+node scripts/test-influzer-webmcp.js
 ```
+
+## 8. Influzer first-party WebMCP
+
+Influzer.ai itself exposes WebMCP tools via `document.modelContext.registerTool()`:
+
+| Surface | Path |
+|---------|------|
+| Interactive demo | `/webmcp/demo` |
+| Tool manifest API | `GET /api/webmcp/v1/self` |
+| Client registration | `public/js/influzer-webmcp.js` |
+| Tool schema source | `data/influzer-webmcp-tools.json` |
+| Catalog upsert | `npm run upsert-influzer-webmcp` |
+| HTTP smoke demo | `npm run demo-influzer-webmcp` |
+
+Browsers without native WebMCP get a **local demo polyfill** on Influzer pages so `getTools()` / `executeTool()` still work for testing. Native `document.modelContext` is preferred when present.
+
+Catalog refresh always re-injects the Influzer showcase from `data/influzer-webmcp-tools.json` so upstream imports cannot drop it.

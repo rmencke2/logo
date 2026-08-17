@@ -1,3 +1,14 @@
 {
-  "sites": {}
+  "sites": {
+    "influzer.ai": {
+      "name": "Influzer.ai",
+      "description": "Influzer.ai exposes its MCP and WebMCP directories as browser-native WebMCP tools so agents can search sites, inspect schemas, and navigate without scraping the UI.",
+      "category": "Directories & Discovery",
+      "site_type": "live",
+      "verification_status": "verified",
+      "published": true,
+      "editorial_notes": "First-party WebMCP showcase — tools from data/influzer-webmcp-tools.json",
+      "tools_source": "data/influzer-webmcp-tools.json"
+    }
+  }
 }

@@ -15,6 +15,7 @@ const CATEGORIES_PATH = path.join(ROOT, 'data', 'webmcp-categories.json');
 const ECOSYSTEM_PATH = path.join(ROOT, 'data', 'webmcp-ecosystem.json');
 const RESOURCES_PATH = path.join(ROOT, 'data', 'webmcp-resources.json');
 const MANUAL_PATH = path.join(ROOT, 'data', 'webmcp-manual.json');
+const SELF_TOOLS_PATH = path.join(ROOT, 'data', 'influzer-webmcp-tools.json');
 
 const SITE_BASE = 'https://www.influzer.ai';
 
@@ -193,11 +194,15 @@ function findSiteByHost(hostOrSlug) {
   return loadCatalog().byHost.get(host) || null;
 }
 
+function loadSelfToolsManifest() {
+  return readJson(SELF_TOOLS_PATH, { version: 1, host: 'influzer.ai', tools: [] });
+}
+
 function listTools(query = {}) {
   const qNorm = String(query.q || '').trim().toLowerCase();
   const kind = query.kind || '';
   const implementation = query.implementation || '';
-  const siteHost = query.site ? normalizeHost(query.site) : '';
+  const siteHost = normalizeHost(query.site || query.host || '');
 
   const tools = [];
   for (const site of loadCatalog().sites) {
@@ -318,6 +323,17 @@ function registerWebmcpRoutes(app) {
       description: 'Track browser, agent, and framework support for WebMCP — with evidence links and checked dates.',
       canonicalUrl: `${SITE_BASE}/webmcp/ecosystem`,
       entries: loadCatalog().ecosystemEntries,
+    }));
+  });
+
+  app.get('/webmcp/demo', (req, res) => {
+    const manifest = loadSelfToolsManifest();
+    res.render('webmcp-demo', renderLocals(req, {
+      title: 'Influzer.ai WebMCP Demo — Try live tools | Influzer.ai',
+      description:
+        'Interactive demo of Influzer.ai’s document.modelContext WebMCP tools. Search the WebMCP and MCP directories, inspect schemas, and run executeTool() in the browser.',
+      canonicalUrl: `${SITE_BASE}/webmcp/demo`,
+      tools: manifest.tools || [],
     }));
   });
 
@@ -487,6 +503,31 @@ function registerWebmcpRoutes(app) {
     res.set('Cache-Control', 'public, max-age=30');
     res.json({ ok: true, found: Boolean(site), site });
   });
+
+  app.get('/api/webmcp/v1/self', (req, res) => {
+    const manifest = loadSelfToolsManifest();
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json({
+      ok: true,
+      host: manifest.host || 'influzer.ai',
+      name: manifest.name || 'Influzer.ai',
+      description: manifest.description || '',
+      canonical_url: manifest.canonical_url || `${SITE_BASE}/`,
+      demo_url: manifest.demo_url || `${SITE_BASE}/webmcp/demo`,
+      category: manifest.category || 'Directories & Discovery',
+      site_type: manifest.site_type || 'live',
+      implementation: manifest.implementation || 'imperative',
+      api_surface: manifest.api_surface || 'spec',
+      tool_count: (manifest.tools || []).length,
+      tools: manifest.tools || [],
+      how_to_test: {
+        browser_demo: `${SITE_BASE}/webmcp/demo`,
+        node_script: 'node scripts/demo-influzer-webmcp.js',
+        unit_test: 'node scripts/test-influzer-webmcp.js',
+        standard: 'https://github.com/webmachinelearning/webmcp',
+      },
+    });
+  });
 }
 
 function expressJsonOptional() {
@@ -500,6 +541,7 @@ function getWebmcpSitemapEntries() {
   const entries = [
     { loc: `${SITE_BASE}/webmcp`, lastmod, changefreq: 'daily', priority: '0.9' },
     { loc: `${SITE_BASE}/webmcp/tools`, lastmod, changefreq: 'daily', priority: '0.8' },
+    { loc: `${SITE_BASE}/webmcp/demo`, lastmod, changefreq: 'weekly', priority: '0.8' },
     { loc: `${SITE_BASE}/webmcp/ecosystem`, lastmod, changefreq: 'weekly', priority: '0.7' },
     { loc: `${SITE_BASE}/webmcp/resources`, lastmod, changefreq: 'weekly', priority: '0.7' },
     { loc: `${SITE_BASE}/webmcp/about`, lastmod, changefreq: 'monthly', priority: '0.6' },
@@ -527,6 +569,7 @@ function getWebmcpSitemapEntries() {
 module.exports = {
   clearWebmcpCache,
   loadCatalog,
+  loadSelfToolsManifest,
   getWebmcpStats,
   filterSites,
   findSiteByHost,

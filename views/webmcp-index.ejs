@@ -32,8 +32,9 @@
           <% if (stats.refreshed_at) { %><span>Updated <%= String(stats.refreshed_at).slice(0, 10) %></span><% } %>
         </div>
         <div class="webmcp-cta-row">
-          <a class="webmcp-btn webmcp-btn--primary" href="/webmcp/submit">Scan your website</a>
+          <a class="webmcp-btn webmcp-btn--primary" href="/webmcp/demo">Try Influzer’s WebMCP</a>
           <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/tools">Browse tools</a>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/submit">Scan your website</a>
           <a class="webmcp-btn webmcp-btn--ghost" href="/insights/what-is-webmcp-agents-navigate-websites">What is WebMCP?</a>
         </div>
       </div>
@@ -106,5 +107,6 @@
     </main>
     <%- include('partials/registry-footer') %>
     <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+    <%- include('partials/influzer-webmcp-script') %>
   </body>
 </html>

@@ -50,6 +50,12 @@
         "parameters": [{ "name": "url", "in": "query", "required": true, "schema": { "type": "string" } }],
         "responses": { "200": { "description": "OK" }, "400": { "description": "url_required" } }
       }
+    },
+    "/api/webmcp/v1/self": {
+      "get": {
+        "summary": "Influzer.ai first-party WebMCP tool manifest (schemas for document.modelContext tools)",
+        "responses": { "200": { "description": "OK" } }
+      }
     }
   }
 }

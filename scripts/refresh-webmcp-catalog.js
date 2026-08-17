@@ -22,6 +22,7 @@ const SITES_PATH = path.join(ROOT, 'data', 'webmcp-sites.json');
 const META_PATH = path.join(ROOT, 'data', 'webmcp-meta.json');
 const MANUAL_PATH = path.join(ROOT, 'data', 'webmcp-manual.json');
 const CATEGORIES_PATH = path.join(ROOT, 'data', 'webmcp-categories.json');
+const SELF_TOOLS_PATH = path.join(ROOT, 'data', 'influzer-webmcp-tools.json');
 
 function readJson(filePath, fallback) {
   if (!fs.existsSync(filePath)) return fallback;
@@ -52,6 +53,50 @@ function applyManual(site, overlay) {
   if (overlay.verification_status) next.verification_status = overlay.verification_status;
   if (overlay.editorial_notes) next.editorial_notes = overlay.editorial_notes;
   return next;
+}
+
+function buildFirstPartyInfluzerSite(previous) {
+  const manifest = readJson(SELF_TOOLS_PATH, null);
+  if (!manifest?.host || !Array.isArray(manifest.tools)) return null;
+  const now = new Date().toISOString();
+  const site = normalizeSite(
+    {
+      host: manifest.host,
+      name: manifest.name,
+      url: manifest.canonical_url,
+      desc: manifest.description,
+      category: manifest.category,
+      type: manifest.site_type || 'live',
+      apiSurface: manifest.api_surface || 'spec',
+      favicon: 'https://www.influzer.ai/favicon-32x32.png',
+      tools: (manifest.tools || []).map((t) => ({
+        name: t.name,
+        description: t.description,
+        kind: t.kind,
+        impl: t.implementation_type || 'imperative',
+        page: t.page_url || '/',
+        inputSchema: t.input_schema || { type: 'object' },
+      })),
+    },
+    {
+      verification_status: 'verified',
+      availability_status: 'active',
+      published: true,
+      first_seen_at: previous?.first_seen_at || now,
+      last_seen_at: now,
+      provenance: {
+        source_name: 'influzer.ai',
+        source_url: 'https://www.influzer.ai/webmcp/demo',
+        imported_at: now,
+      },
+    },
+  );
+  if (site) {
+    site.last_verified_at = now.slice(0, 10);
+    site.editorial_notes =
+      'First-party Influzer WebMCP showcase. Tools registered via document.modelContext.';
+  }
+  return site;
 }
 
 function rebuildCategories(sites) {
@@ -110,6 +155,14 @@ async function main() {
       site.last_verified_at = prev.last_verified_at;
     }
     normalized.push(site);
+  }
+
+  // Always publish first-party Influzer WebMCP showcase (not dependent on upstream)
+  const influzer = buildFirstPartyInfluzerSite(previousByHost.get('influzer.ai'));
+  if (influzer) {
+    const idx = normalized.findIndex((s) => s.host === 'influzer.ai');
+    if (idx >= 0) normalized[idx] = influzer;
+    else normalized.push(influzer);
   }
 
   normalized.sort((a, b) => b.tool_count - a.tool_count || a.host.localeCompare(b.host));

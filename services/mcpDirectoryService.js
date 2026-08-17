@@ -338,6 +338,60 @@ function clearMcpCache() {
   cached = null;
 }
 
+function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {
+  const query = String(q || '').trim().toLowerCase();
+  const safeLimit = Math.min(Math.max(Number(limit) || 10, 1), 25);
+  if (!query) {
+    return { ok: true, q: '', scope: scope === 'all' ? 'all' : 'top', total: 0, servers: [] };
+  }
+
+  const pool = scope === 'all' ? getAllMcpServers() : getTop100McpServers();
+  const matches = [];
+  for (const server of pool) {
+    const hay = [
+      server.name,
+      server.slug,
+      server.description,
+      server.category,
+      ...(server.tools || []).map((t) => (typeof t === 'string' ? t : t.name)),
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    const nameHit = String(server.name || '').toLowerCase().includes(query);
+    const slugHit = String(server.slug || '').toLowerCase().includes(query);
+    const tokens = query.split(/\s+/).filter(Boolean);
+    const tokenHit = tokens.length > 0 && tokens.every((part) => hay.includes(part));
+    if (!hay.includes(query) && !nameHit && !slugHit && !tokenHit) continue;
+
+    matches.push({
+      slug: server.slug,
+      name: server.name,
+      description: String(server.description || '').slice(0, 280),
+      category: server.category || null,
+      tool_count: Array.isArray(server.tools) ? server.tools.length : 0,
+      tools: (server.tools || [])
+        .slice(0, 8)
+        .map((t) => (typeof t === 'string' ? t : t.name))
+        .filter(Boolean),
+      url: `https://www.influzer.ai/mcp/${server.slug}`,
+    });
+    if (matches.length >= safeLimit) break;
+  }
+
+  return {
+    ok: true,
+    q: String(q).trim(),
+    scope: scope === 'all' ? 'all' : 'top',
+    total: matches.length,
+    note:
+      scope === 'all'
+        ? 'Results are capped; refine q for narrower matches.'
+        : 'Searched Top 100 MCP servers. Pass scope=all for the full catalog.',
+    servers: matches,
+  };
+}
+
 module.exports = {
   getAllMcpServers,
   getTop100McpServers,
@@ -350,6 +404,7 @@ module.exports = {
   getMcpCatalogPayload,
   getMcpHomepagePreview,
   getMcpHeroStats,
+  searchMcpServers,
   isInTop100,
   clearMcpCache,
   mergeManualInto,
