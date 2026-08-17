@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell" id="main" style="padding-top:1.5rem;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
+      <header style="display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap;margin:0.75rem 0 1.25rem;">
+        <img src="<%= site.favicon_url %>" alt="" width="48" height="48" style="border-radius:10px;" />
+        <div style="flex:1;min-width:220px;">
+          <div class="webmcp-card__host"><%= site.host %></div>
+          <h1 style="margin:0.15rem 0;font-size:1.75rem;"><%= site.name %></h1>
+          <div class="webmcp-badges" style="margin-top:0.5rem;">
+            <span class="webmcp-badge webmcp-badge--<%= site.site_type === 'demo' ? 'demo' : 'live' %>"><%= site.site_type %></span>
+            <span class="webmcp-badge webmcp-badge--<%= site.verification_status === 'verified' ? 'verified' : 'unverified' %>"><%= site.verification_status === 'verified' ? 'Influzer verified' : 'Unverified (seed import)' %></span>
+            <span class="webmcp-badge"><%= site.category %></span>
+            <span class="webmcp-badge"><%= site.tool_count %> tools</span>
+            <span class="webmcp-badge"><%= site.implementation %> implementation</span>
+          </div>
+          <div class="webmcp-cta-row">
+            <a class="webmcp-btn webmcp-btn--primary" href="<%= site.canonical_url %>" rel="noopener noreferrer" target="_blank">Open website</a>
+            <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/about">How verification works</a>
+          </div>
+        </div>
+      </header>
+
+      <% if (site.description) { %><p class="webmcp-prose"><%= site.description %></p><% } %>
+      <p class="webmcp-note">
+        First seen <%= String(site.first_seen_at || '').slice(0, 10) || '—' %>
+        · Last seen <%= String(site.last_seen_at || '').slice(0, 10) || '—' %>
+        <% if (site.provenance && site.provenance.source_name) { %>
+          · Source: <a href="<%= site.provenance.source_url || '#' %>" rel="noopener noreferrer"><%= site.provenance.source_name %></a>
+        <% } %>
+      </p>
+      <p class="webmcp-note">Answer <%= site.answer_count || 0 %> · Act <%= site.act_count || 0 %> · Transact <%= site.transact_count || 0 %> · Score: <%= site.score == null ? 'Not yet scored' : site.score %></p>
+
+      <h2 style="margin-top:1.75rem;">Tool inspector</h2>
+      <div class="webmcp-site-layout">
+        <nav class="webmcp-tool-list" aria-label="Tools">
+          <% (site.tools || []).forEach(function(tool) { %>
+            <a class="<%= selectedTool && selectedTool.name === tool.name ? 'is-active' : '' %>" href="?tool=<%= encodeURIComponent(tool.name) %>">
+              <strong><%= tool.name %></strong>
+              <div class="webmcp-note"><%= tool.kind %> · <%= tool.implementation_type %></div>
+            </a>
+          <% }) %>
+        </nav>
+        <section class="webmcp-tool-detail">
+          <% if (!selectedTool) { %>
+            <p>No tools listed for this site.</p>
+          <% } else { %>
+            <h3 style="margin-top:0;"><%= selectedTool.name %></h3>
+            <div class="webmcp-badges">
+              <span class="webmcp-badge"><%= selectedTool.kind %></span>
+              <span class="webmcp-badge"><%= selectedTool.implementation_type %></span>
+              <% if (selectedTool.kind === 'transact') { %><span class="webmcp-badge webmcp-badge--transact">May require confirmation</span><% } %>
+            </div>
+            <p><%= selectedTool.description || 'No description provided.' %></p>
+            <% if (selectedTool.page_url) { %><p class="webmcp-note">Page: <code><%= selectedTool.page_url %></code></p><% } %>
+            <h4>Input schema</h4>
+            <% const props = (selectedTool.input_schema && selectedTool.input_schema.properties) || {}; const keys = Object.keys(props); %>
+            <% if (!keys.length) { %>
+              <p class="webmcp-note">No input properties (empty object).</p>
+            <% } else { %>
+              <table class="webmcp-schema-table">
+                <thead><tr><th>Property</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                <tbody>
+                  <% keys.forEach(function(key) { const p = props[key] || {}; %>
+                    <tr>
+                      <td><code><%= key %></code></td>
+                      <td><%= p.type || '—' %></td>
+                      <td><%= (selectedTool.required || []).includes(key) ? 'yes' : 'no' %></td>
+                      <td><%= p.description || '—' %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            <% } %>
+            <details>
+              <summary>Raw JSON schema</summary>
+              <pre class="webmcp-code" id="rawSchema"><%= JSON.stringify(selectedTool.input_schema, null, 2) %></pre>
+              <button type="button" class="webmcp-btn webmcp-btn--ghost" id="copySchemaBtn">Copy JSON</button>
+            </details>
+          <% } %>
+        </section>
+      </div>
+
+      <% if (related && related.length) { %>
+        <h2>Similar websites</h2>
+        <div class="webmcp-grid">
+          <% related.forEach(function(site) { %>
+            <%- include('partials/webmcp-site-card', { site }) %>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <h2>Related on Influzer</h2>
+      <ul>
+        <li><a href="/insights/what-is-webmcp-agents-navigate-websites">What is WebMCP?</a></li>
+        <li><a href="/insights/what-is-model-context-protocol">What is MCP?</a></li>
+        <li><a href="/mcp">MCP Server Directory</a></li>
+        <li><a href="/webmcp/resources">WebMCP resources</a></li>
+      </ul>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+    <script>
+      (function () {
+        var btn = document.getElementById('copySchemaBtn');
+        var pre = document.getElementById('rawSchema');
+        if (!btn || !pre) return;
+        btn.addEventListener('click', function () {
+          navigator.clipboard.writeText(pre.textContent || '').then(function () {
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = 'Copy JSON'; }, 1200);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

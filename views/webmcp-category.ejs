@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell webmcp-prose" style="padding:2rem 1rem;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
+      <h1><%= category.name %></h1>
+      <p><%= category.site_count %> websites · <%= category.tool_count %> tools</p>
+      <div class="webmcp-grid" style="max-width:none;">
+        <% sites.forEach(function(site) { %>
+          <%- include('partials/webmcp-site-card', { site }) %>
+        <% }) %>
+      </div>
+      <% if (pages > 1) { %>
+        <nav class="webmcp-pager">
+          <% if (page > 1) { %><a href="?page=<%= page - 1 %>">← Previous</a><% } %>
+          <span>Page <%= page %> / <%= pages %></span>
+          <% if (page < pages) { %><a href="?page=<%= page + 1 %>">Next →</a><% } %>
+        </nav>
+      <% } %>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

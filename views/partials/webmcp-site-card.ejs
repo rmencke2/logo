@@ -1,0 +1,30 @@
+<a class="webmcp-card" href="/webmcp/sites/<%= site.host %>">
+  <div class="webmcp-card__top">
+    <img class="webmcp-card__favicon" src="<%= site.favicon_url %>" alt="" width="36" height="36" loading="lazy" />
+    <div>
+      <div class="webmcp-card__host"><%= site.host %></div>
+      <h2 class="webmcp-card__name"><%= site.name %></h2>
+    </div>
+  </div>
+  <% if (site.description) { %><p class="webmcp-card__desc"><%= site.description.slice(0, 160) %><%= site.description.length > 160 ? '…' : '' %></p><% } %>
+  <div class="webmcp-badges">
+    <span class="webmcp-badge webmcp-badge--<%= site.site_type === 'demo' ? 'demo' : 'live' %>"><%= site.site_type %></span>
+    <span class="webmcp-badge webmcp-badge--<%= site.verification_status === 'verified' ? 'verified' : 'unverified' %>"><%= site.verification_status === 'verified' ? 'Verified' : 'Unverified' %></span>
+    <% if (site.category) { %><span class="webmcp-badge"><%= site.category %></span><% } %>
+    <% if (site.transact_count > 0) { %><span class="webmcp-badge webmcp-badge--transact">Transact tools</span><% } %>
+  </div>
+  <div class="webmcp-card__meta">
+    <span><%= site.tool_count %> tools</span>
+    <span>A<%= site.answer_count || 0 %> / Act<%= site.act_count || 0 %> / T<%= site.transact_count || 0 %></span>
+    <span><%= site.score == null ? 'Not yet scored' : ('Score ' + site.score) %></span>
+    <% if (site.last_seen_at) { %><span>Seen <%= String(site.last_seen_at).slice(0, 10) %></span><% } %>
+  </div>
+  <% if (site.representative_tools && site.representative_tools.length) { %>
+    <div class="webmcp-card__tools">
+      <% site.representative_tools.forEach(function(name) { %>
+        <span class="webmcp-chip"><%= name %></span>
+      <% }) %>
+    </div>
+  <% } %>
+  <span class="webmcp-btn webmcp-btn--ghost" style="align-self:flex-start;">Inspect tools</span>
+</a>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <header class="dir-hero"><div class="dir-hero__inner">
+      <p class="dir-hero__eyebrow">Tool-level search</p>
+      <h1 class="dir-hero__title">WebMCP tools across the web</h1>
+      <p class="dir-hero__lead">Search tool names, descriptions, and input properties — independent of host.</p>
+    </div></header>
+    <main class="dir-shell">
+      <form class="webmcp-filters" method="get" action="/webmcp/tools">
+        <label>Search<input type="search" name="q" value="<%= filters.q || '' %>" placeholder="search products, book appointment, email…" /></label>
+        <label>Kind
+          <select name="kind">
+            <option value="">All</option>
+            <option value="answer" <%= filters.kind === 'answer' ? 'selected' : '' %>>Answer</option>
+            <option value="act" <%= filters.kind === 'act' ? 'selected' : '' %>>Act</option>
+            <option value="transact" <%= filters.kind === 'transact' ? 'selected' : '' %>>Transact</option>
+          </select>
+        </label>
+        <label>Implementation
+          <select name="implementation">
+            <option value="">All</option>
+            <option value="imperative" <%= filters.implementation === 'imperative' ? 'selected' : '' %>>Imperative</option>
+            <option value="declarative" <%= filters.implementation === 'declarative' ? 'selected' : '' %>>Declarative</option>
+          </select>
+        </label>
+        <button class="webmcp-btn webmcp-btn--primary" type="submit">Search</button>
+      </form>
+      <p class="webmcp-note"><%= total.toLocaleString() %> tools</p>
+      <div class="webmcp-grid">
+        <% tools.forEach(function(tool) { %>
+          <a class="webmcp-card" href="/webmcp/sites/<%= tool.host %>?tool=<%= encodeURIComponent(tool.name) %>">
+            <div class="webmcp-card__host"><%= tool.host %></div>
+            <h2 class="webmcp-card__name"><%= tool.name %></h2>
+            <p class="webmcp-card__desc"><%= (tool.description || '').slice(0, 140) %><%= (tool.description || '').length > 140 ? '…' : '' %></p>
+            <div class="webmcp-badges">
+              <span class="webmcp-badge"><%= tool.kind %></span>
+              <span class="webmcp-badge"><%= tool.implementation_type %></span>
+              <% if ((tool.required || []).length) { %><span class="webmcp-badge">requires <%= tool.required.join(', ') %></span><% } %>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+      <% if (pages > 1) { %>
+        <nav class="webmcp-pager">
+          <% if (page > 1) { %><a href="?<%= new URLSearchParams({ ...filters, page: String(page - 1) }).toString() %>">← Previous</a><% } %>
+          <span>Page <%= page %> / <%= pages %></span>
+          <% if (page < pages) { %><a href="?<%= new URLSearchParams({ ...filters, page: String(page + 1) }).toString() %>">Next →</a><% } %>
+        </nav>
+      <% } %>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

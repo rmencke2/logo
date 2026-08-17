@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-08-17T00:00:00.000Z",
+  "entries": [
+    {
+      "name": "Google Chrome",
+      "slug": "google-chrome",
+      "group": "browsers",
+      "support_status": "origin_trial",
+      "version_or_flag": "chrome://flags/#enable-webmcp-testing · origin trial from Chrome 149",
+      "summary": "Chrome documents WebMCP as an early preview / origin-trial capability with imperative and declarative APIs.",
+      "evidence_url": "https://developer.chrome.com/docs/ai/webmcp",
+      "verified_at": "2026-08-17",
+      "sort_order": 10
+    },
+    {
+      "name": "Microsoft Edge",
+      "slug": "microsoft-edge",
+      "group": "browsers",
+      "support_status": "planned",
+      "version_or_flag": null,
+      "summary": "Microsoft co-authors the WebMCP effort; watch Edge release notes for shipping status.",
+      "evidence_url": "https://github.com/webmachinelearning/webmcp",
+      "verified_at": "2026-08-17",
+      "sort_order": 20
+    },
+    {
+      "name": "Model Context Tool Inspector",
+      "slug": "model-context-tool-inspector",
+      "group": "agents",
+      "support_status": "supported",
+      "version_or_flag": "Chrome extension",
+      "summary": "Chrome-documented inspector for listing, calling, and validating WebMCP tools on a page.",
+      "evidence_url": "https://developer.chrome.com/docs/ai/webmcp",
+      "verified_at": "2026-08-17",
+      "sort_order": 10
+    },
+    {
+      "name": "W3C WebMCP draft",
+      "slug": "w3c-webmcp-draft",
+      "group": "frameworks",
+      "support_status": "partial",
+      "version_or_flag": "Community Group draft",
+      "summary": "Incubation under the W3C Web Machine Learning community group.",
+      "evidence_url": "https://github.com/webmachinelearning/webmcp",
+      "verified_at": "2026-08-17",
+      "sort_order": 10
+    }
+  ]
+}

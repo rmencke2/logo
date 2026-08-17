@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell webmcp-prose" style="padding:2rem 1rem;max-width:640px;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
+      <h1>Submit a WebMCP website</h1>
+      <% if (submitted) { %>
+        <p>Thanks — we received <strong><%= submissionHost %></strong> for review. New listings are not published automatically.</p>
+        <p><a class="webmcp-btn webmcp-btn--primary" href="/webmcp">Back to directory</a></p>
+      <% } else { %>
+        <p>Suggest a public website that exposes WebMCP tools. Influzer review is required before publication. Automated scanning ships in a later phase.</p>
+        <% if (error) { %><p style="color:#9f1239;"><%= error %></p><% } %>
+        <form method="post" action="/webmcp/submit" style="display:grid;gap:0.85rem;">
+          <label>Website URL
+            <input required name="url" type="url" placeholder="https://example.com" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;" />
+          </label>
+          <label>Email (for notifications — not shown publicly)
+            <input required name="email" type="email" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;" />
+          </label>
+          <label>Relationship
+            <select name="relationship" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;">
+              <option value="owner">Site owner</option>
+              <option value="developer">Developer</option>
+              <option value="user" selected>User</option>
+              <option value="researcher">Researcher</option>
+            </select>
+          </label>
+          <label>Notes (optional, private)
+            <textarea name="notes" rows="4" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;"></textarea>
+          </label>
+          <label style="display:flex;gap:0.5rem;align-items:flex-start;font-size:0.9rem;">
+            <input required type="checkbox" name="consent" value="1" />
+            <span>I may request a public scan of this URL and understand submitter email is private.</span>
+          </label>
+          <div style="position:absolute;left:-10000px;" aria-hidden="true">
+            <label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <button class="webmcp-btn webmcp-btn--primary" type="submit">Submit for review</button>
+        </form>
+        <p class="webmcp-note">We do not execute third-party WebMCP tools from Influzer. See our <a href="/privacy">privacy policy</a>.</p>
+      <% } %>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

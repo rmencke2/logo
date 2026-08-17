@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell webmcp-prose" style="padding:2rem 1rem;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
+      <h1>About the Influzer WebMCP Directory</h1>
+      <p><strong>WebMCP</strong> lets websites expose structured tools to AI agents in the browser. This directory helps you discover those websites, inspect tool schemas, and understand capability boundaries.</p>
+      <h2>WebMCP is not an MCP server</h2>
+      <p><a href="/mcp">MCP servers</a> are durable external integrations your AI client connects to (GitHub, databases, browsers). <strong>WebMCP tools</strong> are page-scoped capabilities declared by a website itself. Influzer catalogs both — separately — so the distinction stays clear.</p>
+      <h2>What “verified” means</h2>
+      <p>Verified means Influzer observed the implementation (or confirmed it from a primary source). Seed imports from public directories start as <em>unverified</em> until an Influzer scan or review confirms them. Verified is not a safety endorsement.</p>
+      <h2>Answer / Act / Transact</h2>
+      <p>Tool kinds are a trust taxonomy: answer (read/info), act (mutate state), transact (money or irreversible outcomes). They are classifications, not permissions.</p>
+      <h2>Data sources</h2>
+      <p>Influzer owns the normalized snapshot. Public directories may seed discovery; provenance is shown on site pages. If an upstream feed is unavailable, the last good Influzer snapshot remains live.</p>
+      <p><a class="webmcp-btn webmcp-btn--primary" href="/webmcp">Browse the directory</a>
+      <a class="webmcp-btn webmcp-btn--ghost" href="/insights/what-is-webmcp-agents-navigate-websites">Read the explainer</a></p>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

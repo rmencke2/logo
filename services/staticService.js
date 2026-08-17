@@ -32,6 +32,7 @@ const { getMilestonePromo } = require('../data/mcp-milestone-promo');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
+const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
 const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
 const { getDisplayArticles } = require('./otherNewsService');
@@ -1116,7 +1117,8 @@ ${itemsXml}
       changefreq: 'weekly',
       priority: '0.75',
     }));
-    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...mcpUrls];
+    const webmcpUrls = getWebmcpSitemapEntries();
+    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...mcpUrls, ...webmcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls
