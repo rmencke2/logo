@@ -1,0 +1,43 @@
+# Track the canonical WebMCP standards repository and refresh compatibility data.
+# Source: https://github.com/webmachinelearning/webmcp
+name: Refresh WebMCP standard
+
+on:
+  schedule:
+    # Daily — standards move quickly during incubation
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: webmcp-standard-main-commits
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh WebMCP standard tracker
+        run: npm run refresh-webmcp-standard
+        env:
+          # Optional: higher GitHub API rate limits if a token is configured
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit updated data
+        run: |
+          chmod +x scripts/ci-commit-push.sh
+          scripts/ci-commit-push.sh "chore: refresh WebMCP standard tracker" \
+            data/webmcp-standard.json \
+            data/webmcp-ecosystem.json

@@ -1,27 +1,31 @@
 {
-  "generated_at": "2026-08-17T00:00:00.000Z",
+  "generated_at": "2026-08-17T18:58:19.418Z",
+  "tracked_repo": "webmachinelearning/webmcp",
+  "head_sha": "a724ab1",
   "entries": [
+    {
+      "name": "W3C WebMCP (webmachinelearning/webmcp)",
+      "slug": "w3c-webmcp-draft",
+      "group": "frameworks",
+      "support_status": "partial",
+      "version_or_flag": "main @ a724ab1",
+      "summary": "Canonical WebMCP incubation repo (W3C Web Machine Learning Community Group). Influzer tracks commits and implementation-status.md from this repository.",
+      "evidence_url": "https://github.com/webmachinelearning/webmcp",
+      "verified_at": "2026-08-17",
+      "sort_order": 5,
+      "tracked_from": "webmachinelearning/webmcp"
+    },
     {
       "name": "Google Chrome",
       "slug": "google-chrome",
       "group": "browsers",
       "support_status": "origin_trial",
-      "version_or_flag": "chrome://flags/#enable-webmcp-testing · origin trial from Chrome 149",
-      "summary": "Chrome documents WebMCP as an early preview / origin-trial capability with imperative and declarative APIs.",
-      "evidence_url": "https://developer.chrome.com/docs/ai/webmcp",
+      "version_or_flag": "Chrome 149 origin trial",
+      "summary": "An Origin Trial is live in Chrome 149. * Early preview program * Intent to Experiment * Chrome Status entry",
+      "evidence_url": "https://developer.chrome.com/blog/ai-webmcp-origin-trial",
       "verified_at": "2026-08-17",
-      "sort_order": 10
-    },
-    {
-      "name": "Microsoft Edge",
-      "slug": "microsoft-edge",
-      "group": "browsers",
-      "support_status": "planned",
-      "version_or_flag": null,
-      "summary": "Microsoft co-authors the WebMCP effort; watch Edge release notes for shipping status.",
-      "evidence_url": "https://github.com/webmachinelearning/webmcp",
-      "verified_at": "2026-08-17",
-      "sort_order": 20
+      "sort_order": 10,
+      "tracked_from": "webmachinelearning/webmcp"
     },
     {
       "name": "Model Context Tool Inspector",
@@ -35,15 +39,64 @@
       "sort_order": 10
     },
     {
-      "name": "W3C WebMCP draft",
-      "slug": "w3c-webmcp-draft",
+      "name": "webmcp-types (npm)",
+      "slug": "webmcp-types",
       "group": "frameworks",
-      "support_status": "partial",
-      "version_or_flag": "Community Group draft",
-      "summary": "Incubation under the W3C Web Machine Learning community group.",
-      "evidence_url": "https://github.com/webmachinelearning/webmcp",
+      "support_status": "supported",
+      "version_or_flag": "TypeScript definitions",
+      "summary": "Official TypeScript type definitions for WebMCP, published alongside the standards effort.",
+      "evidence_url": "https://www.npmjs.com/package/webmcp-types",
       "verified_at": "2026-08-17",
-      "sort_order": 10
+      "sort_order": 15,
+      "tracked_from": "webmachinelearning/webmcp"
+    },
+    {
+      "name": "Microsoft Edge",
+      "slug": "microsoft-edge",
+      "group": "browsers",
+      "support_status": "origin_trial",
+      "version_or_flag": "Edge 150 origin trial",
+      "summary": "An Origin Trial is live in Edge 150. Refer to Chrome implementation status for platform support.",
+      "evidence_url": "https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials/0b76fe60-b266-458e-a285-04e375c0c31a",
+      "verified_at": "2026-08-17",
+      "sort_order": 20,
+      "tracked_from": "webmachinelearning/webmcp"
+    },
+    {
+      "name": "Brave",
+      "slug": "brave",
+      "group": "browsers",
+      "support_status": "partial",
+      "version_or_flag": "Experimental",
+      "summary": "Experimental support is added to Leo AI chat. * Issue 55232",
+      "evidence_url": "https://brave.com/leo/",
+      "verified_at": "2026-08-17",
+      "sort_order": 30,
+      "tracked_from": "webmachinelearning/webmcp"
+    },
+    {
+      "name": "Firefox",
+      "slug": "firefox",
+      "group": "browsers",
+      "support_status": "planned",
+      "version_or_flag": null,
+      "summary": "* Mozilla standards-positions * Bugzilla entry",
+      "evidence_url": "https://github.com/mozilla/standards-positions/issues/1412",
+      "verified_at": "2026-08-17",
+      "sort_order": 40,
+      "tracked_from": "webmachinelearning/webmcp"
+    },
+    {
+      "name": "Safari",
+      "slug": "safari",
+      "group": "browsers",
+      "support_status": "planned",
+      "version_or_flag": null,
+      "summary": "* WebKit standards-positions",
+      "evidence_url": "https://github.com/WebKit/standards-positions/issues/670",
+      "verified_at": "2026-08-17",
+      "sort_order": 50,
+      "tracked_from": "webmachinelearning/webmcp"
     }
   ]
 }

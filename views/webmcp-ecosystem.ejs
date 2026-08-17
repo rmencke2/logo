@@ -8,7 +8,7 @@
     <link rel="canonical" href="<%= canonicalUrl %>" />
     <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
     <%- include('partials/favicon-links') %>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
   </head>
@@ -17,7 +17,52 @@
     <main class="dir-shell" style="padding:2rem 1rem;">
       <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
       <h1>WebMCP ecosystem & compatibility</h1>
-      <p class="webmcp-prose">Evidence-based status for browsers, agents, and frameworks. Every claim has a checked date — compatibility changes quickly.</p>
+      <p class="webmcp-prose">Evidence-based status for browsers, agents, and frameworks. Influzer follows the canonical standards repository so this page stays current as WebMCP evolves.</p>
+
+      <% if (typeof standard !== 'undefined' && standard && standard.repo) { %>
+        <section class="webmcp-card" style="margin:1.25rem 0; cursor:default;">
+          <div class="webmcp-badges">
+            <span class="webmcp-badge webmcp-badge--live">Tracking</span>
+            <span class="webmcp-badge">standards</span>
+          </div>
+          <h2 class="webmcp-card__name" style="margin-top:0.4rem;">Following <a href="<%= standard.repo.html_url %>" rel="noopener noreferrer"><%= standard.repo.full_name %></a></h2>
+          <p class="webmcp-card__desc">
+            Canonical WebMCP incubation (W3C Web Machine Learning Community Group).
+            Homepage: <% if (standard.repo.homepage) { %><a href="<%= standard.repo.homepage %>" rel="noopener noreferrer"><%= standard.repo.homepage %></a><% } else { %>—<% } %>
+          </p>
+          <div class="webmcp-card__meta">
+            <span>Head <code><%= standard.repo.head_sha_short || '—' %></code></span>
+            <span><%= (standard.repo.stars || 0).toLocaleString() %> stars</span>
+            <span><%= (standard.repo.open_issues || 0).toLocaleString() %> open issues</span>
+            <span>Pushed <%= standard.repo.pushed_at ? String(standard.repo.pushed_at).slice(0, 10) : '—' %></span>
+            <span>Checked <%= standard.checked_at ? String(standard.checked_at).slice(0, 16).replace('T', ' ') : '—' %> UTC</span>
+          </div>
+          <div class="webmcp-cta-row">
+            <a class="webmcp-btn webmcp-btn--primary" href="<%= standard.links && standard.links.implementation_status %>" rel="noopener noreferrer">Implementation status</a>
+            <a class="webmcp-btn webmcp-btn--ghost" href="<%= standard.repo.html_url %>" rel="noopener noreferrer">GitHub repo</a>
+            <% if (standard.links && standard.links.npm_types) { %>
+              <a class="webmcp-btn webmcp-btn--ghost" href="<%= standard.links.npm_types %>" rel="noopener noreferrer">webmcp-types</a>
+            <% } %>
+            <% if (standard.links && standard.links.chrome_docs) { %>
+              <a class="webmcp-btn webmcp-btn--ghost" href="<%= standard.links.chrome_docs %>" rel="noopener noreferrer">Chrome docs</a>
+            <% } %>
+          </div>
+
+          <% if (standard.recent_commits && standard.recent_commits.length) { %>
+            <h3 style="margin:1.1rem 0 0.5rem;">Recent standard commits</h3>
+            <ul style="margin:0; padding-left:1.1rem; line-height:1.55;">
+              <% standard.recent_commits.slice(0, 8).forEach(function(c) { %>
+                <li>
+                  <code><%= c.sha %></code>
+                  <a href="<%= c.url %>" rel="noopener noreferrer"><%= c.message %></a>
+                  <span class="webmcp-note">— <%= c.author %> · <%= c.date ? String(c.date).slice(0, 10) : '' %></span>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </section>
+      <% } %>
+
       <% const groups = ['browsers', 'agents', 'frameworks']; %>
       <% groups.forEach(function(group) {
         const rows = entries.filter(function(e) { return e.group === group; });
@@ -30,7 +75,11 @@
               <div class="webmcp-badges"><span class="webmcp-badge"><%= e.support_status %></span></div>
               <p class="webmcp-card__desc"><%= e.summary %></p>
               <% if (e.version_or_flag) { %><p class="webmcp-note"><%= e.version_or_flag %></p><% } %>
-              <p class="webmcp-note">Checked <%= e.verified_at %> · <a href="<%= e.evidence_url %>" rel="noopener noreferrer">Evidence</a></p>
+              <p class="webmcp-note">
+                Checked <%= e.verified_at %>
+                · <a href="<%= e.evidence_url %>" rel="noopener noreferrer">Evidence</a>
+                <% if (e.tracked_from) { %> · synced from <%= e.tracked_from %><% } %>
+              </p>
             </article>
           <% }) %>
         </div>

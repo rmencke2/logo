@@ -15,6 +15,7 @@ const CATEGORIES_PATH = path.join(ROOT, 'data', 'webmcp-categories.json');
 const ECOSYSTEM_PATH = path.join(ROOT, 'data', 'webmcp-ecosystem.json');
 const RESOURCES_PATH = path.join(ROOT, 'data', 'webmcp-resources.json');
 const MANUAL_PATH = path.join(ROOT, 'data', 'webmcp-manual.json');
+const STANDARD_PATH = path.join(ROOT, 'data', 'webmcp-standard.json');
 
 const SITE_BASE = 'https://www.influzer.ai';
 
@@ -42,6 +43,7 @@ function loadCatalog() {
   const ecosystem = readJson(ECOSYSTEM_PATH, { entries: [] });
   const resources = readJson(RESOURCES_PATH, { resources: [] });
   const manual = readJson(MANUAL_PATH, { sites: {} });
+  const standard = readJson(STANDARD_PATH, null);
 
   const sites = (sitesFile.sites || []).filter((s) => s && s.host && s.published !== false);
   const byHost = new Map(sites.map((s) => [s.host, s]));
@@ -54,6 +56,7 @@ function loadCatalog() {
     ecosystemEntries: (ecosystem.entries || []).slice().sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)),
     resources: (resources.resources || []).filter((r) => r.published !== false),
     manual,
+    standard,
     generatedAt: sitesFile.generated_at || meta.generated_at || null,
   };
   return cache;
@@ -313,11 +316,13 @@ function registerWebmcpRoutes(app) {
   });
 
   app.get('/webmcp/ecosystem', (req, res) => {
+    const { ecosystemEntries, standard } = loadCatalog();
     res.render('webmcp-ecosystem', renderLocals(req, {
       title: 'WebMCP Ecosystem & Compatibility | Influzer.ai',
-      description: 'Track browser, agent, and framework support for WebMCP — with evidence links and checked dates.',
+      description: 'Track browser, agent, and framework support for WebMCP — synced from the canonical webmachinelearning/webmcp standards repo.',
       canonicalUrl: `${SITE_BASE}/webmcp/ecosystem`,
-      entries: loadCatalog().ecosystemEntries,
+      entries: ecosystemEntries,
+      standard,
     }));
   });
 
@@ -486,6 +491,13 @@ function registerWebmcpRoutes(app) {
     const site = lookupByUrl(String(url));
     res.set('Cache-Control', 'public, max-age=30');
     res.json({ ok: true, found: Boolean(site), site });
+  });
+
+  app.get('/api/webmcp/v1/standard', (req, res) => {
+    const { standard } = loadCatalog();
+    if (!standard) return res.status(404).json({ ok: false, error: 'not_tracked_yet' });
+    res.set('Cache-Control', 'public, max-age=120');
+    res.json({ ok: true, standard });
   });
 }
 
