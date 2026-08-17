@@ -816,23 +816,6 @@ function buildWebmcpScanReportHtml({
             </td>
           </tr>
           <tr>
-            <td style="padding:18px 28px 4px;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#fff7ed;border:1px solid #fdba74;border-radius:14px;">
-                <tr>
-                  <td style="padding:16px 18px;">
-                    <div style="font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:#9a3412;font-weight:800;">Consulting</div>
-                    <p style="margin:8px 0 12px;color:#0f172a;font-size:14px;line-height:1.55;">
-                      Want help getting from <strong>${escapeHtml(String(readiness))}</strong> to <strong>R5 (Agent-native)</strong>?
-                      I advise teams on WebMCP tool design, schema quality, multi-page coverage, and agent journeys.
-                    </p>
-                    <a href="${escapeHtml(consultMailto)}" style="display:inline-block;background:#9a3412;color:#ffffff;text-decoration:none;font-weight:700;padding:11px 16px;border-radius:999px;font-size:14px;">Contact me for advice</a>
-                    <div style="margin-top:10px;color:#7c2d12;font-size:13px;font-weight:600;">${escapeHtml(consult)}</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
             <td style="padding:22px 28px 8px;" align="center">
               ${
                 published && directoryUrl
@@ -844,12 +827,26 @@ function buildWebmcpScanReportHtml({
             </td>
           </tr>
           <tr>
-            <td style="padding:18px 28px 28px;">
+            <td style="padding:8px 28px 4px;">
               <div style="background:#ecfeff;border-radius:12px;padding:14px 16px;color:#0f172a;font-size:13px;line-height:1.55;border:1px solid #67e8f9;">
                 You’re on the Influzer newsletter for community updates and new MCP/WebMCP listings.
                 <a href="https://www.influzer.ai/newsletter/unsubscribe" style="color:#115e59;font-weight:700;">Unsubscribe anytime</a>.
               </div>
-              <p style="margin:16px 0 0;color:#334155;font-size:12px;line-height:1.5;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 28px 8px;">
+              <p style="margin:0;color:#64748b;font-size:12px;line-height:1.55;">
+                Want a hand leveling up to R5?
+                <a href="${escapeHtml(consultMailto)}" style="color:#475569;font-weight:600;text-decoration:underline;">Ask me</a>
+                · <a href="https://x.com/mencke" style="color:#475569;text-decoration:underline;">@mencke</a>
+                · <a href="https://www.linkedin.com/in/mencke/" style="color:#475569;text-decoration:underline;">LinkedIn</a>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 28px 28px;">
+              <p style="margin:0;color:#64748b;font-size:12px;line-height:1.5;">
                 Sent to ${escapeHtml(email || '')} because you requested a WebMCP scan on Influzer.ai.
                 We discover tool schemas only — we do not execute third-party act/transact tools.
               </p>
@@ -882,7 +879,7 @@ function buildWebmcpScanReportText({ host, url, scorecard, published, directoryU
     published && directoryUrl ? `Listing: ${directoryUrl}` : 'Not auto-listed yet — rescan after adding tools.',
     'Demo: https://www.influzer.ai/webmcp/demo',
     '',
-    `Consulting: contact ${consult} for advice on leveling up to R5.`,
+    `Want a hand leveling up to R5? Email ${consult} · https://x.com/mencke · https://www.linkedin.com/in/mencke/`,
   ];
   return lines.join('\n');
 }
