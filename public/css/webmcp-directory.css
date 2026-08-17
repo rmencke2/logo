@@ -143,3 +143,111 @@ button.webmcp-btn--ghost:hover,
 .webmcp-demo__log { max-height: 160px; }
 .webmcp-demo__howto { margin-top: 0.5rem; }
 .webmcp-demo__howto code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.86em; }
+
+/* Scan-gated listing */
+.webmcp-scan__hero h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  margin: 0.35rem 0 0.65rem;
+  color: #0f172a;
+}
+.webmcp-scan__form,
+.webmcp-scan__live,
+.webmcp-scan__report {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  padding: 1.15rem 1.2rem;
+  margin: 1rem 0;
+  display: grid;
+  gap: 0.85rem;
+}
+.webmcp-scan__form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #334155;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.webmcp-scan__form input,
+.webmcp-scan__form select {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  font: 500 1rem/1.4 "Space Grotesk", sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+}
+.webmcp-scan__check {
+  display: flex !important;
+  grid-template-columns: auto 1fr;
+  align-items: flex-start;
+  gap: 0.65rem;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: 0.92rem !important;
+  font-weight: 500 !important;
+  color: #334155 !important;
+  line-height: 1.45;
+}
+.webmcp-scan__check input { margin-top: 0.2rem; }
+.webmcp-scan__hp { position: absolute; left: -10000px; }
+.webmcp-scan__error { color: #9f1239; margin: 0; font-size: 0.92rem; }
+.webmcp-scan__live-top { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+.webmcp-scan__live-host { margin: 0; font-family: "IBM Plex Mono", monospace; font-size: 0.9rem; color: #0f766e; }
+.webmcp-scan__live-msg { margin: 0.25rem 0 0; color: #0f172a; font-weight: 600; }
+.webmcp-scan__timer {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: #ccfbf1;
+  color: #115e59;
+  white-space: nowrap;
+}
+.webmcp-scan__progress-label {
+  display: flex; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 0.35rem;
+}
+.webmcp-scan__bar {
+  height: 8px; border-radius: 999px; background: #e2e8f0; overflow: hidden;
+}
+.webmcp-scan__bar > span {
+  display: block; height: 100%; width: 0; background: #0f766e; transition: width 0.35s ease;
+}
+.webmcp-scan__stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; text-align: center;
+}
+.webmcp-scan__stats b {
+  display: block; font-size: 1.45rem; color: #0f766e; font-family: "Space Grotesk", sans-serif;
+}
+.webmcp-scan__stats span { font-size: 0.78rem; color: #64748b; }
+.webmcp-scan__grade { display: flex; gap: 0.9rem; align-items: center; }
+.webmcp-scan__grade-mark {
+  width: 64px; height: 64px; border-radius: 14px; background: #ccfbf1; color: #115e59;
+  display: grid; place-items: center; font-weight: 700; font-size: 1.35rem;
+  font-family: "Space Grotesk", sans-serif;
+}
+.webmcp-scan__grade-label { margin: 0; font-weight: 700; color: #0f172a; font-size: 1.1rem; }
+.webmcp-scan__banner {
+  padding: 0.75rem 0.85rem; border-radius: 12px; background: #f1f5f9; color: #334155; font-size: 0.92rem;
+}
+.webmcp-scan__banner.is-ok { background: #ecfeff; color: #155e75; }
+.webmcp-scan__banner.is-bad { background: #fff1f2; color: #9f1239; }
+.webmcp-scan__findings { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+.webmcp-scan__findings li {
+  padding: 0.55rem 0.7rem; border-radius: 10px; background: #f8fafc; color: #334155; font-size: 0.92rem;
+  border-left: 3px solid #94a3b8;
+}
+.webmcp-scan__findings li[data-tone="good"] { border-left-color: #0f766e; }
+.webmcp-scan__findings li[data-tone="bad"] { border-left-color: #e11d48; }
+.webmcp-scan__findings li[data-tone="warn"] { border-left-color: #d97706; }
+.webmcp-scan__tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.webmcp-scan__journeys h2 { margin: 0.5rem 0 0.35rem; font-size: 1.05rem; }
+.webmcp-scan__journeys ul { margin: 0.4rem 0 0; padding-left: 1.1rem; color: #334155; }
+.webmcp-scan__journeys li { margin: 0.45rem 0; }
+.webmcp-site-scorecard {
+  margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid #e2e8f0; border-radius: 14px; background: #fff;
+}
+.webmcp-site-scorecard__top { display: flex; gap: 0.85rem; align-items: center; margin-bottom: 0.75rem; }

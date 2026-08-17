@@ -56,6 +56,23 @@
         "summary": "Influzer.ai first-party WebMCP tool manifest (schemas for document.modelContext tools)",
         "responses": { "200": { "description": "OK" } }
       }
+    },
+    "/api/webmcp/v1/scans": {
+      "post": {
+        "summary": "Start a scan-gated WebMCP listing (email required; newsletter opt-in by default)",
+        "responses": {
+          "202": { "description": "Scan queued" },
+          "400": { "description": "Invalid input" },
+          "429": { "description": "Rate limited" }
+        }
+      }
+    },
+    "/api/webmcp/v1/scans/{id}": {
+      "get": {
+        "summary": "Poll scan progress / scorecard",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      }
     }
   }
 }

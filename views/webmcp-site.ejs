@@ -39,6 +39,25 @@
       </header>
 
       <% if (site.description) { %><p class="webmcp-prose"><%= site.description %></p><% } %>
+      <% const sc = typeof scorecard !== 'undefined' && scorecard ? scorecard : site.scorecard; %>
+      <% if (sc && sc.grade) { %>
+        <section class="webmcp-site-scorecard" aria-label="Influzer scorecard">
+          <div class="webmcp-site-scorecard__top">
+            <div class="webmcp-scan__grade-mark"><%= sc.grade %></div>
+            <div>
+              <p class="webmcp-scan__grade-label"><%= sc.label || 'Scorecard' %></p>
+              <p class="webmcp-note"><%= sc.score %>/100 · graded <%= sc.graded_at || '—' %></p>
+            </div>
+          </div>
+          <% if (sc.findings && sc.findings.length) { %>
+            <ul class="webmcp-scan__findings">
+              <% sc.findings.slice(0, 6).forEach(function(f) { %>
+                <li data-tone="<%= f.tone || 'warn' %>"><%= f.text %></li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </section>
+      <% } %>
       <p class="webmcp-note">
         First seen <%= String(site.first_seen_at || '').slice(0, 10) || '—' %>
         · Last seen <%= String(site.last_seen_at || '').slice(0, 10) || '—' %>

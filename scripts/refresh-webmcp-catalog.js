@@ -165,6 +165,44 @@ async function main() {
     else normalized.push(influzer);
   }
 
+  // Keep Influzer-scan listings that upstream does not (yet) include
+  const present = new Set(normalized.map((s) => s.host));
+  for (const prev of previous.sites || []) {
+    if (!prev?.host || present.has(prev.host)) continue;
+    const fromScan = prev.provenance?.source_name === 'influzer-scan';
+    const manualKeep = Boolean(manualByHost[prev.host]?.verification_status === 'verified');
+    if (fromScan || manualKeep) {
+      normalized.push(prev);
+      present.add(prev.host);
+    }
+  }
+
+  // Preserve scorecards / verification on hosts we already verified via Influzer scan
+  for (const site of normalized) {
+    const prev = previousByHost.get(site.host);
+    if (!prev) continue;
+    if (prev.scorecard && !site.scorecard) site.scorecard = prev.scorecard;
+    if (prev.score != null && site.score == null) site.score = prev.score;
+    if (prev.grade && !site.grade) site.grade = prev.grade;
+    if (prev.provenance?.source_name === 'influzer-scan' && site.provenance?.source_name === 'webmcp.com') {
+      // Prefer Influzer scan provenance + verification when we have richer local evidence
+      if ((prev.tool_count || 0) >= (site.tool_count || 0)) {
+        site.tools = prev.tools;
+        site.tool_count = prev.tool_count;
+        site.answer_count = prev.answer_count;
+        site.act_count = prev.act_count;
+        site.transact_count = prev.transact_count;
+        site.implementation = prev.implementation;
+      }
+      site.verification_status = 'verified';
+      site.last_verified_at = prev.last_verified_at || site.last_verified_at;
+      site.provenance = prev.provenance;
+      site.scorecard = prev.scorecard || site.scorecard;
+      site.score = prev.score ?? site.score;
+      site.grade = prev.grade || site.grade;
+    }
+  }
+
   normalized.sort((a, b) => b.tool_count - a.tool_count || a.host.localeCompare(b.host));
 
   const published = normalized.filter((s) => s.published !== false);
