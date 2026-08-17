@@ -22375,6 +22375,297 @@
       ]
     },
     {
+      "host": "influzer.ai",
+      "slug": "influzer.ai",
+      "name": "Influzer.ai",
+      "canonical_url": "https://www.influzer.ai/",
+      "description": "Influzer.ai exposes its MCP and WebMCP directories as browser-native WebMCP tools so agents can search sites, inspect schemas, and navigate without scraping the UI.",
+      "category": "Directories & Discovery",
+      "category_slug": "directories-and-discovery",
+      "site_type": "live",
+      "verification_status": "verified",
+      "availability_status": "active",
+      "favicon_url": "https://www.influzer.ai/favicon-32x32.png",
+      "tool_count": 8,
+      "answer_count": 7,
+      "act_count": 1,
+      "transact_count": 0,
+      "implementation": "imperative",
+      "api_surface": "spec",
+      "score": null,
+      "grade": null,
+      "provenance": {
+        "source_name": "influzer.ai",
+        "source_url": "https://www.influzer.ai/webmcp/demo",
+        "imported_at": "2026-08-17T19:08:37.755Z"
+      },
+      "source_scraped_at": null,
+      "first_seen_at": "2026-08-17T19:08:37.755Z",
+      "last_seen_at": "2026-08-17T19:08:37.755Z",
+      "last_verified_at": "2026-08-17",
+      "published": true,
+      "tools": [
+        {
+          "name": "get_influzer_overview",
+          "description": "Return a short overview of Influzer.ai: what it offers (MCP directory, WebMCP directory, insights) and key URLs agents should use.",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/",
+          "input_schema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "32062bdb9024160d",
+          "required": [],
+          "stable_key": "get_influzer_overview::/::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "get_webmcp_directory_stats",
+          "description": "Return live counts for the Influzer WebMCP Directory: sites, tools, live vs demo, categories, and last refresh time.",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/webmcp",
+          "input_schema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "32062bdb9024160d",
+          "required": [],
+          "stable_key": "get_webmcp_directory_stats::/webmcp::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "search_webmcp_sites",
+          "description": "Search websites in the Influzer WebMCP Directory by keyword, category, site type, or verification status. Returns matching hosts with tool counts.",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/webmcp",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "type": "string",
+                "description": "Free-text query matching host, name, description, or category."
+              },
+              "category": {
+                "type": "string",
+                "description": "Category slug or name (e.g. developer-tools)."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "live",
+                  "demo",
+                  "all"
+                ],
+                "description": "Filter by site type. Defaults to all."
+              },
+              "verified": {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "unverified",
+                  "any"
+                ],
+                "description": "Filter by verification status. Defaults to any."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 25,
+                "description": "Max results to return (1–25). Defaults to 10."
+              }
+            },
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "adf76ae953480fb8",
+          "required": [],
+          "stable_key": "search_webmcp_sites::/webmcp::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "get_webmcp_site",
+          "description": "Fetch one WebMCP-enabled website by host (e.g. persona-chat.dev), including description, tool list, and schemas when available.",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/webmcp",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Hostname without protocol (www. is optional)."
+              },
+              "include_schemas": {
+                "type": "boolean",
+                "description": "When true, include full input schemas for each tool. Defaults to false for a shorter payload."
+              }
+            },
+            "required": [
+              "host"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "54581307bc6c0b8f",
+          "required": [
+            "host"
+          ],
+          "stable_key": "get_webmcp_site::/webmcp::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "search_webmcp_tools",
+          "description": "Search WebMCP tools across all catalogued websites by tool name, description, or kind (answer / act / transact).",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/webmcp/tools",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "type": "string",
+                "description": "Free-text query matching tool name or description."
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "answer",
+                  "act",
+                  "transact",
+                  "any"
+                ],
+                "description": "Filter by tool kind. Defaults to any."
+              },
+              "host": {
+                "type": "string",
+                "description": "Optional host to limit tools to one site."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 40,
+                "description": "Max results (1–40). Defaults to 15."
+              }
+            },
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "43a05725882acd34",
+          "required": [],
+          "stable_key": "search_webmcp_tools::/webmcp/tools::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "search_mcp_servers",
+          "description": "Search Influzer's MCP server directory (backend MCP integrations, not WebMCP). Returns matching servers with categories and tool names.",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/mcp",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "type": "string",
+                "description": "Free-text query matching server name, slug, description, or category."
+              },
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "top",
+                  "all"
+                ],
+                "description": "Search Top 100 (default) or the full catalog."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 25,
+                "description": "Max results (1–25). Defaults to 10."
+              }
+            },
+            "required": [
+              "q"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "b03fb972e8789957",
+          "required": [
+            "q"
+          ],
+          "stable_key": "search_mcp_servers::/mcp::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "list_latest_insights",
+          "description": "List the latest Influzer.ai insights / articles (titles, URLs, summaries) for agent briefings.",
+          "kind": "answer",
+          "implementation_type": "imperative",
+          "page_url": "/insights",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12,
+                "description": "Number of articles (1–12). Defaults to 5."
+              }
+            },
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "28870583ba164ab4",
+          "required": [],
+          "stable_key": "list_latest_insights::/insights::imperative",
+          "host": "influzer.ai"
+        },
+        {
+          "name": "navigate_influzer",
+          "description": "Navigate this browser tab to a first-party Influzer.ai path (e.g. /webmcp, /mcp, /webmcp/demo, /insights). Use after the user confirms they want to move.",
+          "kind": "act",
+          "implementation_type": "imperative",
+          "page_url": "/",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Site path starting with /. Only same-origin Influzer paths are allowed."
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": null,
+          "annotations": null,
+          "schema_hash": "6f02cbc917bb3f16",
+          "required": [
+            "path"
+          ],
+          "stable_key": "navigate_influzer::/::imperative",
+          "host": "influzer.ai"
+        }
+      ],
+      "editorial_notes": "First-party Influzer WebMCP showcase. Tools registered via document.modelContext on site pages."
+    },
+    {
       "host": "muretai.com",
       "slug": "muretai.com",
       "name": "muretai.com",

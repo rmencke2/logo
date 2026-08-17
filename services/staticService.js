@@ -21,6 +21,7 @@ const {
   getMcpHomepagePreview,
   getMcpCatalogTotals,
   getMcpHeroStats,
+  searchMcpServers,
   isInTop100,
 } = require('./mcpDirectoryService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
@@ -675,7 +676,7 @@ function initializeStaticService(app) {
   app.get('/api/insights/recent', (req, res) => {
     try {
       const posts = getAllBlogPosts();
-      const limit = Math.max(1, Math.min(6, Number(req.query.limit) || 3));
+      const limit = Math.max(1, Math.min(12, Number(req.query.limit) || 3));
       const recent = posts.slice(0, limit).map((post) => ({
         slug: post.slug,
         title: post.title,
@@ -800,6 +801,17 @@ ${itemsXml}
     const limit = Math.min(12, Math.max(1, parseInt(String(req.query.limit || '6'), 10) || 6));
     res.setHeader('Cache-Control', 'public, max-age=3600');
     res.json(getMcpHomepagePreview(limit));
+  });
+
+  app.get('/api/mcp/search', (req, res) => {
+    const q = String(req.query.q || '').trim();
+    if (!q) {
+      return res.status(400).json({ ok: false, error: 'q_required' });
+    }
+    const scope = req.query.scope === 'all' ? 'all' : 'top';
+    const limit = Math.min(25, Math.max(1, parseInt(String(req.query.limit || '10'), 10) || 10));
+    res.setHeader('Cache-Control', 'public, max-age=120');
+    res.json(searchMcpServers({ q, scope, limit }));
   });
 
   // MCP Server Directory (must be registered before /insights/:slug)
