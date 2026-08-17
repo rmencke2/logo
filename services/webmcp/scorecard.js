@@ -108,6 +108,9 @@ function buildScorecard({ tools = [], pagesScanned = 0, crashes = 0, host }) {
   score = Math.max(0, Math.min(100, Math.round(score)));
   const { grade, label } = gradeFromScore(score);
   const stars = Math.max(1, Math.min(5, Math.round(score / 20)));
+  const toolNotes = buildPerToolNotes(tools);
+  const nextActions = buildNextActions({ tools, withOutput, pagesWithTools, pagesScanned, crashes });
+  const summary = buildSummary({ grade, label, toolCount, withOutput, pagesWithTools, host });
 
   return {
     host: host || null,
@@ -115,7 +118,10 @@ function buildScorecard({ tools = [], pagesScanned = 0, crashes = 0, host }) {
     grade,
     label,
     stars,
+    summary,
     findings,
+    tool_notes: toolNotes,
+    next_actions: nextActions,
     metrics: {
       tool_count: toolCount,
       pages_scanned: pagesScanned,
@@ -127,6 +133,93 @@ function buildScorecard({ tools = [], pagesScanned = 0, crashes = 0, host }) {
     },
     graded_at: new Date().toISOString().slice(0, 10),
   };
+}
+
+function buildPerToolNotes(tools = []) {
+  return tools.map((t) => {
+    const schema = t.input_schema || t.inputSchema || {};
+    const hasOut = Boolean(t.output_schema || t.outputSchema);
+    const constrained = hasConstrainedInput(schema);
+    const issues = [];
+    const wins = [];
+    if (!hasOut) issues.push('Add an outputSchema so agents know the return shape');
+    else wins.push('Has output schema');
+    if (!constrained) issues.push('Tighten inputSchema (descriptions, enums, bounds)');
+    else wins.push('Useful input constraints');
+    if (!t.description || String(t.description).length < 24) {
+      issues.push('Expand the description with when/why to call this tool');
+    } else {
+      wins.push('Clear description');
+    }
+    if (/navigate|path/i.test(t.name) && !(schema.properties?.path?.enum || schema.properties?.path?.pattern)) {
+      issues.push('Constrain path with enum or pattern, not prose alone');
+    }
+    const status = issues.length === 0 ? 'strong' : hasOut && constrained ? 'ok' : 'improve';
+    return {
+      name: t.name,
+      kind: t.kind || 'unknown',
+      page_url: t.page_url || '/',
+      status,
+      headline:
+        status === 'strong'
+          ? 'Ready for agents'
+          : status === 'ok'
+            ? 'Solid — one upgrade left'
+            : issues[0],
+      wins,
+      issues,
+    };
+  });
+}
+
+function buildNextActions({ tools, withOutput, pagesWithTools, pagesScanned, crashes }) {
+  const actions = [];
+  if (tools.length && withOutput < tools.length) {
+    actions.push({
+      priority: 1,
+      text: `Add outputSchema to ${tools.length - withOutput} tool${tools.length - withOutput === 1 ? '' : 's'} so agents stop guessing return shapes.`,
+    });
+  }
+  if (pagesWithTools <= 1 && tools.length) {
+    actions.push({
+      priority: 2,
+      text: 'Register tools on more than one route (home, product, checkout, docs) for real multi-page coverage.',
+    });
+  }
+  if (crashes > 0) {
+    actions.push({
+      priority: 1,
+      text: 'Fix page crashes seen during the scan before promoting this listing.',
+    });
+  }
+  actions.push({
+    priority: 3,
+    text: 'Add 2–3 suggested agent journeys on your site (or reuse Influzer’s demo pattern) so testers know what to ask.',
+  });
+  if (pagesScanned >= 1) {
+    actions.push({
+      priority: 4,
+      text: 'Rescan after changes to refresh your Influzer verified listing and grade.',
+    });
+  }
+  return actions.sort((a, b) => a.priority - b.priority).slice(0, 5);
+}
+
+function buildSummary({ grade, label, toolCount, withOutput, pagesWithTools, host }) {
+  if (!toolCount) {
+    return `${host || 'This site'} did not expose detectable WebMCP tools on the pages we scanned. Register document.modelContext tools and rescan.`;
+  }
+  const schemaBit =
+    withOutput === 0
+      ? 'The biggest gap: no output schemas — agents must guess return shapes.'
+      : withOutput < toolCount
+        ? `Output schemas cover ${withOutput}/${toolCount} tools — finish the rest for A-tier reliability.`
+        : 'Output schemas look complete — strong agent ergonomics.';
+  const coverageBit =
+    pagesWithTools <= 1
+      ? 'Coverage is still concentrated on a single page surface.'
+      : `Tools appeared across ${pagesWithTools} pages.`;
+  return `${label} (${grade}). We found ${toolCount} tool${toolCount === 1 ? '' : 's'}. ${schemaBit} ${coverageBit}`;
 }
 
 function suggestJourneys(tools = [], host = '') {
@@ -163,6 +256,8 @@ function suggestJourneys(tools = [], host = '') {
 
 module.exports = {
   buildScorecard,
+  buildPerToolNotes,
+  buildNextActions,
   suggestJourneys,
   gradeFromScore,
   hasConstrainedInput,

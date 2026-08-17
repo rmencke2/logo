@@ -642,6 +642,261 @@ async function sendBlogNewsletterEmail({
   return { success: true, messageId: info.messageId, to };
 }
 
+function starsHtml(count) {
+  const n = Math.max(0, Math.min(5, Number(count) || 0));
+  return `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
+}
+
+function toneColor(tone) {
+  if (tone === 'good') return '#0f766e';
+  if (tone === 'bad') return '#e11d48';
+  return '#d97706';
+}
+
+function statusChip(status) {
+  if (status === 'strong') return { bg: '#ccfbf1', fg: '#115e59', label: 'Strong' };
+  if (status === 'ok') return { bg: '#e0f2fe', fg: '#075985', label: 'OK' };
+  return { bg: '#ffedd5', fg: '#9a3412', label: 'Improve' };
+}
+
+function buildWebmcpScanReportHtml({
+  email,
+  host,
+  url,
+  scorecard,
+  result,
+  published,
+  directoryUrl,
+  scanUrl,
+  demoUrl,
+}) {
+  const grade = scorecard?.grade || '—';
+  const label = scorecard?.label || 'Scanned';
+  const score = scorecard?.score ?? '—';
+  const findings = scorecard?.findings || [];
+  const toolNotes = scorecard?.tool_notes || [];
+  const nextActions = scorecard?.next_actions || [];
+  const metrics = scorecard?.metrics || {};
+  const summary = scorecard?.summary || '';
+  const tools = result?.tools || [];
+
+  const findingRows = findings
+    .map(
+      (f) => `
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid #e2e8f0;vertical-align:top;width:18px;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${toneColor(f.tone)};"></span>
+        </td>
+        <td style="padding:10px 0 10px 10px;border-bottom:1px solid #e2e8f0;color:#334155;font-size:14px;line-height:1.45;">
+          ${escapeHtml(f.text)}
+        </td>
+      </tr>`,
+    )
+    .join('');
+
+  const toolRows = toolNotes
+    .slice(0, 12)
+    .map((t) => {
+      const chip = statusChip(t.status);
+      return `
+      <tr>
+        <td style="padding:12px 0;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+          <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#0f172a;font-weight:700;">${escapeHtml(t.name)}</div>
+          <div style="margin-top:4px;font-size:12px;color:#64748b;">${escapeHtml(t.kind)} · ${escapeHtml(t.page_url || '/')}</div>
+        </td>
+        <td style="padding:12px 0 12px 12px;border-bottom:1px solid #e2e8f0;vertical-align:top;">
+          <span style="display:inline-block;padding:3px 8px;border-radius:999px;background:${chip.bg};color:${chip.fg};font-size:11px;font-weight:700;letter-spacing:0.02em;">${chip.label}</span>
+          <div style="margin-top:6px;color:#334155;font-size:13px;line-height:1.45;">${escapeHtml(t.headline)}</div>
+        </td>
+      </tr>`;
+    })
+    .join('');
+
+  const actionItems = nextActions
+    .map(
+      (a, i) => `
+      <li style="margin:0 0 10px;color:#334155;font-size:14px;line-height:1.45;">
+        <strong style="color:#0f766e;">${i + 1}.</strong> ${escapeHtml(a.text)}
+      </li>`,
+    )
+    .join('');
+
+  const listingLine = published
+    ? `Your site is <strong style="color:#0f766e;">listed & Influzer verified</strong> in the directory.`
+    : `No tools were detected, so we did not auto-list yet — fix registration and rescan.`;
+
+  return `<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f1f5f9;color:#0f172a;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+    Influzer WebMCP scorecard for ${escapeHtml(host || url)} — grade ${escapeHtml(String(grade))} (${escapeHtml(String(score))}/100).
+  </div>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f1f5f9;padding:24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #e2e8f0;">
+          <tr>
+            <td style="background:linear-gradient(135deg,#0f766e 0%,#0e7490 100%);padding:28px 28px 24px;">
+              <div style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#ccfbf1;font-weight:700;">Influzer WebMCP</div>
+              <h1 style="margin:10px 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:26px;line-height:1.2;color:#ffffff;">Your WebMCP scorecard is ready</h1>
+              <p style="margin:0;color:#e2e8f0;font-size:14px;">${escapeHtml(host || url)} · graded ${escapeHtml(scorecard?.graded_at || 'today')}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 28px 8px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="88" valign="top">
+                    <div style="width:72px;height:72px;border-radius:16px;background:#ccfbf1;color:#115e59;font-family:Arial,Helvetica,sans-serif;font-size:28px;font-weight:800;text-align:center;line-height:72px;">${escapeHtml(String(grade))}</div>
+                  </td>
+                  <td valign="middle" style="padding-left:14px;">
+                    <div style="font-size:18px;font-weight:800;color:#0f172a;font-family:Arial,Helvetica,sans-serif;">${escapeHtml(label)}</div>
+                    <div style="margin-top:4px;color:#0f766e;font-size:16px;letter-spacing:1px;">${starsHtml(scorecard?.stars)} <span style="color:#64748b;letter-spacing:0;font-size:13px;">${escapeHtml(String(score))}/100</span></div>
+                    <div style="margin-top:8px;color:#475569;font-size:14px;line-height:1.45;">${listingLine}</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 28px 4px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f8fafc;border-radius:14px;">
+                <tr>
+                  <td style="padding:14px;text-align:center;width:33%;">
+                    <div style="font-size:22px;font-weight:800;color:#0f766e;">${escapeHtml(String(metrics.tool_count ?? tools.length ?? 0))}</div>
+                    <div style="font-size:12px;color:#64748b;">Tools</div>
+                  </td>
+                  <td style="padding:14px;text-align:center;width:33%;border-left:1px solid #e2e8f0;">
+                    <div style="font-size:22px;font-weight:800;color:#0f766e;">${escapeHtml(String(metrics.pages_scanned ?? result?.pages_scanned ?? 0))}</div>
+                    <div style="font-size:12px;color:#64748b;">Pages scanned</div>
+                  </td>
+                  <td style="padding:14px;text-align:center;width:33%;border-left:1px solid #e2e8f0;">
+                    <div style="font-size:22px;font-weight:800;color:#0f766e;">${escapeHtml(String(metrics.crashes ?? result?.crashes ?? 0))}</div>
+                    <div style="font-size:12px;color:#64748b;">Crashes</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 28px 8px;">
+              <p style="margin:0;color:#334155;font-size:15px;line-height:1.55;">${escapeHtml(summary)}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:12px 28px 4px;">
+              <h2 style="margin:0 0 8px;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:#0f766e;font-family:Arial,Helvetica,sans-serif;">What we found</h2>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${findingRows || '<tr><td style="color:#64748b;font-size:14px;">No findings.</td></tr>'}</table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 28px 4px;">
+              <h2 style="margin:0 0 8px;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:#0f766e;font-family:Arial,Helvetica,sans-serif;">Per-tool notes</h2>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${toolRows || '<tr><td style="color:#64748b;font-size:14px;">No tools detected.</td></tr>'}</table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 28px 4px;">
+              <h2 style="margin:0 0 8px;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:#0f766e;font-family:Arial,Helvetica,sans-serif;">Do this next</h2>
+              <ol style="margin:0;padding-left:18px;">${actionItems || '<li style="color:#64748b;">Rescan after shipping tools.</li>'}</ol>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:22px 28px 8px;" align="center">
+              ${
+                published && directoryUrl
+                  ? `<a href="${escapeHtml(directoryUrl)}" style="display:inline-block;background:#0f766e;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:999px;font-size:14px;">View your Influzer listing</a>`
+                  : `<a href="${escapeHtml(scanUrl || 'https://www.influzer.ai/webmcp/submit')}" style="display:inline-block;background:#0f766e;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:999px;font-size:14px;">Rescan your site</a>`
+              }
+              <div style="height:10px;"></div>
+              <a href="${escapeHtml(demoUrl || 'https://www.influzer.ai/webmcp/demo')}" style="display:inline-block;background:#ffffff;color:#0f766e;text-decoration:none;font-weight:700;padding:11px 18px;border-radius:999px;font-size:14px;border:1px solid #99f6e4;">Try Influzer’s live WebMCP demo</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 28px 28px;">
+              <div style="background:#ecfeff;border-radius:12px;padding:14px 16px;color:#155e75;font-size:13px;line-height:1.5;">
+                You’re on the Influzer newsletter for community updates and new MCP/WebMCP listings.
+                <a href="https://www.influzer.ai/newsletter/unsubscribe" style="color:#0f766e;">Unsubscribe anytime</a>.
+              </div>
+              <p style="margin:16px 0 0;color:#94a3b8;font-size:12px;line-height:1.45;">
+                Sent to ${escapeHtml(email || '')} because you requested a WebMCP scan on Influzer.ai.
+                We discover tool schemas only — we do not execute third-party act/transact tools.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+function buildWebmcpScanReportText({ host, url, scorecard, published, directoryUrl }) {
+  const lines = [
+    `Influzer WebMCP scorecard for ${host || url}`,
+    `Grade: ${scorecard?.grade || '—'} (${scorecard?.score ?? '—'}/100) — ${scorecard?.label || ''}`,
+    '',
+    scorecard?.summary || '',
+    '',
+    'Findings:',
+    ...(scorecard?.findings || []).map((f) => `- [${f.tone}] ${f.text}`),
+    '',
+    'Next actions:',
+    ...(scorecard?.next_actions || []).map((a, i) => `${i + 1}. ${a.text}`),
+    '',
+    published && directoryUrl ? `Listing: ${directoryUrl}` : 'Not auto-listed yet — rescan after adding tools.',
+    'Demo: https://www.influzer.ai/webmcp/demo',
+  ];
+  return lines.join('\n');
+}
+
+async function sendWebmcpScanReportEmail({
+  to,
+  host,
+  url,
+  scorecard,
+  result,
+  published,
+  directoryUrl,
+  scanUrl,
+  demoUrl,
+}) {
+  if (!to) return { success: false, reason: 'missing_email' };
+  if (!isEmailConfigured()) {
+    console.warn('WebMCP scan report skipped: email not configured');
+    return { success: false, reason: 'email_not_configured' };
+  }
+
+  const html = buildWebmcpScanReportHtml({
+    email: to,
+    host,
+    url,
+    scorecard,
+    result,
+    published,
+    directoryUrl,
+    scanUrl,
+    demoUrl,
+  });
+  const text = buildWebmcpScanReportText({ host, url, scorecard, published, directoryUrl });
+  const mailOptions = {
+    from: getFromAddress(),
+    to,
+    subject: `Your WebMCP scorecard: ${scorecard?.grade || 'Report'} for ${host || 'your site'}`,
+    html,
+    text,
+  };
+
+  try {
+    const info = await getTransporter().sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  } catch (err) {
+    console.error('WebMCP scan report email failed:', err.message);
+    return { success: false, reason: err.message };
+  }
+}
+
 module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -649,6 +904,8 @@ module.exports = {
   sendMcpFeedbackEmail,
   sendMcpApprovalEmail,
   sendBlogNewsletterEmail,
+  sendWebmcpScanReportEmail,
+  buildWebmcpScanReportHtml,
   buildBlogNewsletterHtml,
   isEmailConfigured,
   getTransporter,

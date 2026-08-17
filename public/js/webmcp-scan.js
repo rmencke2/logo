@@ -13,6 +13,16 @@
   let pollTimer = null;
   let startedAt = 0;
 
+  function coerceHttpsUrl(input) {
+    let raw = String(input || '').trim();
+    if (!raw) return '';
+    raw = raw.replace(/^['"]|['"]$/g, '');
+    if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw)) {
+      raw = `https://${raw.replace(/^\/+/, '')}`;
+    }
+    return raw;
+  }
+
   function showError(msg) {
     if (!errEl) return;
     errEl.hidden = !msg;
@@ -56,15 +66,16 @@
       `${result.tool_count || 0} tools · ${result.pages_scanned || 0} pages · graded ${card.graded_at || 'today'}`;
 
     const banner = document.getElementById('scanBanner');
-    if (scan.published) {
-      banner.className = 'webmcp-scan__banner is-ok';
-      banner.innerHTML = `Listed in the Influzer directory${scan.newsletter_subscribed ? ' · newsletter signup saved' : ''}. <a href="/webmcp/sites/${scan.host}">View listing</a>`;
-    } else if (scan.status === 'failed') {
+    if (scan.status === 'failed') {
       banner.className = 'webmcp-scan__banner is-bad';
       banner.textContent = scan.error || 'Scan failed. Check the URL and try again.';
+    } else if (scan.published) {
+      banner.className = 'webmcp-scan__banner is-ok';
+      banner.innerHTML = `${card.summary ? `${card.summary}<br/><br/>` : ''}Listed in the Influzer directory${scan.newsletter_subscribed ? ' · report emailed + newsletter signup saved' : ' · report emailed'}. <a href="/webmcp/sites/${scan.host}">View listing</a>`;
     } else {
       banner.className = 'webmcp-scan__banner';
-      banner.textContent = 'Scan finished, but no tools were detected — fix registration and rescan.';
+      banner.textContent =
+        card.summary || 'Scan finished, but no tools were detected — fix registration and rescan. A report was emailed if address was provided.';
     }
 
     const findings = document.getElementById('scanFindings');
@@ -90,6 +101,39 @@
       more.textContent = `+${result.tool_count - 12} more`;
       tools.appendChild(more);
     }
+
+    // Per-tool notes under chips
+    let notesEl = document.getElementById('scanToolNotes');
+    if (!notesEl) {
+      notesEl = document.createElement('ul');
+      notesEl.id = 'scanToolNotes';
+      notesEl.className = 'webmcp-scan__findings';
+      tools.insertAdjacentElement('afterend', notesEl);
+    }
+    notesEl.innerHTML = '';
+    (card.tool_notes || []).slice(0, 8).forEach((n) => {
+      const li = document.createElement('li');
+      li.dataset.tone = n.status === 'strong' ? 'good' : n.status === 'ok' ? 'warn' : 'bad';
+      const code = document.createElement('code');
+      code.textContent = n.name;
+      li.appendChild(code);
+      li.appendChild(document.createTextNode(` — ${n.headline}`));
+      notesEl.appendChild(li);
+    });
+
+    let nextEl = document.getElementById('scanNextActions');
+    if (!nextEl) {
+      nextEl = document.createElement('ol');
+      nextEl.id = 'scanNextActions';
+      nextEl.className = 'webmcp-scan__next';
+      notesEl.insertAdjacentElement('afterend', nextEl);
+    }
+    nextEl.innerHTML = '';
+    (card.next_actions || []).forEach((a) => {
+      const li = document.createElement('li');
+      li.textContent = a.text;
+      nextEl.appendChild(li);
+    });
 
     const actions = document.getElementById('scanReportActions');
     actions.innerHTML = '';
@@ -202,10 +246,18 @@
   }
 
   if (form) {
+    const urlInput = document.getElementById('scanUrl');
+    if (urlInput) {
+      urlInput.addEventListener('blur', () => {
+        const next = coerceHttpsUrl(urlInput.value);
+        if (next) urlInput.value = next;
+      });
+    }
     form.addEventListener('submit', (ev) => {
       ev.preventDefault();
       const email = document.getElementById('scanEmail').value.trim();
-      const url = document.getElementById('scanUrl').value.trim();
+      let url = coerceHttpsUrl(document.getElementById('scanUrl').value);
+      if (urlInput) urlInput.value = url;
       const relationship = document.getElementById('scanRelationship').value;
       const newsletter = document.getElementById('scanNewsletter').checked;
       const honey = form.querySelector('[name="company_website"]')?.value;

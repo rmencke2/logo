@@ -35,10 +35,21 @@ function isPrivateIp(ip) {
   return true;
 }
 
+function coerceHttpsUrl(input) {
+  let raw = String(input || '').trim();
+  if (!raw) return '';
+  // Strip accidental whitespace / wrapping quotes
+  raw = raw.replace(/^['"]|['"]$/g, '');
+  if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw)) {
+    raw = `https://${raw.replace(/^\/+/, '')}`;
+  }
+  return raw;
+}
+
 async function assertSafePublicUrl(input, { allowHttp = false } = {}) {
   let url;
   try {
-    url = new URL(String(input || '').trim());
+    url = new URL(coerceHttpsUrl(input));
   } catch {
     throw new Error('Invalid URL');
   }
@@ -104,6 +115,7 @@ function isSameOrigin(candidate, origin) {
 
 module.exports = {
   isPrivateIp,
+  coerceHttpsUrl,
   assertSafePublicUrl,
   isSameOrigin,
 };
