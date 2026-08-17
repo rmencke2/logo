@@ -10,7 +10,30 @@ const puppeteer = require('puppeteer-core');
 const { assertSafePublicUrl, isSameOrigin } = require('./ssrf');
 const { normalizeKind } = require('./normalize');
 
-const CHROME_PATH = process.env.WEBMCP_CHROME_PATH || '/usr/local/bin/google-chrome';
+const fs = require('fs');
+
+const CANDIDATE_CHROMES = [
+  process.env.WEBMCP_CHROME_PATH,
+  '/usr/local/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
+  '/usr/bin/google-chrome',
+  '/usr/bin/chromium',
+  '/usr/bin/chromium-browser',
+  '/snap/bin/chromium',
+].filter(Boolean);
+
+function resolveChromePath() {
+  for (const candidate of CANDIDATE_CHROMES) {
+    try {
+      if (candidate && fs.existsSync(candidate)) return candidate;
+    } catch {
+      /* ignore */
+    }
+  }
+  return CANDIDATE_CHROMES[0] || '/usr/bin/chromium';
+}
+
+const CHROME_PATH = resolveChromePath();
 const MAX_PAGES = Number(process.env.WEBMCP_SCAN_MAX_PAGES || 6);
 const PAGE_TIMEOUT_MS = Number(process.env.WEBMCP_SCAN_PAGE_TIMEOUT_MS || 25000);
 const SETTLE_MS = Number(process.env.WEBMCP_SCAN_SETTLE_MS || 1800);
