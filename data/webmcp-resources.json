@@ -1,6 +1,36 @@
 {
-  "generated_at": "2026-08-17T00:00:00.000Z",
+  "generated_at": "2026-08-17T18:58:00.000Z",
   "resources": [
+    {
+      "title": "webmachinelearning/webmcp (canonical standards repo)",
+      "description": "Primary source Influzer follows for the WebMCP standard — explainer, issues, PRs, and implementation-status.md. Our ecosystem page syncs from this repository daily.",
+      "resource_type": "specification",
+      "owner_name": "W3C Web Machine Learning CG",
+      "canonical_url": "https://github.com/webmachinelearning/webmcp",
+      "checked_at": "2026-08-17",
+      "sort_order": 1,
+      "published": true
+    },
+    {
+      "title": "WebMCP implementation status",
+      "description": "Browser support matrix maintained in the standards repo (Chrome/Edge origin trials, Brave experimental, Firefox/Safari positions).",
+      "resource_type": "specification",
+      "owner_name": "W3C Web Machine Learning CG",
+      "canonical_url": "https://github.com/webmachinelearning/webmcp/blob/main/implementation-status.md",
+      "checked_at": "2026-08-17",
+      "sort_order": 2,
+      "published": true
+    },
+    {
+      "title": "What Is WebMCP? How Clearly Exposed Tools Help Agents Navigate the Web",
+      "description": "Influzer explainer on declared tools, capability boundaries, and how WebMCP differs from MCP servers.",
+      "resource_type": "influzer_guide",
+      "owner_name": "Influzer.ai",
+      "canonical_url": "https://www.influzer.ai/insights/what-is-webmcp-agents-navigate-websites",
+      "checked_at": "2026-08-17",
+      "sort_order": 5,
+      "published": true
+    },
     {
       "title": "Chrome Developers — WebMCP",
       "description": "Official overview of WebMCP APIs, security gates, demos, and how to enable local testing.",
@@ -12,23 +42,13 @@
       "published": true
     },
     {
-      "title": "WebMCP GitHub repository",
-      "description": "Explainer, issues, and draft specification discussion for the Web Model Context Protocol.",
-      "resource_type": "specification",
-      "owner_name": "W3C Web Machine Learning CG",
-      "canonical_url": "https://github.com/webmachinelearning/webmcp",
+      "title": "webmcp-types (npm)",
+      "description": "TypeScript type definitions for WebMCP, referenced by the standards repository.",
+      "resource_type": "frameworks",
+      "owner_name": "WebMCP",
+      "canonical_url": "https://www.npmjs.com/package/webmcp-types",
       "checked_at": "2026-08-17",
-      "sort_order": 20,
-      "published": true
-    },
-    {
-      "title": "What Is WebMCP? How Clearly Exposed Tools Help Agents Navigate the Web",
-      "description": "Influzer explainer on declared tools, capability boundaries, and how WebMCP differs from MCP servers.",
-      "resource_type": "influzer_guide",
-      "owner_name": "Influzer.ai",
-      "canonical_url": "https://www.influzer.ai/insights/what-is-webmcp-agents-navigate-websites",
-      "checked_at": "2026-08-17",
-      "sort_order": 5,
+      "sort_order": 15,
       "published": true
     },
     {

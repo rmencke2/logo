@@ -85,4 +85,14 @@ Revert catalog JSON commits on `main`.
 ### Tests
 ```bash
 node scripts/test-webmcp-normalize.js
+node scripts/test-webmcp-standard.js
 ```
+
+### Follow the standards repo
+Influzer tracks [`webmachinelearning/webmcp`](https://github.com/webmachinelearning/webmcp) daily:
+
+```bash
+npm run refresh-webmcp-standard
+```
+
+Writes `data/webmcp-standard.json` (commits, repo metadata, parsed `implementation-status.md`) and refreshes browser entries in `data/webmcp-ecosystem.json`. Surfaced on `/webmcp/ecosystem` and `/api/webmcp/v1/standard`.

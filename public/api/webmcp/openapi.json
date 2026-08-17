@@ -50,6 +50,12 @@
         "parameters": [{ "name": "url", "in": "query", "required": true, "schema": { "type": "string" } }],
         "responses": { "200": { "description": "OK" }, "400": { "description": "url_required" } }
       }
+    },
+    "/api/webmcp/v1/standard": {
+      "get": {
+        "summary": "Latest snapshot of the tracked webmachinelearning/webmcp standards repository",
+        "responses": { "200": { "description": "OK" }, "404": { "description": "not_tracked_yet" } }
+      }
     }
   }
 }

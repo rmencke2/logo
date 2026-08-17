@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "checked_at": "2026-08-17T18:58:19.418Z",
+  "repo": {
+    "full_name": "webmachinelearning/webmcp",
+    "description": "🤖 WebMCP",
+    "html_url": "https://github.com/webmachinelearning/webmcp",
+    "homepage": "https://webmachinelearning.github.io/webmcp/",
+    "default_branch": "main",
+    "stars": 3035,
+    "forks": 196,
+    "open_issues": 104,
+    "pushed_at": "2026-08-17T18:54:44Z",
+    "updated_at": "2026-08-17T18:36:55Z",
+    "license": "NOASSERTION",
+    "head_sha": "a724ab1ddb7ea770f425934de4d9424e85599940",
+    "head_sha_short": "a724ab1"
+  },
+  "links": {
+    "github": "https://github.com/webmachinelearning/webmcp",
+    "homepage": "https://webmachinelearning.github.io/webmcp/",
+    "implementation_status": "https://github.com/webmachinelearning/webmcp/blob/main/implementation-status.md",
+    "explainer": "https://webmachinelearning.github.io/webmcp/",
+    "npm_types": "https://www.npmjs.com/package/webmcp-types",
+    "chrome_docs": "https://developer.chrome.com/docs/ai/webmcp"
+  },
+  "recent_commits": [
+    {
+      "sha": "a724ab1",
+      "full_sha": "a724ab1ddb7ea770f425934de4d9424e85599940",
+      "message": "Accept an object in executeTool() instead of a JSON string (#246)",
+      "author": "François Beaufort",
+      "date": "2026-08-17T17:23:56Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/a724ab1ddb7ea770f425934de4d9424e85599940"
+    },
+    {
+      "sha": "3aafb9c",
+      "full_sha": "3aafb9cdde39ecdc7e5b7b9cbdcfe7722a6afcde",
+      "message": "Fix small bugs in tool registration, notification, and observation (#244)",
+      "author": "Yifan Chen",
+      "date": "2026-08-17T17:15:02Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/3aafb9cdde39ecdc7e5b7b9cbdcfe7722a6afcde"
+    },
+    {
+      "sha": "7abca24",
+      "full_sha": "7abca24665c438a47e6770a3d1b470ca5e965764",
+      "message": "Clarify origin scope in example",
+      "author": "Dominic Farolino",
+      "date": "2026-08-17T15:27:18Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/7abca24665c438a47e6770a3d1b470ca5e965764"
+    },
+    {
+      "sha": "384e110",
+      "full_sha": "384e11010a690c3605e9556f63732e5ea19165b7",
+      "message": "Change `RegisteredTool#inputSchema` type from `DOMString` to `object` (#241)",
+      "author": "François Beaufort",
+      "date": "2026-08-14T15:17:50Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/384e11010a690c3605e9556f63732e5ea19165b7"
+    },
+    {
+      "sha": "f303c45",
+      "full_sha": "f303c458754a5dbdacf47c72dab7f177bef884db",
+      "message": "Spec the `executeTool()` API (#226)",
+      "author": "Dominic Farolino",
+      "date": "2026-08-14T15:06:12Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/f303c458754a5dbdacf47c72dab7f177bef884db"
+    },
+    {
+      "sha": "7aa8235",
+      "full_sha": "7aa8235b23be553f5ce40904883201a267297007",
+      "message": "Validate `exposedTo` before registering `AbortSignal` algorithm (#240)",
+      "author": "François Beaufort",
+      "date": "2026-08-14T14:47:37Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/7aa8235b23be553f5ce40904883201a267297007"
+    },
+    {
+      "sha": "c3a63b2",
+      "full_sha": "c3a63b22341b439ed66cd7d3d71367abccdb0554",
+      "message": "Add implementation-status.md to track browser implementation status (#235)",
+      "author": "François Beaufort",
+      "date": "2026-08-12T18:22:05Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/c3a63b22341b439ed66cd7d3d71367abccdb0554"
+    },
+    {
+      "sha": "3678f64",
+      "full_sha": "3678f646fc0605ef37a76007c5567d31b6989e2c",
+      "message": "Normalize `this` access and signal access (#228)",
+      "author": "François Beaufort",
+      "date": "2026-07-28T17:28:12Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/3678f646fc0605ef37a76007c5567d31b6989e2c"
+    },
+    {
+      "sha": "5801678",
+      "full_sha": "58016782fa379c25bc9584433f29127a9855647b",
+      "message": "Spec the `getTools()` API (#223)",
+      "author": "Dominic Farolino",
+      "date": "2026-07-21T19:22:55Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/58016782fa379c25bc9584433f29127a9855647b"
+    },
+    {
+      "sha": "d29b8d7",
+      "full_sha": "d29b8d7d8d134749aca49bfd18222fe5d8671553",
+      "message": "Move `annotations` into a separate object, in preparation for `getTools()` (#225)",
+      "author": "Dominic Farolino",
+      "date": "2026-07-21T17:44:45Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/d29b8d7d8d134749aca49bfd18222fe5d8671553"
+    },
+    {
+      "sha": "1aece7c",
+      "full_sha": "1aece7c5258dbd17d4e50a7753132790c8d7925b",
+      "message": "Clarify tool visibility algorithm",
+      "author": "Dominic Farolino",
+      "date": "2026-07-20T14:24:29Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/1aece7c5258dbd17d4e50a7753132790c8d7925b"
+    },
+    {
+      "sha": "8aecdb8",
+      "full_sha": "8aecdb862eec32b065a462b5a5e39937dcbc3dc1",
+      "message": "Add test suite link (#221)",
+      "author": "François Beaufort",
+      "date": "2026-07-10T12:03:46Z",
+      "url": "https://github.com/webmachinelearning/webmcp/commit/8aecdb862eec32b065a462b5a5e39937dcbc3dc1"
+    }
+  ],
+  "implementation_browsers": [
+    {
+      "name": "Brave",
+      "slug": "brave",
+      "group": "browsers",
+      "support_status": "partial",
+      "version_or_flag": "Experimental",
+      "summary": "Experimental support is added to Leo AI chat. * Issue 55232",
+      "evidence_url": "https://brave.com/leo/",
+      "links": [
+        {
+          "label": "Leo AI chat",
+          "url": "https://brave.com/leo/"
+        },
+        {
+          "label": "Issue 55232",
+          "url": "https://github.com/brave/brave-browser/issues/55232"
+        }
+      ],
+      "source": "implementation-status.md"
+    },
+    {
+      "name": "Chrome",
+      "slug": "chrome",
+      "group": "browsers",
+      "support_status": "origin_trial",
+      "version_or_flag": "Chrome 149 origin trial",
+      "summary": "An Origin Trial is live in Chrome 149. * Early preview program * Intent to Experiment * Chrome Status entry",
+      "evidence_url": "https://developer.chrome.com/blog/ai-webmcp-origin-trial",
+      "links": [
+        {
+          "label": "Origin Trial",
+          "url": "https://developer.chrome.com/blog/ai-webmcp-origin-trial"
+        },
+        {
+          "label": "Early preview program",
+          "url": "https://developer.chrome.com/docs/ai/join-epp"
+        },
+        {
+          "label": "Intent to Experiment",
+          "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/gmYffo5WOE8/m/OJxuQRP3AAAJ"
+        },
+        {
+          "label": "Chrome Status entry",
+          "url": "https://chromestatus.com/feature/5117755740913664"
+        }
+      ],
+      "source": "implementation-status.md"
+    },
+    {
+      "name": "Edge",
+      "slug": "edge",
+      "group": "browsers",
+      "support_status": "origin_trial",
+      "version_or_flag": "Edge 150 origin trial",
+      "summary": "An Origin Trial is live in Edge 150. Refer to Chrome implementation status for platform support.",
+      "evidence_url": "https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials/0b76fe60-b266-458e-a285-04e375c0c31a",
+      "links": [
+        {
+          "label": "Origin Trial",
+          "url": "https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials/0b76fe60-b266-458e-a285-04e375c0c31a"
+        }
+      ],
+      "source": "implementation-status.md"
+    },
+    {
+      "name": "Firefox",
+      "slug": "firefox",
+      "group": "browsers",
+      "support_status": "planned",
+      "version_or_flag": null,
+      "summary": "* Mozilla standards-positions * Bugzilla entry",
+      "evidence_url": "https://github.com/mozilla/standards-positions/issues/1412",
+      "links": [
+        {
+          "label": "Mozilla standards-positions",
+          "url": "https://github.com/mozilla/standards-positions/issues/1412"
+        },
+        {
+          "label": "Bugzilla entry",
+          "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2018306"
+        }
+      ],
+      "source": "implementation-status.md"
+    },
+    {
+      "name": "Safari",
+      "slug": "safari",
+      "group": "browsers",
+      "support_status": "planned",
+      "version_or_flag": null,
+      "summary": "* WebKit standards-positions",
+      "evidence_url": "https://github.com/WebKit/standards-positions/issues/670",
+      "links": [
+        {
+          "label": "WebKit standards-positions",
+          "url": "https://github.com/WebKit/standards-positions/issues/670"
+        }
+      ],
+      "source": "implementation-status.md"
+    }
+  ],
+  "readme_excerpt": "# WebMCP 🧪\n\nWebMCP lets developers expose web application functionality—either JavaScript functions or HTML `<form>` elements—as \"tools\" with natural language descriptions and structured schemas, designed for AI agent ingestion. These tools can be invoked by AI agents, including those built into the browser, hosted in iframes, or running in extensions to actuate web content that was traditionally designed for human interaction.\n\nTypeScript type definitions for WebMCP are available in the [`webmcp-types`](https://www.npmjs.com/package/webmcp-types) npm package.\n\nSee [Implementation Status](implementation-status.md) for browser support.\n\n## Background and Motivation\n\nThe web platform is the world's largest gateway to information and capabilities. Today, user experiences rely on visual layouts, mouse and touch interactions, and visual cues to communicate functionality and state, but as AI agents become prevalent, the potential for even greater user value is within reach. The motivation of WebMCP is to provide a lightweight way to adapt web content for use by AI agents.\n"
+}
