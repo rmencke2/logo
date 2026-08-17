@@ -17,6 +17,7 @@ const {
   ensureScanTables,
 } = require('./scanStore');
 const { subscribeToNewsletter } = require('../newsletterService');
+const { sendWebmcpScanReportEmail } = require('../../emailService');
 
 const RATE_LIMIT_PER_HOUR = Number(process.env.WEBMCP_SCAN_RATE_LIMIT || 5);
 const running = new Set();
@@ -171,6 +172,24 @@ async function runScanJob(id, { url, email, newsletterOptIn, clearCache }) {
       newsletter,
       error: null,
     });
+
+    if (email) {
+      try {
+        await sendWebmcpScanReportEmail({
+          to: email,
+          host: result.host,
+          url: result.canonical_url || url,
+          scorecard,
+          result,
+          published,
+          directoryUrl: result.host ? `https://www.influzer.ai/webmcp/sites/${result.host}` : null,
+          scanUrl: `https://www.influzer.ai/webmcp/submit?scan=${id}`,
+          demoUrl: 'https://www.influzer.ai/webmcp/demo',
+        });
+      } catch (err) {
+        console.warn('WebMCP report email failed:', err.message);
+      }
+    }
   } catch (err) {
     await finishScan(id, {
       status: 'failed',

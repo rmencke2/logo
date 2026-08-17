@@ -15,6 +15,14 @@ async function main() {
   await assert.rejects(() => assertSafePublicUrl('https://localhost/'), /Local/);
   await assert.rejects(() => assertSafePublicUrl('https://127.0.0.1/'), /Private|private|not allowed/);
 
+  const { coerceHttpsUrl } = require('../services/webmcp/ssrf');
+  assert.equal(coerceHttpsUrl('www.influzer.ai'), 'https://www.influzer.ai');
+  assert.equal(coerceHttpsUrl('influzer.ai/webmcp'), 'https://influzer.ai/webmcp');
+  assert.equal(coerceHttpsUrl('https://www.influzer.ai'), 'https://www.influzer.ai');
+  const coerced = await assertSafePublicUrl('www.example.com');
+  assert.equal(coerced.host, 'example.com');
+  assert.ok(coerced.href.startsWith('https://'));
+
   const empty = buildScorecard({ tools: [], pagesScanned: 1, crashes: 0, host: 'example.com' });
   assert.ok(empty.score < 50);
   assert.ok(empty.findings.some((f) => /No WebMCP tools/i.test(f.text)));
