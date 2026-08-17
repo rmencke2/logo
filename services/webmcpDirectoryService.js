@@ -7,6 +7,8 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeHost, normalizeHttpsUrl, slugifyCategory } = require('./webmcp/normalize');
+const { startWebmcpScan, publicScanView, getScan } = require('./webmcp/scanService');
+const { ensureScanTables } = require('./webmcp/scanStore');
 
 const ROOT = path.join(__dirname, '..');
 const SITES_PATH = path.join(ROOT, 'data', 'webmcp-sites.json');
@@ -357,67 +359,56 @@ function registerWebmcpRoutes(app) {
 
   app.get('/webmcp/submit', (req, res) => {
     res.render('webmcp-submit', renderLocals(req, {
-      title: 'Submit a WebMCP Website | Influzer.ai',
-      description: 'Suggest a website for the Influzer WebMCP Directory. Influzer review required before publication.',
+      title: 'Scan & list your WebMCP website | Influzer.ai',
+      description:
+        'Scan your site for WebMCP tools, get an Influzer scorecard, and list in the directory. Email required — we’ll also add you to the Influzer newsletter.',
       canonicalUrl: `${SITE_BASE}/webmcp/submit`,
-      submitted: false,
-      error: null,
+      initialScanId: req.query.scan || null,
     }));
   });
 
-  app.post('/webmcp/submit', expressJsonOptional(), async (req, res) => {
-    // Phase 1: lead capture only (no scanner). Persist to submissions JSONL.
+  app.get('/webmcp/submit/:scanId', (req, res) => {
+    res.redirect(302, `/webmcp/submit?scan=${encodeURIComponent(req.params.scanId)}`);
+  });
+
+  // JSON scan API (primary path for the live UI)
+  app.post('/api/webmcp/v1/scans', async (req, res) => {
     try {
+      await ensureScanTables();
       const body = req.body || {};
       if (body.company_website) {
-        // honeypot
-        return res.redirect('/webmcp/submit?ok=1');
+        return res.json({ ok: true, ignored: true });
       }
       const url = String(body.url || '').trim();
       const email = String(body.email || '').trim().toLowerCase();
-      const relationship = String(body.relationship || 'user').slice(0, 40);
-      const notes = String(body.notes || '').slice(0, 2000);
-      const host = normalizeHost(url);
-      if (!host || !email.includes('@')) {
-        return res.status(400).render('webmcp-submit', renderLocals(req, {
-          title: 'Submit a WebMCP Website | Influzer.ai',
-          description: 'Suggest a website for the Influzer WebMCP Directory.',
-          canonicalUrl: `${SITE_BASE}/webmcp/submit`,
-          submitted: false,
-          error: 'Please provide a valid public website URL and email.',
-        }));
+      const relationship = String(body.relationship || 'owner').slice(0, 40);
+      const newsletterOptIn = body.newsletter !== false && body.newsletter !== '0';
+      if (!url || !email.includes('@')) {
+        return res.status(400).json({ ok: false, error: 'url_and_email_required' });
       }
-      const dir = path.join(ROOT, 'data', 'webmcp-submissions');
-      fs.mkdirSync(dir, { recursive: true });
-      const row = {
-        id: `${Date.now()}-${host}`,
-        normalized_url: normalizeHttpsUrl(url, host),
-        host,
+      const scan = await startWebmcpScan({
+        url,
         email,
         relationship,
-        notes_private: notes,
-        review_status: 'pending',
-        created_at: new Date().toISOString(),
-        ip: req.ip,
-      };
-      fs.appendFileSync(path.join(dir, 'submissions.jsonl'), `${JSON.stringify(row)}\n`);
-      return res.render('webmcp-submit', renderLocals(req, {
-        title: 'Submission received | Influzer.ai',
-        description: 'Thanks for your WebMCP submission.',
-        canonicalUrl: `${SITE_BASE}/webmcp/submit`,
-        submitted: true,
-        error: null,
-        submissionHost: host,
-      }));
+        ip: req.ip || 'unknown',
+        newsletterOptIn,
+        clearCache: clearWebmcpCache,
+      });
+      res.status(202).json({ ok: true, scan: publicScanView(scan) });
     } catch (err) {
-      console.error('WebMCP submit failed:', err);
-      return res.status(500).render('webmcp-submit', renderLocals(req, {
-        title: 'Submit a WebMCP Website | Influzer.ai',
-        description: 'Suggest a website for the Influzer WebMCP Directory.',
-        canonicalUrl: `${SITE_BASE}/webmcp/submit`,
-        submitted: false,
-        error: 'Something went wrong saving your submission. Please try again.',
-      }));
+      const status = err.code === 'RATE_LIMIT' ? 429 : 400;
+      res.status(status).json({ ok: false, error: err.code || 'scan_start_failed', message: err.message });
+    }
+  });
+
+  app.get('/api/webmcp/v1/scans/:id', async (req, res) => {
+    try {
+      const scan = await getScan(req.params.id);
+      if (!scan) return res.status(404).json({ ok: false, error: 'not_found' });
+      res.set('Cache-Control', 'no-store');
+      res.json({ ok: true, scan: publicScanView(scan) });
+    } catch (err) {
+      res.status(500).json({ ok: false, error: err.message });
     }
   });
 
@@ -434,6 +425,7 @@ function registerWebmcpRoutes(app) {
       site,
       selectedTool: selected || null,
       related: relatedSites(site),
+      scorecard: site.scorecard || null,
     }));
   });
 

@@ -8,53 +8,101 @@
     <link rel="canonical" href="<%= canonicalUrl %>" />
     <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
     <%- include('partials/favicon-links') %>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
   </head>
   <body class="registry-page webmcp-page">
     <%- include('partials/home-header') %>
-    <main class="dir-shell webmcp-prose" style="padding:2rem 1rem;max-width:640px;">
+    <main class="dir-shell webmcp-scan" style="padding:2rem 1rem 3rem;max-width:720px;">
       <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
-      <h1>Submit a WebMCP website</h1>
-      <% if (submitted) { %>
-        <p>Thanks — we received <strong><%= submissionHost %></strong> for review. New listings are not published automatically.</p>
-        <p><a class="webmcp-btn webmcp-btn--primary" href="/webmcp">Back to directory</a></p>
-      <% } else { %>
-        <p>Suggest a public website that exposes WebMCP tools. Influzer review is required before publication. Automated scanning ships in a later phase.</p>
-        <% if (error) { %><p style="color:#9f1239;"><%= error %></p><% } %>
-        <form method="post" action="/webmcp/submit" style="display:grid;gap:0.85rem;">
-          <label>Website URL
-            <input required name="url" type="url" placeholder="https://example.com" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;" />
-          </label>
-          <label>Email (for notifications — not shown publicly)
-            <input required name="email" type="email" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;" />
-          </label>
-          <label>Relationship
-            <select name="relationship" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;">
-              <option value="owner">Site owner</option>
-              <option value="developer">Developer</option>
-              <option value="user" selected>User</option>
-              <option value="researcher">Researcher</option>
-            </select>
-          </label>
-          <label>Notes (optional, private)
-            <textarea name="notes" rows="4" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:10px;"></textarea>
-          </label>
-          <label style="display:flex;gap:0.5rem;align-items:flex-start;font-size:0.9rem;">
-            <input required type="checkbox" name="consent" value="1" />
-            <span>I may request a public scan of this URL and understand submitter email is private.</span>
-          </label>
-          <div style="position:absolute;left:-10000px;" aria-hidden="true">
-            <label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+      <header class="webmcp-scan__hero">
+        <p class="dir-hero__eyebrow">Scan-gated listing</p>
+        <h1>Add your WebMCP site</h1>
+        <p class="webmcp-prose">
+          We scan your public pages for <code>document.modelContext</code> tools, grade the implementation, and list verified sites in the Influzer directory.
+          Your email is required so we can share the report — and subscribe you to the Influzer newsletter (unsubscribe anytime).
+        </p>
+      </header>
+
+      <form id="webmcpScanForm" class="webmcp-scan__form" novalidate>
+        <label>
+          Your email
+          <input id="scanEmail" name="email" type="email" required autocomplete="email" placeholder="you@company.com" />
+        </label>
+        <label>
+          Your site URL
+          <input id="scanUrl" name="url" type="url" required placeholder="https://www.example.com" />
+        </label>
+        <label>
+          Relationship
+          <select id="scanRelationship" name="relationship">
+            <option value="owner" selected>Site owner</option>
+            <option value="developer">Developer</option>
+            <option value="user">User</option>
+            <option value="researcher">Researcher</option>
+          </select>
+        </label>
+        <label class="webmcp-scan__check">
+          <input id="scanNewsletter" name="newsletter" type="checkbox" checked />
+          <span>Email me the scan report and subscribe me to the Influzer newsletter (community updates, new WebMCP/MCP listings). Unsubscribe anytime.</span>
+        </label>
+        <div class="webmcp-scan__hp" aria-hidden="true">
+          <label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <button class="webmcp-btn webmcp-btn--primary" id="scanSubmitBtn" type="submit">Request listing / start scan</button>
+        <p class="webmcp-note" id="scanFormNote">Usually finishes in under 60 seconds. We do not execute third-party act/transact tools.</p>
+        <p class="webmcp-scan__error" id="scanFormError" hidden></p>
+      </form>
+
+      <section class="webmcp-scan__live" id="scanLive" hidden>
+        <div class="webmcp-scan__live-top">
+          <div>
+            <p class="webmcp-scan__live-host" id="scanLiveHost">—</p>
+            <p class="webmcp-scan__live-msg" id="scanLiveMsg">Starting…</p>
           </div>
-          <button class="webmcp-btn webmcp-btn--primary" type="submit">Submit for review</button>
-        </form>
-        <p class="webmcp-note">We do not execute third-party WebMCP tools from Influzer. See our <a href="/privacy">privacy policy</a>.</p>
-      <% } %>
+          <span class="webmcp-scan__timer" id="scanLiveTimer">0s</span>
+        </div>
+        <div class="webmcp-scan__progress">
+          <div class="webmcp-scan__progress-label">
+            <span>Scanning pages</span>
+            <span id="scanLivePages">0 / 6</span>
+          </div>
+          <div class="webmcp-scan__bar"><span id="scanLiveBar"></span></div>
+        </div>
+        <div class="webmcp-scan__stats">
+          <div><b id="scanStatTools">0</b><span>Tools detected</span></div>
+          <div><b id="scanStatPages">0</b><span>Pages scanned</span></div>
+          <div><b id="scanStatCrashes">0</b><span>Crashes</span></div>
+        </div>
+        <p class="webmcp-note">We’ll keep your email on the Influzer newsletter so you get directory and community updates.</p>
+      </section>
+
+      <section class="webmcp-scan__report" id="scanReport" hidden>
+        <div class="webmcp-scan__grade">
+          <div class="webmcp-scan__grade-mark" id="scanGrade">—</div>
+          <div>
+            <p class="webmcp-scan__grade-label" id="scanGradeLabel">—</p>
+            <p class="webmcp-note" id="scanGradeMeta">—</p>
+          </div>
+        </div>
+        <div class="webmcp-scan__banner" id="scanBanner"></div>
+        <ul class="webmcp-scan__findings" id="scanFindings"></ul>
+        <div class="webmcp-scan__tools" id="scanTools"></div>
+        <div class="webmcp-cta-row" id="scanReportActions"></div>
+        <section class="webmcp-scan__journeys" id="scanJourneys" hidden>
+          <h2>Suggested journeys</h2>
+          <p class="webmcp-note">Start with one of these intents when testing with an agent.</p>
+          <ul id="scanJourneyList"></ul>
+        </section>
+      </section>
     </main>
     <%- include('partials/registry-footer') %>
+    <script>
+      window.__WEBMCP_SCAN_INITIAL__ = <%= JSON.stringify(initialScanId || null) %>;
+    </script>
     <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/webmcp-scan.js?v=<%= assetVersion %>" defer></script>
     <%- include('partials/influzer-webmcp-script') %>
   </body>
 </html>

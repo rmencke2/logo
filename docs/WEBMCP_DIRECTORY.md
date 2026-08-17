@@ -86,6 +86,7 @@ Revert catalog JSON commits on `main`.
 ```bash
 node scripts/test-webmcp-normalize.js
 node scripts/test-influzer-webmcp.js
+node scripts/test-webmcp-scan.js
 ```
 
 ## 8. Influzer first-party WebMCP
@@ -104,3 +105,16 @@ Influzer.ai itself exposes WebMCP tools via `document.modelContext.registerTool(
 Browsers without native WebMCP get a **local demo polyfill** on Influzer pages so `getTools()` / `executeTool()` still work for testing. Native `document.modelContext` is preferred when present.
 
 Catalog refresh always re-injects the Influzer showcase from `data/influzer-webmcp-tools.json` so upstream imports cannot drop it.
+
+## 9. Scan-gated listing (Phase 1.5)
+
+`/webmcp/submit` runs a live Chromium scan:
+
+1. Capture email (+ newsletter opt-in, default on) via `subscribeToNewsletter(..., 'webmcp-submit')`
+2. Headless Chrome (`puppeteer-core`) loads up to 6 pages and captures `registerTool()` calls
+3. Influzer scorecard + suggested journeys
+4. Auto-publish when ≥1 tool is found (`verification_status: verified`, provenance `influzer-scan`)
+
+APIs: `POST /api/webmcp/v1/scans`, `GET /api/webmcp/v1/scans/:id`  
+Store: SQLite `webmcp_scans` · SSRF https-only + private IP DNS block · Rate limit 5 scans/IP/hour
+
