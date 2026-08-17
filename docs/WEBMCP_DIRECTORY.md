@@ -111,7 +111,7 @@ Catalog refresh always re-injects the Influzer showcase from `data/influzer-webm
 `/webmcp/submit` runs a live Chromium scan:
 
 1. Capture email (+ newsletter opt-in, default on) via `subscribeToNewsletter(..., 'webmcp-submit')`
-2. Headless Chrome (`puppeteer-core`) loads up to 6 pages and captures `registerTool()` calls
+2. Headless Chrome (`puppeteer-core`) loads up to 6 pages (starting at the submitted path), installs an early `document`/`navigator.modelContext` polyfill, and captures `registerTool()` plus declarative `toolname` forms
 3. Influzer scorecard + suggested journeys
 4. Auto-publish when ≥1 tool is found (`verification_status: verified`, provenance `influzer-scan`)
 

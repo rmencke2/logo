@@ -48,6 +48,8 @@ function inferKind(name, description) {
 }
 
 function captureBootstrap() {
+  // Returned string is injected via evaluateOnNewDocument(captureBootstrap()) —
+  // passing the function itself only returns the string in-page and installs nothing.
   return `(() => {
     if (window.__INFLUZER_WEBMCP_SCAN__) return;
     window.__INFLUZER_WEBMCP_SCAN__ = { tools: [], native: false };
@@ -63,6 +65,7 @@ function captureBootstrap() {
       });
     }
     function install(target) {
+      if (!target || typeof target !== 'object') return target;
       const original = target.registerTool ? target.registerTool.bind(target) : null;
       target.registerTool = async function(def, options) {
         remember(def);
@@ -83,16 +86,20 @@ function captureBootstrap() {
           throw new Error('executeTool disabled during Influzer scan');
         };
       }
+      return target;
     }
-    try {
-      const existing = document.modelContext;
-      if (existing && typeof existing.registerTool === 'function') {
-        window.__INFLUZER_WEBMCP_SCAN__.native = true;
-        install(existing);
-      } else {
-        const poly = {};
-        install(poly);
-        Object.defineProperty(document, 'modelContext', {
+    function ensurePolyfill(owner, prop) {
+      try {
+        const existing = owner[prop];
+        if (existing && typeof existing.registerTool === 'function') {
+          window.__INFLUZER_WEBMCP_SCAN__.native = true;
+          install(existing);
+          return;
+        }
+      } catch (_) { /* ignore */ }
+      const poly = install({});
+      try {
+        Object.defineProperty(owner, prop, {
           configurable: true,
           enumerable: true,
           get() { return poly; },
@@ -100,7 +107,14 @@ function captureBootstrap() {
             if (v && typeof v === 'object') install(v);
           },
         });
+      } catch (_) {
+        try { owner[prop] = poly; } catch (__) { /* ignore */ }
       }
+    }
+    try {
+      ensurePolyfill(document, 'modelContext');
+      // Legacy / compatibility entry point still used by some demos
+      ensurePolyfill(navigator, 'modelContext');
     } catch (err) {
       window.__INFLUZER_WEBMCP_SCAN__.bootError = String(err && err.message || err);
     }
@@ -122,6 +136,22 @@ async function launchBrowser() {
   });
 }
 
+function normalizePagePath(href, origin) {
+  try {
+    const u = new URL(href, origin);
+    if (u.origin !== origin) return null;
+    u.hash = '';
+    // Skip assets
+    if (/\.(css|js|mjs|map|png|jpe?g|gif|svg|webp|ico|pdf|zip|woff2?)$/i.test(u.pathname)) {
+      return null;
+    }
+    if (u.pathname.startsWith('/api/')) return null;
+    return `${u.pathname}${u.search}` || '/';
+  } catch {
+    return null;
+  }
+}
+
 async function collectFromPage(page) {
   return page.evaluate(async () => {
     const scan = window.__INFLUZER_WEBMCP_SCAN__ || { tools: [], native: false };
@@ -133,8 +163,63 @@ async function collectFromPage(page) {
     } catch {
       fromApi = [];
     }
+    try {
+      if (
+        (!fromApi || !fromApi.length) &&
+        navigator.modelContext &&
+        typeof navigator.modelContext.getTools === 'function'
+      ) {
+        fromApi = await navigator.modelContext.getTools();
+      }
+    } catch {
+      /* ignore */
+    }
+
+    // Declarative WebMCP: annotated forms
+    const declarative = [];
+    const nodes = document.querySelectorAll(
+      'form[toolname], form[toolName], form[tooldescription], form[toolDescription], [toolname], [toolName]',
+    );
+    for (const el of nodes) {
+      const name =
+        el.getAttribute('toolname') ||
+        el.getAttribute('toolName') ||
+        el.getAttribute('data-toolname');
+      if (!name) continue;
+      const description =
+        el.getAttribute('tooldescription') ||
+        el.getAttribute('toolDescription') ||
+        el.getAttribute('data-tooldescription') ||
+        '';
+      const properties = {};
+      const required = [];
+      for (const control of el.querySelectorAll('input[name], select[name], textarea[name]')) {
+        const key = control.getAttribute('name');
+        if (!key || properties[key]) continue;
+        const type =
+          control.tagName === 'SELECT'
+            ? 'string'
+            : control.getAttribute('type') === 'number'
+              ? 'number'
+              : control.getAttribute('type') === 'checkbox'
+                ? 'boolean'
+                : 'string';
+        properties[key] = {
+          type,
+          description: control.getAttribute('aria-label') || control.getAttribute('placeholder') || '',
+        };
+        if (control.required) required.push(key);
+      }
+      declarative.push({
+        name: String(name),
+        description: String(description),
+        inputSchema: { type: 'object', properties, required, additionalProperties: false },
+        outputSchema: null,
+      });
+    }
+
     const merged = new Map();
-    for (const t of [...(scan.tools || []), ...(fromApi || [])]) {
+    for (const t of [...(scan.tools || []), ...(fromApi || []), ...declarative]) {
       if (!t?.name) continue;
       merged.set(t.name, {
         name: t.name,
@@ -155,24 +240,9 @@ async function collectFromPage(page) {
       anchors,
       native: Boolean(scan.native),
       bootError: scan.bootError || null,
+      bootInstalled: Boolean(window.__INFLUZER_WEBMCP_SCAN__),
     };
   });
-}
-
-function normalizePagePath(href, origin) {
-  try {
-    const u = new URL(href, origin);
-    if (u.origin !== origin) return null;
-    u.hash = '';
-    // Skip assets
-    if (/\.(css|js|mjs|map|png|jpe?g|gif|svg|webp|ico|pdf|zip|woff2?)$/i.test(u.pathname)) {
-      return null;
-    }
-    if (u.pathname.startsWith('/api/')) return null;
-    return `${u.pathname}${u.search}` || '/';
-  } catch {
-    return null;
-  }
 }
 
 function prioritizePaths(paths) {
@@ -186,8 +256,18 @@ function prioritizePaths(paths) {
     '/docs',
     '/tools',
   ];
-  const set = new Set(paths);
+  // Preserve caller order; only reorder paths already present.
+  const set = new Set(paths.filter(Boolean));
   const ordered = [];
+  for (const p of paths) {
+    if (!p || !set.has(p)) continue;
+    if (ordered.includes(p)) continue;
+    // Keep non-preferred (deep demo URLs) ahead of generic seeds.
+    if (!preferred.includes(p)) {
+      ordered.push(p);
+      set.delete(p);
+    }
+  }
   for (const p of preferred) {
     if (set.has(p)) {
       ordered.push(p);
@@ -225,13 +305,27 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
   try {
     browser = await launchBrowser();
     const page = await browser.newPage();
+    // Use a normal Chrome UA — some sites gate scripts on bot-looking agents.
     await page.setUserAgent(
-      'InfluzerWebMcpScanner/1.0 (+https://www.influzer.ai/webmcp/about; research; not executing tools)',
+      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 InfluzerWebMcpScanner/1.1 (+https://www.influzer.ai/webmcp/about)',
     );
     await page.setViewport({ width: 1280, height: 800 });
-    await page.evaluateOnNewDocument(captureBootstrap);
+    // IMPORTANT: pass the script string, not the factory function.
+    await page.evaluateOnNewDocument(captureBootstrap());
 
-    const queue = prioritizePaths(['/']);
+    // Start at the submitted path (demo hubs are often deep), then crawl.
+    const startPath =
+      normalizePagePath(safe.href, safe.origin) ||
+      (() => {
+        try {
+          const u = new URL(safe.href);
+          return `${u.pathname}${u.search}` || '/';
+        } catch {
+          return '/';
+        }
+      })();
+    const seed = startPath === '/' ? ['/'] : [startPath, '/'];
+    const queue = prioritizePaths(seed);
     const seen = new Set();
 
     while (queue.length && pages.length < MAX_PAGES) {
@@ -259,9 +353,15 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
           timeout: PAGE_TIMEOUT_MS,
         });
         await new Promise((r) => setTimeout(r, SETTLE_MS));
-        await new Promise((r) => setTimeout(r, 500));
 
+        // Poll briefly — SPAs often register tools after hydration.
         pageResult = await collectFromPage(page);
+        if (!(pageResult.tools || []).length) {
+          for (let i = 0; i < 3 && !(pageResult.tools || []).length; i += 1) {
+            await new Promise((r) => setTimeout(r, 700));
+            pageResult = await collectFromPage(page);
+          }
+        }
 
         const finalUrl = page.url();
         if (!isSameOrigin(finalUrl, safe.origin)) {
@@ -301,11 +401,13 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
         for (const href of pageResult.anchors || []) {
           const p = normalizePagePath(href, safe.origin);
           if (p && !seen.has(p) && queue.length + seen.size < MAX_PAGES * 3) {
-            queue.push(p);
+            // Prefer paths that look like WebMCP demos / tool hosts
+            if (/webmcp|theme|demo|tool|agent|mcp/i.test(p)) queue.unshift(p);
+            else queue.push(p);
           }
         }
 
-        // Seed useful first-party paths even if not linked
+        // Seed useful first-party paths even if not linked (after discovered links)
         if (pages.length === 0) {
           for (const extra of ['/webmcp', '/webmcp/demo', '/mcp', '/insights', '/about']) {
             if (!seen.has(extra) && !queue.includes(extra)) queue.push(extra);
