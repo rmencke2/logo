@@ -6,13 +6,18 @@ const crypto = require('crypto');
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
-const { getAllBlogPosts, findBlogPostBySlug } = require('./staticService');
 const { getMcpServersForNewsletter } = require('./mcpCatalogChangelogService');
 const {
   sendBlogNewsletterEmail,
   buildBlogNewsletterHtml,
   isEmailConfigured,
 } = require('../emailService');
+
+// Lazy-load blog helpers — top-level require('./staticService') is circular via
+// staticService → webmcpDirectoryService → scanService → newsletterService.
+function getBlogHelpers() {
+  return require('./staticService');
+}
 
 const MAX_EMAIL_LENGTH = 254;
 const SEND_DELAY_MS = 250;
@@ -359,6 +364,7 @@ async function sendBlogNewsletter({
   confirmResend = false,
   sentByUserId = null,
 }) {
+  const { findBlogPostBySlug } = getBlogHelpers();
   const post = findBlogPostBySlug(slug);
   if (!post) {
     throw new Error('Blog post not found');
@@ -521,6 +527,7 @@ async function initializeNewsletterService(app) {
 
   app.get('/admin/api/newsletter/blog-posts', requireAuth, requireAdmin, async (req, res) => {
     try {
+      const { getAllBlogPosts } = getBlogHelpers();
       const posts = getAllBlogPosts().slice(0, 40);
       const sends = await listRecentSends(100);
       const sendBySlug = new Map(sends.map((send) => [send.blog_slug, send]));
@@ -554,6 +561,7 @@ async function initializeNewsletterService(app) {
     try {
       const slug = String(req.query.slug || '').trim();
       const customIntro = String(req.query.intro || '').trim().slice(0, 2000);
+      const { findBlogPostBySlug } = getBlogHelpers();
       const post = findBlogPostBySlug(slug);
       if (!post) {
         return res.status(404).json({ error: 'Blog post not found' });
