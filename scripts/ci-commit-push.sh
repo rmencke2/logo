@@ -39,6 +39,20 @@ abort_rebase_if_needed() {
   fi
 }
 
+# npm ci / build steps often dirty tracked paths (notably committed node_modules
+# bins). Rebase refuses to start with unstaged changes — discard that noise
+# after our payload commit so push retries can proceed.
+clean_working_tree_for_rebase() {
+  if [[ -z "$(git status --porcelain)" ]]; then
+    return 0
+  fi
+  echo "Working tree dirty before rebase; discarding unstaged noise:"
+  git status --porcelain | head -n 50
+  git reset --hard HEAD
+  # Untracked files rarely block rebase; leave them unless a path we commit is
+  # about to be overwritten (handled by rebase itself).
+}
+
 resolve_rebase_preferring_ours() {
   # During rebase, "theirs" is the commit being replayed (this job's output).
   local path
@@ -59,9 +73,11 @@ resolve_rebase_preferring_ours() {
 
 for attempt in $(seq 1 "${MAX_ATTEMPTS}"); do
   echo "==> Push attempt ${attempt}/${MAX_ATTEMPTS} to ${REMOTE_REF}"
+  clean_working_tree_for_rebase
   git fetch origin "${BRANCH}"
 
-  if git rebase "${REMOTE_REF}"; then
+  # --autostash covers any race where the tree dirties again between clean and rebase
+  if git rebase --autostash "${REMOTE_REF}"; then
     if git push origin "HEAD:${BRANCH}"; then
       echo "Push succeeded on attempt ${attempt}."
       exit 0
