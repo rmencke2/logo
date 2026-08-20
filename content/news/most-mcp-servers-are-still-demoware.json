@@ -1,0 +1,12 @@
+{
+  "slug": "most-mcp-servers-are-still-demoware",
+  "title": "Most MCP servers are still demoware",
+  "date": "2026-08-20",
+  "excerpt": "Influzer’s registry has ~6,000 MCP servers — and only about 7% with indexed tools. Here is the 30-second filter before you install another one.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Directory", "Tools", "Curation", "Developers", "Governance"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/mcp",
+  "relatedInsightSlug": "most-mcp-servers-are-still-demoware",
+  "contentHtml": "<p>Directory scale is no longer the story. <strong>Quality is.</strong> Influzer indexes around <strong>~6,000</strong> MCP servers; after daily validation, only about <strong>~7%</strong> show indexed tools — and far fewer look ready for a shared agent stack.</p><p><strong>30-second filter</strong> (skip on any hard fail):</p><ul><li><strong>Transport</strong> — labeled stdio or HTTPS remote that matches your client lane</li><li><strong>Tools</strong> — real <code>tools/list</code> verbs for one clear job (not <code>hello</code>/<code>echo</code>)</li><li><strong>Auth</strong> — revoke path (env / OAuth / IdP) — not a personal PAT in git</li><li><strong>Docs</strong> — a second engineer can install without Slack archaeology</li></ul><p><strong>Why it matters:</strong> agents call capabilities, not GitHub stars. README theater wastes weeks and creates shadow tool access. Start from the <a href=\"/mcp\">Top 100</a>, shortlist with <a href=\"/mcp/discovery/setup\">Discovery</a>, then read the full playbook: <a href=\"/insights/most-mcp-servers-are-still-demoware\">Most MCP servers are still demoware</a>.</p>"
+}
