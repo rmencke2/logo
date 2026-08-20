@@ -6,7 +6,7 @@ tags:
   - content-pipeline
 status: backlog
 created: 2026-07-20
-updated: 2026-08-05
+updated: 2026-08-20
 ---
 
 # Influzer MCP Briefs — idea backlog
@@ -17,7 +17,14 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 ---
 
-## Shipped this batch (2026-08-05)
+## Shipped this batch (2026-08-20)
+
+| Date | Slug | Title | Status |
+|------|------|-------|--------|
+| 2026-08-20 | `most-mcp-servers-are-still-demoware` | Most MCP servers are still demoware | ✅ Drafted JSON |
+| 2026-08-20 | Insight: `most-mcp-servers-are-still-demoware` | Most MCP Servers Are Still Demoware — How to Spot Production-Ready in 30 Seconds | ✅ Featured Insight |
+
+## Shipped previous batch (2026-08-05)
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
@@ -71,8 +78,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 #### 4. Most MCP servers are still demoware
 - **Angle:** Huge catalog, thin tool quality — how to spot production-ready in 30 seconds (transport, tool count, auth, docs).
 - **Source:** Influzer.ai
-- **Pairs with:** `mcp-server-audit-seven-questions-before-you-connect-another-tool`
-- **Status:** ⬜todo
+- **Pairs with:** Insight `most-mcp-servers-are-still-demoware` · `mcp-server-audit-seven-questions-before-you-connect-another-tool`
+- **Status:** ✅ shipped 2026-08-20 (`most-mcp-servers-are-still-demoware`)
 
 ### Client / workflow
 
