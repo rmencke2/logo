@@ -43,6 +43,38 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+/**
+ * Block disposable / probe / localhost addresses from the newsletter list.
+ * These came in via WebMCP scan tests and caused bounce floods on broadcast.
+ */
+function isEligibleNewsletterEmail(email) {
+  const value = sanitizeEmail(email);
+  if (!isValidEmail(value)) return false;
+
+  const [local = '', domain = ''] = value.split('@');
+  const blockedDomains = new Set([
+    'example.com',
+    'example.org',
+    'example.net',
+    'example.edu',
+    'localhost',
+    'invalid',
+    'test',
+    'localdomain',
+  ]);
+  if (blockedDomains.has(domain)) return false;
+  if (domain.endsWith('.example') || domain.endsWith('.test') || domain.endsWith('.invalid')) {
+    return false;
+  }
+  if (domain === 'influzer.ai' && /(^|[.+_-])(test|probe|scan|verify|coerce|dummy)([.+_-]|$)/.test(local)) {
+    return false;
+  }
+  if (/^(rate-limit|scanner-verify|prod-scan-test|url-coerce-test|test[+._-])/i.test(local)) {
+    return false;
+  }
+  return true;
+}
+
 function getBaseUrl() {
   return (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
 }
@@ -163,6 +195,9 @@ async function subscribeToNewsletter(email, source, ipAddress) {
   const sanitized = sanitizeEmail(email);
   if (!isValidEmail(sanitized)) {
     return { success: false, reason: 'invalid_email' };
+  }
+  if (!isEligibleNewsletterEmail(sanitized)) {
+    return { success: false, reason: 'ineligible_email' };
   }
 
   const db = await getDatabase();
@@ -335,7 +370,13 @@ async function sendNewsletterToRecipients({
   let failed = 0;
   const errors = [];
 
+  let skipped = 0;
+
   for (const recipient of recipients) {
+    if (!isEligibleNewsletterEmail(recipient.email)) {
+      skipped += 1;
+      continue;
+    }
     try {
       const token = await ensureSubscriberToken(recipient);
       await sendBlogNewsletterEmail({
@@ -354,7 +395,7 @@ async function sendNewsletterToRecipients({
     }
   }
 
-  return { sent, failed, errors };
+  return { sent, failed, skipped, errors };
 }
 
 async function sendBlogNewsletter({
@@ -426,6 +467,7 @@ async function sendBlogNewsletter({
     title: post.title,
     sent: result.sent,
     failed: result.failed,
+    skipped: result.skipped || 0,
     totalRecipients: recipients.length,
     errors: result.errors.slice(0, 10),
     resent: Boolean(previousSend),
@@ -630,4 +672,5 @@ module.exports = {
   subscribeToNewsletter,
   countActiveSubscribers,
   listActiveSubscribers,
+  isEligibleNewsletterEmail,
 };
