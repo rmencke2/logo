@@ -1,34 +1,90 @@
 {
-  "generated_at": "2026-08-17T06:48:12.315Z",
+  "generated_at": "2026-08-21T06:33:34.143Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-08-16T06:44:17.309Z",
+  "catalog_generated_at": "2026-08-17T06:48:12.387Z",
   "summary": {
     "checked": 306,
     "skipped_manual": 109,
     "skipped_no_endpoint": 5593,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 304,
-    "tools_changed": 0,
+    "unchanged": 302,
+    "tools_changed": 2,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 1,
-    "live_failed": 1,
+    "auth_required_kept": 0,
+    "live_failed": 2,
     "live_ok": 0,
     "smithery_fallback": 5899,
     "errors": 0,
-    "tools_added_total": 0,
-    "tools_removed_total": 0,
+    "tools_added_total": 5,
+    "tools_removed_total": 2,
     "catalog_total": 6008,
     "http_endpoints": 306,
     "with_tools_before": 411,
     "with_tools_after": 411
   },
-  "changes": [],
+  "changes": [
+    {
+      "slug": "entia-entity-verification",
+      "name": "entity-verification",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 13,
+      "afterToolCount": 12,
+      "added": [
+        "get_entity_home_projection"
+      ],
+      "removed": [
+        "ai_ready_profile",
+        "lookup_by_domain"
+      ],
+      "changed": [
+        "search_entities",
+        "get_competitors",
+        "get_entia_home"
+      ]
+    },
+    {
+      "slug": "kindrat86-mcp-deal-flow-signal",
+      "name": "GitDealFlow Signal",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 8,
+      "afterToolCount": 12,
+      "added": [
+        "get_diligence_dossier",
+        "predict_funding",
+        "shortlist_signals",
+        "compare_signals"
+      ],
+      "removed": [],
+      "changed": [
+        "get_trending_startups",
+        "search_startups_by_sector",
+        "get_deep_signal"
+      ]
+    }
+  ],
   "errors": [
     {
       "slug": "synapselayer-synapse-protocol",
+      "source": "smithery",
+      "status": "live_failed_kept",
+      "validationMethod": "live_failed+smithery_fallback",
+      "error": "Server not found",
+      "liveProbe": {
+        "status": "error",
+        "reason": "Server not found",
+        "httpStatus": 404,
+        "serverInfo": null
+      }
+    },
+    {
+      "slug": "mrabi-google-flights-mcp",
       "source": "smithery",
       "status": "live_failed_kept",
       "validationMethod": "live_failed+smithery_fallback",
