@@ -92,7 +92,17 @@ function initializeAdminService(app) {
     try {
       const db = await getDatabase();
       const user = await db.getUserById(req.user.id);
-      res.json({ isAdmin: !!user?.is_admin });
+      const hasSecret = Boolean(process.env.TURNSTILE_SECRET_KEY);
+      const hasSiteKey = Boolean(process.env.TURNSTILE_SITE_KEY);
+      res.json({
+        isAdmin: !!user?.is_admin,
+        turnstile: {
+          configured: hasSecret && hasSiteKey,
+          secret: hasSecret,
+          siteKey: hasSiteKey,
+          production: process.env.NODE_ENV === 'production',
+        },
+      });
     } catch (err) {
       res.status(500).json({ error: 'Failed to check admin status' });
     }
