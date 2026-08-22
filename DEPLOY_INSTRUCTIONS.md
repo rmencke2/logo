@@ -118,7 +118,7 @@ Or:
 npm run deploy:server
 ```
 
-**What the script does:** `git fetch` → `git reset --hard origin/main` (with `--server`) → `npm ci --omit=dev` (with `--build-from-source` on server for glibc 2.36) → verify native deps → `pm2 restart logo-generator` → `pm2 save`.
+**What the script does:** `git fetch` → `git reset --hard origin/main` (re-execs on `--server`) → `npm ci --omit=dev` → `npm rebuild sqlite3 --build-from-source` on prod → verify native deps → `pm2 restart logo-generator` → `pm2 save`.
 
 ### sqlite3@6 on Debian 12 (glibc 2.36)
 
@@ -128,7 +128,7 @@ Lightsail prod runs **Debian 12** with **glibc 2.36**. The `sqlite3@6` npm packa
 /lib/x86_64-linux-gnu/libm.so.6: version `GLIBC_2.38' not found
 ```
 
-**Fix (already in `scripts/deploy.sh` for `--server` mode):** `npm ci --build-from-source` compiles sqlite3 against the host libc (~2 minutes on deploy). Post-install, `node scripts/verify-native-deps.js` must pass before PM2 restarts.
+**Fix (already in `scripts/deploy.sh` for `--server` mode):** after reset, the script re-execs so the new revision's install steps run, then `npm rebuild sqlite3 --build-from-source` compiles against host libc (~2 minutes). Post-install, `node scripts/verify-native-deps.js` must pass before PM2 restarts.
 
 **Manual check on server:**
 
@@ -138,7 +138,7 @@ node scripts/verify-native-deps.js
 # sqlite3 6.x OK (lib 3.x)
 ```
 
-**Do not** run plain `npm ci` on prod without `--build-from-source` after upgrading to sqlite3@6 — the app will crash on startup.
+**Do not** use global `npm ci --build-from-source` on prod — it forces canvas and other native modules to compile. Only sqlite3 is rebuilt from source.
 
 When the host OS moves to glibc 2.38+ (e.g. Debian 13), prebuilds will work and build-from-source becomes optional.
 
