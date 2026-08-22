@@ -403,6 +403,7 @@
     <div class="tab-content" id="commentsTab">
       <div class="section">
         <h2>Blog Comment Moderation</h2>
+        <p id="turnstileStatusBanner" style="font-size:13px;margin:-8px 0 16px;color:#8e8e93;">Checking Turnstile status…</p>
         <div class="search-bar">
           <input type="text" id="commentSlugFilter" placeholder="Filter by blog slug (optional)">
           <select id="commentStatusFilter" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
@@ -818,6 +819,29 @@
         .replace(/'/g, '&#39;');
     }
 
+    function escapeJsString(value) {
+      return String(value ?? '')
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/\r/g, '\\r')
+        .replace(/\n/g, '\\n')
+        .replace(/</g, '\\u003c');
+    }
+
+    let turnstileStatus = null;
+
+    function renderTurnstileStatusBanner() {
+      const el = document.getElementById('turnstileStatusBanner');
+      if (!el || !turnstileStatus) return;
+      if (turnstileStatus.configured) {
+        el.innerHTML = '<span style="color:#10a37f;">Turnstile active — new blog comments require verification before submission.</span>';
+      } else if (turnstileStatus.production) {
+        el.innerHTML = '<span style="color:#ef4444;">Turnstile not configured — blog comments are blocked in production until TURNSTILE_SECRET_KEY and TURNSTILE_SITE_KEY are set.</span>';
+      } else {
+        el.innerHTML = '<span style="color:#fbbf24;">Turnstile not configured (dev mode — comments allowed without CAPTCHA).</span>';
+      }
+    }
+
     // Check authentication and admin status on load
     async function checkAuth() {
       try {
@@ -839,7 +863,9 @@
           return;
         }
 
-        const { isAdmin } = await adminRes.json();
+        const { isAdmin, turnstile } = await adminRes.json();
+        turnstileStatus = turnstile || null;
+        renderTurnstileStatusBanner();
         if (!isAdmin) {
           alert('Access denied. Admin privileges required.');
           window.location.href = '/';
@@ -935,13 +961,13 @@
           html += `
             <tr>
               <td>${user.id}</td>
-              <td>${user.email || '-'}</td>
-              <td>${user.name || '-'}</td>
-              <td><span class="badge ${user.subscription_tier === 'premium' ? 'premium' : 'free'}">${user.subscription_tier || 'free'}</span></td>
+              <td>${escapeHtml(user.email || '-')}</td>
+              <td>${escapeHtml(user.name || '-')}</td>
+              <td><span class="badge ${user.subscription_tier === 'premium' ? 'premium' : 'free'}">${escapeHtml(user.subscription_tier || 'free')}</span></td>
               <td>${statusBadges.join(' ')}</td>
               <td>${created}</td>
               <td>
-                <button class="btn btn-sm btn-primary" onclick="viewUser(${user.id})">View</button>
+                <button class="btn btn-sm btn-primary" onclick="viewUser(${Number(user.id)})">View</button>
                 ${user.is_blocked 
                   ? `<button class="btn btn-sm btn-secondary" onclick="unblockUser(${user.id})">Unblock</button>`
                   : `<button class="btn btn-sm btn-danger" onclick="openBlockUserModal(${user.id})">Block</button>`
@@ -954,7 +980,7 @@
         html += '</tbody></table>';
         container.innerHTML = html;
       } catch (err) {
-        container.innerHTML = `<div class="error">Error loading users: ${err.message}</div>`;
+        container.innerHTML = `<div class="error">Error loading users: ${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -995,13 +1021,12 @@
             <tbody>
         `;
         comments.forEach((c) => {
-          const safeComment = String(c.comment || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
           html += `
             <tr>
               <td>${c.id}</td>
-              <td>${c.slug}</td>
-              <td>${c.name}</td>
-              <td style="max-width:360px;white-space:normal;">${safeComment}</td>
+              <td>${escapeHtml(c.slug)}</td>
+              <td>${escapeHtml(c.name)}</td>
+              <td style="max-width:360px;white-space:normal;">${escapeHtml(c.comment || '')}</td>
               <td>${c.approved ? '<span class="badge admin">Approved</span>' : '<span class="badge blocked">Hidden</span>'}</td>
               <td>${new Date(c.created_at).toLocaleString()}</td>
               <td>
@@ -1016,7 +1041,7 @@
         html += '</tbody></table>';
         container.innerHTML = html;
       } catch (err) {
-        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="error">Error: ${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -1271,9 +1296,9 @@
           html += `
             <tr>
               <td>${subscriber.id}</td>
-              <td>${subscriber.email}</td>
-              <td>${subscriber.source || 'site'}</td>
-              <td>${subscriber.status || 'active'}</td>
+              <td>${escapeHtml(subscriber.email)}</td>
+              <td>${escapeHtml(subscriber.source || 'site')}</td>
+              <td>${escapeHtml(subscriber.status || 'active')}</td>
               <td>${new Date(subscriber.created_at).toLocaleString()}</td>
             </tr>
           `;
@@ -1281,7 +1306,7 @@
         html += '</tbody></table>';
         container.innerHTML = html;
       } catch (err) {
-        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="error">Error: ${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -1330,12 +1355,12 @@
         let html = `
           <div style="margin-bottom: 24px;">
             <h4 style="color: #fff; margin-bottom: 12px;">User Information</h4>
-            <p><strong>Email:</strong> ${user.email || '-'}</p>
-            <p><strong>Name:</strong> ${user.name || '-'}</p>
-            <p><strong>Tier:</strong> ${user.subscription_tier || 'free'}</p>
+            <p><strong>Email:</strong> ${escapeHtml(user.email || '-')}</p>
+            <p><strong>Name:</strong> ${escapeHtml(user.name || '-')}</p>
+            <p><strong>Tier:</strong> ${escapeHtml(user.subscription_tier || 'free')}</p>
             <p><strong>Verified:</strong> ${user.email_verified ? 'Yes' : 'No'}</p>
             <p><strong>Admin:</strong> ${user.is_admin ? 'Yes' : 'No'}</p>
-            <p><strong>Blocked:</strong> ${user.is_blocked ? `Yes - ${user.blocked_reason || 'No reason'}` : 'No'}</p>
+            <p><strong>Blocked:</strong> ${user.is_blocked ? `Yes - ${escapeHtml(user.blocked_reason || 'No reason')}` : 'No'}</p>
             <p><strong>Created:</strong> ${new Date(user.created_at).toLocaleString()}</p>
             <p><strong>Last Login:</strong> ${user.last_login ? new Date(user.last_login).toLocaleString() : 'Never'}</p>
           </div>
@@ -1343,12 +1368,12 @@
           <div style="margin-bottom: 24px;">
             <h4 style="color: #fff; margin-bottom: 12px;">Custom Limits</h4>
             ${customLimits 
-              ? `<p>Daily: ${customLimits.daily_limit}, Hourly: ${customLimits.hourly_limit}</p>
-                 ${customLimits.notes ? `<p><strong>Notes:</strong> ${customLimits.notes}</p>` : ''}
-                 <button class="btn btn-sm btn-secondary" onclick="removeCustomLimits(${userId})">Remove Custom Limits</button>`
+              ? `<p>Daily: ${Number(customLimits.daily_limit)}, Hourly: ${Number(customLimits.hourly_limit)}</p>
+                 ${customLimits.notes ? `<p><strong>Notes:</strong> ${escapeHtml(customLimits.notes)}</p>` : ''}
+                 <button class="btn btn-sm btn-secondary" onclick="removeCustomLimits(${Number(userId)})">Remove Custom Limits</button>`
               : '<p>No custom limits set</p>'
             }
-            <button class="btn btn-sm btn-primary" onclick="openLimitsModal(${userId})" style="margin-top: 8px;">Set Custom Limits</button>
+            <button class="btn btn-sm btn-primary" onclick="openLimitsModal(${Number(userId)})" style="margin-top: 8px;">Set Custom Limits</button>
           </div>
           
           <div>
@@ -1362,7 +1387,7 @@
           activity.forEach(item => {
             html += `
               <div class="activity-item">
-                <strong>${item.endpoint}</strong> - ${item.ip_address} - ${new Date(item.created_at).toLocaleString()}
+                <strong>${escapeHtml(item.endpoint)}</strong> - ${escapeHtml(item.ip_address)} - ${new Date(item.created_at).toLocaleString()}
               </div>
             `;
           });
@@ -1386,7 +1411,7 @@
         
         content.innerHTML = html;
       } catch (err) {
-        content.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+        content.innerHTML = `<div class="error">Error: ${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -1519,7 +1544,7 @@
         
         let html = `
           <div style="margin-bottom: 24px;">
-            <h4 style="color: #fff; margin-bottom: 12px;">IP Address: ${ipAddress}</h4>
+            <h4 style="color: #fff; margin-bottom: 12px;">IP Address: ${escapeHtml(ipAddress)}</h4>
             <p><strong>Blocked:</strong> ${data.isBlocked ? 'Yes' : 'No'}</p>
             ${data.abuseRecord ? `<p><strong>Violations:</strong> ${data.abuseRecord.count}</p>` : ''}
           </div>
@@ -1535,7 +1560,7 @@
           data.activity.forEach(item => {
             html += `
               <div class="activity-item">
-                <strong>${item.endpoint}</strong> - User: ${item.user_id || 'Anonymous'} - ${new Date(item.created_at).toLocaleString()}
+                <strong>${escapeHtml(item.endpoint)}</strong> - User: ${escapeHtml(item.user_id || 'Anonymous')} - ${new Date(item.created_at).toLocaleString()}
               </div>
             `;
           });
@@ -1548,15 +1573,15 @@
           <div class="form-actions" style="margin-top: 24px;">
             <button class="btn btn-secondary" onclick="closeModal('userModal')">Close</button>
             ${data.isBlocked 
-              ? `<button class="btn btn-primary" onclick="unblockIP('${ipAddress}')">Unblock IP</button>`
-              : `<button class="btn btn-danger" onclick="openBlockIPModal('${ipAddress}')">Block IP</button>`
+              ? `<button class="btn btn-primary" onclick="unblockIP('${escapeJsString(ipAddress)}')">Unblock IP</button>`
+              : `<button class="btn btn-danger" onclick="openBlockIPModal('${escapeJsString(ipAddress)}')">Block IP</button>`
             }
           </div>
         `;
         
         content.innerHTML = html;
       } catch (err) {
-        content.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+        content.innerHTML = `<div class="error">Error: ${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -1644,8 +1669,8 @@
           
           html += `
             <tr>
-              <td>${record.identifier}</td>
-              <td>${record.identifier_type}</td>
+              <td>${escapeHtml(record.identifier)}</td>
+              <td>${escapeHtml(record.identifier_type)}</td>
               <td>${record.count}</td>
               <td>${new Date(record.last_occurrence).toLocaleString()}</td>
               <td>${isBlocked ? `<span class="badge blocked">${blockedUntil}</span>` : blockedUntil}</td>
@@ -1656,7 +1681,7 @@
         html += '</tbody></table>';
         container.innerHTML = html;
       } catch (err) {
-        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="error">Error: ${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -1676,10 +1701,10 @@
           data.activity.topUsers.forEach(user => {
             html += `
               <tr>
-                <td>${user.name || '-'}</td>
-                <td>${user.email || '-'}</td>
+                <td>${escapeHtml(user.name || '-')}</td>
+                <td>${escapeHtml(user.email || '-')}</td>
                 <td>${user.activity_count || 0}</td>
-                <td><button class="btn btn-sm btn-primary" onclick="viewUser(${user.id})">View</button></td>
+                <td><button class="btn btn-sm btn-primary" onclick="viewUser(${Number(user.id)})">View</button></td>
               </tr>
             `;
           });
@@ -1696,10 +1721,10 @@
           data.activity.topIPs.forEach(ip => {
             html += `
               <tr>
-                <td>${ip.ip_address}</td>
+                <td>${escapeHtml(ip.ip_address)}</td>
                 <td>${ip.activity_count}</td>
                 <td>${ip.unique_users || 0}</td>
-                <td><button class="btn btn-sm btn-primary" onclick="viewIP('${ip.ip_address}')">View</button></td>
+                <td><button class="btn btn-sm btn-primary" onclick="viewIP('${escapeJsString(ip.ip_address)}')">View</button></td>
               </tr>
             `;
           });
@@ -1722,8 +1747,9 @@
     });
 
     function mcpStatusBadge(status) {
-      const s = status || 'pending';
-      return `<span class="badge ${s}">${s}</span>`;
+      const raw = String(status || 'pending');
+      const safeClass = raw.replace(/[^a-z0-9_-]/gi, '') || 'pending';
+      return `<span class="badge ${safeClass}">${escapeHtml(raw)}</span>`;
     }
 
     function toolsToText(tools) {
@@ -1905,7 +1931,7 @@
             <td>${escapeHtml(row.submitterName || row.submitterEmail || '')}</td>
             <td>${row.toolCount || 0}</td>
             <td>${mcpStatusBadge(row.reviewStatus)}</td>
-            <td><button class="btn btn-sm btn-secondary" onclick="openMcpReview('${escapeHtml(row.id)}')">Review</button></td>
+            <td><button class="btn btn-sm btn-secondary" onclick="openMcpReview('${escapeJsString(row.id)}')">Review</button></td>
           </tr>`;
         }
         html += '</tbody></table>';
@@ -2145,7 +2171,7 @@
             <td>${escapeHtml(row.transport || '')}</td>
             <td>${row.toolCount || 0}</td>
             <td>${sourceLabel}</td>
-            <td><button class="btn btn-sm btn-secondary" onclick="openMcpCatalogEdit('${escapeHtml(row.slug)}')">Edit</button></td>
+            <td><button class="btn btn-sm btn-secondary" onclick="openMcpCatalogEdit('${escapeJsString(row.slug)}')">Edit</button></td>
           </tr>`;
         }
         html += '</tbody></table>';

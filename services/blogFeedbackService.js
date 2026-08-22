@@ -425,6 +425,22 @@ async function initializeBlogFeedbackService(app) {
     }
   });
 
+  const hasTurnstileSecret = Boolean(process.env.TURNSTILE_SECRET_KEY);
+  const hasTurnstileSiteKey = Boolean(process.env.TURNSTILE_SITE_KEY);
+  if (process.env.NODE_ENV === 'production') {
+    if (hasTurnstileSecret && hasTurnstileSiteKey) {
+      console.log('✅ Blog comments: Cloudflare Turnstile enabled');
+    } else {
+      console.warn(
+        '⚠️  Blog comments: Turnstile not fully configured — new comments will be rejected in production until TURNSTILE_SECRET_KEY and TURNSTILE_SITE_KEY are set',
+      );
+    }
+  } else if (hasTurnstileSecret && hasTurnstileSiteKey) {
+    console.log('✅ Blog comments: Cloudflare Turnstile enabled');
+  } else {
+    console.log('ℹ️  Blog comments: Turnstile not configured (dev mode allows comments without CAPTCHA)');
+  }
+
   console.log('Blog feedback service initialized');
 }
 
