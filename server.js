@@ -25,7 +25,7 @@ const { initializeNewsletterService } = require('./services/newsletterService');
 const { initializeOtherNewsService } = require('./services/otherNewsService');
 const { initializeMcpSubmissionService } = require('./services/mcpSubmissionService');
 const { registerWebmcpRoutes } = require('./services/webmcpDirectoryService');
-const { isEmailConfigured, getTransporter } = require('./emailService');
+const { isEmailConfigured, isResendConfigured, getTransporter } = require('./emailService');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -54,7 +54,12 @@ const PORT = process.env.PORT || 4000;
     // 3d. MCP submission API (page route registered in staticService before /mcp/:slug)
     initializeMcpSubmissionService(app);
     if (isEmailConfigured()) {
-      getTransporter();
+      if (isResendConfigured()) {
+        console.log('✅ Email: Resend configured (newsletter + transactional)');
+      } else {
+        getTransporter();
+        console.log('✅ Email: SMTP/Gmail transport ready');
+      }
       console.log('✅ MCP submission notifications: email enabled');
     } else {
       console.warn('⚠️  MCP submission notifications: email NOT configured — submissions save to disk only');
