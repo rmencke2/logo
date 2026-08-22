@@ -3,15 +3,24 @@
 // ================================
 
 const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 let transporter;
 let transporterMode = 'unknown';
+let resendClient;
 
 function normalizeEmailPass(pass) {
   return String(pass || '').replace(/\s/g, '');
 }
 
+function isResendConfigured() {
+  return process.env.EMAIL_SERVICE === 'resend' && Boolean(process.env.RESEND_API_KEY);
+}
+
 function isEmailConfigured() {
+  if (isResendConfigured()) {
+    return true;
+  }
   if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     return true;
   }
@@ -19,6 +28,45 @@ function isEmailConfigured() {
     return true;
   }
   return false;
+}
+
+function getResendClient() {
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
+
+async function deliverViaResend(mailOptions) {
+  const toList = Array.isArray(mailOptions.to) ? mailOptions.to : [mailOptions.to];
+  const payload = {
+    from: mailOptions.from,
+    to: toList.filter(Boolean),
+    subject: mailOptions.subject,
+    html: mailOptions.html,
+    text: mailOptions.text,
+  };
+  if (mailOptions.replyTo) {
+    payload.reply_to = mailOptions.replyTo;
+  }
+  if (mailOptions.headers && Object.keys(mailOptions.headers).length) {
+    payload.headers = mailOptions.headers;
+  }
+
+  const { data, error } = await getResendClient().emails.send(payload);
+  if (error) {
+    throw new Error(error.message || 'Resend send failed');
+  }
+  return { messageId: data?.id || null, provider: 'resend' };
+}
+
+async function deliverEmail(mailOptions) {
+  if (isResendConfigured()) {
+    transporterMode = 'resend';
+    return deliverViaResend(mailOptions);
+  }
+  const info = await getTransporter().sendMail(mailOptions);
+  return { messageId: info.messageId, provider: transporterMode };
 }
 
 // Create transporter (supports multiple email providers)
@@ -54,6 +102,7 @@ function createTransporter() {
   // Development: console transporter (logs emails instead of sending)
   console.log('⚠️  WARNING: No email configuration found!');
   console.log('⚠️  Email service requires one of:');
+  console.log('   - EMAIL_SERVICE=resend + RESEND_API_KEY (+ EMAIL_FROM)');
   console.log('   - EMAIL_SERVICE=gmail + EMAIL_USER + EMAIL_PASS');
   console.log('   - SMTP_HOST + SMTP_USER + SMTP_PASS');
   console.log('⚠️  Using console transporter (emails will be logged, not sent)');
@@ -78,11 +127,28 @@ function resetTransporter() {
 }
 
 function getFromAddress() {
-  let fromAddress = process.env.EMAIL_FROM || 'noreply@logogenerator.com';
-  if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER) {
-    fromAddress = process.env.EMAIL_USER;
+  if (process.env.EMAIL_FROM) {
+    return process.env.EMAIL_FROM;
   }
-  return fromAddress;
+  if (isResendConfigured()) {
+    return 'Influzer <noreply@influzer.ai>';
+  }
+  if (process.env.EMAIL_SERVICE === 'gmail' && process.env.EMAIL_USER) {
+    return process.env.EMAIL_USER;
+  }
+  return 'noreply@logogenerator.com';
+}
+
+function getNewsletterFromAddress() {
+  return (
+    process.env.NEWSLETTER_FROM ||
+    process.env.EMAIL_FROM ||
+    'Influzer Insights <insights@influzer.ai>'
+  );
+}
+
+function getNewsletterReplyTo() {
+  return process.env.NEWSLETTER_REPLY_TO || process.env.MCP_SUBMISSION_EMAIL || undefined;
 }
 
 // Send verification email
@@ -136,7 +202,7 @@ async function sendVerificationEmail(email, token, name) {
   };
 
   try {
-    const info = await getTransporter().sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     if (info.messageId) {
       console.log('✅ Verification email sent successfully');
       console.log('   From:', fromAddress);
@@ -214,7 +280,7 @@ async function sendPasswordResetEmail(email, token, name) {
   };
 
   try {
-    const info = await getTransporter().sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     console.log('✅ Password reset email sent:', info.messageId || 'logged to console');
     return { success: true, messageId: info.messageId };
   } catch (error) {
@@ -245,8 +311,12 @@ function formatSubmissionField(label, value) {
 function ensureMcpEmailTransportReady() {
   if (!isEmailConfigured()) {
     throw new Error(
-      'Email is not configured on the server (set EMAIL_SERVICE=gmail, EMAIL_USER, EMAIL_PASS in .env and restart PM2).',
+      'Email is not configured on the server (set EMAIL_SERVICE=resend + RESEND_API_KEY, or gmail/SMTP vars in .env and restart PM2).',
     );
+  }
+  if (isResendConfigured()) {
+    transporterMode = 'resend';
+    return;
   }
   if (transporterMode === 'console') {
     resetTransporter();
@@ -330,7 +400,7 @@ async function sendMcpSubmissionEmail(submission) {
   };
 
   try {
-    const info = await getTransporter().sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     console.log('✅ MCP submission email sent');
     console.log('   Mode:', transporterMode);
     console.log('   From:', fromAddress);
@@ -400,7 +470,7 @@ async function sendMcpFeedbackEmail({ submission, note }) {
   };
 
   try {
-    const info = await getTransporter().sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     console.log('✅ MCP feedback email sent to submitter');
     console.log('   To:', to);
     console.log('   Message ID:', info.messageId || '(none)');
@@ -471,7 +541,7 @@ async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
   };
 
   try {
-    const info = await getTransporter().sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     console.log('✅ MCP approval email sent to submitter');
     console.log('   To:', to);
     console.log('   Listing:', listingUrl);
@@ -609,7 +679,7 @@ async function sendBlogNewsletterEmail({
 }) {
   ensureMcpEmailTransportReady();
 
-  const fromAddress = getFromAddress();
+  const fromAddress = getNewsletterFromAddress();
   const subject = `New on Influzer Insights: ${post.title}`;
   const html = buildBlogNewsletterHtml({
     post,
@@ -630,6 +700,7 @@ async function sendBlogNewsletterEmail({
   const mailOptions = {
     from: fromAddress,
     to,
+    replyTo: getNewsletterReplyTo(),
     subject,
     html,
     text,
@@ -638,8 +709,8 @@ async function sendBlogNewsletterEmail({
     },
   };
 
-  const info = await getTransporter().sendMail(mailOptions);
-  return { success: true, messageId: info.messageId, to };
+  const info = await deliverEmail(mailOptions);
+  return { success: true, messageId: info.messageId, to, provider: info.provider };
 }
 
 function starsHtml(count) {
@@ -925,7 +996,7 @@ async function sendWebmcpScanReportEmail({
   };
 
   try {
-    const info = await getTransporter().sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     return { success: true, messageId: info.messageId };
   } catch (err) {
     console.error('WebMCP scan report email failed:', err.message);
@@ -944,6 +1015,10 @@ module.exports = {
   buildWebmcpScanReportHtml,
   buildBlogNewsletterHtml,
   isEmailConfigured,
+  isResendConfigured,
+  getFromAddress,
+  getNewsletterFromAddress,
+  deliverEmail,
   getTransporter,
   resetTransporter,
 };
