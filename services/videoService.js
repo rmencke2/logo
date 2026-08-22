@@ -61,10 +61,11 @@ function initializeVideoService(app) {
 
   // Page routes served by staticService (EJS + shared site header)
 
-  // Convert AVI to MP4 endpoint (no auth required - auth only for download)
+  // Convert AVI to MP4 endpoint (requires authentication)
   app.post(
     '/convert-avi-to-mp4',
     trackService('avi-to-mp4'),
+    requireAuth,
     abuseProtectionMiddleware,
     upload.single('video'),
     async (req, res) => {
@@ -217,10 +218,11 @@ function initializeVideoService(app) {
     },
   );
 
-  // Extract video metadata endpoint (no auth required - auth only for download)
+  // Extract video metadata endpoint (requires authentication)
   app.post(
     '/extract-video-metadata',
     trackService('video-metadata'),
+    requireAuth,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
     async (req, res) => {
@@ -498,12 +500,20 @@ function initializeVideoService(app) {
     },
   );
 
-  // Serve generated videos
-  app.use('/generated_video', express.static(videoOutputDir, {
-    maxAge: '1d',
-    etag: true,
-    lastModified: true,
-  }));
+  // Serve generated videos (authenticated download only)
+  app.get('/generated_video/:filename', requireAuth, (req, res) => {
+    const filename = path.basename(String(req.params.filename || ''));
+    if (!filename || filename !== req.params.filename) {
+      return res.status(400).json({ error: 'Invalid filename' });
+    }
+
+    const filePath = path.join(videoOutputDir, filename);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    return res.sendFile(filePath);
+  });
 }
 
 module.exports = { initializeVideoService };
