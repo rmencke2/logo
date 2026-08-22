@@ -21,6 +21,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
+| 2026-08-22 | `cursor-mcp-json-is-becoming-team-policy` | Project `.cursor/mcp.json` is becoming team policy | ✅ Drafted JSON |
+| 2026-08-22 | Insight: `cursor-mcp-json-is-becoming-team-policy` | .cursor/mcp.json Is Becoming Team Policy — The New Perimeter for Which Tools Your Repo Allows | ✅ Featured Insight |
 | 2026-08-22 | `discovery-mcp-is-the-new-app-store-search` | Discovery MCP is the new App Store search | ✅ Drafted JSON |
 | 2026-08-22 | Insight: `discovery-mcp-is-the-new-app-store-search` | Discovery MCP Is the New App Store Search — Why Agents Find Integrations by Capability, Not Brand | ✅ Featured Insight |
 | 2026-08-22 | `dont-put-secrets-in-mcp-headers` | Don't put secrets in MCP headers | ✅ Drafted JSON |
@@ -96,7 +98,7 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - **Angle:** Shared MCP configs in git = the new “which tools does this repo allow?” perimeter.
 - **Source:** Influzer.ai / Cursor
 - **Pairs with:** `how-to-set-up-your-first-mcp-servers-in-cursor`
-- **Status:** ⬜todo
+- **Status:** ✅ shipped 2026-08-22 (`cursor-mcp-json-is-becoming-team-policy`)
 
 #### 6. One connector, three surfaces
 - **Angle:** Same remote MCP in Claude + ChatGPT + Cursor — why “works in Cursor” ≠ “works for the org.”

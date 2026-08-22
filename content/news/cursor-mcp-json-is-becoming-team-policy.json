@@ -1,0 +1,12 @@
+{
+  "slug": "cursor-mcp-json-is-becoming-team-policy",
+  "title": "Project `.cursor/mcp.json` is becoming team policy",
+  "date": "2026-08-22",
+  "excerpt": "Teams are committing shared MCP config to git — the new answer to “which agent tools does this repo allow?” Secrets stay personal; approved servers ship with the clone.",
+  "category": "MCP Ecosystem",
+  "tags": ["Cursor", "MCP", "Governance", "Developers", "Team Policy"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://docs.cursor.com/context/mcp",
+  "relatedInsightSlug": "cursor-mcp-json-is-becoming-team-policy",
+  "contentHtml": "<p>Cursor MCP is moving from solo hacks to <strong>shared repo policy</strong>. Teams commit <code>.cursor/mcp.json</code> — versioned, PR-reviewed — and treat it like <code>package.json</code> for agent tools.</p><p><strong>Three-tier model:</strong></p><ul><li><strong>Tier 1 (in git):</strong> GitHub read, Context7, Influzer Discovery — no secrets</li><li><strong>Tier 2 (documented local):</strong> staging DB creds in env, not in JSON</li><li><strong>Tier 3 (banned):</strong> random <code>npx</code>, prod write tools, duplicate scrapers</li></ul><p><strong>Why it matters:</strong> when agents can call external systems, “which connectors does this codebase ship?” is a security and onboarding question — not a personal preference.</p><p>Setup basics: <a href=\"/insights/how-to-set-up-your-first-mcp-servers-in-cursor\">First MCP servers in Cursor</a>. Full playbook: <a href=\"/insights/cursor-mcp-json-is-becoming-team-policy\">.cursor/mcp.json is becoming team policy</a>.</p>"
+}
