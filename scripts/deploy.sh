@@ -49,6 +49,12 @@ git fetch origin "${BRANCH}"
 if [[ "${SERVER_MODE}" == 1 ]]; then
   echo "==> Reset to origin/${BRANCH}"
   git reset --hard "origin/${BRANCH}"
+  # Script file updates on disk after reset, but this shell still runs the old
+  # in-memory copy — re-exec so install steps (e.g. sqlite3 rebuild) apply.
+  if [[ "${DEPLOY_SELF_REEXEC:-}" != 1 ]]; then
+    export DEPLOY_SELF_REEXEC=1
+    exec "$0" "$@"
+  fi
 else
   echo "==> Pull fast-forward only"
   git pull --ff-only origin "${BRANCH}"
@@ -65,29 +71,30 @@ install_deps() {
 }
 
 npm_ci_args=(--omit=dev)
+rebuild_sqlite_from_source=0
 if [[ "${SERVER_MODE}" == 1 ]]; then
   # sqlite3@6 prebuilds require GLIBC 2.38+; Debian 12 / Lightsail has 2.36.
-  # Compiling on-server links against the host libc and loads correctly.
-  npm_ci_args+=(--build-from-source)
-  echo "    native modules: build-from-source (glibc 2.36 prod)"
+  # Rebuild sqlite3 only after ci — global --build-from-source breaks canvas prebuilds.
+  rebuild_sqlite_from_source=1
+  echo "    sqlite3: will rebuild from source after npm ci (glibc 2.36 prod)"
 fi
 
 if [[ -f "package-lock.json" ]] && node -e "JSON.parse(require('fs').readFileSync('package-lock.json','utf8'))" 2>/dev/null; then
   echo "    using npm ci (valid package-lock.json)"
   if ! npm ci "${npm_ci_args[@]}"; then
     echo "WARN: npm ci failed; falling back to npm install"
-    if [[ "${SERVER_MODE}" == 1 ]]; then
-      install_deps --build-from-source
-    else
-      install_deps
-    fi
+    install_deps
   fi
 else
   echo "    using npm install (no valid package-lock.json)"
-  if [[ "${SERVER_MODE}" == 1 ]]; then
-    install_deps --build-from-source
-  else
-    install_deps
+  install_deps
+fi
+
+if [[ "${rebuild_sqlite_from_source}" == 1 ]]; then
+  echo "==> Rebuilding sqlite3 from source"
+  if ! npm rebuild sqlite3 --build-from-source; then
+    echo "ERROR: sqlite3 rebuild failed (see DEPLOY_INSTRUCTIONS.md glibc section)"
+    exit 1
   fi
 fi
 
