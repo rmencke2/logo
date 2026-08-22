@@ -5,6 +5,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { clientErrorMessage } = require('../utils/safeError');
 
 const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
 const SITE_BASE_URL = 'https://www.influzer.ai';
@@ -668,7 +669,7 @@ function initializeStaticService(app) {
         category: latest.category || 'General',
       });
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -687,7 +688,7 @@ function initializeStaticService(app) {
       }));
       return res.json({ posts: recent });
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 

@@ -11,6 +11,8 @@ const { body, validationResult } = require('express-validator');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { fontCategories, styles } = require('../config/constants');
 const { getFontPath, generateShape } = require('../utils/logoUtils');
+const { sanitizeLogoIcon } = require('../utils/svgSanitize');
+const { clientErrorPayload } = require('../utils/safeError');
 
 const router = express.Router();
 
@@ -32,6 +34,7 @@ router.post(
     body('bgColor').matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/),
     body('shape').optional().isString().isIn(['none', 'circle', 'square', 'rounded']),
     body('layout').optional().isString().isIn(['none', 'left', 'top']),
+    body('icon').optional().isString().isLength({ max: 16 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -44,12 +47,21 @@ router.post(
         tagline,
         style = 'minimal',
         fontCategory,
-        icon,
+        icon: rawIcon,
         layout = 'none',
         shape = 'none',
         fontColor,
         bgColor,
       } = req.body;
+
+      let icon = null;
+      if (rawIcon) {
+        try {
+          icon = sanitizeLogoIcon(rawIcon);
+        } catch (iconErr) {
+          return res.status(400).json({ error: iconErr.message });
+        }
+      }
 
       console.log(`🎯 Incoming Request:
    ➡ Name: ${name}
@@ -227,7 +239,7 @@ router.post(
       });
     } catch (err) {
       console.error('❌ Error generating logo:', err);
-      res.status(500).json({ error: 'Logo generation failed', details: err.message });
+      res.status(500).json(clientErrorPayload('Logo generation failed', err));
     }
   },
 );

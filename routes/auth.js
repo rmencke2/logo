@@ -9,6 +9,7 @@ const { getDatabase } = require('../database');
 const { hashPassword, comparePassword } = require('../auth');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../emailService');
 const { abuseProtectionMiddleware, logUsage, authRateLimiter } = require('../abuseProtection');
+const { clientErrorPayload } = require('../utils/safeError');
 const crypto = require('crypto');
 
 const router = express.Router();
@@ -124,7 +125,7 @@ router.post(
       });
     } catch (err) {
       console.error('Registration error:', err);
-      res.status(500).json({ error: 'Registration failed', details: err.message });
+      res.status(500).json(clientErrorPayload('Registration failed', err));
     }
   }
 );
@@ -204,7 +205,7 @@ router.post(
       });
     } catch (err) {
       console.error('Login error:', err);
-      res.status(500).json({ error: 'Login failed', details: err.message });
+      res.status(500).json(clientErrorPayload('Login failed', err));
     }
   }
 );

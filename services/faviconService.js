@@ -11,6 +11,7 @@ const { body, validationResult } = require('express-validator');
 const { requireAuth, requireVerified } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { resolveGeneratedImgPath } = require('../utils/safePath');
+const { clientErrorPayload } = require('../utils/safeError');
 
 // Font category mapping (shared with logo service)
 const fontCategories = {
@@ -198,7 +199,7 @@ function initializeFaviconService(app) {
         });
       } catch (err) {
         console.error('❌ Error generating favicon:', err);
-        res.status(500).json({ error: 'Favicon generation failed', details: err.message });
+        res.status(500).json(clientErrorPayload('Favicon generation failed', err));
       }
     },
   );
@@ -278,7 +279,7 @@ function initializeFaviconService(app) {
         });
       } catch (err) {
         console.error('❌ Error generating favicon from logo:', err);
-        res.status(500).json({ error: 'Favicon generation failed', details: err.message });
+        res.status(500).json(clientErrorPayload('Favicon generation failed', err));
       }
     },
   );

@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { requireAuth } = require('../auth');
+const { clientErrorMessage } = require('../utils/safeError');
 const {
   clearMcpCache,
   getMcpCategories,
@@ -583,7 +584,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
       });
     } catch (err) {
       console.error('MCP probe-tools error:', err);
-      res.status(500).json({ error: err.message || 'Failed to probe MCP endpoint' });
+      res.status(500).json({ error: clientErrorMessage(err, 'Failed to probe MCP endpoint') });
     }
   });
 

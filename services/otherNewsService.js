@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
+const { clientErrorMessage } = require('../utils/safeError');
 const {
   loadConfig,
   readJson,
@@ -128,7 +129,7 @@ function initializeOtherNewsService(app) {
       const limit = Math.min(20, parseInt(req.query.limit, 10) || 12);
       res.json(getDisplayArticles(limit));
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -141,7 +142,7 @@ function initializeOtherNewsService(app) {
         overridesPath: 'data/other-news-overrides.json',
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 

@@ -10,6 +10,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const { requireAuth, requireVerified } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { trackService } = require('./analyticsService');
+const { clientErrorPayload } = require('../utils/safeError');
 
 /**
  * Initialize video processing service
@@ -132,10 +133,7 @@ function initializeVideoService(app) {
           console.warn('⚠️  Error during cleanup:', cleanupErr);
         }
 
-        res.status(500).json({ 
-          error: 'Video conversion failed', 
-          details: err.message 
-        });
+        res.status(500).json(clientErrorPayload('Video conversion failed', err));
       }
     },
   );
@@ -212,10 +210,7 @@ function initializeVideoService(app) {
           console.warn('⚠️  Error during cleanup:', cleanupErr);
         }
 
-        res.status(500).json({ 
-          error: 'GIF conversion failed', 
-          details: err.message 
-        });
+        res.status(500).json(clientErrorPayload('GIF conversion failed', err));
       }
     },
   );
@@ -304,10 +299,7 @@ function initializeVideoService(app) {
           console.warn('⚠️  Error during cleanup:', cleanupErr);
         }
 
-        res.status(500).json({ 
-          error: 'Metadata extraction failed', 
-          details: err.message 
-        });
+        res.status(500).json(clientErrorPayload('Metadata extraction failed', err));
       }
     },
   );
@@ -496,10 +488,7 @@ function initializeVideoService(app) {
           console.warn('⚠️  Error during cleanup:', cleanupErr);
         }
 
-        res.status(500).json({ 
-          error: 'Meme conversion failed', 
-          details: err.message 
-        });
+        res.status(500).json(clientErrorPayload('Meme conversion failed', err));
       }
     },
   );

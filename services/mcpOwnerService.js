@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { requireAuth, requireAuthPage, requireVerified } = require('../auth');
+const { clientErrorMessage } = require('../utils/safeError');
 const { getMcpCategories, findMcpServerBySlug } = require('./mcpDirectoryService');
 const {
   findManualServer,
@@ -126,7 +127,9 @@ function registerMcpOwnerRoutes(app) {
     } catch (err) {
       console.error('MCP owned listing detail error:', err);
       res.status(err.message.includes('permission') ? 403 : 500).json({
-        error: err.message || 'Failed to load listing',
+        error: err.message.includes('permission')
+          ? err.message
+          : clientErrorMessage(err, 'Failed to load listing'),
       });
     }
   });
