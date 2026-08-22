@@ -1,0 +1,12 @@
+{
+  "slug": "one-mcp-connector-three-surfaces",
+  "title": "One MCP, three surfaces — Claude, ChatGPT, Cursor",
+  "date": "2026-08-22",
+  "excerpt": "Same MCP protocol, three clients — but Cursor can use local stdio while Claude and ChatGPT need public HTTPS from their cloud. \"Works in Cursor\" is not org-ready until the same URL works in chat connectors too.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Claude", "ChatGPT", "Cursor", "Remote", "Developers"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/mcp/discovery/setup",
+  "relatedInsightSlug": "one-mcp-connector-three-surfaces",
+  "contentHtml": "<p>Teams ship <strong>one MCP server</strong> and assume org rollout is done when Cursor connects. It is not.</p><p><strong>Three surfaces, different rules:</strong></p><ul><li><strong>Cursor</strong> — <code>stdio</code> or HTTPS in <code>.cursor/mcp.json</code></li><li><strong>Claude</strong> — remote HTTPS connector from Anthropic cloud</li><li><strong>ChatGPT</strong> — Developer Mode connector from OpenAI cloud</li></ul><p>Chat products cannot hit <code>localhost</code>. Stdio-only servers are Cursor-only, not company-wide.</p><p><strong>Org-ready</strong> = one HTTPS endpoint, same <code>tools/list</code>, setup docs for each client, one security allowlist row.</p><p>Try it with read-only Discovery: <code>https://www.influzer.ai/mcp/discovery</code> · <a href=\"/mcp/discovery/setup\">setup tabs</a>.</p><p>Full matrix + rollout checklist: <a href=\"/insights/one-mcp-connector-three-surfaces\">One MCP connector, three surfaces</a>.</p>"
+}
