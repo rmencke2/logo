@@ -7,12 +7,14 @@ const path = require('path');
 const { getMcpCategories } = require('./mcpDirectoryService');
 const { sendMcpSubmissionEmail } = require('../emailService');
 const { getOptionalAuthUser } = require('../auth');
+const { getDatabase } = require('../database');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MAX_FIELD = 8000;
 const MAX_TOOLS_FIELD = 20000;
 const RATE_LIMIT_PER_HOUR = 5;
-const recentByIp = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const MCP_SUBMIT_ENDPOINT = 'mcp-submit';
 
 const TRANSPORTS = ['stdio', 'http', 'sse', 'unknown'];
 
@@ -73,14 +75,13 @@ function formatToolsForEmail(tools) {
     .join('\n');
 }
 
-function checkRateLimit(ip) {
-  const now = Date.now();
-  const windowMs = 60 * 60 * 1000;
-  const entry = recentByIp.get(ip) || [];
-  const recent = entry.filter((t) => now - t < windowMs);
-  if (recent.length >= RATE_LIMIT_PER_HOUR) return false;
-  recent.push(now);
-  recentByIp.set(ip, recent);
+async function checkMcpSubmitRateLimit(ip) {
+  const db = await getDatabase();
+  const count = await db.getIPUsageCountForEndpoint(ip, MCP_SUBMIT_ENDPOINT, RATE_LIMIT_WINDOW_MS);
+  if (count >= RATE_LIMIT_PER_HOUR) {
+    return false;
+  }
+  await db.logUsage(null, ip, MCP_SUBMIT_ENDPOINT);
   return true;
 }
 
@@ -196,7 +197,16 @@ function registerMcpSubmissionRoutes(app) {
       }
 
       const ip = getClientIp(req);
-      if (!checkRateLimit(ip)) {
+      let allowed;
+      try {
+        allowed = await checkMcpSubmitRateLimit(ip);
+      } catch (rateErr) {
+        console.error('MCP submit rate limit check failed:', rateErr);
+        return res.status(503).json({
+          error: 'Submission service temporarily unavailable. Please try again shortly.',
+        });
+      }
+      if (!allowed) {
         return res.status(429).json({
           error: 'Too many submissions from this address. Please try again in an hour.',
         });
@@ -280,4 +290,8 @@ module.exports = {
   initializeMcpSubmissionService,
   registerMcpSubmissionRoutes,
   isReservedMcpPath,
+  checkMcpSubmitRateLimit,
+  MCP_SUBMIT_ENDPOINT,
+  RATE_LIMIT_PER_HOUR,
+  RATE_LIMIT_WINDOW_MS,
 };
