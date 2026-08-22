@@ -374,7 +374,7 @@ async function sendNewsletterToRecipients({
   let skipped = 0;
 
   for (const recipient of recipients) {
-    if (!isEligibleNewsletterEmail(recipient.email)) {
+    if (!testMode && !isEligibleNewsletterEmail(recipient.email)) {
       skipped += 1;
       continue;
     }

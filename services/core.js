@@ -41,6 +41,8 @@ async function initializeCore(app) {
           objectSrc: ["'none'"],
           baseUri: ["'self'"],
           formAction: ["'self'"],
+          // Helmet defaults script-src-attr to 'none', which breaks admin.html onclick handlers
+          scriptSrcAttr: ["'unsafe-inline'"],
         },
       },
       crossOriginOpenerPolicy: false,
