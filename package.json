@@ -26,6 +26,7 @@
     "newsletter:backfill-mcp": "node scripts/backfill-mcp-submit-newsletter.js",
     "refresh-other-news": "node scripts/refresh-other-news.js",
     "other-news:admin": "node scripts/other-news-admin.js",
+    "verify:native-deps": "node scripts/verify-native-deps.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -60,7 +61,7 @@
     "puppeteer-core": "^25.8.0",
     "resend": "^4.8.0",
     "sharp": "^0.35.3",
-    "sqlite3": "^5.1.7",
+    "sqlite3": "^6.0.1",
     "text-to-svg": "3.1.5",
     "tinycolor2": "1.6.0"
   },
