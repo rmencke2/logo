@@ -438,6 +438,7 @@
           <textarea id="newsletterCustomIntro" rows="3" placeholder="e.g. We just published a hands-on Cursor story — worth a read if you're wiring MCP tools this week." style="width:100%;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;font-family:inherit;"></textarea>
         </div>
         <div id="newsletterPostMeta" style="color:#8e8e93;font-size:13px;margin:12px 0 16px;"></div>
+        <p id="newsletterTestRecipient" style="color:#8e8e93;font-size:13px;margin:0 0 12px;display:none;"></p>
         <div class="search-bar">
           <button class="btn btn-secondary" onclick="previewNewsletterEmail()">Preview email</button>
           <button class="btn btn-secondary" onclick="sendNewsletterTest()">Send test to my email</button>
@@ -1077,6 +1078,7 @@
           ? `<span style="color:#10a37f;">Email configured</span>`
           : `<span style="color:#f59e0b;">Email not configured — sends will fail until .env is set on the server</span>`;
         status.innerHTML = `${emailNote} · <strong>${data.activeSubscriberCount || 0}</strong> active subscribers`;
+        updateNewsletterTestRecipient();
         updateNewsletterPostMeta();
       } catch (err) {
         status.innerHTML = `<span style="color:#ef4444;">Error: ${escapeHtml(err.message)}</span>`;
@@ -1111,6 +1113,18 @@
       }
     }
 
+    function updateNewsletterTestRecipient() {
+      const el = document.getElementById('newsletterTestRecipient');
+      if (!el) return;
+      if (currentUserEmail) {
+        el.style.display = 'block';
+        el.innerHTML = `Test sends go to <strong style="color:#fff;">${escapeHtml(currentUserEmail)}</strong> (your admin login). Check spam/promotions if it does not arrive within a few minutes.`;
+      } else {
+        el.style.display = 'none';
+        el.textContent = '';
+      }
+    }
+
     async function sendNewsletterTest() {
       const post = getSelectedNewsletterPost();
       if (!post) {
@@ -1121,10 +1135,13 @@
         const email = prompt('Enter the email address for the test send:');
         if (!email) return;
         currentUserEmail = email.trim();
+        updateNewsletterTestRecipient();
       }
 
       const intro = document.getElementById('newsletterCustomIntro')?.value || '';
+      const status = document.getElementById('newsletterSendStatus');
       try {
+        status.innerHTML = `<span style="color:#8e8e93;">Sending test to ${escapeHtml(currentUserEmail)}…</span>`;
         const res = await fetch('/admin/api/newsletter/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1136,9 +1153,11 @@
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Test send failed');
-        alert(`Test email sent to ${currentUserEmail}.`);
+        const msgId = data.messageId ? ` · Resend ID: ${data.messageId}` : '';
+        const provider = data.provider ? ` via ${data.provider}` : '';
+        status.innerHTML = `<span style="color:#10a37f;">Test sent to ${escapeHtml(data.to || currentUserEmail)}${provider}${msgId}. If you do not see it, check spam/promotions for mail from insights@influzer.ai.</span>`;
       } catch (err) {
-        alert(`Test send failed: ${err.message}`);
+        status.innerHTML = `<span style="color:#ef4444;">Test send failed: ${escapeHtml(err.message)}</span>`;
       }
     }
 

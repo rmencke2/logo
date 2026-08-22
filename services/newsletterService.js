@@ -369,6 +369,7 @@ async function sendNewsletterToRecipients({
   let sent = 0;
   let failed = 0;
   const errors = [];
+  let lastDelivery = null;
 
   let skipped = 0;
 
@@ -379,11 +380,12 @@ async function sendNewsletterToRecipients({
     }
     try {
       const token = await ensureSubscriberToken(recipient);
-      await sendBlogNewsletterEmail({
+      const delivery = await sendBlogNewsletterEmail({
         to: recipient.email,
         ...payload,
         unsubscribeUrl: buildUnsubscribeUrl(token),
       });
+      lastDelivery = delivery;
       sent += 1;
     } catch (error) {
       failed += 1;
@@ -395,7 +397,7 @@ async function sendNewsletterToRecipients({
     }
   }
 
-  return { sent, failed, skipped, errors };
+  return { sent, failed, skipped, errors, lastDelivery };
 }
 
 async function sendBlogNewsletter({
@@ -432,6 +434,11 @@ async function sendBlogNewsletter({
       sent: result.sent,
       failed: result.failed,
       errors: result.errors,
+      to: result.lastDelivery?.to || email,
+      from: result.lastDelivery?.from || null,
+      provider: result.lastDelivery?.provider || null,
+      messageId: result.lastDelivery?.messageId || null,
+      subject: result.lastDelivery?.subject || null,
     };
   }
 

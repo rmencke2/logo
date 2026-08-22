@@ -710,7 +710,13 @@ async function sendBlogNewsletterEmail({
   };
 
   const info = await deliverEmail(mailOptions);
-  return { success: true, messageId: info.messageId, to, provider: info.provider };
+  console.log('✅ Newsletter email sent');
+  console.log('   Provider:', info.provider || transporterMode);
+  console.log('   From:', fromAddress);
+  console.log('   To:', to);
+  console.log('   Subject:', subject);
+  console.log('   Message ID:', info.messageId || '(none)');
+  return { success: true, messageId: info.messageId, to, provider: info.provider, from: fromAddress, subject };
 }
 
 function starsHtml(count) {
