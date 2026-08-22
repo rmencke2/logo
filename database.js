@@ -120,6 +120,9 @@ function initDatabase() {
       db.run('CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id)');
       db.run('CREATE INDEX IF NOT EXISTS idx_usage_logs_user_id ON usage_logs(user_id)');
       db.run('CREATE INDEX IF NOT EXISTS idx_usage_logs_created_at ON usage_logs(created_at)');
+      db.run(
+        'CREATE INDEX IF NOT EXISTS idx_usage_logs_ip_endpoint_created ON usage_logs(ip_address, endpoint, created_at)',
+      );
       db.run('CREATE INDEX IF NOT EXISTS idx_abuse_identifier ON abuse_tracking(identifier, identifier_type)');
 
       resolve(db);
@@ -128,6 +131,10 @@ function initDatabase() {
 }
 
 // Database helper functions
+function usageWindowSince(timeWindowMs) {
+  return new Date(Date.now() - timeWindowMs).toISOString().replace('T', ' ').slice(0, 19);
+}
+
 class Database {
   constructor(db) {
     this.db = db;
@@ -529,7 +536,7 @@ class Database {
 
   async getUsageCount(userId, timeWindowMs) {
     return new Promise((resolve, reject) => {
-      const since = new Date(Date.now() - timeWindowMs).toISOString();
+      const since = usageWindowSince(timeWindowMs);
       this.db.get(
         'SELECT COUNT(*) as count FROM usage_logs WHERE user_id = ? AND created_at > ?',
         [userId, since],
@@ -543,10 +550,24 @@ class Database {
 
   async getIPUsageCount(ipAddress, timeWindowMs) {
     return new Promise((resolve, reject) => {
-      const since = new Date(Date.now() - timeWindowMs).toISOString();
+      const since = usageWindowSince(timeWindowMs);
       this.db.get(
         'SELECT COUNT(*) as count FROM usage_logs WHERE ip_address = ? AND created_at > ?',
         [ipAddress, since],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row?.count || 0);
+        }
+      );
+    });
+  }
+
+  async getIPUsageCountForEndpoint(ipAddress, endpoint, timeWindowMs) {
+    return new Promise((resolve, reject) => {
+      const since = usageWindowSince(timeWindowMs);
+      this.db.get(
+        'SELECT COUNT(*) as count FROM usage_logs WHERE ip_address = ? AND endpoint = ? AND created_at > ?',
+        [ipAddress, endpoint, since],
         (err, row) => {
           if (err) reject(err);
           else resolve(row?.count || 0);
