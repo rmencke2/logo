@@ -357,7 +357,7 @@ async function sendNewsletterToRecipients({
 }) {
   if (!isEmailConfigured()) {
     throw new Error(
-      'Email is not configured (set EMAIL_SERVICE=gmail + EMAIL_USER + EMAIL_PASS, or SMTP_* in .env).',
+      'Email is not configured (set EMAIL_SERVICE=resend + RESEND_API_KEY, or gmail/SMTP_* in .env).',
     );
   }
 
