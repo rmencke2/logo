@@ -21,6 +21,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
+| 2026-08-22 | `one-mcp-connector-three-surfaces` | One MCP, three surfaces — Claude, ChatGPT, Cursor | ✅ Drafted JSON |
+| 2026-08-22 | Insight: `one-mcp-connector-three-surfaces` | One MCP Connector, Three Surfaces — Why "Works in Cursor" ≠ Works for the Org | ✅ Featured Insight |
 | 2026-08-22 | `cursor-mcp-json-is-becoming-team-policy` | Project `.cursor/mcp.json` is becoming team policy | ✅ Drafted JSON |
 | 2026-08-22 | Insight: `cursor-mcp-json-is-becoming-team-policy` | .cursor/mcp.json Is Becoming Team Policy — The New Perimeter for Which Tools Your Repo Allows | ✅ Featured Insight |
 | 2026-08-22 | `discovery-mcp-is-the-new-app-store-search` | Discovery MCP is the new App Store search | ✅ Drafted JSON |
@@ -104,7 +106,7 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - **Angle:** Same remote MCP in Claude + ChatGPT + Cursor — why “works in Cursor” ≠ “works for the org.”
 - **Source:** Influzer.ai
 - **CTA:** setup guide tabs
-- **Status:** ⬜todo
+- **Status:** ✅ shipped 2026-08-22 (`one-mcp-connector-three-surfaces`)
 
 #### 7. Claude Code CLI vs Desktop connectors
 - **Angle:** When to use `claude mcp add --transport http` vs web connectors; fallback when flags differ.
