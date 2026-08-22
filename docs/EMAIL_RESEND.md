@@ -58,6 +58,24 @@ npm run newsletter:send -- --slug your-post-slug
 
 With Resend, bounces go to Resend’s dashboard — not your personal Gmail Sent folder.
 
+## Troubleshooting
+
+**Admin says “Test sent” but nothing in inbox**
+
+1. Check **Spam** and **Promotions** for mail from `insights@influzer.ai` (new senders often land there).
+2. Confirm the admin test recipient — it sends to **your login email** (`/auth/me`), shown in the Newsletter tab.
+3. On the server, verify Resend is active: PM2 logs should show `Email: Resend configured`.
+4. Run a CLI test (returns a Resend message ID on success):
+
+```bash
+npm run email:test -- --to your@email.com --newsletter
+npm run newsletter:send -- --slug your-post-slug --test your@email.com
+```
+
+5. Check the [Resend dashboard](https://resend.com/emails) for delivery/bounce status (requires a full-access API key to query via API; the send-only key still delivers mail).
+
+**Note:** Quote `.env` values that contain spaces when editing on the server, e.g. `EMAIL_FROM="Influzer <noreply@influzer.ai>"`.
+
 ## Fallback providers
 
 The code still supports **Gmail** (`EMAIL_SERVICE=gmail`) and generic **SMTP** (`SMTP_HOST`, etc.) if you need them for local dev.
