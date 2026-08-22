@@ -1175,6 +1175,10 @@
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Test send failed');
+        if (!data.sent) {
+          const detail = data.errors?.[0]?.error || 'No message was delivered (check email config or blocked address).';
+          throw new Error(detail);
+        }
         const msgId = data.messageId ? ` · Resend ID: ${data.messageId}` : '';
         const provider = data.provider ? ` via ${data.provider}` : '';
         status.innerHTML = `<span style="color:#10a37f;">Test sent to ${escapeHtml(data.to || currentUserEmail)}${provider}${msgId}. If you do not see it, check spam/promotions for mail from insights@influzer.ai.</span>`;
