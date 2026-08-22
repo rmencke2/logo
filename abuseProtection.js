@@ -123,6 +123,14 @@ async function checkIPLimits(ipAddress) {
   };
 }
 
+function denyWhenAbuseCheckUnavailable(res, err, context) {
+  console.error(`Abuse protection error (${context}):`, err);
+  return res.status(503).json({
+    error: 'Usage limits are temporarily unavailable. Please try again shortly.',
+    retryAfter: '1 minute',
+  });
+}
+
 // Middleware to check abuse protection
 async function abuseProtectionMiddleware(req, res, next) {
   try {
@@ -165,18 +173,13 @@ async function abuseProtectionMiddleware(req, res, next) {
         });
       }
       
-      // Check if user is blocked in users table
-      try {
-        const db = await getDatabase();
-        const user = await db.getUserById(req.user.id);
-        if (user && user.is_blocked) {
-          return res.status(429).json({
-            error: user.blocked_reason || 'Account blocked by administrator. Please contact support.',
-            blocked: true,
-          });
-        }
-      } catch (dbErr) {
-        console.error('Error checking user block status:', dbErr);
+      const db = await getDatabase();
+      const user = await db.getUserById(req.user.id);
+      if (user && user.is_blocked) {
+        return res.status(429).json({
+          error: user.blocked_reason || 'Account blocked by administrator. Please contact support.',
+          blocked: true,
+        });
       }
     }
     
@@ -209,9 +212,7 @@ async function abuseProtectionMiddleware(req, res, next) {
     req.usageLimits = limits;
     next();
   } catch (err) {
-    console.error('Abuse protection error:', err);
-    // On error, allow request but log it
-    next();
+    return denyWhenAbuseCheckUnavailable(res, err, 'middleware');
   }
 }
 
