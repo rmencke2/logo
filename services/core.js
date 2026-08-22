@@ -7,8 +7,10 @@ const session = require('express-session');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { getDatabase } = require('../database');
-const { initializeAuth } = require('../auth');
+const { initializeAuth, requireAuth } = require('../auth');
 const authRoutes = require('../routes/auth');
+const { shouldBypassRateLimit, getSessionSecret } = require('../utils/rateLimitBypass');
+const { csrfTokenHandler, requireCsrfToken } = require('../middleware/csrf');
 
 require('dotenv').config();
 
@@ -24,13 +26,26 @@ async function initializeCore(app) {
   // Increase server timeout for long-running video processing tasks
   app.timeout = 600000; // 10 minutes in milliseconds
 
-  // Security middleware
+  // Security middleware — CSP allows inline scripts/styles used by EJS pages and admin.html
   app.use(
     helmet({
-      contentSecurityPolicy: false,
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", 'https://challenges.cloudflare.com'],
+          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+          fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+          imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+          connectSrc: ["'self'", 'https://challenges.cloudflare.com'],
+          frameSrc: ["'self'", 'https://challenges.cloudflare.com'],
+          objectSrc: ["'none'"],
+          baseUri: ["'self'"],
+          formAction: ["'self'"],
+        },
+      },
       crossOriginOpenerPolicy: false,
-      originAgentCluster: false
-    })
+      originAgentCluster: false,
+    }),
   );
 
   // Global rate limiter — protects APIs/auth; skip static assets and light page browsing.
@@ -61,33 +76,9 @@ async function initializeCore(app) {
         return true;
       }
 
-      const bypassEmails = ['rasmusmencke', 'mencke'];
-
       try {
-        // Check Passport authenticated user
-        if (req.isAuthenticated && req.isAuthenticated() && req.user) {
-          const email = (req.user.email || '').toLowerCase();
-          for (const bypassEmail of bypassEmails) {
-            if (email.includes(bypassEmail)) {
-              console.log(`✅ Rate limit bypassed for user: ${req.user.email}`);
-              return true;
-            }
-          }
-        }
-
-        // Check session-based auth (for local auth)
-        if (req.session && req.session.userId) {
-          const db = await getDatabase();
-          const user = await db.getUserById(req.session.userId);
-          if (user && user.email) {
-            const email = user.email.toLowerCase();
-            for (const bypassEmail of bypassEmails) {
-              if (email.includes(bypassEmail)) {
-                console.log(`✅ Rate limit bypassed for user: ${user.email}`);
-                return true;
-              }
-            }
-          }
+        if (await shouldBypassRateLimit(req)) {
+          return true;
         }
       } catch (err) {
         console.error('Error checking rate limit bypass:', err);
@@ -107,10 +98,7 @@ async function initializeCore(app) {
   const SQLiteSessionStore = require('../sessionStore');
   const sessionConfig = {
     name: 'connect.sid',
-    secret: process.env.SESSION_SECRET || (() => {
-      console.warn('⚠️  WARNING: Using default SESSION_SECRET. Set SESSION_SECRET in .env for production!');
-      return 'your-secret-key-change-in-production';
-    })(),
+    secret: getSessionSecret(),
     resave: false, // Don't resave unchanged sessions
     saveUninitialized: false, // Don't save uninitialized sessions
     cookie: {
@@ -164,6 +152,10 @@ async function initializeCore(app) {
 
   // Authentication routes
   app.use('/auth', authRoutes);
+
+  // Admin API CSRF — register before any service mounts /admin/api routes
+  app.get('/admin/api/csrf-token', requireAuth, csrfTokenHandler);
+  app.use('/admin/api', requireCsrfToken);
 }
 
 module.exports = { initializeCore };

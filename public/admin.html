@@ -786,6 +786,28 @@
     let currentIP = null;
     let newsletterPostsCache = [];
     let mcpCatalogSearchTimer = null;
+    let csrfToken = null;
+    const nativeFetch = window.fetch.bind(window);
+
+    window.fetch = async function patchedFetch(input, init = {}) {
+      const url = typeof input === 'string' ? input : input?.url || '';
+      const method = (init.method || 'GET').toUpperCase();
+      if (url.startsWith('/admin/api') && method !== 'GET' && method !== 'HEAD') {
+        if (!csrfToken) {
+          const tokenRes = await nativeFetch('/admin/api/csrf-token');
+          if (!tokenRes.ok) {
+            throw new Error('Failed to load CSRF token');
+          }
+          const tokenData = await tokenRes.json();
+          csrfToken = tokenData.token;
+        }
+        init.headers = {
+          ...(init.headers || {}),
+          'X-CSRF-Token': csrfToken,
+        };
+      }
+      return nativeFetch(input, init);
+    };
 
     function escapeHtml(value) {
       return String(value ?? '')

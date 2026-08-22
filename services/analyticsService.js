@@ -3,6 +3,8 @@
 // ================================
 
 const { getDatabase } = require('../database');
+const { requireAuth } = require('../auth');
+const { requireAdmin } = require('./adminService');
 const nodemailer = require('nodemailer');
 const https = require('https');
 const fs = require('fs');
@@ -1172,8 +1174,8 @@ async function initializeAnalyticsService(app) {
   // Track page views
   trackPageViews(app);
 
-  // API endpoint to manually trigger analytics email
-  app.post('/api/analytics/send-report', async (req, res) => {
+  // API endpoint to manually trigger analytics email (admin only)
+  app.post('/api/analytics/send-report', requireAuth, requireAdmin, async (req, res) => {
     try {
       const recipientEmail = process.env.ANALYTICS_EMAIL || process.env.EMAIL_USER;
       if (!recipientEmail) {
@@ -1188,8 +1190,8 @@ async function initializeAnalyticsService(app) {
     }
   });
 
-  // API endpoint to get analytics data (for admin dashboard)
-  app.get('/api/analytics/data', async (req, res) => {
+  // API endpoint to get analytics data (admin only)
+  app.get('/api/analytics/data', requireAuth, requireAdmin, async (req, res) => {
     try {
       const days = parseInt(req.query?.days) || 1;
       const analytics = await getAnalytics(days);
@@ -1200,8 +1202,8 @@ async function initializeAnalyticsService(app) {
     }
   });
 
-  // API endpoint to get blog traffic only
-  app.get('/api/analytics/blog-posts', async (req, res) => {
+  // API endpoint to get blog traffic only (admin only)
+  app.get('/api/analytics/blog-posts', requireAuth, requireAdmin, async (req, res) => {
     try {
       const days = parseInt(req.query?.days) || 1;
       const analytics = await getAnalytics(days);

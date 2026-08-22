@@ -49,7 +49,7 @@ async function initializeBlogFeedbackTables(db) {
           name TEXT NOT NULL,
           comment TEXT NOT NULL,
           ip_address TEXT,
-          approved INTEGER DEFAULT 1,
+          approved INTEGER DEFAULT 0,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
       `);
@@ -156,7 +156,7 @@ async function addComment(slug, name, comment, ipAddress) {
   return new Promise((resolve, reject) => {
     db.db.run(
       `INSERT INTO blog_comments (slug, name, comment, ip_address, approved)
-       VALUES (?, ?, ?, ?, 1)`,
+       VALUES (?, ?, ?, ?, 0)`,
       [slug, name, comment, ipAddress],
       function (err) {
         if (err) reject(err);
@@ -185,6 +185,9 @@ async function countRecentCommentsByIp(ipAddress, withinSeconds = 60) {
 async function verifyTurnstileToken(token, ipAddress) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      return { success: false, error: 'Comment verification is unavailable.' };
+    }
     return { success: true, skipped: true };
   }
   if (!token || typeof token !== 'string') {

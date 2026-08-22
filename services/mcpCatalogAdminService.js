@@ -14,6 +14,7 @@ const {
 } = require('./mcpDirectoryService');
 const { sendMcpApprovalEmail, sendMcpFeedbackEmail } = require('../emailService');
 const { fetchLiveMcpTools } = require('../scripts/utils/mcp-live-client');
+const { assertSafePublicUrl } = require('./webmcp/ssrf');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -536,7 +537,19 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
         });
       }
 
-      const live = await fetchLiveMcpTools(endpoint, {
+      let safeEndpoint;
+      try {
+        const safe = await assertSafePublicUrl(endpoint, {
+          allowHttp: process.env.NODE_ENV !== 'production',
+        });
+        safeEndpoint = safe.href;
+      } catch (err) {
+        return res.status(400).json({
+          error: err.message || 'URL is not allowed for probing.',
+        });
+      }
+
+      const live = await fetchLiveMcpTools(safeEndpoint, {
         timeoutMs: Number(process.env.MCP_ADMIN_PROBE_TIMEOUT_MS) || 20000,
       });
 
@@ -547,7 +560,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
           tools: live.tools || [],
           toolCount: (live.tools || []).length,
           serverInfo: live.serverInfo || null,
-          endpoint,
+          endpoint: safeEndpoint,
           message:
             live.status === 'ok_empty'
               ? 'Endpoint responded but returned 0 tools.'
@@ -565,7 +578,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
             : `Could not load tools (${live.status})`),
         status: live.status,
         tools: [],
-        endpoint,
+        endpoint: safeEndpoint,
         httpStatus: live.httpStatus || null,
       });
     } catch (err) {
