@@ -27,6 +27,7 @@
     "refresh-other-news": "node scripts/refresh-other-news.js",
     "other-news:admin": "node scripts/other-news-admin.js",
     "verify:native-deps": "node scripts/verify-native-deps.js",
+    "test:abuse-limits": "node scripts/test-abuse-ip-limits.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
