@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeHost, normalizeHttpsUrl, slugifyCategory } = require('./webmcp/normalize');
 const { startWebmcpScan, publicScanView, getScan } = require('./webmcp/scanService');
+const { clientErrorMessage } = require('../utils/safeError');
 const { ensureScanTables } = require('./webmcp/scanStore');
 
 const ROOT = path.join(__dirname, '..');
@@ -409,7 +410,7 @@ function registerWebmcpRoutes(app) {
       res.set('Cache-Control', 'no-store');
       res.json({ ok: true, scan: publicScanView(scan) });
     } catch (err) {
-      res.status(500).json({ ok: false, error: err.message });
+      res.status(500).json({ ok: false, error: clientErrorMessage(err, 'Scan lookup failed') });
     }
   });
 

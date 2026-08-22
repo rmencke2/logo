@@ -5,6 +5,7 @@
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
+const { clientErrorMessage } = require('../utils/safeError');
 
 const VALID_REACTIONS = new Set(['up', 'down']);
 const MAX_NAME_LENGTH = 60;
@@ -301,7 +302,7 @@ async function initializeBlogFeedbackService(app) {
         comments,
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -331,7 +332,7 @@ async function initializeBlogFeedbackService(app) {
 
       res.json({ slug, reactions: counts, userReaction });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -377,7 +378,7 @@ async function initializeBlogFeedbackService(app) {
 
       res.json({ slug, comments });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -390,7 +391,7 @@ async function initializeBlogFeedbackService(app) {
       const comments = await listAdminComments({ slug, status, limit });
       res.json({ comments });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -406,7 +407,7 @@ async function initializeBlogFeedbackService(app) {
       if (!changes) return res.status(404).json({ error: 'Comment not found' });
       res.json({ success: true, id, approved });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -421,7 +422,7 @@ async function initializeBlogFeedbackService(app) {
       if (!changes) return res.status(404).json({ error: 'Comment not found' });
       res.json({ success: true, id });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 

@@ -5,6 +5,7 @@
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
+const { clientErrorMessage } = require('../utils/safeError');
 const nodemailer = require('nodemailer');
 const https = require('https');
 const fs = require('fs');
@@ -234,7 +235,7 @@ async function fetchGaReport(days = 1) {
     console.error('GA4 report failed:', error.message);
     return {
       configured: true,
-      error: error.message,
+      error: clientErrorMessage(error, 'Analytics report failed'),
     };
   }
 }
@@ -1186,7 +1187,7 @@ async function initializeAnalyticsService(app) {
       await sendAnalyticsEmail(recipientEmail, days);
       res.json({ success: true, message: `Analytics report sent to ${recipientEmail}` });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -1198,7 +1199,7 @@ async function initializeAnalyticsService(app) {
       const recommendations = generateRecommendations(analytics);
       res.json({ ...analytics, recommendations });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -1214,7 +1215,7 @@ async function initializeAnalyticsService(app) {
         topBlogPosts: analytics.topBlogPosts || [],
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 

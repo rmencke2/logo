@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
+const { clientErrorMessage } = require('../utils/safeError');
 const { getMcpServersForNewsletter } = require('./mcpCatalogChangelogService');
 const {
   sendBlogNewsletterEmail,
@@ -389,7 +390,7 @@ async function sendNewsletterToRecipients({
       sent += 1;
     } catch (error) {
       failed += 1;
-      errors.push({ email: recipient.email, error: error.message });
+      errors.push({ email: recipient.email, error: clientErrorMessage(error, 'Send failed') });
     }
 
     if (!testMode && SEND_DELAY_MS > 0) {
@@ -545,7 +546,7 @@ async function initializeNewsletterService(app) {
 
       return res.json({ success: true, message: "You're in! First issue arrives Thursday." });
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: clientErrorMessage(error, 'Subscription failed') });
     }
   };
 
@@ -558,7 +559,7 @@ async function initializeNewsletterService(app) {
       res.render('newsletter-unsubscribe', { result });
     } catch (error) {
       res.status(500).render('newsletter-unsubscribe', {
-        result: { success: false, reason: 'error', message: error.message },
+        result: { success: false, reason: 'error', message: clientErrorMessage(error, 'Unsubscribe failed') },
       });
     }
   });
@@ -570,7 +571,7 @@ async function initializeNewsletterService(app) {
       const activeCount = await countActiveSubscribers();
       res.json({ subscribers, activeCount });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -602,7 +603,7 @@ async function initializeNewsletterService(app) {
         recentSends: sends,
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -634,7 +635,7 @@ async function initializeNewsletterService(app) {
         postUrl: payload.postUrl,
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 
@@ -666,7 +667,7 @@ async function initializeNewsletterService(app) {
           previousSend: error.previousSend,
         });
       }
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
   });
 

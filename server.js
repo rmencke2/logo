@@ -10,6 +10,7 @@ const https = require('https');
 const http = require('http');
 const fs = require('fs');
 const multer = require('multer');
+const { clientErrorMessage } = require('./utils/safeError');
 
 // Load services
 const { initializeCore } = require('./services/core');
@@ -98,7 +99,7 @@ const PORT = process.env.PORT || 4000;
         if (err.code === 'LIMIT_FILE_SIZE') {
           return res.status(400).json({ error: 'File too large. Maximum size is 500MB.' });
         }
-        return res.status(400).json({ error: err.message });
+        return res.status(400).json({ error: clientErrorMessage(err, 'Invalid upload') });
       }
       
       // Handle 413 Payload Too Large errors
@@ -107,9 +108,16 @@ const PORT = process.env.PORT || 4000;
           error: 'File too large. Maximum file size is 500MB. If using Nginx, ensure client_max_body_size is set to at least 500m.' 
         });
       }
-      
+
+      const status = err.status || err.statusCode || 500;
+      if (status >= 500) {
+        return res.status(status).json({
+          error: clientErrorMessage(err, 'Internal Server Error'),
+        });
+      }
+
       if (err.message) {
-        return res.status(400).json({ error: err.message });
+        return res.status(status).json({ error: err.message });
       }
       
       res.status(500).json({ error: 'Internal Server Error' });

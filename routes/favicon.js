@@ -13,6 +13,7 @@ const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { resolveGeneratedImgPath } = require('../utils/safePath');
 const { fontCategories, FAVICON_SIZES } = require('../config/constants');
 const { getFontPath, generateShape } = require('../utils/logoUtils');
+const { clientErrorPayload } = require('../utils/safeError');
 
 const router = express.Router();
 
@@ -136,7 +137,7 @@ router.post(
       });
     } catch (err) {
       console.error('❌ Error generating favicon:', err);
-      res.status(500).json({ error: 'Favicon generation failed', details: err.message });
+      res.status(500).json(clientErrorPayload('Favicon generation failed', err));
     }
   },
 );
@@ -206,7 +207,7 @@ router.post(
       });
     } catch (err) {
       console.error('❌ Error generating favicon from logo:', err);
-      res.status(500).json({ error: 'Favicon generation failed', details: err.message });
+      res.status(500).json(clientErrorPayload('Favicon generation failed', err));
     }
   },
 );
