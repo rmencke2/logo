@@ -64,15 +64,37 @@ install_deps() {
   npm install --omit=dev "$@"
 }
 
+npm_ci_args=(--omit=dev)
+if [[ "${SERVER_MODE}" == 1 ]]; then
+  # sqlite3@6 prebuilds require GLIBC 2.38+; Debian 12 / Lightsail has 2.36.
+  # Compiling on-server links against the host libc and loads correctly.
+  npm_ci_args+=(--build-from-source)
+  echo "    native modules: build-from-source (glibc 2.36 prod)"
+fi
+
 if [[ -f "package-lock.json" ]] && node -e "JSON.parse(require('fs').readFileSync('package-lock.json','utf8'))" 2>/dev/null; then
   echo "    using npm ci (valid package-lock.json)"
-  if ! npm ci --omit=dev; then
+  if ! npm ci "${npm_ci_args[@]}"; then
     echo "WARN: npm ci failed; falling back to npm install"
-    install_deps
+    if [[ "${SERVER_MODE}" == 1 ]]; then
+      install_deps --build-from-source
+    else
+      install_deps
+    fi
   fi
 else
   echo "    using npm install (no valid package-lock.json)"
-  install_deps
+  if [[ "${SERVER_MODE}" == 1 ]]; then
+    install_deps --build-from-source
+  else
+    install_deps
+  fi
+fi
+
+echo "==> Verifying native dependencies"
+if ! node scripts/verify-native-deps.js; then
+  echo "ERROR: native dependency check failed (see sqlite3 / glibc notes in DEPLOY_INSTRUCTIONS.md)"
+  exit 1
 fi
 
 echo "==> Restarting PM2 app: ${PM2_APP_NAME}"
