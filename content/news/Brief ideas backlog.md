@@ -21,6 +21,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
+| 2026-08-22 | `claude-code-cli-vs-desktop-connectors` | Claude Code CLI vs Desktop connectors | ✅ Drafted JSON |
+| 2026-08-22 | Insight: `claude-code-cli-vs-desktop-connectors` | Claude Code CLI vs Desktop Connectors — When to Use `claude mcp add` vs Web Connectors | ✅ Featured Insight |
 | 2026-08-22 | `one-mcp-connector-three-surfaces` | One MCP, three surfaces — Claude, ChatGPT, Cursor | ✅ Drafted JSON |
 | 2026-08-22 | Insight: `one-mcp-connector-three-surfaces` | One MCP Connector, Three Surfaces — Why "Works in Cursor" ≠ Works for the Org | ✅ Featured Insight |
 | 2026-08-22 | `cursor-mcp-json-is-becoming-team-policy` | Project `.cursor/mcp.json` is becoming team policy | ✅ Drafted JSON |
@@ -112,7 +114,7 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - **Angle:** When to use `claude mcp add --transport http` vs web connectors; fallback when flags differ.
 - **Source:** Influzer.ai
 - **CTA:** `/mcp/discovery/setup` Claude Code tab
-- **Status:** ⬜todo
+- **Status:** ✅ shipped 2026-08-22 (`claude-code-cli-vs-desktop-connectors`)
 
 ### Enterprise / buyer
 

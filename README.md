@@ -1,55 +1,25 @@
-<<<<<<< HEAD
-# Welcome to your Expo app 👋
+# Influzer Logo Generator
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Logo generator and MCP directory platform for [Influzer.ai](https://www.influzer.ai).
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Quick start
 
 ```bash
-npm run reset-project
+npm install
+cp .env.example .env   # edit as needed
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Open http://localhost:4000
 
-## Learn more
+See [LOCAL_SETUP.md](LOCAL_SETUP.md) for full local development setup and [DEPLOY_INSTRUCTIONS.md](DEPLOY_INSTRUCTIONS.md) for production deploy.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Scripts
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-=======
-# logo
-Logo Generator 
->>>>>>> logo/main
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start the server |
+| `npm run deploy:remote` | Pull + restart on Lightsail |
+| `npm run deploy:prod` | Push main + deploy |
+| `node --test scripts/test-security-utils.js` | Security utility tests |
+| `node scripts/test-mcp-submit-rate-limit.js` | MCP submit rate limit tests |

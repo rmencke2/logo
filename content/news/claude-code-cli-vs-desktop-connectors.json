@@ -1,0 +1,12 @@
+{
+  "slug": "claude-code-cli-vs-desktop-connectors",
+  "title": "Claude Code CLI vs Desktop connectors — when to use which",
+  "date": "2026-08-22",
+  "excerpt": "Claude Desktop uses web connectors from Anthropic's cloud; Claude Code uses `claude mcp add` in your terminal. Same MCP URL — different install path, transport flags, and fallback when CLI versions disagree.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Claude", "Claude Code", "Developers", "Remote", "CLI"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/mcp/discovery/setup",
+  "relatedInsightSlug": "claude-code-cli-vs-desktop-connectors",
+  "contentHtml": "<p>Teams testing MCP in <strong>Claude Desktop</strong> assume the same steps work in <strong>Claude Code</strong>. They do not.</p><p><strong>Desktop / web:</strong> Settings → Connectors → Custom → Web → paste HTTPS URL. Anthropic's cloud calls your server.</p><p><strong>Claude Code (CLI):</strong> terminal command, local config, often stdio or <code>--transport http</code>:</p><pre style=\"background:#0d0d0d;padding:12px;border-radius:8px;font-size:13px;color:#ececec;overflow-x:auto;\">claude mcp add --transport http influzer-discovery \\\n  https://www.influzer.ai/mcp/discovery</pre><p><strong>When to use CLI:</strong> repo-adjacent coding sessions, local stdio servers, verifying <code>claude mcp list</code> in CI docs.</p><p><strong>When to use Desktop connectors:</strong> non-dev stakeholders, OAuth flows in UI, no local install.</p><p><strong>Fallback:</strong> if your CLI build rejects <code>--transport http</code>, use Desktop/web connectors for the same URL — do not fork the server.</p><p>Try both paths with read-only Discovery: <a href=\"/mcp/discovery/setup\">/mcp/discovery/setup</a> (Claude + Claude Code tabs). Full matrix: <a href=\"/insights/claude-code-cli-vs-desktop-connectors\">Claude Code CLI vs Desktop connectors</a>.</p>"
+}
