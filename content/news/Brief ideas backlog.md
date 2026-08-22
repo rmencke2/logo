@@ -6,7 +6,7 @@ tags:
   - content-pipeline
 status: backlog
 created: 2026-07-20
-updated: 2026-08-20
+updated: 2026-08-22
 ---
 
 # Influzer MCP Briefs — idea backlog
@@ -17,7 +17,14 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 ---
 
-## Shipped this batch (2026-08-20)
+## Shipped this batch (2026-08-22)
+
+| Date | Slug | Title | Status |
+|------|------|-------|--------|
+| 2026-08-22 | `dont-put-secrets-in-mcp-headers` | Don't put secrets in MCP headers | ✅ Drafted JSON |
+| 2026-08-22 | Insight: `dont-put-secrets-in-mcp-headers` | Don't Put Secrets in MCP Headers — Why Mcp-Method Routing Creates a New Leak Path | ✅ Featured Insight |
+
+## Shipped previous batch (2026-08-20)
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
@@ -64,7 +71,7 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - **Angle:** Routable / `Mcp-Method`-style headers help ops — and can leak secrets into proxies/logs if teams map tokens into headers.
 - **Source:** SecurityWeek / Akamai framing, Influzer voice
 - **Pairs with:** `mcp-builders-oauth-tokens-and-the-over-permission-trap`
-- **Status:** ⬜todo
+- **Status:** ✅ shipped 2026-08-22 (`dont-put-secrets-in-mcp-headers`)
 
 ### Catalog / Influzer-native
 
