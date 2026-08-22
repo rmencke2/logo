@@ -105,6 +105,19 @@
     window.location.href = '/login?mode=register';
   }
 
+  // Handle 401/403 from authenticated API calls (login redirect or verification prompt)
+  function handleAuthApiError(response, data) {
+    if (response.status === 401) {
+      const redirect = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `/login?redirect=${redirect}`;
+      return true;
+    }
+    if (response.status === 403 && data?.needsVerification) {
+      return data.error || 'Email verification required. Check your inbox for the verification link.';
+    }
+    return null;
+  }
+
   // Initialize auth
   checkAuth();
 </script>
