@@ -10,6 +10,7 @@ const TextToSVG = require('text-to-svg');
 const { body, validationResult } = require('express-validator');
 const { requireAuth } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
+const { resolveGeneratedImgPath } = require('../utils/safePath');
 const { fontCategories, FAVICON_SIZES } = require('../config/constants');
 const { getFontPath, generateShape } = require('../utils/logoUtils');
 
@@ -157,12 +158,11 @@ router.post(
 
       console.log(`🎯 Favicon from Logo Request: ${logoPath}`);
 
-      // Read the logo file - logoPath should be like /generated_img/filename.png
-      const logoFilePath = path.join(__dirname, '..', logoPath.replace(/^\//, ''));
-      if (!fs.existsSync(logoFilePath)) {
-        console.error(`❌ Logo file not found at: ${logoFilePath}`);
-        return res.status(404).json({ error: 'Logo file not found' });
+      const resolved = resolveGeneratedImgPath(logoPath, path.join(__dirname, '..'));
+      if (!resolved.ok) {
+        return res.status(resolved.status || 400).json({ error: resolved.error });
       }
+      const logoFilePath = resolved.filePath;
 
       const safeName = `favicon-from-logo-${Date.now()}`;
       const generatedFiles = {};

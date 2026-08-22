@@ -4,6 +4,7 @@
 
 const { getDatabase } = require('./database');
 const rateLimit = require('express-rate-limit');
+const { shouldBypassRateLimit } = require('./utils/rateLimitBypass');
 
 // Configuration
 const ABUSE_CONFIG = {
@@ -125,42 +126,8 @@ async function checkIPLimits(ipAddress) {
 // Middleware to check abuse protection
 async function abuseProtectionMiddleware(req, res, next) {
   try {
-    // Check if user should bypass abuse protection
-    const bypassEmails = ['rasmusmencke', 'mencke'];
-    let shouldBypass = false;
-    
-    // Check Passport authenticated user
-    if (req.isAuthenticated && req.isAuthenticated() && req.user) {
-      const email = (req.user.email || '').toLowerCase();
-      for (const bypassEmail of bypassEmails) {
-        if (email.includes(bypassEmail)) {
-          shouldBypass = true;
-          console.log(`✅ Abuse protection bypassed for user: ${req.user.email}`);
-          break;
-        }
-      }
-    }
-    
-    // Check session-based auth (for local auth)
-    if (!shouldBypass && req.session && req.session.userId) {
-      try {
-        const db = await getDatabase();
-        const user = await db.getUserById(req.session.userId);
-        if (user && user.email) {
-          const email = user.email.toLowerCase();
-          for (const bypassEmail of bypassEmails) {
-            if (email.includes(bypassEmail)) {
-              shouldBypass = true;
-              console.log(`✅ Abuse protection bypassed for user: ${user.email}`);
-              break;
-            }
-          }
-        }
-      } catch (dbErr) {
-        console.error('Error checking user for bypass:', dbErr);
-      }
-    }
-    
+    const shouldBypass = await shouldBypassRateLimit(req);
+
     // If bypass is enabled, skip all checks
     if (shouldBypass) {
       // Set unlimited usage limits for bypassed users
