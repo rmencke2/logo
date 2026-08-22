@@ -1,0 +1,12 @@
+{
+  "slug": "discovery-mcp-is-the-new-app-store-search",
+  "title": "Discovery MCP is the new App Store search",
+  "date": "2026-08-22",
+  "excerpt": "Humans browse MCP directories by brand and stars. Agents search by capability — scrape to markdown, Postgres, create_issue. Discovery MCP exposes the catalog as tools inside Claude, ChatGPT, and Cursor.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Discovery", "Directory", "Agents", "Developers", "Influzer.ai"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/mcp/discovery/setup",
+  "relatedInsightSlug": "discovery-mcp-is-the-new-app-store-search",
+  "contentHtml": "<p>MCP directories look like app stores: grids, stars, logos. <strong>Agents do not shop that way.</strong> They search by capability — <em>scrape URL to markdown</em>, <em>run Postgres query</em>, <em>create GitHub issue</em> — and pick whichever server’s <code>tools/list</code> matches the job.</p><p><strong>Influzer MCP Discovery</strong> (<code>https://www.influzer.ai/mcp/discovery</code>) turns the ~6,000-server catalog into read-only tools your agent can call: <code>search_mcp_servers</code>, <code>recommend_mcp_servers</code>, <code>get_mcp_server</code>, <code>list_mcp_topics</code>. Connect once from <a href=\"/mcp/discovery/setup\">/mcp/discovery/setup</a>.</p><p><strong>What changes for authors:</strong></p><ul><li>Tool names + descriptions are SEO for agents — verbs beat clever codenames</li><li>Indexed <code>tools/list</code> is inventory — ~7% of listings today; the rest is search-invisible</li><li>Topic lanes (browser automation, RAG, coding) map to <code>recommend_mcp_servers</code></li><li>Stars help humans; capability keywords win agent search</li></ul><p><strong>Why it matters:</strong> discovery is moving inside the chat. Directories that only optimize for scrolling lose to catalogs agents can query.</p><p>Setup intro: <a href=\"/insights/search-mcp-servers-from-claude-chatgpt-cursor-influzer-discovery\">Search MCP without leaving your client</a>. Full playbook: <a href=\"/insights/discovery-mcp-is-the-new-app-store-search\">Discovery MCP is the new App Store search</a>.</p>"
+}

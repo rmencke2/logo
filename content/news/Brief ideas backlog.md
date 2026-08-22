@@ -21,6 +21,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
+| 2026-08-22 | `discovery-mcp-is-the-new-app-store-search` | Discovery MCP is the new App Store search | ✅ Drafted JSON |
+| 2026-08-22 | Insight: `discovery-mcp-is-the-new-app-store-search` | Discovery MCP Is the New App Store Search — Why Agents Find Integrations by Capability, Not Brand | ✅ Featured Insight |
 | 2026-08-22 | `dont-put-secrets-in-mcp-headers` | Don't put secrets in MCP headers | ✅ Drafted JSON |
 | 2026-08-22 | Insight: `dont-put-secrets-in-mcp-headers` | Don't Put Secrets in MCP Headers — Why Mcp-Method Routing Creates a New Leak Path | ✅ Featured Insight |
 
@@ -80,7 +82,7 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - **Source:** Influzer.ai
 - **CTA:** `/mcp/discovery/setup`
 - **Pairs with:** `search-mcp-servers-from-claude-chatgpt-cursor-influzer-discovery`
-- **Status:** ⬜todo
+- **Status:** ✅ shipped 2026-08-22 (`discovery-mcp-is-the-new-app-store-search`)
 
 #### 4. Most MCP servers are still demoware
 - **Angle:** Huge catalog, thin tool quality — how to spot production-ready in 30 seconds (transport, tool count, auth, docs).
