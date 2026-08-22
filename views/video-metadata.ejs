@@ -204,10 +204,9 @@
         }
 
         if (!response.ok) {
-          if (response.status === 401) {
-            window.location.href = `/login?redirect=${encodeURIComponent('/video-metadata')}`;
-            return;
-          }
+          const authError = handleAuthApiError(response, data);
+          if (authError === true) return;
+          if (authError) throw new Error(authError);
           throw new Error(data.error || data.message || 'Extraction failed');
         }
 

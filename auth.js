@@ -220,33 +220,27 @@ async function requireAuth(req, res, next) {
   res.status(401).json({ error: 'Authentication required' });
 }
 
-// Middleware to check if user is verified (for email/password users)
+// Middleware to check if user is verified (for email/password users).
+// Must run after requireAuth so req.user is populated.
 async function requireVerified(req, res, next) {
-  // Check if authenticated
-  if (!req.isAuthenticated || !req.isAuthenticated()) {
-    if (!req.session || !req.session.userId) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-  }
-  
-  const db = await getDatabase();
   const userId = req.user?.id || req.session?.userId;
   if (!userId) {
     return res.status(401).json({ error: 'Authentication required' });
   }
-  
+
+  const db = await getDatabase();
   const user = await db.getUserById(userId);
   if (!user) {
     return res.status(401).json({ error: 'User not found' });
   }
-  
+
   if (!user.email_verified && user.provider === 'local') {
-    return res.status(403).json({ 
-      error: 'Email verification required',
-      needsVerification: true 
+    return res.status(403).json({
+      error: 'Email verification required. Check your inbox or request a new link from your account settings.',
+      needsVerification: true,
     });
   }
-  
+
   next();
 }
 

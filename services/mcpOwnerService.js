@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { requireAuth, requireAuthPage } = require('../auth');
+const { requireAuth, requireAuthPage, requireVerified } = require('../auth');
 const { getMcpCategories, findMcpServerBySlug } = require('./mcpDirectoryService');
 const {
   findManualServer,
@@ -131,7 +131,7 @@ function registerMcpOwnerRoutes(app) {
     }
   });
 
-  app.put('/api/mcp/my-listings/:slug', requireAuth, (req, res) => {
+  app.put('/api/mcp/my-listings/:slug', requireAuth, requireVerified, (req, res) => {
     try {
       const server = editBodyToManualServer(req.body || {});
       validateManualServer(server);

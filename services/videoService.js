@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
-const { requireAuth } = require('../auth');
+const { requireAuth, requireVerified } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { trackService } = require('./analyticsService');
 
@@ -66,6 +66,7 @@ function initializeVideoService(app) {
     '/convert-avi-to-mp4',
     trackService('avi-to-mp4'),
     requireAuth,
+    requireVerified,
     abuseProtectionMiddleware,
     upload.single('video'),
     async (req, res) => {
@@ -144,6 +145,7 @@ function initializeVideoService(app) {
     '/convert-video-to-gif',
     trackService('video-to-gif'),
     requireAuth,
+    requireVerified,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
     async (req, res) => {
@@ -223,6 +225,7 @@ function initializeVideoService(app) {
     '/extract-video-metadata',
     trackService('video-metadata'),
     requireAuth,
+    requireVerified,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
     async (req, res) => {
@@ -314,6 +317,7 @@ function initializeVideoService(app) {
     '/convert-to-meme',
     trackService('meme-generator'),
     requireAuth,
+    requireVerified,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
     async (req, res) => {
@@ -501,7 +505,7 @@ function initializeVideoService(app) {
   );
 
   // Serve generated videos (authenticated download only)
-  app.get('/generated_video/:filename', requireAuth, (req, res) => {
+  app.get('/generated_video/:filename', requireAuth, requireVerified, (req, res) => {
     const filename = path.basename(String(req.params.filename || ''));
     if (!filename || filename !== req.params.filename) {
       return res.status(400).json({ error: 'Invalid filename' });

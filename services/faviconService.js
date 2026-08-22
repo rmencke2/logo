@@ -8,7 +8,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 const TextToSVG = require('text-to-svg');
 const { body, validationResult } = require('express-validator');
-const { requireAuth } = require('../auth');
+const { requireAuth, requireVerified } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { resolveGeneratedImgPath } = require('../utils/safePath');
 
@@ -78,6 +78,7 @@ function initializeFaviconService(app) {
   app.post(
     '/generate-favicon',
     requireAuth,
+    requireVerified,
     abuseProtectionMiddleware,
     [
       body('text').isString().notEmpty().isLength({ min: 1, max: 2 }),
@@ -206,6 +207,7 @@ function initializeFaviconService(app) {
   app.post(
     '/generate-favicon-from-logo',
     requireAuth,
+    requireVerified,
     abuseProtectionMiddleware,
     [
       body('logoPath').isString().notEmpty(),

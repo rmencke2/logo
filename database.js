@@ -198,7 +198,7 @@ class Database {
   async getUserById(id) {
     return new Promise((resolve, reject) => {
       this.db.get(
-        'SELECT id, email, name, avatar_url, subscription_tier, email_verified, is_admin, is_blocked, blocked_reason, blocked_at, created_at, last_login FROM users WHERE id = ?',
+        'SELECT id, email, name, avatar_url, provider, subscription_tier, email_verified, is_admin, is_blocked, blocked_reason, blocked_at, created_at, last_login FROM users WHERE id = ?',
         [id],
         (err, row) => {
           if (err) reject(err);

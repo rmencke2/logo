@@ -705,7 +705,16 @@
           });
 
           if (!res.ok) {
-            throw new Error(await res.text());
+            let data = {};
+            try {
+              data = await res.json();
+            } catch (_) {
+              data = { error: await res.text() };
+            }
+            const authError = handleAuthApiError(res, data);
+            if (authError === true) return;
+            if (authError) throw new Error(authError);
+            throw new Error(data.error || 'Favicon generation failed');
           }
 
           const { files } = await res.json();
@@ -816,8 +825,16 @@
             credentials: 'include',
           });
           if (!res.ok) {
-            const errorText = await res.text();
-            throw new Error(errorText);
+            let data = {};
+            try {
+              data = await res.json();
+            } catch (_) {
+              data = { error: await res.text() };
+            }
+            const authError = handleAuthApiError(res, data);
+            if (authError === true) return;
+            if (authError) throw new Error(authError);
+            throw new Error(data.error || 'Favicon generation failed');
           }
           const { files } = await res.json();
 
@@ -935,6 +952,9 @@
           const data = await response.json();
 
           if (!response.ok) {
+            const authError = handleAuthApiError(response, data);
+            if (authError === true) return;
+            if (authError) throw new Error(authError);
             throw new Error(data.error || 'Conversion failed');
           }
 
@@ -1242,6 +1262,17 @@
 
       // Authentication functions
       let currentUser = null;
+
+      function handleAuthApiError(response, data) {
+        if (response.status === 401) {
+          window.showAuthGate();
+          return true;
+        }
+        if (response.status === 403 && data?.needsVerification) {
+          return data.error || 'Email verification required. Check your inbox for the verification link.';
+        }
+        return null;
+      }
 
       async function checkAuthStatus() {
         try {

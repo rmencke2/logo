@@ -458,6 +458,9 @@
         }
 
         if (!response.ok) {
+          const authError = handleAuthApiError(response, data);
+          if (authError === true) return;
+          if (authError) throw new Error(authError);
           throw new Error(data.error || data.message || 'Generation failed');
         }
 
