@@ -46,11 +46,10 @@ clean_working_tree_for_rebase() {
   if [[ -z "$(git status --porcelain)" ]]; then
     return 0
   fi
-  echo "Working tree dirty before rebase; discarding unstaged noise:"
-  git status --porcelain | head -n 50 || true
+  local dirty_count
+  dirty_count="$(git status --porcelain | wc -l | tr -d ' ')"
+  echo "Working tree dirty before rebase; discarding ${dirty_count} unstaged path(s)"
   git reset --hard HEAD
-  # Untracked files rarely block rebase; leave them unless a path we commit is
-  # about to be overwritten (handled by rebase itself).
 }
 
 resolve_rebase_preferring_ours() {
