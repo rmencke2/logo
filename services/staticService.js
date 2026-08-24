@@ -40,6 +40,12 @@ const {
 } = require('../data/mcp-categories');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
 const { getServersForCategory, getCategorySummaries } = require('./mcpCategoryService');
+const {
+  getComparisonSummaries,
+  getComparisonPage,
+  getComparisonsForServer,
+  getMcpComparisonsIndexSeoContent,
+} = require('./mcpComparisonService');
 const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
 const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
@@ -1062,6 +1068,95 @@ ${itemsXml}
     });
   });
 
+  app.get('/mcp/compare', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const comparisons = getComparisonSummaries();
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/compare`;
+    const metaDescription =
+      'Head-to-head MCP server comparisons — Firecrawl vs Exa, Postgres vs Neon, Playwright vs Chrome DevTools, and more.';
+    const seoContent = getMcpComparisonsIndexSeoContent();
+    res.render('mcp-comparisons-index', {
+      pageTitle: 'MCP Server Comparisons',
+      metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      comparisons,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'CollectionPage',
+              '@id': `${canonicalUrl}#webpage`,
+              url: canonicalUrl,
+              name: 'MCP Server Comparisons',
+              description: metaDescription,
+            },
+          ],
+        },
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
+  app.get('/mcp/compare/:slug', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const page = getComparisonPage(req.params.slug);
+    if (!page.comparison) {
+      return res.status(404).render('404', { title: 'Comparison Not Found' });
+    }
+    if (!page.isCanonical) {
+      return res.redirect(301, `/mcp/compare/${page.comparison.slug}`);
+    }
+    const { comparison, left, right, tableRows, related, relatedTopics, seoContent } = page;
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/compare/${comparison.slug}`;
+    res.render('mcp-compare', {
+      comparison,
+      left,
+      right,
+      tableRows,
+      related,
+      relatedTopics,
+      pageTitle: comparison.title,
+      metaDescription: comparison.metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'WebPage',
+              '@id': `${canonicalUrl}#webpage`,
+              url: canonicalUrl,
+              name: comparison.title,
+              description: comparison.metaDescription,
+              about: [
+                { '@type': 'SoftwareApplication', name: left.name, url: `${SITE_BASE_URL}/mcp/${left.slug}` },
+                { '@type': 'SoftwareApplication', name: right.name, url: `${SITE_BASE_URL}/mcp/${right.slug}` },
+              ],
+            },
+            {
+              '@type': 'ItemList',
+              '@id': `${canonicalUrl}#itemlist`,
+              name: comparison.title,
+              numberOfItems: 2,
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: left.name, url: `${SITE_BASE_URL}/mcp/${left.slug}` },
+                { '@type': 'ListItem', position: 2, name: right.name, url: `${SITE_BASE_URL}/mcp/${right.slug}` },
+              ],
+            },
+          ],
+        },
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
   // Before /mcp/:slug — otherwise "submit" is treated as a server slug
   registerMcpSubmissionRoutes(app);
   registerMcpOwnerRoutes(app);
@@ -1103,6 +1198,7 @@ ${itemsXml}
       catalogTotals: getMcpCatalogTotals(),
       relatedServers: getRelatedMcpServers(server, 4),
       categorySlug: categorySlugFromName(server.category),
+      comparisons: getComparisonsForServer(server.slug),
       discoveryPromo: getDiscoveryPromo(),
       assetVersion,
       navPath: req.path,
@@ -1182,6 +1278,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/categories`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
+      { loc: `${SITE_BASE_URL}/mcp/compare`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
@@ -1221,8 +1318,14 @@ ${itemsXml}
       changefreq: 'weekly',
       priority: '0.78',
     }));
+    const compareUrls = getComparisonSummaries().map((c) => ({
+      loc: `${SITE_BASE_URL}/mcp/compare/${c.slug}`,
+      lastmod: mcpLastMod,
+      changefreq: 'weekly',
+      priority: '0.8',
+    }));
     const webmcpUrls = getWebmcpSitemapEntries();
-    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...categoryUrls, ...mcpUrls, ...webmcpUrls];
+    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...categoryUrls, ...compareUrls, ...mcpUrls, ...webmcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls
