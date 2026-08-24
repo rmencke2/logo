@@ -169,7 +169,7 @@ function validateSubmission(body) {
 }
 
 /** Reserved MCP path segments — must not be handled as server slugs */
-const RESERVED_MCP_PATHS = new Set(['submit', 'all', 'my-listings', 'topics', 'categories', 'compare', 'discovery']);
+const RESERVED_MCP_PATHS = new Set(['submit', 'all', 'my-listings', 'topics', 'categories', 'compare', 'best', 'discovery']);
 
 function isReservedMcpPath(slug) {
   return RESERVED_MCP_PATHS.has(String(slug || '').toLowerCase());

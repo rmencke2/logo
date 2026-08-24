@@ -46,6 +46,11 @@ const {
   getComparisonsForServer,
   getMcpComparisonsIndexSeoContent,
 } = require('./mcpComparisonService');
+const {
+  getClientSummaries,
+  getClientPage,
+  getMcpBestIndexSeoContent,
+} = require('./mcpClientService');
 const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
 const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
@@ -1157,6 +1162,74 @@ ${itemsXml}
     });
   });
 
+  app.get('/mcp/best', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const clients = getClientSummaries();
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/best`;
+    const metaDescription =
+      'Best MCP servers by AI client — start with Claude Desktop, Claude.ai, and Claude Code. Cursor guide next.';
+    const seoContent = getMcpBestIndexSeoContent();
+    res.render('mcp-best-index', {
+      pageTitle: 'Best MCP Servers by Client',
+      metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      clients,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'CollectionPage',
+              '@id': `${canonicalUrl}#webpage`,
+              url: canonicalUrl,
+              name: 'Best MCP Servers by Client',
+              description: metaDescription,
+            },
+          ],
+        },
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
+  app.get('/mcp/best/:slug', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const page = getClientPage(req.params.slug);
+    if (!page.client) {
+      return res.status(404).render('404', { title: 'Client Guide Not Found' });
+    }
+    if (!page.isCanonical) {
+      return res.redirect(301, `/mcp/best/${page.client.slug}`);
+    }
+    const { client, stacks, featuredServers, relatedTopics, relatedComparisons, seoContent } = page;
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/best/${client.slug}`;
+    res.render('mcp-best-client', {
+      client,
+      stacks,
+      featuredServers,
+      relatedTopics,
+      relatedComparisons,
+      pageTitle: client.title,
+      metaDescription: client.metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        buildMcpCollectionJsonLd({
+          pageUrl: canonicalUrl,
+          pageName: client.title,
+          description: client.metaDescription,
+          servers: featuredServers,
+        }),
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
   // Before /mcp/:slug — otherwise "submit" is treated as a server slug
   registerMcpSubmissionRoutes(app);
   registerMcpOwnerRoutes(app);
@@ -1279,6 +1352,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/categories`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/compare`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
+      { loc: `${SITE_BASE_URL}/mcp/best`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.84' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
@@ -1324,8 +1398,14 @@ ${itemsXml}
       changefreq: 'weekly',
       priority: '0.8',
     }));
+    const bestUrls = getClientSummaries().map((c) => ({
+      loc: `${SITE_BASE_URL}/mcp/best/${c.slug}`,
+      lastmod: latestPostDate,
+      changefreq: 'weekly',
+      priority: '0.86',
+    }));
     const webmcpUrls = getWebmcpSitemapEntries();
-    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...categoryUrls, ...compareUrls, ...mcpUrls, ...webmcpUrls];
+    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...categoryUrls, ...compareUrls, ...bestUrls, ...mcpUrls, ...webmcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls

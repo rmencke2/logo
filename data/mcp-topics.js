@@ -348,6 +348,7 @@ function getMcpTopicsIndexSeoContent() {
           { href: '/mcp', label: 'Top 100 MCP servers', desc: 'Curated ranking with tool lists' },
           { href: '/mcp/all', label: 'Full directory', desc: 'Search every server by tool or name' },
           { href: '/mcp/compare', label: 'Comparisons', desc: 'Head-to-head MCP matchups' },
+          { href: '/mcp/best/claude', label: 'Best for Claude', desc: 'Desktop, claude.ai, and Claude Code' },
         ],
       },
     ],
