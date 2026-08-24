@@ -33,7 +33,13 @@ const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
 const { getMilestonePromo } = require('../data/mcp-milestone-promo');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
+const {
+  getMcpCategorySeoContent,
+  getMcpCategoriesIndexSeoContent,
+  categorySlugFromName,
+} = require('../data/mcp-categories');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
+const { getServersForCategory, getCategorySummaries } = require('./mcpCategoryService');
 const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
 const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
@@ -988,6 +994,74 @@ ${itemsXml}
     });
   });
 
+  app.get('/mcp/categories', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const categories = getCategorySummaries();
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/categories`;
+    const metaDescription =
+      'Browse MCP servers by category — dev tools, databases, search & web, communication, AI memory, and more with indexed tools.';
+    const seoContent = getMcpCategoriesIndexSeoContent();
+    res.render('mcp-categories-index', {
+      pageTitle: 'MCP Server Categories',
+      metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      categories,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'CollectionPage',
+              '@id': `${canonicalUrl}#webpage`,
+              url: canonicalUrl,
+              name: 'MCP Server Categories',
+              description: metaDescription,
+            },
+          ],
+        },
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
+  app.get('/mcp/categories/:slug', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const { category, servers, total } = getServersForCategory(req.params.slug);
+    if (!category) {
+      return res.status(404).render('404', { title: 'Category Not Found' });
+    }
+    const brandedServers = servers.map((s) => attachBranding(s));
+    const relatedTopics = (category.relatedTopicSlugs || [])
+      .map((slug) => getMcpTopicBySlug(slug))
+      .filter(Boolean);
+    const canonicalUrl = `${SITE_BASE_URL}/mcp/categories/${category.slug}`;
+    const seoContent = getMcpCategorySeoContent(category, total);
+    res.render('mcp-category', {
+      category,
+      servers: brandedServers,
+      totalMatches: total,
+      relatedTopics,
+      pageTitle: category.title,
+      metaDescription: category.metaDescription,
+      canonicalUrl,
+      ogImage: SITE_DEFAULT_OG_IMAGE,
+      seoContent,
+      jsonLd: appendFaqToJsonLd(
+        buildMcpCollectionJsonLd({
+          pageUrl: canonicalUrl,
+          pageName: category.title,
+          description: category.metaDescription,
+          servers: brandedServers,
+        }),
+        seoContent.faqs,
+        canonicalUrl,
+      ),
+    });
+  });
+
   // Before /mcp/:slug — otherwise "submit" is treated as a server slug
   registerMcpSubmissionRoutes(app);
   registerMcpOwnerRoutes(app);
@@ -1028,6 +1102,7 @@ ${itemsXml}
       inTop100: isInTop100(server.slug),
       catalogTotals: getMcpCatalogTotals(),
       relatedServers: getRelatedMcpServers(server, 4),
+      categorySlug: categorySlugFromName(server.category),
       discoveryPromo: getDiscoveryPromo(),
       assetVersion,
       navPath: req.path,
@@ -1106,6 +1181,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
+      { loc: `${SITE_BASE_URL}/mcp/categories`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
@@ -1139,8 +1215,14 @@ ${itemsXml}
       changefreq: 'weekly',
       priority: '0.75',
     }));
+    const categoryUrls = getCategorySummaries().map((c) => ({
+      loc: `${SITE_BASE_URL}/mcp/categories/${c.slug}`,
+      lastmod: mcpLastMod,
+      changefreq: 'weekly',
+      priority: '0.78',
+    }));
     const webmcpUrls = getWebmcpSitemapEntries();
-    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...mcpUrls, ...webmcpUrls];
+    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...categoryUrls, ...mcpUrls, ...webmcpUrls];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls
