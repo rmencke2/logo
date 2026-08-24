@@ -515,7 +515,7 @@ function renderHomepage(req, res) {
     seoContent,
     jsonLd,
     promo: getSitePromo(),
-    discoveryPromo: getDiscoveryPromo(),
+    discoveryPromo: getDiscoveryPromo({ ref: 'home', serverCount: heroStats.totalServers }),
     milestonePromo: getMilestonePromo(heroStats.totalServers),
     assetVersion: getHomeAssetVersion(),
   });
@@ -716,7 +716,10 @@ function initializeStaticService(app) {
     const raw = findNewsItemBySlug(req.params.slug);
 
     if (!raw) {
-      return res.status(404).render('news-item', { item: null });
+      return res.status(404).render('news-item', {
+        item: null,
+        discoveryPromo: getDiscoveryPromo({ ref: 'news' }),
+      });
     }
 
     let relatedInsightTitle = '';
@@ -731,7 +734,10 @@ function initializeStaticService(app) {
       relatedInsightTitle,
     };
 
-    return res.render('news-item', { item });
+    return res.render('news-item', {
+      item,
+      discoveryPromo: getDiscoveryPromo({ ref: 'news' }),
+    });
   });
 
   // Blog index
@@ -857,10 +863,10 @@ ${itemsXml}
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),
-      featuredPromo: getSitePromo('firecrawl'),
+      featuredPromo: getSitePromo('influzer-mcp-discovery'),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
-      discoveryPromo: getDiscoveryPromo(),
+      discoveryPromo: getDiscoveryPromo({ ref: 'mcp-all', serverCount: totals.total }),
       milestonePromo: getMilestonePromo(totals.total),
       assetVersion: getHomeAssetVersion(),
     });
@@ -905,10 +911,10 @@ ${itemsXml}
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),
-      featuredPromo: getSitePromo('firecrawl'),
+      featuredPromo: getSitePromo('influzer-mcp-discovery'),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
-      discoveryPromo: getDiscoveryPromo(),
+      discoveryPromo: getDiscoveryPromo({ ref: 'mcp-top', serverCount: totals.total }),
       milestonePromo: getMilestonePromo(totals.total),
       assetVersion: getHomeAssetVersion(),
     });
@@ -1043,6 +1049,7 @@ ${itemsXml}
         turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
         assetVersion,
         navPath: req.path,
+        discoveryPromo: getDiscoveryPromo({ ref: 'insights' }),
       });
     }
 
@@ -1058,6 +1065,7 @@ ${itemsXml}
       turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
       assetVersion,
       navPath: req.path,
+      discoveryPromo: getDiscoveryPromo({ ref: 'insights' }),
     });
   });
 
@@ -1099,6 +1107,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
+      { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },

@@ -54,6 +54,7 @@
       .news-related a { font-weight: 600; }
       .not-found { padding: 24px; border: 1px dashed var(--color-border-strong); border-radius: 14px; }
     </style>
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css" />
   </head>
   <body>
     <%- include('partials/site-header', { navPath: '/news', activeNav: 'news' }) %>
@@ -87,6 +88,9 @@
             </aside>
           <% } %>
         </article>
+        <%- include('partials/discovery-inline-cta', {
+          discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null,
+        }) %>
       <% } %>
     </main>
   </body>

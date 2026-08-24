@@ -33,7 +33,7 @@ const MCP_AFFILIATE_LINKS = {
     provider: 'Firecrawl',
     promoBlurb: 'Scrape, crawl, and search the web for your agents — 1,000 free credits/month.',
     promoCta: 'Try Firecrawl free',
-    featured: true,
+    featured: false,
   },
 };
 
