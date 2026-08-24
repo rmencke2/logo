@@ -637,6 +637,7 @@ function getMcpComparisonsIndexSeoContent() {
           { href: '/mcp', label: 'Top 100 MCP servers', desc: 'Curated ranking with tool lists' },
           { href: '/mcp/categories', label: 'Categories', desc: 'Browse by product type' },
           { href: '/mcp/topics', label: 'Topic guides', desc: 'Browse by workflow' },
+          { href: '/mcp/best/claude', label: 'Best for Claude', desc: 'Starter stacks by Claude surface' },
         ],
       },
     ],
