@@ -164,9 +164,12 @@
 
         <div class="home-aside-card">
           <h3 class="home-aside-card__title">Search from inside your agent</h3>
-          <p class="home-aside-card__desc">Our official MCP server works in Claude, Cursor &amp; ChatGPT. No auth required.</p>
+          <p class="home-aside-card__desc"><%= discoveryPromo && discoveryPromo.promoBlurb ? discoveryPromo.promoBlurb : 'Our official MCP server works in Claude, Cursor & ChatGPT. No auth required.' %></p>
           <div class="home-aside-card__code">influzer.ai/mcp/discovery</div>
           <a class="home-aside-card__btn" href="<%= discoveryPromo && discoveryPromo.setupUrl ? discoveryPromo.setupUrl : '/mcp/discovery/setup' %>">Connect in 2 minutes</a>
+          <p class="home-aside-card__desc" style="margin-top:10px;margin-bottom:0;">
+            <a href="<%= discoveryPromo && discoveryPromo.startersUrl ? discoveryPromo.startersUrl : '/mcp/discovery/starters' %>">Starter kits →</a>
+          </p>
         </div>
 
         <div class="home-aside-card">

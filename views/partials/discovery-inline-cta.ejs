@@ -1,0 +1,17 @@
+<%#
+  Compact Discovery CTA for Insights + Briefs footers.
+  Expects discoveryPromo from getDiscoveryPromo({ ref }).
+%>
+<% const dp = typeof discoveryPromo !== 'undefined' ? discoveryPromo : null; %>
+<% if (dp) { %>
+  <aside class="discovery-inline-cta" aria-label="Influzer MCP Discovery">
+    <p class="discovery-inline-cta__eyebrow">Default discovery layer</p>
+    <h2 class="discovery-inline-cta__title">Search MCP servers from inside your agent</h2>
+    <p class="discovery-inline-cta__text"><%= dp.promoBlurb || dp.blurb %></p>
+    <div class="discovery-inline-cta__actions">
+      <a class="discovery-inline-cta__btn" href="<%= dp.setupUrl %>"><%= dp.promoCta || 'Connect in 2 minutes' %></a>
+      <a class="discovery-inline-cta__link" href="<%= dp.startersUrl || '/mcp/discovery/starters' %>">Starter kits</a>
+      <code class="discovery-inline-cta__endpoint"><%= dp.endpoint %></code>
+    </div>
+  </aside>
+<% } %>

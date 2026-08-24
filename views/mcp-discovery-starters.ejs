@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MCP Discovery starter kits — Cursor, Claude, ChatGPT - Influzer.ai</title>
+    <meta name="description" content="Copy-paste .cursor/mcp.json starter kits with Influzer MCP Discovery: coding agent, browser automation, and research stacks." />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: 'MCP Discovery starter kits — Cursor, Claude, ChatGPT',
+      ogDescription: 'Copy-paste Cursor configs with Influzer MCP Discovery as the default search layer for your agent stack.',
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="/mcp/discovery/setup">← Setup guide</a>
+
+      <p class="setup-eyebrow">Starter kits · Discovery first</p>
+      <h1 class="setup-title">MCP stacks that start with Discovery</h1>
+      <p class="setup-lead">
+        Paste one of these into <code>.cursor/mcp.json</code>. Every kit includes
+        <strong>Influzer MCP Discovery</strong> so your agent can search the directory by capability —
+        then shortlist real servers before you commit secrets.
+      </p>
+
+      <div class="setup-endpoint">
+        <p class="setup-endpoint__label">DISCOVERY ENDPOINT</p>
+        <div class="setup-endpoint__row">
+          <code class="setup-endpoint__url" id="setupEndpoint"><%= endpoint %></code>
+          <button type="button" class="setup-endpoint__copy" id="copyEndpoint">Copy URL</button>
+        </div>
+      </div>
+
+      <% kits.forEach(function(kit) { %>
+        <section class="starter-kit" id="<%= kit.id %>">
+          <p class="starter-kit__audience"><%= kit.audience %></p>
+          <h2 class="starter-kit__title"><%= kit.title %></h2>
+          <p class="starter-kit__blurb"><%= kit.blurb %></p>
+          <blockquote class="setup-prompt">“<%= kit.prompt %>”</blockquote>
+          <p class="setup-code-label">.cursor/mcp.json</p>
+          <pre class="setup-code"><code><%= kit.cursorConfigJson %></code></pre>
+          <% if (kit.note) { %>
+            <p class="setup-note"><%= kit.note %></p>
+          <% } %>
+        </section>
+      <% }); %>
+
+      <p class="setup-links">
+        <a href="/mcp/discovery/setup">Full setup (Claude · ChatGPT · Cursor · Claude Code)</a>
+        · <a href="/mcp">Browse Top 100</a>
+        · <a href="/insights/how-to-set-up-your-first-mcp-servers-in-cursor">First MCP servers in Cursor</a>
+      </p>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-setup-page.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

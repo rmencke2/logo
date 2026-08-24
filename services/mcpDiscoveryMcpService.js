@@ -10,7 +10,7 @@ const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 const { TOOL_DEFINITIONS, handleToolCall } = require('./mcpDiscoveryTools');
-const { getDiscoverySetupGuide, MCP_DISCOVERY_SETUP } = require('../data/mcp-discovery-promo');
+const { getDiscoverySetupGuide, getDiscoveryStarterKits, MCP_DISCOVERY_SETUP, MCP_DISCOVERY_STARTERS, MCP_DISCOVERY_ENDPOINT } = require('../data/mcp-discovery-promo');
 
 function getSetupAssetVersion() {
   try {
@@ -100,6 +100,16 @@ function registerMcpDiscoveryRoutes(app) {
     res.render('mcp-discovery-setup', {
       guide,
       canonicalUrl: MCP_DISCOVERY_SETUP,
+      assetVersion: getSetupAssetVersion(),
+    });
+  });
+
+  app.get('/mcp/discovery/starters', (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.render('mcp-discovery-starters', {
+      kits: getDiscoveryStarterKits(),
+      endpoint: MCP_DISCOVERY_ENDPOINT,
+      canonicalUrl: MCP_DISCOVERY_STARTERS,
       assetVersion: getSetupAssetVersion(),
     });
   });

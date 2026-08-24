@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/seo-content.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css?v=<%= assetVersion %>" />
   </head>
   <body class="registry-page">
     <%- include('partials/home-header') %>
@@ -58,7 +59,9 @@
     </header>
 
     <main class="dir-shell" id="main">
-      <% if (typeof featuredPromo !== 'undefined' && featuredPromo) { %>
+      <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
+
+      <% if (typeof featuredPromo !== 'undefined' && featuredPromo && featuredPromo.slug !== 'influzer-mcp-discovery') { %>
         <aside class="dir-featured" aria-label="Featured server">
           <div class="dir-featured__icon" aria-hidden="true"><%= (featuredPromo.provider || 'W').charAt(0) %></div>
           <div class="dir-featured__body">

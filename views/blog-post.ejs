@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/article-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-discovery-promo.css?v=<%= assetVersion %>" />
     <% if (post) { %>
       <script type="application/ld+json">
         <%- JSON.stringify({
@@ -161,6 +162,12 @@
           </aside>
         <% } %>
       </main>
+
+      <div class="article-discovery-wrap">
+        <%- include('partials/discovery-inline-cta', {
+          discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null,
+        }) %>
+      </div>
 
       <% if (relatedPosts && relatedPosts.length) { %>
         <section class="article-related" aria-label="Related insights">
