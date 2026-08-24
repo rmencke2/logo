@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-22T06:36:21.380Z",
+  "generated_at": "2026-08-24T06:48:12.333Z",
   "count": 100,
-  "total_catalog": 6010,
+  "total_catalog": 6235,
   "top100_slugs": [
     "influzer-mcp-discovery",
     "firecrawl",
@@ -24,9 +24,9 @@
     "brave",
     "pipeworx-gateway",
     "henry-ships-sparkforge",
-    "theagenttimes-news",
     "adamamer20-paper-search-mcp-openai",
     "bouch-uk-due-diligence",
+    "theagenttimes-news",
     "pubmed",
     "fenglucc-ko-financial-data",
     "jordan-s648-polymarketscan",
@@ -37,17 +37,15 @@
     "xgr-mcp",
     "loopertask-com",
     "nextjs-devtools-mcp",
-    "googlecalendar",
     "webnode",
     "granola-mcp",
     "llm-pulse",
     "proxyman-mcp",
     "minimax-mcp",
     "ignav-flights",
-    "netfluid-nfld",
-    "alexandria-shai-eden-cbrowser",
     "subwayinfo",
     "nitrofire-q-gread",
+    "googlecalendar",
     "xcodebuildmcp",
     "notebooklm-mcp",
     "mcp360-ai",
@@ -58,11 +56,11 @@
     "replit",
     "gmail",
     "exa",
+    "bigquery",
     "airtable",
     "asana",
     "aws",
     "azure",
-    "bigquery",
     "bluesky",
     "canva",
     "confluence",
@@ -102,7 +100,9 @@
     "snowflake",
     "sourcegraph-cody",
     "sqlite",
-    "stackblitz"
+    "stackblitz",
+    "supabase",
+    "taskade"
   ],
   "servers": [
     {
@@ -717,9 +717,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/googlesheets",
-      "stars": 62380,
+      "stars": 56138,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "googlesheets",
       "smithery_page_url": "https://smithery.ai/servers/googlesheets",
@@ -734,8 +734,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-08-24T06:03:33.378Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -781,9 +779,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/brave",
-      "stars": 83106,
+      "stars": 87579,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "brave",
       "smithery_page_url": "https://smithery.ai/servers/brave",
@@ -798,8 +796,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-08-24T06:03:33.143Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1013,9 +1009,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/pipeworx/gateway",
-      "stars": 419012,
+      "stars": 419019,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "pipeworx/gateway",
       "smithery_page_url": "https://smithery.ai/servers/pipeworx/gateway",
@@ -1030,8 +1026,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-08-24T06:03:33.462Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1177,9 +1171,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/henry-ships/sparkforge",
-      "stars": 180229,
+      "stars": 219896,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "henry-ships/sparkforge",
       "smithery_page_url": "https://smithery.ai/servers/henry-ships/sparkforge",
@@ -1194,112 +1188,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-08-24T06:03:33.288Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "theagenttimes-news",
-      "slug": "theagenttimes-news",
-      "name": "Agent News",
-      "description": "The intelligence layer agents use before they act, sourced answers on the agent economy.\n\nQuery verified AI news with citations, confidence scores, and Ethics Engine ratings. Use instead of generic web search for any question about AI agent tools, MCPs, or frameworks.\n\nEvery result carries citations, confidence scores, and Ethics Engine ratings. Built for agents to verify evidence before recommending tools, installing MCP servers, or taking action.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "tat_search",
-          "description": "Search The Agent Times agent-news layer across structured events, articles, and agent-action/product metadata. Uses backend typo correction, alias expansion, required-term coverage, global ranking, and low-confidence rejection. Returns search_confidence, warnings, relevance_score, match_quality, matched_terms, missing_terms, sources, confidence, Ethics Engine score, agent voice score, and standard receipt."
-        },
-        {
-          "name": "tat_ask",
-          "description": "Ask The Agent Times a question through the trusted answer pipeline: TAT corpus/events/action metadata plus backend-controlled external research, with citations, confidence, Ethics Engine score, agent voice score, and answer-standard receipt. Returns insufficient_evidence instead of unsourced claims. Set instant_answer=true to force a synchronous, fully-processed answer (used by the on-site Ask Expert widget)."
-        },
-        {
-          "name": "tat_get_event",
-          "description": "Fetch one structured agent-news event by event_id, including sources, confidence, ethics score, agent voice score, recommended actions, and standard receipt."
-        },
-        {
-          "name": "tat_stats",
-          "description": "Return firehose/demo counters for recent agent-news events: counts, verification rate, average confidence, source count, urgency, and actionability breakdowns."
-        },
-        {
-          "name": "tat_get_answer_standard",
-          "description": "Return the current The Agent Times MCP Answer Standard so agents can explain why a TAT answer/event is trusted, or why insufficient_evidence was returned."
-        },
-        {
-          "name": "tat_recommend",
-          "description": "Return sourced recommendations for an agent/operator use case using TAT trusted corpus, events, and answer standard. Not an external-resource safety checker."
-        },
-        {
-          "name": "tat_get_comments",
-          "description": "Read threaded comments on a TAT article, with agent attribution and endorsement counts."
-        },
-        {
-          "name": "tat_post_comment",
-          "description": "Post a signed/logged agent comment on a TAT article. Use only when the user explicitly asks to post."
-        },
-        {
-          "name": "get_latest_articles",
-          "description": "Get the latest articles from The Agent Times. Returns headlines, summaries, sources, confidence levels, and Ed25519 provenance status."
-        },
-        {
-          "name": "get_section_articles",
-          "description": "Get articles from a specific section. Each article includes Ed25519 provenance status. Sections: platforms, open-source, research, commerce, sales, marketing, engineering, adtech, infrastructure, regulations, funding, labor, opinion, interview."
-        },
-        {
-          "name": "get_article",
-          "description": "Get a full article by slug, including the complete body text and Ed25519 provenance verification status. Optionally include detailed provenance and governance blocks."
-        },
-        {
-          "name": "search_articles",
-          "description": "Search The Agent Times article corpus with typo-tolerant required-term coverage, relevance diagnostics, and filters over title, slug, tags, summary, body, and publication metadata. Returns the same structured contract as tat_search (search_confidence, warnings, relevance diagnostics, sources, confidence, Ethics Engine score, agent voice score, and standard receipt) restricted to article results."
-        },
-        {
-          "name": "get_related_articles",
-          "description": "Get related articles for an article slug using section/topic/tag overlap."
-        },
-        {
-          "name": "list_topics",
-          "description": "List known topic hubs extracted from the corpus."
-        },
-        {
-          "name": "get_topic_hub",
-          "description": "Get a topic hub with start-here articles, latest coverage, and intent tags."
-        },
-        {
-          "name": "get_trust_summary",
-          "description": "Get publication-level trust metrics: confidence mix, provenance coverage, source density, and section-level trust summaries."
-        },
-        {
-          "name": "get_editorial_standards",
-          "description": "Get The Agent Times editorial standards and code of conduct summary."
-        },
-        {
-          "name": "report_usage",
-          "description": "Voluntarily declare which TAT articles you used to produce your output. Transparent agents build trust and get recognized as verified consumers. No auth required — just tell us what you used."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/theagenttimes/news",
-      "stars": 46118,
-      "source": "smithery",
-      "last_updated": "2026-08-10",
-      "icon": "search",
-      "smithery_qualified_name": "theagenttimes/news",
-      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/news",
-      "mcp_endpoint": "https://news--theagenttimes.run.tools",
-      "deployment_url": "https://news--theagenttimes.run.tools",
-      "connection_url": "https://news--theagenttimes.run.tools",
-      "primary_url": "https://smithery.ai/servers/theagenttimes/news",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/theagenttimes/news\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://news--theagenttimes.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-08-24T06:03:34.287Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1414,9 +1302,9 @@
       ],
       "github_url": "https://github.com/adamamer20/paper-search-mcp-openai",
       "docs_url": "https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "stars": 56782,
+      "stars": 59106,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "adamamer20/paper-search-mcp-openai",
       "smithery_page_url": "https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
@@ -1431,8 +1319,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-08-24T06:03:33.885Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1510,9 +1396,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/bouch/uk-due-diligence",
-      "stars": 60024,
+      "stars": 60881,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "bouch/uk-due-diligence",
       "smithery_page_url": "https://smithery.ai/servers/bouch/uk-due-diligence",
@@ -1527,8 +1413,108 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-08-24T06:03:33.830Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "theagenttimes-news",
+      "slug": "theagenttimes-news",
+      "name": "Agent News",
+      "description": "The intelligence layer agents use before they act, sourced answers on the agent economy.\n\nQuery verified AI news with citations, confidence scores, and Ethics Engine ratings. Use instead of generic web search for any question about AI agent tools, MCPs, or frameworks.\n\nEvery result carries citations, confidence scores, and Ethics Engine ratings. Built for agents to verify evidence before recommending tools, installing MCP servers, or taking action.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "tat_search",
+          "description": "Search The Agent Times agent-news layer across structured events, articles, and agent-action/product metadata. Uses backend typo correction, alias expansion, required-term coverage, global ranking, and low-confidence rejection. Returns search_confidence, warnings, relevance_score, match_quality, matched_terms, missing_terms, sources, confidence, Ethics Engine score, agent voice score, and standard receipt."
+        },
+        {
+          "name": "tat_ask",
+          "description": "Ask The Agent Times a question through the trusted answer pipeline: TAT corpus/events/action metadata plus backend-controlled external research, with citations, confidence, Ethics Engine score, agent voice score, and answer-standard receipt. Returns insufficient_evidence instead of unsourced claims. Set instant_answer=true to force a synchronous, fully-processed answer (used by the on-site Ask Expert widget)."
+        },
+        {
+          "name": "tat_get_event",
+          "description": "Fetch one structured agent-news event by event_id, including sources, confidence, ethics score, agent voice score, recommended actions, and standard receipt."
+        },
+        {
+          "name": "tat_stats",
+          "description": "Return firehose/demo counters for recent agent-news events: counts, verification rate, average confidence, source count, urgency, and actionability breakdowns."
+        },
+        {
+          "name": "tat_get_answer_standard",
+          "description": "Return the current The Agent Times MCP Answer Standard so agents can explain why a TAT answer/event is trusted, or why insufficient_evidence was returned."
+        },
+        {
+          "name": "tat_recommend",
+          "description": "Return sourced recommendations for an agent/operator use case using TAT trusted corpus, events, and answer standard. Not an external-resource safety checker."
+        },
+        {
+          "name": "tat_get_comments",
+          "description": "Read threaded comments on a TAT article, with agent attribution and endorsement counts."
+        },
+        {
+          "name": "tat_post_comment",
+          "description": "Post a signed/logged agent comment on a TAT article. Use only when the user explicitly asks to post."
+        },
+        {
+          "name": "get_latest_articles",
+          "description": "Get the latest articles from The Agent Times. Returns headlines, summaries, sources, confidence levels, and Ed25519 provenance status."
+        },
+        {
+          "name": "get_section_articles",
+          "description": "Get articles from a specific section. Each article includes Ed25519 provenance status. Sections: platforms, open-source, research, commerce, sales, marketing, engineering, adtech, infrastructure, regulations, funding, labor, opinion, interview."
+        },
+        {
+          "name": "get_article",
+          "description": "Get a full article by slug, including the complete body text and Ed25519 provenance verification status. Optionally include detailed provenance and governance blocks."
+        },
+        {
+          "name": "search_articles",
+          "description": "Search The Agent Times article corpus with typo-tolerant required-term coverage, relevance diagnostics, and filters over title, slug, tags, summary, body, and publication metadata. Returns the same structured contract as tat_search (search_confidence, warnings, relevance diagnostics, sources, confidence, Ethics Engine score, agent voice score, and standard receipt) restricted to article results."
+        },
+        {
+          "name": "get_related_articles",
+          "description": "Get related articles for an article slug using section/topic/tag overlap."
+        },
+        {
+          "name": "list_topics",
+          "description": "List known topic hubs extracted from the corpus."
+        },
+        {
+          "name": "get_topic_hub",
+          "description": "Get a topic hub with start-here articles, latest coverage, and intent tags."
+        },
+        {
+          "name": "get_trust_summary",
+          "description": "Get publication-level trust metrics: confidence mix, provenance coverage, source density, and section-level trust summaries."
+        },
+        {
+          "name": "get_editorial_standards",
+          "description": "Get The Agent Times editorial standards and code of conduct summary."
+        },
+        {
+          "name": "report_usage",
+          "description": "Voluntarily declare which TAT articles you used to produce your output. Transparent agents build trust and get recognized as verified consumers. No auth required — just tell us what you used."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/theagenttimes/news",
+      "stars": 43392,
+      "source": "smithery",
+      "last_updated": "2026-08-24",
+      "icon": "search",
+      "smithery_qualified_name": "theagenttimes/news",
+      "smithery_page_url": "https://smithery.ai/servers/theagenttimes/news",
+      "mcp_endpoint": "https://news--theagenttimes.run.tools",
+      "deployment_url": "https://news--theagenttimes.run.tools",
+      "connection_url": "https://news--theagenttimes.run.tools",
+      "primary_url": "https://smithery.ai/servers/theagenttimes/news",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/theagenttimes/news\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://news--theagenttimes.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
       "featured": true
     },
     {
@@ -1570,9 +1556,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/pubmed",
-      "stars": 36966,
+      "stars": 42137,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "pubmed",
       "smithery_page_url": "https://smithery.ai/servers/pubmed",
@@ -1587,8 +1573,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-08-24T06:03:34.550Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1698,9 +1682,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "stars": 40078,
+      "stars": 40620,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "fenglucc/ko-financial-data",
       "smithery_page_url": "https://smithery.ai/servers/fenglucc/ko-financial-data",
@@ -1715,8 +1699,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-08-24T06:03:34.241Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1762,9 +1744,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "stars": 39356,
+      "stars": 39483,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "jordan-s648/PolymarketScan",
       "smithery_page_url": "https://smithery.ai/servers/jordan-s648/PolymarketScan",
@@ -1779,8 +1761,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-08-24T06:03:34.401Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -1996,7 +1976,7 @@
       "docs_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
       "stars": 34350,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "oobe-protocol/sap-mcp",
       "smithery_page_url": "https://smithery.ai/servers/oobe-protocol/sap-mcp",
@@ -2011,8 +1991,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-08-24T06:03:35.030Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2162,9 +2140,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/onesignal/onesignal",
-      "stars": 26960,
+      "stars": 22491,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "onesignal/onesignal",
       "smithery_page_url": "https://smithery.ai/servers/onesignal/onesignal",
@@ -2179,8 +2157,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-08-24T06:03:34.832Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2394,9 +2370,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
-      "stars": 25090,
+      "stars": 25084,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "emblemai/emblem-mcp",
       "smithery_page_url": "https://smithery.ai/servers/emblemai/emblem-mcp",
@@ -2411,8 +2387,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-08-24T06:03:34.936Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2626,9 +2600,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/creativelead/unclick",
-      "stars": 23427,
+      "stars": 24706,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "search",
       "smithery_qualified_name": "creativelead/unclick",
       "smithery_page_url": "https://smithery.ai/servers/creativelead/unclick",
@@ -2643,8 +2617,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-08-24T06:03:35.174Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -2835,74 +2807,6 @@
       "hidden": false,
       "last_updated": "2026-08-24",
       "icon": "code"
-    },
-    {
-      "id": "googlecalendar",
-      "slug": "googlecalendar",
-      "name": "Google Calendar",
-      "description": "Create, update, and delete Google Calendar events, list calendars and events, respond to invitations, and find times when everyone is free.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "Arcade_ListApps",
-          "description": "See the apps the current caller can act on and whether they are connected. Returns each app's id, name, connected state, and (when connected) the account it is connected as. Call this to answer \"what apps do I have?\" or when the caller's connection state may have changed since the session started."
-        },
-        {
-          "name": "GoogleCalendar_CreateEvent",
-          "description": "Create a new event/meeting/sync/meetup in the specified calendar.\n\nPass `recurrence` to create a repeating event."
-        },
-        {
-          "name": "GoogleCalendar_DeleteEvent",
-          "description": "Delete an event from Google Calendar."
-        },
-        {
-          "name": "GoogleCalendar_FindTimeSlotsWhenEveryoneIsFree",
-          "description": "Provides time slots when everyone is free within a given date range and time boundaries."
-        },
-        {
-          "name": "GoogleCalendar_ListCalendars",
-          "description": "List all calendars accessible by the user."
-        },
-        {
-          "name": "GoogleCalendar_ListEvents",
-          "description": "List events from the specified calendar within the given datetime range.\n\nmin_end_datetime serves as the lower bound (exclusive) for an event's end time.\nmax_start_datetime serves as the upper bound (exclusive) for an event's start time.\n\nFor example:\nIf min_end_datetime is set to 2024-09-15T09:00:00 and max_start_datetime\nis set to 2024-09-16T17:00:00, the function will return events that:\n1. End after 09:00 on September 15, 2024 (exclusive)\n2. Start before 17:00 on September 16, 2024 (exclusiv"
-        },
-        {
-          "name": "GoogleCalendar_RespondToEvent",
-          "description": "Accept or decline (RSVP to) a meeting invitation on the authenticated user's behalf.\n\nSets the user's responseStatus for an event they were invited to."
-        },
-        {
-          "name": "GoogleCalendar_UpdateEvent",
-          "description": "Update an existing event in the specified calendar with the provided details.\nOnly the provided fields will be updated; others will remain unchanged.\n\n`updated_start_datetime` and `updated_end_datetime` are\nindependent and can be provided separately."
-        },
-        {
-          "name": "GoogleCalendar_WhoAmI",
-          "description": "Get comprehensive user profile and Google Calendar environment information.\n\nThis tool provides detailed information about the authenticated user including\ntheir name, email, profile picture, Google Calendar access permissions, and other\nimportant profile details from Google services."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/googlecalendar",
-      "stars": 20024,
-      "source": "smithery",
-      "last_updated": "2026-08-10",
-      "icon": "boxes",
-      "smithery_qualified_name": "googlecalendar",
-      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
-      "mcp_endpoint": "https://googlecalendar.run.tools",
-      "deployment_url": "https://googlecalendar.run.tools",
-      "connection_url": "https://googlecalendar.run.tools",
-      "primary_url": "https://smithery.ai/servers/googlecalendar",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-08-24T06:03:35.412Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
     },
     {
       "id": "webnode",
@@ -3105,470 +3009,6 @@
       "deployment_url": "https://ignav.com/mcp"
     },
     {
-      "id": "netfluid-nfld",
-      "slug": "netfluid-nfld",
-      "name": "NFLD",
-      "description": "",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "signup",
-          "description": "Provides tools to signup a new customer\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object"
-        },
-        {
-          "name": "access_recover",
-          "description": "Recovers the Netfluid wallet's private key from a set of 24 keywords\n\nRecovers the Netfluid wallet's private key from a set of 24 keywords.\nReturns an object with the wallet owner's key, first_name, last_name, mobile and email.\nIt's preferable that the person trying to recover\n    @param api_key: The api key allocated to your application\n    @param words: A set of 24 recovery words, space delimited\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "access_pause",
-          "description": "Temporarily blocks access to the wallet\n\nTemporarily blocks access to the wallet for all systems. This end point requires an api_key with administrator privileges.\n    @param api_key: The api key with administrator privileges\n    @param wallet_fk: The wallet_fk to pause\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "access_resume",
-          "description": "Temporarily blocks access to the wallet\n\nResumes access to a paused wallet. This end point requires an api_key with administrator privileges.\n    @param api_key: The api key with administrator privileges\n    @param wallet_fk: The wallet_fk to resume\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "access_platform_wallet_list",
-          "description": "Retrieves a list of wallets associated with the channel (discord, telegram or whatsapp) and user id\n\nRetrieves a list of wallets associated with the channel (discord, telegram or whatsapp) user id, once you have a wallet_fk you can get a session token.\nThis only works if the wallet_fk has been previously assigned to this channel and user id.\n    @param user_id: The chat, channel user-id specific to this chat customer\n    @param platform: The channel platform: discord, telegram, whatsapp\n\n    @re"
-        },
-        {
-          "name": "access_platform_login",
-          "description": "Retrieves a session token based on a wallet_fk and 5-digit (numeric) PIN. This is a shortcut to the session token.\n\nRetrieves a session token based on a wallet_fk and 5-digit (numeric) PIN\nOnly 1 attempt is allowed, get the PIN wrong and you have to send the user back to the website to get a session key\nThis works on any wallet_fk and PIN combination, so if you have a wallet_fk, but no session token, it's a shortcut to the session token.\n    @param wallet_fk: The wallet_fk\n    @param pin: The 5-"
-        },
-        {
-          "name": "access_platform_assign",
-          "description": "Assigns this wallet_fk to a channel (discord, telegram, whatsapp) user id.\n\nAssigns this wallet_fk to a channel (discord, telegram, whatsapp) user id.\nWhere possible prompt the customer to do this, as it makes getting a session token much easier in the future\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "automated_signup",
-          "description": "Automated signup for new customers. AI should use this tool as the preferred method to signup new customers.\n\nAutomated signup for new customers. Process can take up to 30 seconds.\nOnce completed direct the human customer to the kyc url for them to complete the identity verification process.\nShould the human need more tries at identity verification, call wallet_kyc_session_create\n    @param secret: A secret, minimum 8 characters, must be unique system-wide. This is typically the customer usernam"
-        },
-        {
-          "name": "access_wallet_pin_change",
-          "description": "Changes the wallet PIN, must be 5 digits, e.g. 12345\n\nChanges the wallet PIN, must be 5 digits, e.g. 12345\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param new_pin: The new PIN, but be 5 numeric digits\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "accounts",
-          "description": "Provides tools to create and manage wallet accounts.\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object"
-        },
-        {
-          "name": "account_merchant_voucher_quote",
-          "description": "Performs a quote to before issuing a Netfluid voucher as a merchant.\n\nSTEP 1: Performs a quote to issue a voucher as a merchant. Returns the merchant commission as well as the amount charged to the customer.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to issue the voucher\n    @param amount: The amount to issue the voucher for in up to 2 decimals.\n\n    @return: a jso"
-        },
-        {
-          "name": "account_merchant_voucher_redeem",
-          "description": "Redeems a Netfluid voucher.\n\n@param api_key: The api key allocated to your application\n@param token: The wallet_api_token provided by /access/login\n@param account_fk: The account_fk into which to redeem the voucher\n@param voucher_code: The netfluid voucher code, a string consisting of 4 sets of numbers example 1234-0000-4321-5678\n\n@return: a json object"
-        },
-        {
-          "name": "account_merchant_voucher_issue",
-          "description": "Issues a Netfluid voucher. Performs a FIAT withdraw. Only applicable on FIAT balances\n\n@param api_key: The api key allocated to your application\n@param token: The wallet_api_token provided by /access/login\n@param account_fk: The account_fk into which to redeem the voucher\n@param amount: The amount to issue for\n\n@return: a json object"
-        },
-        {
-          "name": "account_info",
-          "description": "Returns detailed account information.\n\nReturns detailed account information and balances.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_statement",
-          "description": "Returns detailed account FIAT statement.\n\nReturns detailed account statement from a start date for a maximum of entries.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n    @param max_rows: The maximum number of entries to return, if not provided we return 1000\n    @param start_date: The date from which to return the statement, "
-        },
-        {
-          "name": "account_buy_telco",
-          "description": "Purchases airtime by converting currency to minutes and seconds. Confirm (yes/no) before executing\n\nPurchases airtime by converting currency to minutes and seconds.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to deduct the amount\n    @param amount: The amount in currency, 2 decimals\n    @param currency_code: The currency code, e.g USD, ZAR, BWP, ZIG\n\n    @return: a "
-        },
-        {
-          "name": "account_types",
-          "description": "Lists all account types, typically static information\n\nLists all account types\n    @param api_key: The api key allocated to your application\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_buy",
-          "description": "Purchases a digital asset from the account's FIAT balance. Confirm (yes/no) before executing\n\nPurchases a digital asset from the account's FIAT balance\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to buy\n    @param digital_asset_fk: The digital_asset_fk to buy\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_sell",
-          "description": "Sells a digital asset and returns the proceeds to the account's FIAT balance. Confirm (yes/no) before executing\n\nSells a digital asset and returns the proceeds to the account's FIAT balance\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to sell\n    @param digital_asset_fk: The digital_asset_fk to sell\n    @param amount: The amount of the digital_asset_fk to sell\n\n    @"
-        },
-        {
-          "name": "account_swap",
-          "description": "Swaps one digital asset for another on an account level. Confirm (yes/no) before executing\n\nSwaps one digital asset for another on an account level, use digital_asset_fk=0 or to_digital_asset_fk=0 to indicate FIAT\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to swap\n    @param digital_asset_fk: The origin digital_asset_fk to swap\n    @param to_digital_asset_fk: The d"
-        },
-        {
-          "name": "account_wire",
-          "description": "Sends FIAT or Digital Assets from this account to a blockchain address. FIAT is converted by the system. Confirm (yes/no) before executing\n\nSends FIAT or Digital Assets from this account to a blockchain address.\nThe FIAT account must be associated to the same blockchain as the destination address\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to wire\n    @param destina"
-        },
-        {
-          "name": "account_send",
-          "description": "Sends FIAT from this account to another Netfluid account. Optionally save as a beneficiary. Confirm (yes/no) before executing\n\nSends FIAT from this account to an account address. Optionally save as a beneficiary.\nThe FIAT sent is converted to the destination account's currency.\nThis function can send FIAT across wallets\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk from which to"
-        },
-        {
-          "name": "account_charge",
-          "description": "Charges the account based on a presented QR-code or NFC card. Confirm (yes/no) before executing\n\nCharges the account based on a presented QR-code or NFC card.\nThe payer must present a valid PIN for the transaction to complete\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The merchant's account_fk, typically the account that will receive the payment\n    @param account_address: The account_addre"
-        },
-        {
-          "name": "account_mint",
-          "description": "Mints a new account of an account type into the wallet. Confirm (yes/no) before executing\n\nMints a new account of an account type into the wallet. There are costs associated with this operation.\nMinting is generally done asynchronously, it may take several seconds for the minted account to be available\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk into which the new account will b"
-        },
-        {
-          "name": "account_alias",
-          "description": "Sets a friendly name/alias on an account. Confirm (yes/no) before executing\n\nSets a friendly name/alias on an account_fk.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk to charge for the mint fee\n    @param alias: The alias or friendly name, try and use unique names for each account in the wallet\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_pay",
-          "description": "Charges the account a transaction fee. Confirm (yes/no) before executing\n\nCharges the account a transaction fee.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk to charge\n    @param amount: The amount to charge\n    @param note: The note on the transaction\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_pair",
-          "description": "Assigns a PIN to an account for use by a QR-Code or NFC card. Confirm (yes/no) before executing\n\nAssigns a PIN to an account for use by a QR-Code or NFC card\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param address: The account address\n    @param pin: The 5 digit numeric PIN e.g 01234\n    @param expire_date: The optional expiry date on the PIN, format YYYY-MM-DD HH:MM:SS, in GMT timezone\n\n    @return: a json"
-        },
-        {
-          "name": "account_pause",
-          "description": "Temporarily restricts an account from performing any function that would result in funds existing the account.\n    Can only be undone by an administrator, warn before using! Confirm (yes/no) before executing\n\nTemporarily restricts an account from performing any function that would result in funds existing the account.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account"
-        },
-        {
-          "name": "account_resume",
-          "description": "Resumes full trading capability for an account that has been previously paused.\n    Can only be undone by an administrator. Confirm (yes/no) before executing\n\nResumes full trading capability for an account that has been previously paused.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_unlock",
-          "description": "Unlocks a locked account (from status_fk=10 to status_fk=1). Confirm (yes/no) before executing\n\nUnlocks a locked account.\n    @param api_key: The api key allocated to your application, must have admin privileges\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "account_send_sms",
-          "description": "Sends a Mobile SMS and charges this account. Confirm (yes/no) before executing\n\nSends a SMS and charges this account. This end point will deliver to limited destinations:\nSouth Africa, Botswana, Zimbabwe, UK. Delivery is not guaranteed. Charged per submission.\n    @param api_key: The api key allocated to your application, must have admin privileges\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/account"
-        },
-        {
-          "name": "bridges",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "virtual_account",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "virtual_accounts",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "off_ramps",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "on_ramps",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "SEPA",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "ACH",
-          "description": "Returns a list of tools that work with bridges, off-ramps, on-ramps, cross-blockchain transfers, virtual accounts\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "bridge_list",
-          "description": "Returns bridges based on the transfer_type, a bridge is either an\n    \"on-ramp\" (also called a \"virtual account\" and a funding source),\n    an \"off-ramp\" (USDC transfer to a fiat bank account) or\n    a \"blockchain\" (USDC transfer between blockchains).\n    Bridges are only available on blockchain accounts\n\nReturns bridges based on the transfer_type, a bridge is either an on-ramp, an off-ramp or a blockchain. Bridge on-ramps are also called \"virtual accounts\"\n    @param api_key: The api key alloca"
-        },
-        {
-          "name": "bridge_off_ramp_sepa",
-          "description": "Creates a blockchain (USDC) to FIAT off-ramp in Europe for SEPA supporting bank accounts. Confirm (yes/no) before executing\n\nCreates a blockchain to FIAT off-ramp in Europe for SEPA supporting bank accounts.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param account_owner: The owner of t"
-        },
-        {
-          "name": "bridge_off_ramp_ach_wire",
-          "description": "Creates a blockchain to FIAT off-ramp in the USA supporting both ACH/WIRE bank networks. Confirm (yes/no) before executing\n\nCreates a blockchain to FIAT off-ramp in the USA support both ACH/WIRE bank networks.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param account_owner: The owner of"
-        },
-        {
-          "name": "bridge_blockchain",
-          "description": "Creates a blockchain to blockchain bridge. Confirm (yes/no) before executing\n\nCreates a blockchain to blockchain bridge. Only supports USDC transfers. Do not send any other tokens as these may be lost.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param blockchain: The blockchain that wil"
-        },
-        {
-          "name": "bridge_on_ramp",
-          "description": "Creates a virtual account (SEPA/ACH/WIRE) to blockchain bridge. Confirm (yes/no) before executing\n\nCreates a virtual account (SEPA/ACH/WIRE) to blockchain bridge. Limited to one virtual account per payment rail (SEPA/ACH/WIRE).\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param account_fk: The account_fk that will use the bridge\n    @param blockchai"
-        },
-        {
-          "name": "bridge_rename",
-          "description": "Changes the Bridge's descriptive name. Confirm (yes/no) before executing\n\nChanges the Bridge's descriptive name.\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param external_account_id: The bridge's unique reference, found on /bridge/list\n    @param alias: The new descriptive name for this Bridge\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "bridge_delete",
-          "description": "Deactivates the Bridge. Confirm (yes/no) before executing\n\nDeactivates the Bridge\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param wallet_fk: The wallet_fk provided by /access/login\n    @param external_account_id: The bridge's unique reference, found on /bridge/list\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "commodity",
-          "description": "Provides tools to retrieve Netfuid commodities\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object"
-        },
-        {
-          "name": "commodity_types",
-          "description": "Returns all authorised commodities\n\nReturns all authorised commodities\n    @param api_key: The api key allocated to your application\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "crypto",
-          "description": "Returns a list of tools that work with crypto and stable coins (USDC,USDt)\nThis tools provides reference information in the \"referenced_tools\" schema\n@return: a json object containing the schema"
-        },
-        {
-          "name": "crypto_info",
-          "description": "Returns a crypto wallet address and balances associated with an account_fk\n\nReturns a crypto wallet address and balances associated with an account_fk\n    @param api_key: The api key allocated to your application\n    @param token: The wallet_api_token provided by /access/login\n    @param account_fk: The account_fk for the account as provided by /wallet/accounts_list\n\n    @return: a json object\n    "
-        },
-        {
-          "name": "crypto_verify",
-          "description": "Verifies a blockchain address as valid for the blockchain\n\nVerifies a blockchain address as valid for the blockchain.\nCan be any address on that blockchain, if successful it returns a balance of its crypto and digital assets.\n    @param api_key: The api key allocated to your application\n    @param address: The blockchain address\n    @param blockchain_fk: The blockchain_fk of the supported blockchain.\n\n    @return: a json object\n    "
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/netfluid/NFLD",
-      "stars": 20241,
-      "source": "smithery",
-      "last_updated": "2026-08-10",
-      "icon": "boxes",
-      "smithery_qualified_name": "netfluid/NFLD",
-      "smithery_page_url": "https://smithery.ai/servers/netfluid/NFLD",
-      "mcp_endpoint": "https://nfld--netfluid.run.tools",
-      "deployment_url": "https://nfld--netfluid.run.tools",
-      "connection_url": "https://nfld--netfluid.run.tools",
-      "primary_url": "https://smithery.ai/servers/netfluid/NFLD",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/netfluid/NFLD\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://nfld--netfluid.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/netfluid/NFLD",
-      "tools_validated_at": "2026-08-24T06:03:35.687Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
-      "id": "alexandria-shai-eden-cbrowser",
-      "slug": "alexandria-shai-eden-cbrowser",
-      "name": "Cognitive Browser",
-      "description": "105-tool browser automation with cognitive user simulation, visual testing, persona system, and site knowledge. Rate limited (50 req/hr). Free for evaluation",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "navigate",
-          "description": "Navigate to a URL and take a screenshot. Pass _browserToken from a previous tool call to reuse the same browser session."
-        },
-        {
-          "name": "click",
-          "description": "Click an element on the page. MUST pass _browserToken from previous tool call to click on the same page. Without it, clicks go to a blank new browser."
-        },
-        {
-          "name": "smart_click",
-          "description": "Click with auto-retry and self-healing selectors. v11.8.0: Added confidence gating - only reports success if healed selector has >= 60% confidence."
-        },
-        {
-          "name": "dismiss_overlay",
-          "description": "Detect and dismiss modal overlays (cookie consent, age verification, newsletter popups). Constitutional Yellow zone."
-        },
-        {
-          "name": "fill",
-          "description": "Fill a form field with text. MUST pass _browserToken from previous tool call to interact with the same page."
-        },
-        {
-          "name": "scroll",
-          "description": "Scroll the page. MUST pass _browserToken from previous tool call to scroll the same page."
-        },
-        {
-          "name": "screenshot",
-          "description": "Take a screenshot of the current page. IMPORTANT: If you received a _browserToken from a previous tool call (navigate, cognitive_journey_init), you MUST pass it here to see the same page. Without it, you get a blank new browser."
-        },
-        {
-          "name": "extract",
-          "description": "Extract data from the page. Pass _browserToken to use the same browser session."
-        },
-        {
-          "name": "assert",
-          "description": "Assert a condition using natural language"
-        },
-        {
-          "name": "analyze_page",
-          "description": "Analyze page structure for forms, buttons, links"
-        },
-        {
-          "name": "generate_tests",
-          "description": "Generate test scenarios for a page"
-        },
-        {
-          "name": "find_element_by_intent",
-          "description": "AI-powered semantic element finding with ARIA-first selector strategy. Prioritizes aria-label > role > semantic HTML > ID > name > class. Returns selectorType, accessibilityScore (0-1), and alternatives. Use verbose=true for enriched failure responses."
-        },
-        {
-          "name": "ai_benchmark",
-          "description": "Compare AI-friendliness across competitor sites. Runs agent-ready audits on each URL, ranks by AI readiness grade, and identifies what each competitor does better for AI agents. Use for competitive intelligence on AI-readiness."
-        },
-        {
-          "name": "save_session",
-          "description": "Save browser session (cookies, storage) for later use"
-        },
-        {
-          "name": "load_session",
-          "description": "Load a previously saved session"
-        },
-        {
-          "name": "list_sessions",
-          "description": "List all saved sessions with metadata (name, domain, cookies count, localStorage keys, created date, size)"
-        },
-        {
-          "name": "delete_session",
-          "description": "Delete a saved session by name"
-        },
-        {
-          "name": "heal_stats",
-          "description": "Get self-healing selector cache statistics"
-        },
-        {
-          "name": "visual_baseline",
-          "description": "Capture a visual baseline using Wasserstein barycenter. Takes multiple screenshots, rejects outliers, computes optimal consensus reference with adaptive threshold. Robust to dynamic content, animations, and timing variations."
-        },
-        {
-          "name": "visual_regression",
-          "description": "Run visual regression test against a baseline. Automatically uses smart regression (Wasserstein) if a smart baseline exists for this name, otherwise falls back to traditional comparison."
-        },
-        {
-          "name": "cross_browser_test",
-          "description": "Test page rendering across multiple browsers"
-        },
-        {
-          "name": "cross_browser_diff",
-          "description": "Quick diff of page metrics across browsers"
-        },
-        {
-          "name": "responsive_test",
-          "description": "Test page across different viewport sizes"
-        },
-        {
-          "name": "ab_comparison",
-          "description": "Compare two URLs visually (staging vs production)"
-        },
-        {
-          "name": "transport_map",
-          "description": "Generate a Visual Transport Map showing WHERE visual content moved between two screenshots. Produces heatmap, flow arrows, hotspots, and SVG visualization."
-        },
-        {
-          "name": "attention_analysis",
-          "description": "Analyze where a persona's visual attention goes on a page using Wasserstein saliency. Produces attention alignment, entropy, concentration, and top attention areas. Based on Klein & Frintrop W₂ on CIE-Lab distributions."
-        },
-        {
-          "name": "attention_compare",
-          "description": "Compare attention patterns between two personas on the same page. Shows where they look differently and the Wasserstein divergence between their saliency maps."
-        },
-        {
-          "name": "nl_test_file",
-          "description": "Run natural language test suite from a file. Returns step-level results with enriched error info, partial matches, and suggestions."
-        },
-        {
-          "name": "nl_test_inline",
-          "description": "Run natural language tests from inline content. Returns step-level results with enriched error info, partial matches, and suggestions."
-        },
-        {
-          "name": "repair_test",
-          "description": "AI-powered test repair for broken tests"
-        },
-        {
-          "name": "detect_flaky_tests",
-          "description": "Detect flaky/unreliable tests by running multiple times"
-        },
-        {
-          "name": "coverage_map",
-          "description": "Generate test coverage map for a site"
-        },
-        {
-          "name": "hunt_bugs",
-          "description": "Autonomous bug hunting - crawl and find issues. Returns bugs with severity, selector, and actionable recommendation for each issue found."
-        },
-        {
-          "name": "chaos_test",
-          "description": "Inject failures and test resilience"
-        },
-        {
-          "name": "compare_personas",
-          "description": "Compare how different user personas experience a journey. In Claude Code sessions (no API key), use compare_personas_init and compare_personas_complete instead for the bridge workflow."
-        },
-        {
-          "name": "compare_personas_init",
-          "description": "Initialize persona comparison for Claude Code bridge workflow. Returns persona profiles and instructions for running journeys without API key."
-        },
-        {
-          "name": "compare_personas_complete",
-          "description": "Complete persona comparison by aggregating journey results. Call this after running all persona journeys via the bridge workflow."
-        },
-        {
-          "name": "cognitive_distance",
-          "description": "Compute the Wasserstein cognitive distance between two personas. Returns W₁ distance (true cognitive distance), per-trait contributions, and Bures-Wasserstein W₂ distance. Based on optimal transport theory — transport cost = cognitive processing cost."
-        },
-        {
-          "name": "cognitive_coverage",
-          "description": "Select the N most cognitively different personas from a list for maximum test coverage. Uses greedy farthest-point sampling in Wasserstein space."
-        },
-        {
-          "name": "cognitive_interpolate",
-          "description": "Generate an interpolated persona between two known personas using Wasserstein geodesic. Preserves trait coupling structure — the midpoint between ADHD and power-user has intermediate trait correlations, not just averaged values."
-        },
-        {
-          "name": "cognitive_load_estimate",
-          "description": "Estimate cognitive load for a specific persona on page metrics. Returns per-dimension breakdown (information, visual, attention, decision, motor, text, memory, patience) and identifies the bottleneck dimension."
-        },
-        {
-          "name": "cognitive_journey_init",
-          "description": "Initialize a cognitive user journey simulation. Returns the persona's cognitive profile, initial state, and abandonment thresholds. The actual simulation is driven by the LLM using browser tools (navigate, click, fill, screenshot) while tracking cognitive state."
-        },
-        {
-          "name": "cognitive_journey_update_state",
-          "description": "Update the cognitive state during a journey simulation. Call this after each action to track mental state."
-        },
-        {
-          "name": "list_cognitive_personas",
-          "description": "List all available personas with their cognitive traits (includes accessibility and emotional personas)"
-        },
-        {
-          "name": "persona_values_list",
-          "description": "List all Schwartz's 10 Universal Values with their meanings, plus higher-order values, Self-Determination Theory needs, and Maslow levels. Use this to understand the values framework before looking up specific personas."
-        },
-        {
-          "name": "persona_values_lookup",
-          "description": "Look up the values profile for a persona (Schwartz's 10 Universal Values, SDT needs, Maslow level). Values describe WHO the persona is at a deeper motivational level, informing influence susceptibility."
-        },
-        {
-          "name": "list_influence_patterns",
-          "description": "List research-backed behavioral persuasion patterns (Cialdini, Kahneman) and which persona values correlate with susceptibility to each pattern."
-        },
-        {
-          "name": "persona_questionnaire_get",
-          "description": "Get the persona questionnaire for building a custom persona. Returns research-backed questions that map to cognitive traits. Use comprehensive=true for all 25 traits, or leave false for 8 core traits. v16.12.0: Now includes optional category question for disability-specific value safeguards."
-        },
-        {
-          "name": "persona_questionnaire_build",
-          "description": "Build a custom persona from questionnaire answers with category-aware value safeguards. Answers should be a map of trait names to values (0-1). Missing traits will use intelligent defaults based on research correlations. v16.12.0: Optionally specify category for disability-specific value handling."
-        },
-        {
-          "name": "persona_trait_lookup",
-          "description": "Look up behavioral descriptions for specific trait values. Useful for understanding what a trait value means in practice."
-        }
-      ],
-      "docs_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "stars": 19553,
-      "source": "smithery",
-      "last_updated": "2026-08-10",
-      "icon": "search",
-      "smithery_qualified_name": "alexandria-shai-eden/cbrowser",
-      "smithery_page_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "mcp_endpoint": "https://cbrowser.run.tools",
-      "deployment_url": "https://cbrowser.run.tools",
-      "connection_url": "https://cbrowser.run.tools",
-      "primary_url": "https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "setup_steps": [
-        {
-          "title": "Smithery (hosted)",
-          "text": "1. Open https://smithery.ai/servers/alexandria-shai-eden/cbrowser\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://cbrowser.run.tools"
-        }
-      ],
-      "setup_summary": "1. Open https://smithery.ai/servers/alexandria-shai-eden/cbrowser",
-      "tools_validated_at": "2026-08-24T06:03:36.181Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
-      "featured": true
-    },
-    {
       "id": "subwayinfo",
       "slug": "subwayinfo",
       "name": "SubwayInfo NYC",
@@ -3671,9 +3111,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/subwayinfo",
-      "stars": 16438,
+      "stars": 16873,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "subwayinfo",
       "smithery_page_url": "https://smithery.ai/servers/subwayinfo",
@@ -3688,8 +3128,6 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/subwayinfo",
-      "tools_validated_at": "2026-08-24T06:03:36.133Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
     {
@@ -3723,9 +3161,9 @@
         }
       ],
       "docs_url": "https://smithery.ai/servers/nitrofire-q/gread",
-      "stars": 21642,
+      "stars": 21140,
       "source": "smithery",
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-24",
       "icon": "boxes",
       "smithery_qualified_name": "nitrofire-q/gread",
       "smithery_page_url": "https://smithery.ai/servers/nitrofire-q/gread",
@@ -3740,8 +3178,72 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-08-24T06:03:35.590Z",
-      "tools_validation_method": "live_mcp+smithery_fallback",
+      "featured": true
+    },
+    {
+      "id": "googlecalendar",
+      "slug": "googlecalendar",
+      "name": "Google Calendar",
+      "description": "Create, update, and delete Google Calendar events, list calendars and events, respond to invitations, and find times when everyone is free.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "Arcade_ListApps",
+          "description": "See the apps the current caller can act on and whether they are connected. Returns each app's id, name, connected state, and (when connected) the account it is connected as. Call this to answer \"what apps do I have?\" or when the caller's connection state may have changed since the session started."
+        },
+        {
+          "name": "GoogleCalendar_CreateEvent",
+          "description": "Create a new event/meeting/sync/meetup in the specified calendar.\n\nPass `recurrence` to create a repeating event."
+        },
+        {
+          "name": "GoogleCalendar_DeleteEvent",
+          "description": "Delete an event from Google Calendar."
+        },
+        {
+          "name": "GoogleCalendar_FindTimeSlotsWhenEveryoneIsFree",
+          "description": "Provides time slots when everyone is free within a given date range and time boundaries."
+        },
+        {
+          "name": "GoogleCalendar_ListCalendars",
+          "description": "List all calendars accessible by the user."
+        },
+        {
+          "name": "GoogleCalendar_ListEvents",
+          "description": "List events from the specified calendar within the given datetime range.\n\nmin_end_datetime serves as the lower bound (exclusive) for an event's end time.\nmax_start_datetime serves as the upper bound (exclusive) for an event's start time.\n\nFor example:\nIf min_end_datetime is set to 2024-09-15T09:00:00 and max_start_datetime\nis set to 2024-09-16T17:00:00, the function will return events that:\n1. End after 09:00 on September 15, 2024 (exclusive)\n2. Start before 17:00 on September 16, 2024 (exclusiv"
+        },
+        {
+          "name": "GoogleCalendar_RespondToEvent",
+          "description": "Accept or decline (RSVP to) a meeting invitation on the authenticated user's behalf.\n\nSets the user's responseStatus for an event they were invited to."
+        },
+        {
+          "name": "GoogleCalendar_UpdateEvent",
+          "description": "Update an existing event in the specified calendar with the provided details.\nOnly the provided fields will be updated; others will remain unchanged.\n\n`updated_start_datetime` and `updated_end_datetime` are\nindependent and can be provided separately."
+        },
+        {
+          "name": "GoogleCalendar_WhoAmI",
+          "description": "Get comprehensive user profile and Google Calendar environment information.\n\nThis tool provides detailed information about the authenticated user including\ntheir name, email, profile picture, Google Calendar access permissions, and other\nimportant profile details from Google services."
+        }
+      ],
+      "docs_url": "https://smithery.ai/servers/googlecalendar",
+      "stars": 15718,
+      "source": "smithery",
+      "last_updated": "2026-08-24",
+      "icon": "boxes",
+      "smithery_qualified_name": "googlecalendar",
+      "smithery_page_url": "https://smithery.ai/servers/googlecalendar",
+      "mcp_endpoint": "https://googlecalendar.run.tools",
+      "deployment_url": "https://googlecalendar.run.tools",
+      "connection_url": "https://googlecalendar.run.tools",
+      "primary_url": "https://smithery.ai/servers/googlecalendar",
+      "setup_steps": [
+        {
+          "title": "Smithery (hosted)",
+          "text": "1. Open https://smithery.ai/servers/googlecalendar\n2. Click Connect and complete OAuth in your MCP client (Claude, Cursor, VS Code, etc.)\n3. MCP endpoint: https://googlecalendar.run.tools"
+        }
+      ],
+      "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
       "featured": true
     },
     {
@@ -4080,6 +3582,36 @@
       "icon": "search"
     },
     {
+      "id": "bigquery",
+      "slug": "bigquery",
+      "name": "BigQuery",
+      "description": "Google analytics warehouse queries and table management.",
+      "category": "Data & Analytics",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
+        },
+        {
+          "name": "list_datasets",
+          "description": "List datasets in a project"
+        },
+        {
+          "name": "get_table_schema",
+          "description": "Describe table schema"
+        }
+      ],
+      "docs_url": "https://cloud.google.com/bigquery/docs",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-08-24",
+      "icon": "bar-chart"
+    },
+    {
       "id": "airtable",
       "slug": "airtable",
       "name": "Airtable",
@@ -4199,36 +3731,6 @@
       "hidden": false,
       "last_updated": "2026-08-24",
       "icon": "cloud"
-    },
-    {
-      "id": "bigquery",
-      "slug": "bigquery",
-      "name": "BigQuery",
-      "description": "Google analytics warehouse queries and table management.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_query",
-          "description": "Execute BigQuery SQL"
-        },
-        {
-          "name": "list_datasets",
-          "description": "List datasets in a project"
-        },
-        {
-          "name": "get_table_schema",
-          "description": "Describe table schema"
-        }
-      ],
-      "docs_url": "https://cloud.google.com/bigquery/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-08-24",
-      "icon": "bar-chart"
     },
     {
       "id": "bluesky",
@@ -5436,6 +4938,67 @@
       "hidden": false,
       "last_updated": "2026-08-24",
       "icon": "browser"
+    },
+    {
+      "id": "supabase",
+      "slug": "supabase",
+      "name": "Supabase",
+      "description": "Postgres plus auth, storage, and edge functions for Supabase projects.",
+      "category": "Databases",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List Supabase projects"
+        },
+        {
+          "name": "execute_sql",
+          "description": "Run SQL against a project"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables in a schema"
+        }
+      ],
+      "github_url": "https://github.com/supabase-community/supabase-mcp",
+      "docs_url": "https://supabase.com/docs",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-08-24",
+      "icon": "database"
+    },
+    {
+      "id": "taskade",
+      "slug": "taskade",
+      "name": "Taskade",
+      "description": "Workspace memory plus agent automation for tasks.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "create_task",
+          "description": "Create a workspace task"
+        },
+        {
+          "name": "run_agent",
+          "description": "Trigger an automation agent"
+        },
+        {
+          "name": "search_workspace",
+          "description": "Search workspace content"
+        }
+      ],
+      "docs_url": "https://www.taskade.com/api",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-08-24",
+      "icon": "brain"
     }
   ]
 }
