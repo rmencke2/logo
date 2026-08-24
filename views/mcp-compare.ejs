@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> - Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' - Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      ogImage: typeof ogImage !== 'undefined' ? ogImage : undefined,
+    }) %>
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+      <script type="application/ld+json">
+        <%- JSON.stringify(jsonLd) %>
+      </script>
+    <% } %>
+    <%- include('partials/favicon-links') %>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-directory.css" />
+    <link rel="stylesheet" href="/css/seo-content.css" />
+    <style>
+      .mcp-page { max-width: 1120px; margin: 0 auto; padding: 48px 20px 80px; }
+      .mcp-back { font-family: var(--font-ui); margin-bottom: 20px; display: inline-block; color: var(--color-charcoal); text-decoration: none; }
+      .mcp-back:hover { color: var(--color-terracotta); }
+      .mcp-compare-grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin: 24px 0 8px; }
+      @media (min-width: 800px) { .mcp-compare-grid { grid-template-columns: 1fr 1fr; } }
+      .mcp-compare-table-wrap { overflow-x: auto; margin: 28px 0; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-paper); }
+      .mcp-compare-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+      .mcp-compare-table th, .mcp-compare-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+      .mcp-compare-table th { font-family: var(--font-ui); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal-light); }
+      .mcp-compare-table th a, .mcp-compare-table td a { color: var(--color-terracotta); text-decoration: none; }
+      .mcp-compare-table tr:last-child td { border-bottom: 0; }
+      .mcp-compare-table .mcp-compare-dim { width: 22%; color: var(--color-charcoal-light); font-weight: 600; }
+      .mcp-verdict { margin: 8px 0 28px; padding: 16px 18px; border-radius: 14px; background: var(--color-cream-dark); border: 1px solid var(--color-border); line-height: 1.65; }
+      .mcp-choose { display: grid; gap: 16px; grid-template-columns: 1fr; margin: 8px 0 32px; }
+      @media (min-width: 800px) { .mcp-choose { grid-template-columns: 1fr 1fr; } }
+      .mcp-choose article { padding: 18px; border-radius: 16px; border: 1px solid var(--color-border); background: var(--color-paper); }
+      .mcp-choose h2 { margin: 0 0 10px; font-size: 1.1rem; }
+      .mcp-choose ul { margin: 0; padding-left: 1.2rem; line-height: 1.65; color: var(--color-charcoal-light); }
+      .mcp-choose li { margin-bottom: 8px; }
+      .mcp-topic-related { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+      .mcp-topic-related a {
+        font-family: var(--font-ui); font-size: .85rem; padding: 8px 14px; border-radius: 999px;
+        text-decoration: none; border: 1px solid var(--color-border); color: var(--color-charcoal);
+      }
+      .mcp-topic-related a:hover { border-color: var(--color-terracotta); color: var(--color-terracotta); }
+      .mcp-topic-section { margin: 32px 0; }
+      .mcp-topic-section h2 { margin: 0 0 12px; font-size: 1.2rem; }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/site-header', { navPath: '/mcp' }) %>
+    <script src="/js/site-header.js" defer></script>
+
+    <main class="mcp-page">
+      <a class="mcp-back" href="/mcp/compare">← All comparisons</a>
+
+      <header class="mcp-header">
+        <p class="mcp-kicker">MCP comparison</p>
+        <h1><%= comparison.title %></h1>
+        <p class="mcp-lead"><%= comparison.intro %></p>
+      </header>
+
+      <div class="mcp-compare-grid">
+        <%- include('partials/mcp-server-card', { server: left }) %>
+        <%- include('partials/mcp-server-card', { server: right }) %>
+      </div>
+
+      <p class="mcp-verdict"><strong>Verdict.</strong> <%= comparison.verdict %></p>
+
+      <div class="mcp-compare-table-wrap">
+        <table class="mcp-compare-table">
+          <thead>
+            <tr>
+              <th class="mcp-compare-dim">Dimension</th>
+              <th><a href="/mcp/<%= left.slug %>"><%= left.name %></a></th>
+              <th><a href="/mcp/<%= right.slug %>"><%= right.name %></a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tableRows.forEach(function(row) { %>
+              <tr>
+                <td class="mcp-compare-dim"><%= row.label %></td>
+                <td><%= row.left %></td>
+                <td><%= row.right %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mcp-choose">
+        <article>
+          <h2>Choose <%= left.name %> if</h2>
+          <ul>
+            <% comparison.chooseLeft.forEach(function(item) { %>
+              <li><%= item %></li>
+            <% }); %>
+          </ul>
+        </article>
+        <article>
+          <h2>Choose <%= right.name %> if</h2>
+          <ul>
+            <% comparison.chooseRight.forEach(function(item) { %>
+              <li><%= item %></li>
+            <% }); %>
+          </ul>
+        </article>
+      </div>
+
+      <% if (relatedTopics && relatedTopics.length) { %>
+        <section class="mcp-topic-section">
+          <h2>Related topic guides</h2>
+          <div class="mcp-topic-related">
+            <% relatedTopics.forEach(function(rt) { %>
+              <a href="/mcp/topics/<%= rt.slug %>"><%= rt.shortTitle %></a>
+            <% }); %>
+          </div>
+        </section>
+      <% } %>
+
+      <% if (related && related.length) { %>
+        <section class="mcp-topic-section">
+          <h2>Related comparisons</h2>
+          <div class="mcp-topic-related">
+            <% related.forEach(function(rc) { %>
+              <a href="/mcp/compare/<%= rc.slug %>"><%= rc.shortTitle %></a>
+            <% }); %>
+          </div>
+        </section>
+      <% } %>
+
+      <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent }) %>
+    </main>
+  </body>
+</html>

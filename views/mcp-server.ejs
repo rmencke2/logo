@@ -190,6 +190,23 @@
             <% } %>
           </section>
 
+          <% if (typeof comparisons !== 'undefined' && comparisons && comparisons.length) { %>
+            <section class="mcp-section">
+              <h2>Compare</h2>
+              <div class="mcp-related-grid">
+                <% comparisons.forEach(function(cmp) { %>
+                  <a class="mcp-related-card" href="<%= cmp.href %>">
+                    <span class="mcp-related-card__icon" aria-hidden="true">⇄</span>
+                    <div style="min-width:0;">
+                      <div class="mcp-related-card__name"><%= cmp.shortTitle %></div>
+                      <div class="mcp-related-card__desc">Head-to-head comparison</div>
+                    </div>
+                  </a>
+                <% }); %>
+              </div>
+            </section>
+          <% } %>
+
           <% if (relatedServers && relatedServers.length) { %>
             <section class="mcp-section">
               <h2>Related servers</h2>
