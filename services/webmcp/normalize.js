@@ -33,9 +33,11 @@ function normalizeHost(input) {
   }
   raw = raw.replace(/\.$/, '');
   if (raw.startsWith('www.')) raw = raw.slice(4);
-  // Basic hostname validation
-  if (!/^[a-z0-9.-]+$/.test(raw) || !raw.includes('.')) return '';
-  return raw;
+  // Multi-label hostnames
+  if (/^[a-z0-9.-]+$/.test(raw) && raw.includes('.')) return raw;
+  // Single-label demo hosts used by webmcp.com for path demos (e.g. "coffee-shop")
+  if (/^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/.test(raw)) return raw;
+  return '';
 }
 
 function normalizeHttpsUrl(input, fallbackHost) {
