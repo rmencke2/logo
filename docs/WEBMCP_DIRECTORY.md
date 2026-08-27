@@ -87,7 +87,31 @@ Revert catalog JSON commits on `main`.
 node scripts/test-webmcp-normalize.js
 node scripts/test-influzer-webmcp.js
 node scripts/test-webmcp-scan.js
+node scripts/test-webmcp-external-sources.js
 ```
+
+### External directories → Influzer gap check / import
+Influzer can verify whether WebMCP *websites* listed elsewhere are already in `data/webmcp-sites.json`, then import missing hosts.
+
+Source registry: `data/webmcp-external-sources.json`  
+(webmcp.com, webmcp.cool, webmcpdirectory.com, webmcp-registry.dev, Awesome WebMCP, monitors, optional GitHub code search)
+
+```bash
+# Report coverage gaps (network)
+npm run verify-webmcp-sources
+
+# Dry-run import of missing hosts
+npm run import-webmcp-sources
+
+# Write missing hosts into the catalog JSON
+node scripts/import-webmcp-external-sources.js --apply
+
+# Prefer full schemas from primary API first
+npm run refresh-webmcp
+node scripts/import-webmcp-external-sources.js --apply --with-tools-only
+```
+
+GitHub code search requires `GITHUB_TOKEN`. These sources grow the **/webmcp** website directory — not the classic **/mcp** server catalog.
 
 ## 8. Influzer first-party WebMCP
 
