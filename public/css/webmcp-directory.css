@@ -144,6 +144,270 @@ button.webmcp-btn--ghost:hover,
 .webmcp-demo__howto { margin-top: 0.5rem; }
 .webmcp-demo__howto code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.86em; }
 
+/* Video tour stage — large type for screen capture */
+.webmcp-tour {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1.75rem;
+}
+@media (min-width: 960px) {
+  .webmcp-tour { grid-template-columns: minmax(280px, 1.05fr) minmax(300px, 1fr); align-items: stretch; }
+}
+.webmcp-tour__stage {
+  border: 1px solid #99f6e4;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse 70% 80% at 0% 0%, rgba(13, 148, 136, 0.12), transparent 55%),
+    #fff;
+  padding: 1.25rem 1.35rem 1.35rem;
+  display: grid;
+  gap: 0.55rem;
+}
+.webmcp-tour__kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+.webmcp-tour__stage h2 {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  color: #0f172a;
+  line-height: 1.2;
+}
+.webmcp-tour__say,
+.webmcp-tour__do {
+  margin: 0;
+  line-height: 1.55;
+  color: #334155;
+  font-size: 1.02rem;
+}
+.webmcp-tour__say::before,
+.webmcp-tour__do::before {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-right: 0.45rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 6px;
+  vertical-align: 0.1em;
+}
+.webmcp-tour__say::before {
+  content: "Say";
+  background: #ccfbf1;
+  color: #115e59;
+}
+.webmcp-tour__do::before {
+  content: "Do";
+  background: #e2e8f0;
+  color: #334155;
+}
+.webmcp-tour__progress {
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+  margin: 0.35rem 0 0.15rem;
+}
+.webmcp-tour__progress > span {
+  display: block;
+  height: 100%;
+  width: 20%;
+  background: #0f766e;
+  transition: width 0.35s ease;
+}
+.webmcp-tour__output {
+  margin: 0;
+  min-height: 220px;
+  max-height: 360px;
+}
+
+/* Setup / launch guide */
+.webmcp-setup__hero { max-width: 46rem; margin-bottom: 1.5rem; }
+.webmcp-setup__hero h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.9rem, 3.2vw, 2.55rem);
+  margin: 0.35rem 0 0.65rem;
+  color: #0f172a;
+}
+.webmcp-setup__lead { margin: 0; color: #475569; line-height: 1.6; font-size: 1.05rem; }
+.webmcp-setup__endpoint {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid #99f6e4;
+  background: #f0fdfa;
+}
+.webmcp-setup__endpoint-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+.webmcp-setup__endpoint-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+}
+.webmcp-setup__endpoint-row code {
+  flex: 1 1 220px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.86rem;
+  color: #0f172a;
+  word-break: break-all;
+}
+.webmcp-setup__toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.75rem;
+}
+.webmcp-setup__toc a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+.webmcp-setup__toc a:hover { border-color: #5eead4; color: #0f766e; }
+.webmcp-setup__toc span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: #ccfbf1;
+  color: #115e59;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.webmcp-setup__step {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: auto 1fr;
+  margin: 0 0 1.35rem;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+}
+.webmcp-setup__step-num {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  background: #0f766e;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.webmcp-setup__step-body h2 {
+  margin: 0 0 0.45rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+.webmcp-setup__step-body p {
+  margin: 0 0 0.75rem;
+  color: #475569;
+  line-height: 1.6;
+}
+.webmcp-setup__step-body .webmcp-code { margin: 0.35rem 0 0.85rem; }
+.webmcp-setup__video {
+  margin: 2rem 0 1.5rem;
+  padding: 1.35rem 1.4rem;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background:
+    radial-gradient(ellipse 60% 70% at 100% 0%, rgba(13, 148, 136, 0.1), transparent 55%),
+    #fff;
+}
+.webmcp-setup__video h2 {
+  margin: 0.25rem 0 0.55rem;
+  font-family: "Space Grotesk", sans-serif;
+  color: #0f172a;
+}
+.webmcp-setup__shots {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+.webmcp-setup__shots li {
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.webmcp-setup__shot-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.85rem;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+.webmcp-setup__shot-meta time {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  color: #0f766e;
+  font-weight: 600;
+}
+.webmcp-setup__shot-meta strong { color: #0f172a; }
+.webmcp-setup__shots p { margin: 0.3rem 0 0; color: #475569; line-height: 1.5; font-size: 0.95rem; }
+.webmcp-setup__say,
+.webmcp-setup__do {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.35rem;
+  border-radius: 5px;
+  margin-right: 0.35rem;
+}
+.webmcp-setup__say { background: #ccfbf1; color: #115e59; }
+.webmcp-setup__do { background: #e2e8f0; color: #334155; }
+.webmcp-setup__faq { max-width: 46rem; margin-top: 1.5rem; }
+.webmcp-setup__faq h2 {
+  font-family: "Space Grotesk", sans-serif;
+  color: #0f172a;
+  margin: 0 0 0.75rem;
+}
+.webmcp-setup__faq details {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.75rem 0.95rem;
+  margin: 0 0 0.55rem;
+  background: #fff;
+}
+.webmcp-setup__faq summary {
+  cursor: pointer;
+  font-weight: 650;
+  color: #0f172a;
+}
+.webmcp-setup__faq details p {
+  margin: 0.55rem 0 0;
+  color: #475569;
+  line-height: 1.55;
+}
+
 /* Scan-gated listing */
 .webmcp-scan__hero h1 {
   font-family: "Space Grotesk", sans-serif;

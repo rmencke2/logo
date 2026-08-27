@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+      <script type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
+    <% } %>
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+
+    <main class="dir-shell webmcp-setup" style="padding:2rem 1rem 3.5rem;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a> · <a href="/webmcp/demo">Live demo</a></p>
+
+      <header class="webmcp-setup__hero">
+        <p class="dir-hero__eyebrow">Launch guide · Film-ready</p>
+        <h1><%= guide.title %></h1>
+        <p class="webmcp-setup__lead"><%= guide.intro %></p>
+
+        <div class="webmcp-setup__endpoint" aria-label="Live demo URL">
+          <p class="webmcp-setup__endpoint-label"><%= guide.endpointLabel %></p>
+          <div class="webmcp-setup__endpoint-row">
+            <code id="webmcpSetupDemoUrl"><%= guide.demoUrl %></code>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" id="webmcpSetupCopyDemo">Copy</button>
+            <a class="webmcp-btn webmcp-btn--primary" href="/webmcp/demo?tour=1">Open demo + video tour</a>
+          </div>
+        </div>
+      </header>
+
+      <nav class="webmcp-setup__toc" aria-label="Guide sections">
+        <% guide.steps.forEach(function(step, i) { %>
+          <a href="#step-<%= step.id %>"><span><%= i + 1 %></span><%= step.title %></a>
+        <% }) %>
+        <a href="#video-outline"><span>▶</span>YouTube outline</a>
+      </nav>
+
+      <% guide.steps.forEach(function(step, i) { %>
+        <section class="webmcp-setup__step" id="step-<%= step.id %>">
+          <div class="webmcp-setup__step-num" aria-hidden="true"><%= i + 1 %></div>
+          <div class="webmcp-setup__step-body">
+            <h2><%= step.title %></h2>
+            <p><%= step.body %></p>
+            <% if (step.code) { %>
+              <pre class="webmcp-code"><code><%= step.code %></code></pre>
+            <% } %>
+            <% if (step.links && step.links.length) { %>
+              <div class="webmcp-cta-row">
+                <% step.links.forEach(function(link) { %>
+                  <a
+                    class="webmcp-btn webmcp-btn--ghost"
+                    href="<%= link.href %>"
+                    <% if (link.external) { %>target="_blank" rel="noopener noreferrer"<% } %>
+                  ><%= link.label %><%= link.external ? ' ↗' : '' %></a>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        </section>
+      <% }) %>
+
+      <section class="webmcp-setup__video" id="video-outline">
+        <p class="dir-hero__eyebrow">Creator kit</p>
+        <h2><%= guide.video.title %></h2>
+        <p class="webmcp-setup__lead"><%= guide.video.hook %></p>
+        <ol class="webmcp-setup__shots">
+          <% guide.video.shots.forEach(function(shot) { %>
+            <li>
+              <div class="webmcp-setup__shot-meta">
+                <time><%= shot.t %></time>
+                <strong><%= shot.title %></strong>
+              </div>
+              <p><span class="webmcp-setup__say">Say</span> <%= shot.say %></p>
+              <p><span class="webmcp-setup__do">Do</span> <%= shot.do %></p>
+            </li>
+          <% }) %>
+        </ol>
+      </section>
+
+      <section class="webmcp-setup__faq" aria-labelledby="setup-faq-heading">
+        <h2 id="setup-faq-heading">FAQ</h2>
+        <% guide.faqs.forEach(function(faq) { %>
+          <details>
+            <summary><%= faq.q %></summary>
+            <p><%= faq.a %></p>
+          </details>
+        <% }) %>
+      </section>
+
+      <div class="webmcp-cta-row" style="margin-top:2rem;">
+        <a class="webmcp-btn webmcp-btn--primary" href="/webmcp/demo?tour=1">Run the video tour</a>
+        <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/submit">List your site</a>
+        <a class="webmcp-btn webmcp-btn--ghost" href="<%= guide.standardUrl %>" target="_blank" rel="noopener noreferrer">WebMCP standard ↗</a>
+      </div>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <%- include('partials/influzer-webmcp-script') %>
+    <script src="/js/webmcp-setup-page.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

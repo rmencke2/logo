@@ -340,6 +340,30 @@ function registerWebmcpRoutes(app) {
     }));
   });
 
+  app.get('/webmcp/setup', (req, res) => {
+    const { WEBMCP_SETUP_GUIDE } = require('../data/webmcp-setup-guide');
+    const guide = WEBMCP_SETUP_GUIDE;
+    res.render('webmcp-setup', renderLocals(req, {
+      title: 'Set up and launch WebMCP — Influzer.ai',
+      description: guide.metaDescription,
+      canonicalUrl: `${SITE_BASE}/webmcp/setup`,
+      guide,
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: guide.title,
+        description: guide.metaDescription,
+        step: guide.steps.map((step, i) => ({
+          '@type': 'HowToStep',
+          position: i + 1,
+          name: step.title,
+          text: step.body,
+          url: `${SITE_BASE}/webmcp/setup#step-${step.id}`,
+        })),
+      },
+    }));
+  });
+
   app.get('/webmcp/resources', (req, res) => {
     res.render('webmcp-resources', renderLocals(req, {
       title: 'WebMCP Resources — Specs, Docs & Guides | Influzer.ai',
@@ -516,6 +540,8 @@ function registerWebmcpRoutes(app) {
       tools: manifest.tools || [],
       how_to_test: {
         browser_demo: `${SITE_BASE}/webmcp/demo`,
+        video_tour: `${SITE_BASE}/webmcp/demo?tour=1`,
+        setup_guide: `${SITE_BASE}/webmcp/setup`,
         node_script: 'node scripts/demo-influzer-webmcp.js',
         unit_test: 'node scripts/test-influzer-webmcp.js',
         standard: 'https://github.com/webmachinelearning/webmcp',
@@ -536,6 +562,7 @@ function getWebmcpSitemapEntries() {
     { loc: `${SITE_BASE}/webmcp`, lastmod, changefreq: 'daily', priority: '0.9' },
     { loc: `${SITE_BASE}/webmcp/tools`, lastmod, changefreq: 'daily', priority: '0.8' },
     { loc: `${SITE_BASE}/webmcp/demo`, lastmod, changefreq: 'weekly', priority: '0.8' },
+    { loc: `${SITE_BASE}/webmcp/setup`, lastmod, changefreq: 'weekly', priority: '0.85' },
     { loc: `${SITE_BASE}/webmcp/ecosystem`, lastmod, changefreq: 'weekly', priority: '0.7' },
     { loc: `${SITE_BASE}/webmcp/resources`, lastmod, changefreq: 'weekly', priority: '0.7' },
     { loc: `${SITE_BASE}/webmcp/about`, lastmod, changefreq: 'monthly', priority: '0.6' },
