@@ -17,6 +17,8 @@
     insights: '/api/insights/recent',
     mcpSearch: '/api/mcp/search',
     mcpServer: (slug) => `/api/mcp/servers/${encodeURIComponent(slug)}`,
+    mcpBest: '/api/mcp/best',
+    mcpBestClient: (slug) => `/api/mcp/best/${encodeURIComponent(slug)}`,
     selfTools: '/api/webmcp/v1/self',
   };
 
@@ -63,11 +65,31 @@
 
   function mcpSlugFromPath() {
     const match = window.location.pathname.match(/^\/mcp\/([^/]+)\/?$/);
+    if (!match) return null;
+    const slug = decodeURIComponent(match[1]);
+    // Reserved directory paths are not server detail pages.
+    if (
+      ['all', 'best', 'topics', 'categories', 'compare', 'submit', 'discovery', 'my-listings'].includes(
+        slug,
+      )
+    ) {
+      return null;
+    }
+    return slug;
+  }
+
+  function bestClientSlugFromPath() {
+    const match = window.location.pathname.match(/^\/mcp\/best\/([^/]+)\/?$/);
     return match ? decodeURIComponent(match[1]) : null;
   }
 
   function pageMcpServer() {
     const ctx = window.__INFLUZER_MCP_SERVER__;
+    return ctx && ctx.slug ? ctx : null;
+  }
+
+  function pageBestClient() {
+    const ctx = window.__INFLUZER_BEST_CLIENT__;
     return ctx && ctx.slug ? ctx : null;
   }
 
@@ -104,12 +126,13 @@
         urls: {
           home: 'https://www.influzer.ai/',
           mcp_directory: 'https://www.influzer.ai/mcp',
+          best_for_claude: 'https://www.influzer.ai/mcp/best/claude',
           webmcp_directory: 'https://www.influzer.ai/webmcp',
           webmcp_demo: 'https://www.influzer.ai/webmcp/demo',
           insights: 'https://www.influzer.ai/insights',
           standard: 'https://github.com/webmachinelearning/webmcp',
         },
-        tip: 'Open /webmcp/demo to list and invoke these tools interactively — works with a local polyfill when native WebMCP is unavailable.',
+        tip: 'On /mcp/best/claude use get_current_best_mcp_client. On /mcp/{slug} use get_current_mcp_server. Open /webmcp/demo to try tools interactively.',
       });
     },
 
@@ -263,6 +286,33 @@
         copied: connection,
         message: `Copied connection details for ${server.name || server.slug}`,
       });
+    },
+
+    async list_best_mcp_clients() {
+      const data = await getJson(API.mcpBest);
+      return textResult(data);
+    },
+
+    async get_best_mcp_client({ slug } = {}) {
+      const id = String(slug || '').trim().toLowerCase();
+      if (!id) throw new Error('slug is required (e.g. claude)');
+      const data = await getJson(API.mcpBestClient(id));
+      return textResult(data);
+    },
+
+    async get_current_best_mcp_client({ slug } = {}) {
+      const page = pageBestClient();
+      const id = String(slug || page?.slug || bestClientSlugFromPath() || '')
+        .trim()
+        .toLowerCase();
+      if (page && (!slug || page.slug === id)) {
+        return textResult({ source: 'page', client: page });
+      }
+      if (!id) {
+        throw new Error('Not on a /mcp/best/{client} page. Pass slug (e.g. claude) or open the guide.');
+      }
+      const data = await getJson(API.mcpBestClient(id));
+      return textResult({ source: 'api', ...data });
     },
 
     async list_latest_insights({ limit = 5 } = {}) {

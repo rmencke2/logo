@@ -140,5 +140,11 @@
 
       <%- include('partials/seo-faq-crosslinks', { seoContent: seoContent }) %>
     </main>
+    <% if (typeof clientWebmcp !== 'undefined' && clientWebmcp) { %>
+    <script>
+      window.__INFLUZER_BEST_CLIENT__ = <%- JSON.stringify(clientWebmcp).replace(/</g, '\\u003c') %>;
+    </script>
+    <% } %>
+    <%- include('partials/influzer-webmcp-script') %>
   </body>
 </html>

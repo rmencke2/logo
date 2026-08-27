@@ -82,9 +82,93 @@ function getClientPage(slug) {
   };
 }
 
+function summarizeServerForAgent(server) {
+  return {
+    slug: server.slug,
+    name: server.name,
+    description: String(server.description || '').slice(0, 220),
+    category: server.category || null,
+    transport: server.transport || null,
+    is_remote: Boolean(server.isRemote),
+    url: `https://www.influzer.ai/mcp/${server.slug}`,
+  };
+}
+
+/**
+ * Compact client-intent payload for WebMCP / public JSON API.
+ */
+function getBestClientPayload(slug) {
+  const page = getClientPage(slug);
+  if (!page.client) {
+    return {
+      error: `No client guide found for "${slug}"`,
+      client: null,
+      index_url: 'https://www.influzer.ai/mcp/best',
+    };
+  }
+
+  const { client, stacks, featuredServers, relatedTopics, relatedComparisons } = page;
+  return {
+    client: {
+      slug: client.slug,
+      name: client.name,
+      title: client.title,
+      short_title: client.shortTitle,
+      intro: client.intro,
+      meta_description: client.metaDescription,
+      url: `https://www.influzer.ai/mcp/best/${client.slug}`,
+      setup_url: client.setupHref,
+      setup_label: client.setupLabel,
+      insights_url: client.insightsHref || null,
+      insights_label: client.insightsLabel || null,
+      surfaces: (client.surfaces || []).map((s) => ({
+        name: s.name,
+        transport: s.transport,
+        blurb: s.blurb,
+      })),
+      stacks: stacks.map((stack) => ({
+        id: stack.id,
+        title: stack.title,
+        blurb: stack.blurb,
+        servers: stack.servers.map(summarizeServerForAgent),
+      })),
+      featured_servers: featuredServers.map(summarizeServerForAgent),
+      checklist: client.checklist || [],
+      choose_tips: client.chooseTips || [],
+      faqs: (client.faqs || []).map((f) => ({
+        q: f.q,
+        a: f.aPlain || f.a,
+      })),
+      related_topics: relatedTopics.map((t) => ({
+        slug: t.slug,
+        title: t.shortTitle || t.title,
+        url: `https://www.influzer.ai/mcp/topics/${t.slug}`,
+      })),
+      related_comparisons: relatedComparisons.map((c) => ({
+        slug: c.slug,
+        title: c.shortTitle || c.title,
+        url: `https://www.influzer.ai/mcp/compare/${c.slug}`,
+      })),
+    },
+  };
+}
+
+function getBestIndexPayload() {
+  return {
+    title: 'Best MCP Servers by Client',
+    url: 'https://www.influzer.ai/mcp/best',
+    clients: getClientSummaries().map((c) => ({
+      ...c,
+      url: `https://www.influzer.ai/mcp/best/${c.slug}`,
+    })),
+  };
+}
+
 module.exports = {
   getClientSummaries,
   getClientPage,
+  getBestClientPayload,
+  getBestIndexPayload,
   getMcpBestIndexSeoContent,
   lookupClient,
 };

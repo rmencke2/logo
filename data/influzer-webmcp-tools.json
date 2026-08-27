@@ -207,6 +207,53 @@
       }
     },
     {
+      "name": "list_best_mcp_clients",
+      "description": "List Influzer client-intent guides (/mcp/best) — currently Claude, with more clients as they ship. Returns titles, featured counts, and URLs.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/mcp/best",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_best_mcp_client",
+      "description": "Get a client-intent guide by slug (e.g. claude): Claude.ai vs Desktop vs Code surfaces, starter stacks with server links, checklist, and FAQs.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/mcp/best",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Client slug (e.g. claude). Aliases like claude-desktop also resolve."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_current_best_mcp_client",
+      "description": "Return the client-intent guide for the current /mcp/best/{slug} page (e.g. Best MCP for Claude). Falls back to slug lookup when opened elsewhere.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/mcp/best",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Optional client slug override when not on a best-client page."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "list_latest_insights",
       "description": "List the latest Influzer.ai insights / articles (titles, URLs, summaries) for agent briefings.",
       "kind": "answer",
