@@ -14,6 +14,10 @@ const { csrfTokenHandler, requireCsrfToken } = require('../middleware/csrf');
 
 require('dotenv').config();
 
+/** Microsoft Edge WebMCP origin trial for https://www.influzer.ai (expires 2026-11-17). */
+const WEBMCP_ORIGIN_TRIAL_TOKEN =
+  'A9cknZAQd7Fdz1tjH7MuRTxyNTQx/XSRENC+KArPyJjOcPFGVYHl9+dkQWoAvb3sCTT3vmtw0HN3sxvhutvJwDgAAABPeyJvcmlnaW4iOiJodHRwczovL3d3dy5pbmZsdXplci5haTo0NDMiLCJmZWF0dXJlIjoiV2ViTUNQIiwiZXhwaXJ5IjoxNzkxNjk1MzA1fQ==';
+
 /**
  * Initialize core Express app with middleware
  * @param {express.Application} app - Express application instance
@@ -49,6 +53,12 @@ async function initializeCore(app) {
       originAgentCluster: false,
     }),
   );
+
+  // Enable native WebMCP in Edge/Chrome via origin trial (see influzer-webmcp.js polyfill fallback).
+  app.use((_req, res, next) => {
+    res.setHeader('Origin-Trial', WEBMCP_ORIGIN_TRIAL_TOKEN);
+    next();
+  });
 
   // Global rate limiter — protects APIs/auth; skip static assets and light page browsing.
   // Previously max:100 counted every CSS/JS request and blocked the whole site after ~1–2 pages.

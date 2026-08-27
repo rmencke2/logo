@@ -28,6 +28,7 @@ const {
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
+const { getMcpServer } = require('./mcpDiscoveryTools');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
 const { getMilestonePromo } = require('../data/mcp-milestone-promo');
@@ -49,6 +50,8 @@ const {
 const {
   getClientSummaries,
   getClientPage,
+  getBestClientPayload,
+  getBestIndexPayload,
   getMcpBestIndexSeoContent,
 } = require('./mcpClientService');
 const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
@@ -838,6 +841,29 @@ ${itemsXml}
     res.json(searchMcpServers({ q, scope, limit }));
   });
 
+  app.get('/api/mcp/servers/:slug', (req, res) => {
+    const result = getMcpServer({ slug: req.params.slug });
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    if (!result.server) {
+      return res.status(404).json({ ok: false, ...result });
+    }
+    res.json({ ok: true, ...result });
+  });
+
+  app.get('/api/mcp/best', (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.json({ ok: true, ...getBestIndexPayload() });
+  });
+
+  app.get('/api/mcp/best/:slug', (req, res) => {
+    const result = getBestClientPayload(req.params.slug);
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    if (!result.client) {
+      return res.status(404).json({ ok: false, ...result });
+    }
+    res.json({ ok: true, ...result });
+  });
+
   // MCP Server Directory (must be registered before /insights/:slug)
   registerMcpDiscoveryRoutes(app);
 
@@ -1176,6 +1202,7 @@ ${itemsXml}
       ogImage: SITE_DEFAULT_OG_IMAGE,
       clients,
       seoContent,
+      assetVersion: getHomeAssetVersion(),
       jsonLd: appendFaqToJsonLd(
         {
           '@context': 'https://schema.org',
@@ -1206,8 +1233,10 @@ ${itemsXml}
     }
     const { client, stacks, featuredServers, relatedTopics, relatedComparisons, seoContent } = page;
     const canonicalUrl = `${SITE_BASE_URL}/mcp/best/${client.slug}`;
+    const clientWebmcp = getBestClientPayload(client.slug).client;
     res.render('mcp-best-client', {
       client,
+      clientWebmcp,
       stacks,
       featuredServers,
       relatedTopics,
@@ -1217,6 +1246,7 @@ ${itemsXml}
       canonicalUrl,
       ogImage: SITE_DEFAULT_OG_IMAGE,
       seoContent,
+      assetVersion: getHomeAssetVersion(),
       jsonLd: appendFaqToJsonLd(
         buildMcpCollectionJsonLd({
           pageUrl: canonicalUrl,
@@ -1263,8 +1293,10 @@ ${itemsXml}
         navPath: req.path,
       });
     }
+    const serverWebmcp = getMcpServer({ slug: server.slug }).server;
     return res.render('mcp-server', {
       server,
+      serverWebmcp,
       iconEmoji: getMcpIconEmoji(server.icon),
       transportLabel: transportLabel(server.transport),
       inTop100: isInTop100(server.slug),

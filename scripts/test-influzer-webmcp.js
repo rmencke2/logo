@@ -76,8 +76,22 @@ const required = [
   'get_webmcp_site',
   'search_webmcp_tools',
   'search_mcp_servers',
+  'get_mcp_server',
+  'get_current_mcp_server',
+  'copy_mcp_connection',
+  'list_best_mcp_clients',
+  'get_best_mcp_client',
+  'get_current_best_mcp_client',
   'navigate_influzer',
 ];
+
+const { getBestClientPayload, getBestIndexPayload } = require('../services/mcpClientService');
+const bestIndex = getBestIndexPayload();
+assert.ok(bestIndex.clients.length >= 1, 'expected at least one best-client guide');
+const claude = getBestClientPayload('claude');
+assert.ok(claude.client, 'claude client guide missing');
+assert.ok(claude.client.stacks.length >= 1, 'claude stacks missing');
+assert.ok(claude.client.featured_servers.length >= 1, 'claude featured servers missing');
 for (const name of required) {
   assert.ok(names.has(name), `missing required tool ${name}`);
 }

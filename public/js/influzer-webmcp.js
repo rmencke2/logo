@@ -16,6 +16,9 @@
     tools: '/api/webmcp/v1/tools',
     insights: '/api/insights/recent',
     mcpSearch: '/api/mcp/search',
+    mcpServer: (slug) => `/api/mcp/servers/${encodeURIComponent(slug)}`,
+    mcpBest: '/api/mcp/best',
+    mcpBestClient: (slug) => `/api/mcp/best/${encodeURIComponent(slug)}`,
     selfTools: '/api/webmcp/v1/self',
   };
 
@@ -60,6 +63,60 @@
     }
   }
 
+  function mcpSlugFromPath() {
+    const match = window.location.pathname.match(/^\/mcp\/([^/]+)\/?$/);
+    if (!match) return null;
+    const slug = decodeURIComponent(match[1]);
+    // Reserved directory paths are not server detail pages.
+    if (
+      ['all', 'best', 'topics', 'categories', 'compare', 'submit', 'discovery', 'my-listings'].includes(
+        slug,
+      )
+    ) {
+      return null;
+    }
+    return slug;
+  }
+
+  function bestClientSlugFromPath() {
+    const match = window.location.pathname.match(/^\/mcp\/best\/([^/]+)\/?$/);
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  function pageMcpServer() {
+    const ctx = window.__INFLUZER_MCP_SERVER__;
+    return ctx && ctx.slug ? ctx : null;
+  }
+
+  function pageBestClient() {
+    const ctx = window.__INFLUZER_BEST_CLIENT__;
+    return ctx && ctx.slug ? ctx : null;
+  }
+
+  function mcpConnectionText(server) {
+    if (!server) return null;
+    return (
+      server.install_command ||
+      server.connection_url ||
+      server.mcp_endpoint ||
+      null
+    );
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch (_) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  }
+
   const executors = {
     async get_influzer_overview() {
       return textResult({
@@ -69,12 +126,13 @@
         urls: {
           home: 'https://www.influzer.ai/',
           mcp_directory: 'https://www.influzer.ai/mcp',
+          best_for_claude: 'https://www.influzer.ai/mcp/best/claude',
           webmcp_directory: 'https://www.influzer.ai/webmcp',
           webmcp_demo: 'https://www.influzer.ai/webmcp/demo',
           insights: 'https://www.influzer.ai/insights',
           standard: 'https://github.com/webmachinelearning/webmcp',
         },
-        tip: 'Open /webmcp/demo to list and invoke these tools interactively — works with a local polyfill when native WebMCP is unavailable.',
+        tip: 'On /mcp/best/claude use get_current_best_mcp_client. On /mcp/{slug} use get_current_mcp_server. Open /webmcp/demo to try tools interactively.',
       });
     },
 
@@ -169,6 +227,92 @@
       });
       const data = await getJson(`${API.mcpSearch}?${params}`);
       return textResult(data);
+    },
+
+    async get_mcp_server({ slug } = {}) {
+      const id = String(slug || '').trim().toLowerCase();
+      if (!id) throw new Error('slug is required');
+      const data = await getJson(API.mcpServer(id));
+      return textResult(data);
+    },
+
+    async get_current_mcp_server({ slug } = {}) {
+      const page = pageMcpServer();
+      const id = String(slug || page?.slug || mcpSlugFromPath() || '')
+        .trim()
+        .toLowerCase();
+      if (page && (!slug || page.slug === id)) {
+        return textResult({ source: 'page', server: page });
+      }
+      if (!id) {
+        throw new Error('Not on an MCP server detail page. Pass slug or open /mcp/{slug}.');
+      }
+      const data = await getJson(API.mcpServer(id));
+      return textResult({ source: 'api', ...data });
+    },
+
+    async copy_mcp_connection({ slug } = {}) {
+      const page = pageMcpServer();
+      const id = String(slug || page?.slug || mcpSlugFromPath() || '')
+        .trim()
+        .toLowerCase();
+
+      let server = null;
+      let source = 'page';
+
+      if (page && (!slug || page.slug === id)) {
+        server = page;
+      } else {
+        if (!id) throw new Error('slug is required when not on a server detail page');
+        source = 'api';
+        const data = await getJson(API.mcpServer(id));
+        if (!data.server) throw new Error(data.error || `No server found for slug "${id}"`);
+        server = data.server;
+      }
+
+      const connection = mcpConnectionText(server);
+      if (!connection) {
+        throw new Error(
+          `No install command or connection URL for ${server.name || server.slug}. Open GitHub or docs instead.`,
+        );
+      }
+
+      await copyText(connection);
+      return textResult({
+        ok: true,
+        source,
+        server: server.name || server.slug,
+        slug: server.slug,
+        copied: connection,
+        message: `Copied connection details for ${server.name || server.slug}`,
+      });
+    },
+
+    async list_best_mcp_clients() {
+      const data = await getJson(API.mcpBest);
+      return textResult(data);
+    },
+
+    async get_best_mcp_client({ slug } = {}) {
+      const id = String(slug || '').trim().toLowerCase();
+      if (!id) throw new Error('slug is required (e.g. claude)');
+      const data = await getJson(API.mcpBestClient(id));
+      return textResult(data);
+    },
+
+    async get_current_best_mcp_client({ slug } = {}) {
+      const page = pageBestClient();
+      const id = String(slug || page?.slug || bestClientSlugFromPath() || '')
+        .trim()
+        .toLowerCase();
+      if (page && (!slug || page.slug === id)) {
+        return textResult({ source: 'page', client: page });
+      }
+      if (!id) {
+        throw new Error('Not on a /mcp/best/{client} page. Pass slug (e.g. claude) or open the guide.');
+      }
+      const data = await getJson(API.mcpBestClient(id));
+      return textResult({ source: 'api', ...data });
     },
 
     async list_latest_insights({ limit = 5 } = {}) {
