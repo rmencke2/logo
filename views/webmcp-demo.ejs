@@ -60,7 +60,7 @@
       <section class="webmcp-demo__panel" aria-labelledby="demo-console-heading">
         <div class="webmcp-demo__controls">
           <h2 id="demo-console-heading">Tool console</h2>
-          <p class="webmcp-note">Uses <code>getTools()</code> and <code>executeTool()</code> — the same discovery path in-page agents use.</p>
+          <p class="webmcp-note">Uses <code>getTools()</code> and <code>executeTool(tool, jsonString)</code> — native WebMCP requires args as a JSON string.</p>
 
           <label>
             Tool
@@ -101,7 +101,7 @@
         <ol>
           <li>Click <strong>Start video tour</strong> for a narrated 5-scene walkthrough (ideal for screen recording).</li>
           <li>Or pick a tool, edit JSON args, click <strong>Run executeTool()</strong>.</li>
-          <li>From DevTools: <code>await document.modelContext.getTools()</code> then <code>await document.modelContext.executeTool(tools[0], {})</code>.</li>
+          <li>From DevTools: <code>const tools = await document.modelContext.getTools(); await document.modelContext.executeTool(tools[0], '{}')</code> — pass a <strong>JSON string</strong>, not a JS object.</li>
           <li>Full launch checklist: <a href="/webmcp/setup">Set up and launch WebMCP</a>.</li>
         </ol>
         <h2>Registered tools</h2>

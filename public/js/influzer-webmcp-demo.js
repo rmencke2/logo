@@ -184,8 +184,32 @@
 
   async function executeNamed(name, args) {
     const tools = await listTools();
-    const tool = tools.find((t) => t.name === name) || { name };
-    return document.modelContext.executeTool(tool, args || {});
+    const tool = tools.find((t) => t.name === name);
+    if (!tool) throw new Error(`Tool not found: ${name}`);
+    // Native WebMCP requires the 2nd arg as a JSON *string* (objects throw
+    // UnknownError: Failed to parse input arguments). Polyfill accepts both.
+    const payload = typeof args === 'string' ? args : JSON.stringify(args ?? {});
+    const raw = await document.modelContext.executeTool(tool, payload);
+    return normalizeExecuteResult(raw);
+  }
+
+  function normalizeExecuteResult(raw) {
+    if (raw == null) return raw;
+    if (typeof raw !== 'string') return raw;
+    try {
+      let parsed = JSON.parse(raw);
+      // Some native builds double-encode the tool result payload.
+      if (typeof parsed === 'string') {
+        try {
+          parsed = JSON.parse(parsed);
+        } catch (_) {
+          /* keep first parse */
+        }
+      }
+      return parsed;
+    } catch (_) {
+      return raw;
+    }
   }
 
   async function runSelected() {

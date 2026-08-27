@@ -398,7 +398,18 @@
           const err = new DOMException('Aborted', 'AbortError');
           throw err;
         }
-        return entry.execute(args || {}, { signal });
+        let parsed = args;
+        if (typeof args === 'string') {
+          try {
+            parsed = JSON.parse(args || '{}');
+          } catch (err) {
+            throw new Error(`Failed to parse input arguments: ${err.message}`);
+          }
+        }
+        if (parsed == null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+          parsed = {};
+        }
+        return entry.execute(parsed, { signal });
       },
       __influzerPolyfill: true,
       __registry: registry,

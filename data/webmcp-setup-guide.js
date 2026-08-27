@@ -80,7 +80,8 @@ const WEBMCP_SETUP_GUIDE = {
       code: `const tools = await document.modelContext.getTools();
 console.table(tools.map((t) => t.name));
 
-const result = await document.modelContext.executeTool(tools[0], {});
+// Native WebMCP: 2nd arg must be a JSON string (not a plain object).
+const result = await document.modelContext.executeTool(tools[0], '{}');
 console.log(result);`,
       links: [
         { href: '/webmcp/demo', label: 'Open live demo + video tour' },
