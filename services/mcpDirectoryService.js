@@ -13,6 +13,7 @@ const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
 const PINNED_PATH = path.join(__dirname, '..', 'data', 'mcp-top100-pinned.json');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
 const LEGACY_MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers.json');
+const DISCOVERED_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-discovered.json');
 const LAST_UPDATED_PATH = path.join(__dirname, '..', 'data', 'last-updated.json');
 
 const ICON_EMOJI = {
@@ -124,16 +125,25 @@ function preferRicherServer(existing, incoming) {
   const incomingTools = toolCount(incoming);
   if (incomingTools > existingTools) return incoming;
   if (incomingTools < existingTools) return existing;
+  // Prefer non-discovered overlays when tool counts tie
+  if (existing.source === 'discovered' && incoming.source !== 'discovered') return incoming;
+  if (incoming.source === 'discovered' && existing.source !== 'discovered') return existing;
   return existing;
 }
 
-function mergeManualInto(servers, manualData) {
-  if (!manualData?.servers?.length) return servers;
+function mergeOverlayInto(servers, overlayServers, { treatAsManual = false } = {}) {
+  if (!overlayServers?.length) return servers;
   const bySlug = new Map(servers.map((s) => [s.slug, s]));
   const ghKeys = new Set(servers.map((s) => (s.github_url || '').toLowerCase()).filter(Boolean));
 
-  for (const raw of manualData.servers) {
-    const m = normalizeLegacyManual(raw);
+  for (const raw of overlayServers) {
+    const m = treatAsManual
+      ? normalizeLegacyManual(raw)
+      : normalizeServer({
+          ...raw,
+          slug: raw.slug || raw.id,
+          source: raw.source || 'discovered',
+        });
     const gh = (m.github_url || '').toLowerCase();
     const existing = bySlug.get(m.slug);
     if (existing) {
@@ -153,6 +163,16 @@ function mergeManualInto(servers, manualData) {
     if (gh) ghKeys.add(gh);
   }
   return [...bySlug.values()];
+}
+
+function mergeManualInto(servers, manualData) {
+  if (!manualData?.servers?.length) return servers;
+  return mergeOverlayInto(servers, manualData.servers, { treatAsManual: true });
+}
+
+function mergeDiscoveredInto(servers, discoveredData) {
+  if (!discoveredData?.servers?.length) return servers;
+  return mergeOverlayInto(servers, discoveredData.servers, { treatAsManual: false });
 }
 
 function computeTop100FromAll(allServers) {
@@ -185,11 +205,15 @@ function loadCatalog() {
     generatedAt = generated.generated_at || null;
   }
 
+  const discoveredData = readJsonIfExists(DISCOVERED_PATH);
+  // Discovered overlay first (stubs), then manual wins on conflicts.
+  allServers = mergeDiscoveredInto(allServers, discoveredData);
   allServers = mergeManualInto(allServers, manualData);
   top100Servers = computeTop100FromAll(allServers);
 
   if (!allServers.length && manualData?.servers?.length) {
     allServers = manualData.servers.map(normalizeLegacyManual);
+    allServers = mergeDiscoveredInto(allServers, discoveredData);
     top100Servers = computeTop100FromAll(allServers);
     categories = manualData.categories || STANDARD_CATEGORIES;
   }

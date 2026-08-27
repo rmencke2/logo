@@ -419,6 +419,107 @@ async function fetchMcpserversOrgServers() {
   return servers;
 }
 
+// ——— Official MCP Registry API ———
+
+async function fetchOfficialRegistryServers() {
+  const maxPages = Number(process.env.MCP_REGISTRY_MAX_PAGES) || 250;
+  const pageSize = 100;
+  const base = 'https://registry.modelcontextprotocol.io/v0/servers';
+  console.log(`\n📡 Official MCP Registry: listing servers (max ${maxPages} pages)…`);
+
+  const byName = new Map();
+  let cursor = null;
+  let pages = 0;
+
+  while (pages < maxPages) {
+    pages += 1;
+    const params = new URLSearchParams({ limit: String(pageSize) });
+    if (cursor) params.set('cursor', cursor);
+    let data;
+    try {
+      data = await fetchJson(`${base}?${params}`);
+    } catch (err) {
+      console.error(`❌ Official registry page ${pages} failed:`, err.message);
+      break;
+    }
+    const batch = data.servers || [];
+    for (const row of batch) {
+      const server = row.server || {};
+      const name = server.name;
+      if (!name) continue;
+      const meta = row._meta?.['io.modelcontextprotocol.registry/official'] || {};
+      if (meta.status && meta.status !== 'active') continue;
+      if (!byName.has(name) || meta.isLatest) byName.set(name, row);
+    }
+    cursor = data.metadata?.nextCursor || null;
+    if (pages % 25 === 0 || pages === 1) {
+      console.log(`   … page ${pages} (${byName.size} unique names)`);
+    }
+    if (!cursor || !batch.length) break;
+    await sleep(40);
+  }
+
+  const servers = [];
+  for (const row of byName.values()) {
+    const server = row.server || {};
+    const remotes = Array.isArray(server.remotes) ? server.remotes : [];
+    const remoteUrl = remotes.find((r) => r?.url)?.url;
+    const packages = Array.isArray(server.packages) ? server.packages : [];
+    const transport = remotes.length
+      ? mapTransport(remotes[0]?.type || 'http')
+      : packages.length
+        ? 'stdio'
+        : 'unknown';
+    const title = server.title || server.name;
+    const gh = server.repository?.url || undefined;
+    servers.push(
+      toCatalogServer({
+        id: slugify(server.name),
+        slug: slugify(server.name),
+        name: title,
+        description: server.description || `${title} — published on the official MCP Registry.`,
+        category: mapCategory(title, server.description || ''),
+        official: true,
+        transport,
+        tools: [],
+        github_url: gh,
+        docs_url:
+          remoteUrl ||
+          `https://registry.modelcontextprotocol.io/?q=${encodeURIComponent(server.name)}`,
+        mcp_endpoint: remoteUrl,
+        deployment_url: remoteUrl,
+        stars: 0,
+        source: 'official-registry',
+        registry_name: server.name,
+      }),
+    );
+  }
+
+  console.log(`✅ Official MCP Registry: ${servers.length} unique servers`);
+  return servers;
+}
+
+function loadDiscoveredOverlay() {
+  const discoveredPath = path.join(ROOT, 'data', 'mcp-servers-discovered.json');
+  if (!fs.existsSync(discoveredPath)) return [];
+  try {
+    const data = JSON.parse(fs.readFileSync(discoveredPath, 'utf8'));
+    const today = new Date().toISOString().slice(0, 10);
+    return (data.servers || []).map((s) =>
+      toCatalogServer({
+        ...s,
+        id: s.slug || s.id || slugify(s.name),
+        slug: s.slug || s.id || slugify(s.name),
+        source: s.source || 'discovered',
+        last_updated: s.last_updated || today,
+      }),
+    );
+  } catch (err) {
+    console.error('⚠️  Failed to load discovered overlay:', err.message);
+    return [];
+  }
+}
+
 // ——— Manual seed ———
 
 function loadManualServers() {
@@ -516,7 +617,25 @@ async function main() {
     console.error('❌ mcpservers.org error:', err.message);
   }
 
-  const combined = [...manual, ...glama, ...smithery, ...awesome, ...mcpservers];
+  let officialRegistry = [];
+  try {
+    officialRegistry = await fetchOfficialRegistryServers();
+  } catch (err) {
+    console.error('❌ Official MCP Registry error:', err.message);
+  }
+
+  const discovered = loadDiscoveredOverlay();
+  console.log(`📦 Discovered overlay: ${discovered.length} servers`);
+
+  const combined = [
+    ...manual,
+    ...glama,
+    ...smithery,
+    ...awesome,
+    ...mcpservers,
+    ...officialRegistry,
+    ...discovered,
+  ];
   stats.fetched = combined.length;
 
   let servers = dedupeServers(combined);
