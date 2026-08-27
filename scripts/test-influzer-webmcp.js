@@ -76,6 +76,9 @@ const required = [
   'get_webmcp_site',
   'search_webmcp_tools',
   'search_mcp_servers',
+  'get_mcp_server',
+  'get_current_mcp_server',
+  'copy_mcp_connection',
   'navigate_influzer',
 ];
 for (const name of required) {

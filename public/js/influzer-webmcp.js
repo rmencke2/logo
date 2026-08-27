@@ -16,6 +16,7 @@
     tools: '/api/webmcp/v1/tools',
     insights: '/api/insights/recent',
     mcpSearch: '/api/mcp/search',
+    mcpServer: (slug) => `/api/mcp/servers/${encodeURIComponent(slug)}`,
     selfTools: '/api/webmcp/v1/self',
   };
 
@@ -57,6 +58,40 @@
       return `${u.pathname}${u.search}`;
     } catch {
       return null;
+    }
+  }
+
+  function mcpSlugFromPath() {
+    const match = window.location.pathname.match(/^\/mcp\/([^/]+)\/?$/);
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  function pageMcpServer() {
+    const ctx = window.__INFLUZER_MCP_SERVER__;
+    return ctx && ctx.slug ? ctx : null;
+  }
+
+  function mcpConnectionText(server) {
+    if (!server) return null;
+    return (
+      server.install_command ||
+      server.connection_url ||
+      server.mcp_endpoint ||
+      null
+    );
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch (_) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
     }
   }
 
@@ -169,6 +204,65 @@
       });
       const data = await getJson(`${API.mcpSearch}?${params}`);
       return textResult(data);
+    },
+
+    async get_mcp_server({ slug } = {}) {
+      const id = String(slug || '').trim().toLowerCase();
+      if (!id) throw new Error('slug is required');
+      const data = await getJson(API.mcpServer(id));
+      return textResult(data);
+    },
+
+    async get_current_mcp_server({ slug } = {}) {
+      const page = pageMcpServer();
+      const id = String(slug || page?.slug || mcpSlugFromPath() || '')
+        .trim()
+        .toLowerCase();
+      if (page && (!slug || page.slug === id)) {
+        return textResult({ source: 'page', server: page });
+      }
+      if (!id) {
+        throw new Error('Not on an MCP server detail page. Pass slug or open /mcp/{slug}.');
+      }
+      const data = await getJson(API.mcpServer(id));
+      return textResult({ source: 'api', ...data });
+    },
+
+    async copy_mcp_connection({ slug } = {}) {
+      const page = pageMcpServer();
+      const id = String(slug || page?.slug || mcpSlugFromPath() || '')
+        .trim()
+        .toLowerCase();
+
+      let server = null;
+      let source = 'page';
+
+      if (page && (!slug || page.slug === id)) {
+        server = page;
+      } else {
+        if (!id) throw new Error('slug is required when not on a server detail page');
+        source = 'api';
+        const data = await getJson(API.mcpServer(id));
+        if (!data.server) throw new Error(data.error || `No server found for slug "${id}"`);
+        server = data.server;
+      }
+
+      const connection = mcpConnectionText(server);
+      if (!connection) {
+        throw new Error(
+          `No install command or connection URL for ${server.name || server.slug}. Open GitHub or docs instead.`,
+        );
+      }
+
+      await copyText(connection);
+      return textResult({
+        ok: true,
+        source,
+        server: server.name || server.slug,
+        slug: server.slug,
+        copied: connection,
+        message: `Copied connection details for ${server.name || server.slug}`,
+      });
     },
 
     async list_latest_insights({ limit = 5 } = {}) {

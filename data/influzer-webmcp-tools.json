@@ -155,6 +155,58 @@
       }
     },
     {
+      "name": "get_mcp_server",
+      "description": "Get full details for one MCP server by slug: description, transport, install command, remote endpoint, indexed tools, and Influzer page URL.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/mcp",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Server slug from the Influzer directory (e.g. playwright, github)."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_current_mcp_server",
+      "description": "Return the MCP server profile for the current /mcp/{slug} detail page when the user is viewing one. Falls back to slug lookup when opened elsewhere.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/mcp",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Optional slug override when not on a server detail page."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "copy_mcp_connection",
+      "description": "Copy the install command or remote MCP endpoint for a server to the clipboard. Prefer when the user asks to install or connect on the current detail page.",
+      "kind": "act",
+      "implementation_type": "imperative",
+      "page_url": "/mcp",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Optional slug when not on the matching /mcp/{slug} page."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "list_latest_insights",
       "description": "List the latest Influzer.ai insights / articles (titles, URLs, summaries) for agent briefings.",
       "kind": "answer",

@@ -66,6 +66,14 @@ async function main() {
     console.log(`  - ${s.name} → ${s.url}`);
   }
 
+  section('get_mcp_server(slug=playwright)');
+  try {
+    const detail = await getJson('/api/mcp/servers/playwright');
+    console.log(`  name=${detail.server?.name} tools=${detail.server?.tools?.length || 0}`);
+  } catch (err) {
+    console.log(`  (skipped: ${err.message})`);
+  }
+
   section('list_latest_insights');
   const insights = await getJson('/api/insights/recent?limit=3');
   for (const p of insights.posts || []) {
