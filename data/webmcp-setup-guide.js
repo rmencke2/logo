@@ -7,14 +7,15 @@ const SITE = 'https://www.influzer.ai';
 const WEBMCP_SETUP_GUIDE = {
   title: 'Set up and launch WebMCP',
   metaDescription:
-    'Step-by-step WebMCP setup: enable the origin trial, register document.modelContext tools, verify in Edge/Chrome, and list your site on Influzer — plus a filmable demo tour.',
+    'Step-by-step WebMCP setup: Chrome Canary flag, Edge origin trial, register document.modelContext tools, verify, and list your site on Influzer — plus a filmable demo tour.',
   intro:
-    'WebMCP lets a website register tools that AI agents can discover and call in the browser — without shipping a separate MCP server. This guide walks from zero to a live launch you can film.',
+    'WebMCP lets a website register tools that AI agents can discover and call in the browser — without shipping a separate MCP server. This guide walks from zero to a live launch you can film. Native mode needs a preview browser (Chrome flag and/or Edge origin trial); the Influzer demo still works via polyfill without that.',
   endpointLabel: 'LIVE DEMO — OPEN WHILE YOU FOLLOW ALONG',
   demoUrl: `${SITE}/webmcp/demo`,
   setupUrl: `${SITE}/webmcp/setup`,
   standardUrl: 'https://github.com/webmachinelearning/webmcp',
   chromeDocsUrl: 'https://developer.chrome.com/docs/ai/webmcp',
+  chromeFlagsUrl: 'chrome://flags/#enable-webmcp-testing',
   edgeTrialUrl:
     'https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials/0b76fe60-b266-458e-a285-04e375c0c31a',
   steps: [
@@ -30,10 +31,26 @@ const WEBMCP_SETUP_GUIDE = {
       ],
     },
     {
-      id: 'origin-trial',
-      title: 'Enable the browser origin trial',
+      id: 'chrome-flag',
+      title: 'Enable WebMCP in Chrome (Canary / Beta)',
       body:
-        'Native document.modelContext is behind an origin trial in Edge/Chrome. Register your production origin, then serve the token as an Origin-Trial HTTP header (preferred) or a meta tag on every page that registers tools.',
+        'For Google Chrome, use an up-to-date preview build — Chrome Canary or Beta, version 146 or higher. Open chrome://flags/#enable-webmcp-testing, set “WebMCP for testing” to Enabled, and relaunch the browser. Stable Chrome does not expose native document.modelContext yet.',
+      code: `1. Install Chrome Canary or Beta (version 146+)
+2. Visit chrome://flags/#enable-webmcp-testing
+3. Set "WebMCP for testing" → Enabled
+4. Relaunch Chrome
+5. Open https://www.influzer.ai/webmcp/demo
+   → Mode should read: Native WebMCP (document.modelContext)`,
+      links: [
+        { href: 'https://developer.chrome.com/docs/ai/webmcp', label: 'Chrome WebMCP docs', external: true },
+        { href: '/webmcp/demo', label: 'Verify on the live demo' },
+      ],
+    },
+    {
+      id: 'origin-trial',
+      title: 'Enable the Edge / site origin trial',
+      body:
+        'Microsoft Edge (and Chromium builds that honor origin trials) unlock native WebMCP when the site serves a registered token. Register your production origin, then prefer an Origin-Trial HTTP response header (one place for every page). Influzer already serves this for www.influzer.ai. Pair with the Chrome flag above when filming in Chrome Canary.',
       code: `Origin-Trial: <your-token-here>
 
 <!-- or in <head> -->
@@ -76,7 +93,7 @@ const WEBMCP_SETUP_GUIDE = {
       id: 'verify',
       title: 'Verify in the browser',
       body:
-        'Open your page in Edge or Chrome with the trial enabled. In DevTools, list and call tools. Influzer’s demo also works with a local polyfill so you can film the flow before native support is on.',
+        'Confirm Mode = Native on the demo (Chrome flag and/or Edge trial). In DevTools, list and call tools. Native executeTool requires a JSON string for arguments — not a plain object. Without native support, Influzer’s demo polyfill still runs the same tools for filming.',
       code: `const tools = await document.modelContext.getTools();
 console.table(tools.map((t) => t.name));
 
@@ -108,40 +125,46 @@ console.log(result);`,
         t: '0:00',
         title: 'Hook',
         say: 'Websites can now expose tools to AI agents in the browser. This is WebMCP — and I’ll show how Influzer ships it.',
-        do: 'Open /webmcp/demo in Edge/Chrome. Point at Status = tools ready and Mode = Native or Polyfill.',
+        do: 'Open /webmcp/demo in Chrome Canary with WebMCP for testing enabled. Point at Mode = Native WebMCP.',
       },
       {
-        t: '0:45',
+        t: '0:40',
+        title: 'Browser prerequisite (Chrome)',
+        say: 'Stable Chrome is not enough yet. You need Canary or Beta 146+, then enable the WebMCP for testing flag and relaunch.',
+        do: 'Brief cut to chrome://flags/#enable-webmcp-testing set to Enabled, then back to the demo.',
+      },
+      {
+        t: '1:10',
         title: 'What WebMCP is (and isn’t)',
         say: 'MCP servers are backends you connect once. WebMCP tools live on the page — agents discover them while browsing.',
         do: 'Cut to /webmcp/about. Highlight “WebMCP is not an MCP server.”',
       },
       {
-        t: '1:30',
+        t: '1:50',
         title: 'Video tour — discovery',
-        say: 'Let’s run the same path an in-page agent uses: getTools, then executeTool.',
+        say: 'Let’s run the same path an in-page agent uses: getTools, then executeTool with a JSON string.',
         do: 'On /webmcp/demo click Start video tour. Narrate each scene as it runs.',
       },
       {
-        t: '4:00',
-        title: 'Setup — origin trial',
-        say: 'Native support needs an origin trial token on your production host. Influzer serves it as an HTTP header.',
-        do: 'Show /webmcp/setup step 2. Optional B-roll: curl -I showing Origin-Trial.',
+        t: '4:15',
+        title: 'Setup — Chrome flag + origin trial',
+        say: 'For Chrome, flip the testing flag. For Edge and site-wide native unlocks, serve an Origin-Trial header — Influzer already does.',
+        do: 'Show /webmcp/setup steps “Enable WebMCP in Chrome” and “Edge / site origin trial”. Optional B-roll: curl -I Origin-Trial.',
       },
       {
-        t: '5:30',
+        t: '5:45',
         title: 'Setup — registerTool',
         say: 'Here’s the minimal registerTool call. Feature-detect, return structured content, degrade gracefully.',
-        do: 'Show step 3 code block. Optional: open /api/webmcp/v1/self.',
+        do: 'Show the registerTool code block. Optional: open /api/webmcp/v1/self.',
       },
       {
-        t: '7:00',
+        t: '7:15',
         title: 'Where it shows up on Influzer',
         say: 'Server detail pages and Best-for-Claude guides also register tools — so agents get context where users already land.',
         do: 'Quick cuts: /mcp/playwright, /mcp/best/claude, DevTools getTools().',
       },
       {
-        t: '8:30',
+        t: '8:45',
         title: 'CTA',
         say: 'Try the demo, follow the setup guide, and list your site so agents can find you.',
         do: 'End cards: /webmcp/demo · /webmcp/setup · /webmcp/submit',
@@ -150,8 +173,12 @@ console.log(result);`,
   },
   faqs: [
     {
-      q: 'Do I need the origin trial to try Influzer’s demo?',
-      a: 'No. The demo installs a local polyfill when native WebMCP is missing, so you can film and test tool calls in any modern browser. The trial unlocks native document.modelContext in Edge/Chrome.',
+      q: 'How do I enable WebMCP in Google Chrome?',
+      a: 'Use Chrome Canary or Beta (version 146 or higher). Open chrome://flags/#enable-webmcp-testing, set “WebMCP for testing” to Enabled, and relaunch. Then open the Influzer demo — Mode should say Native WebMCP.',
+    },
+    {
+      q: 'Do I need the origin trial or Chrome flag to try Influzer’s demo?',
+      a: 'No. The demo installs a local polyfill when native WebMCP is missing, so you can film and test tool calls in any modern browser. The Chrome flag and/or Edge origin trial unlock real document.modelContext.',
     },
     {
       q: 'Header or meta tag for the origin trial?',

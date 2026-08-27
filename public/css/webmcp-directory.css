@@ -119,6 +119,24 @@ button.webmcp-btn--ghost:hover,
 /* Influzer first-party WebMCP demo console */
 .webmcp-demo__hero { margin-bottom: 1.5rem; max-width: 46rem; }
 .webmcp-demo__hero h1 { font-family: "Space Grotesk", sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); margin: 0.35rem 0 0.6rem; color: #0f172a; }
+.webmcp-demo__browser-tip {
+  margin: 0.85rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid #fcd34d;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.webmcp-demo__browser-tip code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.84em;
+  background: #fef3c7;
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+}
+.webmcp-demo__browser-tip a { color: #0f766e; font-weight: 650; }
 .webmcp-demo__panel {
   display: grid; gap: 1.25rem; margin: 1.5rem 0 2rem;
 }

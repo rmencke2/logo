@@ -31,9 +31,11 @@
           <span>Status: <b id="webmcp-demo-status" data-state="warn">Starting…</b></span>
           <span>Mode: <b id="webmcp-demo-mode">Detecting…</b></span>
         </div>
+        <p class="webmcp-demo__browser-tip" id="webmcp-demo-browser-tip" hidden></p>
         <div class="webmcp-cta-row">
           <button type="button" class="webmcp-btn webmcp-btn--primary" id="webmcp-tour-start">Start video tour</button>
-          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/setup">How to set it up</a>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/setup#step-chrome-flag">Chrome Canary setup</a>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/setup">Full setup guide</a>
           <a class="webmcp-btn webmcp-btn--ghost" href="https://github.com/webmachinelearning/webmcp" rel="noopener noreferrer">WebMCP standard</a>
           <a class="webmcp-btn webmcp-btn--ghost" href="/api/webmcp/v1/self">Tool manifest JSON</a>
         </div>
@@ -99,10 +101,11 @@
       <section class="webmcp-demo__howto webmcp-prose">
         <h2>How to try this yourself</h2>
         <ol>
+          <li><strong>Native Chrome:</strong> Canary or Beta 146+ → <code>chrome://flags/#enable-webmcp-testing</code> → set <em>WebMCP for testing</em> to Enabled → relaunch. Demo Mode should say Native.</li>
           <li>Click <strong>Start video tour</strong> for a narrated 5-scene walkthrough (ideal for screen recording).</li>
           <li>Or pick a tool, edit JSON args, click <strong>Run executeTool()</strong>.</li>
           <li>From DevTools: <code>const tools = await document.modelContext.getTools(); await document.modelContext.executeTool(tools[0], '{}')</code> — pass a <strong>JSON string</strong>, not a JS object.</li>
-          <li>Full launch checklist: <a href="/webmcp/setup">Set up and launch WebMCP</a>.</li>
+          <li>Full launch checklist: <a href="/webmcp/setup">Set up and launch WebMCP</a> (Chrome flag + Edge origin trial).</li>
         </ol>
         <h2>Registered tools</h2>
         <ul>

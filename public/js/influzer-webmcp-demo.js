@@ -27,6 +27,7 @@
     tourDo: document.getElementById('webmcp-tour-do'),
     tourBar: document.getElementById('webmcp-tour-bar'),
     tourOutput: document.getElementById('webmcp-tour-output'),
+    browserTip: document.getElementById('webmcp-demo-browser-tip'),
   };
 
   const PRESETS = {
@@ -46,7 +47,7 @@
   const TOUR_SCENES = [
     {
       title: 'Detect WebMCP on this page',
-      say: 'First we check whether the browser exposes document.modelContext — native via the origin trial, or Influzer’s demo polyfill.',
+      say: 'First we check whether the browser exposes document.modelContext — native via Chrome’s WebMCP testing flag / Edge origin trial, or Influzer’s demo polyfill.',
       do: 'Read Status and Mode in the hero. Then list tools with getTools().',
       async run() {
         const state = window.__INFLUZER_WEBMCP__ || {};
@@ -169,6 +170,21 @@
       if (state?.native) els.mode.textContent = 'Native WebMCP (document.modelContext)';
       else if (state?.polyfill) els.mode.textContent = 'Demo polyfill (local-only Model Context)';
       else els.mode.textContent = 'Unavailable';
+    }
+
+    if (els.browserTip) {
+      if (state?.native) {
+        els.browserTip.hidden = true;
+        els.browserTip.textContent = '';
+      } else if (state?.polyfill) {
+        els.browserTip.hidden = false;
+        els.browserTip.innerHTML =
+          'Polyfill mode — tools still run. For <strong>native</strong> WebMCP in Chrome: Canary/Beta 146+ → <code>chrome://flags/#enable-webmcp-testing</code> → Enabled → relaunch. Details: <a href="/webmcp/setup#step-chrome-flag">Chrome setup</a>.';
+      } else {
+        els.browserTip.hidden = false;
+        els.browserTip.innerHTML =
+          'WebMCP unavailable. Enable <code>chrome://flags/#enable-webmcp-testing</code> in Chrome Canary/Beta 146+, or see <a href="/webmcp/setup">setup</a>.';
+      }
     }
 
     if (!tools.length) {
