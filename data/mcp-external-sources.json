@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "notes": "External MCP *server* registries used to grow Influzer's /mcp catalog (classic backend MCP, not WebMCP websites).",
+  "sources": [
+    {
+      "id": "official-mcp-registry",
+      "name": "Official MCP Registry",
+      "usefulness": 5,
+      "machine_readable": "api",
+      "enabled": true,
+      "adapter": "officialRegistry",
+      "base_url": "https://registry.modelcontextprotocol.io/v0/servers",
+      "use_for": "Primary official published-server API (cursor-paginated)"
+    },
+    {
+      "id": "glama",
+      "name": "Glama",
+      "usefulness": 5,
+      "machine_readable": "api",
+      "enabled": true,
+      "adapter": "glama",
+      "use_for": "Large registry API — list-only for gap checks"
+    },
+    {
+      "id": "smithery",
+      "name": "Smithery",
+      "usefulness": 4,
+      "machine_readable": "api",
+      "enabled": true,
+      "adapter": "smithery",
+      "use_for": "Hosted MCP registry with qualified names"
+    },
+    {
+      "id": "awesome-mcp",
+      "name": "wong2/awesome-mcp-servers",
+      "usefulness": 4,
+      "machine_readable": "markdown",
+      "enabled": true,
+      "adapter": "awesomeMcp",
+      "markdown_url": "https://raw.githubusercontent.com/wong2/awesome-mcp-servers/main/README.md",
+      "use_for": "Curated GitHub list seed"
+    },
+    {
+      "id": "mcpservers-org",
+      "name": "mcpservers.org",
+      "usefulness": 5,
+      "machine_readable": "scrape",
+      "enabled": true,
+      "adapter": "mcpserversOrg",
+      "use_for": "Large public directory (JSON-LD pages)"
+    },
+    {
+      "id": "official-mcp-servers",
+      "name": "modelcontextprotocol/servers",
+      "usefulness": 5,
+      "machine_readable": "markdown",
+      "enabled": true,
+      "adapter": "officialMcpRepo",
+      "readme_url": "https://raw.githubusercontent.com/modelcontextprotocol/servers/main/README.md",
+      "use_for": "Official reference + archived server list"
+    }
+  ]
+}

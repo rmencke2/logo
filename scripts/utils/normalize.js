@@ -190,9 +190,11 @@ function qualityScore(s) {
   score += Math.min(s.description?.length || 0, 200);
   score += Math.min(s.stars || 0, 5000);
   if (s.source === 'manual') score += 500;
+  if (s.source === 'official-registry') score += 200;
   if (s.source === 'smithery') score += 120;
   if (s.source === 'glama') score += 30;
   if (s.source === 'mcpservers-org') score += 10;
+  if (s.source === 'discovered') score += 5;
   if (s.github_url) score += 20;
   return score;
 }
