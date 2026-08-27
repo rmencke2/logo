@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "notes": "External WebMCP website directories used to grow Influzer's /webmcp catalog. These are WebMCP *sites* (browser tools), not classic MCP servers.",
+  "sources": [
+    {
+      "id": "webmcp-com",
+      "name": "webmcp.com",
+      "usefulness": 5,
+      "machine_readable": "api",
+      "enabled": true,
+      "adapter": "webmcpApi",
+      "base_url": "https://webmcp.com",
+      "use_for": "Primary ingestion source (same shape as weekly refresh)"
+    },
+    {
+      "id": "webmcp-cool",
+      "name": "webmcp.cool",
+      "usefulness": 5,
+      "machine_readable": "api",
+      "enabled": true,
+      "adapter": "webmcpApi",
+      "base_url": "https://webmcp.cool",
+      "use_for": "Mirror/compatible discovery API — cross-check primary"
+    },
+    {
+      "id": "webmcpdirectory",
+      "name": "webmcpdirectory.com",
+      "usefulness": 5,
+      "machine_readable": "sitemap",
+      "enabled": true,
+      "adapter": "webmcpDirectorySitemap",
+      "sitemap_url": "https://webmcpdirectory.onescales.com/sitemap.xml",
+      "use_for": "Independent cross-reference via /tool/{host-slug} sitemap entries"
+    },
+    {
+      "id": "webmcp-registry-dev",
+      "name": "webmcp-registry.dev",
+      "usefulness": 4,
+      "machine_readable": "sitemap",
+      "enabled": true,
+      "adapter": "registryDevSitemap",
+      "sitemap_url": "https://webmcp-registry.dev/sitemap.xml",
+      "use_for": "Additional registry — /domain/{host-or-path} sitemap entries"
+    },
+    {
+      "id": "awesome-chromelabs",
+      "name": "GoogleChromeLabs Awesome WebMCP",
+      "usefulness": 4,
+      "machine_readable": "markdown",
+      "enabled": true,
+      "adapter": "awesomeMarkdown",
+      "markdown_url": "https://raw.githubusercontent.com/GoogleChromeLabs/webmcp-tools/main/AWESOME_WEBMCP.md",
+      "use_for": "Seed discovery from curated demos"
+    },
+    {
+      "id": "webmcpregistry-org",
+      "name": "webmcpregistry.org",
+      "usefulness": 3,
+      "machine_readable": "monitor",
+      "enabled": true,
+      "adapter": "monitorOnly",
+      "home_url": "https://webmcpregistry.org",
+      "use_for": "Manifest registry/CLI — monitor until a public list API appears"
+    },
+    {
+      "id": "webmcptools-io",
+      "name": "webmcptools.io directory",
+      "usefulness": 3,
+      "machine_readable": "sitemap",
+      "enabled": true,
+      "adapter": "genericSitemap",
+      "sitemap_url": "https://webmcptools.io/sitemap.xml",
+      "use_for": "Secondary discovery (mostly product pages today)"
+    },
+    {
+      "id": "webmcplist",
+      "name": "webmcplist.com",
+      "usefulness": 1,
+      "machine_readable": "monitor",
+      "enabled": true,
+      "adapter": "monitorOnly",
+      "home_url": "https://webmcplist.com",
+      "use_for": "Monitor rather than ingest (currently empty)"
+    },
+    {
+      "id": "github-code-search",
+      "name": "GitHub code search",
+      "usefulness": 5,
+      "machine_readable": "github",
+      "enabled": true,
+      "adapter": "githubCodeSearch",
+      "queries": [
+        "document.modelContext.registerTool",
+        "navigator.modelContext.registerTool"
+      ],
+      "use_for": "Discover sites before directories list them (requires GITHUB_TOKEN)"
+    }
+  ]
+}
