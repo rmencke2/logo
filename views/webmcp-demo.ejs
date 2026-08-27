@@ -15,30 +15,54 @@
   <body class="registry-page webmcp-page">
     <%- include('partials/home-header') %>
     <main class="dir-shell webmcp-demo" style="padding:2rem 1rem 3rem;">
-      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a></p>
+      <p class="webmcp-note">
+        <a href="/webmcp">← WebMCP Directory</a>
+        · <a href="/webmcp/setup">Setup &amp; launch guide</a>
+      </p>
 
       <header class="webmcp-demo__hero">
-        <p class="dir-hero__eyebrow">Live showcase</p>
+        <p class="dir-hero__eyebrow">Live showcase · YouTube-ready</p>
         <h1>Influzer.ai WebMCP demo</h1>
         <p class="webmcp-prose">
           This page registers real <code>document.modelContext</code> tools for Influzer’s directories.
-          Try them below — with a native WebMCP browser, or via the built-in demo polyfill when the API is not available yet.
+          Use the <strong>video tour</strong> for a narrated walkthrough, or the console below to call tools yourself.
         </p>
         <div class="webmcp-metrics">
           <span>Status: <b id="webmcp-demo-status" data-state="warn">Starting…</b></span>
           <span>Mode: <b id="webmcp-demo-mode">Detecting…</b></span>
         </div>
+        <p class="webmcp-demo__browser-tip" id="webmcp-demo-browser-tip" hidden></p>
         <div class="webmcp-cta-row">
+          <button type="button" class="webmcp-btn webmcp-btn--primary" id="webmcp-tour-start">Start video tour</button>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/setup#step-chrome-flag">Chrome Canary setup</a>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/setup">Full setup guide</a>
           <a class="webmcp-btn webmcp-btn--ghost" href="https://github.com/webmachinelearning/webmcp" rel="noopener noreferrer">WebMCP standard</a>
-          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/sites/influzer.ai">Directory listing</a>
           <a class="webmcp-btn webmcp-btn--ghost" href="/api/webmcp/v1/self">Tool manifest JSON</a>
         </div>
       </header>
 
+      <section class="webmcp-tour" id="webmcp-tour" aria-labelledby="webmcp-tour-heading" hidden>
+        <div class="webmcp-tour__stage">
+          <p class="webmcp-tour__kicker" id="webmcp-tour-kicker">Scene 1 of 5</p>
+          <h2 id="webmcp-tour-heading">Detect WebMCP</h2>
+          <p class="webmcp-tour__say" id="webmcp-tour-say">Narration appears here.</p>
+          <p class="webmcp-tour__do" id="webmcp-tour-do">Action appears here.</p>
+          <div class="webmcp-tour__progress" aria-hidden="true">
+            <span id="webmcp-tour-bar"></span>
+          </div>
+          <div class="webmcp-cta-row">
+            <button type="button" class="webmcp-btn webmcp-btn--primary" id="webmcp-tour-next">Run this scene</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" id="webmcp-tour-skip">Skip</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" id="webmcp-tour-stop">Stop tour</button>
+          </div>
+        </div>
+        <pre class="webmcp-code webmcp-tour__output" id="webmcp-tour-output">Tour output appears here.</pre>
+      </section>
+
       <section class="webmcp-demo__panel" aria-labelledby="demo-console-heading">
         <div class="webmcp-demo__controls">
           <h2 id="demo-console-heading">Tool console</h2>
-          <p class="webmcp-note">Uses <code>getTools()</code> and <code>executeTool()</code> — the same discovery path in-page agents use.</p>
+          <p class="webmcp-note">Uses <code>getTools()</code> and <code>executeTool(tool, jsonString)</code> — native WebMCP requires args as a JSON string.</p>
 
           <label>
             Tool
@@ -46,10 +70,11 @@
           </label>
 
           <div class="webmcp-demo__presets" id="webmcp-demo-presets">
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="get_influzer_overview">Preset: overview</button>
             <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="search_webmcp_sites">Preset: search sites</button>
             <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="search_mcp_servers">Preset: search MCP</button>
-            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="get_webmcp_site">Preset: get influzer.ai</button>
-            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="list_latest_insights">Preset: insights</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="get_best_mcp_client">Preset: best for Claude</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="get_mcp_server">Preset: get playwright</button>
           </div>
 
           <label>
@@ -76,10 +101,11 @@
       <section class="webmcp-demo__howto webmcp-prose">
         <h2>How to try this yourself</h2>
         <ol>
-          <li>Open this page in Chrome with the WebMCP origin trial (or any browser — the demo polyfill still runs the tools locally).</li>
-          <li>Pick a tool, edit JSON args, click <strong>Run executeTool()</strong>.</li>
-          <li>Or from DevTools: <code>await document.modelContext.getTools()</code> then <code>await document.modelContext.executeTool(tools[0], {})</code>.</li>
-          <li>Node smoke test from the repo: <code>node scripts/demo-influzer-webmcp.js</code></li>
+          <li><strong>Native Chrome:</strong> Canary or Beta 146+ → <code>chrome://flags/#enable-webmcp-testing</code> → set <em>WebMCP for testing</em> to Enabled → relaunch. Demo Mode should say Native.</li>
+          <li>Click <strong>Start video tour</strong> for a narrated 5-scene walkthrough (ideal for screen recording).</li>
+          <li>Or pick a tool, edit JSON args, click <strong>Run executeTool()</strong>.</li>
+          <li>From DevTools: <code>const tools = await document.modelContext.getTools(); await document.modelContext.executeTool(tools[0], '{}')</code> — pass a <strong>JSON string</strong>, not a JS object.</li>
+          <li>Full launch checklist: <a href="/webmcp/setup">Set up and launch WebMCP</a> (Chrome flag + Edge origin trial).</li>
         </ol>
         <h2>Registered tools</h2>
         <ul>
