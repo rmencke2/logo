@@ -33,6 +33,9 @@ Open **https://www.influzer.ai/webmcp/challenge** in ChatGPT’s in-app browser.
 3. You ask for details → **`get_webmcp_site`** (tool schemas) + **`get_mcp_server`** (install steps).
 4. You pick a site → **`open_webmcp_site`** navigates the tab so you and the agent use **that site’s own WebMCP tools**.
 
+**Bonus — list your own site:**  
+5. You say *“Submit https://mysite.com — email me@co.com”* → agent calls **`start_webmcp_listing_scan`** (with `user_confirmed: true`) → polls **`get_webmcp_listing_scan`** until tools + scorecard return.
+
 No OAuth. No scraping the UI. Structured tools via `document.modelContext`.
 
 ---

@@ -79,6 +79,8 @@ const required = [
   'get_mcp_server',
   'recommend_agent_stack',
   'open_webmcp_site',
+  'start_webmcp_listing_scan',
+  'get_webmcp_listing_scan',
   'navigate_influzer',
 ];
 for (const name of required) {

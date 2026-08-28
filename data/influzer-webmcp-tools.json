@@ -227,6 +227,59 @@
       }
     },
     {
+      "name": "start_webmcp_listing_scan",
+      "description": "Start an Influzer scan to detect WebMCP tools on a public website and queue it for directory listing. Requires the user's email, site URL, and explicit consent (user_confirmed: true). Returns a scan_id to poll with get_webmcp_listing_scan. Listing is scan-gated — sites with detected tools may be published after review.",
+      "kind": "act",
+      "implementation_type": "imperative",
+      "page_url": "/webmcp/submit",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Public website URL to scan (https://example.com or example.com)."
+          },
+          "email": {
+            "type": "string",
+            "description": "Submitter email for the scan report and listing follow-up."
+          },
+          "user_confirmed": {
+            "type": "boolean",
+            "description": "Must be true — confirms the user explicitly asked to submit this URL and share their email."
+          },
+          "relationship": {
+            "type": "string",
+            "enum": ["owner", "developer", "user", "researcher"],
+            "description": "Submitter relationship to the site. Defaults to owner."
+          },
+          "newsletter": {
+            "type": "boolean",
+            "description": "Subscribe email to Influzer newsletter for directory updates. Defaults to true."
+          }
+        },
+        "required": ["url", "email", "user_confirmed"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_webmcp_listing_scan",
+      "description": "Poll status of a WebMCP listing scan started by start_webmcp_listing_scan. Returns progress, detected tools, scorecard, and directory URL when published.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/webmcp/submit",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "scan_id": {
+            "type": "string",
+            "description": "Scan id returned by start_webmcp_listing_scan."
+          }
+        },
+        "required": ["scan_id"],
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "list_latest_insights",
       "description": "List the latest Influzer.ai insights / articles (titles, URLs, summaries) for agent briefings.",
       "kind": "answer",
