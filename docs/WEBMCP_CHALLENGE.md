@@ -19,6 +19,7 @@ Pre-existing Influzer had a WebMCP directory (Aug 17). **Challenge-period work**
 | Aug 28 | `recommend_agent_stack` — dual-directory search for a build goal |
 | Aug 28 | `get_mcp_server` — setup metadata for one classic MCP server |
 | Aug 28 | `open_webmcp_site` — navigate browser tab to a catalogued WebMCP site |
+| Aug 28 | `start_webmcp_listing_scan` + `get_webmcp_listing_scan` — agent-driven site submission |
 | Aug 28 | `/webmcp/challenge` — ChatGPT-browser judge page + submission docs |
 | Aug 28 | `GET /api/mcp/server/:slug` — API backing `get_mcp_server` |
 | Aug 27 | WebMCP catalog sync → 358 sites (supporting data, not scored alone) |
@@ -58,13 +59,15 @@ await document.modelContext.registerTool({
 
 Manifest: `data/influzer-webmcp-tools.json` · Self API: `GET /api/webmcp/v1/self`
 
-### Tool list (11)
+### Tool list (13)
 
 | Tool | Kind | Purpose |
 |------|------|---------|
-| `recommend_agent_stack` | answer | **New** — dual discovery for build goals |
-| `get_mcp_server` | answer | **New** — one MCP server + install steps |
-| `open_webmcp_site` | act | **New** — open catalogued site in tab |
+| `recommend_agent_stack` | answer | Dual discovery for build goals |
+| `get_mcp_server` | answer | One MCP server + install steps |
+| `open_webmcp_site` | act | Open catalogued site in tab |
+| `start_webmcp_listing_scan` | act | **New** — submit URL + email for scan/listing |
+| `get_webmcp_listing_scan` | answer | **New** — poll scan status + scorecard |
 | `search_webmcp_sites` | answer | Search 358+ WebMCP websites |
 | `search_webmcp_tools` | answer | Search tools across all sites |
 | `get_webmcp_site` | answer | Site detail + schemas |

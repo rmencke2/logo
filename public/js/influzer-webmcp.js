@@ -17,6 +17,8 @@
     insights: '/api/insights/recent',
     mcpSearch: '/api/mcp/search',
     mcpServer: (slug) => `/api/mcp/server/${encodeURIComponent(slug)}`,
+    scans: '/api/webmcp/v1/scans',
+    scan: (id) => `/api/webmcp/v1/scans/${encodeURIComponent(id)}`,
     selfTools: '/api/webmcp/v1/self',
   };
 
@@ -38,6 +40,30 @@
       throw new Error(`HTTP ${res.status} for ${url}: ${body.slice(0, 180)}`);
     }
     return res.json();
+  }
+
+  async function postJson(url, body) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.ok === false) {
+      const msg = data.message || data.error || `HTTP ${res.status}`;
+      throw new Error(msg);
+    }
+    return data;
+  }
+
+  function coerceHttpsUrl(input) {
+    let raw = String(input || '').trim().replace(/^['"]|['"]$/g, '');
+    if (!raw) return '';
+    if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw)) {
+      raw = `https://${raw.replace(/^\/+/, '')}`;
+    }
+    return raw;
   }
 
   function clampInt(value, fallback, min, max) {
@@ -108,10 +134,11 @@
           webmcp_directory: 'https://www.influzer.ai/webmcp',
           webmcp_demo: 'https://www.influzer.ai/webmcp/demo',
           webmcp_challenge: 'https://www.influzer.ai/webmcp/challenge',
+          webmcp_submit: 'https://www.influzer.ai/webmcp/submit',
           insights: 'https://www.influzer.ai/insights',
           standard: 'https://github.com/webmachinelearning/webmcp',
         },
-        tip: 'In ChatGPT’s browser: open influzer.ai/webmcp/challenge and ask the agent to recommend_agent_stack for your app goal, then open_webmcp_site on the best match.',
+        tip: 'Submit a new WebMCP site: start_webmcp_listing_scan (needs user email + user_confirmed:true), poll with get_webmcp_listing_scan, or open /webmcp/submit.',
       });
     },
 
@@ -316,6 +343,78 @@
         host: safeHost,
         message: `Navigating this tab to ${target} — the destination site may expose its own WebMCP tools via document.modelContext.`,
         influzer_listing: `https://www.influzer.ai/webmcp/sites/${safeHost}`,
+      });
+    },
+
+    async start_webmcp_listing_scan({
+      url,
+      email,
+      user_confirmed,
+      relationship = 'owner',
+      newsletter = true,
+    } = {}) {
+      if (!user_confirmed) {
+        throw new Error(
+          'user_confirmed must be true — ask the user to explicitly approve submitting their URL and email before calling this tool.',
+        );
+      }
+      const safeUrl = coerceHttpsUrl(url);
+      const safeEmail = String(email || '').trim().toLowerCase();
+      if (!safeUrl) throw new Error('url is required');
+      if (!safeEmail.includes('@')) throw new Error('a valid email is required');
+
+      const data = await postJson(API.scans, {
+        url: safeUrl,
+        email: safeEmail,
+        relationship: String(relationship || 'owner').slice(0, 40),
+        newsletter: newsletter !== false,
+      });
+
+      const scan = data.scan || {};
+      return textResult({
+        ok: true,
+        scan_id: scan.id,
+        host: scan.host,
+        url: scan.url,
+        status: scan.status,
+        message:
+          'Scan started. Poll get_webmcp_listing_scan with scan_id every few seconds until status is completed or failed. A report is emailed when finished; sites with detected tools may be listed in the directory.',
+        submit_page: scan.id
+          ? `https://www.influzer.ai/webmcp/submit?scan=${encodeURIComponent(scan.id)}`
+          : 'https://www.influzer.ai/webmcp/submit',
+        next_tool_call: { tool: 'get_webmcp_listing_scan', scan_id: scan.id },
+      });
+    },
+
+    async get_webmcp_listing_scan({ scan_id } = {}) {
+      const id = String(scan_id || '').trim();
+      if (!id) throw new Error('scan_id is required');
+      const data = await getJson(API.scan(id));
+      const scan = data.scan || {};
+      const terminal = scan.status === 'completed' || scan.status === 'failed';
+      return textResult({
+        scan_id: scan.id,
+        host: scan.host,
+        url: scan.url,
+        status: scan.status,
+        progress: scan.progress,
+        scorecard: scan.scorecard
+          ? {
+              score: scan.scorecard.score,
+              grade: scan.scorecard.grade || scan.scorecard.readiness,
+              label: scan.scorecard.label,
+              summary: scan.scorecard.summary,
+            }
+          : null,
+        tool_count: scan.result?.tool_count || 0,
+        tools: (scan.result?.tools || []).slice(0, 12),
+        published: Boolean(scan.published),
+        directory_url: scan.directory_url,
+        submit_page: `https://www.influzer.ai/webmcp/submit?scan=${encodeURIComponent(id)}`,
+        error: scan.error || null,
+        terminal,
+        poll_again: !terminal,
+        newsletter_subscribed: Boolean(scan.newsletter_subscribed),
       });
     },
 

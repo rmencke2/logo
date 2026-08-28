@@ -34,6 +34,14 @@
     list_latest_insights: { limit: 3 },
     navigate_influzer: { path: '/webmcp' },
     open_webmcp_site: { host: 'influzer.ai', path: '/' },
+    start_webmcp_listing_scan: {
+      url: 'https://www.influzer.ai/webmcp/demo',
+      email: 'demo@example.com',
+      user_confirmed: true,
+      relationship: 'researcher',
+      newsletter: false,
+    },
+    get_webmcp_listing_scan: { scan_id: 'paste-scan-id-here' },
   };
 
   function log(line) {
