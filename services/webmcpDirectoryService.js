@@ -340,6 +340,17 @@ function registerWebmcpRoutes(app) {
     }));
   });
 
+  app.get('/webmcp/challenge', (req, res) => {
+    const manifest = loadSelfToolsManifest();
+    res.render('webmcp-challenge', renderLocals(req, {
+      title: 'Agent Discovery Copilot — Build with WebMCP + MCP | Influzer.ai',
+      description:
+        'Open in ChatGPT’s browser: discover WebMCP websites and classic MCP servers while building an app. recommend_agent_stack, inspect tools, open sites — human + agent together.',
+      canonicalUrl: `${SITE_BASE}/webmcp/challenge`,
+      tools: manifest.tools || [],
+    }));
+  });
+
   app.get('/webmcp/resources', (req, res) => {
     res.render('webmcp-resources', renderLocals(req, {
       title: 'WebMCP Resources — Specs, Docs & Guides | Influzer.ai',

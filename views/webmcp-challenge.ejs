@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/webmcp-directory.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page webmcp-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell webmcp-demo" style="padding:2rem 1rem 3rem;">
+      <p class="webmcp-note"><a href="/webmcp">← WebMCP Directory</a> · <a href="/webmcp/demo">Tool console</a></p>
+
+      <header class="webmcp-demo__hero">
+        <p class="dir-hero__eyebrow">OpenAI WebMCP Challenge · Agent Discovery Copilot</p>
+        <h1>Build an app while your agent discovers tools</h1>
+        <p class="webmcp-prose">
+          Open <strong>influzer.ai</strong> inside <strong>ChatGPT’s browser</strong> (or Chrome with WebMCP enabled).
+          This page exposes <code>document.modelContext</code> tools so you and your agent can
+          <strong>search 358+ WebMCP websites</strong> and <strong>14k+ classic MCP servers</strong>,
+          inspect available tools, and open the best match — without leaving the build session.
+        </p>
+        <div class="webmcp-metrics">
+          <span>Status: <b id="webmcp-demo-status" data-state="warn">Starting…</b></span>
+          <span>Mode: <b id="webmcp-demo-mode">Detecting…</b></span>
+        </div>
+        <div class="webmcp-cta-row">
+          <a class="webmcp-btn webmcp-btn--primary" href="https://openai.com/webmcp-challenge/" rel="noopener noreferrer">WebMCP Challenge</a>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/webmcp/sites/influzer.ai">Our listing</a>
+          <a class="webmcp-btn webmcp-btn--ghost" href="/api/webmcp/v1/self">Tool manifest</a>
+        </div>
+      </header>
+
+      <section class="webmcp-demo__howto webmcp-prose" style="margin-bottom:1.5rem;">
+        <h2>Try in ChatGPT (recommended for judges)</h2>
+        <ol>
+          <li>Open ChatGPT desktop → start a chat with the <strong>in-app browser</strong>.</li>
+          <li>Navigate to <code>https://www.influzer.ai/webmcp/challenge</code></li>
+          <li>Ask: <em>“Use recommend_agent_stack — I’m building a [your app]. Show WebMCP sites and MCP servers I should combine.”</em></li>
+          <li>Follow up: <em>“Get tool schemas for the top WebMCP site and install steps for the top MCP server.”</em></li>
+          <li>Confirm, then: <em>“Open the best WebMCP site in this tab.”</em> (calls <code>open_webmcp_site</code>)</li>
+        </ol>
+        <h2>Example build-session prompts</h2>
+        <ul>
+          <li><em>“I’m building a booking app — recommend WebMCP sites for scheduling plus MCP servers for email/calendar.”</em></li>
+          <li><em>“Search MCP servers for Postgres and WebMCP sites with cart/checkout tools.”</em></li>
+          <li><em>“What tools does influzer.ai expose? Then navigate to the WebMCP directory.”</em></li>
+        </ul>
+      </section>
+
+      <section class="webmcp-demo__panel" aria-labelledby="demo-console-heading">
+        <div class="webmcp-demo__controls">
+          <h2 id="demo-console-heading">Live tool console</h2>
+          <p class="webmcp-note">Same tools ChatGPT discovers via <code>getTools()</code> — run them manually below.</p>
+
+          <label>
+            Tool
+            <select id="webmcp-demo-tool"></select>
+          </label>
+
+          <div class="webmcp-demo__presets" id="webmcp-demo-presets">
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="recommend_agent_stack">Preset: recommend stack</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="search_webmcp_sites">Preset: search WebMCP</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="search_mcp_servers">Preset: search MCP</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" data-preset="get_mcp_server">Preset: get MCP server</button>
+          </div>
+
+          <label>
+            Arguments (JSON)
+            <textarea id="webmcp-demo-args" rows="8" spellcheck="false">{}</textarea>
+          </label>
+
+          <div class="webmcp-cta-row">
+            <button type="button" class="webmcp-btn webmcp-btn--primary" id="webmcp-demo-run">Run executeTool()</button>
+            <button type="button" class="webmcp-btn webmcp-btn--ghost" id="webmcp-demo-refresh">Refresh getTools()</button>
+          </div>
+        </div>
+
+        <div class="webmcp-demo__results">
+          <h3>Input schema</h3>
+          <pre class="webmcp-code" id="webmcp-demo-schema">{}</pre>
+          <h3>Result</h3>
+          <pre class="webmcp-code" id="webmcp-demo-output">Run a tool to see structured output.</pre>
+          <h3>Log</h3>
+          <pre class="webmcp-code webmcp-demo__log" id="webmcp-demo-log"></pre>
+        </div>
+      </section>
+
+      <section class="webmcp-demo__howto webmcp-prose">
+        <h2>Challenge entry — what’s new (Aug 25+)</h2>
+        <ul>
+          <li><code>recommend_agent_stack</code> — dual-directory discovery for app building</li>
+          <li><code>get_mcp_server</code> — full setup metadata for one classic MCP server</li>
+          <li><code>open_webmcp_site</code> — navigate to a catalogued WebMCP site to use its tools</li>
+        </ul>
+        <p>Repo: <a href="https://github.com/rmencke2/logo">github.com/rmencke2/logo</a> · Docs: <code>docs/WEBMCP_CHALLENGE.md</code></p>
+      </section>
+    </main>
+    <%- include('partials/registry-footer') %>
+    <%- include('partials/influzer-webmcp-script') %>
+    <script src="/js/influzer-webmcp-demo.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

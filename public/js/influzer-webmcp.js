@@ -16,6 +16,7 @@
     tools: '/api/webmcp/v1/tools',
     insights: '/api/insights/recent',
     mcpSearch: '/api/mcp/search',
+    mcpServer: (slug) => `/api/mcp/server/${encodeURIComponent(slug)}`,
     selfTools: '/api/webmcp/v1/self',
   };
 
@@ -60,21 +61,57 @@
     }
   }
 
+  function safeExternalHost(host) {
+    const h = String(host || '')
+      .trim()
+      .toLowerCase()
+      .replace(/^https?:\/\//, '')
+      .replace(/^www\./, '')
+      .split('/')[0]
+      .split(':')[0];
+    if (!h || !/^[a-z0-9.-]+\.[a-z]{2,24}$/i.test(h)) return null;
+    if (h === 'localhost' || h.endsWith('.local') || h.includes('..')) return null;
+    return h;
+  }
+
+  function safeExternalPath(input) {
+    const raw = String(input || '/').trim() || '/';
+    if (!raw.startsWith('/') || raw.startsWith('//')) return '/';
+    if (raw.includes('://') || raw.includes('\\')) return '/';
+    return raw.split(/[\s#]/)[0] || '/';
+  }
+
+  const STOP_WORDS = new Set([
+    'a', 'an', 'the', 'and', 'or', 'for', 'with', 'from', 'into', 'using', 'use', 'app', 'build',
+    'building', 'need', 'want', 'that', 'this', 'my', 'our', 'your', 'agent', 'agents', 'mcp', 'webmcp',
+  ]);
+
+  function searchTermsFromGoal(goal) {
+    const words = String(goal || '')
+      .toLowerCase()
+      .split(/[^a-z0-9+.#-]+/)
+      .map((w) => w.trim())
+      .filter((w) => w.length >= 3 && !STOP_WORDS.has(w));
+    const unique = [...new Set(words)];
+    return unique.length ? unique : [String(goal || '').trim()].filter(Boolean);
+  }
+
   const executors = {
     async get_influzer_overview() {
       return textResult({
         name: 'Influzer.ai',
         summary:
-          'Influzer.ai catalogs MCP servers (backend AI integrations) and WebMCP websites (in-browser page tools for agents). Use search_webmcp_* for websites with document.modelContext tools, and search_mcp_servers for classic MCP servers.',
+          'Influzer.ai catalogs MCP servers (backend AI integrations) and WebMCP websites (in-browser page tools for agents). Use recommend_agent_stack while building an app to shortlist both surfaces, search_webmcp_* for websites, search_mcp_servers/get_mcp_server for classic MCP, then open_webmcp_site to try a site in this tab.',
         urls: {
           home: 'https://www.influzer.ai/',
           mcp_directory: 'https://www.influzer.ai/mcp',
           webmcp_directory: 'https://www.influzer.ai/webmcp',
           webmcp_demo: 'https://www.influzer.ai/webmcp/demo',
+          webmcp_challenge: 'https://www.influzer.ai/webmcp/challenge',
           insights: 'https://www.influzer.ai/insights',
           standard: 'https://github.com/webmachinelearning/webmcp',
         },
-        tip: 'Open /webmcp/demo to list and invoke these tools interactively — works with a local polyfill when native WebMCP is unavailable.',
+        tip: 'In ChatGPT’s browser: open influzer.ai/webmcp/challenge and ask the agent to recommend_agent_stack for your app goal, then open_webmcp_site on the best match.',
       });
     },
 
@@ -169,6 +206,117 @@
       });
       const data = await getJson(`${API.mcpSearch}?${params}`);
       return textResult(data);
+    },
+
+    async get_mcp_server({ slug, include_tools = true } = {}) {
+      if (!slug) throw new Error('slug is required');
+      const data = await getJson(API.mcpServer(String(slug).trim().toLowerCase()));
+      if (!data.ok) throw new Error(data.error || 'server not found');
+      const server = data.server || {};
+      if (!include_tools) {
+        delete server.tools;
+        delete server.top_tools;
+      }
+      return textResult(server);
+    },
+
+    async recommend_agent_stack({ goal, limit = 5, include_tool_details = false } = {}) {
+      if (!goal) throw new Error('goal is required');
+      const perLimit = clampInt(limit, 5, 1, 8);
+      const terms = searchTermsFromGoal(goal);
+      const primary = terms.slice(0, 4).join(' ') || String(goal).trim();
+
+      const [webmcpSitesRes, webmcpToolsRes, mcpRes] = await Promise.all([
+        getJson(`${API.sites}?${new URLSearchParams({ q: primary, limit: String(perLimit), page: '1' })}`),
+        getJson(`${API.tools}?${new URLSearchParams({ q: primary, limit: String(perLimit * 2), page: '1' })}`),
+        getJson(`${API.mcpSearch}?${new URLSearchParams({ q: primary, scope: 'all', limit: String(perLimit) })}`),
+      ]);
+
+      const siteRows = (webmcpSitesRes.sites || []).map((s) => ({
+        host: s.host,
+        name: s.name,
+        category: s.category,
+        site_type: s.site_type,
+        tool_count: s.tool_count,
+        verification_status: s.verification_status,
+        directory_url: `https://www.influzer.ai/webmcp/sites/${s.host}`,
+        live_url: s.canonical_url || `https://${s.host}/`,
+      }));
+
+      if (include_tool_details && siteRows.length) {
+        await Promise.all(
+          siteRows.slice(0, 3).map(async (row) => {
+            try {
+              const detail = await getJson(API.site(row.host));
+              row.sample_tools = (detail.site?.tools || []).slice(0, 6).map((t) => ({
+                name: t.name,
+                kind: t.kind,
+                description: String(t.description || '').slice(0, 120),
+              }));
+            } catch {
+              row.sample_tools = [];
+            }
+          }),
+        );
+      }
+
+      const toolRows = (webmcpToolsRes.tools || []).slice(0, perLimit * 2).map((t) => ({
+        name: t.name,
+        host: t.host,
+        kind: t.kind,
+        description: String(t.description || '').slice(0, 160),
+        site_url: t.host ? `https://www.influzer.ai/webmcp/sites/${t.host}` : null,
+      }));
+
+      const mcpRows = (mcpRes.servers || []).map((s) => ({
+        slug: s.slug,
+        name: s.name,
+        category: s.category,
+        transport: s.transport,
+        tool_count: s.tool_count,
+        tools: (s.tools || []).slice(0, 6),
+        page_url: s.url || `https://www.influzer.ai/mcp/${s.slug}`,
+      }));
+
+      return textResult({
+        goal: String(goal).trim(),
+        query_used: primary,
+        search_terms: terms,
+        summary:
+          'WebMCP sites expose in-browser tools via document.modelContext; classic MCP servers are backend integrations for Cursor/Claude Desktop. Combine both while building: WebMCP for user-facing flows in the browser, MCP servers for repo/data/API work.',
+        webmcp_sites: siteRows,
+        webmcp_tools: toolRows,
+        mcp_servers: mcpRows,
+        suggested_workflow: [
+          'Confirm the goal with the user (what the app should do end-to-end).',
+          'Pick one WebMCP site for browser-native actions (cart, booking, forms) — call get_webmcp_site for schemas.',
+          'Pick classic MCP servers for backend work (database, GitHub, scrape) — call get_mcp_server for install steps.',
+          'Use open_webmcp_site after the user chooses a site to try its tools in this tab.',
+          'Wire chosen MCP servers into the project config (.cursor/mcp.json or Claude connectors).',
+        ],
+        next_tool_calls: [
+          { tool: 'get_webmcp_site', example: { host: siteRows[0]?.host, include_schemas: true } },
+          { tool: 'get_mcp_server', example: { slug: mcpRows[0]?.slug } },
+          { tool: 'open_webmcp_site', example: { host: siteRows[0]?.host } },
+        ].filter((row) => row.example.host || row.example.slug),
+      });
+    },
+
+    async open_webmcp_site({ host, path = '/' } = {}) {
+      const safeHost = safeExternalHost(host);
+      if (!safeHost) throw new Error('host must be a valid public hostname');
+      const safePathPart = safeExternalPath(path);
+      const target = `https://${safeHost}${safePathPart}`;
+      setTimeout(() => {
+        window.location.assign(target);
+      }, 50);
+      return textResult({
+        ok: true,
+        navigated_to: target,
+        host: safeHost,
+        message: `Navigating this tab to ${target} — the destination site may expose its own WebMCP tools via document.modelContext.`,
+        influzer_listing: `https://www.influzer.ai/webmcp/sites/${safeHost}`,
+      });
     },
 
     async list_latest_insights({ limit = 5 } = {}) {

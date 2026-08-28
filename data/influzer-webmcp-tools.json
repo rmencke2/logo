@@ -155,6 +155,78 @@
       }
     },
     {
+      "name": "get_mcp_server",
+      "description": "Fetch one classic MCP server by slug from Influzer's directory: transport, indexed tools, install command, docs URL, and setup summary.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/mcp",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Server slug from search_mcp_servers (e.g. playwright, postgres, firecrawl)."
+          },
+          "include_tools": {
+            "type": "boolean",
+            "description": "Include tool name/description list. Defaults to true."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "recommend_agent_stack",
+      "description": "Given an app or workflow goal, search BOTH Influzer directories at once: WebMCP websites (in-browser page tools) and classic MCP servers (backend integrations). Returns a combined shortlist with tool previews and suggested next steps for building in ChatGPT or Cursor.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/webmcp/challenge",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "goal": {
+            "type": "string",
+            "description": "What you are building, e.g. 'e-commerce app with cart and Postgres' or 'coding agent with GitHub and docs lookup'."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8,
+            "description": "Max matches per surface (WebMCP sites, WebMCP tools, MCP servers). Defaults to 5."
+          },
+          "include_tool_details": {
+            "type": "boolean",
+            "description": "When true, include top tool names for each WebMCP site. Defaults to false."
+          }
+        },
+        "required": ["goal"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "open_webmcp_site",
+      "description": "Navigate this browser tab to a WebMCP-enabled website's homepage so the user and agent can use that site's own document.modelContext tools together. Call only after the user confirms which host to open.",
+      "kind": "act",
+      "implementation_type": "imperative",
+      "page_url": "/webmcp/challenge",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "Hostname from search_webmcp_sites or recommend_agent_stack (no protocol)."
+          },
+          "path": {
+            "type": "string",
+            "description": "Optional path on that host (must start with /). Defaults to /."
+          }
+        },
+        "required": ["host"],
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "list_latest_insights",
       "description": "List the latest Influzer.ai insights / articles (titles, URLs, summaries) for agent briefings.",
       "kind": "answer",
