@@ -25,8 +25,15 @@
     get_webmcp_site: { host: 'influzer.ai', include_schemas: false },
     search_webmcp_tools: { q: 'search', kind: 'answer', limit: 8 },
     search_mcp_servers: { q: 'browser', scope: 'top', limit: 5 },
+    get_mcp_server: { slug: 'playwright', include_tools: true },
+    recommend_agent_stack: {
+      goal: 'e-commerce app with cart checkout and Postgres database',
+      limit: 5,
+      include_tool_details: true,
+    },
     list_latest_insights: { limit: 3 },
     navigate_influzer: { path: '/webmcp' },
+    open_webmcp_site: { host: 'influzer.ai', path: '/' },
   };
 
   function log(line) {

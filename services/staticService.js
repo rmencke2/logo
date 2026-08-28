@@ -821,6 +821,41 @@ ${itemsXml}
     res.json(searchMcpServers({ q, scope, limit }));
   });
 
+  app.get('/api/mcp/server/:slug', (req, res) => {
+    const slug = String(req.params.slug || '').trim().toLowerCase();
+    const server = findMcpServerBySlug(slug);
+    if (!server) {
+      return res.status(404).json({ ok: false, error: 'not_found', slug });
+    }
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.json({
+      ok: true,
+      server: {
+        slug: server.slug,
+        name: server.name,
+        description: String(server.description || '').slice(0, 2000),
+        category: server.category,
+        official: Boolean(server.official),
+        transport: server.transport,
+        transport_label: transportLabel(server.transport),
+        in_top_100: isInTop100(server.slug),
+        tool_count: (server.tools || []).length,
+        tools: (server.tools || []).slice(0, 25).map((t) => ({
+          name: t.name,
+          description: String(t.description || '').slice(0, 400),
+        })),
+        github_url: server.github_url || null,
+        docs_url: server.docs_url || null,
+        install_command: server.install_command || null,
+        setup_summary: server.setup_summary || null,
+        setup_steps: server.setup_steps || null,
+        mcp_endpoint: server.mcp_endpoint || server.deployment_url || null,
+        page_url: `https://www.influzer.ai/mcp/${server.slug}`,
+        directory: 'https://www.influzer.ai/mcp',
+      },
+    });
+  });
+
   // MCP Server Directory (must be registered before /insights/:slug)
   registerMcpDiscoveryRoutes(app);
 
