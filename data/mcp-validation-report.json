@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-27T17:08:13.349Z",
+  "generated_at": "2026-08-28T18:09:56.087Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-08-26T06:42:39.682Z",
+  "catalog_generated_at": "2026-08-27T17:08:13.431Z",
   "summary": {
     "checked": 293,
     "skipped_manual": 108,
     "skipped_no_endpoint": 5832,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 291,
-    "tools_changed": 1,
+    "unchanged": 292,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 1,
@@ -18,36 +18,13 @@
     "live_ok": 0,
     "smithery_fallback": 6125,
     "errors": 0,
-    "tools_added_total": 2,
-    "tools_removed_total": 2,
+    "tools_added_total": 0,
+    "tools_removed_total": 0,
     "catalog_total": 6233,
     "http_endpoints": 293,
     "with_tools_before": 395,
     "with_tools_after": 395
   },
-  "changes": [
-    {
-      "slug": "lanchuske-local-mcp",
-      "name": "Local MCP",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 50,
-      "afterToolCount": 50,
-      "added": [
-        "delete_note",
-        "gdrive_delete_file"
-      ],
-      "removed": [
-        "list_email_folders",
-        "list_emails"
-      ],
-      "changed": [
-        "setup_install",
-        "get_reminder_folders",
-        "list_accounts"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
