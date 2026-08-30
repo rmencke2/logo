@@ -19,6 +19,7 @@
     mcpServer: (slug) => `/api/mcp/server/${encodeURIComponent(slug)}`,
     scans: '/api/webmcp/v1/scans',
     scan: (id) => `/api/webmcp/v1/scans/${encodeURIComponent(id)}`,
+    scanStarter: (id) => `/api/webmcp/v1/scans/${encodeURIComponent(id)}/starter`,
     selfTools: '/api/webmcp/v1/self',
   };
 
@@ -411,10 +412,33 @@
         published: Boolean(scan.published),
         directory_url: scan.directory_url,
         submit_page: `https://www.influzer.ai/webmcp/submit?scan=${encodeURIComponent(id)}`,
+        starter: scan.starter || null,
         error: scan.error || null,
         terminal,
         poll_again: !terminal,
         newsletter_subscribed: Boolean(scan.newsletter_subscribed),
+        next_tool_call: terminal && scan.starter
+          ? { tool: 'generate_webmcp_starter_code', scan_id: scan.id }
+          : null,
+      });
+    },
+
+    async generate_webmcp_starter_code({ scan_id } = {}) {
+      const id = String(scan_id || '').trim();
+      if (!id) throw new Error('scan_id is required — run start_webmcp_listing_scan first');
+      const data = await getJson(API.scanStarter(id));
+      const starter = data.starter || {};
+      return textResult({
+        scan_id: id,
+        host: starter.host,
+        estimated_grade_after: starter.estimated_grade_after,
+        tool_count: starter.tool_count,
+        tools_suggested: starter.tools_suggested,
+        install_steps: starter.install_steps,
+        starter_js: starter.starter_js,
+        html_snippet: starter.html_snippet,
+        message:
+          'Copy starter_js into your site before </body>, then rescan at influzer.ai/webmcp/submit to refresh your Agent Readiness grade.',
       });
     },
 
