@@ -554,6 +554,12 @@ async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
   }
 }
 
+function formatNewsletterDate(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return String(dateString || '');
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
 function newsletterSectionHead(label) {
   return `<p style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">${escapeHtml(label)}</p>`;
 }
@@ -700,7 +706,7 @@ function buildBlogNewsletterHtml({
       <div style="background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #e7e5e4;">
         <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">Influzer Insights</p>
         <h1 style="margin:0 0 12px;font-size:24px;line-height:1.25;color:#18181b;">${escapeHtml(post.title)}</h1>
-        <p style="margin:0 0 20px;font-size:14px;color:#71717a;">${escapeHtml(post.date)}${post.category ? ` · ${escapeHtml(post.category)}` : ''}</p>
+        <p style="margin:0 0 20px;font-size:14px;color:#71717a;">${escapeHtml(formatNewsletterDate(post.date))}${post.category ? ` · ${escapeHtml(post.category)}` : ''}</p>
         ${intro}
         ${coverBlock}
         <p style="font-size:16px;line-height:1.6;color:#444;margin:0 0 20px;">${escapeHtml(post.excerpt)}</p>
@@ -739,7 +745,7 @@ function buildBlogNewsletterText({
     'Influzer Insights',
     '',
     post.title,
-    post.date + (post.category ? ` · ${post.category}` : ''),
+    post.date ? formatNewsletterDate(post.date) + (post.category ? ` · ${post.category}` : '') : '',
     '',
     intro + post.excerpt,
   ];
