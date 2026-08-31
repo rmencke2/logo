@@ -1,0 +1,12 @@
+{
+  "slug": "policy-before-plugins-mcp-allowlist",
+  "title": "Policy before plugins — write the allowlist first",
+  "date": "2026-08-31",
+  "excerpt": "The catalog has passed 10,000 MCP servers. Your agent does not need another install this week. It needs a one-page allowlist before the next npx line ships.",
+  "category": "MCP Ecosystem",
+  "tags": ["MCP", "Governance", "Allowlist", "Security", "Developers"],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/insights/policy-before-plugins-mcp-allowlist",
+  "relatedInsightSlug": "policy-before-plugins-mcp-allowlist",
+  "contentHtml": "<p><strong>Policy before plugins.</strong> That is the sequencing most MCP teams still get backwards.</p><p>The directory has passed 10,000 servers — and only a few percent have indexed tools. Install UX is a copy-paste. This week the ecosystem is arguing about agent incidents and <em>pre-execution policy gates</em> for tool calls. The useful version for a product team is not a new gateway product. It is a one-page table: what may connect, what may write, what is banned — published <em>before</em> the next <code>npx</code> lands in shared config.</p><p><strong>Why it matters:</strong> plugins without a policy are unreviewed production access with a friendly Connect button. Search can stay open (Discovery is read-only). Install should be default-deny for writes.</p><p>Steal the one-page allowlist, the five hallway refusals, and a 48-hour rollout: <a href=\"/insights/policy-before-plugins-mcp-allowlist\">Policy Before Plugins</a>. Pair with the <a href=\"/insights/most-mcp-servers-are-still-demoware\">demoware filter</a> and <a href=\"/insights/cursor-mcp-json-is-becoming-team-policy\"><code>.cursor/mcp.json</code> as team policy</a>.</p>"
+}

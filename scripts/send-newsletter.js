@@ -6,23 +6,31 @@
  *   node scripts/send-newsletter.js --slug my-post-slug
  *   node scripts/send-newsletter.js --slug my-post-slug --intro "Optional hook"
  *   node scripts/send-newsletter.js --slug my-post-slug --test you@example.com
+ *   node scripts/send-newsletter.js --slug my-post-slug --preview [outfile.html]
  *   node scripts/send-newsletter.js --slug my-post-slug --resend
  */
 
+const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
-const { sendBlogNewsletter } = require('../services/newsletterService');
+const { sendBlogNewsletter, previewBlogNewsletter } = require('../services/newsletterService');
 
 function parseArgs(argv) {
-  const options = { slug: '', intro: '', testEmail: '', resend: false };
+  const options = { slug: '', intro: '', testEmail: '', resend: false, preview: false, previewPath: '' };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--slug') options.slug = argv[++i] || '';
     else if (arg === '--intro') options.intro = argv[++i] || '';
     else if (arg === '--test') options.testEmail = argv[++i] || '';
     else if (arg === '--resend') options.resend = true;
-    else if (arg === '--help' || arg === '-h') options.help = true;
+    else if (arg === '--preview') {
+      options.preview = true;
+      const next = argv[i + 1];
+      if (next && !next.startsWith('--')) {
+        options.previewPath = argv[++i];
+      }
+    } else if (arg === '--help' || arg === '-h') options.help = true;
   }
   return options;
 }
@@ -31,11 +39,36 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help || !options.slug) {
     console.log(`Usage:
-  node scripts/send-newsletter.js --slug <blog-slug> [--intro "text"] [--test email@example.com] [--resend]`);
+  node scripts/send-newsletter.js --slug <blog-slug> [--intro "text"] [--test email@example.com] [--preview [file.html]] [--resend]`);
     process.exit(options.slug ? 0 : 1);
   }
 
   try {
+    if (options.preview) {
+      const preview = await previewBlogNewsletter({
+        slug: options.slug,
+        customIntro: options.intro,
+      });
+      const outPath = options.previewPath
+        ? path.resolve(options.previewPath)
+        : path.join(process.cwd(), `${options.slug}-newsletter-preview.html`);
+      fs.writeFileSync(outPath, preview.html, 'utf8');
+      console.log(JSON.stringify({
+        mode: preview.mode,
+        slug: preview.slug,
+        subject: preview.subject,
+        postUrl: preview.postUrl,
+        intro: preview.intro,
+        briefCount: preview.briefCount,
+        aroundTheWebCount: preview.aroundTheWebCount,
+        mcpServerCount: preview.mcpServerCount,
+        catalogStat: preview.catalogStat,
+        previewPath: outPath,
+      }, null, 2));
+      process.exit(0);
+      return;
+    }
+
     const result = await sendBlogNewsletter({
       slug: options.slug,
       customIntro: options.intro,
@@ -44,7 +77,7 @@ async function main() {
     });
 
     console.log(JSON.stringify(result, null, 2));
-    if (result.failed > 0) process.exit(2);
+    process.exit(result.failed > 0 ? 2 : 0);
   } catch (error) {
     if (error.code === 'ALREADY_SENT') {
       console.error(`Already sent for "${options.slug}". Use --resend to send again.`);
