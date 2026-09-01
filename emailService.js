@@ -148,7 +148,11 @@ function getNewsletterFromAddress() {
 }
 
 function getNewsletterReplyTo() {
-  return process.env.NEWSLETTER_REPLY_TO || process.env.MCP_SUBMISSION_EMAIL || undefined;
+  return (
+    process.env.NEWSLETTER_REPLY_TO ||
+    process.env.MCP_SUBMISSION_EMAIL ||
+    'mencke@gmail.com'
+  );
 }
 
 // Send verification email
@@ -719,7 +723,10 @@ function buildBlogNewsletterHtml({
         ${aroundTheWebBlock}
         ${mcpServersBlock}
       </div>
-      <p style="margin:20px 0 0;font-size:12px;color:#a1a1aa;text-align:center;">
+      <p style="margin:20px 0 8px;font-size:12px;color:#a1a1aa;text-align:center;">
+        Reply to this email — it goes to <a href="mailto:${escapeHtml(getNewsletterReplyTo())}" style="color:#71717a;">${escapeHtml(getNewsletterReplyTo())}</a>
+      </p>
+      <p style="margin:0;font-size:12px;color:#a1a1aa;text-align:center;">
         You subscribed at influzer.ai · <a href="${escapeHtml(unsubscribeUrl)}" style="color:#71717a;">Unsubscribe</a>
       </p>
     </div>
@@ -789,7 +796,7 @@ function buildBlogNewsletterText({
     lines.push(`Browse the latest servers: ${baseUrl}/mcp`);
   }
 
-  lines.push('', `Unsubscribe: ${unsubscribeUrl}`);
+  lines.push('', `Reply to this email: ${getNewsletterReplyTo()}`, '', `Unsubscribe: ${unsubscribeUrl}`);
   return lines.join('\n');
 }
 
@@ -809,6 +816,7 @@ async function sendBlogNewsletterEmail({
   ensureMcpEmailTransportReady();
 
   const fromAddress = getNewsletterFromAddress();
+  const replyTo = getNewsletterReplyTo();
   const subject = resolveNewsletterSubject(post);
   const html = buildBlogNewsletterHtml({
     post,
@@ -837,7 +845,7 @@ async function sendBlogNewsletterEmail({
   const mailOptions = {
     from: fromAddress,
     to,
-    replyTo: getNewsletterReplyTo(),
+    replyTo,
     subject,
     html,
     text,
@@ -850,10 +858,11 @@ async function sendBlogNewsletterEmail({
   console.log('✅ Newsletter email sent');
   console.log('   Provider:', info.provider || transporterMode);
   console.log('   From:', fromAddress);
+  console.log('   Reply-To:', replyTo);
   console.log('   To:', to);
   console.log('   Subject:', subject);
   console.log('   Message ID:', info.messageId || '(none)');
-  return { success: true, messageId: info.messageId, to, provider: info.provider, from: fromAddress, subject };
+  return { success: true, messageId: info.messageId, to, provider: info.provider, from: fromAddress, subject, replyTo };
 }
 
 function starsHtml(count) {
@@ -1163,6 +1172,7 @@ module.exports = {
   isResendConfigured,
   getFromAddress,
   getNewsletterFromAddress,
+  getNewsletterReplyTo,
   deliverEmail,
   getTransporter,
   resetTransporter,

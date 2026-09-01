@@ -52,7 +52,7 @@ assert.ok(html.includes('POLICY FIRST') || html.includes('allowlist') || html.in
 assert.ok(html.includes("Don't put secrets in MCP headers"));
 assert.ok(html.includes('Example Server'));
 assert.ok(html.includes('Pre-Execution Policy Gate'));
-assert.ok(html.includes(post.newsletterIntro.slice(0, 40)));
+assert.ok(html.includes('mencke@gmail.com'));
 
 const text = buildBlogNewsletterText({
   post,

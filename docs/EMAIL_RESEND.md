@@ -22,6 +22,8 @@ NEWSLETTER_FROM=Influzer Insights <insights@influzer.ai>
 NEWSLETTER_REPLY_TO=mencke@gmail.com
 ```
 
+`insights@influzer.ai` is **send-only** (Resend). Microsoft 365 owns inbound mail for `influzer.ai` and currently rejects `insights@` with `550 5.4.1`. Newsletter **Reply** uses the `Reply-To` header (`mencke@gmail.com`).
+
 Comment out or remove Gmail vars:
 
 ```env
@@ -73,6 +75,24 @@ npm run newsletter:send -- --slug your-post-slug --test your@email.com
 ```
 
 5. Check the [Resend dashboard](https://resend.com/emails) for delivery/bounce status (requires a full-access API key to query via API; the send-only key still delivers mail).
+
+**Reply bounces: `550 5.4.1 Recipient address rejected` for `insights@influzer.ai`**
+
+Resend can **send from** that address. It cannot **receive**. A Microsoft 365 forwarding rule also cannot run until the mailbox exists — Exchange rejects the message first.
+
+For newsletter **Reply**:
+
+1. Confirm `NEWSLETTER_REPLY_TO=mencke@gmail.com` in production `.env`
+2. Hit Reply on a new test send — To should be Gmail, not `insights@`
+3. The email footer also links `mencke@gmail.com`
+
+To make `insights@influzer.ai` itself receivable (people who type the From address):
+
+1. Microsoft 365 admin → **Active users** or **Shared mailboxes** → add `insights@influzer.ai`
+2. Enable **Forwarding** to `mencke@gmail.com` (keep a copy if you want it in M365 too)
+3. Wait a few minutes, then send a test **to** `insights@influzer.ai`
+
+Do not point MX at Resend. Keep MX on Microsoft 365; Resend only needs SPF/DKIM for outbound.
 
 **Note:** Quote `.env` values that contain spaces when editing on the server, e.g. `EMAIL_FROM="Influzer <noreply@influzer.ai>"`.
 
