@@ -6,6 +6,7 @@ const express = require('express');
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { registerMcpCatalogAdminRoutes } = require('./mcpCatalogAdminService');
+const { getMcpDiscoveryAnalytics } = require('./mcpDiscoveryAnalytics');
 
 /**
  * Middleware to check if user is admin (requires auth first)
@@ -119,14 +120,16 @@ function initializeAdminService(app) {
         topUsers,
         topIPs,
         blockedUsers,
-        blockedIPs
+        blockedIPs,
+        mcpDiscovery
       ] = await Promise.all([
         db.getUserCount(),
         db.getRecentSignups(7),
         db.getTopUsersByActivity(10, 7),
         db.getTopIPsByActivity(10, 7),
         db.db.all('SELECT COUNT(*) as count FROM users WHERE is_blocked = 1'),
-        db.db.all('SELECT COUNT(*) as count FROM abuse_tracking WHERE blocked_until > CURRENT_TIMESTAMP')
+        db.db.all('SELECT COUNT(*) as count FROM abuse_tracking WHERE blocked_until > CURRENT_TIMESTAMP'),
+        getMcpDiscoveryAnalytics(7).catch(() => null),
       ]);
 
       // Get activity stats
@@ -161,6 +164,13 @@ function initializeAdminService(app) {
           users: blockedUsers[0]?.count || 0,
           ips: blockedIPs[0]?.count || 0,
         },
+        mcpDiscovery: mcpDiscovery
+          ? {
+              totalCalls: mcpDiscovery.totalCalls,
+              toolCalls: mcpDiscovery.toolCalls,
+              uniqueIps: mcpDiscovery.uniqueIps,
+            }
+          : { totalCalls: 0, toolCalls: 0, uniqueIps: 0 },
       });
     } catch (err) {
       console.error('Error fetching admin stats:', err);
@@ -425,6 +435,17 @@ function initializeAdminService(app) {
   });
 
   registerMcpCatalogAdminRoutes(app, requireAdmin);
+
+  app.get('/admin/api/mcp-discovery/analytics', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const days = parseInt(req.query.days, 10) || 7;
+      const analytics = await getMcpDiscoveryAnalytics(days);
+      res.json(analytics);
+    } catch (err) {
+      console.error('Error fetching MCP Discovery analytics:', err);
+      res.status(500).json({ error: 'Failed to fetch MCP Discovery analytics' });
+    }
+  });
 }
 
 module.exports = { initializeAdminService, requireAdmin };

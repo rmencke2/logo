@@ -372,6 +372,10 @@
         <h3>Blocked IPs</h3>
         <div class="value" id="blockedIPs">-</div>
       </div>
+      <div class="stat-card">
+        <h3>MCP Discovery (7d)</h3>
+        <div class="value" id="mcpDiscoveryCalls">-</div>
+      </div>
     </div>
 
     <!-- Tabs -->
@@ -382,6 +386,7 @@
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
       <button class="tab" data-tab="activity">Top Activity</button>
       <button class="tab" data-tab="mcp">MCP Submissions</button>
+      <button class="tab" data-tab="mcpdiscovery">MCP Discovery</button>
       <button class="tab" data-tab="othernews">Around the web</button>
     </div>
 
@@ -522,6 +527,34 @@
         </div>
         <div id="mcpCatalogResultsContainer">
           <div class="loading" style="color:#8e8e93;">Type at least two characters to search the catalog.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MCP Discovery usage Tab -->
+    <div class="tab-content" id="mcpdiscoveryTab">
+      <div class="section">
+        <h2>MCP Discovery usage</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          JSON-RPC calls to <code>POST /mcp/discovery</code> from Claude, ChatGPT, Cursor, and other MCP clients.
+          Handshake traffic (<code>initialize</code>, <code>tools/list</code>) is counted separately from actual tool calls.
+        </p>
+        <div class="search-bar">
+          <select id="mcpDiscoveryDays" onchange="loadMcpDiscoveryAnalytics()" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
+            <option value="1">Last 24 hours</option>
+            <option value="7" selected>Last 7 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+          <button class="btn btn-primary" onclick="loadMcpDiscoveryAnalytics()">Refresh</button>
+        </div>
+        <div class="stats-grid" style="margin-bottom:24px;" id="mcpDiscoveryStatCards">
+          <div class="stat-card"><h3>RPC calls</h3><div class="value" id="mcpDiscTotal">-</div></div>
+          <div class="stat-card"><h3>Tool calls</h3><div class="value" id="mcpDiscTools">-</div></div>
+          <div class="stat-card"><h3>Unique IPs</h3><div class="value" id="mcpDiscIps">-</div></div>
+          <div class="stat-card"><h3>Failed</h3><div class="value" id="mcpDiscFailed">-</div></div>
+        </div>
+        <div id="mcpDiscoveryTables">
+          <div class="loading">Loading MCP Discovery usage…</div>
         </div>
       </div>
     </div>
@@ -898,6 +931,7 @@
           loadMcpSubmissions();
           initMcpCatalogSearch();
         }
+        if (tabName === 'mcpdiscovery') loadMcpDiscoveryAnalytics();
         if (tabName === 'othernews') loadOtherNewsItems();
       });
     });
@@ -913,8 +947,73 @@
         document.getElementById('recentSignups').textContent = data.users.recent;
         document.getElementById('blockedUsers').textContent = data.users.blocked;
         document.getElementById('blockedIPs').textContent = data.blocks.ips;
+        document.getElementById('mcpDiscoveryCalls').textContent =
+          data.mcpDiscovery ? data.mcpDiscovery.totalCalls : 0;
       } catch (err) {
         console.error('Error loading stats:', err);
+      }
+    }
+
+    function mcpDiscoveryTable(title, headers, rowsHtml, emptyText) {
+      if (!rowsHtml) {
+        return `<h3 style="color:#fff;font-size:16px;margin:24px 0 12px;">${title}</h3>
+          <p style="color:#8e8e93;font-size:14px;">${emptyText}</p>`;
+      }
+      return `<h3 style="color:#fff;font-size:16px;margin:24px 0 12px;">${title}</h3>
+        <table>
+          <thead><tr>${headers.map((h) => `<th>${h}</th>`).join('')}</tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>`;
+    }
+
+    async function loadMcpDiscoveryAnalytics() {
+      const container = document.getElementById('mcpDiscoveryTables');
+      const days = document.getElementById('mcpDiscoveryDays').value || '7';
+      container.innerHTML = '<div class="loading">Loading MCP Discovery usage…</div>';
+      try {
+        const res = await fetch(`/admin/api/mcp-discovery/analytics?days=${encodeURIComponent(days)}`);
+        if (!res.ok) throw new Error('Failed to load MCP Discovery analytics');
+        const data = await res.json();
+
+        document.getElementById('mcpDiscTotal').textContent = data.totalCalls || 0;
+        document.getElementById('mcpDiscTools').textContent = data.toolCalls || 0;
+        document.getElementById('mcpDiscIps').textContent = data.uniqueIps || 0;
+        document.getElementById('mcpDiscFailed').textContent = data.failedCalls || 0;
+
+        const methodRows = (data.byMethod || []).map((row) => `
+          <tr>
+            <td><code>${escapeHtml(row.rpcMethod || '')}</code></td>
+            <td>${row.calls}</td>
+            <td>${row.failed || 0}</td>
+          </tr>`).join('');
+        const toolRows = (data.byTool || []).map((row) => `
+          <tr>
+            <td><code>${escapeHtml(row.toolName || '')}</code></td>
+            <td>${row.calls}</td>
+            <td>${row.failed || 0}</td>
+            <td>${row.avgDurationMs != null ? Math.round(row.avgDurationMs) + 'ms' : '—'}</td>
+          </tr>`).join('');
+        const clientRows = (data.byClient || []).map((row) => `
+          <tr>
+            <td>${escapeHtml(row.clientName || 'unknown')}</td>
+            <td>${row.calls}</td>
+            <td>${row.uniqueIps || 0}</td>
+          </tr>`).join('');
+        const dayRows = (data.byDay || []).map((row) => `
+          <tr>
+            <td>${escapeHtml(row.day || '')}</td>
+            <td>${row.calls}</td>
+            <td>${row.toolCalls || 0}</td>
+          </tr>`).join('');
+
+        container.innerHTML =
+          mcpDiscoveryTable('By method', ['Method', 'Calls', 'Failed'], methodRows, 'No RPC methods yet.') +
+          mcpDiscoveryTable('By tool', ['Tool', 'Calls', 'Failed', 'Avg time'], toolRows, 'No tool calls yet.') +
+          mcpDiscoveryTable('By client', ['Client', 'Calls', 'Unique IPs'], clientRows, 'No client names recorded yet.') +
+          mcpDiscoveryTable('By day', ['Day', 'RPC calls', 'Tool calls'], dayRows, 'No daily data yet.');
+      } catch (err) {
+        console.error('Error loading MCP Discovery analytics:', err);
+        container.innerHTML = '<div class="loading">Failed to load MCP Discovery usage.</div>';
       }
     }
 

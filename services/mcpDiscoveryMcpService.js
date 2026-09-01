@@ -11,6 +11,10 @@ const fs = require('fs');
 const path = require('path');
 const { TOOL_DEFINITIONS, handleToolCall } = require('./mcpDiscoveryTools');
 const { getDiscoverySetupGuide, getDiscoveryStarterKits, MCP_DISCOVERY_SETUP, MCP_DISCOVERY_STARTERS, MCP_DISCOVERY_ENDPOINT } = require('../data/mcp-discovery-promo');
+const {
+  ensureMcpDiscoveryAnalyticsTables,
+  recordMcpDiscoveryCall,
+} = require('./mcpDiscoveryAnalytics');
 
 function getSetupAssetVersion() {
   try {
@@ -94,6 +98,8 @@ function parseJsonRpcBatch(req) {
 }
 
 function registerMcpDiscoveryRoutes(app) {
+  ensureMcpDiscoveryAnalyticsTables().catch(() => {});
+
   app.get('/mcp/discovery/setup', (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=3600');
     const guide = getDiscoverySetupGuide();
@@ -163,18 +169,41 @@ function registerMcpDiscoveryRoutes(app) {
     for (const msg of messages) {
       if (!msg || msg.jsonrpc !== '2.0' || !msg.method) continue;
 
+      const started = Date.now();
+      const toolName = msg.method === 'tools/call' ? msg.params?.name || null : null;
       const isNotification = msg.id === undefined || msg.id === null;
       if (isNotification) {
-        if (msg.method === 'notifications/initialized') continue;
+        recordMcpDiscoveryCall(req, {
+          rpcMethod: msg.method,
+          toolName,
+          success: true,
+          durationMs: Date.now() - started,
+          params: msg.params,
+        });
         continue;
       }
 
       try {
         const result = await dispatchMethod(msg.method, msg.params);
+        recordMcpDiscoveryCall(req, {
+          rpcMethod: msg.method,
+          toolName,
+          success: true,
+          durationMs: Date.now() - started,
+          params: msg.params,
+        });
         if (result !== null) {
           responses.push(jsonRpcResult(msg.id, result));
         }
       } catch (err) {
+        recordMcpDiscoveryCall(req, {
+          rpcMethod: msg.method,
+          toolName,
+          success: false,
+          errorMessage: err.message || 'Internal error',
+          durationMs: Date.now() - started,
+          params: msg.params,
+        });
         responses.push(jsonRpcError(msg.id, err.code || -32603, err.message || 'Internal error'));
       }
     }
