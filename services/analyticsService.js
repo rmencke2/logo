@@ -6,6 +6,10 @@ const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
 const { clientErrorMessage } = require('../utils/safeError');
+const {
+  ensureMcpDiscoveryAnalyticsTables,
+  getMcpDiscoveryAnalytics,
+} = require('./mcpDiscoveryAnalytics');
 const nodemailer = require('nodemailer');
 const https = require('https');
 const fs = require('fs');
@@ -637,6 +641,12 @@ async function getAnalytics(days = 1) {
 
   analytics.ga = await fetchGaReport(days);
 
+  try {
+    analytics.mcpDiscovery = await getMcpDiscoveryAnalytics(days);
+  } catch {
+    analytics.mcpDiscovery = null;
+  }
+
   return analytics;
 }
 
@@ -680,6 +690,16 @@ function generateRecommendations(analytics) {
       recommendations.push(`Low conversion rate (${conversionRate.toFixed(2)}%). Consider improving signup flow.`);
     } else if (conversionRate > 5) {
       recommendations.push(`Good conversion rate (${conversionRate.toFixed(2)}%). Keep up the good work!`);
+    }
+  }
+
+  const mcp = analytics.mcpDiscovery;
+  if (mcp && mcp.totalCalls > 0) {
+    const mcpFailRate = (mcp.failedCalls / mcp.totalCalls) * 100;
+    if (mcpFailRate > 20) {
+      recommendations.push(
+        `MCP Discovery has a ${mcpFailRate.toFixed(1)}% failure rate (${mcp.failedCalls}/${mcp.totalCalls}). Check recent errors.`,
+      );
     }
   }
 
@@ -896,6 +916,52 @@ async function sendAnalyticsEmail(recipientEmail, days = 1) {
             </div>
 
             <div class="section">
+              <div class="section-title">MCP Discovery</div>
+              ${analytics.mcpDiscovery && analytics.mcpDiscovery.totalCalls > 0 ? `
+              <p style="color:#666;font-size:13px;margin:0 0 12px;">
+                JSON-RPC calls to /mcp/discovery (initialize, tools/list, tools/call, ping).
+              </p>
+              <div class="stat-grid">
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.mcpDiscovery.totalCalls}</div>
+                  <div class="stat-label">RPC Calls</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.mcpDiscovery.toolCalls}</div>
+                  <div class="stat-label">Tool Calls</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">${analytics.mcpDiscovery.uniqueIps}</div>
+                  <div class="stat-label">Unique IPs</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number error">${analytics.mcpDiscovery.failedCalls}</div>
+                  <div class="stat-label">Failed</div>
+                </div>
+              </div>
+              ${(analytics.mcpDiscovery.byTool || []).length ? `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tool</th>
+                    <th style="text-align:center;">Calls</th>
+                    <th style="text-align:center;">Failed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${analytics.mcpDiscovery.byTool.map((t) => `
+                    <tr>
+                      <td style="padding:6px 8px;border-bottom:1px solid #eee;">${t.toolName}</td>
+                      <td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center;">${t.calls}</td>
+                      <td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center;">${t.failed}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>` : ''}
+              ` : '<p style="color: #666;">No MCP Discovery calls recorded for this period.</p>'}
+            </div>
+
+            <div class="section">
               <div class="section-title">Visitors by Country</div>
               ${analytics.visitorsByCountry.length > 0 ? `
               <table>
@@ -1019,6 +1085,16 @@ ${(analytics.ga.topPages || []).map((p) => `${p.path}: ${p.views}`).join('\n') |
 SERVICE USAGE
 =============
 ${analytics.serviceUsage.map(s => `${s.service_name}: ${s.total_calls} total (${s.successful} success, ${s.failed} failed)`).join('\n')}
+
+MCP DISCOVERY
+=============
+${analytics.mcpDiscovery && analytics.mcpDiscovery.totalCalls
+  ? `RPC calls: ${analytics.mcpDiscovery.totalCalls}
+Tool calls: ${analytics.mcpDiscovery.toolCalls}
+Unique IPs: ${analytics.mcpDiscovery.uniqueIps}
+Failed: ${analytics.mcpDiscovery.failedCalls}
+${(analytics.mcpDiscovery.byTool || []).map((t) => `${t.toolName}: ${t.calls}`).join('\n') || 'No tool calls yet.'}`
+  : 'No MCP Discovery calls recorded for this period.'}
 
 VISITORS BY COUNTRY
 ===================
@@ -1171,6 +1247,7 @@ async function initializeAnalyticsService(app) {
 
   // Create analytics tables
   await initializeAnalyticsTables(db);
+  await ensureMcpDiscoveryAnalyticsTables();
 
   // Track page views
   trackPageViews(app);

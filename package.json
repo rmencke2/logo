@@ -11,6 +11,7 @@
     "verify-mcp-external": "node scripts/verify-mcp-external-sources.js",
     "import-mcp-external": "node scripts/import-mcp-external-sources.js",
     "test-mcp-external": "node scripts/test-mcp-external-sources.js",
+    "test-mcp-discovery-analytics": "node scripts/test-mcp-discovery-analytics.js",
     "refresh-webmcp": "node scripts/refresh-webmcp-catalog.js",
     "verify-webmcp-sources": "node scripts/verify-webmcp-external-sources.js",
     "import-webmcp-sources": "node scripts/import-webmcp-external-sources.js",
