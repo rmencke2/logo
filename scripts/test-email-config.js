@@ -15,6 +15,7 @@ const {
   deliverEmail,
   getFromAddress,
   getNewsletterFromAddress,
+  getNewsletterReplyTo,
 } = require('../emailService');
 
 function parseArgs(argv) {
@@ -44,17 +45,26 @@ async function main() {
   }
 
   const from = options.newsletter ? getNewsletterFromAddress() : getFromAddress();
+  const replyTo = options.newsletter ? getNewsletterReplyTo() : undefined;
   const provider = process.env.EMAIL_SERVICE || 'smtp';
 
   const info = await deliverEmail({
     from,
     to: options.to,
+    replyTo,
     subject: `Influzer email test (${provider})`,
-    html: `<p>If you received this, <strong>${provider}</strong> outbound mail is working.</p><p>From: ${from}</p>`,
-    text: `Influzer email test (${provider}). From: ${from}`,
+    html: `<p>If you received this, <strong>${provider}</strong> outbound mail is working.</p><p>From: ${from}${replyTo ? `<br>Reply-To: ${replyTo}` : ''}</p>`,
+    text: `Influzer email test (${provider}). From: ${from}${replyTo ? `\nReply-To: ${replyTo}` : ''}`,
   });
 
-  console.log(JSON.stringify({ success: true, to: options.to, from, provider: info.provider, messageId: info.messageId }, null, 2));
+  console.log(JSON.stringify({
+    success: true,
+    to: options.to,
+    from,
+    replyTo: replyTo || null,
+    provider: info.provider,
+    messageId: info.messageId,
+  }, null, 2));
 }
 
 main().catch((error) => {
