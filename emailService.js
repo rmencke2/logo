@@ -554,9 +554,86 @@ async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
   }
 }
 
+function formatNewsletterDate(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return String(dateString || '');
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function newsletterSectionHead(label) {
+  return `<p style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">${escapeHtml(label)}</p>`;
+}
+
+function buildPullQuoteHtml(pullQuote) {
+  const quote = String(pullQuote || '').trim();
+  if (!quote) return '';
+  return `
+    <blockquote style="margin:0 0 24px;padding:16px 18px;border-left:4px solid #6366f1;background:#f5f3ff;border-radius:0 12px 12px 0;">
+      <p style="margin:0;font-size:16px;line-height:1.5;color:#18181b;font-style:italic;">${escapeHtml(quote)}</p>
+    </blockquote>`;
+}
+
+function buildCatalogStatHtml(catalogStat, baseUrl) {
+  if (!catalogStat?.label) return '';
+  const href = `${baseUrl}/mcp`;
+  const detail = catalogStat.detail
+    ? `<p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:#71717a;">${escapeHtml(catalogStat.detail)}</p>`
+    : '';
+  return `
+    <div style="margin:0 0 24px;padding:16px 18px;background:#18181b;border-radius:12px;color:#fafafa;">
+      <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#a5b4fc;font-weight:700;">Catalog this week</p>
+      <p style="margin:0;font-size:18px;line-height:1.35;font-weight:700;color:#fff;">${escapeHtml(catalogStat.label)}</p>
+      ${detail}
+      <p style="margin:12px 0 0;"><a href="${escapeHtml(href)}" style="font-size:13px;font-weight:600;color:#c7d2fe;text-decoration:none;">Browse the Top 100 →</a></p>
+    </div>`;
+}
+
+function buildRecentBriefsHtml(recentBriefs, baseUrl) {
+  if (!recentBriefs?.length) return '';
+  const items = recentBriefs
+    .map((brief) => {
+      const pageUrl = `${baseUrl}/news/${encodeURIComponent(brief.slug)}`;
+      const excerpt = brief.excerpt
+        ? `<p style="margin:4px 0 0;font-size:14px;line-height:1.5;color:#71717a;">${escapeHtml(brief.excerpt)}</p>`
+        : '';
+      return `<li style="margin:0 0 14px;">
+        <a href="${escapeHtml(pageUrl)}" style="font-size:16px;font-weight:600;color:#18181b;text-decoration:none;">${escapeHtml(brief.title)}</a>
+        ${excerpt}
+      </li>`;
+    })
+    .join('');
+
+  return `
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid #e7e5e4;">
+      ${newsletterSectionHead('Fresh briefs')}
+      <ul style="margin:0 0 16px;padding:0;list-style:none;">${items}</ul>
+      <a href="${escapeHtml(`${baseUrl}/news`)}" style="font-size:14px;font-weight:600;color:#6366f1;text-decoration:none;">All briefs →</a>
+    </div>`;
+}
+
+function buildAroundTheWebHtml(aroundTheWeb) {
+  if (!aroundTheWeb?.length) return '';
+  const items = aroundTheWeb
+    .map((article) => {
+      const source = article.source
+        ? `<span style="font-size:12px;color:#a1a1aa;"> · ${escapeHtml(article.source)}</span>`
+        : '';
+      return `<li style="margin:0 0 14px;">
+        <a href="${escapeHtml(article.url)}" style="font-size:16px;font-weight:600;color:#18181b;text-decoration:none;">${escapeHtml(article.title)}</a>${source}
+      </li>`;
+    })
+    .join('');
+
+  return `
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid #e7e5e4;">
+      ${newsletterSectionHead('From around the web')}
+      <ul style="margin:0 0 8px;padding:0;list-style:none;">${items}</ul>
+    </div>`;
+}
+
 function buildRecentMcpServersHtml(recentMcpServers, baseUrl) {
   const browseUrl = `${baseUrl}/mcp`;
-  const sectionHead = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">New in the MCP directory</p>`;
+  const sectionHead = newsletterSectionHead('New in the MCP directory');
 
   if (!recentMcpServers?.length) {
     return `
@@ -591,6 +668,12 @@ function buildRecentMcpServersHtml(recentMcpServers, baseUrl) {
     </div>`;
 }
 
+function resolveNewsletterSubject(post) {
+  const custom = String(post?.newsletterSubject || '').trim();
+  if (custom) return custom;
+  return `New on Influzer Insights: ${post?.title || 'New article'}`;
+}
+
 function buildBlogNewsletterHtml({
   post,
   postUrl,
@@ -598,6 +681,10 @@ function buildBlogNewsletterHtml({
   customIntro,
   unsubscribeUrl,
   recentMcpServers = [],
+  recentBriefs = [],
+  aroundTheWeb = [],
+  catalogStat = null,
+  pullQuote = '',
 }) {
   const baseUrl = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
   const intro = customIntro
@@ -606,6 +693,10 @@ function buildBlogNewsletterHtml({
   const coverBlock = coverImageUrl
     ? `<a href="${escapeHtml(postUrl)}" style="display:block;margin:0 0 20px;"><img src="${escapeHtml(coverImageUrl)}" alt="${escapeHtml(post.coverImageAlt || post.title)}" style="width:100%;max-width:560px;border-radius:12px;display:block;" /></a>`
     : '';
+  const pullQuoteBlock = buildPullQuoteHtml(pullQuote || post.newsletterPullQuote);
+  const catalogStatBlock = buildCatalogStatHtml(catalogStat, baseUrl);
+  const briefsBlock = buildRecentBriefsHtml(recentBriefs, baseUrl);
+  const aroundTheWebBlock = buildAroundTheWebHtml(aroundTheWeb);
   const mcpServersBlock = buildRecentMcpServersHtml(recentMcpServers, baseUrl);
 
   return `<!DOCTYPE html>
@@ -615,13 +706,17 @@ function buildBlogNewsletterHtml({
       <div style="background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #e7e5e4;">
         <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;font-weight:700;">Influzer Insights</p>
         <h1 style="margin:0 0 12px;font-size:24px;line-height:1.25;color:#18181b;">${escapeHtml(post.title)}</h1>
-        <p style="margin:0 0 20px;font-size:14px;color:#71717a;">${escapeHtml(post.date)}${post.category ? ` · ${escapeHtml(post.category)}` : ''}</p>
+        <p style="margin:0 0 20px;font-size:14px;color:#71717a;">${escapeHtml(formatNewsletterDate(post.date))}${post.category ? ` · ${escapeHtml(post.category)}` : ''}</p>
         ${intro}
         ${coverBlock}
         <p style="font-size:16px;line-height:1.6;color:#444;margin:0 0 20px;">${escapeHtml(post.excerpt)}</p>
+        ${pullQuoteBlock}
         <p style="margin:0 0 24px;">
           <a href="${escapeHtml(postUrl)}" style="display:inline-block;padding:12px 24px;background:#18181b;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;">Read the article →</a>
         </p>
+        ${catalogStatBlock}
+        ${briefsBlock}
+        ${aroundTheWebBlock}
         ${mcpServersBlock}
       </div>
       <p style="margin:20px 0 0;font-size:12px;color:#a1a1aa;text-align:center;">
@@ -638,34 +733,64 @@ function buildBlogNewsletterText({
   customIntro,
   unsubscribeUrl,
   recentMcpServers = [],
+  recentBriefs = [],
+  aroundTheWeb = [],
+  catalogStat = null,
+  pullQuote = '',
 }) {
   const baseUrl = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
   const intro = customIntro ? `${customIntro.trim()}\n\n` : '';
-  const mcpLines = ['', 'New in the MCP directory', ''];
-
-  if (recentMcpServers?.length) {
-    for (const server of recentMcpServers) {
-      mcpLines.push(`- ${server.name} (${baseUrl}/mcp/${server.slug})`);
-      if (server.description) mcpLines.push(`  ${server.description}`);
-    }
-    mcpLines.push('', `Browse all: ${baseUrl}/mcp`);
-  } else {
-    mcpLines.push(`Browse the latest servers: ${baseUrl}/mcp`);
-  }
-
-  return [
+  const quote = String(pullQuote || post.newsletterPullQuote || '').trim();
+  const lines = [
     'Influzer Insights',
     '',
     post.title,
-    post.date + (post.category ? ` · ${post.category}` : ''),
+    post.date ? formatNewsletterDate(post.date) + (post.category ? ` · ${post.category}` : '') : '',
     '',
     intro + post.excerpt,
-    '',
-    `Read the article: ${postUrl}`,
-    ...mcpLines,
-    '',
-    `Unsubscribe: ${unsubscribeUrl}`,
-  ].join('\n');
+  ];
+
+  if (quote) {
+    lines.push('', `"${quote}"`);
+  }
+
+  lines.push('', `Read the article: ${postUrl}`);
+
+  if (catalogStat?.label) {
+    lines.push('', 'Catalog this week', catalogStat.label);
+    if (catalogStat.detail) lines.push(catalogStat.detail);
+    lines.push(`Browse the Top 100: ${baseUrl}/mcp`);
+  }
+
+  if (recentBriefs?.length) {
+    lines.push('', 'Fresh briefs', '');
+    for (const brief of recentBriefs) {
+      lines.push(`- ${brief.title} (${baseUrl}/news/${brief.slug})`);
+    }
+  }
+
+  if (aroundTheWeb?.length) {
+    lines.push('', 'From around the web', '');
+    for (const article of aroundTheWeb) {
+      const source = article.source ? ` [${article.source}]` : '';
+      lines.push(`- ${article.title}${source}`);
+      if (article.url) lines.push(`  ${article.url}`);
+    }
+  }
+
+  lines.push('', 'New in the MCP directory', '');
+  if (recentMcpServers?.length) {
+    for (const server of recentMcpServers) {
+      lines.push(`- ${server.name} (${baseUrl}/mcp/${server.slug})`);
+      if (server.description) lines.push(`  ${server.description}`);
+    }
+    lines.push('', `Browse all: ${baseUrl}/mcp`);
+  } else {
+    lines.push(`Browse the latest servers: ${baseUrl}/mcp`);
+  }
+
+  lines.push('', `Unsubscribe: ${unsubscribeUrl}`);
+  return lines.join('\n');
 }
 
 async function sendBlogNewsletterEmail({
@@ -676,11 +801,15 @@ async function sendBlogNewsletterEmail({
   customIntro,
   unsubscribeUrl,
   recentMcpServers = [],
+  recentBriefs = [],
+  aroundTheWeb = [],
+  catalogStat = null,
+  pullQuote = '',
 }) {
   ensureMcpEmailTransportReady();
 
   const fromAddress = getNewsletterFromAddress();
-  const subject = `New on Influzer Insights: ${post.title}`;
+  const subject = resolveNewsletterSubject(post);
   const html = buildBlogNewsletterHtml({
     post,
     postUrl,
@@ -688,6 +817,10 @@ async function sendBlogNewsletterEmail({
     customIntro,
     unsubscribeUrl,
     recentMcpServers,
+    recentBriefs,
+    aroundTheWeb,
+    catalogStat,
+    pullQuote,
   });
   const text = buildBlogNewsletterText({
     post,
@@ -695,6 +828,10 @@ async function sendBlogNewsletterEmail({
     customIntro,
     unsubscribeUrl,
     recentMcpServers,
+    recentBriefs,
+    aroundTheWeb,
+    catalogStat,
+    pullQuote,
   });
 
   const mailOptions = {
@@ -1020,6 +1157,8 @@ module.exports = {
   sendWebmcpScanReportEmail,
   buildWebmcpScanReportHtml,
   buildBlogNewsletterHtml,
+  buildBlogNewsletterText,
+  resolveNewsletterSubject,
   isEmailConfigured,
   isResendConfigured,
   getFromAddress,

@@ -68,6 +68,9 @@ function getAllBlogPosts() {
         coverImage: parsed.coverImage || '',
         coverImageAlt: parsed.coverImageAlt || parsed.title,
         videoEmbedUrl: parsed.videoEmbedUrl || '',
+        newsletterSubject: parsed.newsletterSubject || '',
+        newsletterIntro: parsed.newsletterIntro || '',
+        newsletterPullQuote: parsed.newsletterPullQuote || '',
         contentHtml: parsed.contentHtml,
       });
     } catch (error) {

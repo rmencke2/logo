@@ -6,7 +6,7 @@ tags:
   - content-pipeline
 status: backlog
 created: 2026-07-20
-updated: 2026-08-22
+updated: 2026-08-31
 ---
 
 # Influzer MCP Briefs — idea backlog
@@ -17,7 +17,14 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 
 ---
 
-## Shipped this batch (2026-08-22)
+## Shipped this batch (2026-08-31)
+
+| Date | Slug | Title | Status |
+|------|------|-------|--------|
+| 2026-08-31 | `policy-before-plugins-mcp-allowlist` | Policy before plugins — write the allowlist first | ✅ Drafted JSON |
+| 2026-08-31 | Insight: `policy-before-plugins-mcp-allowlist` | Policy Before Plugins — Write the MCP Allowlist Before You Install Another Server | ✅ Featured Insight |
+
+## Shipped previous batch (2026-08-22)
 
 | Date | Slug | Title | Status |
 |------|------|-------|--------|
@@ -127,7 +134,8 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 #### 9. Policy before plugins
 - **Angle:** Allowlisted MCP servers + no arbitrary `npx` in prod agents.
 - **Source:** Influzer.ai
-- **Status:** ⬜todo
+- **Pairs with:** Insight `policy-before-plugins-mcp-allowlist`
+- **Status:** ✅ shipped 2026-08-31 (`policy-before-plugins-mcp-allowlist`)
 
 ### Contrarian / sharp
 
@@ -164,5 +172,5 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - `.cursor/mcp.json` is becoming team policy
 - One MCP, three surfaces — Claude, ChatGPT, Cursor
 - Claude Code CLI vs Desktop connectors
-- From paste-a-key to IdP: MCP auth grows up
 - Policy before plugins: allowlists for agent tools
+- From paste-a-key to IdP: MCP auth grows up

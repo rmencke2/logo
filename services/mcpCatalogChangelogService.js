@@ -109,7 +109,9 @@ function getMcpServersForNewsletter({ since, limit = DEFAULT_NEWSLETTER_LIMIT } 
 
   const fallbackSince = new Date(Date.now() - FALLBACK_DAYS * 24 * 60 * 60 * 1000).toISOString();
   servers = getRecentMcpServersForNewsletter({ since: fallbackSince, limit });
-  return servers;
+  if (servers.length) return servers;
+
+  return getRecentMcpServersForNewsletter({ limit });
 }
 
 function diffNewCatalogSlugs(previousServers, nextServers) {

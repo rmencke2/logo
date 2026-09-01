@@ -11,6 +11,8 @@ const { getMcpServersForNewsletter } = require('./mcpCatalogChangelogService');
 const {
   sendBlogNewsletterEmail,
   buildBlogNewsletterHtml,
+  buildBlogNewsletterText,
+  resolveNewsletterSubject,
   isEmailConfigured,
 } = require('../emailService');
 
@@ -332,21 +334,127 @@ async function getLastNewsletterSendAt() {
 }
 
 async function resolveNewsletterMcpServers() {
-  const lastSendAt = await getLastNewsletterSendAt();
-  const since =
-    lastSendAt || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  let since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  try {
+    const lastSendAt = await getLastNewsletterSendAt();
+    if (lastSendAt) since = lastSendAt;
+  } catch (error) {
+    console.warn('Newsletter last-send lookup failed:', error.message);
+  }
   return getMcpServersForNewsletter({ since, limit: 8 });
 }
 
-function buildNewsletterPayload(post, customIntro, recentMcpServers = []) {
+function decodeBasicEntities(value) {
+  return String(value || '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ');
+}
+
+function cleanNewsletterText(value) {
+  return decodeBasicEntities(String(value || '').replace(/<[^>]*>/g, ' '))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getRecentBriefsForNewsletter(currentSlug, limit = 3) {
+  const { getAllNewsItems } = require('./newsService');
+  return getAllNewsItems()
+    .filter((item) => item.slug !== currentSlug && item.relatedInsightSlug !== currentSlug)
+    .slice(0, Math.max(1, Math.min(6, Number(limit) || 3)))
+    .map((item) => ({
+      slug: item.slug,
+      title: item.title,
+      excerpt: item.excerpt,
+      date: item.date,
+    }));
+}
+
+function truncateTitle(value, max = 110) {
+  const text = cleanNewsletterText(value);
+  if (text.length <= max) return text;
+  const sliced = text.slice(0, max - 1);
+  const lastSpace = sliced.lastIndexOf(' ');
+  const clipped = lastSpace > 40 ? sliced.slice(0, lastSpace) : sliced;
+  return `${clipped.trim()}…`;
+}
+
+function cleanAroundTheWebTitle(value) {
+  let text = cleanNewsletterText(value);
+  text = text.replace(/^GitHub:\s+\S+\s+—\s+/i, '');
+  return truncateTitle(text, 110);
+}
+
+function getAroundTheWebForNewsletter(limit = 3) {
+  try {
+    const { getDisplayArticles } = require('./otherNewsService');
+    const { articles } = getDisplayArticles(Math.max(1, Math.min(6, Number(limit) || 3)));
+    return (articles || [])
+      .map((article) => ({
+        title: cleanAroundTheWebTitle(article.title),
+        source: cleanNewsletterText(article.source).slice(0, 80),
+        url: article.outbound_url || article.url || '',
+        date: article.display_date || '',
+      }))
+      .filter((article) => article.title && article.url);
+  } catch (error) {
+    console.warn('Newsletter around-the-web lookup failed:', error.message);
+    return [];
+  }
+}
+
+function getCatalogStatForNewsletter() {
+  try {
+    const { getMcpHeroStats } = require('./mcpDirectoryService');
+    const stats = getMcpHeroStats();
+    const total = Number(stats.totalServers) || 0;
+    const withTools = Number(stats.serversWithIndexedTools) || 0;
+    if (!total) return null;
+    const pct = Math.round((withTools / total) * 100);
+    return {
+      label: `${total.toLocaleString('en-US')} MCP servers in the directory`,
+      detail: `${withTools.toLocaleString('en-US')} have indexed tools (${pct}%). Search first — then allowlist before you install.`,
+    };
+  } catch (error) {
+    console.warn('Newsletter catalog stat lookup failed:', error.message);
+    return null;
+  }
+}
+
+function resolveIntro(post, customIntro) {
+  const custom = String(customIntro || '').trim();
+  if (custom) return custom;
+  return String(post?.newsletterIntro || '').trim();
+}
+
+async function resolveNewsletterExtras(post) {
+  return {
+    recentMcpServers: await resolveNewsletterMcpServers(),
+    recentBriefs: getRecentBriefsForNewsletter(post.slug),
+    aroundTheWeb: getAroundTheWebForNewsletter(),
+    catalogStat: getCatalogStatForNewsletter(),
+  };
+}
+
+function buildNewsletterPayload(post, customIntro, extras = {}) {
   const postUrl = buildPostUrl(post.slug);
   const coverImageUrl = buildCoverImageUrl(post);
+  const recentMcpServers = Array.isArray(extras.recentMcpServers)
+    ? extras.recentMcpServers
+    : extras;
   return {
     post,
     postUrl,
     coverImageUrl,
-    customIntro: customIntro || '',
-    recentMcpServers,
+    customIntro: resolveIntro(post, customIntro),
+    recentMcpServers: Array.isArray(recentMcpServers) ? recentMcpServers : [],
+    recentBriefs: extras.recentBriefs || [],
+    aroundTheWeb: extras.aroundTheWeb || [],
+    catalogStat: extras.catalogStat || null,
+    pullQuote: post.newsletterPullQuote || '',
   };
 }
 
@@ -365,7 +473,7 @@ async function sendNewsletterToRecipients({
   const payload = buildNewsletterPayload(
     post,
     customIntro,
-    await resolveNewsletterMcpServers(),
+    await resolveNewsletterExtras(post),
   );
   let sent = 0;
   let failed = 0;
@@ -399,6 +507,32 @@ async function sendNewsletterToRecipients({
   }
 
   return { sent, failed, skipped, errors, lastDelivery };
+}
+
+async function previewBlogNewsletter({ slug, customIntro = '' }) {
+  const { findBlogPostBySlug } = getBlogHelpers();
+  const post = findBlogPostBySlug(slug);
+  if (!post) {
+    throw new Error('Blog post not found');
+  }
+
+  const extras = await resolveNewsletterExtras(post);
+  const payload = buildNewsletterPayload(post, customIntro, extras);
+  const unsubscribeUrl = `${getBaseUrl()}/newsletter/unsubscribe?token=preview`;
+  return {
+    mode: 'preview',
+    slug,
+    title: post.title,
+    subject: resolveNewsletterSubject(post),
+    html: buildBlogNewsletterHtml({ ...payload, unsubscribeUrl }),
+    text: buildBlogNewsletterText({ ...payload, unsubscribeUrl }),
+    postUrl: payload.postUrl,
+    intro: payload.customIntro,
+    catalogStat: payload.catalogStat,
+    briefCount: payload.recentBriefs.length,
+    aroundTheWebCount: payload.aroundTheWeb.length,
+    mcpServerCount: payload.recentMcpServers.length,
+  };
 }
 
 async function sendBlogNewsletter({
@@ -620,17 +754,18 @@ async function initializeNewsletterService(app) {
       const payload = buildNewsletterPayload(
         post,
         customIntro,
-        await resolveNewsletterMcpServers(),
+        await resolveNewsletterExtras(post),
       );
+      const unsubscribeUrl = `${getBaseUrl()}/newsletter/unsubscribe?token=preview`;
       const html = buildBlogNewsletterHtml({
         ...payload,
-        unsubscribeUrl: `${getBaseUrl()}/newsletter/unsubscribe?token=preview`,
+        unsubscribeUrl,
       });
 
       res.json({
         slug,
         title: post.title,
-        subject: `New on Influzer Insights: ${post.title}`,
+        subject: resolveNewsletterSubject(post),
         html,
         postUrl: payload.postUrl,
       });
@@ -677,6 +812,7 @@ async function initializeNewsletterService(app) {
 module.exports = {
   initializeNewsletterService,
   sendBlogNewsletter,
+  previewBlogNewsletter,
   subscribeToNewsletter,
   countActiveSubscribers,
   listActiveSubscribers,
