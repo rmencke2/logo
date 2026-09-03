@@ -16,6 +16,7 @@ const {
 const { sendMcpApprovalEmail, sendMcpFeedbackEmail } = require('../emailService');
 const { fetchLiveMcpTools } = require('../scripts/utils/mcp-live-client');
 const { assertSafePublicUrl } = require('./webmcp/ssrf');
+const { scanListingText, sanitizeTools } = require('./mcpSourceSafety');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -78,6 +79,8 @@ function listSubmissions({ status } = {}) {
         toolCount: Array.isArray(full.tools) ? full.tools.length : 0,
         reviewNote: full.reviewNote || null,
         feedbackSentAt: full.feedbackSentAt || null,
+        sourceSafetyHigh: Number(full.sourceSafety?.highCount || 0),
+        sourceSafetyMedium: Number(full.sourceSafety?.mediumCount || 0),
       };
     })
     .sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
@@ -389,6 +392,12 @@ async function approveSubmission(id, body = {}, reviewedBy = '') {
   const wasAlreadyApproved = sub.reviewStatus === 'approved';
   const server = submissionToManualServer(sub, body);
   validateManualServer(server);
+  server.tools = sanitizeTools(server.tools);
+
+  const sourceSafety = scanListingText({
+    description: server.description,
+    tools: server.tools,
+  });
 
   upsertManualServer(server);
   syncTop100Pin(server.slug, Boolean(body.pinToTop100));
@@ -421,7 +430,7 @@ async function approveSubmission(id, body = {}, reviewedBy = '') {
     }
   }
 
-  return { server, slug: server.slug, pageUrl, emailSent, emailError };
+  return { server, slug: server.slug, pageUrl, emailSent, emailError, sourceSafety };
 }
 
 function registerMcpCatalogAdminRoutes(app, requireAdmin) {
@@ -445,9 +454,19 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
       if (!sub) return res.status(404).json({ error: 'Submission not found' });
       const { filePath, ...payload } = sub;
       const preview = submissionToManualServer(sub, {});
+      const sourceSafety =
+        sub.sourceSafety && Array.isArray(sub.sourceSafety.findings)
+          ? sub.sourceSafety
+          : scanListingText({
+              description: sub.description,
+              setupInstructions: sub.setupInstructions,
+              additionalNotes: sub.additionalNotes,
+              tools: preview.tools || sub.tools,
+            });
       res.json({
         submission: payload,
         preview,
+        sourceSafety,
         categories: [...getMcpCategories(), 'Other'],
         alreadyInCatalog: Boolean(findMcpServerBySlug(preview.slug)),
       });
@@ -555,17 +574,24 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
       });
 
       if (live.status === 'ok' || live.status === 'ok_empty') {
+        const tools = sanitizeTools(live.tools || []);
+        const sourceSafety = scanListingText({ tools });
+        const poisonNote =
+          sourceSafety.highCount > 0
+            ? ` Source-safety flagged ${sourceSafety.highCount} high finding(s) in tool text — review before publishing.`
+            : '';
         return res.json({
           success: true,
           status: live.status,
-          tools: live.tools || [],
-          toolCount: (live.tools || []).length,
+          tools,
+          toolCount: tools.length,
           serverInfo: live.serverInfo || null,
           endpoint: safeEndpoint,
+          sourceSafety,
           message:
-            live.status === 'ok_empty'
+            (live.status === 'ok_empty'
               ? 'Endpoint responded but returned 0 tools.'
-              : `Loaded ${(live.tools || []).length} tool(s) from the live endpoint.`,
+              : `Loaded ${tools.length} tool(s) from the live endpoint.`) + poisonNote,
         });
       }
 

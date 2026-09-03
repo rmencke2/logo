@@ -1933,6 +1933,10 @@
         if (!(data.tools || []).length) {
           statusEl.style.color = '#fbbf24';
         }
+        if (data.sourceSafety?.highCount) {
+          window.__mcpSourceSafetyHigh = data.sourceSafety.highCount;
+          statusEl.style.color = '#ef4444';
+        }
       } catch (err) {
         statusEl.textContent = err.message || 'Probe failed';
         statusEl.style.color = '#ef4444';
@@ -2024,10 +2028,18 @@
           return;
         }
         let html = `<table><thead><tr>
-          <th>Submitted</th><th>Server</th><th>Category</th><th>From</th><th>Tools</th><th>Status</th><th></th>
+          <th>Submitted</th><th>Server</th><th>Category</th><th>From</th><th>Tools</th><th>Status</th><th>Source scan</th><th></th>
         </tr></thead><tbody>`;
         for (const row of data.submissions) {
           const date = row.submittedAt ? new Date(row.submittedAt).toLocaleString() : '—';
+          const high = Number(row.sourceSafetyHigh || 0);
+          const medium = Number(row.sourceSafetyMedium || 0);
+          let scanCell = '<span style="color:#8e8e93;">clean</span>';
+          if (high > 0) {
+            scanCell = `<span style="color:#ef4444;font-weight:600;">${high} high</span>`;
+          } else if (medium > 0) {
+            scanCell = `<span style="color:#fbbf24;">${medium} medium</span>`;
+          }
           html += `<tr>
             <td>${date}</td>
             <td><strong>${escapeHtml(row.serverName || '')}</strong><br><span style="color:#8e8e93;font-size:12px;">${escapeHtml(row.suggestedSlug || '')}</span></td>
@@ -2035,6 +2047,7 @@
             <td>${escapeHtml(row.submitterName || row.submitterEmail || '')}</td>
             <td>${row.toolCount || 0}</td>
             <td>${mcpStatusBadge(row.reviewStatus)}</td>
+            <td>${scanCell}</td>
             <td><button class="btn btn-sm btn-secondary" onclick="openMcpReview('${escapeJsString(row.id)}')">Review</button></td>
           </tr>`;
         }
@@ -2122,6 +2135,20 @@
           alertEl.innerHTML +=
             '<div class="error">Tools look mangled (names/descriptions glued together). Use <strong>Refresh tools from live endpoint</strong> if the MCP URL is reachable.</div>';
         }
+        const safety = data.sourceSafety || sub.sourceSafety;
+        window.__mcpSourceSafetyHigh = Number(safety?.highCount || 0);
+        if (safety && (safety.highCount || safety.mediumCount)) {
+          const rows = (safety.findings || [])
+            .slice(0, 8)
+            .map((f) => `<li><strong>${escapeHtml(f.severity)}</strong> ${escapeHtml(f.title)} <span style="color:#8e8e93;">(${escapeHtml(f.field)})</span></li>`)
+            .join('');
+          alertEl.innerHTML +=
+            `<div class="${safety.highCount ? 'error' : 'success'}" style="${safety.highCount ? '' : 'background:#3a3200;color:#fbbf24;'}">
+              Source-safety scan: ${safety.highCount || 0} high, ${safety.mediumCount || 0} medium.
+              Hidden Unicode / comments / instruction-override language only — not a SkillSpector “safe” badge.
+              <ul style="margin:8px 0 0 18px;">${rows}</ul>
+            </div>`;
+        }
 
         document.getElementById('mcpReviewModal').classList.add('active');
       } catch (err) {
@@ -2136,6 +2163,12 @@
       if (!tools.length) {
         alert('Add at least one tool.');
         return;
+      }
+      if (window.__mcpSourceSafetyHigh > 0) {
+        const ok = confirm(
+          'Source-safety found high-severity issues in this listing (hidden Unicode or instruction-override copy). Publish anyway? This does not certify the server as safe.',
+        );
+        if (!ok) return;
       }
       const body = {
         serverName: document.getElementById('mcpServerName').value.trim(),

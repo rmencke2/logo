@@ -8,6 +8,7 @@ const { getMcpCategories } = require('./mcpDirectoryService');
 const { sendMcpSubmissionEmail } = require('../emailService');
 const { getOptionalAuthUser } = require('../auth');
 const { getDatabase } = require('../database');
+const { scanListingText } = require('./mcpSourceSafety');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MAX_FIELD = 8000;
@@ -224,6 +225,12 @@ function registerMcpSubmissionRoutes(app) {
         ip,
         submittedAt,
         reviewStatus: 'pending',
+        sourceSafety: scanListingText({
+          description: data.description,
+          setupInstructions: data.setupInstructions,
+          additionalNotes: data.additionalNotes,
+          tools: data.tools,
+        }),
       };
       if (authUser?.id) {
         payload.submitterUserId = authUser.id;
