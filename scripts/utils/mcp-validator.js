@@ -5,6 +5,7 @@
 const { normalizeTools } = require('./normalize');
 const { fetchSmitheryDetail, applySmitheryDetail, smitheryQualifiedName } = require('./enrich-tools');
 const { fetchLiveMcpTools } = require('./mcp-live-client');
+const { sanitizeTools } = require('../../services/mcpSourceSafety');
 
 const ENDPOINT_PROBE_TIMEOUT_MS = Number(process.env.MCP_ENDPOINT_TIMEOUT_MS) || 12000;
 
@@ -233,7 +234,7 @@ function finalizeResult(result, beforeTools, draft, mutate) {
   }
 
   if (mutate) {
-    draft.tools = afterTools;
+    draft.tools = sanitizeTools(afterTools);
     draft.tools_validated_at = new Date().toISOString();
     draft.tools_validation_method = result.validationMethod;
     if (result.liveProbe?.serverInfo?.name && !draft.mcp_live_name) {

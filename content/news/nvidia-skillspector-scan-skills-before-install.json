@@ -1,0 +1,19 @@
+{
+  "slug": "nvidia-skillspector-scan-skills-before-install",
+  "title": "Scan skills with SkillSpector — don’t badge MCP listings “safe”",
+  "date": "2026-09-03",
+  "excerpt": "NVIDIA SkillSpector is a static scanner for agent skills. Use it before you install a SKILL.md. Do not treat a green score as a safe hosted MCP.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "MCP",
+    "Security",
+    "SkillSpector",
+    "NVIDIA",
+    "Agent Skills",
+    "Governance"
+  ],
+  "sourceName": "NVIDIA",
+  "sourceUrl": "https://github.com/NVIDIA/SkillSpector",
+  "relatedInsightSlug": "nvidia-skillspector-scan-skills-before-install",
+  "contentHtml": "<p><strong>Scan skills. Handshake MCP.</strong> NVIDIA’s <a href=\"https://github.com/NVIDIA/SkillSpector\" rel=\"noopener noreferrer\">SkillSpector</a> is a static linter for agent skill packs (<code>SKILL.md</code>, zips, Git repos). It catches hidden instructions, exfil patterns, CVEs, and tool-poisoning copy. It does not execute the skill, and it does not prove a live HTTPS MCP is safe.</p><p>Influzer is pointing builders at the repo — and we are <em>not</em> putting a SAFE badge on directory listings. Most MCP servers have no cloneable tree; many legitimate tools look “excessive” to a skill scanner. Our quality bar stays MCP-shaped: live <code>tools/list</code> (401 counts as alive), indexed tools over stars, Discovery as search-not-install, and a poison pass on submissions (hidden Unicode, HTML comments, instruction-override language) without auto-deleting the catalog.</p><p>Full split, the 20-minute rollout, and what a score actually means: <a href=\"/insights/nvidia-skillspector-scan-skills-before-install\">Scan agent skills before you install them</a>.</p>"
+}
