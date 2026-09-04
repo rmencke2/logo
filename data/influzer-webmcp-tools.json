@@ -280,6 +280,24 @@
       }
     },
     {
+      "name": "generate_webmcp_starter_code",
+      "description": "Return a copy-paste WebMCP starter kit (JS + install steps) generated from a completed listing scan. Use after get_webmcp_listing_scan when status is completed — especially for R0/R1 sites with no or few tools.",
+      "kind": "answer",
+      "implementation_type": "imperative",
+      "page_url": "/webmcp/submit",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "scan_id": {
+            "type": "string",
+            "description": "Scan id from start_webmcp_listing_scan / get_webmcp_listing_scan."
+          }
+        },
+        "required": ["scan_id"],
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "list_latest_insights",
       "description": "List the latest Influzer.ai insights / articles (titles, URLs, summaries) for agent briefings.",
       "kind": "answer",

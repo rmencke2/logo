@@ -81,6 +81,7 @@ const required = [
   'open_webmcp_site',
   'start_webmcp_listing_scan',
   'get_webmcp_listing_scan',
+  'generate_webmcp_starter_code',
   'navigate_influzer',
 ];
 for (const name of required) {

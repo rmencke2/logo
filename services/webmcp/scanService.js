@@ -7,6 +7,7 @@
 const { assertSafePublicUrl } = require('./ssrf');
 const { scanWebsite } = require('./scanner');
 const { buildScorecard, suggestJourneys } = require('./scorecard');
+const { buildWebmcpStarter } = require('./starterGenerator');
 const { publishScannedSite } = require('./catalogPublisher');
 const {
   createScan,
@@ -24,8 +25,26 @@ const { sendWebmcpScanReportEmail } = require('../../emailService');
 const RATE_LIMIT_PER_HOUR = Number(process.env.WEBMCP_SCAN_RATE_LIMIT || 30);
 const running = new Set();
 
+function publicStarterView(starter) {
+  if (!starter) return null;
+  return {
+    host: starter.host,
+    canonical_url: starter.canonical_url,
+    generated_at: starter.generated_at,
+    existing_tool_count: starter.existing_tool_count,
+    tool_count: starter.tool_count,
+    estimated_grade_after: starter.estimated_grade_after,
+    tools_suggested: starter.tools_suggested,
+    install_steps: starter.install_steps,
+    starter_js: starter.starter_js,
+    html_snippet: starter.html_snippet,
+    payment: starter.payment,
+  };
+}
+
 function publicScanView(scan) {
   if (!scan) return null;
+  const starter = scan.result?.starter || null;
   return {
     id: scan.id,
     host: scan.host,
@@ -59,6 +78,21 @@ function publicScanView(scan) {
             tool_count: p.tool_count,
             error: p.error || null,
           })),
+        }
+      : null,
+    starter: starter
+      ? {
+          tool_count: starter.tool_count,
+          estimated_grade_after: starter.estimated_grade_after,
+          tools_suggested: starter.tools_suggested?.map((t) => ({
+            name: t.name,
+            description: t.description,
+            kind: t.kind,
+          })),
+          install_steps: starter.install_steps,
+          starter_url: scan.id
+            ? `https://www.influzer.ai/api/webmcp/v1/scans/${scan.id}/starter`
+            : null,
         }
       : null,
     directory_url: scan.host ? `https://www.influzer.ai/webmcp/sites/${scan.host}` : null,
@@ -146,6 +180,7 @@ async function runScanJob(id, { url, email, newsletterOptIn, clearCache }) {
     });
     result.journeys = suggestJourneys(result.tools, result.host);
     result.scorecard = scorecard;
+    result.starter = buildWebmcpStarter({ ...result, scorecard });
 
     let published = false;
     let publishReason = 'not_eligible';
@@ -213,5 +248,6 @@ module.exports = {
   startWebmcpScan,
   getScan,
   publicScanView,
+  publicStarterView,
   RATE_LIMIT_PER_HOUR,
 };

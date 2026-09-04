@@ -249,6 +249,39 @@ button.webmcp-btn--ghost:hover,
 .webmcp-scan__journeys li { margin: 0.45rem 0; }
 .webmcp-scan__next { margin: 0.75rem 0 0; padding-left: 1.2rem; color: #334155; }
 .webmcp-scan__next li { margin: 0.4rem 0; font-size: 0.92rem; line-height: 1.45; }
+.webmcp-scan__starter { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+.webmcp-scan__starter h2 { margin: 0 0 0.35rem; font-size: 1.15rem; }
+.webmcp-scan__starter-meta { margin: 0.35rem 0 0.75rem; font-size: 0.92rem; color: #0f766e; font-weight: 600; }
+.webmcp-scan__code-wrap {
+  margin-top: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0f172a;
+}
+.webmcp-scan__code-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+}
+.webmcp-scan__code {
+  margin: 0;
+  padding: 0.85rem;
+  max-height: 420px;
+  overflow: auto;
+  color: #e2e8f0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 .webmcp-site-scorecard {
   margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid #e2e8f0; border-radius: 14px; background: #fff;
 }

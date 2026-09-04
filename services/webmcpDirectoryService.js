@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeHost, normalizeHttpsUrl, slugifyCategory } = require('./webmcp/normalize');
-const { startWebmcpScan, publicScanView, getScan } = require('./webmcp/scanService');
+const { startWebmcpScan, publicScanView, publicStarterView, getScan } = require('./webmcp/scanService');
 const { clientErrorMessage } = require('../utils/safeError');
 const { ensureScanTables } = require('./webmcp/scanStore');
 
@@ -422,6 +422,29 @@ function registerWebmcpRoutes(app) {
       res.json({ ok: true, scan: publicScanView(scan) });
     } catch (err) {
       res.status(500).json({ ok: false, error: clientErrorMessage(err, 'Scan lookup failed') });
+    }
+  });
+
+  app.get('/api/webmcp/v1/scans/:id/starter', async (req, res) => {
+    try {
+      const scan = await getScan(req.params.id);
+      if (!scan) return res.status(404).json({ ok: false, error: 'not_found' });
+      if (scan.status !== 'completed') {
+        return res.status(409).json({
+          ok: false,
+          error: 'scan_not_complete',
+          message: 'Starter kit is available after the scan completes.',
+          status: scan.status,
+        });
+      }
+      const starter = scan.result?.starter;
+      if (!starter) {
+        return res.status(404).json({ ok: false, error: 'starter_unavailable' });
+      }
+      res.set('Cache-Control', 'no-store');
+      res.json({ ok: true, scan_id: scan.id, starter: publicStarterView(starter) });
+    } catch (err) {
+      res.status(500).json({ ok: false, error: clientErrorMessage(err, 'Starter lookup failed') });
     }
   });
 
