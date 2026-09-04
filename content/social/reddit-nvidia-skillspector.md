@@ -1,166 +1,124 @@
 # Reddit post — NVIDIA SkillSpector + MCP servers
 
-**Status:** ready to post  
+**Status:** ready to post (question-led)  
 **Related Insight:** https://www.influzer.ai/insights/nvidia-skillspector-scan-skills-before-install  
 **NVIDIA repo:** https://github.com/NVIDIA/SkillSpector  
-**Disclosure:** we run influzer.ai — say so in the post, not only in comments.
+**Disclosure:** we run influzer.ai — one sentence in the body, not a product tour.
+
+---
+
+## Why questions, not a lecture
+
+The first draft told people how to use SkillSpector. That reads as a blog dump. On Reddit it underperforms and smells like promo.
+
+A question-led post is better here because:
+
+- SkillSpector is new. You do not actually know who is running it in anger.
+- The interesting gap (skills vs hosted MCP) is something **operators** will argue about. Let them.
+- Influzer learns more from “here’s where it false-positived on our GitHub MCP” than from upvotes on a how-to.
+- You can still drop the playbook **later**, as a comment, if someone asks “so what do you do?”
+
+Keep the body short: enough context that lurkers know what the tool is, then three questions. Do not answer your own questions in the post.
 
 ---
 
 ## Where to post
 
-Post as a **text/self post**, not a link dump. One subreddit first; wait for replies before crossposting.
+Post as a **text/self post**. One subreddit first; wait for replies before crossposting.
 
-| Subreddit | Why | Title to use |
+| Subreddit | Why | Title |
 | --- | --- | --- |
 | r/LocalLLaMA | Best technical discussion | **A** |
-| r/ClaudeAI | Skill + MCP installers live here | **A** or **B** |
-| r/mcp | Protocol-native audience | **C** |
+| r/ClaudeAI | People actually installing skills | **A** or **B** |
+| r/mcp | Protocol-native; will argue MCP vs skills | **C** |
 | r/cursor | `.cursor/mcp.json` crowd | **B** |
-| r/netsec | If you want the scanner angle, not MCP | **D** |
+| r/netsec | Scanner / supply-chain angle | **D** |
 
-Do **not** post the same body to r/MachineLearning or r/programming on day one — those will treat it as promo.
+Do **not** post the same body to r/MachineLearning or r/programming on day one.
 
 ---
 
 ## Title options (pick one)
 
-**A (recommended):** NVIDIA SkillSpector is not a “safe MCP” badge. Here’s how it should actually be used with MCP servers.
+**A (recommended):** Who’s actually using NVIDIA SkillSpector? And does it help at all with MCP servers?
 
-**B:** Don’t paste a SKILL.md or `npx` MCP into Claude/Cursor until you scan it. The interesting part is SkillSpector *as* an MCP.
+**B:** SkillSpector before Claude/Cursor installs — who’s running it, and where does it fall short?
 
-**C:** Pair SkillSpector MCP (`scan_skill`) with a discovery MCP. Search → scan → allowlist. Never search → install.
+**C:** SkillSpector as an MCP (`scan_skill`) — useful guardrail or score theater for hosted servers?
 
-**D:** 26% of agent skills in the wild have vulns. NVIDIA’s SkillSpector is the first public scanner — and it also speaks MCP.
+**D:** NVIDIA says 26% of agent skills have vulns. Is anyone scanning them before install?
 
 ---
 
 ## Body (copy from here)
 
-NVIDIA open-sourced SkillSpector so you can scan an agent skill *before* it lands in Claude Code, Codex, or Gemini. That part is getting the headlines.
+NVIDIA shipped SkillSpector as a static scanner for agent skills (`SKILL.md`, zip, git repo). It does not execute the skill. It returns a 0–100 risk score — prompt injection, hidden Unicode, tool poisoning in descriptions, CVEs via OSV, that kind of thing. Their research: 26.1% of skills in the wild have at least one vuln, 5.2% look malicious.
 
-The useful part for people actually wiring agents: **it also runs as an MCP server.** One tool, `scan_skill`. You can make the agent scan the thing it wants to install, and you can refuse the install if the verdict is high/critical.
+It also runs as an MCP server (`skillspector mcp`) with a single tool, `scan_skill`, so an agent can theoretically gate an install on the verdict.
 
-Most people will still use it wrong. They’ll either (a) never run it, or (b) treat a green score as “this hosted MCP is safe, stamp it on the directory.” Those are different objects.
+We run influzer.ai (MCP directory). We are *not* putting SkillSpector scores on listings — most hosted MCPs have no cloneable tree, and a GitHub MCP that writes issues looks “excessive” to a skill linter. Curious whether that’s the right call, or too cautious.
 
-### What SkillSpector actually is
+If you’ve touched it:
 
-Static linter for skill packs. You point it at a Git repo, zip, directory, or `SKILL.md`. It does **not** execute the skill. It greps, walks Python ASTs, runs YARA, optionally sends file contents to an LLM, and returns a 0–100 risk score plus findings.
+1. **Who’s using it, and where?** CLI before a Claude Code skill? CI / SARIF? Wired as MCP so the agent calls `scan_skill`? Or you cloned it, ran it once, and it didn’t stick?
 
-NVIDIA’s own numbers (cited in the repo): **26.1% of skills in the wild have at least one vulnerability**, **5.2% look outright malicious.** The scanner covers 70+ patterns, including the MCP-shaped ones: least-privilege mismatches and **tool poisoning** in descriptions (hidden Unicode, HTML comments, instruction-override copy).
+2. **How would you use it with MCP servers?** Scan the GitHub before it goes in `.cursor/mcp.json`? Ignore it for remote HTTPS connectors and only handshake `tools/list`? Pair it with a read-only discovery MCP so search ≠ install? Something else?
 
-CLI, no LLM, contents stay on the machine:
+3. **Where does it fall short?** False positives on filesystem/shell/GitHub-write servers? Blind to hosted endpoints? LLM pass you don’t want sending an untrusted zip to a provider? Scores that look more certain than they are? Anything it caught that a human review missed?
 
-```bash
-uv tool install git+https://github.com/NVIDIA/SkillSpector.git
-skillspector scan ./my-skill/ --no-llm
-```
+Not looking for a “safe” badge. Looking for whether this is a real pre-install gate or just a nicer grep.
 
-Use the LLM pass when you want description-vs-code mismatch. Use `--no-llm` in CI and on untrusted zips you do not want leaving the laptop. NVIDIA is explicit: with LLM analysis on, file contents go to the configured provider.
-
-### The MCP version (this is the product-shaped bit)
-
-```bash
-uv tool install --force 'skillspector[mcp] @ git+https://github.com/NVIDIA/SkillSpector.git'
-claude mcp add skillspector -- skillspector mcp
-```
-
-Or HTTP for a remote runtime:
-
-```bash
-skillspector mcp --transport http --host 127.0.0.1 --port 8000
-```
-
-`scan_skill(target)` returns `risk_score`, `severity`, `recommendation`, `safe_to_install`, `findings`, plus `llm_used` / `scan_mode` so a static-only 12 is never mistaken for a full semantic scan.
-
-Two gotchas from their README, because people will skip them:
-
-1. HTTP transport ships **without auth**. Bind `127.0.0.1` or sit it behind a proxy. Over HTTP, local paths and `file://` are rejected on purpose so a random caller cannot read your disk.
-2. A 0–20 score means “no matched patterns in the files we could read.” Not “harmless once installed.” Not “the hosted URL with the same name is clean.” Not “auth/scopes are fine for your org.” It cannot see compiled binaries, text in images, or runtime behavior. A remote HTTPS MCP with no cloneable tree is mostly outside the tool — which is most production connectors.
-
-NVIDIA calls it defense-in-depth, not a sandbox. Believe them.
-
-### How it should be used *with* MCP servers
-
-The failure mode I keep seeing: agent can search a registry, then “helpfully” install whatever it found. Search became install. That’s how you get a mystery `npx` in `.cursor/mcp.json` and a write tool nobody reviewed.
-
-The loop that actually works:
-
-1. **Search** with a read-only discovery MCP. Capability in, shortlist out. No secrets, no filesystem, no connect.
-2. **Scan** cloneable source with SkillSpector (`--no-llm` first, then LLM if you trust the provider with the files). Gate on high/critical.
-3. **Handshake** the live process: `initialize` + `tools/list`. A pretty GitHub is not a pretty hosted URL. A 401 still counts as alive — that’s usually OAuth, not a dead server.
-4. **Allowlist** in git. New server = PR to the list, then to `mcp.json`. Default deny writes. Humans own the connect step.
-
-SkillSpector is step 2. It is not steps 1, 3, or 4.
-
-Concrete pairing we run at influzer.ai (disclosure: that’s us — MCP directory + a read-only Discovery server):
-
-- Discovery MCP at `https://www.influzer.ai/mcp/discovery` — search / recommend / fetch setup metadata. It does **not** install anything.
-- SkillSpector MCP locally — scan the Git URL or zip before it hits Claude Code.
-- Directory quality bar stays MCP-shaped: live `tools/list` (401 = alive), indexed tools over star count, poison pass on submissions (hidden Unicode, HTML comments, “ignore previous instructions”), strip zero-width chars on ingest. **No public SAFE badge.**
-
-We will not stamp SkillSpector scores on 12k listings. Roughly 40% of them even have a GitHub URL. A skill linter will also flag *legitimate* MCP servers whose job is filesystem, shell, or GitHub writes — that’s “excessive agency” to a skill scanner and “the product” to the operator. Auto-dropping HIGH scores would hide the useful write tools and miss the failure mode that actually bites: a live `tools/list` description that lies, or a hosted endpoint whose README is cleaner than the process.
-
-So: promote the scanner to skill installers. Steal NVIDIA’s *sequencing* (scan → evaluate → then publish). Do not fake the signature on a catalog card.
-
-### 15-minute setup if you install skills *and* MCP
-
-1. `skillspector scan <path> --no-llm` before any skill hits Claude Code.
-2. Add SkillSpector as an MCP so the agent can call `scan_skill` instead of you copy-pasting.
-3. Connect a discovery MCP so “is there an MCP for X?” is a search, not a hallucinated `npx`.
-4. Pin a short allowlist next to `.cursor/mcp.json`. If it’s not on the list, it doesn’t get connected.
-5. Treat every tool description as an untrusted string. Because it is.
-
-If you only connect a handful of official remote MCPs, SkillSpector will not see those endpoints. Handshake + allowlist is the whole game. If you install third-party `SKILL.md` packs, run the static pass every time. If you have a cloneable MCP repo, do both — scan the tree, then handshake the process you will actually call.
-
-Scan the files you can clone. Handshake the process you will actually call. Never let search become install.
+Repo: https://github.com/NVIDIA/SkillSpector
 
 ---
 
-## First comment (post this immediately)
+## First comment (links only — do not lecture here)
 
-Paste this as the first comment so the body stays a discussion, not a link farm.
+Keep this thin. If you paste the playbook first, you killed the thread.
 
-> NVIDIA repo: https://github.com/NVIDIA/SkillSpector  
-> Scan guide: https://docs.nvidia.com/skills/scanning-agent-skills  
-> Longer split (what a score means, why we won’t badge listings): https://www.influzer.ai/insights/nvidia-skillspector-scan-skills-before-install  
-> Discovery MCP setup (search-not-install): https://www.influzer.ai/mcp/discovery/setup  
->  
-> We run the directory. Not asking anyone to trust a score we can’t compute on a hosted URL.
+> Docs: https://docs.nvidia.com/skills/scanning-agent-skills  
+> We wrote up the skills-vs-MCP split here (why we won’t badge listings): https://www.influzer.ai/insights/nvidia-skillspector-scan-skills-before-install
 
 ---
 
-## Shorter variant (r/mcp, if the long post feels heavy)
+## Follow-up comment (only if someone asks “so what do *you* do?”)
 
-**Title:** SkillSpector as an MCP (`scan_skill`) is the interesting part. Don’t badge directories “SAFE.”
+Do not post this with the thread. Wait.
 
-NVIDIA SkillSpector is a static scanner for agent skills (`SKILL.md`, zip, git). 26% of skills in the wild have vulns per their research. It also ships as MCP:
+> What we’d actually run:
+>
+> 1. Read-only discovery MCP to *search* (we expose https://www.influzer.ai/mcp/discovery — it does not install anything).
+> 2. SkillSpector on cloneable source, `--no-llm` first, gate on high/critical. `claude mcp add skillspector -- skillspector mcp` if you want the agent to call `scan_skill`.
+> 3. Handshake the live process (`initialize` + `tools/list`). A clean GitHub is not a clean hosted URL. HTTP SkillSpector has no auth — bind `127.0.0.1`.
+> 4. Human allowlist before `.cursor/mcp.json` / Claude Connect. Default deny writes.
+>
+> SkillSpector is step 2. It is not a sandbox and it cannot certify an HTTPS connector it cannot clone. NVIDIA says defense-in-depth; that matches what we see.
 
-```
-uv tool install --force 'skillspector[mcp] @ git+https://github.com/NVIDIA/SkillSpector.git'
-claude mcp add skillspector -- skillspector mcp
-```
+---
 
-One tool: `scan_skill`. Gate the install on high/critical. `--no-llm` keeps contents on the machine.
+## Shorter variant (r/mcp)
 
-How to use it **with** other MCP servers, not instead of them:
+**Title:** Anyone using SkillSpector on MCP servers, or only on `SKILL.md`?
 
-1. Discovery MCP = search (read-only). Example we run: https://www.influzer.ai/mcp/discovery
-2. SkillSpector MCP = scan cloneable source.
-3. `tools/list` handshake on the live endpoint.
-4. Human allowlist before `.cursor/mcp.json` / Claude Connect.
+NVIDIA SkillSpector scans skill packs (static, optional LLM). Also speaks MCP via `scan_skill`.
 
-A green SkillSpector score is not “this HTTPS connector is safe.” Most production MCPs have no cloneable tree. A GitHub MCP that writes issues will look “excessive” to a skill linter — that’s the product, not malware.
+We run a directory (influzer.ai) and are deliberately *not* stamping scores on listings — no source tree for most remote MCPs, and write-capable servers look “too agency” to a skill linter.
 
-We will not put a SAFE chip on influzer.ai listings. Poison-pattern review on submissions (hidden Unicode, HTML comments, instruction-override copy) + live ingest, yes. Fake certification, no.
+Genuinely asking:
 
-Scan files you can clone. Handshake the process you’ll call. Never let search become install.
+- Are you running it in CI, as MCP, or not at all?
+- Would you scan an MCP GitHub before it hits `mcp.json`?
+- What’s the miss: hosted endpoints, false positives, score theater?
+
+Repo: https://github.com/NVIDIA/SkillSpector
 
 ---
 
 ## Do not
 
+- Answer the three questions in the same post.
+- Lead with Influzer Discovery setup steps.
 - Crosspost the identical body to five subs in one hour.
-- Lead with “we launched.” Lead with the split (skill scan ≠ MCP handshake).
 - Claim Influzer “uses SkillSpector on every listing.” We don’t. We use SkillSpector-shaped poison checks on text we already store.
 - Call a 0–20 score “verified” or “NVIDIA-safe.”
+- Drop the follow-up playbook as the first comment. Let other people talk first.
