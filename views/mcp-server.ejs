@@ -63,7 +63,11 @@
             <div class="mcp-detail-header__body">
               <h1><%= server.name %></h1>
               <div class="mcp-detail-badges">
-                <span class="mcp-pill mcp-pill--cat"><%= server.category %></span>
+                <% if (typeof categorySlug !== 'undefined' && categorySlug) { %>
+                  <a class="mcp-pill mcp-pill--cat" href="/mcp/categories/<%= categorySlug %>"><%= server.category %></a>
+                <% } else { %>
+                  <span class="mcp-pill mcp-pill--cat"><%= server.category %></span>
+                <% } %>
                 <span class="mcp-pill"><%= server.transportBadge || (server.isRemote ? 'Remote' : 'Local') %></span>
                 <% if (server.official) { %><span class="mcp-pill mcp-pill--official">Official</span><% } %>
                 <% if (inTop100) { %><span class="mcp-pill">Top 100</span><% } %>
@@ -213,7 +217,13 @@
             </div>
             <div class="mcp-glance__row">
               <span class="mcp-glance__key">Category</span>
-              <span class="mcp-glance__val"><%= server.category %></span>
+              <span class="mcp-glance__val">
+                <% if (typeof categorySlug !== 'undefined' && categorySlug) { %>
+                  <a href="/mcp/categories/<%= categorySlug %>"><%= server.category %></a>
+                <% } else { %>
+                  <%= server.category %>
+                <% } %>
+              </span>
             </div>
             <div class="mcp-glance__row">
               <span class="mcp-glance__key">Tools indexed</span>
