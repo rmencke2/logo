@@ -11,6 +11,7 @@ const { initializeAuth, requireAuth } = require('../auth');
 const authRoutes = require('../routes/auth');
 const { shouldBypassRateLimit, getSessionSecret } = require('../utils/rateLimitBypass');
 const { csrfTokenHandler, requireCsrfToken } = require('../middleware/csrf');
+const { getPublicSiteOrigin } = require('../utils/siteUrl');
 
 require('dotenv').config();
 
@@ -25,6 +26,18 @@ async function initializeCore(app) {
 
   // Increase server timeout for long-running video processing tasks
   app.timeout = 600000; // 10 minutes in milliseconds
+
+  // Canonical host early: apex → www. Skip /auth so Google/Facebook can
+  // finish on whichever callback host is registered in the provider console.
+  app.use((req, res, next) => {
+    const host = String(req.hostname || '')
+      .toLowerCase()
+      .replace(/:\d+$/, '');
+    if (host === 'influzer.ai' && !String(req.path || '').startsWith('/auth')) {
+      return res.redirect(301, `${getPublicSiteOrigin()}${req.originalUrl || '/'}`);
+    }
+    return next();
+  });
 
   // Security middleware — CSP allows inline scripts/styles used by EJS pages and admin.html
   app.use(
@@ -98,20 +111,32 @@ async function initializeCore(app) {
 
   // Session configuration with persistent SQLite store
   const SQLiteSessionStore = require('../sessionStore');
+  const isProd = process.env.NODE_ENV === 'production';
+  // Share the session across apex + www. Host-only cookies caused an admin
+  // login loop after apex → www redirects (OAuth callback still hits apex when
+  // BASE_URL is https://influzer.ai).
+  const cookieDomain =
+    process.env.COOKIE_DOMAIN ||
+    (isProd ? '.influzer.ai' : undefined);
   const sessionConfig = {
     name: 'connect.sid',
     secret: getSessionSecret(),
     resave: false, // Don't resave unchanged sessions
     saveUninitialized: false, // Don't save uninitialized sessions
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProd,
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       sameSite: 'lax',
       path: '/',
+      ...(cookieDomain ? { domain: cookieDomain } : {}),
     },
     store: new SQLiteSessionStore(), // Use persistent SQLite store instead of MemoryStore
   };
+
+  if (cookieDomain) {
+    console.log(`🍪 Session cookie domain: ${cookieDomain}`);
+  }
 
   app.use(session(sessionConfig));
 

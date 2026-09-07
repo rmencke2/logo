@@ -54,9 +54,9 @@ function initializeAdminService(app) {
         }
       }
       
-      // If still not authenticated, redirect to login
+      // If still not authenticated, redirect to login on the canonical host
       if (!req.user || !req.user.id) {
-        return res.redirect('/login?redirect=/admin');
+        return res.redirect('https://www.influzer.ai/login?redirect=/admin');
       }
     }
     
