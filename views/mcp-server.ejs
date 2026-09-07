@@ -11,6 +11,7 @@
       ogDescription: server ? server.description : 'MCP server not found in the Influzer.ai directory.',
       ogUrl: server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp',
       ogType: 'website',
+      noindex: typeof noindex !== 'undefined' ? noindex : !server,
     }) %>
     <%- include('partials/favicon-links') %>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

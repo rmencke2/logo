@@ -13,6 +13,7 @@ const SITE_DEFAULT_OG_IMAGE = `${SITE_BASE_URL}/images/blog/ai-weekly-operating-
 const {
   getAllMcpServers,
   getTop100McpServers,
+  getSitemapMcpServers,
   getMcpCategories,
   findMcpServerBySlug,
   getMcpIconEmoji,
@@ -538,8 +539,24 @@ function initializeStaticService(app) {
     next();
   });
 
+  // Canonical host: apex → www (avoids "Alternate page with proper canonical" in GSC)
+  app.use((req, res, next) => {
+    const host = String(req.hostname || '')
+      .toLowerCase()
+      .replace(/:\d+$/, '');
+    if (host === 'influzer.ai') {
+      return res.redirect(301, `https://www.influzer.ai${req.originalUrl || '/'}`);
+    }
+    return next();
+  });
+
   app.get('/favicon-generator', (req, res) => {
-    res.redirect(302, '/logo-generator#favicon');
+    res.redirect(301, '/logo-generator#favicon');
+  });
+
+  // public/index.html is the logo-generator app; do not leave it crawlable at /index.html
+  app.get('/index.html', (req, res) => {
+    res.redirect(301, '/logo-generator');
   });
 
   app.get('/login', (req, res) => {
@@ -628,7 +645,7 @@ function initializeStaticService(app) {
   app.get('/favicon.ico', (req, res) => {
     const svgFavicon = path.join(__dirname, '..', 'public', 'favicon.svg');
     if (fs.existsSync(svgFavicon)) {
-      res.redirect('/favicon.svg');
+      res.redirect(301, '/favicon.svg');
     } else {
       res.status(204).end();
     }
@@ -1057,6 +1074,7 @@ ${itemsXml}
         discoveryPromo: getDiscoveryPromo(),
         assetVersion,
         navPath: req.path,
+        noindex: true,
       });
     }
     return res.render('mcp-server', {
@@ -1165,7 +1183,7 @@ ${itemsXml}
     }));
     const lastUpdatedRaw = getMcpLastUpdated().iso;
     const mcpLastMod = lastUpdatedRaw ? String(lastUpdatedRaw).slice(0, 10) : '2026-06-03';
-    const mcpUrls = getAllMcpServers().map((s) => ({
+    const mcpUrls = getSitemapMcpServers().map((s) => ({
       loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
       lastmod: mcpLastMod,
       changefreq: 'monthly',

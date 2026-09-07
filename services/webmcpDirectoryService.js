@@ -560,7 +560,8 @@ function getWebmcpSitemapEntries() {
       priority: '0.7',
     });
   }
-  for (const s of sites) {
+  // Only sites with tools — empty stubs inflate crawl budget / "crawled not indexed"
+  for (const s of sites.filter((site) => (site.tool_count || 0) > 0 || (site.tools || []).length > 0)) {
     entries.push({
       loc: `${SITE_BASE}/webmcp/sites/${s.host}`,
       lastmod: String(s.last_seen_at || lastmod).slice(0, 10),
