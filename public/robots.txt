@@ -4,9 +4,18 @@ Allow: /
 # Sitemap
 Sitemap: https://www.influzer.ai/sitemap.xml
 
-# Disallow admin and private areas
+# Disallow admin, private, and non-HTML surfaces
 Disallow: /admin
 Disallow: /auth/
 Disallow: /api/
 Disallow: /generated_img/
+Disallow: /login
+Disallow: /reset-password
+Disallow: /mcp/my-listings
+Disallow: /preview/
+
+# MCP JSON endpoint (not a webpage). Keep the HTML setup guides crawlable.
+Disallow: /mcp/discovery
+Allow: /mcp/discovery/setup
+Allow: /mcp/discovery/starters
 

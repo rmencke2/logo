@@ -263,6 +263,22 @@ function getTop100McpServers() {
   return top100Servers.map((s) => attachSetupInfo(s));
 }
 
+/**
+ * Servers worth putting in sitemap.xml.
+ * Full catalog (~13k) floods crawl budget and drives "Crawled - currently not indexed".
+ * Prefer Top 100, indexed-tool listings, curated manual entries, and featured servers.
+ */
+function getSitemapMcpServers() {
+  const topSlugs = new Set(getTop100McpServers().map((s) => s.slug));
+  return getAllMcpServers().filter(
+    (s) =>
+      topSlugs.has(s.slug) ||
+      hasIndexedTools(s) ||
+      s.source === 'manual' ||
+      Boolean(s.featured),
+  );
+}
+
 function getMcpCatalogTotals() {
   const { allServers, top100Servers } = loadCatalog();
   return {
@@ -419,6 +435,7 @@ function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {
 module.exports = {
   getAllMcpServers,
   getTop100McpServers,
+  getSitemapMcpServers,
   getMcpCatalogTotals,
   getMcpCategories,
   findMcpServerBySlug,
@@ -430,6 +447,7 @@ module.exports = {
   getMcpHeroStats,
   searchMcpServers,
   isInTop100,
+  hasIndexedTools,
   clearMcpCache,
   mergeManualInto,
 };
