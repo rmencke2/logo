@@ -539,12 +539,13 @@ function initializeStaticService(app) {
     next();
   });
 
-  // Canonical host: apex → www (avoids "Alternate page with proper canonical" in GSC)
+  // Canonical host: apex → www (avoids "Alternate page with proper canonical" in GSC).
+  // /auth is handled in core.js (skipped there so OAuth callbacks are not interrupted).
   app.use((req, res, next) => {
     const host = String(req.hostname || '')
       .toLowerCase()
       .replace(/:\d+$/, '');
-    if (host === 'influzer.ai') {
+    if (host === 'influzer.ai' && !String(req.path || '').startsWith('/auth')) {
       return res.redirect(301, `https://www.influzer.ai${req.originalUrl || '/'}`);
     }
     return next();

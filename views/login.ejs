@@ -160,8 +160,11 @@
           }
         });
 
-        async function afterAuth() {
-          window.location.href = redirectTo;
+        async function afterAuth(data) {
+          const target =
+            (data && data.redirectTo) ||
+            (redirectTo.startsWith('/') ? redirectTo : '/');
+          window.location.href = target;
         }
 
         loginForm.addEventListener('submit', async (e) => {
@@ -177,6 +180,7 @@
               body: JSON.stringify({
                 email: document.getElementById('loginEmail').value.trim(),
                 password: document.getElementById('loginPassword').value,
+                redirect: redirectTo,
               }),
             });
             const data = await res.json();
@@ -184,7 +188,7 @@
               throw new Error(data.error || 'Login failed');
             }
             showStatus('Signed in. Redirecting…', 'success');
-            setTimeout(afterAuth, 400);
+            setTimeout(() => afterAuth(data), 400);
           } catch (err) {
             showStatus(err.message || 'Login failed', 'error');
           } finally {

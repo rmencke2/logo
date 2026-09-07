@@ -10,9 +10,22 @@ const { hashPassword, comparePassword } = require('../auth');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../emailService');
 const { abuseProtectionMiddleware, logUsage, authRateLimiter } = require('../abuseProtection');
 const { clientErrorPayload } = require('../utils/safeError');
+const { absoluteSiteUrl, isSafeInternalRedirect } = require('../utils/siteUrl');
 const crypto = require('crypto');
 
 const router = express.Router();
+
+function saveSession(req) {
+  return new Promise((resolve, reject) => {
+    req.session.save((err) => (err ? reject(err) : resolve()));
+  });
+}
+
+function loginWithPassport(req, user) {
+  return new Promise((resolve, reject) => {
+    req.login(user, (err) => (err ? reject(err) : resolve()));
+  });
+}
 
 // Helper to get client IP
 function getClientIP(req) {
@@ -172,24 +185,18 @@ router.post(
       const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
       await db.createSession(user.id, sessionId, expiresAt.toISOString());
 
+      // Establish Passport session so requireAuth / admin APIs see req.user
+      await loginWithPassport(req, user);
       req.session.userId = user.id;
       req.session.sessionId = sessionId;
-      req.user = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        subscription_tier: user.subscription_tier,
-        email_verified: !!user.email_verified,
-      };
 
-      // Explicitly save session before sending response
-      req.session.save((saveErr) => {
-        if (saveErr) {
-          console.error('❌ Session save error during login:', saveErr);
-        } else {
-          console.log(`✅ Login session saved - User ID: ${user.id}, Session ID: ${req.sessionID}`);
-        }
-      });
+      try {
+        await saveSession(req);
+        console.log(`✅ Login session saved - User ID: ${user.id}, Session ID: ${req.sessionID}`);
+      } catch (saveErr) {
+        console.error('❌ Session save error during login:', saveErr);
+        return res.status(500).json({ error: 'Login failed — could not save session' });
+      }
 
       res.json({
         success: true,
@@ -202,6 +209,9 @@ router.post(
           emailVerified: !!user.email_verified,
         },
         needsVerification: !user.email_verified,
+        redirectTo: absoluteSiteUrl(
+          isSafeInternalRedirect(req.body?.redirect) ? req.body.redirect : '/',
+        ),
       });
     } catch (err) {
       console.error('Login error:', err);
@@ -473,10 +483,16 @@ router.post(
 // OAuth routes
 router.get('/google', (req, res, next) => {
   const redirect = String(req.query.redirect || '').trim();
-  if (redirect.startsWith('/') && !redirect.startsWith('//')) {
+  if (isSafeInternalRedirect(redirect)) {
     req.session.oauthRedirect = redirect;
   }
-  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  // Persist oauthRedirect before leaving for Google
+  req.session.save((saveErr) => {
+    if (saveErr) {
+      console.error('❌ Failed to save oauthRedirect before Google auth:', saveErr);
+    }
+    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  });
 });
 
 router.get(
@@ -487,7 +503,7 @@ router.get(
       // Check if user is authenticated
       if (!req.user || !req.user.id) {
         console.error('❌ Google OAuth callback: req.user is missing');
-        return res.redirect('/?auth_error=user_not_found');
+        return res.redirect(absoluteSiteUrl('/?auth_error=user_not_found'));
       }
 
       // Create database session first
@@ -512,32 +528,33 @@ router.get(
         console.log(`🔐 Session cookie name: ${req.session.cookie.name}`);
         console.log(`🔐 Session cookie secure: ${req.session.cookie.secure}`);
         console.log(`🔐 Session cookie sameSite: ${req.session.cookie.sameSite}`);
+        console.log(`🔐 Session cookie domain: ${req.session.cookie.domain || '(host-only)'}`);
         
         // Explicitly save the session and wait for it to complete
         // This ensures the cookie is set before redirecting
         req.session.save((saveErr) => {
           if (saveErr) {
             console.error('❌ Session save error:', saveErr);
-            return res.redirect('/?auth_error=session_error');
+            return res.redirect(absoluteSiteUrl('/?auth_error=session_error'));
           }
           
           console.log(`✅ Session saved - Session ID: ${req.sessionID}`);
           console.log(`✅ User ID in session: ${req.session.userId}`);
           
-          // Check if cookie header will be set
-          // Note: The cookie is set by Express-session middleware, not manually
-          // It should be set automatically when the response is sent
-          const redirectTo = req.session.oauthRedirect || '/';
+          const redirectTo = isSafeInternalRedirect(req.session.oauthRedirect)
+            ? req.session.oauthRedirect
+            : '/';
           delete req.session.oauthRedirect;
-          res.redirect(redirectTo);
+          // Always land on www so the browser keeps one origin after apex OAuth callbacks
+          res.redirect(absoluteSiteUrl(redirectTo));
         });
       } catch (err) {
         console.error('❌ Database error:', err);
-        res.redirect('/?auth_error=server_error');
+        res.redirect(absoluteSiteUrl('/?auth_error=server_error'));
       }
     } catch (err) {
       console.error('❌ Google OAuth callback error:', err);
-      res.redirect('/?auth_error=server_error');
+      res.redirect(absoluteSiteUrl('/?auth_error=server_error'));
     }
   }
 );
@@ -552,7 +569,7 @@ router.get(
       // Check if user is authenticated
       if (!req.user || !req.user.id) {
         console.error('❌ Facebook OAuth callback: req.user is missing');
-        return res.redirect('/?auth_error=user_not_found');
+        return res.redirect(absoluteSiteUrl('/?auth_error=user_not_found'));
       }
 
       // Create session
@@ -569,14 +586,14 @@ router.get(
       req.session.save((err) => {
         if (err) {
           console.error('❌ Session save error:', err);
-          return res.redirect('/?auth_error=session_error');
+          return res.redirect(absoluteSiteUrl('/?auth_error=session_error'));
         }
         console.log(`✅ Facebook OAuth success for user: ${req.user.id}`);
-        res.redirect('/?auth_success=true');
+        res.redirect(absoluteSiteUrl('/?auth_success=true'));
       });
     } catch (err) {
       console.error('❌ Facebook OAuth callback error:', err);
-      res.redirect('/?auth_error=server_error');
+      res.redirect(absoluteSiteUrl('/?auth_error=server_error'));
     }
   }
 );
