@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-06T11:38:13.016Z",
+  "generated_at": "2026-09-07T12:37:12.798Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-09-05T10:38:00.906Z",
+  "catalog_generated_at": "2026-09-06T11:38:13.136Z",
   "summary": {
     "checked": 289,
     "skipped_manual": 108,
@@ -10,10 +10,10 @@
     "skipped_stdio": 0,
     "skipped_other": 0,
     "unchanged": 288,
-    "tools_changed": 1,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 0,
+    "auth_required_kept": 1,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 12772,
@@ -25,21 +25,6 @@
     "with_tools_before": 390,
     "with_tools_after": 390
   },
-  "changes": [
-    {
-      "slug": "cturkieh-france-data",
-      "name": "france-data",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 36,
-      "afterToolCount": 36,
-      "added": [],
-      "removed": [],
-      "changed": [
-        "data_freshness"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
