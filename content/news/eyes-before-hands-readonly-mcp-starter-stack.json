@@ -1,0 +1,19 @@
+{
+  "slug": "eyes-before-hands-readonly-mcp-starter-stack",
+  "title": "Eyes before hands — ship a read-only MCP stack first",
+  "date": "2026-09-09",
+  "excerpt": "Write-capable MCP demos die in security review. Start with Discovery, docs, screenshots, and read-only DB access — then add hands with a named owner.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "MCP",
+    "Security",
+    "Read-Only",
+    "Governance",
+    "Discovery",
+    "AI Agents"
+  ],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/insights/eyes-before-hands-readonly-mcp-starter-stack",
+  "relatedInsightSlug": "eyes-before-hands-readonly-mcp-starter-stack",
+  "contentHtml": "<p><strong>Eyes before hands.</strong> The default MCP pilot still wires GitHub-write and a database connector in week one, then freezes when security asks what the agent can mutate. Flip the order.</p><p>Ship a read-only stack first: <a href=\"/mcp/discovery/setup\">Influzer Discovery</a> (search, not install), docs lookup, screenshot/capture MCP, a DB <em>read</em> role or replica, and repo-scoped read. That answers Monday questions without a write exception. Add one hand later — draft PR, sandbox ticket — only when the eyes are already in daily use and the allowlist row exists in git.</p><p>Full starter stack, demoware filter, and 90-minute rollout: <a href=\"/insights/eyes-before-hands-readonly-mcp-starter-stack\">Eyes before hands</a>.</p>"
+}
