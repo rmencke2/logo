@@ -108,6 +108,11 @@
   font-weight: 600;
   color: var(--hp-accent-fg);
   background: var(--hp-accent-tint);
+  text-decoration: none;
+}
+
+a.mcp-pill--cat:hover {
+  filter: brightness(0.95);
 }
 
 .mcp-pill--official {
