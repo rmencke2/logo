@@ -43,6 +43,8 @@ migration-tool/.venv/
 
 # Docker
 Dockerfile*
+# Cloud Agent environment Dockerfile must be tracked
+!.cursor/Dockerfile
 
 # Database files
 *.db
