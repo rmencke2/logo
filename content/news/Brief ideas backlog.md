@@ -129,7 +129,7 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - **Angle:** Follow-on to Okta brief — what IT will approve that engineering already ships.
 - **Source:** Anthropic
 - **Pairs with:** `enterprise-managed-mcp-auth-changes-the-game`
-- **Status:** ⬜todo
+- **Status:** ✅ shipped 2026-09-12 (`paste-a-key-is-dead-mcp-auth-checklist-it-will-sign`)
 
 #### 9. Policy before plugins
 - **Angle:** Allowlisted MCP servers + no arbitrary `npx` in prod agents.
@@ -173,4 +173,4 @@ Related: [[MCP]] · Directory: https://www.influzer.ai/mcp · Publish path: `con
 - One MCP, three surfaces — Claude, ChatGPT, Cursor
 - Claude Code CLI vs Desktop connectors
 - Policy before plugins: allowlists for agent tools
-- From paste-a-key to IdP: MCP auth grows up
+- ~~From paste-a-key to IdP: MCP auth grows up~~ → shipped as Paste-a-Key Is Dead checklist
