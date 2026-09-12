@@ -1,0 +1,19 @@
+{
+  "slug": "paste-a-key-is-dead-mcp-auth-checklist-it-will-sign",
+  "title": "Paste-a-key is dead — the MCP auth checklist IT will sign",
+  "date": "2026-09-12",
+  "excerpt": "IdP-managed MCP auth exists. Most pilots still use personal tokens. Here is the one-page packet that gets a connector approved.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "MCP",
+    "Enterprise",
+    "Auth",
+    "IdP",
+    "Security",
+    "Governance"
+  ],
+  "sourceName": "Influzer.ai",
+  "sourceUrl": "https://www.influzer.ai/insights/paste-a-key-is-dead-mcp-auth-checklist-it-will-sign",
+  "relatedInsightSlug": "paste-a-key-is-dead-mcp-auth-checklist-it-will-sign",
+  "contentHtml": "<p><strong>Paste-a-key is dead</strong> as an enterprise approval story. IdP-managed MCP connectors (Claude + Okta and the open auth direction) already answer who issues credentials and how offboarding works. What teams still miss is the handoff packet.</p><p>Bring one page: server slug, named owner, auth lane (IdP / org OAuth / local-only), IdP groups, read vs write class, environments, kill switch, and a <code>tools/list</code> snapshot. Prefer eyes before hands. Keep Discovery for search-not-install. Reject personal PATs in shared <code>mcp.json</code>.</p><p>Full checklist and 48-hour path: <a href=\"/insights/paste-a-key-is-dead-mcp-auth-checklist-it-will-sign\">Paste-a-key is dead</a>.</p>"
+}
