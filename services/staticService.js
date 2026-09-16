@@ -821,8 +821,9 @@ ${itemsXml}
       scope === 'top'
         ? true
         : !(req.query.tools_only === '0' || req.query.tools_only === 'false');
+    const quality = String(req.query.quality || '').trim().toLowerCase();
     res.setHeader('Cache-Control', scope === 'top' ? 'public, max-age=7200' : 'public, max-age=3600');
-    res.json(getMcpCatalogPayload(scope, { toolsOnly }));
+    res.json(getMcpCatalogPayload(scope, { toolsOnly, quality }));
   });
 
   app.get('/api/mcp/preview', (req, res) => {

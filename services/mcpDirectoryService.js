@@ -7,6 +7,7 @@ const path = require('path');
 const { pickTop100, TOP100_SIZE } = require('../scripts/utils/normalize');
 const { attachSetupInfo } = require('../scripts/utils/setup-info');
 const { attachBranding } = require('../utils/mcpBranding');
+const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
 
 const GENERATED_PATH = path.join(__dirname, '..', 'data', 'servers-generated.json');
 const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
@@ -15,6 +16,7 @@ const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json'
 const LEGACY_MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers.json');
 const DISCOVERED_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-discovered.json');
 const LAST_UPDATED_PATH = path.join(__dirname, '..', 'data', 'last-updated.json');
+const VALIDATION_STATE_PATH = path.join(__dirname, '..', 'data', 'mcp-validation-state.json');
 
 const ICON_EMOJI = {
   folder: '📁',
@@ -65,10 +67,28 @@ const STANDARD_CATEGORIES = [
 ];
 
 let cached;
+let validationStateCache;
 
 function readJsonIfExists(filePath) {
   if (!fs.existsSync(filePath)) return null;
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function loadValidationStateBySlug() {
+  if (validationStateCache) return validationStateCache;
+  const data = readJsonIfExists(VALIDATION_STATE_PATH);
+  validationStateCache = data?.servers && typeof data.servers === 'object' ? data.servers : {};
+  return validationStateCache;
+}
+
+function attachQuality(server) {
+  if (!server) return server;
+  if (server.quality) return server;
+  const entry = loadValidationStateBySlug()[server.slug] || null;
+  return {
+    ...server,
+    quality: computeQualitySignals(server, entry),
+  };
 }
 
 function loadPinnedSlugs() {
@@ -254,13 +274,15 @@ function getMcpLastUpdated() {
 
 function getAllMcpServers() {
   return sortServers(
-    loadCatalog().allServers.filter((s) => !s.hidden).map((s) => attachSetupInfo(s)),
+    loadCatalog()
+      .allServers.filter((s) => !s.hidden)
+      .map((s) => attachQuality(attachSetupInfo(s))),
   );
 }
 
 function getTop100McpServers() {
   const { top100Servers } = loadCatalog();
-  return top100Servers.map((s) => attachSetupInfo(s));
+  return top100Servers.map((s) => attachQuality(attachSetupInfo(s)));
 }
 
 /**
@@ -293,14 +315,18 @@ function getMcpCategories() {
 
 function findMcpServerBySlug(slug) {
   const server = getAllMcpServers().find((s) => s.slug === slug || s.id === slug);
-  return server ? attachBranding(server) : null;
+  return server ? attachBranding(attachQuality(server)) : null;
 }
 
 function withDisplay(servers) {
-  return servers.map((s) => attachBranding({
-    ...s,
-    iconEmoji: getMcpIconEmoji(s.icon),
-  }));
+  return servers.map((s) =>
+    attachBranding(
+      attachQuality({
+        ...s,
+        iconEmoji: getMcpIconEmoji(s.icon),
+      }),
+    ),
+  );
 }
 
 function getMcpHeroStats() {
@@ -317,12 +343,13 @@ function getMcpHeroStats() {
 
 /**
  * @param {'top' | 'all'} scope
- * @param {{ toolsOnly?: boolean }} [opts]
+ * @param {{ toolsOnly?: boolean, quality?: string }} [opts]
  */
 function getMcpCatalogPayload(scope = 'all', opts = {}) {
   const catalog = loadCatalog();
   const lastUpdated = getMcpLastUpdated();
   const toolsOnly = opts.toolsOnly ?? scope === 'top';
+  const qualityFilter = String(opts.quality || '').trim().toLowerCase();
   let servers = scope === 'top' ? getTop100McpServers() : getAllMcpServers();
 
   if (scope === 'top') {
@@ -331,19 +358,84 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
     servers = servers.filter((s) => hasIndexedTools(s));
   }
 
+  if (qualityFilter && qualityFilter !== 'all') {
+    servers = servers.filter((s) => matchesQualityFilter(attachQuality(s), qualityFilter));
+  }
+
   const withToolsCount = getAllMcpServers().filter((s) => hasIndexedTools(s)).length;
+  const displayed = withDisplay(servers);
 
   return {
     scope,
     tools_only: toolsOnly,
+    quality_filter: qualityFilter || 'all',
     categories: catalog.categories,
-    servers: withDisplay(servers),
-    total: servers.length,
+    servers: displayed,
+    total: displayed.length,
     total_catalog: catalog.allServers.length,
     total_with_tools: withToolsCount,
+    quality_counts: countQualityBuckets(scope === 'top' ? getTop100McpServers() : getAllMcpServers()),
     generated_at: catalog.generatedAt,
     last_updated: lastUpdated.display,
   };
+}
+
+/**
+ * @param {object} server
+ * @param {string} filter
+ */
+function matchesQualityFilter(server, filter) {
+  const q = server.quality || computeQualitySignals(server, null);
+  switch (filter) {
+    case 'indexed':
+    case 'tools_indexed':
+      return Boolean(q.tools_indexed);
+    case 'ready':
+      return q.demoware_tier === 'ready';
+    case 'thin':
+      return q.demoware_tier === 'thin';
+    case 'unverified':
+      return q.demoware_tier === 'unverified';
+    case 'live_ok':
+    case 'live':
+      return q.live_status === 'live_ok';
+    case 'auth_required':
+    case 'auth':
+      return q.live_status === 'auth_required' || q.auth_gate === 'required';
+    case 'probed':
+      return q.live_status === 'live_ok' || q.live_status === 'auth_required' || q.live_status === 'unreachable';
+    case 'not_probed':
+      return q.live_status === 'not_probed' || q.live_status === 'local_unprobed';
+    default:
+      return true;
+  }
+}
+
+function countQualityBuckets(servers) {
+  const counts = {
+    ready: 0,
+    indexed: 0,
+    thin: 0,
+    unverified: 0,
+    live_ok: 0,
+    auth_required: 0,
+    probed: 0,
+    tools_indexed: 0,
+  };
+  for (const s of servers) {
+    const q = s.quality || computeQualitySignals(s, null);
+    if (q.demoware_tier === 'ready') counts.ready += 1;
+    if (q.demoware_tier === 'indexed') counts.indexed += 1;
+    if (q.demoware_tier === 'thin') counts.thin += 1;
+    if (q.demoware_tier === 'unverified') counts.unverified += 1;
+    if (q.live_status === 'live_ok') counts.live_ok += 1;
+    if (q.live_status === 'auth_required') counts.auth_required += 1;
+    if (q.live_status === 'live_ok' || q.live_status === 'auth_required' || q.live_status === 'unreachable') {
+      counts.probed += 1;
+    }
+    if (q.tools_indexed) counts.tools_indexed += 1;
+  }
+  return counts;
 }
 
 function getMcpHomepagePreview(limit = 6) {
@@ -376,6 +468,7 @@ function isInTop100(slug) {
 
 function clearMcpCache() {
   cached = null;
+  validationStateCache = null;
 }
 
 function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {
@@ -404,6 +497,7 @@ function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {
     const tokenHit = tokens.length > 0 && tokens.every((part) => hay.includes(part));
     if (!hay.includes(query) && !nameHit && !slugHit && !tokenHit) continue;
 
+    const withQ = attachQuality(server);
     matches.push({
       slug: server.slug,
       name: server.name,
@@ -414,6 +508,17 @@ function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {
         .slice(0, 8)
         .map((t) => (typeof t === 'string' ? t : t.name))
         .filter(Boolean),
+      quality: withQ.quality
+        ? {
+            live_status: withQ.quality.live_status,
+            auth_gate: withQ.quality.auth_gate,
+            demoware_tier: withQ.quality.demoware_tier,
+            tools_indexed: withQ.quality.tools_indexed,
+            demoware_tier_label: withQ.quality.demoware_tier_label,
+            live_status_label: withQ.quality.live_status_label,
+            safety_badge: null,
+          }
+        : null,
       url: `https://www.influzer.ai/mcp/${server.slug}`,
     });
     if (matches.length >= safeLimit) break;
@@ -450,4 +555,6 @@ module.exports = {
   hasIndexedTools,
   clearMcpCache,
   mergeManualInto,
+  attachQuality,
+  matchesQualityFilter,
 };

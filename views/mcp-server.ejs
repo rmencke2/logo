@@ -71,6 +71,11 @@
                 <% if (server.tools && server.tools.length) { %>
                   <span class="mcp-pill mcp-pill--mono"><%= server.tools.length %> tool<%= server.tools.length === 1 ? '' : 's' %></span>
                 <% } %>
+                <% if (server.quality && server.quality.badges) { %>
+                  <% server.quality.badges.forEach(function(b) { %>
+                    <span class="mcp-pill mcp-pill--quality mcp-pill--quality-<%= b.kind %>"><%= b.label %></span>
+                  <% }); %>
+                <% } %>
               </div>
               <p class="mcp-detail-desc"><%= server.description %></p>
               <div class="mcp-detail-actions">
@@ -164,6 +169,32 @@
             </div>
           </section>
 
+          <% if (server.quality) { %>
+            <section class="mcp-section mcp-quality-panel">
+              <h2>Listing quality</h2>
+              <p class="mcp-quality-panel__lead">Observable facts from our catalog and daily probe — not a safe-to-install badge.</p>
+              <dl class="mcp-quality-grid">
+                <div>
+                  <dt>Surface</dt>
+                  <dd><%= server.quality.demoware_tier_label %></dd>
+                </div>
+                <div>
+                  <dt>Live handshake</dt>
+                  <dd><%= server.quality.live_status_label %></dd>
+                </div>
+                <div>
+                  <dt>Auth gate</dt>
+                  <dd><%= server.quality.auth_gate_label %></dd>
+                </div>
+                <div>
+                  <dt>Tools source</dt>
+                  <dd><%= server.quality.tools_source_label %></dd>
+                </div>
+              </dl>
+              <p class="mcp-quality-panel__note"><%= server.quality.note %></p>
+            </section>
+          <% } %>
+
           <section class="mcp-section">
             <div class="mcp-section__head">
               <h2>Tools</h2>
@@ -180,9 +211,12 @@
                   </li>
                 <% }); %>
               </ul>
+              <% if (server.quality && server.quality.tools_source_label) { %>
+                <p class="mcp-quality-footnote">Tool source: <%= server.quality.tools_source_label %><% if (server.quality.probed_at) { %> · last probed <%= new Date(server.quality.probed_at).toISOString().slice(0, 10) %><% } %></p>
+              <% } %>
             <% } else { %>
               <p style="color:var(--hp-muted2);font-size:14px;">
-                Tool names are not listed in our registry for this server. Connect it in your MCP client to see the live tool list.
+                No indexed tools yet — treat this as an unverified listing. Handshake the live <code class="mcp-inline-code">tools/list</code> before you connect.
               </p>
             <% } %>
           </section>
@@ -220,10 +254,25 @@
               <span class="mcp-glance__key">Tools indexed</span>
               <span class="mcp-glance__val"><%= (server.tools && server.tools.length) || 0 %></span>
             </div>
-            <div class="mcp-glance__row">
-              <span class="mcp-glance__key">Status</span>
-              <span class="mcp-glance__val mcp-glance__val--ok">● Validated daily</span>
-            </div>
+            <% if (server.quality) { %>
+              <div class="mcp-glance__row">
+                <span class="mcp-glance__key">Surface</span>
+                <span class="mcp-glance__val"><%= server.quality.demoware_tier_label %></span>
+              </div>
+              <div class="mcp-glance__row">
+                <span class="mcp-glance__key">Handshake</span>
+                <span class="mcp-glance__val"><%= server.quality.live_status_label %></span>
+              </div>
+              <div class="mcp-glance__row">
+                <span class="mcp-glance__key">Auth gate</span>
+                <span class="mcp-glance__val"><%= server.quality.auth_gate_label %></span>
+              </div>
+            <% } else { %>
+              <div class="mcp-glance__row">
+                <span class="mcp-glance__key">Status</span>
+                <span class="mcp-glance__val">Catalog listing</span>
+              </div>
+            <% } %>
           </div>
 
           <%- include('partials/registry-newsletter', { newsletterSource: 'mcp-server-aside', newsletterId: 'newsletter' }) %>

@@ -13,6 +13,7 @@ const {
 } = require('./mcpDirectoryService');
 const { getServersForTopic } = require('./mcpTopicService');
 const { getAllMcpTopics, getMcpTopicBySlug } = require('../data/mcp-topics');
+const { qualityRankBoost, summarizeQuality } = require('../scripts/utils/mcp-quality');
 
 const DEFAULT_LIMIT = 8;
 const MAX_LIMIT = 15;
@@ -43,7 +44,7 @@ const TOOL_DEFINITIONS = [
   {
     name: 'search_mcp_servers',
     description:
-      'Search the Influzer.ai MCP server directory by name, category, or tool capability (e.g. "postgres", "scrape", "create_issue"). Returns ranked summaries with links to full setup pages.',
+      'Search the Influzer.ai MCP server directory by name, category, or tool capability (e.g. "postgres", "scrape", "create_issue"). Returns ranked summaries with honest quality signals (tools indexed, live handshake, auth gate) — never a safe-to-install badge.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -175,6 +176,7 @@ function scoreSearch(server, query) {
   score += Math.min(server.stars || 0, 5000) / 500;
   score += Math.min((server.tools?.length || 0), 20) * 0.5;
   if (isInTop100(server.slug)) score += 6;
+  score += qualityRankBoost(server.quality);
 
   return score;
 }
@@ -191,6 +193,7 @@ function summarizeServer(server, { includeTools = true } = {}) {
     transport_label: transportLabel(server.transport),
     tool_count: tools.length,
     in_top_100: isInTop100(server.slug),
+    quality: summarizeQuality(server.quality),
     page_url: `${SITE_BASE}/mcp/${server.slug}`,
     directory: 'https://www.influzer.ai/mcp',
   };
@@ -220,6 +223,8 @@ function detailServer(server) {
       name: t.name,
       description: t.description || '',
     })),
+    quality: summarizeQuality(server.quality),
+    quality_note: server.quality?.note || null,
     submit_url: 'https://www.influzer.ai/mcp/submit',
     topics_url: 'https://www.influzer.ai/mcp/topics',
   };

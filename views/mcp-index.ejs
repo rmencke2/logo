@@ -88,6 +88,7 @@
           <label class="visually-hidden" for="mcpSort" style="position:absolute;left:-9999px;">Sort</label>
           <select id="mcpSort">
             <option value="stars" selected>Most popular</option>
+            <option value="quality">Best listing quality</option>
             <option value="name">Name A–Z</option>
             <option value="tools">Most tools</option>
             <option value="official">Official first</option>
@@ -96,6 +97,11 @@
       </div>
 
       <div class="dir-pills" id="mcpFilters" role="group" aria-label="Filter by category"></div>
+      <div class="dir-quality-row">
+        <span class="dir-quality-row__label">Quality</span>
+        <div class="dir-pills dir-pills--quality" id="mcpQualityFilters" role="group" aria-label="Filter by listing quality"></div>
+      </div>
+      <p class="dir-quality-note">Honest labels from catalog + live handshake — not a safe-to-install badge.</p>
 
       <% if (catalogScope === 'all') { %>
         <label class="dir-tools-only">
