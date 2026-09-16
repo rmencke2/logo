@@ -169,32 +169,6 @@
             </div>
           </section>
 
-          <section class="mcp-section">
-            <div class="mcp-section__head">
-              <h2>Tools</h2>
-              <% if (server.tools && server.tools.length) { %>
-                <span class="mcp-section__count">(<%= server.tools.length %>)</span>
-              <% } %>
-            </div>
-            <% if (server.tools && server.tools.length) { %>
-              <ul class="mcp-tool-list">
-                <% server.tools.forEach(function(tool) { %>
-                  <li class="mcp-tool-card">
-                    <code><%= tool.name %></code>
-                    <p><%= tool.description || 'No description provided.' %></p>
-                  </li>
-                <% }); %>
-              </ul>
-              <% if (server.quality && server.quality.tools_source_label) { %>
-                <p class="mcp-quality-footnote">Tool source: <%= server.quality.tools_source_label %><% if (server.quality.probed_at) { %> · last probed <%= new Date(server.quality.probed_at).toISOString().slice(0, 10) %><% } %></p>
-              <% } %>
-            <% } else { %>
-              <p style="color:var(--hp-muted2);font-size:14px;">
-                No indexed tools yet — treat this as an unverified listing. Handshake the live <code class="mcp-inline-code">tools/list</code> before you connect.
-              </p>
-            <% } %>
-          </section>
-
           <% if (server.quality) { %>
             <section class="mcp-section mcp-quality-panel">
               <h2>Listing quality</h2>
@@ -220,6 +194,32 @@
               <p class="mcp-quality-panel__note"><%= server.quality.note %></p>
             </section>
           <% } %>
+
+          <section class="mcp-section">
+            <div class="mcp-section__head">
+              <h2>Tools</h2>
+              <% if (server.tools && server.tools.length) { %>
+                <span class="mcp-section__count">(<%= server.tools.length %>)</span>
+              <% } %>
+            </div>
+            <% if (server.tools && server.tools.length) { %>
+              <ul class="mcp-tool-list">
+                <% server.tools.forEach(function(tool) { %>
+                  <li class="mcp-tool-card">
+                    <code><%= tool.name %></code>
+                    <p><%= tool.description || 'No description provided.' %></p>
+                  </li>
+                <% }); %>
+              </ul>
+              <% if (server.quality && server.quality.tools_source_label) { %>
+                <p class="mcp-quality-footnote">Tool source: <%= server.quality.tools_source_label %><% if (server.quality.probed_at) { %> · last probed <%= new Date(server.quality.probed_at).toISOString().slice(0, 10) %><% } %></p>
+              <% } %>
+            <% } else { %>
+              <p style="color:var(--hp-muted2);font-size:14px;">
+                No indexed tools yet — treat this as an unverified listing. Handshake the live <code class="mcp-inline-code">tools/list</code> before you connect.
+              </p>
+            <% } %>
+          </section>
 
           <% if (relatedServers && relatedServers.length) { %>
             <section class="mcp-section">
