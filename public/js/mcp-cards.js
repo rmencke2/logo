@@ -159,6 +159,21 @@
     const starLabel =
       s.stars > 0 ? '★ ' + fmtStars(s.stars) : 'Curated';
     const transport = s.transportBadge || (s.isRemote ? 'Remote' : 'Local');
+    const qualityBadges = (s.quality && s.quality.badges) || [];
+    const qualityHtml = qualityBadges.length
+      ? '<div class="dir-card__quality">' +
+        qualityBadges
+          .map(
+            (b) =>
+              '<span class="dir-card__qchip dir-card__qchip--' +
+              esc(b.kind || 'tools') +
+              '">' +
+              esc(b.label) +
+              '</span>',
+          )
+          .join('') +
+        '</div>'
+      : '';
 
     return (
       '<a class="dir-card" href="/mcp/' +
@@ -181,6 +196,7 @@
       esc(s.description || '') +
       '</p>' +
       (tags ? '<div class="dir-card__tags">' + tags + '</div>' : '') +
+      qualityHtml +
       '<div class="dir-card__foot">' +
       '<span class="dir-card__stars">' +
       esc(starLabel) +

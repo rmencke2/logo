@@ -430,6 +430,79 @@
   margin-top: auto;
 }
 
+.dir-card__quality {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.dir-card__qchip {
+  font-family: var(--hp-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  padding: 3px 7px;
+  border: 1px solid var(--hp-border);
+  color: var(--hp-muted2);
+  background: transparent;
+}
+
+.dir-card__qchip--tools {
+  color: #1f5c45;
+  border-color: #b7d7c8;
+  background: #eef7f2;
+}
+
+.dir-card__qchip--live {
+  color: #1d4f78;
+  border-color: #b9d0e6;
+  background: #eef4fa;
+}
+
+.dir-card__qchip--auth {
+  color: #7a4b12;
+  border-color: #e2c9a0;
+  background: #faf4ea;
+}
+
+.dir-card__qchip--caution {
+  color: #6b5b3a;
+  border-color: #ddd2b8;
+  background: #f7f3ea;
+}
+
+.dir-quality-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 10px 0 4px;
+  flex-wrap: wrap;
+}
+
+.dir-quality-row__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hp-muted2);
+  padding-top: 8px;
+  min-width: 52px;
+}
+
+.dir-pills--quality {
+  flex: 1;
+}
+
+.dir-pill--quality {
+  font-size: 12px;
+}
+
+.dir-quality-note {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--hp-faint);
+}
+
 .dir-card__stars {
   font-size: 12px;
   font-weight: 600;
