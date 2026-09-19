@@ -15,6 +15,94 @@
   ],
   "servers": [
     {
+      "name": "Macaly Cloud",
+      "slug": "macaly-cloud",
+      "category": "Dev Tools",
+      "description": "Remote MCP so Claude, ChatGPT, or Codex writes the code while Macaly supplies the git repo, cloud sandbox, database/platform capabilities, build, preview, and production hosting on macaly.app. OAuth or API-key auth over Streamable HTTP.",
+      "official": true,
+      "transport": "http",
+      "icon": "cloud-code",
+      "featured": true,
+      "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
+      "docs_url": "https://www.macaly.com/docs/en/integrations/macaly-cloud",
+      "install_command": "claude mcp add macaly-cloud --transport http https://www.macaly.com/api/cloud/mcp",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "list_teams",
+          "description": "List the workspaces you can build in"
+        },
+        {
+          "name": "create_app",
+          "description": "Create a new, empty app on the default stack and return its briefing"
+        },
+        {
+          "name": "list_projects",
+          "description": "List a workspace's apps, most recently updated first, with search and pagination"
+        },
+        {
+          "name": "get_project",
+          "description": "Status snapshot: preview build state, preview and live URLs, briefing, and who is working on the app"
+        },
+        {
+          "name": "get_messages",
+          "description": "Read the app's chat history before making changes"
+        },
+        {
+          "name": "duplicate_app",
+          "description": "Fork an app with its history into a fresh one"
+        },
+        {
+          "name": "list_files",
+          "description": "List the app's source files"
+        },
+        {
+          "name": "read_file",
+          "description": "Read one file by path"
+        },
+        {
+          "name": "write_file",
+          "description": "Write one file in full and commit it immediately"
+        },
+        {
+          "name": "delete_file",
+          "description": "Delete one file and commit the deletion immediately"
+        },
+        {
+          "name": "bash",
+          "description": "Run a shell command in the app's sandbox — installs, CLIs, skill scripts, typecheck"
+        },
+        {
+          "name": "upload_file",
+          "description": "Import a file from a publicly reachable URL into the app's media library"
+        },
+        {
+          "name": "skill_info",
+          "description": "Read a platform capability guide with ready-to-run commands and code patterns"
+        },
+        {
+          "name": "get_logs",
+          "description": "Fetch build, dev server, or deployment logs"
+        },
+        {
+          "name": "preview_app",
+          "description": "Return the app's live preview URL to share"
+        },
+        {
+          "name": "publish_app",
+          "description": "Publish the app to production at its macaly.app URL"
+        },
+        {
+          "name": "get_deployment",
+          "description": "Check deployment status, live URL, and connected domains"
+        },
+        {
+          "name": "connect_domain",
+          "description": "Connect a custom domain, or rename the app's Macaly subdomain"
+        }
+      ]
+    },
+    {
       "name": "LooperTask",
       "slug": "loopertask-com",
       "category": "Dev Tools",
