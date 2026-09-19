@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-18T10:50:08.359Z",
+  "generated_at": "2026-09-19T11:28:51.042Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-09-17T11:33:38.280Z",
+  "catalog_generated_at": "2026-09-18T10:50:08.447Z",
   "summary": {
     "checked": 290,
     "skipped_manual": 108,
@@ -10,37 +10,21 @@
     "skipped_stdio": 0,
     "skipped_other": 0,
     "unchanged": 289,
-    "tools_changed": 1,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 0,
+    "auth_required_kept": 1,
     "live_failed": 0,
     "live_ok": 0,
     "smithery_fallback": 11378,
     "errors": 0,
     "tools_added_total": 0,
-    "tools_removed_total": 2,
+    "tools_removed_total": 0,
     "catalog_total": 11486,
     "http_endpoints": 290,
     "with_tools_before": 391,
     "with_tools_after": 391
   },
-  "changes": [
-    {
-      "slug": "pkobielak-social-superpowers",
-      "name": "social-superpowers",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 12,
-      "afterToolCount": 10,
-      "added": [],
-      "removed": [
-        "reddit-get-subreddit-info",
-        "reddit-get-user-info"
-      ],
-      "changed": []
-    }
-  ],
+  "changes": [],
   "errors": []
 }

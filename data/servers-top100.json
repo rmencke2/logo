@@ -1,9 +1,10 @@
 {
-  "generated_at": "2026-09-17T11:33:38.280Z",
+  "generated_at": "2026-09-18T10:50:08.447Z",
   "count": 100,
-  "total_catalog": 11488,
+  "total_catalog": 11489,
   "top100_slugs": [
     "influzer-mcp-discovery",
+    "macaly-cloud",
     "firecrawl",
     "brave-search",
     "postgres",
@@ -101,8 +102,7 @@
     "sourcegraph-cody",
     "sqlite",
     "stackblitz",
-    "supabase",
-    "taskade"
+    "supabase"
   ],
   "servers": [
     {
@@ -136,10 +136,103 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "search",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
       "deployment_url": "https://www.influzer.ai/mcp/discovery"
+    },
+    {
+      "id": "macaly-cloud",
+      "slug": "macaly-cloud",
+      "name": "Macaly Cloud",
+      "description": "Remote MCP so Claude, ChatGPT, or Codex writes the code while Macaly supplies the git repo, cloud sandbox, database/platform capabilities, build, preview, and production hosting on macaly.app. OAuth or API-key auth over Streamable HTTP.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_teams",
+          "description": "List the workspaces you can build in"
+        },
+        {
+          "name": "create_app",
+          "description": "Create a new, empty app on the default stack and return its briefing"
+        },
+        {
+          "name": "list_projects",
+          "description": "List a workspace's apps, most recently updated first, with search and pagination"
+        },
+        {
+          "name": "get_project",
+          "description": "Status snapshot: preview build state, preview and live URLs, briefing, and who is working on the app"
+        },
+        {
+          "name": "get_messages",
+          "description": "Read the app's chat history before making changes"
+        },
+        {
+          "name": "duplicate_app",
+          "description": "Fork an app with its history into a fresh one"
+        },
+        {
+          "name": "list_files",
+          "description": "List the app's source files"
+        },
+        {
+          "name": "read_file",
+          "description": "Read one file by path"
+        },
+        {
+          "name": "write_file",
+          "description": "Write one file in full and commit it immediately"
+        },
+        {
+          "name": "delete_file",
+          "description": "Delete one file and commit the deletion immediately"
+        },
+        {
+          "name": "bash",
+          "description": "Run a shell command in the app's sandbox — installs, CLIs, skill scripts, typecheck"
+        },
+        {
+          "name": "upload_file",
+          "description": "Import a file from a publicly reachable URL into the app's media library"
+        },
+        {
+          "name": "skill_info",
+          "description": "Read a platform capability guide with ready-to-run commands and code patterns"
+        },
+        {
+          "name": "get_logs",
+          "description": "Fetch build, dev server, or deployment logs"
+        },
+        {
+          "name": "preview_app",
+          "description": "Return the app's live preview URL to share"
+        },
+        {
+          "name": "publish_app",
+          "description": "Publish the app to production at its macaly.app URL"
+        },
+        {
+          "name": "get_deployment",
+          "description": "Check deployment status, live URL, and connected domains"
+        },
+        {
+          "name": "connect_domain",
+          "description": "Connect a custom domain, or rename the app's Macaly subdomain"
+        }
+      ],
+      "docs_url": "https://www.macaly.com/docs/en/integrations/macaly-cloud",
+      "install_command": "claude mcp add macaly-cloud --transport http https://www.macaly.com/api/cloud/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-09-19",
+      "icon": "cloud-code",
+      "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
+      "deployment_url": "https://www.macaly.com/api/cloud/mcp"
     },
     {
       "id": "firecrawl",
@@ -169,7 +262,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "flame"
     },
     {
@@ -196,7 +289,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "search"
     },
     {
@@ -227,7 +320,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -258,7 +351,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "hard-drive"
     },
     {
@@ -289,7 +382,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "brain"
     },
     {
@@ -324,7 +417,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "layout-list"
     },
     {
@@ -351,7 +444,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "book-open"
     },
     {
@@ -382,7 +475,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "credit-card"
     },
     {
@@ -413,7 +506,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "shield-alert"
     },
     {
@@ -444,7 +537,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "file-text"
     },
     {
@@ -474,7 +567,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "monitor-play"
     },
     {
@@ -512,7 +605,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "monitor"
     },
     {
@@ -550,7 +643,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "message-square"
     },
     {
@@ -585,7 +678,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud"
     },
     {
@@ -619,7 +712,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud"
     },
     {
@@ -649,7 +742,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "calendar",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
       "deployment_url": "https://mcp.cal.com/mcp"
@@ -734,7 +827,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-09-18T09:58:55.415Z",
+      "tools_validated_at": "2026-09-19T09:40:36.000Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -798,7 +891,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-09-18T09:58:54.326Z",
+      "tools_validated_at": "2026-09-19T09:40:35.513Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1030,7 +1123,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-09-18T09:58:55.141Z",
+      "tools_validated_at": "2026-09-19T09:40:35.810Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1194,7 +1287,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-09-18T09:58:54.661Z",
+      "tools_validated_at": "2026-09-19T09:40:35.495Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1327,7 +1420,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-09-18T09:58:55.346Z",
+      "tools_validated_at": "2026-09-19T09:40:36.205Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1423,7 +1516,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-09-18T09:58:54.684Z",
+      "tools_validated_at": "2026-09-19T09:40:35.505Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1527,7 +1620,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-09-18T09:58:55.858Z",
+      "tools_validated_at": "2026-09-19T09:40:36.302Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1587,7 +1680,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-09-18T09:58:56.074Z",
+      "tools_validated_at": "2026-09-19T09:40:36.377Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1715,7 +1808,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-09-18T09:58:56.152Z",
+      "tools_validated_at": "2026-09-19T09:40:36.466Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1779,7 +1872,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-09-18T09:58:56.217Z",
+      "tools_validated_at": "2026-09-19T09:40:36.670Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2011,7 +2104,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-09-18T09:58:56.778Z",
+      "tools_validated_at": "2026-09-19T09:40:36.869Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2179,7 +2272,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-09-18T09:58:57.055Z",
+      "tools_validated_at": "2026-09-19T09:40:37.151Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2411,7 +2504,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-09-18T09:58:56.967Z",
+      "tools_validated_at": "2026-09-19T09:40:36.886Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2643,7 +2736,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-09-18T09:58:57.804Z",
+      "tools_validated_at": "2026-09-19T09:40:37.043Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2723,7 +2816,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
       "deployment_url": "https://mcp.xgr.network/mcp"
@@ -2803,7 +2896,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe"
     },
     {
@@ -2833,7 +2926,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "code"
     },
     {
@@ -2859,7 +2952,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
       "deployment_url": "https://mcp.webnode.com/_mcp"
@@ -2891,7 +2984,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "message-square"
     },
     {
@@ -2942,7 +3035,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
       "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
@@ -2974,7 +3067,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "activity"
     },
     {
@@ -3004,7 +3097,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "image"
     },
     {
@@ -3031,7 +3124,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
       "deployment_url": "https://ignav.com/mcp"
@@ -3156,7 +3249,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/subwayinfo",
-      "tools_validated_at": "2026-09-18T09:58:58.464Z",
+      "tools_validated_at": "2026-09-19T09:40:37.780Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3208,7 +3301,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-09-18T09:58:57.553Z",
+      "tools_validated_at": "2026-09-19T09:40:37.312Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3276,7 +3369,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-09-18T09:58:59.046Z",
+      "tools_validated_at": "2026-09-19T09:40:38.083Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3307,7 +3400,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "monitor"
     },
     {
@@ -3337,7 +3430,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "book-open"
     },
     {
@@ -3376,7 +3469,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe",
       "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
       "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
@@ -3412,7 +3505,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe",
       "mcp_endpoint": "https://corvid.perch-app.workers.dev/mcp",
       "deployment_url": "https://corvid.perch-app.workers.dev/mcp"
@@ -3448,7 +3541,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "terminal"
     },
     {
@@ -3483,7 +3576,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "sandbox"
     },
     {
@@ -3517,7 +3610,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "gitlab"
     },
     {
@@ -3551,7 +3644,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud-code"
     },
     {
@@ -3581,7 +3674,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "mail"
     },
     {
@@ -3612,7 +3705,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "search"
     },
     {
@@ -3642,7 +3735,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "bar-chart"
     },
     {
@@ -3672,7 +3765,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "bar-chart"
     },
     {
@@ -3702,7 +3795,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "layout-list"
     },
     {
@@ -3733,7 +3826,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud"
     },
     {
@@ -3763,7 +3856,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud"
     },
     {
@@ -3793,7 +3886,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "globe"
     },
     {
@@ -3823,7 +3916,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "image"
     },
     {
@@ -3853,7 +3946,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "file-text"
     },
     {
@@ -3883,7 +3976,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "activity"
     },
     {
@@ -3913,7 +4006,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "boxes"
     },
     {
@@ -3943,7 +4036,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "hard-drive"
     },
     {
@@ -3973,7 +4066,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "figma"
     },
     {
@@ -4003,7 +4096,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "calendar"
     },
     {
@@ -4033,7 +4126,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud"
     },
     {
@@ -4063,7 +4156,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "bar-chart"
     },
     {
@@ -4093,7 +4186,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "boxes"
     },
     {
@@ -4123,7 +4216,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "message-square"
     },
     {
@@ -4153,7 +4246,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "layout-list"
     },
     {
@@ -4184,7 +4277,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "bar-chart"
     },
     {
@@ -4214,7 +4307,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "boxes"
     },
     {
@@ -4245,7 +4338,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "brain"
     },
     {
@@ -4275,7 +4368,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "credit-card"
     },
     {
@@ -4305,7 +4398,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "credit-card"
     },
     {
@@ -4335,7 +4428,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "message-square"
     },
     {
@@ -4365,7 +4458,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4396,7 +4489,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4426,7 +4519,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "layout-list"
     },
     {
@@ -4456,7 +4549,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4487,7 +4580,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4517,7 +4610,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4548,7 +4641,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "boxes"
     },
     {
@@ -4579,7 +4672,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4609,7 +4702,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "cloud"
     },
     {
@@ -4639,7 +4732,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "hard-drive"
     },
     {
@@ -4669,7 +4762,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "mail"
     },
     {
@@ -4699,7 +4792,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "shield-alert"
     },
     {
@@ -4729,7 +4822,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4759,7 +4852,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "boxes"
     },
     {
@@ -4789,7 +4882,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "credit-card"
     },
     {
@@ -4819,7 +4912,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "credit-card"
     },
     {
@@ -4849,7 +4942,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "file-text"
     },
     {
@@ -4879,7 +4972,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "bar-chart"
     },
     {
@@ -4910,7 +5003,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "code"
     },
     {
@@ -4940,7 +5033,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
     },
     {
@@ -4970,7 +5063,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "browser"
     },
     {
@@ -5001,38 +5094,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-09-18",
+      "last_updated": "2026-09-19",
       "icon": "database"
-    },
-    {
-      "id": "taskade",
-      "slug": "taskade",
-      "name": "Taskade",
-      "description": "Workspace memory plus agent automation for tasks.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "create_task",
-          "description": "Create a workspace task"
-        },
-        {
-          "name": "run_agent",
-          "description": "Trigger an automation agent"
-        },
-        {
-          "name": "search_workspace",
-          "description": "Search workspace content"
-        }
-      ],
-      "docs_url": "https://www.taskade.com/api",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-09-18",
-      "icon": "brain"
     }
   ]
 }
