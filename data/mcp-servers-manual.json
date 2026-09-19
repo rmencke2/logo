@@ -15,6 +15,94 @@
   ],
   "servers": [
     {
+      "name": "Macaly Cloud",
+      "slug": "macaly-cloud",
+      "category": "Dev Tools",
+      "description": "Remote MCP so Claude, ChatGPT, or Codex writes the code while Macaly supplies the git repo, cloud sandbox, database/platform capabilities, build, preview, and production hosting on macaly.app. OAuth or API-key auth over Streamable HTTP.",
+      "official": true,
+      "transport": "http",
+      "icon": "cloud-code",
+      "featured": false,
+      "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
+      "docs_url": "https://www.macaly.com/docs/en/integrations/macaly-cloud",
+      "install_command": "claude mcp add macaly-cloud --transport http https://www.macaly.com/api/cloud/mcp",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "list_teams",
+          "description": "List the workspaces you can build in"
+        },
+        {
+          "name": "create_app",
+          "description": "Create a new, empty app on the default stack and return its briefing"
+        },
+        {
+          "name": "list_projects",
+          "description": "List a workspace's apps, most recently updated first, with search and pagination"
+        },
+        {
+          "name": "get_project",
+          "description": "Status snapshot: preview build state, preview and live URLs, briefing, and who is working on the app"
+        },
+        {
+          "name": "get_messages",
+          "description": "Read the app's chat history before making changes"
+        },
+        {
+          "name": "duplicate_app",
+          "description": "Fork an app with its history into a fresh one"
+        },
+        {
+          "name": "list_files",
+          "description": "List the app's source files"
+        },
+        {
+          "name": "read_file",
+          "description": "Read one file by path"
+        },
+        {
+          "name": "write_file",
+          "description": "Write one file in full and commit it immediately"
+        },
+        {
+          "name": "delete_file",
+          "description": "Delete one file and commit the deletion immediately"
+        },
+        {
+          "name": "bash",
+          "description": "Run a shell command in the app's sandbox \u2014 installs, CLIs, skill scripts, typecheck"
+        },
+        {
+          "name": "upload_file",
+          "description": "Import a file from a publicly reachable URL into the app's media library"
+        },
+        {
+          "name": "skill_info",
+          "description": "Read a platform capability guide with ready-to-run commands and code patterns"
+        },
+        {
+          "name": "get_logs",
+          "description": "Fetch build, dev server, or deployment logs"
+        },
+        {
+          "name": "preview_app",
+          "description": "Return the app's live preview URL to share"
+        },
+        {
+          "name": "publish_app",
+          "description": "Publish the app to production at its macaly.app URL"
+        },
+        {
+          "name": "get_deployment",
+          "description": "Check deployment status, live URL, and connected domains"
+        },
+        {
+          "name": "connect_domain",
+          "description": "Connect a custom domain, or rename the app's Macaly subdomain"
+        }
+      ]
+    },
+    {
       "name": "LooperTask",
       "slug": "loopertask-com",
       "category": "Dev Tools",
@@ -80,11 +168,11 @@
         },
         {
           "name": "claim_next_task",
-          "description": "Claim the next queued task assigned to you — the core AI worker loop"
+          "description": "Claim the next queued task assigned to you \u2014 the core AI worker loop"
         },
         {
           "name": "request_human_review",
-          "description": "Move a task to the «Needs Human» column with a comment"
+          "description": "Move a task to the \u00abNeeds Human\u00bb column with a comment"
         }
       ],
       "owner_user_id": 35
@@ -104,7 +192,7 @@
       "tools": [
         {
           "name": "search_papers",
-          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper — Look up a single paper by identifier or DOI and return its full evidence record"
+          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper \u2014 Look up a single paper by identifier or DOI and return its full evidence record"
         }
       ],
       "mcp_endpoint": "https://bgpt.pro/mcp/"
@@ -113,7 +201,7 @@
       "name": "Corvid",
       "slug": "corvid",
       "category": "AI & Memory",
-      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP — no install, no repo, works from any MCP client.",
+      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP \u2014 no install, no repo, works from any MCP client.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -127,7 +215,7 @@
         },
         {
           "name": "recall",
-          "description": "Semantic search over your stored memories — finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
+          "description": "Semantic search over your stored memories \u2014 finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
         },
         {
           "name": "list_recent",
@@ -252,7 +340,7 @@
       "name": "Webnode",
       "slug": "webnode",
       "category": "Design",
-      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building — list templates by language and spin up new projects.",
+      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building \u2014 list templates by language and spin up new projects.",
       "official": true,
       "transport": "http",
       "icon": "browser",
@@ -262,7 +350,7 @@
       "tools": [
         {
           "name": "get_project_branches",
-          "description": "List available project templates (branches) for a language — call before create_project"
+          "description": "List available project templates (branches) for a language \u2014 call before create_project"
         },
         {
           "name": "create_project",
@@ -2941,7 +3029,7 @@
       "name": "Railway MCP",
       "slug": "railway-mcp",
       "category": "Cloud & Infra",
-      "description": "Natural language interaction with Railway projects — create projects, deploy templates, manage environments, pull variables, and redeploy services.",
+      "description": "Natural language interaction with Railway projects \u2014 create projects, deploy templates, manage environments, pull variables, and redeploy services.",
       "official": true,
       "transport": "http",
       "icon": "cloud",
@@ -2970,7 +3058,7 @@
       "name": "XcodeBuildMCP",
       "slug": "xcodebuildmcp",
       "category": "Dev Tools",
-      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects — builds, simulators, and Xcode workflows.",
+      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects \u2014 builds, simulators, and Xcode workflows.",
       "official": false,
       "transport": "stdio",
       "icon": "monitor",
@@ -2995,7 +3083,7 @@
       "name": "Influzer MCP Discovery",
       "slug": "influzer-mcp-discovery",
       "category": "Search & Web",
-      "description": "Official Influzer.ai read-only MCP server — search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
+      "description": "Official Influzer.ai read-only MCP server \u2014 search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
       "official": true,
       "transport": "http",
       "icon": "search",

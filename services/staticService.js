@@ -1053,6 +1053,8 @@ ${itemsXml}
     'xgr-network': 'xgr-mcp',
     'xgr-network-mcp': 'xgr-mcp',
     'https-mcp-xgr-network-mcp': 'xgr-mcp',
+    macaly: 'macaly-cloud',
+    'macaly-com': 'macaly-cloud',
   };
 
   app.get('/mcp/:slug', (req, res) => {
