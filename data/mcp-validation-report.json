@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-09-20T11:09:54.287Z",
+  "generated_at": "2026-09-21T12:22:20.370Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-09-19T11:28:51.158Z",
+  "catalog_generated_at": "2026-09-20T11:09:54.403Z",
   "summary": {
     "checked": 290,
     "skipped_manual": 108,
     "skipped_no_endpoint": 11088,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 289,
-    "tools_changed": 1,
+    "unchanged": 290,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,38 +18,13 @@
     "live_ok": 0,
     "smithery_fallback": 11378,
     "errors": 0,
-    "tools_added_total": 6,
+    "tools_added_total": 0,
     "tools_removed_total": 0,
     "catalog_total": 11486,
     "http_endpoints": 290,
     "with_tools_before": 391,
     "with_tools_after": 391
   },
-  "changes": [
-    {
-      "slug": "cammac-ibanforge",
-      "name": "IBANforge",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 5,
-      "afterToolCount": 11,
-      "added": [
-        "validate_payment_reference",
-        "check_swiss_qr_bill",
-        "check_postal_address",
-        "send_feedback",
-        "request_api_key",
-        "poll_api_key"
-      ],
-      "removed": [],
-      "changed": [
-        "validate_iban",
-        "batch_validate_iban",
-        "lookup_bic",
-        "lookup_ch_clearing"
-      ]
-    }
-  ],
+  "changes": [],
   "errors": []
 }
