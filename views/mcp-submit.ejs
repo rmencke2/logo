@@ -115,7 +115,7 @@
 
         <fieldset class="mcp-submit-fieldset">
           <legend>Links</legend>
-          <p class="mcp-submit-hint">Provide at least one link so we can verify the server.</p>
+          <p class="mcp-submit-hint" id="mcpSubmitLinksHint">Provide at least one MCP server URL so we can verify it (GitHub, docs, or primary/install).</p>
           <div class="mcp-submit-grid">
             <label class="mcp-submit-field mcp-submit-field--wide">
               <span>GitHub repository URL</span>
@@ -135,8 +135,8 @@
         <fieldset class="mcp-submit-fieldset">
           <legend>Tools &amp; setup</legend>
           <label class="mcp-submit-field mcp-submit-field--wide">
-            <span>Tools <em>(one per line)</em></span>
-            <textarea name="tools" rows="8" maxlength="20000" placeholder="read_file — Read file contents&#10;write_file — Create or overwrite a file&#10;list_directory — List files in a folder"></textarea>
+            <span>Tools <em>(required — at least one, one per line)</em></span>
+            <textarea name="tools" required rows="8" maxlength="20000" placeholder="read_file — Read file contents&#10;write_file — Create or overwrite a file&#10;list_directory — List files in a folder"></textarea>
           </label>
           <label class="mcp-submit-field mcp-submit-field--wide">
             <span>Setup instructions</span>
