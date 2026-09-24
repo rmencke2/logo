@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-09-23T11:36:09.355Z",
+  "generated_at": "2026-09-24T11:44:56.159Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-09-22T12:07:44.978Z",
+  "catalog_generated_at": "2026-09-23T11:36:09.461Z",
   "summary": {
     "checked": 282,
     "skipped_manual": 109,
     "skipped_no_endpoint": 11742,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 282,
-    "tools_changed": 0,
+    "unchanged": 281,
+    "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,13 +18,56 @@
     "live_ok": 0,
     "smithery_fallback": 12024,
     "errors": 0,
-    "tools_added_total": 0,
-    "tools_removed_total": 0,
+    "tools_added_total": 13,
+    "tools_removed_total": 9,
     "catalog_total": 12133,
     "http_endpoints": 282,
     "with_tools_before": 383,
     "with_tools_after": 383
   },
-  "changes": [],
+  "changes": [
+    {
+      "slug": "dynamoi-music-youtube-marketing-mcp",
+      "name": "Dynamoi - Music & YouTube Promotion Automation",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 14,
+      "afterToolCount": 18,
+      "added": [
+        "dynamoi_about",
+        "dynamoi_get_account_overview",
+        "search",
+        "fetch",
+        "dynamoi_get_artist_analytics",
+        "dynamoi_get_distribution_application",
+        "dynamoi_apply_for_distribution",
+        "dynamoi_preview_smart_link_themes",
+        "dynamoi_create_smart_link_from_spotify",
+        "dynamoi_create_smart_links_from_spotify_artist",
+        "dynamoi_list_smart_links",
+        "dynamoi_get_smart_link",
+        "dynamoi_update_smart_link"
+      ],
+      "removed": [
+        "dynamoi_get_current_user",
+        "dynamoi_get_artist",
+        "dynamoi_get_campaign_analytics",
+        "dynamoi_get_billing",
+        "dynamoi_pause_campaign",
+        "dynamoi_resume_campaign",
+        "dynamoi_update_budget",
+        "dynamoi_list_media_assets",
+        "dynamoi_launch_campaign"
+      ],
+      "changed": [
+        "dynamoi_list_artists",
+        "dynamoi_search",
+        "dynamoi_list_campaigns",
+        "dynamoi_get_campaign",
+        "dynamoi_get_platform_status"
+      ]
+    }
+  ],
   "errors": []
 }
