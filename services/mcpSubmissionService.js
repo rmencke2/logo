@@ -52,7 +52,11 @@ function slugify(value) {
 }
 
 function parseTools(raw) {
-  const lines = cleanText(raw, MAX_TOOLS_FIELD)
+  if (typeof raw !== 'string') return [];
+  const lines = raw
+    .replace(/\r\n/g, '\n')
+    .replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, '')
+    .slice(0, MAX_TOOLS_FIELD)
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean);
@@ -135,7 +139,10 @@ function validateSubmission(body) {
   if (!isValidUrl(docsUrl)) errors.push('Docs URL must be a valid http(s) link.');
   if (!isValidUrl(primaryUrl)) errors.push('Primary URL must be a valid http(s) link.');
   if (!githubUrl && !docsUrl && !primaryUrl) {
-    errors.push('Provide at least one of GitHub URL, docs URL, or primary/install URL.');
+    errors.push('Provide at least one MCP server URL (GitHub, docs, or primary/install).');
+  }
+  if (!tools.length) {
+    errors.push('Add at least one tool (one tool name per line).');
   }
 
   let stars = '';
@@ -298,6 +305,7 @@ module.exports = {
   registerMcpSubmissionRoutes,
   isReservedMcpPath,
   checkMcpSubmitRateLimit,
+  validateSubmission,
   MCP_SUBMIT_ENDPOINT,
   RATE_LIMIT_PER_HOUR,
   RATE_LIMIT_WINDOW_MS,
