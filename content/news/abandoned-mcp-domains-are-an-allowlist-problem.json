@@ -1,0 +1,18 @@
+{
+  "slug": "abandoned-mcp-domains-are-an-allowlist-problem",
+  "title": "Abandoned MCP domains are an allowlist problem",
+  "date": "2026-09-26",
+  "excerpt": "OX Security found expired MCP hostnames — including six $4 domains. Listings are leads. Standing configs without owners are the incident.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "MCP",
+    "Security",
+    "Allowlist",
+    "Governance",
+    "Directory"
+  ],
+  "sourceName": "OX Security",
+  "sourceUrl": "https://www.ox.security/blog/how-mcp-is-bypassing-a-decade-of-cloud-security-best-practices/",
+  "relatedInsightSlug": "abandoned-mcp-domains-are-an-allowlist-problem",
+  "contentHtml": "<p><strong>Abandoned MCP domains are an allowlist problem.</strong> On 24 September 2026, OX Security published a scan of 15,465 public MCP listings (5,095 unique hostnames): 15.6% resolved outside the US, 0.45% sat on home/consumer tunnels, and 2.3% no longer resolved — including six unregistered domains for about $4–$12 a year.</p>\n<p>The protocol will not enforce residency, expiry, or ownership for you. Clients keep calling the URL in <code>mcp.json</code>. If the name lapses, the next registrant inherits standing approval.</p>\n<p><strong>Why it matters:</strong> Influzer’s catalog is ~12,150 servers and only ~386 with indexed tools. Search is not the bottleneck. An owner, a live handshake, and a write/read split are. Filter <a href=\"/mcp?quality=ready\">Ready surface</a>, keep Discovery read-only, and kill any hostname you cannot name.</p>\n<p>Full operator drill: <a href=\"/insights/abandoned-mcp-domains-are-an-allowlist-problem\">Abandoned MCP domains are an allowlist problem</a>. Pair with <a href=\"/insights/policy-before-plugins-mcp-allowlist\">policy before plugins</a> and <a href=\"/insights/not-safe-just-honest-mcp-quality-layer-for-the-long-tail\">honest quality labels</a>.</p>"
+}
