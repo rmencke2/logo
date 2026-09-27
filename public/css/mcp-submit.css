@@ -137,6 +137,32 @@
   background: #fff;
 }
 
+.mcp-submit-field.is-invalid input,
+.mcp-submit-field.is-invalid select,
+.mcp-submit-field.is-invalid textarea {
+  border-color: #b3261e;
+  background: #fff8f7;
+}
+
+.mcp-submit-field.is-invalid input:focus,
+.mcp-submit-field.is-invalid select:focus,
+.mcp-submit-field.is-invalid textarea:focus {
+  border-color: #b3261e;
+  box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.15);
+}
+
+.mcp-submit-field-error {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #b3261e;
+}
+
+.mcp-submit-hint.is-error {
+  color: #b3261e;
+}
+
 .mcp-submit-field--check {
   flex-direction: row;
   align-items: center;
