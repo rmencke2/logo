@@ -1,0 +1,18 @@
+{
+  "slug": "your-website-is-not-an-mcp-server",
+  "title": "Your website is not an MCP server",
+  "date": "2026-09-28",
+  "excerpt": "ChatGPT site tools are WebMCP on the page you are looking at — not a remote MCP connector. Do not wrap the storefront.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "WebMCP",
+    "ChatGPT",
+    "MCP",
+    "Site Tools",
+    "Directory"
+  ],
+  "sourceName": "OpenAI",
+  "sourceUrl": "https://learn.chatgpt.com/docs/webmcp",
+  "relatedInsightSlug": "your-website-is-not-an-mcp-server",
+  "contentHtml": "<p><strong>Your website is not an MCP server.</strong> ChatGPT’s desktop browser now implements WebMCP as <em>site tools</em> — same live page, same signed-in session. That is not the MCP connectors ChatGPT has had since 2025. Site tools need GPT-5.6 Sol or Terra; they are off on Luna and not in Enterprise/Edu this rollout.</p>\n<p>ChatGPT also does not discover declarative HTML-form tools or tools registered in iframes. If your “WebMCP launch” was form attributes only, the ChatGPT address bar will look empty. Register imperative tools on the top-level document.</p>\n<p><strong>Why it matters:</strong> wrapping a storefront as a remote MCP server puts money and session off the page the human can see. Keep backends on <a href=\"/mcp\">classic MCP</a>. Keep journeys on <a href=\"/webmcp\">WebMCP websites</a> (~864 sites, ~5,660 tools in Influzer’s snapshot). Full take: <a href=\"/insights/your-website-is-not-an-mcp-server\">Your website is not an MCP server</a>.</p>"
+}
