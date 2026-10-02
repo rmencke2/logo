@@ -1,0 +1,19 @@
+{
+  "slug": "acp-vs-mcp-editor-layer-is-not-the-tool-layer",
+  "title": "ACP vs MCP: the editor layer is not the tool layer",
+  "date": "2026-10-02",
+  "excerpt": "Agent Client Protocol hosts coding agents in the IDE. MCP attaches tools to those agents. Two JSON-RPC sockets, two allowlists — and three products named ACP.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "ACP",
+    "MCP",
+    "Zed",
+    "JetBrains",
+    "Governance",
+    "Directory"
+  ],
+  "sourceName": "Agent Client Protocol",
+  "sourceUrl": "https://agentclientprotocol.com/protocol/v1/overview",
+  "relatedInsightSlug": "acp-vs-mcp-editor-layer-is-not-the-tool-layer",
+  "contentHtml": "<p><strong>ACP is not MCP.</strong> Agent Client Protocol (Zed + JetBrains) is how an editor launches a coding agent over JSON-RPC stdio — sessions, prompts, native diffs, permission prompts. The ACP Registry installs Claude Code, Gemini CLI, Codex, Copilot CLI, and others into the IDE. Model Context Protocol is still how that agent calls tools. On <code>session/new</code> the editor may forward <code>mcpServers</code> (stdio/HTTP if the agent advertised them). Agent-local MCP config travels too.</p>\n<p>Spell the acronym: BeeAI’s Agent Communication Protocol merged into A2A; Agentic Commerce Protocol is checkout. Neither is this. Cursor remains a first-class MCP host, not a native ACP client. Influzer indexes ~12,850 MCP servers (~383 with tools), not ACP agents.</p>\n<p><strong>Why it matters:</strong> two install buttons, two allowlists, three auth planes. Approving an ACP diff is not approving <code>tools/call</code>. Full take: <a href=\"/insights/acp-vs-mcp-editor-layer-is-not-the-tool-layer\">ACP vs MCP — The Editor Layer Is Not the Tool Layer</a>.</p>"
+}
