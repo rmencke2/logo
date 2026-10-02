@@ -1,0 +1,19 @@
+{
+  "slug": "mcp-apps-are-not-webmcp",
+  "title": "MCP Apps are not WebMCP",
+  "date": "2026-10-02",
+  "excerpt": "SEP-1865 widgets live in a sandboxed iframe inside the agent. WebMCP lives on the page. Do not allowlist them as one surface.",
+  "category": "MCP Ecosystem",
+  "tags": [
+    "MCP",
+    "MCP Apps",
+    "WebMCP",
+    "Claude",
+    "ChatGPT",
+    "Directory"
+  ],
+  "sourceName": "Model Context Protocol",
+  "sourceUrl": "https://modelcontextprotocol.org/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp",
+  "relatedInsightSlug": "mcp-apps-are-not-webmcp",
+  "contentHtml": "<p><strong>MCP Apps are not WebMCP.</strong> SEP-1865 lets a server ship HTML (<code>ui://</code>, <code>_meta.ui.resourceUri</code>) that Claude and ChatGPT render in a sandboxed iframe. That is a widget inside the agent. WebMCP / ChatGPT site tools are the opposite shape: named actions on the live origin, human still looking at your URL bar. Classic MCP is still <code>tools/list</code> with no UI.</p>\n<p>OpenAI documents MCP Apps as the portable layer and <code>window.openai</code> as ChatGPT extras. Chrome’s WebMCP vs MCP note is the other half: the agent is a guest on the page. Influzer keeps the catalogs separate — ~12,850 MCP servers (~383 with indexed tools) and ~1,330 WebMCP sites / ~7,750 page tools. An App is a label on a connector, not a third website class.</p>\n<p><strong>Why it matters:</strong> if money or session must stay on your origin, do not hide checkout in Claude’s iframe. If the human never opens your site, do not call it WebMCP. Full take: <a href=\"/insights/mcp-apps-are-not-webmcp\">MCP Apps Are Not WebMCP</a>. Pair with <a href=\"/insights/your-website-is-not-an-mcp-server\">your website is not an MCP server</a> and the <a href=\"/insights/pack-an-allowlist-for-mcp-dev-summit\">Toronto packing list</a>.</p>"
+}
