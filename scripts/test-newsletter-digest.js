@@ -9,23 +9,24 @@ const { buildBlogNewsletterHtml, buildBlogNewsletterText, resolveNewsletterSubje
 const { findBlogPostBySlug } = require('../services/staticService');
 const { findNewsItemBySlug } = require('../services/newsService');
 
-const latest = findBlogPostBySlug('mcp-apps-are-not-webmcp');
-assert.ok(latest, 'MCP Apps Insight should load');
+const latest = findBlogPostBySlug('acp-vs-mcp-editor-layer-is-not-the-tool-layer');
+assert.ok(latest, 'ACP vs MCP Insight should load');
 assert.strictEqual(latest.featured, true);
 assert.ok(latest.newsletterSubject);
 assert.ok(latest.newsletterIntro);
 assert.ok(latest.newsletterPullQuote);
-assert.ok(latest.coverImage.includes('mcp-apps-not-webmcp'));
-assert.ok(latest.contentHtml.includes('SEP-1865'));
-assert.ok(latest.contentHtml.includes('/insights/your-website-is-not-an-mcp-server'));
+assert.ok(latest.coverImage.includes('acp-vs-mcp'));
+assert.ok(latest.contentHtml.includes('Agent Client Protocol'));
+assert.ok(latest.contentHtml.includes('mcpServers'));
+assert.ok(latest.contentHtml.includes('/insights/what-is-model-context-protocol'));
 assert.strictEqual(
   resolveNewsletterSubject(latest),
-  "Don't put the storefront in the Claude iframe.",
+  'ACP picks the agent. MCP picks what it can touch.',
 );
 
-const latestBrief = findNewsItemBySlug('mcp-apps-are-not-webmcp');
-assert.ok(latestBrief, 'MCP Apps companion brief should load');
-assert.strictEqual(latestBrief.relatedInsightSlug, 'mcp-apps-are-not-webmcp');
+const latestBrief = findNewsItemBySlug('acp-vs-mcp-editor-layer-is-not-the-tool-layer');
+assert.ok(latestBrief, 'ACP vs MCP companion brief should load');
+assert.strictEqual(latestBrief.relatedInsightSlug, 'acp-vs-mcp-editor-layer-is-not-the-tool-layer');
 
 const post = findBlogPostBySlug('policy-before-plugins-mcp-allowlist');
 assert.ok(post, 'Insight post should load');
