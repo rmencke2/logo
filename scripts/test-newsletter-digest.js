@@ -19,6 +19,7 @@ assert.ok(latest.coverImage.includes('acp-vs-mcp'));
 assert.ok(latest.contentHtml.includes('Agent Client Protocol'));
 assert.ok(latest.contentHtml.includes('mcpServers'));
 assert.ok(latest.contentHtml.includes('/insights/what-is-model-context-protocol'));
+assert.ok(latest.contentHtml.includes('/images/blog/acp-vs-mcp-diagram.jpg'));
 assert.strictEqual(
   resolveNewsletterSubject(latest),
   'ACP picks the agent. MCP picks what it can touch.',
