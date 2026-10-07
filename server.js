@@ -124,6 +124,10 @@ const PORT = process.env.PORT || 4000;
     });
     
     console.log('✅ All services initialized');
+    const { startWarmHandshakeProbe } = require('./services/mcpHandshakeOverlay');
+    startWarmHandshakeProbe().catch((err) => {
+      console.error('MCP warm handshake failed:', err.message || err);
+    });
   } catch (error) {
     console.error('❌ Error initializing services:', error);
     process.exit(1);

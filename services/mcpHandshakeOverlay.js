@@ -11,6 +11,9 @@ const { httpsRemoteUrl } = require('./mcpInstallSnippets');
 const { buildHandshakeBadgeSvg } = require('./mcpHandshakeBadge');
 
 const SEED_PATH = path.join(__dirname, '..', 'data', 'mcp-handshake-seed.json');
+const WARM_PATH =
+  process.env.MCP_HANDSHAKE_WARM_PATH ||
+  path.join(__dirname, '..', 'data', 'mcp-handshake-warm.json');
 const OVERLAY_TTL_MS = Number(process.env.MCP_HANDSHAKE_OVERLAY_TTL_MS) || 10 * 60 * 1000;
 
 const byUrl = new Map();
@@ -27,15 +30,117 @@ function liveToEndpoint(liveStatus) {
   return LIVE_TO_ENDPOINT[liveStatus] || null;
 }
 
+function readServersFile(filePath) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (!raw || typeof raw !== 'object') return {};
+    return raw.servers && typeof raw.servers === 'object' ? raw.servers : raw;
+  } catch {
+    return {};
+  }
+}
+
 function loadSeed() {
   if (seedCache) return seedCache;
-  try {
-    const raw = JSON.parse(fs.readFileSync(SEED_PATH, 'utf8'));
-    seedCache = raw && typeof raw === 'object' ? raw.servers || raw : {};
-  } catch {
-    seedCache = {};
-  }
+  seedCache = {
+    ...readServersFile(SEED_PATH),
+    ...readServersFile(WARM_PATH),
+  };
   return seedCache;
+}
+
+function persistWarmFile() {
+  const servers = { ...readServersFile(WARM_PATH) };
+  for (const [slug, rec] of bySlug.entries()) {
+    if (!rec || !rec.endpoint_status) continue;
+    servers[slug] = {
+      endpoint_status: rec.endpoint_status,
+      validation_method: rec.validation_method || 'live_mcp',
+      validated_at: rec.validated_at,
+    };
+  }
+  const payload = {
+    updated_at: new Date().toISOString(),
+    note: 'Boot warm-probe of featured / Top 100 HTTPS remotes. Not a SAFE badge. Stdio is skipped.',
+    servers,
+  };
+  fs.mkdirSync(path.dirname(WARM_PATH), { recursive: true });
+  fs.writeFileSync(WARM_PATH, JSON.stringify(payload, null, 2) + '\n');
+  seedCache = null;
+}
+
+const HANDSHAKE_DONE = new Set(['live_ok', 'auth_required', 'unreachable']);
+
+function listWarmProbeTargets() {
+  const { getTop100McpServers, getAllMcpServers } = require('./mcpDirectoryService');
+  const seen = new Set();
+  const targets = [];
+  const pool = [...getTop100McpServers()];
+  for (const server of getAllMcpServers()) {
+    if (server.featured) pool.push(server);
+  }
+  for (const server of pool) {
+    const slug = String(server.slug || '').trim().toLowerCase();
+    if (!slug || seen.has(slug)) continue;
+    seen.add(slug);
+    const url = httpsRemoteUrl(server);
+    if (!url) continue;
+    const status = server.quality?.live_status;
+    if (HANDSHAKE_DONE.has(status)) continue;
+    targets.push({ slug, url, name: server.name || slug });
+  }
+  return targets;
+}
+
+/**
+ * Handshake featured + Top 100 HTTPS remotes that still say not_probed.
+ * Stdio is skipped. Results overlay listings and persist to the warm file.
+ */
+async function warmProbeHttpsListings(opts = {}) {
+  if (opts.enabled === false || process.env.MCP_WARM_PROBE === '0') {
+    return { skipped: true, probed: 0, targets: [] };
+  }
+  const probeMcpUrl = opts.probeMcpUrl || require('./mcpProbeService').probeMcpUrl;
+  const targets = opts.targets || listWarmProbeTargets();
+  const summary = {
+    skipped: false,
+    probed: 0,
+    live_ok: 0,
+    auth_required: 0,
+    unreachable: 0,
+    targets: targets.map((t) => t.slug),
+  };
+
+  for (const target of targets) {
+    try {
+      const result = await probeMcpUrl(target.url, opts.probeOpts);
+      rememberFromProbe(result, target.slug);
+      const status = result.live_status || 'unreachable';
+      if (summary[status] !== undefined) summary[status] += 1;
+    } catch {
+      rememberHandshake({
+        url: target.url,
+        slug: target.slug,
+        liveStatus: 'unreachable',
+        probedAt: new Date().toISOString(),
+      });
+      summary.unreachable += 1;
+    }
+    summary.probed += 1;
+  }
+
+  if (opts.persist !== false && summary.probed > 0) persistWarmFile();
+  return summary;
+}
+
+async function startWarmHandshakeProbe() {
+  if (process.env.MCP_WARM_PROBE === '0') return { skipped: true, probed: 0, targets: [] };
+  const summary = await warmProbeHttpsListings();
+  if (summary.skipped) return summary;
+  console.log(
+    `MCP warm handshake: ${summary.probed} probed (${summary.live_ok} live_ok, ${summary.auth_required} auth_required, ${summary.unreachable} unreachable) — not a SAFE badge`,
+  );
+  return summary;
 }
 
 function overlayRecord({ url, slug, liveStatus, probedAt, expires }) {
@@ -176,4 +281,8 @@ module.exports = {
   refreshListingHandshake,
   clearHandshakeOverlay,
   liveToEndpoint,
+  listWarmProbeTargets,
+  warmProbeHttpsListings,
+  startWarmHandshakeProbe,
+  persistWarmFile,
 };

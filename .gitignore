@@ -52,6 +52,9 @@ Dockerfile*
 # MCP submission form payloads (may contain emails)
 data/mcp-submissions/*.json
 
+# Runtime handshake overlay from boot warm-probe
+data/mcp-handshake-warm.json
+
 # Expo (mobile subproject)
 .expo/
 dist/
