@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>Influzer MCP agent skill — search, handshake, paste</title>
+    <meta name="description" content="Agent skill for Influzer: search the MCP catalog, handshake a remote URL, paste Cursor/Claude/ChatGPT/ACP snippets. Not a safe-to-install badge." />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: 'Influzer MCP agent skill — search, handshake, paste',
+      ogDescription: 'A SKILL.md that teaches agents the Influzer loop: Discovery search, probe handshake, client install snippets. Not a SAFE badge.',
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="/mcp/discovery/setup">← MCP Discovery</a>
+
+      <p class="setup-eyebrow">Agent skill · Read-only catalog · No SAFE badge</p>
+      <h1 class="setup-title">Search, handshake, paste</h1>
+      <p class="setup-lead">
+        Discovery can search. Probe can handshake. Snippets can paste.
+        This skill teaches the agent that loop so it does not invent an
+        <code>npx</code> line. MCP is not WebMCP, not MCP Apps, and not ACP.
+      </p>
+
+      <div class="setup-endpoint">
+        <p class="setup-endpoint__label">SKILL.md — COPY INTO THE PROJECT</p>
+        <div class="setup-endpoint__row">
+          <code class="setup-endpoint__url" id="setupEndpoint"><%= skillUrl %></code>
+          <button type="button" class="setup-endpoint__copy" id="copyEndpoint">Copy URL</button>
+        </div>
+      </div>
+
+      <h2 class="setup-prompts__title">Cursor</h2>
+      <pre class="setup-code"><code><%= cursorSkillCommand %></code></pre>
+
+      <h2 class="setup-prompts__title">Claude Code</h2>
+      <pre class="setup-code"><code><%= claudeSkillCommand %></code></pre>
+
+      <h2 class="setup-prompts__title">What the skill does</h2>
+      <ul class="setup-steps probe-facts">
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">1</span><span>Call Discovery <code>search_mcp_servers</code> / <code>get_mcp_server</code> (install snippets are now in the tool result)</span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">2</span><span>Handshake HTTPS remotes with <code>GET /api/v1/probe?url=…</code></span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">3</span><span>Paste the client snippet. Human still allowlists. Claude/ChatGPT stay off stdio.</span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">4</span><span><code>safety_badge</code> is always <code>null</code></span></li>
+      </ul>
+
+      <p class="setup-links">
+        <a href="<%= skillUrl %>">Raw SKILL.md</a>
+        · <a href="<%= skillIndexUrl %>">Skill index</a>
+        · <a href="/mcp/discovery/setup">Connect Discovery</a>
+        · <a href="/mcp/influzer-mcp-discovery#install">Install snippets</a>
+        · <a href="/mcp/probe">Handshake probe</a>
+        · <a href="/insights/search-handshake-paste-influzer-mcp-skill">Why this exists</a>
+      </p>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-setup-page.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

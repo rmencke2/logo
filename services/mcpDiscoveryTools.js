@@ -14,6 +14,7 @@ const {
 const { getServersForTopic } = require('./mcpTopicService');
 const { getAllMcpTopics, getMcpTopicBySlug } = require('../data/mcp-topics');
 const { qualityRankBoost, summarizeQuality } = require('../scripts/utils/mcp-quality');
+const { slimInstallForAgent } = require('./mcpInstallSnippets');
 
 const DEFAULT_LIMIT = 8;
 const MAX_LIMIT = 15;
@@ -67,7 +68,7 @@ const TOOL_DEFINITIONS = [
   {
     name: 'get_mcp_server',
     description:
-      'Get full details for one MCP server by slug: tools, transport, install command, remote URL, install_api (Cursor/Claude/ChatGPT/ACP snippets), and Influzer page link. install_api is copy-paste config — not a safe-to-install badge.',
+      'Get full details for one MCP server by slug: tools, transport, remote URL, and install.clients (Cursor JSON, Claude/ChatGPT steps, Claude Code, ACP mcpServers). install.safety_badge is always null — copy-paste config, not a safe-to-install badge. MCP is not WebMCP, MCP Apps, or ACP.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -229,6 +230,7 @@ function detailServer(server) {
     topics_url: 'https://www.influzer.ai/mcp/topics',
     install_api: `https://www.influzer.ai/api/v1/install/${server.slug}`,
     markdown_url: `https://www.influzer.ai/embed/mcp/${server.slug}.md`,
+    install: slimInstallForAgent(server),
   };
 }
 

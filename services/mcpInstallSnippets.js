@@ -276,8 +276,42 @@ function buildInstallSnippets(server) {
   };
 }
 
+/**
+ * Compact payload for Discovery get_mcp_server (no markdown dump).
+ */
+function slimInstallForAgent(server) {
+  const snippets = buildInstallSnippets(server);
+  if (!snippets) return null;
+  const clients = {};
+  for (const id of ['cursor', 'claude', 'chatgpt', 'claude-code', 'acp']) {
+    const client = snippets.clients[id];
+    if (!client) continue;
+    clients[id] = {
+      available: client.available,
+      label: client.label,
+      summary: client.summary,
+      language: client.language,
+      code: client.code,
+    };
+  }
+  return {
+    safety_badge: null,
+    has_remote: snippets.has_remote,
+    stdio_only: snippets.stdio_only,
+    remote_url: snippets.remote_url,
+    probe_url: snippets.probe_url,
+    install_api: snippets.install_api,
+    markdown_url: snippets.markdown_url,
+    skill_url: `${SITE_BASE}/skills/influzer-mcp/SKILL.md`,
+    skill_page: `${SITE_BASE}/mcp/discovery/skill`,
+    clients,
+    note: snippets.quality.note,
+  };
+}
+
 module.exports = {
   buildInstallSnippets,
+  slimInstallForAgent,
   configKey,
   httpsRemoteUrl,
   parseStdioFromInstall,
