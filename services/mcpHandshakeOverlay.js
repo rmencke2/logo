@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { httpsRemoteUrl } = require('./mcpInstallSnippets');
 const { buildHandshakeBadgeSvg } = require('./mcpHandshakeBadge');
+const { resolveLiveStatus } = require('../scripts/utils/mcp-quality');
 
 const SEED_PATH = path.join(__dirname, '..', 'data', 'mcp-handshake-seed.json');
 const WARM_PATH =
@@ -200,6 +201,33 @@ function peekHandshake({ url, slug } = {}) {
   return null;
 }
 
+/**
+ * Shared listing/badge clock. Overlay (warm + seed + in-memory) first,
+ * then catalog quality. null means the badge may live-probe.
+ */
+function handshakeClockStatus({ url, slug } = {}) {
+  const rec = peekHandshake({ url, slug });
+  if (rec) {
+    if (HANDSHAKE_DONE.has(rec.live_status)) return rec.live_status;
+    const mapped = resolveLiveStatus({}, rec);
+    if (HANDSHAKE_DONE.has(mapped)) return mapped;
+  }
+
+  if (slug) {
+    const { findMcpServerBySlug } = require('./mcpDirectoryService');
+    const status = findMcpServerBySlug(slug)?.quality?.live_status;
+    if (HANDSHAKE_DONE.has(status)) return status;
+  }
+
+  if (url) {
+    const { findMcpServersByEndpoint } = require('./mcpDirectoryService');
+    const status = findMcpServersByEndpoint(url, 1)[0]?.quality?.live_status;
+    if (HANDSHAKE_DONE.has(status)) return status;
+  }
+
+  return null;
+}
+
 function mergeHandshakeEntry(server, entry) {
   const overlay = peekHandshake({
     slug: server?.slug,
@@ -276,6 +304,7 @@ module.exports = {
   rememberHandshake,
   rememberFromProbe,
   peekHandshake,
+  handshakeClockStatus,
   mergeHandshakeEntry,
   listingHandshakeSvg,
   refreshListingHandshake,

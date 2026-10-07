@@ -235,6 +235,7 @@ function summarizeQuality(quality) {
 
 module.exports = {
   computeQualitySignals,
+  resolveLiveStatus,
   qualityRankBoost,
   summarizeQuality,
   LIVE_STATUS_LABELS,

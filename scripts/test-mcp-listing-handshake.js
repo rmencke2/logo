@@ -5,6 +5,7 @@ const { validateServer } = require('./utils/mcp-validator');
 const {
   rememberHandshake,
   peekHandshake,
+  handshakeClockStatus,
   mergeHandshakeEntry,
   listingHandshakeSvg,
   refreshListingHandshake,
@@ -49,6 +50,8 @@ async function main() {
   });
   const peeked = peekHandshake({ slug: 'demo-remote' });
   assert.equal(peeked.endpoint_status, 'ok');
+  assert.equal(handshakeClockStatus({ slug: 'demo-remote' }), 'live_ok');
+  assert.equal(handshakeClockStatus({ url: 'https://example.com/mcp' }), 'live_ok');
 
   const merged = mergeHandshakeEntry(
     { slug: 'demo-remote', mcp_endpoint: 'https://example.com/mcp' },

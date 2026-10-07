@@ -5,8 +5,8 @@
  *
  *   GET  /api/v1/probe?url=https://example.com/mcp
  *   POST /api/v1/probe  { "url": "https://example.com/mcp" }
- *   GET  /api/v1/probe/badge?url=…   shields-style SVG (live_ok / auth_required / unreachable)
- *   GET  /api/v1/probe/badge?slug=…  same, from a catalog listing (stdio → gray, no probe)
+ *   GET  /api/v1/probe/badge?url=…   shields-style SVG from the listing overlay clock
+ *   GET  /api/v1/probe/badge?slug=…  same; stdio → gray, no probe. Live-probes only if overlay/seed missing.
  */
 
 const rateLimit = require('express-rate-limit');
@@ -20,7 +20,7 @@ const { findMcpServersByEndpoint, findMcpServerBySlug } = require('./mcpDirector
 const { httpsRemoteUrl } = require('./mcpInstallSnippets');
 const { clientErrorMessage } = require('../utils/safeError');
 const { buildHandshakeBadgeSvg } = require('./mcpHandshakeBadge');
-const { rememberFromProbe } = require('./mcpHandshakeOverlay');
+const { rememberFromProbe, handshakeClockStatus } = require('./mcpHandshakeOverlay');
 
 const SITE_BASE = 'https://www.influzer.ai';
 const PROBE_PATH = '/api/v1/probe';
@@ -126,6 +126,13 @@ async function svgForProbeUrl(targetUrl, opts = {}) {
   const cached = badgeCacheGet(cacheKey);
   if (cached) return cached;
 
+  const clock = handshakeClockStatus({ url: targetUrl, slug: opts.slug });
+  if (clock) {
+    const out = { svg: buildHandshakeBadgeSvg({ liveStatus: clock }), status: 200 };
+    badgeCacheSet(cacheKey, out.svg, out.status);
+    return out;
+  }
+
   let pending = badgeInflight.get(cacheKey);
   if (!pending) {
     pending = probeMcpUrl(targetUrl, opts)
@@ -167,7 +174,7 @@ async function handleBadgeRequest(req, res) {
     if (!remote) {
       return sendBadgeSvg(res, buildHandshakeBadgeSvg({ errorCode: 'stdio_only' }), 200, 600);
     }
-    const out = await svgForProbeUrl(remote);
+    const out = await svgForProbeUrl(remote, { slug });
     return sendBadgeSvg(res, out.svg, out.status);
   }
 

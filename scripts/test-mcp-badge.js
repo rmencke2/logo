@@ -13,6 +13,11 @@ const {
   clearHandshakeBadgeCache,
   handleBadgeRequest,
 } = require('../services/mcpProbeService');
+const {
+  rememberHandshake,
+  handshakeClockStatus,
+  clearHandshakeOverlay,
+} = require('../services/mcpHandshakeOverlay');
 const { buildInstallSnippets } = require('../services/mcpInstallSnippets');
 
 const GREEN = /#22c55e|#16a34a|#15803d|#10b981|#059669|#4ade80|#86efac/i;
@@ -124,6 +129,39 @@ async function main() {
   await handleBadgeRequest({ query: { slug: 'this-server-does-not-exist-zzz' } }, noSlug);
   assert.equal(noSlug.statusCode, 404);
   assert.match(String(noSlug.body), /not found/);
+
+  clearHandshakeOverlay();
+  clearHandshakeBadgeCache();
+  rememberHandshake({
+    url: 'https://macaly.example.com/mcp',
+    slug: 'macaly-clock',
+    liveStatus: 'auth_required',
+    probedAt: '2026-10-07T00:00:00.000Z',
+  });
+  assert.equal(handshakeClockStatus({ url: 'https://macaly.example.com/mcp' }), 'auth_required');
+  assert.equal(handshakeClockStatus({ slug: 'macaly-clock' }), 'auth_required');
+  let overlayFetches = 0;
+  const overlayFetch = async () => {
+    overlayFetches += 1;
+    return {
+      status: 'ok',
+      tools: [{ name: 'search', description: 'Search' }],
+      httpStatus: 200,
+    };
+  };
+  const overlayBadge = await svgForProbeUrl('https://macaly.example.com/mcp', {
+    fetchLiveMcpTools: overlayFetch,
+    slug: 'macaly-clock',
+  });
+  assert.equal(overlayFetches, 0);
+  assert.equal(overlayBadge.status, 200);
+  assert.match(overlayBadge.svg, /auth_required/);
+  assert.match(overlayBadge.svg, /#d97706/);
+
+  const seeded = mockRes();
+  await handleBadgeRequest({ query: { slug: 'influzer-mcp-discovery' } }, seeded);
+  assert.equal(seeded.statusCode, 200);
+  assert.match(String(seeded.body), /live_ok/);
 
   console.log('mcp handshake badge tests passed');
 }

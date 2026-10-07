@@ -73,7 +73,7 @@
 test "$STATUS" != "unreachable"</code></pre>
 
       <h2 class="setup-prompts__title">README badge</h2>
-      <p class="setup-note">Shields-style SVG from the same handshake. Indigo <code>live_ok</code>, amber <code>auth_required</code>, gray <code>unreachable</code>. Cached ~10 minutes. Never a SAFE badge. Stdio has no badge.</p>
+      <p class="setup-note">Shields-style SVG from the catalog overlay clock (warm / seed / last handshake). Live-probes only when that is missing so README and listing cannot disagree. JSON <code>/probe</code> stays on-demand live. Indigo <code>live_ok</code>, amber <code>auth_required</code>, gray <code>unreachable</code>. Cached ~10 minutes. Never a SAFE badge. Stdio has no badge.</p>
       <p class="setup-note"><img alt="MCP handshake" src="/api/v1/probe/badge?slug=influzer-mcp-discovery" height="20" /></p>
       <pre class="setup-code"><code>[![MCP handshake](<%= endpoint %>/badge?url=https://www.influzer.ai/mcp/discovery)](<%= canonicalUrl %>?url=https://www.influzer.ai/mcp/discovery)</code></pre>
       <pre class="setup-code"><code>curl -sS "<%= endpoint %>/badge?slug=influzer-mcp-discovery"</code></pre>
