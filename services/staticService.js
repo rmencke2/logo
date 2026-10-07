@@ -29,6 +29,7 @@ const {
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
+const { registerMcpProbeRoutes } = require('./mcpProbeService');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
 const { getMilestonePromo } = require('../data/mcp-milestone-promo');
@@ -880,6 +881,7 @@ ${itemsXml}
 
   // MCP Server Directory (must be registered before /insights/:slug)
   registerMcpDiscoveryRoutes(app);
+  registerMcpProbeRoutes(app);
 
   app.get('/mcp/all', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -1168,6 +1170,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
+      { loc: `${SITE_BASE_URL}/mcp/probe`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.84' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },

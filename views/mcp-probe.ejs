@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MCP handshake probe API — Influzer.ai</title>
+    <meta name="description" content="Public API: handshake a remote MCP URL. Returns tools/list count, auth gate, and live status — never a safe-to-install badge. Embed in CI, catalogs, and docs." />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: 'MCP handshake probe API — Influzer.ai',
+      ogDescription: 'GET /api/v1/probe?url=… — live tools/list facts for a remote MCP server. Not a SAFE badge.',
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="/mcp">← MCP directory</a>
+
+      <p class="setup-eyebrow">Public API · Read-only · No auth</p>
+      <h1 class="setup-title">Handshake probe</h1>
+      <p class="setup-lead">
+        Call a remote MCP URL the same way Influzer does in the catalog:
+        <code>initialize</code> then <code>tools/list</code>.
+        You get live status, tool count, and whether an auth gate answered —
+        <strong>not a safe-to-install badge</strong>.
+        Embed this in CI, internal catalogs, and README checks.
+      </p>
+
+      <div class="setup-endpoint">
+        <p class="setup-endpoint__label">PROBE ENDPOINT</p>
+        <div class="setup-endpoint__row">
+          <code class="setup-endpoint__url" id="setupEndpoint"><%= endpoint %></code>
+          <button type="button" class="setup-endpoint__copy" id="copyEndpoint">Copy URL</button>
+        </div>
+      </div>
+
+      <form class="probe-form" id="probeForm">
+        <label class="probe-form__label" for="probeUrl">Remote MCP URL</label>
+        <div class="probe-form__row">
+          <input
+            class="probe-form__input"
+            id="probeUrl"
+            name="url"
+            type="url"
+            required
+            placeholder="https://www.influzer.ai/mcp/discovery"
+            value="<%= discoveryEndpoint %>"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" class="probe-form__submit" id="probeSubmit">Probe</button>
+        </div>
+        <p class="setup-note">HTTPS only. Private, localhost, and credentialed URLs are rejected.</p>
+      </form>
+
+      <pre class="setup-code probe-result" id="probeResult" hidden><code></code></pre>
+      <p class="probe-status" id="probeStatus" hidden></p>
+
+      <h2 class="setup-prompts__title">curl</h2>
+      <pre class="setup-code"><code>curl -sS "<%= endpoint %>?url=https://www.influzer.ai/mcp/discovery"</code></pre>
+
+      <h2 class="setup-prompts__title">CI check</h2>
+      <pre class="setup-code"><code>STATUS=$(curl -sS "<%= endpoint %>?url=$MCP_URL" | jq -r .live_status)
+# live_ok or auth_required are handshakes. unreachable is a ticket.
+test "$STATUS" != "unreachable"</code></pre>
+
+      <h2 class="setup-prompts__title">What you get</h2>
+      <ul class="setup-steps probe-facts">
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">1</span><span><code>live_status</code> — <code>live_ok</code>, <code>auth_required</code>, or <code>unreachable</code></span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">2</span><span><code>auth_gate</code> — 401/403 seen vs none detected</span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">3</span><span><code>tool_count</code> + tool names from live <code>tools/list</code></span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">4</span><span><code>catalog</code> — Influzer listings that already use this URL</span></li>
+        <li class="setup-step"><span class="setup-step__num" aria-hidden="true">5</span><span><code>safety_badge</code> is always <code>null</code></span></li>
+      </ul>
+
+      <p class="setup-links">
+        <a href="/mcp/discovery/setup">MCP Discovery</a>
+        · <a href="/insights/not-safe-just-honest-mcp-quality-layer-for-the-long-tail">Not “safe” — just honest</a>
+        · <a href="/mcp">Browse Top 100</a>
+      </p>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-setup-page.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-probe-page.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

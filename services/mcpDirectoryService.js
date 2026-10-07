@@ -318,6 +318,48 @@ function findMcpServerBySlug(slug) {
   return server ? attachBranding(attachQuality(server)) : null;
 }
 
+function normalizeMcpEndpoint(url) {
+  try {
+    const parsed = new URL(String(url || '').trim());
+    parsed.hash = '';
+    parsed.username = '';
+    parsed.password = '';
+    let href = parsed.toString();
+    if (href.endsWith('/') && parsed.pathname === '/') {
+      href = href.slice(0, -1);
+    } else if (href.endsWith('/') && parsed.pathname.length > 1) {
+      href = href.slice(0, -1);
+    }
+    return href.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Match catalog listings whose remote MCP URL equals the probed endpoint.
+ * @param {string} url
+ * @param {number} [limit]
+ */
+function findMcpServersByEndpoint(url, limit = 5) {
+  const target = normalizeMcpEndpoint(url);
+  if (!target) return [];
+  const matches = [];
+  for (const server of getAllMcpServers()) {
+    const candidates = [
+      server.mcp_endpoint,
+      server.deployment_url,
+      server.connection_url,
+      server.primary_url,
+    ];
+    if (candidates.some((candidate) => normalizeMcpEndpoint(candidate) === target)) {
+      matches.push(attachBranding(attachQuality(server)));
+      if (matches.length >= limit) break;
+    }
+  }
+  return matches;
+}
+
 function withDisplay(servers) {
   return servers.map((s) =>
     attachBranding(
@@ -544,6 +586,8 @@ module.exports = {
   getMcpCatalogTotals,
   getMcpCategories,
   findMcpServerBySlug,
+  findMcpServersByEndpoint,
+  normalizeMcpEndpoint,
   getMcpIconEmoji,
   transportLabel,
   getMcpLastUpdated,
