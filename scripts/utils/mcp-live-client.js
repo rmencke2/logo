@@ -65,7 +65,7 @@ function pickJsonRpcReply(messages, id) {
 /**
  * @param {string} endpoint
  * @param {object} payload
- * @param {{ sessionId?: string; timeoutMs?: number }} [opts]
+ * @param {{ sessionId?: string; timeoutMs?: number; redirect?: RequestRedirect }} [opts]
  */
 async function postMcpMessage(endpoint, payload, opts = {}) {
   const timeoutMs = opts.timeoutMs || DEFAULT_TIMEOUT_MS;
@@ -84,7 +84,7 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
       headers,
       body: JSON.stringify(payload),
       signal: controller.signal,
-      redirect: 'follow',
+      redirect: opts.redirect || 'follow',
     });
 
     const contentType = res.headers.get('content-type');
@@ -119,7 +119,7 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
 
 /**
  * @param {string} endpoint
- * @param {{ timeoutMs?: number }} [opts]
+ * @param {{ timeoutMs?: number; redirect?: RequestRedirect; clientInfo?: { name: string; version: string } }} [opts]
  */
 async function fetchLiveMcpTools(endpoint, opts = {}) {
   if (!endpoint || !/^https?:\/\//i.test(endpoint)) {
@@ -133,7 +133,7 @@ async function fetchLiveMcpTools(endpoint, opts = {}) {
     params: {
       protocolVersion: PROTOCOL_VERSION,
       capabilities: {},
-      clientInfo: CLIENT_INFO,
+      clientInfo: opts.clientInfo || CLIENT_INFO,
     },
   };
 
