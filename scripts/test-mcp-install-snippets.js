@@ -43,6 +43,8 @@ function main() {
   assert.equal(remote.clients.claude.available, true);
   assert.ok(remote.markdown.includes('Connect Influzer MCP Discovery'));
   assert.ok(remote.embed_html.includes('data-influzer-install="influzer-mcp-discovery"'));
+  assert.ok(remote.badge_url.includes('/api/v1/probe/badge?slug=influzer-mcp-discovery'));
+  assert.ok(remote.badge_markdown.includes('MCP handshake'));
 
   const local = buildInstallSnippets({
     slug: 'github',
@@ -57,6 +59,8 @@ function main() {
   assert.equal(local.clients.cursor.available, true);
   assert.ok(local.clients.cursor.code.includes('"command": "npx"'));
   assert.ok(local.clients.acp.code.includes('"type": "stdio"'));
+  assert.equal(local.badge_url, null);
+  assert.equal(local.badge_markdown, null);
 
   const { snippetsForSlug } = require('../services/mcpInstallService');
   const live = snippetsForSlug('influzer-mcp-discovery');

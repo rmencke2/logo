@@ -5,6 +5,8 @@
  *
  *   GET  /api/v1/probe?url=https://example.com/mcp
  *   POST /api/v1/probe  { "url": "https://example.com/mcp" }
+ *   GET  /api/v1/probe/badge?url=…   shields-style SVG (live_ok / auth_required / unreachable)
+ *   GET  /api/v1/probe/badge?slug=…  same, from a catalog listing (stdio → gray, no probe)
  */
 
 const rateLimit = require('express-rate-limit');
@@ -14,8 +16,10 @@ const { fetchLiveMcpTools } = require('../scripts/utils/mcp-live-client');
 const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
 const { sanitizeTools } = require('./mcpSourceSafety');
 const { assertSafePublicUrl } = require('./webmcp/ssrf');
-const { findMcpServersByEndpoint } = require('./mcpDirectoryService');
+const { findMcpServersByEndpoint, findMcpServerBySlug } = require('./mcpDirectoryService');
+const { httpsRemoteUrl } = require('./mcpInstallSnippets');
 const { clientErrorMessage } = require('../utils/safeError');
+const { buildHandshakeBadgeSvg } = require('./mcpHandshakeBadge');
 
 const SITE_BASE = 'https://www.influzer.ai';
 const PROBE_PATH = '/api/v1/probe';
@@ -68,6 +72,111 @@ const probeLimiter = rateLimit({
     note: 'Too many probes from this IP. Wait and retry, or cache the last handshake.',
   },
 });
+
+const BADGE_TTL_MS = Number(process.env.MCP_BADGE_TTL_MS) || 10 * 60 * 1000;
+const BADGE_CACHE_MAX = 400;
+const badgeCache = new Map();
+const badgeInflight = new Map();
+
+const badgeLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: Number(process.env.MCP_BADGE_RATE_LIMIT) || 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler(req, res) {
+    setProbeCors(res);
+    sendBadgeSvg(res, buildHandshakeBadgeSvg({ errorCode: 'rate_limited' }), 429, 60);
+  },
+});
+
+function badgeCacheGet(key) {
+  const hit = badgeCache.get(key);
+  if (!hit) return null;
+  if (hit.expires <= Date.now()) {
+    badgeCache.delete(key);
+    return null;
+  }
+  return { svg: hit.svg, status: hit.status };
+}
+
+function badgeCacheSet(key, svg, status) {
+  if (badgeCache.size >= BADGE_CACHE_MAX) {
+    const oldest = badgeCache.keys().next().value;
+    if (oldest !== undefined) badgeCache.delete(oldest);
+  }
+  badgeCache.set(key, { svg, status, expires: Date.now() + BADGE_TTL_MS });
+}
+
+function clearHandshakeBadgeCache() {
+  badgeCache.clear();
+  badgeInflight.clear();
+}
+
+function sendBadgeSvg(res, svg, status = 200, maxAgeSec = 300) {
+  setProbeCors(res);
+  res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+  res.setHeader('Cache-Control', `public, max-age=${maxAgeSec}, s-maxage=${maxAgeSec}`);
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  return res.status(status).send(svg);
+}
+
+async function svgForProbeUrl(targetUrl, opts = {}) {
+  const cacheKey = String(targetUrl || '').trim().toLowerCase();
+  const cached = badgeCacheGet(cacheKey);
+  if (cached) return cached;
+
+  let pending = badgeInflight.get(cacheKey);
+  if (!pending) {
+    pending = probeMcpUrl(targetUrl, opts)
+      .then((result) => ({
+        svg: buildHandshakeBadgeSvg({ liveStatus: result.live_status }),
+        status: 200,
+      }))
+      .catch((err) => {
+        const errorCode = err.code || 'probe_failed';
+        const httpStatus = Number(err.status) && err.status < 500 ? err.status : 502;
+        return {
+          svg: buildHandshakeBadgeSvg({ errorCode, liveStatus: 'unreachable' }),
+          status: httpStatus,
+        };
+      })
+      .finally(() => {
+        badgeInflight.delete(cacheKey);
+      });
+    badgeInflight.set(cacheKey, pending);
+  }
+
+  const out = await pending;
+  badgeCacheSet(cacheKey, out.svg, out.status);
+  return out;
+}
+
+async function handleBadgeRequest(req, res) {
+  const rawUrl = req.query?.url || req.query?.endpoint;
+  const slug = String(req.query?.slug || '')
+    .trim()
+    .toLowerCase();
+
+  if (!String(rawUrl || '').trim() && slug) {
+    const server = findMcpServerBySlug(slug);
+    if (!server) {
+      return sendBadgeSvg(res, buildHandshakeBadgeSvg({ errorCode: 'not_found' }), 404, 120);
+    }
+    const remote = httpsRemoteUrl(server);
+    if (!remote) {
+      return sendBadgeSvg(res, buildHandshakeBadgeSvg({ errorCode: 'stdio_only' }), 200, 600);
+    }
+    const out = await svgForProbeUrl(remote);
+    return sendBadgeSvg(res, out.svg, out.status);
+  }
+
+  if (!String(rawUrl || '').trim()) {
+    return sendBadgeSvg(res, buildHandshakeBadgeSvg({ errorCode: 'url_required' }), 400, 120);
+  }
+
+  const out = await svgForProbeUrl(rawUrl);
+  return sendBadgeSvg(res, out.svg, out.status);
+}
 
 function clipReason(reason) {
   const text = String(reason || '').replace(/\s+/g, ' ').trim();
@@ -228,6 +337,20 @@ function registerMcpProbeRoutes(app) {
     });
   });
 
+  const badgePaths = [
+    `${PROBE_PATH}/badge`,
+    `${PROBE_PATH}/badge.svg`,
+    '/api/mcp/v1/probe/badge',
+    '/api/mcp/v1/probe/badge.svg',
+  ];
+  for (const badgePath of badgePaths) {
+    app.options(badgePath, (req, res) => {
+      setProbeCors(res);
+      res.status(204).end();
+    });
+    app.get(badgePath, badgeLimiter, handleBadgeRequest);
+  }
+
   app.options(PROBE_PATH, (req, res) => {
     setProbeCors(res);
     res.status(204).end();
@@ -247,4 +370,8 @@ module.exports = {
   registerMcpProbeRoutes,
   probeMcpUrl,
   LIVE_STATUS_FROM_PROBE,
+  handleBadgeRequest,
+  svgForProbeUrl,
+  clearHandshakeBadgeCache,
+  BADGE_TTL_MS,
 };

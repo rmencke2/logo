@@ -28,7 +28,7 @@ A website is not an MCP server. An MCP App is not WebMCP. ACP is not MCP.
 
 1. **Search** — if Influzer MCP Discovery is connected, call `search_mcp_servers` or `recommend_mcp_servers`. Else fetch `https://www.influzer.ai/api/v1/install/<slug>` after looking up the slug on `/mcp`.
 2. **Detail** — `get_mcp_server` now returns `install.clients` (Cursor JSON, Claude steps, ChatGPT steps, Claude Code CLI, ACP `mcpServers`). `safety_badge` is always `null`.
-3. **Handshake** — if `install.has_remote` and `install.remote_url` is `https://…`, GET `https://www.influzer.ai/api/v1/probe?url=<encoded>`. `live_ok` or `auth_required` is a handshake. `unreachable` is a ticket. Probe is **not** a SAFE badge.
+3. **Handshake** — if `install.has_remote` and `install.remote_url` is `https://…`, GET `https://www.influzer.ai/api/v1/probe?url=<encoded>`. `live_ok` or `auth_required` is a handshake. `unreachable` is a ticket. Probe is **not** a SAFE badge. README SVG: `install.badge_markdown` or `GET /api/v1/probe/badge?url=…` (indigo / amber / gray — never SAFE). Stdio listings have no badge.
 4. **Paste** — give the human the snippet for **this** client only.
    - Cursor → `install.clients.cursor.code` into Settings → MCP or `.cursor/mcp.json`
    - Claude chat → connector steps (HTTPS only)

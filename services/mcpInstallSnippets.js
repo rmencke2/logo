@@ -6,6 +6,7 @@
  */
 
 const SITE_BASE = 'https://www.influzer.ai';
+const { badgeUrlForSlug, badgeMarkdown } = require('./mcpHandshakeBadge');
 
 function configKey(slug) {
   const raw = String(slug || 'mcp-server')
@@ -99,6 +100,11 @@ function buildInstallSnippets(server) {
   const probeUrl = remoteUrl
     ? `${SITE_BASE}/api/v1/probe?url=${encodeURIComponent(remoteUrl)}`
     : null;
+  const badgeUrl = remoteUrl ? badgeUrlForSlug(server.slug) : null;
+  const handshakeHref = remoteUrl
+    ? `${SITE_BASE}/mcp/probe?url=${encodeURIComponent(remoteUrl)}`
+    : pageUrl;
+  const badgeMd = badgeMarkdown({ badgeUrl, href: handshakeHref });
   const installApi = `${SITE_BASE}/api/v1/install/${server.slug}`;
   const markdownUrl = `${SITE_BASE}/embed/mcp/${server.slug}.md`;
 
@@ -225,6 +231,8 @@ function buildInstallSnippets(server) {
     'Observable listing facts — not a safe-to-install badge. Handshake tools/list before you connect.';
 
   const markdown = [
+    badgeMd,
+    '',
     `## Connect ${server.name} (MCP)`,
     '',
     remoteUrl ? `Remote URL: \`${remoteUrl}\`` : 'No public HTTPS MCP URL on this listing (stdio / docs only).',
@@ -242,6 +250,7 @@ function buildInstallSnippets(server) {
     `[${server.name} on Influzer](${pageUrl}) · [Install JSON](${installApi}) · Probe is not a SAFE badge.`,
     '',
   ]
+    .filter((line) => line != null)
     .filter((line, i, arr) => !(line === '' && arr[i - 1] === ''))
     .join('\n');
 
@@ -258,6 +267,8 @@ function buildInstallSnippets(server) {
     page_url: pageUrl,
     probe_url: probeUrl,
     probe_docs: `${SITE_BASE}/mcp/probe`,
+    badge_url: badgeUrl,
+    badge_markdown: badgeMd,
     install_api: installApi,
     markdown_url: markdownUrl,
     quality: {
@@ -300,6 +311,8 @@ function slimInstallForAgent(server) {
     stdio_only: snippets.stdio_only,
     remote_url: snippets.remote_url,
     probe_url: snippets.probe_url,
+    badge_url: snippets.badge_url,
+    badge_markdown: snippets.badge_markdown,
     install_api: snippets.install_api,
     markdown_url: snippets.markdown_url,
     skill_url: `${SITE_BASE}/skills/influzer-mcp/SKILL.md`,

@@ -30,6 +30,8 @@ function main() {
   assert.ok(live.server.install.clients.cursor.code.includes('https://www.influzer.ai/mcp/discovery'));
   assert.equal(live.server.install.clients.claude.available, true);
   assert.ok(live.server.install.skill_url.includes('/skills/influzer-mcp/SKILL.md'));
+  assert.ok(live.server.install.badge_url.includes('/api/v1/probe/badge'));
+  assert.ok(raw.includes('/api/v1/probe/badge'));
 
   const missing = getMcpServer({ slug: '' });
   assert.ok(missing.error);
