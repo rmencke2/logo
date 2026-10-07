@@ -1,0 +1,29 @@
+name: Probe MCP JSON
+description: Handshake every HTTPS URL in mcp.json via Influzer probe. live_ok/auth_required pass; unreachable fails. Not a SAFE badge.
+inputs:
+  file:
+    description: Path to Cursor/VS Code mcp.json
+    required: true
+    default: '.cursor/mcp.json'
+  base:
+    description: Influzer origin
+    required: false
+    default: 'https://www.influzer.ai'
+  fail-on-auth:
+    description: Fail when live_status is auth_required
+    required: false
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - name: Probe MCP remotes
+      shell: bash
+      run: |
+        ARGS=(--file "${{ inputs.file }}" --base "${{ inputs.base }}")
+        if [[ "${{ inputs.fail-on-auth }}" == "true" ]]; then
+          ARGS+=(--fail-on-auth)
+        fi
+        node "${GITHUB_ACTION_PATH}/../../../scripts/probe-mcp-json.js" "${ARGS[@]}"

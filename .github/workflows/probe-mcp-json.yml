@@ -1,0 +1,56 @@
+# Handshake HTTPS MCP URLs via Influzer probe.
+# Other repos:
+#   jobs:
+#     probe:
+#       uses: rmencke2/logo/.github/workflows/probe-mcp-json.yml@main
+#       with:
+#         file: .cursor/mcp.json
+# Or:
+#   - uses: rmencke2/logo/.github/actions/probe-mcp-json@main
+#     with:
+#       file: .cursor/mcp.json
+#
+# Not a SAFE badge. live_ok and auth_required pass; unreachable fails.
+
+name: Probe MCP JSON
+
+on:
+  workflow_call:
+    inputs:
+      file:
+        description: Path to mcp.json in the caller repo
+        type: string
+        required: false
+        default: '.cursor/mcp.json'
+      fail-on-auth:
+        type: boolean
+        required: false
+        default: false
+  workflow_dispatch:
+    inputs:
+      file:
+        description: Path to mcp.json
+        type: string
+        required: false
+        default: 'scripts/fixtures/mcp.ci.json'
+      fail-on-auth:
+        description: Fail on auth_required
+        type: boolean
+        required: false
+        default: false
+  schedule:
+    - cron: '20 6 * * 1'
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: rmencke2/logo
+          path: .influzer-probe
+      - uses: ./.influzer-probe/.github/actions/probe-mcp-json
+        with:
+          file: ${{ inputs.file || 'scripts/fixtures/mcp.ci.json' }}
+          fail-on-auth: ${{ inputs.fail-on-auth && 'true' || 'false' }}
