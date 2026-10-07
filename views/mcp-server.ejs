@@ -134,6 +134,7 @@
                 <% if (snippets.badge_markdown) { %>
                 <div class="mcp-step__title">README handshake badge</div>
                 <p class="mcp-step__help">Live <code>tools/list</code> status as SVG. Indigo is live_ok, amber is auth_required, gray is unreachable. Not a SAFE badge. Stdio listings have no badge.</p>
+                <p class="mcp-step__help"><img alt="MCP handshake" src="/api/v1/probe/badge?slug=<%= server.slug %>" height="20" /></p>
                 <div class="mcp-terminal mcp-terminal--block">
                   <code><%= snippets.badge_markdown %></code>
                   <button type="button" class="mcp-terminal__copy" data-copy-install>Copy</button>
