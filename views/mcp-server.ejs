@@ -62,7 +62,12 @@
               <% } %>
             </div>
             <div class="mcp-detail-header__body">
-              <h1><%= server.name %></h1>
+              <h1>
+                <%= server.name %>
+                <% if (server.quality && server.quality.handshake_svg) { %>
+                  <span class="mcp-handshake-badge" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
+                <% } %>
+              </h1>
               <div class="mcp-detail-badges">
                 <span class="mcp-pill mcp-pill--cat"><%= server.category %></span>
                 <span class="mcp-pill"><%= server.transportBadge || (server.isRemote ? 'Remote' : 'Local') %></span>
@@ -236,7 +241,12 @@
                 </div>
                 <div>
                   <dt>Live handshake</dt>
-                  <dd><%= server.quality.live_status_label %></dd>
+                  <dd>
+                    <%= server.quality.live_status_label %>
+                    <% if (server.quality.handshake_svg) { %>
+                      <span class="mcp-handshake-badge mcp-handshake-badge--inline" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
+                    <% } %>
+                  </dd>
                 </div>
                 <div>
                   <dt>Auth gate</dt>
@@ -317,7 +327,13 @@
               </div>
               <div class="mcp-glance__row">
                 <span class="mcp-glance__key">Handshake</span>
-                <span class="mcp-glance__val"><%= server.quality.live_status_label %></span>
+                <span class="mcp-glance__val">
+                  <% if (server.quality.handshake_svg) { %>
+                    <span class="mcp-handshake-badge mcp-handshake-badge--inline" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
+                  <% } else { %>
+                    <%= server.quality.live_status_label %>
+                  <% } %>
+                </span>
               </div>
               <div class="mcp-glance__row">
                 <span class="mcp-glance__key">Auth gate</span>

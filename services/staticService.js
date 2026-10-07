@@ -29,7 +29,8 @@ const {
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
-const { registerMcpProbeRoutes } = require('./mcpProbeService');
+const { registerMcpProbeRoutes, probeMcpUrl } = require('./mcpProbeService');
+const { refreshListingHandshake } = require('./mcpHandshakeOverlay');
 const { registerMcpInstallRoutes } = require('./mcpInstallService');
 const { registerMcpSkillRoutes } = require('./mcpSkillService');
 const { buildInstallSnippets } = require('./mcpInstallSnippets');
@@ -356,6 +357,7 @@ function mapHomeServerRow(server) {
     official: isOurs,
     category: server.category || 'Dev Tools',
     kind: homeTransportKind(server.transport),
+    handshake_svg: server.quality && server.quality.handshake_svg ? server.quality.handshake_svg : '',
     initial: String(server.name || '?').charAt(0).toUpperCase(),
     shortDesc: desc.length > 140 ? `${desc.slice(0, 137)}…` : desc,
     searchText: [server.name, desc, server.category, toolNames, server.slug]
@@ -1067,7 +1069,7 @@ ${itemsXml}
     'macaly-com': 'macaly-cloud',
   };
 
-  app.get('/mcp/:slug', (req, res) => {
+  app.get('/mcp/:slug', async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const alias = MCP_SLUG_ALIASES[req.params.slug];
     if (alias) {
@@ -1076,7 +1078,7 @@ ${itemsXml}
     if (isReservedMcpPath(req.params.slug)) {
       return res.status(404).render('404', { title: 'Page Not Found' });
     }
-    const server = findMcpServerBySlug(req.params.slug);
+    let server = findMcpServerBySlug(req.params.slug);
     const assetVersion = getHomeAssetVersion();
     if (!server) {
       return res.status(404).render('mcp-server', {
@@ -1091,6 +1093,7 @@ ${itemsXml}
         noindex: true,
       });
     }
+    server = await refreshListingHandshake(server, probeMcpUrl);
     return res.render('mcp-server', {
       server,
       installSnippets: buildInstallSnippets(server),

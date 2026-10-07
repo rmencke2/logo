@@ -72,6 +72,24 @@ function main() {
   assert.equal(local.live_status, 'local_unprobed');
   assert.equal(local.demoware_tier, 'indexed');
 
+  const stdioWithDocs = computeQualitySignals(
+    {
+      slug: 'firecrawl-like',
+      transport: 'stdio',
+      tools: [{ name: 'scrape_url' }],
+      docs_url: 'https://docs.example.com',
+      primary_url: 'https://docs.example.com',
+    },
+    null,
+  );
+  assert.equal(stdioWithDocs.live_status, 'local_unprobed');
+
+  const failed = computeQualitySignals(
+    { slug: 'down', transport: 'http', mcp_endpoint: 'https://example.com/mcp', tools: [{ name: 'x' }] },
+    { endpoint_status: 'failed' },
+  );
+  assert.equal(failed.live_status, 'unreachable');
+
   const unverified = computeQualitySignals(
     { slug: 'mystery', transport: 'unknown', tools: [] },
     null,

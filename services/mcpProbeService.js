@@ -20,6 +20,7 @@ const { findMcpServersByEndpoint, findMcpServerBySlug } = require('./mcpDirector
 const { httpsRemoteUrl } = require('./mcpInstallSnippets');
 const { clientErrorMessage } = require('../utils/safeError');
 const { buildHandshakeBadgeSvg } = require('./mcpHandshakeBadge');
+const { rememberFromProbe } = require('./mcpHandshakeOverlay');
 
 const SITE_BASE = 'https://www.influzer.ai';
 const PROBE_PATH = '/api/v1/probe';
@@ -262,7 +263,7 @@ async function probeMcpUrl(rawUrl, opts = {}) {
     tool_count: tools.length,
   });
 
-  return {
+  const payload = {
     ok: true,
     probed_at: probedAt,
     url: safe.href,
@@ -291,6 +292,8 @@ async function probeMcpUrl(rawUrl, opts = {}) {
     note: quality.note,
     docs: PROBE_DOCS,
   };
+  rememberFromProbe(payload);
+  return payload;
 }
 
 function sendProbeError(res, err) {

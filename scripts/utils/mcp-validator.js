@@ -128,6 +128,7 @@ async function probeMcpEndpoint(endpoint) {
 async function validateServer(server, opts = {}) {
   const mutate = opts.mutate !== false;
   const registryFallback = opts.registryFallback !== false;
+  const fetchLive = opts.fetchLiveMcpTools || fetchLiveMcpTools;
   const beforeTools = server.tools || [];
   const beforeFingerprint = toolFingerprint(beforeTools);
   const endpoint = getHttpMcpEndpoint(server);
@@ -146,7 +147,29 @@ async function validateServer(server, opts = {}) {
   };
 
   if (server.source === 'manual') {
-    result.status = 'skipped_manual';
+    if (!endpoint) {
+      result.status = 'skipped_manual';
+      return result;
+    }
+    result.validationMethod = 'live_mcp';
+    const live = await fetchLive(endpoint, { timeoutMs: ENDPOINT_PROBE_TIMEOUT_MS });
+    result.liveProbe = {
+      status: live.status,
+      reason: live.reason || null,
+      httpStatus: live.httpStatus || null,
+      serverInfo: live.serverInfo || null,
+    };
+    if (live.status === 'ok' || live.status === 'ok_empty') {
+      result.endpointStatus = 'ok';
+      result.status = 'handshake_ok';
+    } else if (live.status === 'auth_required') {
+      result.endpointStatus = 'auth_required';
+      result.status = 'auth_required_kept';
+    } else {
+      result.endpointStatus = 'unreachable';
+      result.status = 'live_failed_kept';
+      result.error = live.reason || live.status;
+    }
     return result;
   }
 
@@ -154,7 +177,7 @@ async function validateServer(server, opts = {}) {
 
   if (endpoint) {
     result.validationMethod = 'live_mcp';
-    const live = await fetchLiveMcpTools(endpoint);
+    const live = await fetchLive(endpoint, { timeoutMs: ENDPOINT_PROBE_TIMEOUT_MS });
     result.liveProbe = {
       status: live.status,
       reason: live.reason || null,
@@ -191,7 +214,7 @@ async function validateServer(server, opts = {}) {
     } else {
       result.status = beforeTools.length ? 'live_failed_kept' : 'live_failed';
       result.error = live.reason || live.status;
-      result.endpointStatus = live.status === 'unreachable' ? 'failed' : 'error';
+      result.endpointStatus = 'unreachable';
       return finalizeResult(result, beforeTools, draft, mutate);
     }
   } else if (registryFallback && canUseSmitheryRegistry(server)) {

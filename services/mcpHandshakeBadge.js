@@ -13,6 +13,7 @@ const STATUS_STYLE = {
   live_ok: { right: 'live_ok', color: '#4f46e5' },
   auth_required: { right: 'auth_required', color: '#d97706' },
   unreachable: { right: 'unreachable', color: '#6b7280' },
+  not_probed: { right: 'not_probed', color: '#6b7280' },
 };
 
 const ERROR_STYLE = {

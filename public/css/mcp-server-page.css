@@ -79,6 +79,22 @@
   min-width: 0;
 }
 
+.mcp-handshake-badge {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.mcp-handshake-badge svg {
+  display: block;
+  height: 20px;
+  width: auto;
+}
+
+.mcp-handshake-badge--inline {
+  margin-left: 6px;
+}
+
 .mcp-detail-header h1 {
   margin: 0 0 10px;
   font-size: clamp(1.6rem, 3vw, 34px);
@@ -86,6 +102,14 @@
   line-height: 1.1;
   font-weight: 700;
   color: var(--hp-text);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.mcp-detail-header h1 .mcp-handshake-badge {
+  margin-left: 0;
 }
 
 .mcp-detail-badges {

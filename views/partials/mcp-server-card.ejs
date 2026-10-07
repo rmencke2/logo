@@ -18,6 +18,9 @@
       <div class="mcp-card-title-wrap">
         <h2 class="mcp-card-title"><%= server.name %></h2>
         <div class="mcp-card-meta">
+          <% if (server.quality && server.quality.handshake_svg) { %>
+            <span class="mcp-handshake-badge" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
+          <% } %>
           <span class="mcp-badge-cat"><%= server.category %></span>
           <% if (server.stars) { %>
             <span class="mcp-badge-stars">★ <%= Number(server.stars).toLocaleString() %></span>

@@ -107,7 +107,7 @@ function buildSummary(results) {
 }
 
 function selectTargets(servers, args) {
-  let targets = servers.filter((s) => s.source !== 'manual');
+  let targets = servers.filter((s) => s.source !== 'manual' || Boolean(getHttpMcpEndpoint(s)));
   if (args.liveOnly) {
     targets = targets.filter((s) => Boolean(getHttpMcpEndpoint(s)));
   }
@@ -126,8 +126,7 @@ async function main() {
   const servers = catalog.servers || [];
   const beforeWithTools = servers.filter((s) => s.tools?.length).length;
   const httpEndpoints = servers.filter((s) => getHttpMcpEndpoint(s)).length;
-  const targets = selectTargets(servers, args);
-  const validateTargets = targets.filter((s) => s.source !== 'manual');
+  const validateTargets = selectTargets(servers, args);
 
   console.log(`\n🔍 MCP catalog validation (live tools/list)`);
   console.log(`   Catalog: ${servers.length} servers (${beforeWithTools} with tools)`);
@@ -192,8 +191,9 @@ async function main() {
     CONCURRENCY,
   );
 
+  const probed = new Set(results.map((r) => r.slug));
   for (const server of servers) {
-    if (server.source === 'manual') {
+    if (server.source === 'manual' && !probed.has(server.slug)) {
       results.push({ slug: server.slug, source: server.source, status: 'skipped_manual' });
     }
   }

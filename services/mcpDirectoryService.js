@@ -8,6 +8,7 @@ const { pickTop100, TOP100_SIZE } = require('../scripts/utils/normalize');
 const { attachSetupInfo } = require('../scripts/utils/setup-info');
 const { attachBranding } = require('../utils/mcpBranding');
 const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
+const { mergeHandshakeEntry, listingHandshakeSvg } = require('./mcpHandshakeOverlay');
 
 const GENERATED_PATH = path.join(__dirname, '..', 'data', 'servers-generated.json');
 const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
@@ -84,10 +85,12 @@ function loadValidationStateBySlug() {
 function attachQuality(server) {
   if (!server) return server;
   if (server.quality) return server;
-  const entry = loadValidationStateBySlug()[server.slug] || null;
+  const entry = mergeHandshakeEntry(server, loadValidationStateBySlug()[server.slug] || null);
+  const quality = computeQualitySignals(server, entry);
+  quality.handshake_svg = listingHandshakeSvg(quality);
   return {
     ...server,
-    quality: computeQualitySignals(server, entry),
+    quality,
   };
 }
 
@@ -412,7 +415,12 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
     tools_only: toolsOnly,
     quality_filter: qualityFilter || 'all',
     categories: catalog.categories,
-    servers: displayed,
+    servers: displayed.map((s) => {
+      if (!s.quality || !s.quality.handshake_svg) return s;
+      const quality = { ...s.quality };
+      delete quality.handshake_svg;
+      return { ...s, quality };
+    }),
     total: displayed.length,
     total_catalog: catalog.allServers.length,
     total_with_tools: withToolsCount,

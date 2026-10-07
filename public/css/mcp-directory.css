@@ -137,6 +137,15 @@
   gap: 6px;
   margin-top: 6px;
 }
+.mcp-handshake-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.mcp-handshake-badge svg {
+  display: block;
+  height: 18px;
+  width: auto;
+}
 .mcp-badge-cat {
   font-family: var(--font-ui);
   font-size: 0.68rem;

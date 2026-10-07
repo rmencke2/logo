@@ -63,7 +63,13 @@ function resolveLiveStatus(server, entry) {
   const endpointStatus = entry?.endpoint_status ? String(entry.endpoint_status) : '';
   if (endpointStatus === 'ok') return 'live_ok';
   if (endpointStatus === 'auth_required') return 'auth_required';
-  if (endpointStatus === 'unreachable' || endpointStatus === 'error') return 'unreachable';
+  if (
+    endpointStatus === 'unreachable' ||
+    endpointStatus === 'error' ||
+    endpointStatus === 'failed'
+  ) {
+    return 'unreachable';
+  }
 
   const method = String(entry?.validation_method || '');
   if (method.startsWith('live_mcp') && !endpointStatus) {
@@ -71,7 +77,10 @@ function resolveLiveStatus(server, entry) {
     return 'not_probed';
   }
 
-  if (!hasHttpEndpoint(server) && isLocalTransport(server)) return 'local_unprobed';
+  const remoteMcp = String(
+    server.mcp_endpoint || server.deployment_url || server.connection_url || '',
+  );
+  if (isLocalTransport(server) && !/^https:\/\//i.test(remoteMcp)) return 'local_unprobed';
   return 'not_probed';
 }
 

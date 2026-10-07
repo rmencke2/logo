@@ -12,6 +12,22 @@
       .replace(/"/g, '&quot;');
   }
 
+  function handshakeChip(s) {
+    const status = s.quality && s.quality.live_status;
+    if (!status || status === 'local_unprobed') return '';
+    const color =
+      status === 'live_ok' ? '#4f46e5' : status === 'auth_required' ? '#d97706' : '#6b7280';
+    return (
+      '<span class="mcp-hs-chip" title="MCP handshake — not a SAFE badge">' +
+      '<span class="mcp-hs-chip__l">MCP handshake</span>' +
+      '<span class="mcp-hs-chip__r" style="background:' +
+      color +
+      '">' +
+      esc(status) +
+      '</span></span>'
+    );
+  }
+
   function fmtStars(n) {
     const num = Number(n) || 0;
     if (num >= 10000) return Math.round(num / 1000) + 'k';
@@ -128,6 +144,7 @@
       esc(s.name) +
       '</h2>' +
       '<div class="mcp-card-meta">' +
+      handshakeChip(s) +
       '<span class="mcp-badge-cat">' +
       esc(s.category) +
       '</span>' +
@@ -187,6 +204,7 @@
       esc(s.name) +
       '</span>' +
       (s.official ? '<span class="dir-card__official">OFFICIAL</span>' : '') +
+      handshakeChip(s) +
       '</div>' +
       '<div class="dir-card__cat">' +
       esc(s.category || '') +

@@ -131,6 +131,9 @@
                   <div class="home-server-row__name">
                     <%= server.name %>
                     <% if (server.official) { %><span class="home-server-row__official">OFFICIAL</span><% } %>
+                    <% if (server.handshake_svg) { %>
+                      <span class="mcp-handshake-badge" title="MCP handshake — not a SAFE badge"><%- server.handshake_svg %></span>
+                    <% } %>
                   </div>
                   <div class="home-server-row__desc"><%= server.shortDesc %></div>
                 </div>
