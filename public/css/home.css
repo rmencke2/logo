@@ -490,6 +490,110 @@ body.registry-page.site-header-active {
   font-weight: 600;
 }
 
+.home-hero__embed {
+  margin: 22px auto 0;
+  max-width: 560px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--hp-muted);
+}
+
+.home-hero__embed a {
+  font-weight: 600;
+}
+
+.home-tools {
+  border-bottom: 1px solid var(--hp-border);
+  background: var(--hp-card);
+}
+
+.home-tools__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 32px 32px;
+}
+
+.home-tools__head {
+  margin: 0 0 16px;
+}
+
+.home-tools__title {
+  margin: 0 0 6px;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.home-tools__lead {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--hp-muted);
+  max-width: 46rem;
+}
+
+.home-tools__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-tool {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+  padding: 16px 16px 14px;
+  border: 1px solid var(--hp-border);
+  border-radius: 12px;
+  background: var(--hp-bg);
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-tool:hover {
+  border-color: var(--hp-text);
+  color: inherit;
+}
+
+.home-tool__kicker {
+  font-family: var(--hp-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hp-accent);
+  font-weight: 600;
+}
+
+.home-tool__name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.home-tool__desc {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--hp-muted);
+  flex: 1;
+}
+
+.home-tool__desc code {
+  font-family: var(--hp-mono);
+  font-size: 11.5px;
+}
+
+.home-tool__code {
+  font-family: var(--hp-mono);
+  font-size: 11px;
+  color: var(--hp-near);
+  background: var(--hp-surface);
+  border-radius: 6px;
+  padding: 5px 8px;
+  word-break: break-all;
+}
+
 /* ---- Main grid ---- */
 .home-main {
   flex: 1;
@@ -1074,6 +1178,14 @@ body.registry-page.site-header-active {
 
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
+  .home-tools__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-tools__inner {
+    padding: 24px 20px 28px;
+  }
+
   .home-main {
     grid-template-columns: 1fr;
     padding: 32px 20px;
@@ -1140,6 +1252,10 @@ body.registry-page.site-header-active {
 }
 
 @media (max-width: 520px) {
+  .home-tools__grid {
+    grid-template-columns: 1fr;
+  }
+
   .home-hero__search {
     flex-direction: column;
     align-items: stretch;

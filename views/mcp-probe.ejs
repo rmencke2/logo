@@ -72,6 +72,13 @@
 # live_ok or auth_required are handshakes. unreachable is a ticket.
 test "$STATUS" != "unreachable"</code></pre>
 
+      <h2 class="setup-prompts__title">GitHub Action on mcp.json</h2>
+      <p class="setup-note">Handshake every HTTPS URL in Cursor/VS Code <code>mcp.json</code>. Stdio entries are skipped. Not a SAFE badge.</p>
+      <pre class="setup-code"><code>- uses: rmencke2/logo/.github/actions/probe-mcp-json@main
+  with:
+    file: .cursor/mcp.json</code></pre>
+      <pre class="setup-code"><code>node scripts/probe-mcp-json.js --file .cursor/mcp.json</code></pre>
+
       <h2 class="setup-prompts__title">What you get</h2>
       <ul class="setup-steps probe-facts">
         <li class="setup-step"><span class="setup-step__num" aria-hidden="true">1</span><span><code>live_status</code> — <code>live_ok</code>, <code>auth_required</code>, or <code>unreachable</code></span></li>
