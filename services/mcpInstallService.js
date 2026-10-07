@@ -7,6 +7,8 @@ const { buildInstallSnippets } = require('./mcpInstallSnippets');
 const SITE_BASE = 'https://www.influzer.ai';
 
 function setInstallCors(res) {
+  // Global middleware sets Allow-Credentials: true; * + credentials is rejected by browsers.
+  res.removeHeader('Access-Control-Allow-Credentials');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');

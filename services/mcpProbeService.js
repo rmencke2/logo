@@ -50,9 +50,11 @@ function getProbeAssetVersion() {
 }
 
 function setProbeCors(res) {
+  res.removeHeader('Access-Control-Allow-Credentials');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
 }
 
 const probeLimiter = rateLimit({
