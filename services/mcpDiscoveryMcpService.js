@@ -153,6 +153,8 @@ function registerMcpDiscoveryRoutes(app) {
       directory: 'https://www.influzer.ai/mcp',
       probe_api: 'https://www.influzer.ai/api/v1/probe',
       probe_docs: 'https://www.influzer.ai/mcp/probe',
+      skill_url: 'https://www.influzer.ai/skills/influzer-mcp/SKILL.md',
+      skill_page: 'https://www.influzer.ai/mcp/discovery/skill',
     });
   });
 

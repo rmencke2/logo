@@ -79,6 +79,8 @@ async function initializeCore(app) {
         p.startsWith('/js/') ||
         p.startsWith('/images/') ||
         p.startsWith('/embed/') ||
+        p.startsWith('/skills/') ||
+        p.startsWith('/.well-known/') ||
         p.startsWith('/api/v1/install/') ||
         p.startsWith('/api/mcp/v1/install/') ||
         p.startsWith('/fonts/') ||
@@ -175,7 +177,9 @@ async function initializeCore(app) {
       p.startsWith('/api/mcp/v1/install/') ||
       p.startsWith('/api/v1/probe') ||
       p.startsWith('/api/mcp/v1/probe') ||
-      p.startsWith('/embed/');
+      p.startsWith('/embed/') ||
+      p.startsWith('/skills/') ||
+      p.startsWith('/.well-known/');
     // * + Allow-Credentials is invalid CORS; embed/probe APIs are anonymous.
     if (!publicEmbed) {
       res.header('Access-Control-Allow-Credentials', 'true');
