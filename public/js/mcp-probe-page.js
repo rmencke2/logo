@@ -35,4 +35,10 @@
       submit.disabled = false;
     }
   });
+
+  const fromQuery = String(new URLSearchParams(window.location.search).get('url') || '').trim();
+  if (fromQuery) {
+    input.value = fromQuery;
+    form.requestSubmit();
+  }
 })();

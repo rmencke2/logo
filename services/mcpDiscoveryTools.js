@@ -67,7 +67,7 @@ const TOOL_DEFINITIONS = [
   {
     name: 'get_mcp_server',
     description:
-      'Get full details for one MCP server by slug: tools, transport, install command, remote URL, and Influzer page link.',
+      'Get full details for one MCP server by slug: tools, transport, install command, remote URL, install_api (Cursor/Claude/ChatGPT/ACP snippets), and Influzer page link. install_api is copy-paste config — not a safe-to-install badge.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -227,6 +227,8 @@ function detailServer(server) {
     quality_note: server.quality?.note || null,
     submit_url: 'https://www.influzer.ai/mcp/submit',
     topics_url: 'https://www.influzer.ai/mcp/topics',
+    install_api: `https://www.influzer.ai/api/v1/install/${server.slug}`,
+    markdown_url: `https://www.influzer.ai/embed/mcp/${server.slug}.md`,
   };
 }
 
