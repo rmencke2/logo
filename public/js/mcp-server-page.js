@@ -11,9 +11,24 @@
     }, 1800);
   }
 
+  document.querySelectorAll('[data-install-tab]').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const id = tab.getAttribute('data-install-tab');
+      document.querySelectorAll('[data-install-tab]').forEach((btn) => {
+        const on = btn === tab;
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      document.querySelectorAll('[data-install-panel]').forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-install-panel') !== id;
+      });
+    });
+  });
+
   document.querySelectorAll('[data-copy-install]').forEach((btn) => {
     btn.addEventListener('click', async () => {
-      const text = btn.getAttribute('data-copy-text') || '';
+      const fromCode = btn.closest('.mcp-terminal') && btn.closest('.mcp-terminal').querySelector('code');
+      const text = btn.getAttribute('data-copy-text') || (fromCode && fromCode.textContent) || '';
       if (!text) return;
       try {
         await navigator.clipboard.writeText(text);

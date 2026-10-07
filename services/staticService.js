@@ -30,6 +30,8 @@ const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmiss
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { registerMcpProbeRoutes } = require('./mcpProbeService');
+const { registerMcpInstallRoutes } = require('./mcpInstallService');
+const { buildInstallSnippets } = require('./mcpInstallSnippets');
 const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
 const { getMilestonePromo } = require('../data/mcp-milestone-promo');
@@ -875,6 +877,7 @@ ${itemsXml}
         mcp_endpoint: server.mcp_endpoint || server.deployment_url || null,
         page_url: `https://www.influzer.ai/mcp/${server.slug}`,
         directory: 'https://www.influzer.ai/mcp',
+        install: buildInstallSnippets(server),
       },
     });
   });
@@ -882,6 +885,7 @@ ${itemsXml}
   // MCP Server Directory (must be registered before /insights/:slug)
   registerMcpDiscoveryRoutes(app);
   registerMcpProbeRoutes(app);
+  registerMcpInstallRoutes(app);
 
   app.get('/mcp/all', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -1085,6 +1089,7 @@ ${itemsXml}
     }
     return res.render('mcp-server', {
       server,
+      installSnippets: buildInstallSnippets(server),
       iconEmoji: getMcpIconEmoji(server.icon),
       transportLabel: transportLabel(server.transport),
       inTop100: isInTop100(server.slug),

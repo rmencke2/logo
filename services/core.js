@@ -78,6 +78,9 @@ async function initializeCore(app) {
         p.startsWith('/css/') ||
         p.startsWith('/js/') ||
         p.startsWith('/images/') ||
+        p.startsWith('/embed/') ||
+        p.startsWith('/api/v1/install/') ||
+        p.startsWith('/api/mcp/v1/install/') ||
         p.startsWith('/fonts/') ||
         p.startsWith('/generated_img/') ||
         p === '/favicon.svg' ||
@@ -166,7 +169,17 @@ async function initializeCore(app) {
 
   // CORS configuration
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Credentials', 'true');
+    const p = req.path || '';
+    const publicEmbed =
+      p.startsWith('/api/v1/install/') ||
+      p.startsWith('/api/mcp/v1/install/') ||
+      p.startsWith('/api/v1/probe') ||
+      p.startsWith('/api/mcp/v1/probe') ||
+      p.startsWith('/embed/');
+    // * + Allow-Credentials is invalid CORS; embed/probe APIs are anonymous.
+    if (!publicEmbed) {
+      res.header('Access-Control-Allow-Credentials', 'true');
+    }
     if (process.env.ALLOWED_ORIGINS) {
       const origins = process.env.ALLOWED_ORIGINS.split(',');
       const origin = req.headers.origin;

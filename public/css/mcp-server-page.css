@@ -337,6 +337,35 @@
   border-radius: 4px;
 }
 
+.mcp-install-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.mcp-install-tab {
+  font-family: var(--hp-font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-card);
+  color: var(--hp-text);
+  cursor: pointer;
+}
+
+.mcp-install-tab.is-active {
+  background: var(--hp-text);
+  color: var(--hp-card);
+  border-color: var(--hp-text);
+}
+
+.mcp-install-panel {
+  min-width: 0;
+}
+
 .mcp-terminal {
   background: #16181d;
   border: 1px solid #2c2f38;
@@ -360,6 +389,16 @@
   white-space: nowrap;
   /* Keep the Copy button visible; long commands scroll inside the code area */
   scrollbar-width: thin;
+}
+
+.mcp-terminal--block {
+  align-items: flex-start;
+}
+
+.mcp-terminal--block code {
+  white-space: pre-wrap;
+  overflow: auto;
+  max-height: 280px;
 }
 
 .mcp-terminal__copy {

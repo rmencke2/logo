@@ -96,8 +96,54 @@
             </div>
           </header>
 
-          <section class="mcp-section">
+          <section class="mcp-section" id="install">
             <h2>How to connect</h2>
+            <% const snippets = typeof installSnippets !== 'undefined' ? installSnippets : null; %>
+            <% if (snippets && snippets.clients) { %>
+              <p class="mcp-step__help" style="margin-top:-8px;">
+                Same URL, five paste targets.
+                <% if (snippets.stdio_only) { %>Stdio / local only — Claude chat and ChatGPT need a public HTTPS endpoint.<% } %>
+                <% if (snippets.quality && snippets.quality.demoware_tier_label) { %>
+                  <%= snippets.quality.demoware_tier_label %> · <%= snippets.quality.live_status_label %>.
+                <% } %>
+                Not a safe-to-install badge.
+                <% if (snippets.probe_url) { %>
+                  <a href="/mcp/probe?url=<%= encodeURIComponent(snippets.remote_url) %>">Handshake this URL</a>
+                <% } %>
+              </p>
+              <div class="mcp-install-tabs" role="tablist" aria-label="MCP client">
+                <% ['cursor','claude','chatgpt','claude-code','acp','embed'].forEach(function(id, i) { %>
+                  <% const label = id === 'claude-code' ? 'Claude Code' : (id === 'acp' ? 'ACP' : (id === 'embed' ? 'Embed' : snippets.clients[id].label)); %>
+                  <button type="button" class="mcp-install-tab<%= i === 0 ? ' is-active' : '' %>" role="tab" aria-selected="<%= i === 0 ? 'true' : 'false' %>" data-install-tab="<%= id %>"><%= label %></button>
+                <% }); %>
+              </div>
+              <% ['cursor','claude','chatgpt','claude-code','acp'].forEach(function(id, i) { %>
+                <% const client = snippets.clients[id]; %>
+                <div class="mcp-install-panel" data-install-panel="<%= id %>" <%= i === 0 ? '' : 'hidden' %>>
+                  <p class="mcp-step__help"><%= client.summary %></p>
+                  <% if (client.code) { %>
+                    <div class="mcp-terminal mcp-terminal--block">
+                      <code><%= client.code %></code>
+                      <button type="button" class="mcp-terminal__copy" data-copy-install>Copy</button>
+                    </div>
+                  <% } %>
+                </div>
+              <% }); %>
+              <div class="mcp-install-panel" data-install-panel="embed" hidden>
+                <p class="mcp-step__help">Paste into a README or docs site. The widget loads snippets from Influzer — still not a SAFE badge.</p>
+                <div class="mcp-step__title">HTML widget</div>
+                <div class="mcp-terminal mcp-terminal--block">
+                  <code><%= snippets.embed_html %></code>
+                  <button type="button" class="mcp-terminal__copy" data-copy-install>Copy</button>
+                </div>
+                <div class="mcp-step__title" style="margin-top:14px;">Markdown</div>
+                <div class="mcp-terminal mcp-terminal--block">
+                  <code><%= snippets.markdown_url %></code>
+                  <button type="button" class="mcp-terminal__copy" data-copy-install data-copy-text="<%= snippets.markdown_url %>">Copy</button>
+                </div>
+                <p class="mcp-step__help" style="margin-top:10px;">JSON: <a href="<%= snippets.install_api %>"><%= snippets.install_api %></a></p>
+              </div>
+            <% } else { %>
             <div class="mcp-steps">
               <% if (server.install_command) { %>
                 <div class="mcp-step">
@@ -167,6 +213,7 @@
                 </div>
               <% } %>
             </div>
+            <% } %>
           </section>
 
           <% if (server.quality) { %>
