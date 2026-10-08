@@ -25,7 +25,7 @@ async function main() {
   const slugs = targets.map((t) => t.slug);
   assert.ok(slugs.includes('macaly-cloud'), 'homepage remote Macaly should be warmed');
   assert.equal(slugs.includes('influzer-mcp-discovery'), false);
-  assert.equal(slugs.includes('firecrawl'), false);
+  assert.ok(slugs.includes('firecrawl'), 'Firecrawl now has a published HTTPS MCP URL');
   assert.ok(targets.every((t) => /^https:\/\//i.test(t.url)));
 
   const skipped = await warmProbeHttpsListings({

@@ -588,7 +588,7 @@
       "name": "Context7",
       "slug": "context7",
       "category": "Dev Tools",
-      "description": "Live versioned documentation fetching for libraries and frameworks.",
+      "description": "Live versioned documentation fetching. Official remote MCP at https://mcp.context7.com/mcp (API key or OAuth). Not a SAFE badge.",
       "official": false,
       "transport": "http",
       "icon": "book-open",
@@ -604,7 +604,9 @@
       ],
       "github_url": "https://github.com/upstash/context7",
       "docs_url": "https://context7.com",
-      "stars": 2100
+      "stars": 2100,
+      "mcp_endpoint": "https://mcp.context7.com/mcp",
+      "install_command": "claude mcp add context7 --transport http https://mcp.context7.com/mcp"
     },
     {
       "name": "Sourcegraph Cody",
@@ -687,9 +689,9 @@
       "name": "Linear",
       "slug": "linear",
       "category": "Dev Tools",
-      "description": "Issue tracking, sprints, roadmaps, and engineering workflow in Linear.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Linear remote MCP (issues, projects, cycles) over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "layout-list",
       "tools": [
         {
@@ -710,8 +712,10 @@
         }
       ],
       "github_url": "https://github.com/jerhadad/linear-mcp-server",
-      "docs_url": "https://linear.app/docs",
-      "stars": 920
+      "docs_url": "https://linear.app/docs/mcp",
+      "stars": 920,
+      "mcp_endpoint": "https://mcp.linear.app/mcp",
+      "install_command": "claude mcp add linear --transport http https://mcp.linear.app/mcp"
     },
     {
       "name": "Brave Search",
@@ -738,9 +742,9 @@
       "name": "Firecrawl",
       "slug": "firecrawl",
       "category": "Search & Web",
-      "description": "URL-to-clean-Markdown scraping for LLM-ready web content extraction.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Firecrawl remote MCP (v2) for scrape, crawl, and map over Streamable HTTP. API-key or OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "flame",
       "tools": [
         {
@@ -758,7 +762,9 @@
       ],
       "github_url": "https://github.com/mendableai/firecrawl-mcp-server",
       "docs_url": "https://docs.firecrawl.dev",
-      "featured": true
+      "featured": true,
+      "mcp_endpoint": "https://mcp.firecrawl.dev/v2/mcp",
+      "install_command": "claude mcp add firecrawl --transport http https://mcp.firecrawl.dev/v2/mcp"
     },
     {
       "name": "Jina Reader",
@@ -1009,9 +1015,9 @@
       "name": "Supabase",
       "slug": "supabase",
       "category": "Databases",
-      "description": "Postgres plus auth, storage, and edge functions for Supabase projects.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Supabase remote MCP for Postgres, auth, and project tools over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "database",
       "tools": [
         {
@@ -1028,13 +1034,15 @@
         }
       ],
       "github_url": "https://github.com/supabase-community/supabase-mcp",
-      "docs_url": "https://supabase.com/docs"
+      "docs_url": "https://supabase.com/docs",
+      "mcp_endpoint": "https://mcp.supabase.com/mcp",
+      "install_command": "claude mcp add supabase --transport http https://mcp.supabase.com/mcp"
     },
     {
       "name": "Neon",
       "slug": "neon",
       "category": "Databases",
-      "description": "Serverless Postgres with branching via remote HTTP MCP transport.",
+      "description": "Official Neon hosted MCP for serverless Postgres over Streamable HTTP. OAuth or API key. Not a SAFE badge.",
       "official": false,
       "transport": "http",
       "icon": "database",
@@ -1053,7 +1061,9 @@
         }
       ],
       "github_url": "https://github.com/neondatabase/mcp-server-neon",
-      "docs_url": "https://neon.tech/docs"
+      "docs_url": "https://neon.com/docs/ai/neon-mcp-server",
+      "mcp_endpoint": "https://mcp.neon.tech/mcp",
+      "install_command": "claude mcp add neon --transport http https://mcp.neon.tech/mcp"
     },
     {
       "name": "MongoDB",
@@ -1181,9 +1191,9 @@
       "name": "Figma",
       "slug": "figma",
       "category": "Design",
-      "description": "Live design layers to code via official Figma Dev Mode and REST APIs.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Figma remote MCP for Dev Mode design context over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "figma",
       "tools": [
         {
@@ -1199,7 +1209,9 @@
           "description": "Export images or SVGs from nodes"
         }
       ],
-      "github_url": "https://github.com/GLips/Figma-Context-MCP"
+      "github_url": "https://github.com/GLips/Figma-Context-MCP",
+      "mcp_endpoint": "https://mcp.figma.com/mcp",
+      "install_command": "claude mcp add figma --transport http https://mcp.figma.com/mcp"
     },
     {
       "name": "Magic UI",
@@ -1338,9 +1350,9 @@
       "name": "Google Cloud",
       "slug": "google-cloud",
       "category": "Cloud & Infra",
-      "description": "GCP services access for compute, storage, and APIs.",
+      "description": "Google Cloud SDK/CLI remote MCP at https://cloudcli.googleapis.com/mcp. Sibling hosts: storage.googleapis.com/storage/mcp, cloudbilling.googleapis.com/mcp, run.googleapis.com/mcp, cloudresourcemanager.googleapis.com/mcp. OAuth. Not a SAFE badge.",
       "official": false,
-      "transport": "stdio",
+      "transport": "http",
       "icon": "cloud",
       "tools": [
         {
@@ -1356,7 +1368,9 @@
           "description": "Query Bigtable instances"
         }
       ],
-      "docs_url": "https://cloud.google.com/mcp"
+      "docs_url": "https://cloud.google.com/mcp",
+      "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
+      "install_command": "claude mcp add google-cloud-cli --transport http https://cloudcli.googleapis.com/mcp"
     },
     {
       "name": "Azure",
@@ -1411,9 +1425,9 @@
       "name": "Netlify",
       "slug": "netlify",
       "category": "Cloud & Infra",
-      "description": "Build and deploy management for Netlify sites.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Netlify remote MCP for sites, deploys, and build logs over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "cloud",
       "tools": [
         {
@@ -1429,7 +1443,9 @@
           "description": "Fetch build logs"
         }
       ],
-      "docs_url": "https://docs.netlify.com"
+      "docs_url": "https://docs.netlify.com",
+      "mcp_endpoint": "https://netlify-mcp.netlify.app/mcp",
+      "install_command": "claude mcp add netlify --transport http https://netlify-mcp.netlify.app/mcp"
     },
     {
       "name": "Kubernetes",
@@ -1668,9 +1684,9 @@
       "name": "Notion",
       "slug": "notion",
       "category": "Communication",
-      "description": "Pages, databases, blocks, and workspace knowledge management.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Notion remote MCP for pages and databases over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "file-text",
       "tools": [
         {
@@ -1687,7 +1703,9 @@
         }
       ],
       "github_url": "https://github.com/makenotion/notion-mcp-server",
-      "docs_url": "https://developers.notion.com"
+      "docs_url": "https://developers.notion.com",
+      "mcp_endpoint": "https://mcp.notion.com/mcp",
+      "install_command": "claude mcp add notion --transport http https://mcp.notion.com/mcp"
     },
     {
       "name": "Confluence",
@@ -2010,7 +2028,7 @@
       "name": "Sentry",
       "slug": "sentry",
       "category": "Security & Monitoring",
-      "description": "Error tracking and issue triage with stack traces and releases.",
+      "description": "Official Sentry remote MCP for issues and performance over Streamable HTTP. OAuth. Not a SAFE badge.",
       "official": false,
       "transport": "http",
       "icon": "shield-alert",
@@ -2029,7 +2047,9 @@
         }
       ],
       "github_url": "https://github.com/getsentry/sentry-mcp",
-      "docs_url": "https://docs.sentry.io"
+      "docs_url": "https://docs.sentry.io/ai/mcp/",
+      "mcp_endpoint": "https://mcp.sentry.dev/mcp",
+      "install_command": "claude mcp add sentry --transport http https://mcp.sentry.dev/mcp"
     },
     {
       "name": "Datadog",
@@ -2163,9 +2183,9 @@
       "name": "Stripe",
       "slug": "stripe",
       "category": "Payments & Commerce",
-      "description": "Payments, customers, subscriptions, and invoices.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Stripe remote MCP for payments, customers, and subscriptions over Streamable HTTP. Auth required. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "credit-card",
       "tools": [
         {
@@ -2182,13 +2202,15 @@
         }
       ],
       "github_url": "https://github.com/stripe/agent-toolkit",
-      "docs_url": "https://stripe.com/docs"
+      "docs_url": "https://stripe.com/docs",
+      "mcp_endpoint": "https://mcp.stripe.com",
+      "install_command": "claude mcp add stripe --transport http https://mcp.stripe.com"
     },
     {
       "name": "Shopify",
       "slug": "shopify",
       "category": "Payments & Commerce",
-      "description": "Store, products, orders, and inventory management.",
+      "description": "Shopify store MCP is per-shop, not a single public host: https://{shop}.myshopify.com/api/mcp (storefront), https://{shop-domain}/api/ucp/mcp (catalog/orders). Customer Accounts MCP is discovered via /.well-known/customer-account-api. Influzer does not handshake a placeholder shop. Not a SAFE badge.",
       "official": false,
       "transport": "stdio",
       "icon": "credit-card",
@@ -2690,9 +2712,9 @@
       "name": "HubSpot",
       "slug": "hubspot",
       "category": "Automation",
-      "description": "CRM contacts, deals, and marketing campaigns.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official HubSpot remote MCP for CRM contacts, deals, and campaigns over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "boxes",
       "tools": [
         {
@@ -2708,7 +2730,9 @@
           "description": "List marketing campaigns"
         }
       ],
-      "docs_url": "https://developers.hubspot.com"
+      "docs_url": "https://developers.hubspot.com",
+      "mcp_endpoint": "https://mcp.hubspot.com",
+      "install_command": "claude mcp add hubspot --transport http https://mcp.hubspot.com"
     },
     {
       "name": "Salesforce",
@@ -2782,7 +2806,7 @@
       "name": "Atlassian MCP Server",
       "slug": "atlassian-mcp",
       "category": "Communication",
-      "description": "Official Atlassian MCP server for connecting AI agents to Jira, Confluence, Opsgenie, and other Atlassian Cloud products.",
+      "description": "Official Atlassian Rovo MCP (Jira, Confluence, and other Cloud products) at https://mcp.atlassian.com/v2/mcp. OAuth. Not a SAFE badge.",
       "official": true,
       "transport": "http",
       "icon": "message-square",
@@ -2808,8 +2832,10 @@
           "description": "Read Confluence page content"
         }
       ],
-      "docs_url": "https://developer.atlassian.com/cloud/mcp",
-      "stars": 920
+      "docs_url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/",
+      "stars": 920,
+      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "install_command": "claude mcp add atlassian --transport http https://mcp.atlassian.com/v2/mcp"
     },
     {
       "name": "Chrome DevTools MCP",
@@ -2848,9 +2874,9 @@
       "name": "Google MCP Servers",
       "slug": "google-mcp-servers",
       "category": "Dev Tools",
-      "description": "Collection of Google's official MCP servers for Maps, BigQuery, Kubernetes Engine, Compute, and other Google Cloud developer workflows.",
+      "description": "Google Cloud remote MCP hosts (Cloud SDK/CLI at cloudcli.googleapis.com/mcp). Other published hosts: Cloud Storage, Cloud Billing, Cloud Run, Resource Manager. OAuth. Not a SAFE badge.",
       "official": true,
-      "transport": "stdio",
+      "transport": "http",
       "icon": "cloud",
       "tools": [
         {
@@ -2872,7 +2898,9 @@
       ],
       "github_url": "https://github.com/google/mcp",
       "docs_url": "https://cloud.google.com/mcp",
-      "stars": 1500
+      "stars": 1500,
+      "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
+      "install_command": "claude mcp add google-cloud-cli --transport http https://cloudcli.googleapis.com/mcp"
     },
     {
       "name": "Cal.com MCP",
@@ -2904,7 +2932,7 @@
       "name": "Granola MCP",
       "slug": "granola-mcp",
       "category": "Communication",
-      "description": "Connect Claude, ChatGPT, and other AI tools to your Granola meeting notes via MCP. Query notes, search transcripts, and get meeting insights.",
+      "description": "Official Granola remote MCP for meeting notes and transcripts at https://mcp.granola.ai/mcp. OAuth. Not a SAFE badge.",
       "official": true,
       "transport": "http",
       "icon": "message-square",
@@ -2922,8 +2950,10 @@
           "description": "List recent meetings"
         }
       ],
-      "docs_url": "https://www.granola.ai/docs/mcp",
-      "stars": 420
+      "docs_url": "https://docs.granola.ai/help-center/sharing/integrations/mcp",
+      "stars": 420,
+      "mcp_endpoint": "https://mcp.granola.ai/mcp",
+      "install_command": "claude mcp add granola --transport http https://mcp.granola.ai/mcp"
     },
     {
       "name": "MiniMax MCP",
@@ -3029,7 +3059,7 @@
       "name": "Railway MCP",
       "slug": "railway-mcp",
       "category": "Cloud & Infra",
-      "description": "Natural language interaction with Railway projects — create projects, deploy templates, manage environments, pull variables, and redeploy services.",
+      "description": "Official Railway remote MCP for projects, deploys, and variables at https://mcp.railway.com. OAuth. Not a SAFE badge.",
       "official": true,
       "transport": "http",
       "icon": "cloud",
@@ -3051,8 +3081,10 @@
           "description": "Create a new Railway project"
         }
       ],
-      "docs_url": "https://docs.railway.com/guides/mcp",
-      "stars": 760
+      "docs_url": "https://docs.railway.com/ai/mcp-server",
+      "stars": 760,
+      "mcp_endpoint": "https://mcp.railway.com",
+      "install_command": "claude mcp add railway --transport http https://mcp.railway.com"
     },
     {
       "name": "XcodeBuildMCP",
