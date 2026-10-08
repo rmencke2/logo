@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T13:29:40.385Z",
+  "generated_at": "2026-10-07T12:53:01.068Z",
   "count": 100,
   "total_catalog": 12089,
   "top100_slugs": [
@@ -43,6 +43,10 @@
     "llm-pulse",
     "proxyman-mcp",
     "minimax-mcp",
+    "figma",
+    "hubspot",
+    "netlify",
+    "supabase",
     "ignav-flights",
     "subwayinfo",
     "nitrofire-q-gread",
@@ -55,6 +59,9 @@
     "e2b",
     "gitlab",
     "replit",
+    "google-cloud",
+    "neon",
+    "shopify",
     "gmail",
     "exa",
     "bigquery",
@@ -68,11 +75,8 @@
     "datadog",
     "docker",
     "dropbox",
-    "figma",
     "google-calendar",
-    "google-cloud",
     "google-sheets",
-    "hubspot",
     "imessage",
     "jira",
     "keboola",
@@ -88,21 +92,17 @@
     "motherduck",
     "mysql",
     "n8n",
-    "neon",
-    "netlify",
     "onedrive",
     "outlook",
     "pagerduty",
     "redis",
     "salesforce",
-    "shopify",
     "shopsavvy",
     "slidespeak",
     "snowflake",
     "sourcegraph-cody",
     "sqlite",
-    "stackblitz",
-    "supabase"
+    "stackblitz"
   ],
   "servers": [
     {
@@ -136,7 +136,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "search",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
       "deployment_url": "https://www.influzer.ai/mcp/discovery"
@@ -229,7 +229,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "cloud-code",
       "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
       "deployment_url": "https://www.macaly.com/api/cloud/mcp"
@@ -238,10 +238,10 @@
       "id": "firecrawl",
       "slug": "firecrawl",
       "name": "Firecrawl",
-      "description": "URL-to-clean-Markdown scraping for LLM-ready web content extraction.",
+      "description": "Official Firecrawl remote MCP (v2) for scrape, crawl, and map over Streamable HTTP. API-key or OAuth. Not a SAFE badge.",
       "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
+      "official": true,
+      "transport": "http",
       "tools": [
         {
           "name": "scrape_url",
@@ -258,12 +258,15 @@
       ],
       "github_url": "https://github.com/mendableai/firecrawl-mcp-server",
       "docs_url": "https://docs.firecrawl.dev",
+      "install_command": "claude mcp add firecrawl --transport http https://mcp.firecrawl.dev/v2/mcp",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "flame"
+      "last_updated": "2026-10-08",
+      "icon": "flame",
+      "mcp_endpoint": "https://mcp.firecrawl.dev/v2/mcp",
+      "deployment_url": "https://mcp.firecrawl.dev/v2/mcp"
     },
     {
       "id": "brave-search",
@@ -289,7 +292,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "search"
     },
     {
@@ -320,7 +323,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -351,7 +354,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "hard-drive"
     },
     {
@@ -382,17 +385,17 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "brain"
     },
     {
       "id": "linear",
       "slug": "linear",
       "name": "Linear",
-      "description": "Issue tracking, sprints, roadmaps, and engineering workflow in Linear.",
+      "description": "Official Linear remote MCP (issues, projects, cycles) over Streamable HTTP. OAuth. Not a SAFE badge.",
       "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
+      "official": true,
+      "transport": "http",
       "tools": [
         {
           "name": "search_issues",
@@ -412,19 +415,22 @@
         }
       ],
       "github_url": "https://github.com/jerhadad/linear-mcp-server",
-      "docs_url": "https://linear.app/docs",
+      "docs_url": "https://linear.app/docs/mcp",
+      "install_command": "claude mcp add linear --transport http https://mcp.linear.app/mcp",
       "stars": 920,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "layout-list"
+      "last_updated": "2026-10-08",
+      "icon": "layout-list",
+      "mcp_endpoint": "https://mcp.linear.app/mcp",
+      "deployment_url": "https://mcp.linear.app/mcp"
     },
     {
       "id": "context7",
       "slug": "context7",
       "name": "Context7",
-      "description": "Live versioned documentation fetching for libraries and frameworks.",
+      "description": "Live versioned documentation fetching. Official remote MCP at https://mcp.context7.com/mcp (API key or OAuth). Not a SAFE badge.",
       "category": "Dev Tools",
       "official": false,
       "transport": "http",
@@ -440,21 +446,24 @@
       ],
       "github_url": "https://github.com/upstash/context7",
       "docs_url": "https://context7.com",
+      "install_command": "claude mcp add context7 --transport http https://mcp.context7.com/mcp",
       "stars": 2100,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "book-open"
+      "last_updated": "2026-10-08",
+      "icon": "book-open",
+      "mcp_endpoint": "https://mcp.context7.com/mcp",
+      "deployment_url": "https://mcp.context7.com/mcp"
     },
     {
       "id": "stripe",
       "slug": "stripe",
       "name": "Stripe",
-      "description": "Payments, customers, subscriptions, and invoices.",
+      "description": "Official Stripe remote MCP for payments, customers, and subscriptions over Streamable HTTP. Auth required. Not a SAFE badge.",
       "category": "Payments & Commerce",
-      "official": false,
-      "transport": "stdio",
+      "official": true,
+      "transport": "http",
       "tools": [
         {
           "name": "list_customers",
@@ -471,18 +480,21 @@
       ],
       "github_url": "https://github.com/stripe/agent-toolkit",
       "docs_url": "https://stripe.com/docs",
+      "install_command": "claude mcp add stripe --transport http https://mcp.stripe.com",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "credit-card"
+      "last_updated": "2026-10-08",
+      "icon": "credit-card",
+      "mcp_endpoint": "https://mcp.stripe.com",
+      "deployment_url": "https://mcp.stripe.com"
     },
     {
       "id": "sentry",
       "slug": "sentry",
       "name": "Sentry",
-      "description": "Error tracking and issue triage with stack traces and releases.",
+      "description": "Official Sentry remote MCP for issues and performance over Streamable HTTP. OAuth. Not a SAFE badge.",
       "category": "Security & Monitoring",
       "official": false,
       "transport": "http",
@@ -501,22 +513,25 @@
         }
       ],
       "github_url": "https://github.com/getsentry/sentry-mcp",
-      "docs_url": "https://docs.sentry.io",
+      "docs_url": "https://docs.sentry.io/ai/mcp/",
+      "install_command": "claude mcp add sentry --transport http https://mcp.sentry.dev/mcp",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "shield-alert"
+      "last_updated": "2026-10-08",
+      "icon": "shield-alert",
+      "mcp_endpoint": "https://mcp.sentry.dev/mcp",
+      "deployment_url": "https://mcp.sentry.dev/mcp"
     },
     {
       "id": "notion",
       "slug": "notion",
       "name": "Notion",
-      "description": "Pages, databases, blocks, and workspace knowledge management.",
+      "description": "Official Notion remote MCP for pages and databases over Streamable HTTP. OAuth. Not a SAFE badge.",
       "category": "Communication",
-      "official": false,
-      "transport": "stdio",
+      "official": true,
+      "transport": "http",
       "tools": [
         {
           "name": "search",
@@ -533,12 +548,15 @@
       ],
       "github_url": "https://github.com/makenotion/notion-mcp-server",
       "docs_url": "https://developers.notion.com",
+      "install_command": "claude mcp add notion --transport http https://mcp.notion.com/mcp",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "file-text"
+      "last_updated": "2026-10-08",
+      "icon": "file-text",
+      "mcp_endpoint": "https://mcp.notion.com/mcp",
+      "deployment_url": "https://mcp.notion.com/mcp"
     },
     {
       "id": "playwright",
@@ -567,7 +585,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "monitor-play"
     },
     {
@@ -605,14 +623,14 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "monitor"
     },
     {
       "id": "atlassian-mcp",
       "slug": "atlassian-mcp",
       "name": "Atlassian MCP Server",
-      "description": "Official Atlassian MCP server for connecting AI agents to Jira, Confluence, Opsgenie, and other Atlassian Cloud products.",
+      "description": "Official Atlassian Rovo MCP (Jira, Confluence, and other Cloud products) at https://mcp.atlassian.com/v2/mcp. OAuth. Not a SAFE badge.",
       "category": "Communication",
       "official": true,
       "transport": "http",
@@ -638,22 +656,25 @@
           "description": "Read Confluence page content"
         }
       ],
-      "docs_url": "https://developer.atlassian.com/cloud/mcp",
+      "docs_url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/",
+      "install_command": "claude mcp add atlassian --transport http https://mcp.atlassian.com/v2/mcp",
       "stars": 920,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "message-square"
+      "last_updated": "2026-10-08",
+      "icon": "message-square",
+      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "deployment_url": "https://mcp.atlassian.com/v2/mcp"
     },
     {
       "id": "google-mcp-servers",
       "slug": "google-mcp-servers",
       "name": "Google MCP Servers",
-      "description": "Collection of Google's official MCP servers for Maps, BigQuery, Kubernetes Engine, Compute, and other Google Cloud developer workflows.",
+      "description": "Google Cloud remote MCP hosts (Cloud SDK/CLI at cloudcli.googleapis.com/mcp). Other published hosts: Cloud Storage, Cloud Billing, Cloud Run, Resource Manager. OAuth. Not a SAFE badge.",
       "category": "Dev Tools",
       "official": true,
-      "transport": "stdio",
+      "transport": "http",
       "tools": [
         {
           "name": "search_places",
@@ -674,18 +695,21 @@
       ],
       "github_url": "https://github.com/google/mcp",
       "docs_url": "https://cloud.google.com/mcp",
+      "install_command": "claude mcp add google-cloud-cli --transport http https://cloudcli.googleapis.com/mcp",
       "stars": 1500,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "cloud"
+      "last_updated": "2026-10-08",
+      "icon": "cloud",
+      "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
+      "deployment_url": "https://cloudcli.googleapis.com/mcp"
     },
     {
       "id": "railway-mcp",
       "slug": "railway-mcp",
       "name": "Railway MCP",
-      "description": "Natural language interaction with Railway projects — create projects, deploy templates, manage environments, pull variables, and redeploy services.",
+      "description": "Official Railway remote MCP for projects, deploys, and variables at https://mcp.railway.com. OAuth. Not a SAFE badge.",
       "category": "Cloud & Infra",
       "official": true,
       "transport": "http",
@@ -707,13 +731,16 @@
           "description": "Create a new Railway project"
         }
       ],
-      "docs_url": "https://docs.railway.com/guides/mcp",
+      "docs_url": "https://docs.railway.com/ai/mcp-server",
+      "install_command": "claude mcp add railway --transport http https://mcp.railway.com",
       "stars": 760,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "cloud"
+      "last_updated": "2026-10-08",
+      "icon": "cloud",
+      "mcp_endpoint": "https://mcp.railway.com",
+      "deployment_url": "https://mcp.railway.com"
     },
     {
       "id": "cal-com-mcp",
@@ -742,7 +769,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "calendar",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
       "deployment_url": "https://mcp.cal.com/mcp"
@@ -827,7 +854,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-10-07T11:55:35.074Z",
+      "tools_validated_at": "2026-10-08T12:10:42.656Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -891,7 +918,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-10-07T11:55:34.131Z",
+      "tools_validated_at": "2026-10-08T12:10:41.481Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1123,7 +1150,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-10-07T11:55:34.661Z",
+      "tools_validated_at": "2026-10-08T12:10:41.869Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1287,7 +1314,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-10-07T11:55:34.318Z",
+      "tools_validated_at": "2026-10-08T12:10:41.715Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1420,7 +1447,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-10-07T11:55:34.765Z",
+      "tools_validated_at": "2026-10-08T12:10:42.535Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1516,7 +1543,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-10-07T11:55:34.483Z",
+      "tools_validated_at": "2026-10-08T12:10:41.904Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1620,7 +1647,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-10-07T11:55:35.721Z",
+      "tools_validated_at": "2026-10-08T12:10:43.166Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1680,7 +1707,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-10-07T11:55:35.871Z",
+      "tools_validated_at": "2026-10-08T12:10:43.156Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1808,7 +1835,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-10-07T11:55:36.096Z",
+      "tools_validated_at": "2026-10-08T12:10:43.685Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1872,7 +1899,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-10-07T11:55:36.076Z",
+      "tools_validated_at": "2026-10-08T12:10:43.544Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2104,7 +2131,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-10-07T11:55:37.011Z",
+      "tools_validated_at": "2026-10-08T12:10:44.435Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2272,7 +2299,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-10-07T11:55:37.245Z",
+      "tools_validated_at": "2026-10-08T12:10:44.353Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2504,7 +2531,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-10-07T11:55:36.915Z",
+      "tools_validated_at": "2026-10-08T12:10:43.907Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2736,7 +2763,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-10-07T11:55:37.341Z",
+      "tools_validated_at": "2026-10-08T12:10:44.510Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2816,7 +2843,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
       "deployment_url": "https://mcp.xgr.network/mcp"
@@ -2896,7 +2923,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe"
     },
     {
@@ -2926,7 +2953,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "code"
     },
     {
@@ -2952,7 +2979,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
       "deployment_url": "https://mcp.webnode.com/_mcp"
@@ -2961,7 +2988,7 @@
       "id": "granola-mcp",
       "slug": "granola-mcp",
       "name": "Granola MCP",
-      "description": "Connect Claude, ChatGPT, and other AI tools to your Granola meeting notes via MCP. Query notes, search transcripts, and get meeting insights.",
+      "description": "Official Granola remote MCP for meeting notes and transcripts at https://mcp.granola.ai/mcp. OAuth. Not a SAFE badge.",
       "category": "Communication",
       "official": true,
       "transport": "http",
@@ -2979,13 +3006,16 @@
           "description": "List recent meetings"
         }
       ],
-      "docs_url": "https://www.granola.ai/docs/mcp",
+      "docs_url": "https://docs.granola.ai/help-center/sharing/integrations/mcp",
+      "install_command": "claude mcp add granola --transport http https://mcp.granola.ai/mcp",
       "stars": 420,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "message-square"
+      "last_updated": "2026-10-08",
+      "icon": "message-square",
+      "mcp_endpoint": "https://mcp.granola.ai/mcp",
+      "deployment_url": "https://mcp.granola.ai/mcp"
     },
     {
       "id": "llm-pulse",
@@ -3035,7 +3065,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
       "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
@@ -3067,7 +3097,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "activity"
     },
     {
@@ -3097,8 +3127,141 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "image"
+    },
+    {
+      "id": "figma",
+      "slug": "figma",
+      "name": "Figma",
+      "description": "Official Figma remote MCP for Dev Mode design context over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "category": "Design",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "get_file",
+          "description": "Fetch Figma file metadata and structure"
+        },
+        {
+          "name": "get_node",
+          "description": "Get details for a specific node"
+        },
+        {
+          "name": "export_asset",
+          "description": "Export images or SVGs from nodes"
+        }
+      ],
+      "github_url": "https://github.com/GLips/Figma-Context-MCP",
+      "install_command": "claude mcp add figma --transport http https://mcp.figma.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "figma",
+      "mcp_endpoint": "https://mcp.figma.com/mcp",
+      "deployment_url": "https://mcp.figma.com/mcp"
+    },
+    {
+      "id": "hubspot",
+      "slug": "hubspot",
+      "name": "HubSpot",
+      "description": "Official HubSpot remote MCP for CRM contacts, deals, and campaigns over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "category": "Automation",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_contacts",
+          "description": "Search CRM contacts"
+        },
+        {
+          "name": "create_deal",
+          "description": "Create a sales deal"
+        },
+        {
+          "name": "list_campaigns",
+          "description": "List marketing campaigns"
+        }
+      ],
+      "docs_url": "https://developers.hubspot.com",
+      "install_command": "claude mcp add hubspot --transport http https://mcp.hubspot.com",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "boxes",
+      "mcp_endpoint": "https://mcp.hubspot.com",
+      "deployment_url": "https://mcp.hubspot.com"
+    },
+    {
+      "id": "netlify",
+      "slug": "netlify",
+      "name": "Netlify",
+      "description": "Official Netlify remote MCP for sites, deploys, and build logs over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "category": "Cloud & Infra",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_sites",
+          "description": "List Netlify sites"
+        },
+        {
+          "name": "trigger_deploy",
+          "description": "Trigger a new deploy"
+        },
+        {
+          "name": "get_build_logs",
+          "description": "Fetch build logs"
+        }
+      ],
+      "docs_url": "https://docs.netlify.com",
+      "install_command": "claude mcp add netlify --transport http https://netlify-mcp.netlify.app/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "cloud",
+      "mcp_endpoint": "https://netlify-mcp.netlify.app/mcp",
+      "deployment_url": "https://netlify-mcp.netlify.app/mcp"
+    },
+    {
+      "id": "supabase",
+      "slug": "supabase",
+      "name": "Supabase",
+      "description": "Official Supabase remote MCP for Postgres, auth, and project tools over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "category": "Databases",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List Supabase projects"
+        },
+        {
+          "name": "execute_sql",
+          "description": "Run SQL against a project"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables in a schema"
+        }
+      ],
+      "github_url": "https://github.com/supabase-community/supabase-mcp",
+      "docs_url": "https://supabase.com/docs",
+      "install_command": "claude mcp add supabase --transport http https://mcp.supabase.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "database",
+      "mcp_endpoint": "https://mcp.supabase.com/mcp",
+      "deployment_url": "https://mcp.supabase.com/mcp"
     },
     {
       "id": "ignav-flights",
@@ -3124,7 +3287,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
       "deployment_url": "https://ignav.com/mcp"
@@ -3249,7 +3412,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/subwayinfo",
-      "tools_validated_at": "2026-10-07T11:55:39.164Z",
+      "tools_validated_at": "2026-10-08T12:10:45.203Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3301,7 +3464,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-10-07T11:55:38.062Z",
+      "tools_validated_at": "2026-10-08T12:10:44.537Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3369,7 +3532,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-10-07T11:55:39.478Z",
+      "tools_validated_at": "2026-10-08T12:10:45.782Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3400,7 +3563,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "monitor"
     },
     {
@@ -3430,7 +3593,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "book-open"
     },
     {
@@ -3469,7 +3632,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe",
       "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
       "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
@@ -3505,7 +3668,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe",
       "mcp_endpoint": "https://corvid.perch-app.workers.dev/mcp",
       "deployment_url": "https://corvid.perch-app.workers.dev/mcp"
@@ -3541,7 +3704,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "terminal"
     },
     {
@@ -3576,7 +3739,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "sandbox"
     },
     {
@@ -3610,7 +3773,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "gitlab"
     },
     {
@@ -3644,8 +3807,105 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "cloud-code"
+    },
+    {
+      "id": "google-cloud",
+      "slug": "google-cloud",
+      "name": "Google Cloud",
+      "description": "Google Cloud SDK/CLI remote MCP at https://cloudcli.googleapis.com/mcp. Sibling hosts: storage.googleapis.com/storage/mcp, cloudbilling.googleapis.com/mcp, run.googleapis.com/mcp, cloudresourcemanager.googleapis.com/mcp. OAuth. Not a SAFE badge.",
+      "category": "Cloud & Infra",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List GCP projects"
+        },
+        {
+          "name": "run_gcloud",
+          "description": "Execute allowed gcloud commands"
+        },
+        {
+          "name": "query_bigtable",
+          "description": "Query Bigtable instances"
+        }
+      ],
+      "docs_url": "https://cloud.google.com/mcp",
+      "install_command": "claude mcp add google-cloud-cli --transport http https://cloudcli.googleapis.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "cloud",
+      "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
+      "deployment_url": "https://cloudcli.googleapis.com/mcp"
+    },
+    {
+      "id": "neon",
+      "slug": "neon",
+      "name": "Neon",
+      "description": "Official Neon hosted MCP for serverless Postgres over Streamable HTTP. OAuth or API key. Not a SAFE badge.",
+      "category": "Databases",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute SQL on a Neon branch"
+        },
+        {
+          "name": "list_branches",
+          "description": "List database branches"
+        },
+        {
+          "name": "create_branch",
+          "description": "Create a new database branch"
+        }
+      ],
+      "github_url": "https://github.com/neondatabase/mcp-server-neon",
+      "docs_url": "https://neon.com/docs/ai/neon-mcp-server",
+      "install_command": "claude mcp add neon --transport http https://mcp.neon.tech/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "database",
+      "mcp_endpoint": "https://mcp.neon.tech/mcp",
+      "deployment_url": "https://mcp.neon.tech/mcp"
+    },
+    {
+      "id": "shopify",
+      "slug": "shopify",
+      "name": "Shopify",
+      "description": "Shopify store MCP is per-shop, not a single public host: https://{shop}.myshopify.com/api/mcp (storefront), https://{shop-domain}/api/ucp/mcp (catalog/orders). Customer Accounts MCP is discovered via /.well-known/customer-account-api. Influzer does not handshake a placeholder shop. Not a SAFE badge.",
+      "category": "Payments & Commerce",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_products",
+          "description": "List store products"
+        },
+        {
+          "name": "get_order",
+          "description": "Retrieve order details"
+        },
+        {
+          "name": "update_inventory",
+          "description": "Update product inventory"
+        }
+      ],
+      "docs_url": "https://shopify.dev/docs/api",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-08",
+      "icon": "credit-card"
     },
     {
       "id": "gmail",
@@ -3674,7 +3934,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "mail"
     },
     {
@@ -3705,7 +3965,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "search"
     },
     {
@@ -3735,7 +3995,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "bar-chart"
     },
     {
@@ -3765,7 +4025,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "bar-chart"
     },
     {
@@ -3795,7 +4055,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "layout-list"
     },
     {
@@ -3826,7 +4086,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "cloud"
     },
     {
@@ -3856,7 +4116,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "cloud"
     },
     {
@@ -3886,7 +4146,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "globe"
     },
     {
@@ -3916,7 +4176,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "image"
     },
     {
@@ -3946,7 +4206,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "file-text"
     },
     {
@@ -3976,7 +4236,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "activity"
     },
     {
@@ -4006,7 +4266,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "boxes"
     },
     {
@@ -4036,38 +4296,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "hard-drive"
-    },
-    {
-      "id": "figma",
-      "slug": "figma",
-      "name": "Figma",
-      "description": "Live design layers to code via official Figma Dev Mode and REST APIs.",
-      "category": "Design",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "get_file",
-          "description": "Fetch Figma file metadata and structure"
-        },
-        {
-          "name": "get_node",
-          "description": "Get details for a specific node"
-        },
-        {
-          "name": "export_asset",
-          "description": "Export images or SVGs from nodes"
-        }
-      ],
-      "github_url": "https://github.com/GLips/Figma-Context-MCP",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "figma"
     },
     {
       "id": "google-calendar",
@@ -4096,38 +4326,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "calendar"
-    },
-    {
-      "id": "google-cloud",
-      "slug": "google-cloud",
-      "name": "Google Cloud",
-      "description": "GCP services access for compute, storage, and APIs.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_projects",
-          "description": "List GCP projects"
-        },
-        {
-          "name": "run_gcloud",
-          "description": "Execute allowed gcloud commands"
-        },
-        {
-          "name": "query_bigtable",
-          "description": "Query Bigtable instances"
-        }
-      ],
-      "docs_url": "https://cloud.google.com/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "cloud"
     },
     {
       "id": "google-sheets",
@@ -4156,38 +4356,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "bar-chart"
-    },
-    {
-      "id": "hubspot",
-      "slug": "hubspot",
-      "name": "HubSpot",
-      "description": "CRM contacts, deals, and marketing campaigns.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_contacts",
-          "description": "Search CRM contacts"
-        },
-        {
-          "name": "create_deal",
-          "description": "Create a sales deal"
-        },
-        {
-          "name": "list_campaigns",
-          "description": "List marketing campaigns"
-        }
-      ],
-      "docs_url": "https://developers.hubspot.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "boxes"
     },
     {
       "id": "imessage",
@@ -4216,7 +4386,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "message-square"
     },
     {
@@ -4246,7 +4416,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "layout-list"
     },
     {
@@ -4277,7 +4447,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "bar-chart"
     },
     {
@@ -4307,7 +4477,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "boxes"
     },
     {
@@ -4338,7 +4508,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "brain"
     },
     {
@@ -4368,7 +4538,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "credit-card"
     },
     {
@@ -4398,7 +4568,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "credit-card"
     },
     {
@@ -4428,7 +4598,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "message-square"
     },
     {
@@ -4458,7 +4628,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -4489,7 +4659,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -4519,7 +4689,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "layout-list"
     },
     {
@@ -4549,7 +4719,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -4580,7 +4750,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -4610,7 +4780,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -4641,69 +4811,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "boxes"
-    },
-    {
-      "id": "neon",
-      "slug": "neon",
-      "name": "Neon",
-      "description": "Serverless Postgres with branching via remote HTTP MCP transport.",
-      "category": "Databases",
-      "official": false,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "run_query",
-          "description": "Execute SQL on a Neon branch"
-        },
-        {
-          "name": "list_branches",
-          "description": "List database branches"
-        },
-        {
-          "name": "create_branch",
-          "description": "Create a new database branch"
-        }
-      ],
-      "github_url": "https://github.com/neondatabase/mcp-server-neon",
-      "docs_url": "https://neon.tech/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "database"
-    },
-    {
-      "id": "netlify",
-      "slug": "netlify",
-      "name": "Netlify",
-      "description": "Build and deploy management for Netlify sites.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_sites",
-          "description": "List Netlify sites"
-        },
-        {
-          "name": "trigger_deploy",
-          "description": "Trigger a new deploy"
-        },
-        {
-          "name": "get_build_logs",
-          "description": "Fetch build logs"
-        }
-      ],
-      "docs_url": "https://docs.netlify.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "cloud"
     },
     {
       "id": "onedrive",
@@ -4732,7 +4841,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "hard-drive"
     },
     {
@@ -4762,7 +4871,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "mail"
     },
     {
@@ -4792,7 +4901,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "shield-alert"
     },
     {
@@ -4822,7 +4931,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -4852,38 +4961,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "boxes"
-    },
-    {
-      "id": "shopify",
-      "slug": "shopify",
-      "name": "Shopify",
-      "description": "Store, products, orders, and inventory management.",
-      "category": "Payments & Commerce",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_products",
-          "description": "List store products"
-        },
-        {
-          "name": "get_order",
-          "description": "Retrieve order details"
-        },
-        {
-          "name": "update_inventory",
-          "description": "Update product inventory"
-        }
-      ],
-      "docs_url": "https://shopify.dev/docs/api",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "credit-card"
     },
     {
       "id": "shopsavvy",
@@ -4912,7 +4991,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "credit-card"
     },
     {
@@ -4942,7 +5021,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "file-text"
     },
     {
@@ -4972,7 +5051,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "bar-chart"
     },
     {
@@ -5003,7 +5082,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "code"
     },
     {
@@ -5033,7 +5112,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "database"
     },
     {
@@ -5063,39 +5142,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-07",
+      "last_updated": "2026-10-08",
       "icon": "browser"
-    },
-    {
-      "id": "supabase",
-      "slug": "supabase",
-      "name": "Supabase",
-      "description": "Postgres plus auth, storage, and edge functions for Supabase projects.",
-      "category": "Databases",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_projects",
-          "description": "List Supabase projects"
-        },
-        {
-          "name": "execute_sql",
-          "description": "Run SQL against a project"
-        },
-        {
-          "name": "list_tables",
-          "description": "List tables in a schema"
-        }
-      ],
-      "github_url": "https://github.com/supabase-community/supabase-mcp",
-      "docs_url": "https://supabase.com/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-07",
-      "icon": "database"
     }
   ]
 }
