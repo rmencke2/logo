@@ -90,6 +90,16 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
     const contentType = res.headers.get('content-type');
     const sessionId = res.headers.get('mcp-session-id') || opts.sessionId || null;
     const body = await res.text();
+    const authError = res.status === 401 || res.status === 403;
+    let messages = [];
+    if (res.ok || authError) {
+      try {
+        messages = parseMcpResponseBody(body, contentType);
+      } catch (err) {
+        // Figma and others return 401 text/plain "Unauthorized" plus WWW-Authenticate.
+        if (!authError) throw err;
+      }
+    }
 
     return {
       ok: res.ok,
@@ -97,8 +107,8 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
       contentType,
       sessionId,
       body,
-      messages: res.ok || res.status === 401 || res.status === 403 ? parseMcpResponseBody(body, contentType) : [],
-      authError: res.status === 401 || res.status === 403,
+      messages,
+      authError,
       rawError: !res.ok && body ? body.slice(0, 500) : null,
     };
   } catch (err) {

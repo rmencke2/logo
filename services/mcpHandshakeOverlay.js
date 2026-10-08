@@ -87,7 +87,8 @@ function listWarmProbeTargets() {
     const url = httpsRemoteUrl(server);
     if (!url) continue;
     const status = server.quality?.live_status;
-    if (HANDSHAKE_DONE.has(status)) continue;
+    // Retry unreachable: a parser bug (plain 401) used to stick as unreachable in the warm file.
+    if (status === 'live_ok' || status === 'auth_required') continue;
     targets.push({ slug, url, name: server.name || slug });
   }
   return targets;
