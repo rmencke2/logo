@@ -2095,9 +2095,9 @@
       "name": "Datadog",
       "slug": "datadog",
       "category": "Security & Monitoring",
-      "description": "Logs, metrics, and APM for observability-driven debugging.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Datadog remote MCP at https://mcp.datadoghq.com/v1/mcp. OAuth or API keys. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "activity",
       "tools": [
         {
@@ -2113,7 +2113,10 @@
           "description": "List configured monitors"
         }
       ],
-      "github_url": "https://github.com/GeLi2001/datadog-mcp-server"
+      "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
+      "docs_url": "https://docs.datadoghq.com/bits_ai/mcp_server/setup/",
+      "mcp_endpoint": "https://mcp.datadoghq.com/v1/mcp",
+      "install_command": "claude mcp add datadog --transport http https://mcp.datadoghq.com/v1/mcp"
     },
     {
       "name": "PagerDuty",

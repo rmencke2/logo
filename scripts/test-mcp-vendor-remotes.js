@@ -44,6 +44,7 @@ const EXPECTED = {
   motherduck: 'https://api.motherduck.com/mcp',
   pagerduty: 'https://mcp.pagerduty.com/mcp',
   slidespeak: 'https://mcp.slidespeak.co/mcp',
+  datadog: 'https://mcp.datadoghq.com/v1/mcp',
 };
 
 async function main() {
