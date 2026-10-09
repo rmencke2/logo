@@ -132,6 +132,7 @@ function normalizeLegacyManual(server) {
     last_updated: new Date().toISOString().slice(0, 10),
     icon: server.icon || 'boxes',
     mcp_endpoint: server.mcp_endpoint,
+    mcp_endpoint_template: server.mcp_endpoint_template || null,
     deployment_url: server.mcp_endpoint || server.deployment_url,
     install_command: server.install_command,
   });

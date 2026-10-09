@@ -52,7 +52,12 @@
             <b><%= board.counts.not_probed %></b><span>Not probed</span>
           </a>
         </div>
-        <p class="board-host-note"><b><%= board.https_hosts %></b> with an HTTPS MCP host · <b><%= board.missing_hosts %></b> still local or unknown</p>
+        <p class="board-host-note">
+          <b><%= board.https_hosts %></b> fixed HTTPS ·
+          <b><%= board.template_hosts || 0 %></b> per-tenant/shop ·
+          <b><%= board.local_hosts || 0 %></b> stdio/local ·
+          <b><%= board.unknown_hosts || 0 %></b> unknown
+        </p>
       </div>
     </header>
 
@@ -96,8 +101,13 @@
                 </td>
                 <td class="board-clock"><%= row.probed_at_label %></td>
                 <td class="board-host">
-                  <% if (row.remote_url) { %>
-                    <code><%= row.remote_url.replace(/^https:\/\//, '') %></code>
+                  <% if (row.host_kind === 'fixed' && row.remote_url) { %>
+                    <code><%= row.host_label || row.remote_url.replace(/^https:\/\//, '') %></code>
+                  <% } else if (row.host_kind === 'template' && (row.remote_template || row.host_label)) { %>
+                    <code class="board-host--template" title="Per-tenant / per-shop pattern — not a single public host"><%= row.host_label || row.remote_template.replace(/^https:\/\//, '') %></code>
+                    <span class="board-host-tag">per-tenant</span>
+                  <% } else if (row.host_kind === 'local') { %>
+                    <span class="board-host--none">stdio / local</span>
                   <% } else { %>
                     <span class="board-host--none">no public HTTPS</span>
                   <% } %>

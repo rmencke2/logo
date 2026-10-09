@@ -8,7 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getTop100McpServers, findMcpServerBySlug } = require('./mcpDirectoryService');
-const { httpsRemoteUrl } = require('./mcpInstallSnippets');
+const { remoteHostPresentation } = require('./mcpInstallSnippets');
 const { LIVE_STATUS_LABELS } = require('../scripts/utils/mcp-quality');
 const { getActivePins, getPromoteOffer, presentSponsorRail, submitPromoteRequest } = require('./mcpPromoteService');
 
@@ -37,7 +37,7 @@ function formatProbedAt(iso) {
 function scoreboardRow(server, rank) {
   const quality = server.quality || {};
   const liveStatus = quality.live_status || 'not_probed';
-  const remoteUrl = httpsRemoteUrl(server);
+  const host = remoteHostPresentation(server);
   const probed = formatProbedAt(quality.probed_at);
   return {
     rank,
@@ -46,7 +46,10 @@ function scoreboardRow(server, rank) {
     category: server.category || '',
     official: Boolean(server.official),
     transport: server.transport || 'unknown',
-    remote_url: remoteUrl,
+    remote_url: host.remote_url,
+    remote_template: host.template,
+    host_kind: host.kind,
+    host_label: host.label,
     live_status: liveStatus,
     live_status_label: quality.live_status_label || LIVE_STATUS_LABELS[liveStatus] || liveStatus,
     handshake_svg: quality.handshake_svg || '',
@@ -71,6 +74,9 @@ function pinRow(slot) {
         official: false,
         transport: '',
         remote_url: slot.url || null,
+        remote_template: null,
+        host_kind: slot.url ? 'fixed' : 'unknown',
+        host_label: slot.url ? String(slot.url).replace(/^https:\/\//i, '') : 'no public HTTPS',
         live_status: 'not_probed',
         live_status_label: 'Sponsored — handshake unchanged',
         handshake_svg: '',
@@ -99,13 +105,19 @@ function buildScoreboard() {
     return row;
   });
 
-  const httpsHosts = rows.filter((r) => r.remote_url).length;
+  const httpsHosts = rows.filter((r) => r.host_kind === 'fixed').length;
+  const templateHosts = rows.filter((r) => r.host_kind === 'template').length;
+  const localHosts = rows.filter((r) => r.host_kind === 'local').length;
+  const unknownHosts = rows.filter((r) => r.host_kind === 'unknown').length;
   const pins = getActivePins().map(pinRow);
 
   return {
     generated_at: new Date().toISOString(),
     total: rows.length,
     https_hosts: httpsHosts,
+    template_hosts: templateHosts,
+    local_hosts: localHosts,
+    unknown_hosts: unknownHosts,
     missing_hosts: rows.length - httpsHosts,
     counts,
     status_order: STATUS_ORDER,
