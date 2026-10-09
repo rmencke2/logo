@@ -78,23 +78,33 @@
     <section class="home-board" id="scoreboard" aria-labelledby="homeBoardHeading">
       <div class="home-board__inner">
         <div class="home-board__copy">
-          <p class="home-board__eyebrow">Top 100 × last handshake</p>
-          <h2 class="home-board__title" id="homeBoardHeading">Who actually answers tools/list</h2>
-          <p class="home-board__lead">
-            Same clock as the listing badge. Not a safe-to-install stamp.
-            Two sponsored pins at $<%= promoteOffer.product.price_usd %>/month — ads, not rank.
-          </p>
-          <div class="home-board__actions">
-            <a class="home-board__btn home-board__btn--primary" href="/mcp/scoreboard">Open the scoreboard</a>
-            <a class="home-board__btn" href="/mcp/promote">Promote your MCP · $<%= promoteOffer.product.price_usd %>/mo</a>
-          </div>
+          <p class="home-board__eyebrow">No VC · No tracking · No pay-to-rank</p>
+          <h2 class="home-board__title" id="homeBoardHeading">Influzer is run by one person and funded by its sponsors.</h2>
         </div>
-        <ul class="home-board__counts" aria-label="Handshake counts">
-          <li><b><%= scoreboard.counts.live_ok %></b><span>Live OK</span></li>
-          <li><b><%= scoreboard.counts.auth_required %></b><span>Auth gate</span></li>
-          <li><b><%= scoreboard.counts.local_unprobed %></b><span>Stdio / local</span></li>
-          <li><b><%= scoreboard.https_hosts %></b><span>HTTPS hosts</span></li>
-        </ul>
+        <div class="home-board__fund">
+          <p class="home-board__lead">
+            Every handshake, crawl, and index rebuild costs money. Two sponsor slots a month keep the registry free — and never touch the ranking.
+          </p>
+          <div class="home-board__meter" aria-label="Sponsor funding this month">
+            <div class="home-board__meter-labels">
+              <span>This month · $<%= promoteOffer.funded_usd %> funded</span>
+              <span>Goal $<%= promoteOffer.monthly_if_sold_out_usd %></span>
+            </div>
+            <div class="home-board__bar" role="progressbar" aria-valuemin="0" aria-valuemax="<%= promoteOffer.monthly_if_sold_out_usd %>" aria-valuenow="<%= promoteOffer.funded_usd %>">
+              <span style="width: <%= Math.max(promoteOffer.funded_pct, promoteOffer.funded_usd ? 8 : 0) %>%"></span>
+            </div>
+          </div>
+          <div class="home-board__actions">
+            <a class="home-board__btn home-board__btn--primary" href="/mcp/promote">Promote your server · $<%= promoteOffer.product.price_usd %></a>
+            <a class="home-board__btn home-board__btn--ghost" href="/mcp/promote">How slots work</a>
+          </div>
+          <p class="home-board__clock">
+            Top 100 handshake:
+            <a href="/mcp/scoreboard"><b><%= scoreboard.counts.live_ok %></b> live</a>
+            · <b><%= scoreboard.counts.auth_required %></b> auth
+            · <b><%= scoreboard.https_hosts %></b> HTTPS hosts
+          </p>
+        </div>
       </div>
     </section>
 

@@ -22,8 +22,10 @@ async function main() {
   assert.match(homeTpl, /home-board/);
   assert.match(homeTpl, /\/mcp\/scoreboard/);
   assert.match(homeTpl, /\/mcp\/promote/);
-  assert.match(homeTpl, /Promote your MCP/);
-  assert.equal(/safe-to-install stamp/i.test(homeTpl), true);
+  assert.match(homeTpl, /Promote your server/);
+  assert.match(homeTpl, /run by one person/);
+  assert.match(homeTpl, /No pay-to-rank/);
+  assert.match(homeTpl, /funded_usd/);
 
   const board = buildScoreboard();
   assert.equal(board.total, 100);
@@ -47,6 +49,8 @@ async function main() {
   assert.equal(offer.product.price_usd, 249);
   assert.equal(offer.product.max_concurrent, 2);
   assert.equal(offer.monthly_if_sold_out_usd, 498);
+  assert.equal(offer.funded_usd, 0);
+  assert.equal(offer.slots_sold, 0);
   assert.equal(offer.safety_badge, null);
   assert.equal(offer.sold_out, false);
   assert.equal(slotsRemaining() >= 1, true);

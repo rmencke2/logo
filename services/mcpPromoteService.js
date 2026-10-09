@@ -57,9 +57,15 @@ function getPromoteOffer(now = Date.now()) {
   const { product } = loadConfig();
   const remaining = slotsRemaining(now);
   const monthlyIfSoldOut = product.price_usd * product.max_concurrent;
+  const slotsSold = product.max_concurrent - remaining;
+  const fundedUsd = slotsSold * product.price_usd;
+  const fundedPct = monthlyIfSoldOut ? Math.round((fundedUsd / monthlyIfSoldOut) * 100) : 0;
   return {
     product,
     remaining,
+    slots_sold: slotsSold,
+    funded_usd: fundedUsd,
+    funded_pct: fundedPct,
     sold_out: remaining === 0,
     monthly_if_sold_out_usd: monthlyIfSoldOut,
     stripe_ready: Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_PROMOTE_PRICE_ID),
