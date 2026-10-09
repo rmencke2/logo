@@ -62,11 +62,11 @@ function getPromoteOffer(now = Date.now()) {
     remaining,
     sold_out: remaining === 0,
     monthly_if_sold_out_usd: monthlyIfSoldOut,
-    stripe_ready: Boolean(process.env.STRIPE_SECRET_KEY),
+    stripe_ready: Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_PROMOTE_PRICE_ID),
     payment_link: process.env.STRIPE_PROMOTE_PAYMENT_LINK || null,
     contact: 'hello@influzer.ai',
     includes: [
-      `Pin on /mcp/scoreboard for ${product.interval_days} days`,
+      `Pin on /mcp/scoreboard billed monthly ($${product.price_usd}/mo)`,
       'Labeled Sponsored — never mixed into organic handshake rank',
       'Link to your Influzer listing or HTTPS MCP URL',
     ],
@@ -121,14 +121,18 @@ async function createStripeCheckout(input) {
   if (!secret) return null;
   const { product } = loadConfig();
   const params = new URLSearchParams();
-  params.set('mode', 'payment');
+  const priceId = process.env.STRIPE_PROMOTE_PRICE_ID;
+  // Recurring Stripe prices (Influzer Promo $249/month) need subscription mode.
+  const mode = priceId
+    ? String(process.env.STRIPE_PROMOTE_MODE || 'subscription')
+    : 'payment';
+  params.set('mode', mode);
   params.set('success_url', `${SITE_BASE}/mcp/promote?paid=1`);
   params.set('cancel_url', `${SITE_BASE}/mcp/promote?canceled=1`);
   params.set('customer_email', input.email);
   params.set('metadata[slug]', input.slug || '');
   params.set('metadata[company]', input.company || '');
   params.set('metadata[product]', product.id);
-  const priceId = process.env.STRIPE_PROMOTE_PRICE_ID;
   if (priceId) {
     params.set('line_items[0][price]', priceId);
     params.set('line_items[0][quantity]', '1');

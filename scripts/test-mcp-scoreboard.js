@@ -36,6 +36,7 @@ async function main() {
   assert.equal(board.rows.every((r) => r.safety_badge === null), true);
 
   const offer = getPromoteOffer();
+  assert.equal(String(process.env.STRIPE_PROMOTE_MODE || 'subscription'), 'subscription');
   assert.equal(offer.product.price_usd, 249);
   assert.equal(offer.product.max_concurrent, 2);
   assert.equal(offer.monthly_if_sold_out_usd, 498);

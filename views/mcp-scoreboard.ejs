@@ -62,7 +62,7 @@
           <a href="/mcp/scoreboard" class="is-active">Scoreboard</a>
           <a href="/mcp/all">Full directory</a>
         </nav>
-        <a class="board-promote-cta" href="/mcp/promote">Promote a listing · $<%= offer.product.price_usd %>/30d</a>
+        <a class="board-promote-cta" href="/mcp/promote">Promote a listing · $<%= offer.product.price_usd %>/mo</a>
       </div>
 
       <% if (board.pins && board.pins.length) { %>
@@ -78,7 +78,7 @@
         </section>
       <% } else { %>
         <aside class="board-pins board-pins--empty">
-          <p><strong><%= offer.remaining %></strong> of <%= offer.product.max_concurrent %> scoreboard pins open this cycle ($<%= offer.product.price_usd %> for <%= offer.product.interval_days %> days). Ads, not rank.</p>
+          <p><strong><%= offer.remaining %></strong> of <%= offer.product.max_concurrent %> scoreboard pins open ($<%= offer.product.price_usd %>/month). Ads, not rank.</p>
           <a href="/mcp/promote">Buy a pin →</a>
         </aside>
       <% } %>
