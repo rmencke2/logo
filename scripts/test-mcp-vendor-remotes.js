@@ -2,7 +2,11 @@
 
 const assert = require('node:assert/strict');
 const { clearMcpCache, findMcpServerBySlug } = require('../services/mcpDirectoryService');
-const { httpsRemoteUrl } = require('../services/mcpInstallSnippets');
+const {
+  httpsRemoteUrl,
+  httpsRemoteTemplate,
+  remoteHostPresentation,
+} = require('../services/mcpInstallSnippets');
 
 const EXPECTED = {
   linear: 'https://mcp.linear.app/mcp',
@@ -46,6 +50,19 @@ const EXPECTED = {
   pagerduty: 'https://mcp.pagerduty.com/mcp',
   slidespeak: 'https://mcp.slidespeak.co/mcp',
   datadog: 'https://mcp.datadoghq.com/v1/mcp',
+  mongodb: 'https://mcp.mongodb.com',
+  salesforce: 'https://api.salesforce.com/platform/mcp/v1/platform/sobject-all',
+  'mercado-libre': 'https://mcp.mercadolibre.com/mcp',
+};
+
+const TEMPLATES = {
+  shopify: 'https://{shop}/api/mcp',
+  n8n: 'https://{instance}/mcp-server/http',
+  'microsoft-teams':
+    'https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_TeamsServer',
+  outlook: 'https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_MailTools',
+  onedrive:
+    'https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_OneDriveRemoteServer',
 };
 
 async function main() {
@@ -57,21 +74,32 @@ async function main() {
     assert.equal(httpsRemoteUrl(server), url, slug);
     assert.equal(server.transport, 'http', slug);
     assert.equal(server.quality?.safety_badge, null, slug);
+    assert.equal(remoteHostPresentation(server).kind, 'fixed', slug);
   }
 
-  const shopify = findMcpServerBySlug('shopify');
-  assert.ok(shopify);
-  assert.equal(httpsRemoteUrl(shopify), null);
-  assert.match(shopify.description, /myshopify\.com\/api\/mcp/);
-  assert.equal(shopify.description.includes('{shop}'), true);
-  assert.equal(/safe/i.test(shopify.description.replace(/not a SAFE badge/gi, '')), false);
-
-  // Per-instance / unverified / HTML-403 — do not invent a host.
-  for (const slug of ['mercado-libre', 'postgres', 'mongodb', 'n8n', 'snowflake']) {
+  for (const [slug, template] of Object.entries(TEMPLATES)) {
     const server = findMcpServerBySlug(slug);
     assert.ok(server, slug);
     assert.equal(httpsRemoteUrl(server), null, slug);
+    assert.equal(httpsRemoteTemplate(server), template, slug);
+    assert.equal(remoteHostPresentation(server).kind, 'template', slug);
   }
+
+  const shopify = findMcpServerBySlug('shopify');
+  assert.match(shopify.description, /\{shop\}\/api\/mcp/);
+  assert.equal(/safe/i.test(shopify.description.replace(/not a SAFE badge/gi, '')), false);
+
+  // Do not invent a host for competitor / different-product remotes, or local stdio.
+  for (const slug of ['postgres', 'kubernetes', 'redis', 'azure', 'brave-search']) {
+    const server = findMcpServerBySlug(slug);
+    assert.ok(server, slug);
+    assert.equal(httpsRemoteUrl(server), null, slug);
+    assert.equal(httpsRemoteTemplate(server), null, slug);
+    assert.equal(remoteHostPresentation(server).kind, 'local', slug);
+  }
+
+  const mercado = findMcpServerBySlug('mercado-libre');
+  assert.match(mercado.github_url, /mercadolibre-mcp-server/);
 
   console.log('mcp vendor remote URL tests passed');
 }

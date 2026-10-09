@@ -16,13 +16,62 @@ function configKey(slug) {
   return raw.slice(0, 64) || 'mcp-server';
 }
 
+function looksLikeHttpsTemplate(url) {
+  const value = String(url || '').trim();
+  return /^https:\/\//i.test(value) && /[{}<>]/.test(value);
+}
+
+function looksLikeFixedHttps(url) {
+  const value = String(url || '').trim();
+  return /^https:\/\//i.test(value) && !/[{}<>]/.test(value);
+}
+
+/** Fixed public HTTPS MCP host — never a {shop}/{tenantId} template. */
 function httpsRemoteUrl(server) {
   const candidates = [server.mcp_endpoint, server.deployment_url, server.connection_url];
   for (const candidate of candidates) {
-    const url = String(candidate || '').trim();
-    if (/^https:\/\//i.test(url)) return url;
+    if (looksLikeFixedHttps(candidate)) return String(candidate).trim();
   }
   return null;
+}
+
+/** Per-shop / per-tenant / per-instance HTTPS pattern — display only, not probeable. */
+function httpsRemoteTemplate(server) {
+  const candidates = [
+    server.mcp_endpoint_template,
+    server.mcp_endpoint,
+    server.deployment_url,
+    server.connection_url,
+  ];
+  for (const candidate of candidates) {
+    if (looksLikeHttpsTemplate(candidate)) return String(candidate).trim();
+  }
+  return null;
+}
+
+/**
+ * Scoreboard host cell.
+ * fixed → probeable HTTPS; template → labeled pattern; local → stdio/self-host; unknown → no public HTTPS found.
+ */
+function remoteHostPresentation(server) {
+  const fixed = httpsRemoteUrl(server);
+  if (fixed) {
+    return { kind: 'fixed', remote_url: fixed, template: null, label: fixed.replace(/^https:\/\//i, '') };
+  }
+  const template = httpsRemoteTemplate(server);
+  if (template) {
+    return {
+      kind: 'template',
+      remote_url: null,
+      template,
+      label: template.replace(/^https:\/\//i, ''),
+    };
+  }
+  const transport = String(server?.transport || '').toLowerCase();
+  if (transport === 'stdio' || transport === 'local') {
+    return { kind: 'local', remote_url: null, template: null, label: 'stdio / local' };
+  }
+  return { kind: 'unknown', remote_url: null, template: null, label: 'no public HTTPS' };
 }
 
 function parseStdioFromInstall(installCommand) {
@@ -327,5 +376,9 @@ module.exports = {
   slimInstallForAgent,
   configKey,
   httpsRemoteUrl,
+  httpsRemoteTemplate,
+  remoteHostPresentation,
+  looksLikeFixedHttps,
+  looksLikeHttpsTemplate,
   parseStdioFromInstall,
 };

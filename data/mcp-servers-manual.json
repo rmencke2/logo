@@ -70,7 +70,7 @@
         },
         {
           "name": "bash",
-          "description": "Run a shell command in the app's sandbox — installs, CLIs, skill scripts, typecheck"
+          "description": "Run a shell command in the app's sandbox \u2014 installs, CLIs, skill scripts, typecheck"
         },
         {
           "name": "upload_file",
@@ -170,11 +170,11 @@
         },
         {
           "name": "claim_next_task",
-          "description": "Claim the next queued task assigned to you — the core AI worker loop"
+          "description": "Claim the next queued task assigned to you \u2014 the core AI worker loop"
         },
         {
           "name": "request_human_review",
-          "description": "Move a task to the «Needs Human» column with a comment"
+          "description": "Move a task to the \u00abNeeds Human\u00bb column with a comment"
         }
       ],
       "owner_user_id": 35
@@ -194,7 +194,7 @@
       "tools": [
         {
           "name": "search_papers",
-          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper — Look up a single paper by identifier or DOI and return its full evidence record"
+          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper \u2014 Look up a single paper by identifier or DOI and return its full evidence record"
         }
       ],
       "mcp_endpoint": "https://bgpt.pro/mcp/"
@@ -203,7 +203,7 @@
       "name": "Corvid",
       "slug": "corvid",
       "category": "AI & Memory",
-      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP — no install, no repo, works from any MCP client.",
+      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP \u2014 no install, no repo, works from any MCP client.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -217,7 +217,7 @@
         },
         {
           "name": "recall",
-          "description": "Semantic search over your stored memories — finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
+          "description": "Semantic search over your stored memories \u2014 finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
         },
         {
           "name": "list_recent",
@@ -342,7 +342,7 @@
       "name": "Webnode",
       "slug": "webnode",
       "category": "Design",
-      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building — list templates by language and spin up new projects.",
+      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building \u2014 list templates by language and spin up new projects.",
       "official": true,
       "transport": "http",
       "icon": "browser",
@@ -352,7 +352,7 @@
       "tools": [
         {
           "name": "get_project_branches",
-          "description": "List available project templates (branches) for a language — call before create_project"
+          "description": "List available project templates (branches) for a language \u2014 call before create_project"
         },
         {
           "name": "create_project",
@@ -620,7 +620,7 @@
       "name": "Sourcegraph Cody",
       "slug": "sourcegraph-cody",
       "category": "Dev Tools",
-      "description": "Semantic codebase search and navigation across large repositories.",
+      "description": "Sourcegraph Cody MCP is instance-specific \u2014 no single public HTTPS host in the Influzer listing. Point at your Sourcegraph instance. Not a SAFE badge.",
       "official": false,
       "transport": "stdio",
       "icon": "code",
@@ -1081,9 +1081,9 @@
       "name": "MongoDB",
       "slug": "mongodb",
       "category": "Databases",
-      "description": "Document database queries and collection management.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Atlas Managed MCP Server at https://mcp.mongodb.com. OAuth only; Atlas clusters only; public preview. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "database",
       "tools": [
         {
@@ -1099,7 +1099,9 @@
           "description": "List collections in a database"
         }
       ],
-      "github_url": "https://github.com/mongodb-js/mongodb-mcp-server"
+      "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
+      "mcp_endpoint": "https://mcp.mongodb.com",
+      "docs_url": "https://www.mongodb.com/docs/atlas/managed-mcp-server/"
     },
     {
       "name": "Redis",
@@ -1662,9 +1664,9 @@
       "name": "Outlook",
       "slug": "outlook",
       "category": "Communication",
-      "description": "Microsoft email and calendar access.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Microsoft Agent 365 Mail MCP (preview, Entra auth). Per-tenant host: https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_MailTools. Not a single public host. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "mail",
       "tools": [
         {
@@ -1680,15 +1682,16 @@
           "description": "List calendar events"
         }
       ],
-      "docs_url": "https://learn.microsoft.com/graph"
+      "docs_url": "https://learn.microsoft.com/graph",
+      "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_MailTools"
     },
     {
       "name": "Microsoft Teams",
       "slug": "microsoft-teams",
       "category": "Communication",
-      "description": "Teams messaging and channel collaboration.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Microsoft Agent 365 Teams MCP (preview, Entra auth). Per-tenant host: https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_TeamsServer. Not a single public host. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "message-square",
       "tools": [
         {
@@ -1704,7 +1707,8 @@
           "description": "List recent chats"
         }
       ],
-      "docs_url": "https://learn.microsoft.com/microsoftteams"
+      "docs_url": "https://learn.microsoft.com/microsoftteams",
+      "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_TeamsServer"
     },
     {
       "name": "Notion",
@@ -1973,7 +1977,7 @@
       "name": "Snowflake",
       "slug": "snowflake",
       "category": "Data & Analytics",
-      "description": "Cloud data warehouse SQL and schema inspection.",
+      "description": "Snowflake MCP is account/instance-specific \u2014 no single public HTTPS host in the Influzer listing. Self-host or your Snowflake account URL. Not a SAFE badge.",
       "official": false,
       "transport": "stdio",
       "icon": "bar-chart",
@@ -2257,9 +2261,9 @@
       "name": "Shopify",
       "slug": "shopify",
       "category": "Payments & Commerce",
-      "description": "Shopify store MCP is per-shop, not a single public host: https://{shop}.myshopify.com/api/mcp (storefront), https://{shop-domain}/api/ucp/mcp (catalog/orders). Customer Accounts MCP is discovered via /.well-known/customer-account-api. Influzer does not handshake a placeholder shop. Not a SAFE badge.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Shopify store MCP is per-shop, not a single public host: https://{shop}/api/mcp and https://{shop}/api/ucp/mcp. Customer Accounts MCP is discovered via /.well-known/customer-account-api. Influzer does not handshake a placeholder shop. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "credit-card",
       "tools": [
         {
@@ -2275,15 +2279,16 @@
           "description": "Update product inventory"
         }
       ],
-      "docs_url": "https://shopify.dev/docs/api"
+      "docs_url": "https://shopify.dev/docs/api",
+      "mcp_endpoint_template": "https://{shop}/api/mcp"
     },
     {
       "name": "Mercado Libre",
       "slug": "mercado-libre",
       "category": "Payments & Commerce",
-      "description": "Marketplace interaction and product integration for Latin America.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Mercado Libre remote MCP at https://mcp.mercadolibre.com/mcp. Bearer token auth. Official repo mercadolibre/mercadolibre-mcp-server. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "credit-card",
       "tools": [
         {
@@ -2299,7 +2304,8 @@
           "description": "Update a product listing"
         }
       ],
-      "github_url": "https://github.com/mercadolibre/mcp-mercadolibre"
+      "github_url": "https://github.com/mercadolibre/mercadolibre-mcp-server",
+      "mcp_endpoint": "https://mcp.mercadolibre.com/mcp"
     },
     {
       "name": "Mercado Pago",
@@ -2609,9 +2615,9 @@
       "name": "OneDrive",
       "slug": "onedrive",
       "category": "Files & Docs",
-      "description": "Microsoft cloud storage file operations.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Microsoft Agent 365 OneDrive MCP (preview, Entra auth). Per-tenant host: https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_OneDriveRemoteServer. Not a single public host. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "hard-drive",
       "tools": [
         {
@@ -2627,7 +2633,8 @@
           "description": "Upload a file"
         }
       ],
-      "docs_url": "https://learn.microsoft.com/graph/onedrive"
+      "docs_url": "https://learn.microsoft.com/graph/onedrive",
+      "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_OneDriveRemoteServer"
     },
     {
       "name": "iMessage",
@@ -2681,9 +2688,9 @@
       "name": "n8n",
       "slug": "n8n",
       "category": "Automation",
-      "description": "Conversational workflow automation and node orchestration.",
-      "official": false,
-      "transport": "stdio",
+      "description": "n8n MCP is per-instance: https://{instance}/mcp-server/http. Not a single public host. Self-host or your cloud workspace URL. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "boxes",
       "tools": [
         {
@@ -2700,7 +2707,8 @@
         }
       ],
       "github_url": "https://github.com/n8n-io/n8n",
-      "docs_url": "https://docs.n8n.io"
+      "docs_url": "https://docs.n8n.io",
+      "mcp_endpoint_template": "https://{instance}/mcp-server/http"
     },
     {
       "name": "Zapier",
@@ -2793,9 +2801,9 @@
       "name": "Salesforce",
       "slug": "salesforce",
       "category": "Automation",
-      "description": "Enterprise CRM operations and record management.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Salesforce Platform MCP at https://api.salesforce.com/platform/mcp/v1/platform/sobject-all (also /v1/data360 and /v1/analytics/tableau-next). Sandbox twins insert sandbox/ after v1/. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "boxes",
       "tools": [
         {
@@ -2811,7 +2819,8 @@
           "description": "Update record fields"
         }
       ],
-      "docs_url": "https://developer.salesforce.com"
+      "docs_url": "https://developer.salesforce.com",
+      "mcp_endpoint": "https://api.salesforce.com/platform/mcp/v1/platform/sobject-all"
     },
     {
       "name": "Publora",
@@ -3145,7 +3154,7 @@
       "name": "XcodeBuildMCP",
       "slug": "xcodebuildmcp",
       "category": "Dev Tools",
-      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects — builds, simulators, and Xcode workflows.",
+      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects \u2014 builds, simulators, and Xcode workflows.",
       "official": false,
       "transport": "stdio",
       "icon": "monitor",
@@ -3170,7 +3179,7 @@
       "name": "Influzer MCP Discovery",
       "slug": "influzer-mcp-discovery",
       "category": "Search & Web",
-      "description": "Official Influzer.ai read-only MCP server — search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
+      "description": "Official Influzer.ai read-only MCP server \u2014 search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
       "official": true,
       "transport": "http",
       "icon": "search",

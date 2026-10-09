@@ -60,9 +60,26 @@ async function main() {
     board.counts.local_unprobed;
   assert.equal(counted, 100);
   assert.equal(board.https_hosts + board.missing_hosts, 100);
+  assert.equal(
+    board.https_hosts + board.template_hosts + board.local_hosts + board.unknown_hosts,
+    100,
+  );
   assert.equal(board.rows[0].rank, 1);
   assert.equal(board.rows.every((r) => r.sponsored === false), true);
   assert.equal(board.rows.every((r) => r.safety_badge === null), true);
+  const mongodb = board.rows.find((r) => r.slug === 'mongodb');
+  assert.ok(mongodb);
+  assert.equal(mongodb.host_kind, 'fixed');
+  assert.equal(mongodb.remote_url, 'https://mcp.mongodb.com');
+  const shopify = board.rows.find((r) => r.slug === 'shopify');
+  assert.ok(shopify);
+  assert.equal(shopify.host_kind, 'template');
+  assert.equal(shopify.remote_url, null);
+  assert.match(shopify.remote_template, /\{shop\}/);
+  const postgres = board.rows.find((r) => r.slug === 'postgres');
+  assert.ok(postgres);
+  assert.equal(postgres.host_kind, 'local');
+  assert.equal(postgres.host_label, 'stdio / local');
 
   const offer = getPromoteOffer();
   assert.equal(String(process.env.STRIPE_PROMOTE_MODE || 'subscription'), 'subscription');

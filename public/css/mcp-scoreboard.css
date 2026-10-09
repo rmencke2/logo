@@ -158,6 +158,24 @@
 
 .board-host--none { color: var(--hp-faint); font-size: 12px; }
 
+.board-host--template {
+  color: #92400e;
+}
+
+.board-host-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-family: var(--hp-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #92400e;
+  background: #fef3c7;
+  border-radius: 999px;
+  padding: 2px 6px;
+  vertical-align: middle;
+}
+
 .board-status {
   font-size: 12px;
   font-weight: 600;
