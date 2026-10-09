@@ -1926,7 +1926,16 @@
           body: JSON.stringify({ endpoint }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Probe failed');
+        if (!res.ok) {
+          if (data.suggestedEndpoint && endpointEl && data.suggestedEndpoint !== endpoint) {
+            if (confirm((data.error || 'Probe failed') + '\n\nUse ' + data.suggestedEndpoint + ' as the MCP endpoint and retry?')) {
+              endpointEl.value = data.suggestedEndpoint;
+              btn.disabled = false;
+              return refreshMcpToolsFromLive(mode);
+            }
+          }
+          throw new Error(data.error || 'Probe failed');
+        }
         toolsEl.value = toolsToText(data.tools || []);
         statusEl.textContent = data.message || `Loaded ${data.toolCount || 0} tool(s).`;
         statusEl.style.color = '#10a37f';

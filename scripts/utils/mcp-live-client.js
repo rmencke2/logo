@@ -52,6 +52,40 @@ function parseMcpResponseBody(body, contentType) {
 }
 
 /**
+ * CDN/HTML bodies must never surface as the admin alert (Arvow /mcp docs page).
+ */
+function looksLikeWebsiteOrCdnError(body, contentType) {
+  const ct = String(contentType || '').toLowerCase();
+  const text = String(body || '').trim();
+  if (!text) return false;
+  if (ct.includes('xml') || ct.includes('text/html')) return true;
+  if (/^<\?xml/i.test(text) || /^<!doctype html/i.test(text) || /^<html/i.test(text)) return true;
+  if (text.includes('<Error>') && /InvalidRequest|Couldn.?t route/i.test(text)) return true;
+  return false;
+}
+
+function humanizeHandshakeFailure(initRes) {
+  const body = initRes.rawError || initRes.body || '';
+  if (looksLikeWebsiteOrCdnError(body, initRes.contentType)) {
+    return 'This URL is not a Streamable HTTP MCP endpoint. POST hit a website or CDN, not initialize. Use the vendor MCP host from their docs (often https://api.<domain>/mcp), not a marketing /mcp page.';
+  }
+  const clipped = String(body).replace(/\s+/g, ' ').trim().slice(0, 200);
+  return clipped || `HTTP ${initRes.status}`;
+}
+
+function suggestApiMcpUrl(endpoint) {
+  try {
+    const u = new URL(String(endpoint || '').trim());
+    if (!/^https?:$/i.test(u.protocol)) return null;
+    const host = u.hostname.replace(/^www\./i, '');
+    if (!host || host.startsWith('api.')) return null;
+    return `https://api.${host}/mcp`;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * @param {object[]} messages
  * @param {number|string} id
  */
@@ -162,7 +196,7 @@ async function fetchLiveMcpTools(endpoint, opts = {}) {
   if (!initRes.ok) {
     return {
       status: 'error',
-      reason: initRes.rawError || `HTTP ${initRes.status}`,
+      reason: humanizeHandshakeFailure(initRes),
       tools: [],
       httpStatus: initRes.status,
     };
@@ -247,4 +281,7 @@ module.exports = {
   fetchLiveMcpTools,
   parseMcpResponseBody,
   parseSseJsonMessages,
+  looksLikeWebsiteOrCdnError,
+  humanizeHandshakeFailure,
+  suggestApiMcpUrl,
 };

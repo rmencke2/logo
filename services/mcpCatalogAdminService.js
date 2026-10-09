@@ -14,7 +14,10 @@ const {
   isInTop100,
 } = require('./mcpDirectoryService');
 const { sendMcpApprovalEmail, sendMcpFeedbackEmail } = require('../emailService');
-const { fetchLiveMcpTools } = require('../scripts/utils/mcp-live-client');
+const {
+  fetchLiveMcpTools,
+  suggestApiMcpUrl,
+} = require('../scripts/utils/mcp-live-client');
 const { assertSafePublicUrl } = require('./webmcp/ssrf');
 const { scanListingText, sanitizeTools } = require('./mcpSourceSafety');
 
@@ -569,9 +572,10 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
         });
       }
 
-      const live = await fetchLiveMcpTools(safeEndpoint, {
+      const probeOpts = {
         timeoutMs: Number(process.env.MCP_ADMIN_PROBE_TIMEOUT_MS) || 20000,
-      });
+      };
+      const live = await fetchLiveMcpTools(safeEndpoint, probeOpts);
 
       if (live.status === 'ok' || live.status === 'ok_empty') {
         const tools = sanitizeTools(live.tools || []);
@@ -597,7 +601,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
 
       const statusCode =
         live.status === 'auth_required' ? 401 : live.status === 'unreachable' ? 502 : 400;
-      return res.status(statusCode).json({
+      const payload = {
         error:
           live.reason ||
           (live.status === 'auth_required'
@@ -607,7 +611,26 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
         tools: [],
         endpoint: safeEndpoint,
         httpStatus: live.httpStatus || null,
-      });
+      };
+
+      const guessed = suggestApiMcpUrl(safeEndpoint);
+      if (guessed && guessed !== safeEndpoint && live.status === 'error') {
+        try {
+          const altSafe = await assertSafePublicUrl(guessed, {
+            allowHttp: process.env.NODE_ENV !== 'production',
+          });
+          const alt = await fetchLiveMcpTools(altSafe.href, probeOpts);
+          if (alt.status === 'ok' || alt.status === 'ok_empty' || alt.status === 'auth_required') {
+            payload.suggestedEndpoint = altSafe.href;
+            payload.suggestedStatus = alt.status;
+            payload.error = `${payload.error} Try ${altSafe.href} instead.`;
+          }
+        } catch {
+          /* keep original error */
+        }
+      }
+
+      return res.status(statusCode).json(payload);
     } catch (err) {
       console.error('MCP probe-tools error:', err);
       res.status(500).json({ error: clientErrorMessage(err, 'Failed to probe MCP endpoint') });
