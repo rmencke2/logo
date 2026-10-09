@@ -502,6 +502,106 @@ body.registry-page.site-header-active {
   font-weight: 600;
 }
 
+.home-board {
+  border-bottom: 1px solid var(--hp-border);
+  background: var(--hp-accent-tint);
+}
+
+.home-board__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 28px 40px;
+  align-items: center;
+}
+
+.home-board__eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--hp-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hp-accent-fg);
+}
+
+.home-board__title {
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.home-board__lead {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--hp-muted);
+  max-width: 38rem;
+}
+
+.home-board__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.home-board__btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-card);
+  color: var(--hp-text);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.home-board__btn--primary {
+  background: var(--hp-accent);
+  border-color: var(--hp-accent);
+  color: #fff !important;
+}
+
+.home-board__btn--primary:hover {
+  background: var(--hp-accent-hover);
+}
+
+.home-board__counts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.home-board__counts li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  background: var(--hp-card);
+  border: 1px solid var(--hp-border);
+  border-radius: 12px;
+}
+
+.home-board__counts b {
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-board__counts span {
+  font-family: var(--hp-mono);
+  font-size: 11px;
+  color: var(--hp-muted2);
+}
+
 .home-tools {
   border-bottom: 1px solid var(--hp-border);
   background: var(--hp-card);
@@ -1210,6 +1310,11 @@ body.registry-page.site-header-active {
 
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
+  .home-board__inner {
+    grid-template-columns: 1fr;
+    padding: 24px 20px;
+  }
+
   .home-tools__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -18,6 +18,13 @@ async function main() {
   assert.equal(isReservedMcpPath('scoreboard'), true);
   assert.equal(isReservedMcpPath('promote'), true);
 
+  const homeTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'home.ejs'), 'utf8');
+  assert.match(homeTpl, /home-board/);
+  assert.match(homeTpl, /\/mcp\/scoreboard/);
+  assert.match(homeTpl, /\/mcp\/promote/);
+  assert.match(homeTpl, /Promote your MCP/);
+  assert.equal(/safe-to-install stamp/i.test(homeTpl), true);
+
   const board = buildScoreboard();
   assert.equal(board.total, 100);
   assert.equal(board.rows.length, 100);

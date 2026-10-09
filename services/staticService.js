@@ -30,7 +30,8 @@ const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmiss
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { registerMcpProbeRoutes, probeMcpUrl } = require('./mcpProbeService');
-const { registerMcpScoreboardRoutes } = require('./mcpScoreboardService');
+const { registerMcpScoreboardRoutes, buildScoreboard } = require('./mcpScoreboardService');
+const { getPromoteOffer } = require('./mcpPromoteService');
 const { refreshListingHandshake } = require('./mcpHandshakeOverlay');
 const { registerMcpInstallRoutes } = require('./mcpInstallService');
 const { registerMcpSkillRoutes } = require('./mcpSkillService');
@@ -528,6 +529,8 @@ function renderHomepage(req, res) {
     promo: getSitePromo(),
     discoveryPromo: getDiscoveryPromo({ ref: 'home', serverCount: heroStats.totalServers }),
     milestonePromo: getMilestonePromo(heroStats.totalServers),
+    scoreboard: buildScoreboard(),
+    promoteOffer: getPromoteOffer(),
     assetVersion: getHomeAssetVersion(),
   });
 }

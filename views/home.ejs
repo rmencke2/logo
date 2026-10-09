@@ -61,6 +61,7 @@
         <p class="home-hero__embed">
           Search the catalog here — or drop Influzer into the agent, CI, and docs.
           <a href="#embed">Embed tools →</a>
+          · <a href="/mcp/scoreboard">Handshake scoreboard →</a>
         </p>
         <div class="home-hero__indexing">
           <span>Indexing</span>
@@ -73,6 +74,29 @@
         </div>
       </div>
     </header>
+
+    <section class="home-board" id="scoreboard" aria-labelledby="homeBoardHeading">
+      <div class="home-board__inner">
+        <div class="home-board__copy">
+          <p class="home-board__eyebrow">Top 100 × last handshake</p>
+          <h2 class="home-board__title" id="homeBoardHeading">Who actually answers tools/list</h2>
+          <p class="home-board__lead">
+            Same clock as the listing badge. Not a safe-to-install stamp.
+            Two sponsored pins at $<%= promoteOffer.product.price_usd %>/month — ads, not rank.
+          </p>
+          <div class="home-board__actions">
+            <a class="home-board__btn home-board__btn--primary" href="/mcp/scoreboard">Open the scoreboard</a>
+            <a class="home-board__btn" href="/mcp/promote">Promote your MCP · $<%= promoteOffer.product.price_usd %>/mo</a>
+          </div>
+        </div>
+        <ul class="home-board__counts" aria-label="Handshake counts">
+          <li><b><%= scoreboard.counts.live_ok %></b><span>Live OK</span></li>
+          <li><b><%= scoreboard.counts.auth_required %></b><span>Auth gate</span></li>
+          <li><b><%= scoreboard.counts.local_unprobed %></b><span>Stdio / local</span></li>
+          <li><b><%= scoreboard.https_hosts %></b><span>HTTPS hosts</span></li>
+        </ul>
+      </div>
+    </section>
 
     <section class="home-tools" id="embed" aria-labelledby="homeToolsHeading">
       <div class="home-tools__inner">
@@ -223,6 +247,7 @@
             · <a href="/mcp/influzer-mcp-discovery#install">Snippets</a>
             · <a href="/mcp/probe">Probe</a>
             · <a href="/mcp/scoreboard">Scoreboard</a>
+            · <a href="/mcp/promote">Promote</a>
             · <a href="<%= discoveryPromo && discoveryPromo.startersUrl ? discoveryPromo.startersUrl : '/mcp/discovery/starters' %>">Starters</a>
           </p>
         </div>
