@@ -31,7 +31,7 @@ const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { registerMcpProbeRoutes, probeMcpUrl } = require('./mcpProbeService');
 const { registerMcpScoreboardRoutes, buildScoreboard } = require('./mcpScoreboardService');
-const { getPromoteOffer } = require('./mcpPromoteService');
+const { getPromoteOffer, presentSponsorRail, isSponsoredSlug } = require('./mcpPromoteService');
 const { refreshListingHandshake } = require('./mcpHandshakeOverlay');
 const { registerMcpInstallRoutes } = require('./mcpInstallService');
 const { registerMcpSkillRoutes } = require('./mcpSkillService');
@@ -401,6 +401,7 @@ function getHomeAssetVersion() {
       'mcp-server-page.css',
       'article-page.css',
       'mcp-directory-page.css',
+      'mcp-sponsor.css',
       'insights-index.css',
       'mcp-setup-page.css',
       'briefs-page.css',
@@ -531,6 +532,7 @@ function renderHomepage(req, res) {
     milestonePromo: getMilestonePromo(heroStats.totalServers),
     scoreboard: buildScoreboard(),
     promoteOffer: getPromoteOffer(),
+    sponsorRail: presentSponsorRail(),
     assetVersion: getHomeAssetVersion(),
   });
 }
@@ -938,6 +940,7 @@ ${itemsXml}
       previewServers,
       promo: getSitePromo(),
       featuredPromo: getSitePromo('influzer-mcp-discovery'),
+      sponsorRail: presentSponsorRail(),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
       discoveryPromo: getDiscoveryPromo({ ref: 'mcp-all', serverCount: totals.total }),
@@ -986,6 +989,7 @@ ${itemsXml}
       previewServers,
       promo: getSitePromo(),
       featuredPromo: getSitePromo('influzer-mcp-discovery'),
+      sponsorRail: presentSponsorRail(),
       otherNews: getDisplayArticles(),
       topicSummaries: getTopicSummaries(),
       discoveryPromo: getDiscoveryPromo({ ref: 'mcp-top', serverCount: totals.total }),
@@ -1105,6 +1109,7 @@ ${itemsXml}
       iconEmoji: getMcpIconEmoji(server.icon),
       transportLabel: transportLabel(server.transport),
       inTop100: isInTop100(server.slug),
+      sponsored: isSponsoredSlug(server.slug),
       catalogTotals: getMcpCatalogTotals(),
       relatedServers: getRelatedMcpServers(server, 4),
       discoveryPromo: getDiscoveryPromo(),

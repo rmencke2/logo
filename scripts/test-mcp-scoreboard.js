@@ -10,6 +10,10 @@ const {
   submitPromoteRequest,
   validatePromoteInput,
   isSlotActive,
+  isSponsoredSlug,
+  presentPin,
+  presentOpenSlot,
+  presentSponsorRail,
   slotsRemaining,
 } = require('../services/mcpPromoteService');
 const { isReservedMcpPath } = require('../services/mcpSubmissionService');
@@ -26,6 +30,16 @@ async function main() {
   assert.match(homeTpl, /run by one person/);
   assert.match(homeTpl, /No pay-to-rank/);
   assert.match(homeTpl, /funded_usd/);
+  assert.match(homeTpl, /home-sponsors/);
+  assert.match(homeTpl, /mcp-sponsor-rail/);
+
+  const dirTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-index.ejs'), 'utf8');
+  assert.match(dirTpl, /mcp-sponsor-rail/);
+  const promoteTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-promote.ejs'), 'utf8');
+  assert.match(promoteTpl, /Where you appear/);
+  assert.match(promoteTpl, /offer\.placements/);
+  const listingTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-server.ejs'), 'utf8');
+  assert.match(listingTpl, /mcp-pill--sponsored/);
 
   const board = buildScoreboard();
   assert.equal(board.total, 100);
@@ -55,6 +69,22 @@ async function main() {
   assert.equal(offer.sold_out, false);
   assert.equal(slotsRemaining() >= 1, true);
   assert.ok(offer.excludes.some((line) => /SAFE/i.test(line)));
+  assert.equal(offer.product.name, 'Sponsored placement');
+  assert.equal(offer.placements.length, 4);
+  assert.ok(offer.includes.some((line) => /homepage/i.test(line)));
+  assert.ok(offer.includes.some((line) => /\/mcp/i.test(line)));
+
+  const rail = presentSponsorRail();
+  assert.equal(rail.items.length, 2);
+  assert.equal(rail.filled.length, 0);
+  assert.equal(rail.open.length, 2);
+  assert.equal(rail.safety_badge, null);
+  assert.equal(presentOpenSlot().open, true);
+  const asanaPin = presentPin({ slug: 'asana', blurb: 'Paid Asana MCP slot.' });
+  assert.equal(asanaPin.sponsor_label, 'Sponsored');
+  assert.equal(asanaPin.filled, true);
+  assert.equal(asanaPin.href, '/mcp/asana');
+  assert.equal(isSponsoredSlug('asana'), false);
 
   assert.equal(isSlotActive({ slug: 'asana', ends_at: '2099-01-01T00:00:00.000Z' }), true);
   assert.equal(isSlotActive({ slug: 'asana', ends_at: '2001-01-01T00:00:00.000Z' }), false);

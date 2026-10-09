@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
@@ -74,6 +75,10 @@
         </div>
       </div>
     </header>
+
+    <section class="home-sponsors" aria-label="Sponsored placements">
+      <%- include('partials/mcp-sponsor-rail', { sponsorRail: sponsorRail }) %>
+    </section>
 
     <section class="home-board" id="scoreboard" aria-labelledby="homeBoardHeading">
       <div class="home-board__inner">
