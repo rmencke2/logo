@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <header class="dir-hero">
+      <div class="dir-hero__inner">
+        <p class="dir-hero__eyebrow">Top 100 × last handshake</p>
+        <h1 class="dir-hero__title">MCP handshake scoreboard</h1>
+        <p class="dir-hero__lead">
+          Same clock as the listing badge: <code>initialize</code> then <code>tools/list</code>.
+          <strong>Not a safe-to-install badge.</strong>
+          Sponsored pins are ads and do not buy a handshake.
+        </p>
+        <div class="board-stats" aria-label="Handshake counts">
+          <a class="board-stat<%= filter === '' ? ' is-active' : '' %>" href="/mcp/scoreboard" data-filter="">
+            <b><%= board.total %></b><span>Top 100</span>
+          </a>
+          <a class="board-stat board-stat--ok<%= filter === 'live_ok' ? ' is-active' : '' %>" href="/mcp/scoreboard?status=live_ok" data-filter="live_ok">
+            <b><%= board.counts.live_ok %></b><span>Live OK</span>
+          </a>
+          <a class="board-stat board-stat--auth<%= filter === 'auth_required' ? ' is-active' : '' %>" href="/mcp/scoreboard?status=auth_required" data-filter="auth_required">
+            <b><%= board.counts.auth_required %></b><span>Auth gate</span>
+          </a>
+          <a class="board-stat board-stat--down<%= filter === 'unreachable' ? ' is-active' : '' %>" href="/mcp/scoreboard?status=unreachable" data-filter="unreachable">
+            <b><%= board.counts.unreachable %></b><span>Unreachable</span>
+          </a>
+          <a class="board-stat<%= filter === 'local_unprobed' ? ' is-active' : '' %>" href="/mcp/scoreboard?status=local_unprobed" data-filter="local_unprobed">
+            <b><%= board.counts.local_unprobed %></b><span>Stdio / local</span>
+          </a>
+          <a class="board-stat<%= filter === 'not_probed' ? ' is-active' : '' %>" href="/mcp/scoreboard?status=not_probed" data-filter="not_probed">
+            <b><%= board.counts.not_probed %></b><span>Not probed</span>
+          </a>
+        </div>
+        <p class="board-host-note"><b><%= board.https_hosts %></b> with an HTTPS MCP host · <b><%= board.missing_hosts %></b> still local or unknown</p>
+      </div>
+    </header>
+
+    <main class="dir-shell board-shell" id="main">
+      <div class="dir-controls">
+        <nav class="dir-tabs" aria-label="Directory scope">
+          <a href="/mcp">Top 100</a>
+          <a href="/mcp/scoreboard" class="is-active">Scoreboard</a>
+          <a href="/mcp/all">Full directory</a>
+        </nav>
+        <a class="board-promote-cta" href="/mcp/promote">Promote a listing · $<%= offer.product.price_usd %>/30d</a>
+      </div>
+
+      <% if (board.pins && board.pins.length) { %>
+        <section class="board-pins" aria-label="Sponsored pins">
+          <p class="board-pins__label">Sponsored · paid placement · handshake unchanged</p>
+          <% board.pins.forEach(function(pin) { %>
+            <a class="board-pin" href="<%= pin.href %>">
+              <span class="board-pin__badge">Sponsored</span>
+              <span class="board-pin__name"><%= pin.name %></span>
+              <span class="board-pin__blurb"><%= pin.sponsor_blurb %></span>
+            </a>
+          <% }); %>
+        </section>
+      <% } else { %>
+        <aside class="board-pins board-pins--empty">
+          <p><strong><%= offer.remaining %></strong> of <%= offer.product.max_concurrent %> scoreboard pins open this cycle ($<%= offer.product.price_usd %> for <%= offer.product.interval_days %> days). Ads, not rank.</p>
+          <a href="/mcp/promote">Buy a pin →</a>
+        </aside>
+      <% } %>
+
+      <div class="board-table-wrap">
+        <table class="board-table" id="handshakeBoard">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Server</th>
+              <th scope="col">Handshake</th>
+              <th scope="col">Last clock</th>
+              <th scope="col">Host</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% board.rows.forEach(function(row) { %>
+              <tr class="board-row" data-status="<%= row.live_status %>"<%= filter && filter !== row.live_status ? ' hidden' : '' %>>
+                <td class="board-rank"><%= row.rank %></td>
+                <td>
+                  <a class="board-name" href="<%= row.page_url %>"><%= row.name %></a>
+                  <div class="board-meta"><%= row.slug %><% if (row.official) { %> · official<% } %></div>
+                </td>
+                <td>
+                  <% if (row.handshake_svg) { %>
+                    <span class="mcp-handshake-badge" title="MCP handshake — not a SAFE badge"><%- row.handshake_svg %></span>
+                  <% } else { %>
+                    <span class="board-status board-status--<%= row.live_status %>"><%= row.live_status_label %></span>
+                  <% } %>
+                </td>
+                <td class="board-clock"><%= row.probed_at_label %></td>
+                <td class="board-host">
+                  <% if (row.remote_url) { %>
+                    <code><%= row.remote_url.replace(/^https:\/\//, '') %></code>
+                  <% } else { %>
+                    <span class="board-host--none">no public HTTPS</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <p class="board-footnote"><%= board.note %></p>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-scoreboard.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

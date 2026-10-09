@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="/mcp/scoreboard">← Handshake scoreboard</a>
+      <p class="setup-eyebrow">Sponsored pin · not a SAFE badge</p>
+      <h1 class="setup-title">Promote an MCP server</h1>
+      <p class="setup-lead">
+        Two pins on the scoreboard, <b>$<%= offer.product.price_usd %></b> for <%= offer.product.interval_days %> days each.
+        Sold out that is <b>$<%= offer.monthly_if_sold_out_usd %></b> / month — enough to run the directory.
+        You buy a labeled ad. You do not buy <code>live_ok</code>.
+      </p>
+
+      <% if (paid) { %>
+        <p class="promote-flash promote-flash--ok">Payment received. We pin the listing on the next cycle and email <code>hello@influzer.ai</code> confirmation.</p>
+      <% } %>
+      <% if (canceled) { %>
+        <p class="promote-flash">Checkout canceled. The pin is still open if you want it.</p>
+      <% } %>
+
+      <div class="promote-grid">
+        <section class="promote-card">
+          <h2>What you get</h2>
+          <ul>
+            <% offer.includes.forEach(function(item) { %>
+              <li><%= item %></li>
+            <% }); %>
+          </ul>
+          <h2>What you do not get</h2>
+          <ul>
+            <% offer.excludes.forEach(function(item) { %>
+              <li><%= item %></li>
+            <% }); %>
+          </ul>
+          <p class="promote-stock">
+            <% if (offer.sold_out) { %>
+              Both pins are taken. Email <a href="mailto:<%= offer.contact %>?subject=Scoreboard%20pin%20waitlist"><%= offer.contact %></a> for the waitlist.
+            <% } else { %>
+              <b><%= offer.remaining %></b> of <%= offer.product.max_concurrent %> pins open.
+            <% } %>
+          </p>
+        </section>
+
+        <form class="promote-form" id="promoteForm" <%= offer.sold_out ? 'hidden' : '' %>>
+          <label>
+            Work email
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label>
+            Company
+            <input type="text" name="company" maxlength="120" />
+          </label>
+          <label>
+            Influzer slug (optional)
+            <input type="text" name="slug" placeholder="asana" autocomplete="off" />
+          </label>
+          <label>
+            HTTPS MCP URL (if no slug)
+            <input type="url" name="url" placeholder="https://mcp.example.com/mcp" />
+          </label>
+          <label>
+            Note
+            <textarea name="note" rows="3" maxlength="500" placeholder="Dates, listing to pin, invoice needs"></textarea>
+          </label>
+          <input type="text" name="website" class="promote-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit" class="probe-form__submit" id="promoteSubmit">Pay $<%= offer.product.price_usd %> · pin for <%= offer.product.interval_days %> days</button>
+          <p class="setup-note" id="promoteStatus">Stripe Checkout when configured. Otherwise we invoice <%= offer.contact %>.</p>
+        </form>
+      </div>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-promote.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>
