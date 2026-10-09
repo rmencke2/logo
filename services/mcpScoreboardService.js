@@ -10,7 +10,7 @@ const path = require('path');
 const { getTop100McpServers, findMcpServerBySlug } = require('./mcpDirectoryService');
 const { httpsRemoteUrl } = require('./mcpInstallSnippets');
 const { LIVE_STATUS_LABELS } = require('../scripts/utils/mcp-quality');
-const { getActivePins, getPromoteOffer, submitPromoteRequest } = require('./mcpPromoteService');
+const { getActivePins, getPromoteOffer, presentSponsorRail, submitPromoteRequest } = require('./mcpPromoteService');
 
 const STATUS_ORDER = ['live_ok', 'auth_required', 'unreachable', 'not_probed', 'local_unprobed'];
 
@@ -120,7 +120,12 @@ function buildScoreboard() {
 function scoreboardAssetVersion() {
   try {
     return String(
-      Math.floor(fs.statSync(path.join(__dirname, '..', 'public/css/mcp-scoreboard.css')).mtimeMs),
+      Math.floor(
+        Math.max(
+          fs.statSync(path.join(__dirname, '..', 'public/css/mcp-scoreboard.css')).mtimeMs,
+          fs.statSync(path.join(__dirname, '..', 'public/css/mcp-sponsor.css')).mtimeMs,
+        ),
+      ),
     );
   } catch {
     return String(Date.now());
@@ -144,10 +149,11 @@ function registerMcpScoreboardRoutes(app) {
     res.render('mcp-scoreboard', {
       pageTitle: 'MCP handshake scoreboard',
       metaDescription:
-        'Top 100 MCP servers by last handshake: live, auth gate, unreachable, or stdio-only. Not a safe-to-install badge. Sponsored pins are ads.',
+        'Top 100 MCP servers by last handshake: live, auth gate, unreachable, or stdio-only. Not a safe-to-install badge. Sponsored placements are ads at the top.',
       canonicalUrl: 'https://www.influzer.ai/mcp/scoreboard',
       board,
       offer,
+      sponsorRail: presentSponsorRail(),
       filter: String(req.query.status || '').trim(),
       assetVersion: scoreboardAssetVersion(),
       navPath: req.path,
@@ -160,9 +166,10 @@ function registerMcpScoreboardRoutes(app) {
     res.render('mcp-promote', {
       pageTitle: 'Promote an MCP server',
       metaDescription:
-        'Pin your MCP listing on the Influzer handshake scoreboard for $249 / 30 days. Sponsored, not a SAFE badge. Two pins cover hosting.',
+        'Labeled Sponsored placement on the Influzer homepage, directory, and handshake scoreboard for $249 / month. Not a SAFE badge. Two slots cover hosting.',
       canonicalUrl: 'https://www.influzer.ai/mcp/promote',
       offer,
+      sponsorRail: presentSponsorRail(),
       paid: String(req.query.paid || '') === '1',
       canceled: String(req.query.canceled || '') === '1',
       assetVersion: scoreboardAssetVersion(),

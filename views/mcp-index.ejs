@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/seo-content.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-discovery-promo.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
   </head>
   <body class="registry-page">
     <%- include('partials/home-header') %>
@@ -59,6 +60,8 @@
     </header>
 
     <main class="dir-shell" id="main">
+      <%- include('partials/mcp-promote-pitch', { promotePitchSurface: 'mcp', promoteOffer: typeof promoteOffer !== 'undefined' ? promoteOffer : null }) %>
+      <%- include('partials/mcp-sponsor-rail', { compact: true }) %>
       <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
 
       <% if (typeof featuredPromo !== 'undefined' && featuredPromo && featuredPromo.slug !== 'influzer-mcp-discovery') { %>

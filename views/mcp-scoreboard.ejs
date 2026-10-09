@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
   </head>
   <body class="registry-page">
     <%- include('partials/home-header') %>
@@ -29,7 +30,7 @@
         <p class="dir-hero__lead">
           Same clock as the listing badge: <code>initialize</code> then <code>tools/list</code>.
           <strong>Not a safe-to-install badge.</strong>
-          Sponsored pins are ads and do not buy a handshake.
+          Sponsored placements are ads at the top and do not buy a handshake.
         </p>
         <div class="board-stats" aria-label="Handshake counts">
           <a class="board-stat<%= filter === '' ? ' is-active' : '' %>" href="/mcp/scoreboard" data-filter="">
@@ -62,26 +63,10 @@
           <a href="/mcp/scoreboard" class="is-active">Scoreboard</a>
           <a href="/mcp/all">Full directory</a>
         </nav>
-        <a class="board-promote-cta" href="/mcp/promote">Promote a listing · $<%= offer.product.price_usd %>/mo</a>
+        <a class="board-promote-cta" href="/mcp/promote">Get a labeled top slot · $<%= offer.product.price_usd %>/mo</a>
       </div>
 
-      <% if (board.pins && board.pins.length) { %>
-        <section class="board-pins" aria-label="Sponsored pins">
-          <p class="board-pins__label">Sponsored · paid placement · handshake unchanged</p>
-          <% board.pins.forEach(function(pin) { %>
-            <a class="board-pin" href="<%= pin.href %>">
-              <span class="board-pin__badge">Sponsored</span>
-              <span class="board-pin__name"><%= pin.name %></span>
-              <span class="board-pin__blurb"><%= pin.sponsor_blurb %></span>
-            </a>
-          <% }); %>
-        </section>
-      <% } else { %>
-        <aside class="board-pins board-pins--empty">
-          <p><strong><%= offer.remaining %></strong> of <%= offer.product.max_concurrent %> scoreboard pins open ($<%= offer.product.price_usd %>/month). Ads, not rank.</p>
-          <a href="/mcp/promote">Buy a pin →</a>
-        </aside>
-      <% } %>
+      <%- include('partials/mcp-sponsor-rail', { compact: true }) %>
 
       <div class="board-table-wrap">
         <table class="board-table" id="handshakeBoard">

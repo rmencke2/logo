@@ -18,26 +18,43 @@
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
   </head>
   <body class="registry-page">
     <%- include('partials/home-header') %>
 
     <main class="setup-shell" id="main">
       <a class="setup-back" href="/mcp/scoreboard">← Handshake scoreboard</a>
-      <p class="setup-eyebrow">Sponsored pin · not a SAFE badge</p>
+      <p class="setup-eyebrow">Sponsored placement · not a SAFE badge</p>
       <h1 class="setup-title">Promote an MCP server</h1>
       <p class="setup-lead">
-        Two pins on the scoreboard, <b>$<%= offer.product.price_usd %></b> / month each.
+        Two labeled slots, <b>$<%= offer.product.price_usd %></b> / month each.
+        You sit at the top of the homepage, the directory, and the handshake scoreboard.
         Sold out that is <b>$<%= offer.monthly_if_sold_out_usd %></b> / month — enough to run the directory.
-        You buy a labeled ad. You do not buy <code>live_ok</code>.
+        You buy traffic and a Sponsored label. You do not buy <code>live_ok</code>.
       </p>
 
       <% if (paid) { %>
-        <p class="promote-flash promote-flash--ok">Payment received. We pin the listing on the next cycle and email <code>hello@influzer.ai</code> confirmation.</p>
+        <p class="promote-flash promote-flash--ok">Payment received. We place the labeled cards on the homepage, directory, and scoreboard on the next cycle, and email <code>hello@influzer.ai</code> confirmation.</p>
       <% } %>
       <% if (canceled) { %>
-        <p class="promote-flash">Checkout canceled. The pin is still open if you want it.</p>
+        <p class="promote-flash">Checkout canceled. The slot is still open if you want it.</p>
       <% } %>
+
+      <section class="promote-where" aria-label="Where you appear">
+        <h2>Where you appear</h2>
+        <p class="promote-where__lead">This is the product: labeled, on top, on the pages people already use to pick a server.</p>
+        <ol>
+          <% offer.placements.forEach(function(place) { %>
+            <li>
+              <b><%= place.label %></b>
+              <span><%= place.where %></span>
+            </li>
+          <% }); %>
+        </ol>
+      </section>
+
+      <%- include('partials/mcp-sponsor-rail') %>
 
       <div class="promote-grid">
         <section class="promote-card">
@@ -55,9 +72,9 @@
           </ul>
           <p class="promote-stock">
             <% if (offer.sold_out) { %>
-              Both pins are taken. Email <a href="mailto:<%= offer.contact %>?subject=Scoreboard%20pin%20waitlist"><%= offer.contact %></a> for the waitlist.
+              Both slots are taken. Email <a href="mailto:<%= offer.contact %>?subject=Sponsored%20placement%20waitlist"><%= offer.contact %></a> for the waitlist.
             <% } else { %>
-              <b><%= offer.remaining %></b> of <%= offer.product.max_concurrent %> pins open.
+              <b><%= offer.remaining %></b> of <%= offer.product.max_concurrent %> labeled slots open.
             <% } %>
           </p>
         </section>
@@ -84,7 +101,7 @@
             <textarea name="note" rows="3" maxlength="500" placeholder="Dates, listing to pin, invoice needs"></textarea>
           </label>
           <input type="text" name="website" class="promote-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <button type="submit" class="probe-form__submit" id="promoteSubmit">Subscribe $<%= offer.product.price_usd %>/month · pin on the scoreboard</button>
+          <button type="submit" class="probe-form__submit" id="promoteSubmit">Subscribe $<%= offer.product.price_usd %>/month · labeled top placement</button>
           <p class="setup-note" id="promoteStatus">Stripe Checkout when configured. Otherwise we invoice <%= offer.contact %>.</p>
         </form>
       </div>

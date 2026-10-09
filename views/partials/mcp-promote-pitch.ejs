@@ -1,0 +1,26 @@
+<%#
+  Promo for the $249 placement. Pass promoteOffer.
+  promotePitchSurface: 'mcp' | 'webmcp'
+%>
+<% const offer = typeof locals !== 'undefined' && locals.promoteOffer ? locals.promoteOffer : (typeof promoteOffer !== 'undefined' ? promoteOffer : null); %>
+<% const surface = typeof promotePitchSurface !== 'undefined' ? promotePitchSurface : 'mcp'; %>
+<% if (offer) { %>
+  <aside class="sponsor-pitch" aria-label="Promote an MCP server">
+    <% if (!offer.sold_out) { %>
+      <p>
+        <% if (surface === 'webmcp') { %>
+          <b>Get on this page.</b>
+          Labeled Sponsored at the top of WebMCP and <a href="/mcp">/mcp</a>.
+          $<%= offer.product.price_usd %>/month. This is an MCP server ad — WebMCP is not MCP. Rank is not for sale.
+        <% } else { %>
+          <b>Get on this page.</b>
+          Labeled Sponsored at the top of /mcp and <a href="/webmcp">/webmcp</a>.
+          $<%= offer.product.price_usd %>/month. Handshake rank is not for sale.
+        <% } %>
+      </p>
+      <a class="sponsor-pitch__cta" href="/mcp/promote">Promote your server · $<%= offer.product.price_usd %>/mo</a>
+    <% } else { %>
+      <p>Both Sponsored slots are taken this month. Labeled ads, not rank.</p>
+    <% } %>
+  </aside>
+<% } %>

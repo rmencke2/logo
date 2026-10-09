@@ -1,0 +1,32 @@
+<%#
+  Labeled paid placements. Ads, not rank. Pass sponsorRail from presentSponsorRail().
+  compact: true on directory/scoreboard; omit on homepage.
+%>
+<% const rail = typeof locals !== 'undefined' && locals.sponsorRail ? locals.sponsorRail : (typeof sponsorRail !== 'undefined' ? sponsorRail : null); %>
+<% if (rail && rail.items && rail.items.length) { %>
+  <section class="sponsor-rail<%= typeof compact !== 'undefined' && compact ? ' sponsor-rail--compact' : '' %>" aria-label="Sponsored placements">
+    <div class="sponsor-rail__head">
+      <p class="sponsor-rail__kicker"><%= rail.kicker %></p>
+      <% if (rail.remaining) { %>
+        <a class="sponsor-rail__buy" href="/mcp/promote"><%= rail.remaining %> slot<%= rail.remaining === 1 ? '' : 's' %> open · $<%= rail.price_usd %>/mo</a>
+      <% } %>
+    </div>
+    <div class="sponsor-rail__grid">
+      <% rail.items.forEach(function(pin) { %>
+        <a
+          class="sponsor-spot<%= pin.open ? ' sponsor-spot--open' : '' %>"
+          href="<%= pin.href %>"
+          <% if (pin.external) { %>target="_blank" rel="<%= pin.rel %>"<% } %>
+        >
+          <span class="sponsor-spot__badge"><%= pin.sponsor_label %></span>
+          <span class="sponsor-spot__icon" aria-hidden="true"><%= pin.initial %></span>
+          <span class="sponsor-spot__body">
+            <span class="sponsor-spot__name"><%= pin.name %></span>
+            <span class="sponsor-spot__blurb"><%= pin.blurb %></span>
+          </span>
+          <span class="sponsor-spot__cta"><%= pin.cta %> →</span>
+        </a>
+      <% }); %>
+    </div>
+  </section>
+<% } %>
