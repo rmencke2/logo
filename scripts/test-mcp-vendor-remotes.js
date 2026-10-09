@@ -21,6 +21,7 @@ const EXPECTED = {
   'atlassian-mcp': 'https://mcp.atlassian.com/v2/mcp',
   'railway-mcp': 'https://mcp.railway.com',
   'granola-mcp': 'https://mcp.granola.ai/mcp',
+  'loopertask-com': 'https://loopertask.com/mcp',
 };
 
 async function main() {

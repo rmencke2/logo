@@ -108,10 +108,12 @@
       "category": "Dev Tools",
       "description": "LooperTask is a Kanban board built for AI agents. Agents like Claude Code and Cursor connect via MCP and create, update, and move tasks as native tool calls. Human review gates keep you in control, real-time updates keep the board live, and MCP tool calls are unlimited on every plan.",
       "official": true,
-      "transport": "unknown",
+      "transport": "http",
       "icon": "globe",
       "featured": false,
-      "docs_url": "https://loopertask.com/docs/quickstart",
+      "mcp_endpoint": "https://loopertask.com/mcp",
+      "docs_url": "https://loopertask.com/mcp",
+      "install_command": "claude mcp add loopertask --transport http https://loopertask.com/mcp",
       "stars": 0,
       "tools": [
         {
