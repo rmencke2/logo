@@ -475,9 +475,9 @@
       "name": "GitLab",
       "slug": "gitlab",
       "category": "Dev Tools",
-      "description": "GitLab repositories, merge requests, CI/CD pipelines, and project management.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official GitLab MCP on GitLab.com at https://gitlab.com/api/v4/mcp (also /api/v4/mcp on self-managed hosts). OAuth 2.0 + DCR. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "gitlab",
       "tools": [
         {
@@ -497,15 +497,18 @@
           "description": "Search code across repositories"
         }
       ],
-      "github_url": "https://github.com/zereight/gitlab-mcp"
+      "github_url": "https://github.com/zereight/gitlab-mcp",
+      "mcp_endpoint": "https://gitlab.com/api/v4/mcp",
+      "docs_url": "https://docs.gitlab.com/user/model_context_protocol/mcp_server/",
+      "install_command": "claude mcp add gitlab --transport http https://gitlab.com/api/v4/mcp"
     },
     {
       "name": "Desktop Commander",
       "slug": "desktop-commander",
       "category": "Dev Tools",
-      "description": "Terminal access, process management, and ripgrep-powered search on the local machine.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Desktop Commander remote MCP at https://mcp.desktopcommander.app/mcp (needs a Remote Device agent). OAuth on the remote; local stdio still ships. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "terminal",
       "tools": [
         {
@@ -525,7 +528,10 @@
           "description": "Read file contents from disk"
         }
       ],
-      "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp"
+      "github_url": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+      "mcp_endpoint": "https://mcp.desktopcommander.app/mcp",
+      "docs_url": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+      "install_command": "claude mcp add desktop-commander --transport http https://mcp.desktopcommander.app/mcp"
     },
     {
       "name": "Filesystem",
@@ -639,9 +645,9 @@
       "name": "Replit",
       "slug": "replit",
       "category": "Dev Tools",
-      "description": "Cloud coding environments: create repls, run code, and manage projects remotely.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Replit remote MCP at https://mcp.replit.com/server/mcp over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "cloud-code",
       "tools": [
         {
@@ -661,7 +667,9 @@
           "description": "Deploy a repl application"
         }
       ],
-      "docs_url": "https://docs.replit.com"
+      "docs_url": "https://docs.replit.com/platforms/mcp-server.md",
+      "mcp_endpoint": "https://mcp.replit.com/server/mcp",
+      "install_command": "claude mcp add replit --transport http https://mcp.replit.com/server/mcp"
     },
     {
       "name": "StackBlitz",
@@ -829,9 +837,9 @@
       "name": "Exa",
       "slug": "exa",
       "category": "Search & Web",
-      "description": "Neural semantic web search for research and retrieval.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Exa remote MCP at https://mcp.exa.ai/mcp. Keyless rate-limited, OAuth (?login), or x-api-key. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "search",
       "tools": [
         {
@@ -848,7 +856,9 @@
         }
       ],
       "github_url": "https://github.com/exa-labs/exa-mcp-server",
-      "docs_url": "https://docs.exa.ai"
+      "docs_url": "https://exa.ai/docs/get-started/exa-mcp.md",
+      "mcp_endpoint": "https://mcp.exa.ai/mcp",
+      "install_command": "claude mcp add exa --transport http https://mcp.exa.ai/mcp"
     },
     {
       "name": "Tavily",
@@ -1119,9 +1129,9 @@
       "name": "MotherDuck",
       "slug": "motherduck",
       "category": "Databases",
-      "description": "Analytical SQL with DuckDB in-process and MotherDuck cloud sync.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official MotherDuck remote MCP at https://api.motherduck.com/mcp. OAuth or Bearer token. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "database",
       "tools": [
         {
@@ -1138,7 +1148,9 @@
         }
       ],
       "github_url": "https://github.com/motherduckdb/mcp-server-motherduck",
-      "docs_url": "https://motherduck.com/docs"
+      "docs_url": "https://motherduck.com/docs/sql-reference/mcp",
+      "mcp_endpoint": "https://api.motherduck.com/mcp",
+      "install_command": "claude mcp add motherduck --transport http https://api.motherduck.com/mcp"
     },
     {
       "name": "Milvus",
@@ -1259,9 +1271,9 @@
       "name": "Canva",
       "slug": "canva",
       "category": "Design",
-      "description": "Design generation and editing through the Canva API.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Canva remote MCP at https://mcp.canva.com/mcp over Streamable HTTP. OAuth per-user. Handshake is 401 without a token. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "image",
       "tools": [
         {
@@ -1277,7 +1289,9 @@
           "description": "Browse design templates"
         }
       ],
-      "docs_url": "https://www.canva.dev/docs"
+      "docs_url": "https://www.canva.dev/docs",
+      "mcp_endpoint": "https://mcp.canva.com/mcp",
+      "install_command": "claude mcp add canva --transport http https://mcp.canva.com/mcp"
     },
     {
       "name": "Storybook",
@@ -1303,9 +1317,9 @@
       "name": "SlideSpeak",
       "slug": "slidespeak",
       "category": "Design",
-      "description": "Create presentations and PowerPoints using AI from outlines and data.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official SlideSpeak remote MCP at https://mcp.slidespeak.co/mcp. Bearer API key. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "file-text",
       "tools": [
         {
@@ -1321,15 +1335,18 @@
           "description": "Export to PowerPoint format"
         }
       ],
-      "github_url": "https://github.com/SlideSpeak/slidespeak-mcp"
+      "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
+      "mcp_endpoint": "https://mcp.slidespeak.co/mcp",
+      "docs_url": "https://github.com/SlideSpeak/slidespeak-mcp",
+      "install_command": "claude mcp add slidespeak --transport http https://mcp.slidespeak.co/mcp"
     },
     {
       "name": "AWS",
       "slug": "aws",
       "category": "Cloud & Infra",
-      "description": "S3, Lambda, EC2, and other AWS service operations.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Managed AWS MCP Server at https://aws-mcp.us-east-1.api.aws/mcp (also us-west-2, eu-west-1, and other regions). OAuth 2.1 or SigV4. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "cloud",
       "tools": [
         {
@@ -1346,7 +1363,9 @@
         }
       ],
       "github_url": "https://github.com/awslabs/mcp",
-      "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/"
+      "docs_url": "https://docs.aws.amazon.com/agent-toolkit/latest/userguide/getting-started-aws-mcp-server.md",
+      "mcp_endpoint": "https://aws-mcp.us-east-1.api.aws/mcp",
+      "install_command": "claude mcp add aws --transport http https://aws-mcp.us-east-1.api.aws/mcp"
     },
     {
       "name": "Google Cloud",
@@ -1590,9 +1609,9 @@
       "name": "Gmail",
       "slug": "gmail",
       "category": "Communication",
-      "description": "Read, compose, and search email via Gmail API.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Google Gmail remote MCP (Developer Preview) at https://gmailmcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "mail",
       "tools": [
         {
@@ -1608,15 +1627,18 @@
           "description": "Read an email thread"
         }
       ],
-      "github_url": "https://github.com/GongRzhe/Gmail-MCP-Server"
+      "github_url": "https://github.com/GongRzhe/Gmail-MCP-Server",
+      "mcp_endpoint": "https://gmailmcp.googleapis.com/mcp/v1",
+      "docs_url": "https://developers.google.com/workspace/gmail/api/guides/configure-mcp-server",
+      "install_command": "claude mcp add gmail --transport http https://gmailmcp.googleapis.com/mcp/v1"
     },
     {
       "name": "Google Calendar",
       "slug": "google-calendar",
       "category": "Communication",
-      "description": "Events, scheduling, and calendar management.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Google Calendar remote MCP at https://calendarmcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "calendar",
       "tools": [
         {
@@ -1632,7 +1654,9 @@
           "description": "Find available time slots"
         }
       ],
-      "docs_url": "https://developers.google.com/calendar"
+      "docs_url": "https://developers.google.com/workspace/calendar/api/guides/configure-mcp-server",
+      "mcp_endpoint": "https://calendarmcp.googleapis.com/mcp/v1",
+      "install_command": "claude mcp add google-calendar --transport http https://calendarmcp.googleapis.com/mcp/v1"
     },
     {
       "name": "Outlook",
@@ -1713,9 +1737,9 @@
       "name": "Confluence",
       "slug": "confluence",
       "category": "Communication",
-      "description": "Atlassian wiki access for documentation search and edits.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Atlassian Rovo MCP (Confluence, Jira, Bitbucket) at https://mcp.atlassian.com/v2/mcp. OAuth 2.1 or API token. Same host as the atlassian-mcp listing. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "file-text",
       "tools": [
         {
@@ -1731,15 +1755,17 @@
           "description": "Create a wiki page"
         }
       ],
-      "docs_url": "https://developer.atlassian.com/cloud/confluence"
+      "docs_url": "https://www.atlassian.com/platform/remote-mcp-server",
+      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "install_command": "claude mcp add confluence --transport http https://mcp.atlassian.com/v2/mcp"
     },
     {
       "name": "Jira",
       "slug": "jira",
       "category": "Communication",
-      "description": "Tickets, sprints, and project tracking in Jira.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Atlassian Rovo MCP (Jira, Confluence, Bitbucket) at https://mcp.atlassian.com/v2/mcp. OAuth 2.1 or API token. Same host as the atlassian-mcp listing. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "layout-list",
       "tools": [
         {
@@ -1755,15 +1781,17 @@
           "description": "Move issue through workflow"
         }
       ],
-      "docs_url": "https://developer.atlassian.com/cloud/jira"
+      "docs_url": "https://developer.atlassian.com/cloud/rovo-mcp/",
+      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "install_command": "claude mcp add jira --transport http https://mcp.atlassian.com/v2/mcp"
     },
     {
       "name": "Asana",
       "slug": "asana",
       "category": "Communication",
-      "description": "Tasks and project management in Asana.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Asana remote MCP at https://mcp.asana.com/v2/mcp over Streamable HTTP. OAuth. SSE /sse is deprecated. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "layout-list",
       "tools": [
         {
@@ -1779,15 +1807,17 @@
           "description": "Update task status"
         }
       ],
-      "docs_url": "https://developers.asana.com"
+      "docs_url": "https://developers.asana.com/docs/using-asanas-mcp-server",
+      "mcp_endpoint": "https://mcp.asana.com/v2/mcp",
+      "install_command": "claude mcp add asana --transport http https://mcp.asana.com/v2/mcp"
     },
     {
       "name": "Monday.com",
       "slug": "monday",
       "category": "Communication",
-      "description": "Boards, items, and workflow automation on Monday.com.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official monday.com remote MCP at https://mcp.monday.com/mcp over Streamable HTTP. OAuth 2.0 or API token. /sse is deprecated. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "layout-list",
       "tools": [
         {
@@ -1803,15 +1833,17 @@
           "description": "Update column values"
         }
       ],
-      "docs_url": "https://developer.monday.com"
+      "docs_url": "https://developer.monday.com/api-reference/docs/integrate-with-monday-mcp",
+      "mcp_endpoint": "https://mcp.monday.com/mcp",
+      "install_command": "claude mcp add monday --transport http https://mcp.monday.com/mcp"
     },
     {
       "name": "Google Sheets",
       "slug": "google-sheets",
       "category": "Data & Analytics",
-      "description": "Spreadsheet read and write via Google Sheets API.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Google Sheets remote MCP at https://sheetsmcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "bar-chart",
       "tools": [
         {
@@ -1827,15 +1859,17 @@
           "description": "List tabs in a spreadsheet"
         }
       ],
-      "docs_url": "https://developers.google.com/sheets/api"
+      "docs_url": "https://developers.google.com/workspace/sheets/api/guides/configure-mcp-server",
+      "mcp_endpoint": "https://sheetsmcp.googleapis.com/mcp/v1",
+      "install_command": "claude mcp add google-sheets --transport http https://sheetsmcp.googleapis.com/mcp/v1"
     },
     {
       "name": "Airtable",
       "slug": "airtable",
       "category": "Data & Analytics",
-      "description": "Base and table operations for structured data.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Airtable remote MCP at https://mcp.airtable.com/mcp. OAuth (DCR) or PAT. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "bar-chart",
       "tools": [
         {
@@ -1851,7 +1885,9 @@
           "description": "Update record fields"
         }
       ],
-      "docs_url": "https://airtable.com/developers/web/api"
+      "docs_url": "https://airtable.com/developers/agents/mcp/getting-started",
+      "mcp_endpoint": "https://mcp.airtable.com/mcp",
+      "install_command": "claude mcp add airtable --transport http https://mcp.airtable.com/mcp"
     },
     {
       "name": "Amplitude",
@@ -1961,9 +1997,9 @@
       "name": "BigQuery",
       "slug": "bigquery",
       "category": "Data & Analytics",
-      "description": "Google analytics warehouse queries and table management.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official BigQuery remote MCP at https://bigquery.googleapis.com/mcp over Streamable HTTP. OAuth 2.0 / IAM. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "bar-chart",
       "tools": [
         {
@@ -1979,15 +2015,17 @@
           "description": "Describe table schema"
         }
       ],
-      "docs_url": "https://cloud.google.com/bigquery/docs"
+      "docs_url": "https://docs.cloud.google.com/bigquery/docs/use-bigquery-mcp",
+      "mcp_endpoint": "https://bigquery.googleapis.com/mcp",
+      "install_command": "claude mcp add bigquery --transport http https://bigquery.googleapis.com/mcp"
     },
     {
       "name": "Keboola",
       "slug": "keboola",
       "category": "Data & Analytics",
-      "description": "Data workflows, integrations, and analytics pipelines.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Keboola remote MCP. US: https://mcp.keboola.com/mcp ; EU: https://mcp.eu-central-1.keboola.com/mcp. OAuth on the remote. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "bar-chart",
       "tools": [
         {
@@ -2004,7 +2042,9 @@
         }
       ],
       "github_url": "https://github.com/keboola/mcp-server",
-      "docs_url": "https://developers.keboola.com"
+      "docs_url": "https://github.com/keboola/mcp-server",
+      "mcp_endpoint": "https://mcp.keboola.com/mcp",
+      "install_command": "claude mcp add keboola --transport http https://mcp.keboola.com/mcp"
     },
     {
       "name": "VegaLite",
@@ -2057,9 +2097,9 @@
       "name": "Datadog",
       "slug": "datadog",
       "category": "Security & Monitoring",
-      "description": "Logs, metrics, and APM for observability-driven debugging.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Datadog remote MCP at https://mcp.datadoghq.com/v1/mcp. OAuth or API keys. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "activity",
       "tools": [
         {
@@ -2075,15 +2115,18 @@
           "description": "List configured monitors"
         }
       ],
-      "github_url": "https://github.com/GeLi2001/datadog-mcp-server"
+      "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
+      "docs_url": "https://docs.datadoghq.com/bits_ai/mcp_server/setup/",
+      "mcp_endpoint": "https://mcp.datadoghq.com/v1/mcp",
+      "install_command": "claude mcp add datadog --transport http https://mcp.datadoghq.com/v1/mcp"
     },
     {
       "name": "PagerDuty",
       "slug": "pagerduty",
       "category": "Security & Monitoring",
-      "description": "Incident management and on-call workflows.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official PagerDuty remote MCP at https://mcp.pagerduty.com/mcp (EU: https://mcp.eu.pagerduty.com/mcp). API token or OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "shield-alert",
       "tools": [
         {
@@ -2099,7 +2142,9 @@
           "description": "Create a new incident"
         }
       ],
-      "docs_url": "https://developer.pagerduty.com"
+      "docs_url": "https://support.pagerduty.com/main/docs/pagerduty-mcp-server",
+      "mcp_endpoint": "https://mcp.pagerduty.com/mcp",
+      "install_command": "claude mcp add pagerduty --transport http https://mcp.pagerduty.com/mcp"
     },
     {
       "name": "Snyk",
@@ -2260,9 +2305,9 @@
       "name": "Mercado Pago",
       "slug": "mercado-pago",
       "category": "Payments & Commerce",
-      "description": "Latin America payments API for charges and refunds.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Mercado Pago remote MCP at https://mcp.mercadopago.com/mcp. OAuth login. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "credit-card",
       "tools": [
         {
@@ -2278,7 +2323,9 @@
           "description": "Issue a refund"
         }
       ],
-      "docs_url": "https://www.mercadopago.com/developers"
+      "docs_url": "https://www.mercadopago.com.ar/developers/en/docs/mcp-server/connection",
+      "mcp_endpoint": "https://mcp.mercadopago.com/mcp",
+      "install_command": "claude mcp add mercado-pago --transport http https://mcp.mercadopago.com/mcp"
     },
     {
       "name": "ShopSavvy",
@@ -2333,9 +2380,9 @@
       "name": "Mem0",
       "slug": "mem0",
       "category": "AI & Memory",
-      "description": "Long-term memory layer for AI agents across conversations.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Mem0 remote MCP at https://mcp.mem0.ai/mcp over Streamable HTTP. OAuth or Bearer API key. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "brain",
       "tools": [
         {
@@ -2352,7 +2399,9 @@
         }
       ],
       "github_url": "https://github.com/mem0ai/mem0",
-      "docs_url": "https://docs.mem0.ai"
+      "docs_url": "https://docs.mem0.ai/platform/mem0-mcp",
+      "mcp_endpoint": "https://mcp.mem0.ai/mcp",
+      "install_command": "claude mcp add mem0 --transport http https://mcp.mem0.ai/mcp"
     },
     {
       "name": "Zep",
@@ -2487,9 +2536,9 @@
       "name": "Google Drive",
       "slug": "google-drive",
       "category": "Files & Docs",
-      "description": "File listing, search, and read access in Google Drive.",
+      "description": "Official Google Drive remote MCP at https://drivemcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
       "official": true,
-      "transport": "stdio",
+      "transport": "http",
       "icon": "hard-drive",
       "tools": [
         {
@@ -2506,15 +2555,17 @@
         }
       ],
       "github_url": "https://github.com/modelcontextprotocol/servers",
-      "install_command": "claude mcp add gdrive -- npx -y @modelcontextprotocol/server-gdrive"
+      "install_command": "claude mcp add google-drive --transport http https://drivemcp.googleapis.com/mcp/v1",
+      "mcp_endpoint": "https://drivemcp.googleapis.com/mcp/v1",
+      "docs_url": "https://developers.google.com/workspace/drive/api/guides/configure-mcp-server"
     },
     {
       "name": "Dropbox",
       "slug": "dropbox",
       "category": "Files & Docs",
-      "description": "File access and sharing in Dropbox.",
-      "official": false,
-      "transport": "stdio",
+      "description": "Official Dropbox remote MCP at https://mcp.dropbox.com/mcp. Dropbox OAuth. Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
       "icon": "hard-drive",
       "tools": [
         {
@@ -2530,7 +2581,9 @@
           "description": "Upload a file"
         }
       ],
-      "docs_url": "https://www.dropbox.com/developers/documentation"
+      "docs_url": "https://help.dropbox.com/integrations/connect-dropbox-mcp-server",
+      "mcp_endpoint": "https://mcp.dropbox.com/mcp",
+      "install_command": "claude mcp add dropbox --transport http https://mcp.dropbox.com/mcp"
     },
     {
       "name": "Box",
