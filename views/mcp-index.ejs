@@ -60,6 +60,7 @@
     </header>
 
     <main class="dir-shell" id="main">
+      <%- include('partials/mcp-promote-pitch', { promotePitchSurface: 'mcp', promoteOffer: typeof promoteOffer !== 'undefined' ? promoteOffer : null }) %>
       <%- include('partials/mcp-sponsor-rail', { compact: true }) %>
       <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
 

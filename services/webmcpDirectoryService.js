@@ -10,6 +10,7 @@ const { normalizeHost, normalizeHttpsUrl, slugifyCategory } = require('./webmcp/
 const { startWebmcpScan, publicScanView, getScan } = require('./webmcp/scanService');
 const { clientErrorMessage } = require('../utils/safeError');
 const { ensureScanTables } = require('./webmcp/scanStore');
+const { getPromoteOffer, presentSponsorRail } = require('./mcpPromoteService');
 
 const ROOT = path.join(__dirname, '..');
 const SITES_PATH = path.join(ROOT, 'data', 'webmcp-sites.json');
@@ -281,6 +282,8 @@ function registerWebmcpRoutes(app) {
       pages,
       facets,
       filters: req.query,
+      sponsorRail: presentSponsorRail(),
+      promoteOffer: getPromoteOffer(),
     }));
   });
 

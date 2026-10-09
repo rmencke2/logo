@@ -35,6 +35,12 @@ async function main() {
 
   const dirTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-index.ejs'), 'utf8');
   assert.match(dirTpl, /mcp-sponsor-rail/);
+  assert.match(dirTpl, /mcp-promote-pitch/);
+  const webmcpTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'webmcp-index.ejs'), 'utf8');
+  assert.match(webmcpTpl, /mcp-sponsor-rail/);
+  assert.match(webmcpTpl, /mcp-promote-pitch/);
+  assert.match(webmcpTpl, /promotePitchSurface: 'webmcp'/);
+  assert.match(webmcpTpl, /promoteOffer/);
   const promoteTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-promote.ejs'), 'utf8');
   assert.match(promoteTpl, /Where you appear/);
   assert.match(promoteTpl, /offer\.placements/);
@@ -70,9 +76,11 @@ async function main() {
   assert.equal(slotsRemaining() >= 1, true);
   assert.ok(offer.excludes.some((line) => /SAFE/i.test(line)));
   assert.equal(offer.product.name, 'Sponsored placement');
-  assert.equal(offer.placements.length, 4);
+  assert.equal(offer.placements.length, 5);
   assert.ok(offer.includes.some((line) => /homepage/i.test(line)));
   assert.ok(offer.includes.some((line) => /\/mcp/i.test(line)));
+  assert.ok(offer.includes.some((line) => /webmcp/i.test(line)));
+  assert.ok(offer.placements.some((p) => p.id === 'webmcp'));
 
   const rail = presentSponsorRail();
   assert.equal(rail.items.length, 2);

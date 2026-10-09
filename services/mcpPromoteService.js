@@ -30,8 +30,13 @@ const PLACEMENTS = [
   },
   {
     id: 'directory',
-    label: 'Directory',
+    label: 'MCP directory',
     where: 'Top of /mcp and /mcp/all — above the organic Top 100 list',
+  },
+  {
+    id: 'webmcp',
+    label: 'WebMCP directory',
+    where: 'Top of /webmcp — labeled Sponsored MCP ad (WebMCP is not MCP)',
   },
   {
     id: 'scoreboard',
@@ -111,7 +116,7 @@ function presentOpenSlot(product = DEFAULT_PRODUCT) {
     open: true,
     slug: null,
     name: 'Your server here',
-    blurb: `Labeled Sponsored on the homepage, directory, and handshake scoreboard. $${product.price_usd}/month. Rank is not for sale.`,
+    blurb: `Labeled Sponsored on the homepage, /mcp, /webmcp, and handshake scoreboard. $${product.price_usd}/month. Rank is not for sale.`,
     href: '/mcp/promote',
     cta: 'Buy this slot',
     initial: '+',
@@ -168,6 +173,7 @@ function getPromoteOffer(now = Date.now()) {
     includes: [
       `Labeled Sponsored card at the top of the homepage ($${product.price_usd}/mo)`,
       'Labeled Sponsored card at the top of /mcp and /mcp/all',
+      'Labeled Sponsored card at the top of /webmcp (MCP ad, not a WebMCP listing)',
       'Labeled Sponsored pin above the handshake scoreboard',
       'Sponsored pill on your listing page',
     ],
@@ -244,7 +250,7 @@ async function createStripeCheckout(input) {
     params.set('line_items[0][price_data][product_data][name]', `${product.name} (${product.interval_days} days)`);
     params.set(
       'line_items[0][price_data][product_data][description]',
-      'Labeled Sponsored placement on the Influzer homepage, directory, and handshake scoreboard. Not a SAFE badge.',
+      'Labeled Sponsored placement on the Influzer homepage, /mcp, /webmcp, and handshake scoreboard. Not a SAFE badge.',
     );
   }
 
