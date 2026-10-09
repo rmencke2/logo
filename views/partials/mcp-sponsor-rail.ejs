@@ -2,7 +2,7 @@
   Labeled paid placements. Ads, not rank. Pass sponsorRail from presentSponsorRail().
   compact: true on directory/scoreboard; omit on homepage.
 %>
-<% const rail = typeof sponsorRail !== 'undefined' && sponsorRail ? sponsorRail : null; %>
+<% const rail = typeof locals !== 'undefined' && locals.sponsorRail ? locals.sponsorRail : (typeof sponsorRail !== 'undefined' ? sponsorRail : null); %>
 <% if (rail && rail.items && rail.items.length) { %>
   <section class="sponsor-rail<%= typeof compact !== 'undefined' && compact ? ' sponsor-rail--compact' : '' %>" aria-label="Sponsored placements">
     <div class="sponsor-rail__head">

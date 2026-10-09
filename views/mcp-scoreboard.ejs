@@ -30,7 +30,7 @@
         <p class="dir-hero__lead">
           Same clock as the listing badge: <code>initialize</code> then <code>tools/list</code>.
           <strong>Not a safe-to-install badge.</strong>
-          Sponsored pins are ads and do not buy a handshake.
+          Sponsored placements are ads at the top and do not buy a handshake.
         </p>
         <div class="board-stats" aria-label="Handshake counts">
           <a class="board-stat<%= filter === '' ? ' is-active' : '' %>" href="/mcp/scoreboard" data-filter="">
@@ -66,7 +66,7 @@
         <a class="board-promote-cta" href="/mcp/promote">Get a labeled top slot · $<%= offer.product.price_usd %>/mo</a>
       </div>
 
-      <%- include('partials/mcp-sponsor-rail', { sponsorRail: typeof sponsorRail !== 'undefined' ? sponsorRail : null, compact: true }) %>
+      <%- include('partials/mcp-sponsor-rail', { compact: true }) %>
 
       <div class="board-table-wrap">
         <table class="board-table" id="handshakeBoard">

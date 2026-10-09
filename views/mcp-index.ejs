@@ -60,7 +60,7 @@
     </header>
 
     <main class="dir-shell" id="main">
-      <%- include('partials/mcp-sponsor-rail', { sponsorRail: typeof sponsorRail !== 'undefined' ? sponsorRail : null, compact: true }) %>
+      <%- include('partials/mcp-sponsor-rail', { compact: true }) %>
       <%- include('partials/mcp-discovery-banner', { discoveryPromo: typeof discoveryPromo !== 'undefined' ? discoveryPromo : null }) %>
 
       <% if (typeof featuredPromo !== 'undefined' && featuredPromo && featuredPromo.slug !== 'influzer-mcp-discovery') { %>
