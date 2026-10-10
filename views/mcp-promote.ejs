@@ -35,7 +35,7 @@
       </p>
 
       <% if (paid) { %>
-        <p class="promote-flash promote-flash--ok">Payment received. We place the labeled cards on the homepage, directory, and scoreboard on the next cycle, and email <code>hello@influzer.ai</code> confirmation.</p>
+        <p class="promote-flash promote-flash--ok">Payment received. We place the labeled cards on the next cycle (subject to the <a href="/mcp/promote/terms">Sponsored Placement Terms</a>) and email <code>hello@influzer.ai</code> confirmation.</p>
       <% } %>
       <% if (canceled) { %>
         <p class="promote-flash">Checkout canceled. The slot is still open if you want it.</p>
@@ -55,6 +55,25 @@
       </section>
 
       <%- include('partials/mcp-sponsor-rail') %>
+
+      <section class="promote-terms-block promote-terms-block--ban" aria-label="Advertising rules">
+        <h2>Advertising rules</h2>
+        <p class="promote-where__lead">
+          No porn, gambling, scams, malware, hate, or illegal offers.
+          If a placement breaks the rules, we can remove it and <b>keep the fee</b>.
+          Full text:
+          <a href="<%= offer.terms_path || '/mcp/promote/terms' %>">Sponsored Placement Terms</a>
+          (v<%= offer.terms_version %>).
+        </p>
+        <ul class="promote-ban-list promote-ban-list--compact">
+          <% (offer.terms && offer.terms.prohibited ? offer.terms.prohibited : []).slice(0, 6).forEach(function(item) { %>
+            <li>
+              <b><%= item.label %></b>
+              <span><%= item.detail %></span>
+            </li>
+          <% }); %>
+        </ul>
+      </section>
 
       <div class="promote-grid">
         <section class="promote-card">
@@ -99,6 +118,14 @@
           <label>
             Note
             <textarea name="note" rows="3" maxlength="500" placeholder="Dates, listing to pin, invoice needs"></textarea>
+          </label>
+          <label class="promote-accept">
+            <input type="checkbox" name="accept_terms" value="1" required />
+            <span>
+              I agree to the
+              <a href="<%= offer.terms_path || '/mcp/promote/terms' %>" target="_blank" rel="noopener noreferrer">Sponsored Placement Terms</a>
+              (no porn, gambling, scams, malware, hate, or illegal ads; Influzer may remove violating ads and keep fees already paid).
+            </span>
           </label>
           <input type="text" name="website" class="promote-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <button type="submit" class="probe-form__submit" id="promoteSubmit">Subscribe $<%= offer.product.price_usd %>/month · labeled top placement</button>

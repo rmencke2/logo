@@ -10,7 +10,13 @@ const path = require('path');
 const { getTop100McpServers, findMcpServerBySlug } = require('./mcpDirectoryService');
 const { remoteHostPresentation } = require('./mcpInstallSnippets');
 const { LIVE_STATUS_LABELS } = require('../scripts/utils/mcp-quality');
-const { getActivePins, getPromoteOffer, presentSponsorRail, submitPromoteRequest } = require('./mcpPromoteService');
+const {
+  getActivePins,
+  getPromoteOffer,
+  getPromoteTerms,
+  presentSponsorRail,
+  submitPromoteRequest,
+} = require('./mcpPromoteService');
 
 const STATUS_ORDER = ['live_ok', 'auth_required', 'unreachable', 'not_probed', 'local_unprobed'];
 
@@ -178,12 +184,25 @@ function registerMcpScoreboardRoutes(app) {
     res.render('mcp-promote', {
       pageTitle: 'Promote an MCP server',
       metaDescription:
-        'Labeled Sponsored placement on the Influzer homepage, directory, and handshake scoreboard for $249 / month. Not a SAFE badge. Two slots cover hosting.',
+        'Labeled Sponsored placement on the Influzer homepage, directory, and handshake scoreboard for $249 / month. Not a SAFE badge. Two slots cover hosting. Ads must follow Sponsored Placement Terms.',
       canonicalUrl: 'https://www.influzer.ai/mcp/promote',
       offer,
       sponsorRail: presentSponsorRail(),
       paid: String(req.query.paid || '') === '1',
       canceled: String(req.query.canceled || '') === '1',
+      assetVersion: scoreboardAssetVersion(),
+      navPath: req.path,
+    });
+  });
+
+  app.get('/mcp/promote/terms', (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    const terms = getPromoteTerms();
+    res.render('mcp-promote-terms', {
+      pageTitle: terms.title,
+      metaDescription: terms.summary,
+      canonicalUrl: `https://www.influzer.ai${terms.path}`,
+      terms,
       assetVersion: scoreboardAssetVersion(),
       navPath: req.path,
     });

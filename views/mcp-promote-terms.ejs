@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="/mcp/promote">← Promote an MCP server</a>
+      <p class="setup-eyebrow">Advertising rules · version <%= terms.version %></p>
+      <h1 class="setup-title"><%= terms.title %></h1>
+      <p class="setup-lead">
+        These terms apply when you buy a labeled Sponsored placement on Influzer
+        ($249/month). They sit on top of the general
+        <a href="/terms">Terms and Conditions</a>.
+        Effective <%= terms.effective_date %>.
+      </p>
+
+      <section class="promote-terms-block">
+        <h2>1. What you are buying</h2>
+        <p>
+          A labeled advertising placement — not a ranking, not a SAFE badge, and not a handshake result.
+          Influzer may refuse any creative or listing that is unclear, misleading, or off-topic for an MCP developer directory.
+        </p>
+      </section>
+
+      <section class="promote-terms-block">
+        <h2>2. What is allowed</h2>
+        <ul>
+          <% terms.allowed.forEach(function(item) { %>
+            <li><%= item %></li>
+          <% }); %>
+        </ul>
+      </section>
+
+      <section class="promote-terms-block promote-terms-block--ban">
+        <h2>3. What is not allowed</h2>
+        <p>Do not promote any of the following. This list is not exhaustive — Influzer decides edge cases.</p>
+        <ul class="promote-ban-list">
+          <% terms.prohibited.forEach(function(item) { %>
+            <li>
+              <b><%= item.label %></b>
+              <span><%= item.detail %></span>
+            </li>
+          <% }); %>
+        </ul>
+      </section>
+
+      <section class="promote-terms-block">
+        <h2>4. Removal, cancellation, and fees</h2>
+        <ul>
+          <% terms.removal_rights.forEach(function(item) { %>
+            <li><%= item %></li>
+          <% }); %>
+        </ul>
+        <p>
+          Practically: if the ad is porn, gambling, a scam, malware, hate, illegal, or otherwise banned,
+          we can take it down immediately, cancel the subscription, and <b>keep money already paid</b> for that period.
+        </p>
+      </section>
+
+      <section class="promote-terms-block">
+        <h2>5. Your warranties</h2>
+        <p>
+          You confirm you have the right to advertise the listing, that the MCP URL and copy are accurate,
+          and that the placement will not violate these terms for the whole subscription period.
+          If the listing changes into a prohibited category after purchase, tell us or we may still remove it under §4.
+        </p>
+      </section>
+
+      <section class="promote-terms-block">
+        <h2>6. Contact</h2>
+        <p>
+          Questions or appeals:
+          <a href="mailto:<%= terms.contact %>?subject=Sponsored%20placement%20terms"><%= terms.contact %></a>.
+          Buying a slot requires accepting this page at checkout.
+        </p>
+        <p><a class="home-board__btn home-board__btn--primary" href="/mcp/promote">Back to promote →</a></p>
+      </section>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

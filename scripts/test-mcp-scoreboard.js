@@ -44,6 +44,13 @@ async function main() {
   const promoteTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-promote.ejs'), 'utf8');
   assert.match(promoteTpl, /Where you appear/);
   assert.match(promoteTpl, /offer\.placements/);
+  assert.match(promoteTpl, /accept_terms/);
+  assert.match(promoteTpl, /\/mcp\/promote\/terms/);
+  assert.match(promoteTpl, /Advertising rules/);
+  const termsTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-promote-terms.ejs'), 'utf8');
+  assert.match(termsTpl, /What is not allowed/);
+  assert.match(termsTpl, /porn, gambling/);
+  assert.match(termsTpl, /keep money already paid/i);
   const listingTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-server.ejs'), 'utf8');
   assert.match(listingTpl, /mcp-pill--sponsored/);
 
@@ -115,26 +122,50 @@ async function main() {
   assert.equal(isSlotActive({ slug: 'asana', ends_at: '2001-01-01T00:00:00.000Z' }), false);
   assert.equal(isSlotActive({ active: false, slug: 'asana' }), false);
 
-  assert.throws(() => validatePromoteInput({ email: 'nope' }), /email/i);
+  assert.throws(() => validatePromoteInput({ email: 'nope', accept_terms: '1' }), /email/i);
+  assert.throws(
+    () =>
+      validatePromoteInput({
+        email: 'ops@example.com',
+        slug: 'asana',
+      }),
+    /Sponsored Placement Terms/i,
+  );
   const ok = validatePromoteInput({
     email: 'ops@example.com',
     slug: '/mcp/asana',
     url: 'https://mcp.asana.com/v2/mcp',
+    accept_terms: '1',
   });
   assert.equal(ok.slug, 'asana');
+  assert.equal(ok.accept_terms, true);
+  assert.ok(ok.terms_version);
+
+  assert.ok(offer.terms);
+  assert.ok(offer.terms.prohibited.some((p) => /gambling/i.test(p.label)));
+  assert.ok(offer.terms.prohibited.some((p) => /adult|sexual/i.test(p.label)));
+  assert.ok(offer.terms.removal_rights.some((line) => /non-refundable/i.test(line)));
 
   const tmp = path.join(os.tmpdir(), `mcp-promote-requests-${Date.now()}.json`);
   process.env.MCP_PROMOTE_REQUESTS_PATH = tmp;
+  await assert.rejects(
+    () => submitPromoteRequest({ email: 'ops@example.com', slug: 'asana', company: 'Asana' }),
+    /Sponsored Placement Terms/i,
+  );
   const saved = await submitPromoteRequest({
     email: 'ops@example.com',
     slug: 'asana',
     company: 'Asana',
+    accept_terms: true,
   });
   assert.equal(saved.ok, true);
   assert.equal(saved.safety_badge, null);
   assert.equal(saved.invoice, true);
+  assert.equal(saved.terms_path, '/mcp/promote/terms');
   const dumped = JSON.parse(fs.readFileSync(tmp, 'utf8'));
   assert.equal(dumped[0].slug, 'asana');
+  assert.equal(dumped[0].accept_terms, true);
+  assert.ok(dumped[0].terms_accepted_at);
   fs.rmSync(tmp, { force: true });
 
   console.log(

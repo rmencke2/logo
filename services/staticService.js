@@ -1198,6 +1198,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/probe`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.84' },
       { loc: `${SITE_BASE_URL}/mcp/scoreboard`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/promote`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },
+      { loc: `${SITE_BASE_URL}/mcp/promote/terms`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.55' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
