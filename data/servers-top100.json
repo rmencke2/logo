@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T13:05:08.705Z",
+  "generated_at": "2026-10-09T12:59:49.271Z",
   "count": 100,
   "total_catalog": 12089,
   "top100_slugs": [
@@ -43,9 +43,40 @@
     "llm-pulse",
     "proxyman-mcp",
     "minimax-mcp",
+    "desktop-commander",
+    "gitlab",
+    "replit",
+    "gmail",
+    "exa",
+    "bigquery",
+    "airtable",
+    "asana",
+    "aws",
+    "canva",
+    "confluence",
+    "datadog",
+    "dropbox",
     "figma",
+    "google-calendar",
+    "google-sheets",
     "hubspot",
+    "jira",
+    "keboola",
+    "mem0",
+    "mercado-libre",
+    "mercado-pago",
+    "microsoft-teams",
+    "monday",
+    "mongodb",
+    "motherduck",
+    "n8n",
     "netlify",
+    "onedrive",
+    "outlook",
+    "pagerduty",
+    "salesforce",
+    "shopify",
+    "slidespeak",
     "supabase",
     "ignav-flights",
     "subwayinfo",
@@ -55,52 +86,21 @@
     "notebooklm-mcp",
     "mcp360-ai",
     "corvid",
-    "desktop-commander",
     "e2b",
-    "gitlab",
-    "replit",
     "google-cloud",
     "neon",
-    "shopify",
-    "gmail",
-    "exa",
-    "bigquery",
-    "airtable",
-    "asana",
-    "aws",
-    "azure",
-    "bluesky",
-    "canva",
-    "confluence",
-    "datadog",
-    "docker",
-    "dropbox",
-    "google-calendar",
-    "google-sheets",
-    "imessage",
-    "jira",
-    "keboola",
-    "kubernetes",
-    "mem0",
-    "mercado-libre",
-    "mercado-pago",
-    "microsoft-teams",
-    "milvus",
-    "mindsdb",
-    "monday",
-    "mongodb",
-    "motherduck",
-    "mysql",
-    "n8n",
-    "onedrive",
-    "outlook",
-    "pagerduty",
-    "redis",
-    "salesforce",
-    "shopsavvy",
-    "slidespeak",
     "snowflake",
     "sourcegraph-cody",
+    "azure",
+    "bluesky",
+    "docker",
+    "imessage",
+    "kubernetes",
+    "milvus",
+    "mindsdb",
+    "mysql",
+    "redis",
+    "shopsavvy",
     "sqlite",
     "stackblitz"
   ],
@@ -136,9 +136,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "search",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://www.influzer.ai/mcp/discovery"
     },
     {
@@ -229,9 +230,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "cloud-code",
       "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://www.macaly.com/api/cloud/mcp"
     },
     {
@@ -263,9 +265,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "flame",
       "mcp_endpoint": "https://mcp.firecrawl.dev/v2/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.firecrawl.dev/v2/mcp"
     },
     {
@@ -292,8 +295,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "search"
+      "last_updated": "2026-10-10",
+      "icon": "search",
+      "mcp_endpoint_template": null
     },
     {
       "id": "postgres",
@@ -323,17 +327,18 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "google-drive",
       "slug": "google-drive",
       "name": "Google Drive",
-      "description": "File listing, search, and read access in Google Drive.",
+      "description": "Official Google Drive remote MCP at https://drivemcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
       "category": "Files & Docs",
       "official": true,
-      "transport": "stdio",
+      "transport": "http",
       "tools": [
         {
           "name": "search",
@@ -349,13 +354,17 @@
         }
       ],
       "github_url": "https://github.com/modelcontextprotocol/servers",
-      "install_command": "claude mcp add gdrive -- npx -y @modelcontextprotocol/server-gdrive",
+      "docs_url": "https://developers.google.com/workspace/drive/api/guides/configure-mcp-server",
+      "install_command": "claude mcp add google-drive --transport http https://drivemcp.googleapis.com/mcp/v1",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "hard-drive"
+      "last_updated": "2026-10-10",
+      "icon": "hard-drive",
+      "mcp_endpoint": "https://drivemcp.googleapis.com/mcp/v1",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://drivemcp.googleapis.com/mcp/v1"
     },
     {
       "id": "memory",
@@ -385,8 +394,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "brain"
+      "last_updated": "2026-10-10",
+      "icon": "brain",
+      "mcp_endpoint_template": null
     },
     {
       "id": "linear",
@@ -421,9 +431,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "layout-list",
       "mcp_endpoint": "https://mcp.linear.app/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.linear.app/mcp"
     },
     {
@@ -451,9 +462,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "book-open",
       "mcp_endpoint": "https://mcp.context7.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.context7.com/mcp"
     },
     {
@@ -485,9 +497,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "credit-card",
       "mcp_endpoint": "https://mcp.stripe.com",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.stripe.com"
     },
     {
@@ -519,9 +532,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "shield-alert",
       "mcp_endpoint": "https://mcp.sentry.dev/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.sentry.dev/mcp"
     },
     {
@@ -553,9 +567,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "file-text",
       "mcp_endpoint": "https://mcp.notion.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.notion.com/mcp"
     },
     {
@@ -585,8 +600,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "monitor-play"
+      "last_updated": "2026-10-10",
+      "icon": "monitor-play",
+      "mcp_endpoint_template": null
     },
     {
       "id": "chrome-devtools-mcp",
@@ -623,8 +639,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "monitor"
+      "last_updated": "2026-10-10",
+      "icon": "monitor",
+      "mcp_endpoint_template": null
     },
     {
       "id": "atlassian-mcp",
@@ -662,9 +679,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "message-square",
       "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.atlassian.com/v2/mcp"
     },
     {
@@ -700,9 +718,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "cloud",
       "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://cloudcli.googleapis.com/mcp"
     },
     {
@@ -737,9 +756,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "cloud",
       "mcp_endpoint": "https://mcp.railway.com",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.railway.com"
     },
     {
@@ -769,9 +789,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "calendar",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.cal.com/mcp"
     },
     {
@@ -854,7 +875,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-10-09T12:01:54.420Z",
+      "tools_validated_at": "2026-10-10T11:18:29.953Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -918,7 +939,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-10-09T12:01:53.941Z",
+      "tools_validated_at": "2026-10-10T11:18:28.777Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1150,7 +1171,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-10-09T12:01:54.375Z",
+      "tools_validated_at": "2026-10-10T11:18:29.197Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1314,7 +1335,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-10-09T12:01:54.004Z",
+      "tools_validated_at": "2026-10-10T11:18:28.874Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1447,7 +1468,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-10-09T12:01:54.779Z",
+      "tools_validated_at": "2026-10-10T11:18:29.638Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1543,7 +1564,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-10-09T12:01:53.995Z",
+      "tools_validated_at": "2026-10-10T11:18:28.775Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1647,7 +1668,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-10-09T12:01:55.048Z",
+      "tools_validated_at": "2026-10-10T11:18:30.308Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1707,7 +1728,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-10-09T12:01:55.049Z",
+      "tools_validated_at": "2026-10-10T11:18:30.477Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1835,7 +1856,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-10-09T12:01:55.446Z",
+      "tools_validated_at": "2026-10-10T11:18:30.748Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1899,7 +1920,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-10-09T12:01:55.604Z",
+      "tools_validated_at": "2026-10-10T11:18:30.926Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2131,7 +2152,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-10-09T12:01:56.007Z",
+      "tools_validated_at": "2026-10-10T11:18:31.403Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2299,7 +2320,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-10-09T12:01:56.357Z",
+      "tools_validated_at": "2026-10-10T11:18:31.814Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2531,7 +2552,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-10-09T12:01:55.777Z",
+      "tools_validated_at": "2026-10-10T11:18:31.314Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2763,7 +2784,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-10-09T12:01:56.255Z",
+      "tools_validated_at": "2026-10-10T11:18:33.020Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2843,9 +2864,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.xgr.network/mcp"
     },
     {
@@ -2855,7 +2877,7 @@
       "description": "LooperTask is a Kanban board built for AI agents. Agents like Claude Code and Cursor connect via MCP and create, update, and move tasks as native tool calls. Human review gates keep you in control, real-time updates keep the board live, and MCP tool calls are unlimited on every plan.",
       "category": "Dev Tools",
       "official": true,
-      "transport": "unknown",
+      "transport": "http",
       "tools": [
         {
           "name": "list_projects",
@@ -2918,13 +2940,17 @@
           "description": "Move a task to the «Needs Human» column with a comment"
         }
       ],
-      "docs_url": "https://loopertask.com/docs/quickstart",
+      "docs_url": "https://loopertask.com/mcp",
+      "install_command": "claude mcp add loopertask --transport http https://loopertask.com/mcp",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "globe"
+      "last_updated": "2026-10-10",
+      "icon": "globe",
+      "mcp_endpoint": "https://loopertask.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://loopertask.com/mcp"
     },
     {
       "id": "nextjs-devtools-mcp",
@@ -2953,8 +2979,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "code"
+      "last_updated": "2026-10-10",
+      "icon": "code",
+      "mcp_endpoint_template": null
     },
     {
       "id": "webnode",
@@ -2979,9 +3006,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.webnode.com/_mcp"
     },
     {
@@ -3012,9 +3040,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "message-square",
       "mcp_endpoint": "https://mcp.granola.ai/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.granola.ai/mcp"
     },
     {
@@ -3065,9 +3094,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://api.llmpulse.ai/api/v1/mcp"
     },
     {
@@ -3097,8 +3127,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "activity"
+      "last_updated": "2026-10-10",
+      "icon": "activity",
+      "mcp_endpoint_template": null
     },
     {
       "id": "minimax-mcp",
@@ -3127,8 +3158,469 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "image"
+      "last_updated": "2026-10-10",
+      "icon": "image",
+      "mcp_endpoint_template": null
+    },
+    {
+      "id": "desktop-commander",
+      "slug": "desktop-commander",
+      "name": "Desktop Commander",
+      "description": "Desktop Commander remote MCP at https://mcp.desktopcommander.app/mcp (needs a Remote Device agent). OAuth on the remote; local stdio still ships. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "execute_command",
+          "description": "Run shell commands in a controlled environment"
+        },
+        {
+          "name": "list_processes",
+          "description": "List running processes"
+        },
+        {
+          "name": "search_files",
+          "description": "Ripgrep search across directories"
+        },
+        {
+          "name": "read_file",
+          "description": "Read file contents from disk"
+        }
+      ],
+      "github_url": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+      "docs_url": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+      "install_command": "claude mcp add desktop-commander --transport http https://mcp.desktopcommander.app/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "terminal",
+      "mcp_endpoint": "https://mcp.desktopcommander.app/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.desktopcommander.app/mcp"
+    },
+    {
+      "id": "gitlab",
+      "slug": "gitlab",
+      "name": "GitLab",
+      "description": "Official GitLab MCP on GitLab.com at https://gitlab.com/api/v4/mcp (also /api/v4/mcp on self-managed hosts). OAuth 2.0 + DCR. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_projects",
+          "description": "List accessible GitLab projects"
+        },
+        {
+          "name": "get_merge_requests",
+          "description": "List and inspect merge requests"
+        },
+        {
+          "name": "get_pipeline_status",
+          "description": "Check CI pipeline status"
+        },
+        {
+          "name": "search_code",
+          "description": "Search code across repositories"
+        }
+      ],
+      "github_url": "https://github.com/zereight/gitlab-mcp",
+      "docs_url": "https://docs.gitlab.com/user/model_context_protocol/mcp_server/",
+      "install_command": "claude mcp add gitlab --transport http https://gitlab.com/api/v4/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "gitlab",
+      "mcp_endpoint": "https://gitlab.com/api/v4/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://gitlab.com/api/v4/mcp"
+    },
+    {
+      "id": "replit",
+      "slug": "replit",
+      "name": "Replit",
+      "description": "Official Replit remote MCP at https://mcp.replit.com/server/mcp over Streamable HTTP. OAuth. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "create_repl",
+          "description": "Create a new Replit project"
+        },
+        {
+          "name": "run_code",
+          "description": "Execute code in a repl"
+        },
+        {
+          "name": "list_files",
+          "description": "List project files"
+        },
+        {
+          "name": "deploy",
+          "description": "Deploy a repl application"
+        }
+      ],
+      "docs_url": "https://docs.replit.com/platforms/mcp-server.md",
+      "install_command": "claude mcp add replit --transport http https://mcp.replit.com/server/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "cloud-code",
+      "mcp_endpoint": "https://mcp.replit.com/server/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.replit.com/server/mcp"
+    },
+    {
+      "id": "gmail",
+      "slug": "gmail",
+      "name": "Gmail",
+      "description": "Official Google Gmail remote MCP (Developer Preview) at https://gmailmcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_messages",
+          "description": "Search inbox messages"
+        },
+        {
+          "name": "send_email",
+          "description": "Compose and send email"
+        },
+        {
+          "name": "read_thread",
+          "description": "Read an email thread"
+        }
+      ],
+      "github_url": "https://github.com/GongRzhe/Gmail-MCP-Server",
+      "docs_url": "https://developers.google.com/workspace/gmail/api/guides/configure-mcp-server",
+      "install_command": "claude mcp add gmail --transport http https://gmailmcp.googleapis.com/mcp/v1",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "mail",
+      "mcp_endpoint": "https://gmailmcp.googleapis.com/mcp/v1",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://gmailmcp.googleapis.com/mcp/v1"
+    },
+    {
+      "id": "exa",
+      "slug": "exa",
+      "name": "Exa",
+      "description": "Official Exa remote MCP at https://mcp.exa.ai/mcp. Keyless rate-limited, OAuth (?login), or x-api-key. Not a SAFE badge.",
+      "category": "Search & Web",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Semantic web search"
+        },
+        {
+          "name": "find_similar",
+          "description": "Find pages similar to a URL"
+        },
+        {
+          "name": "get_contents",
+          "description": "Fetch full text for result URLs"
+        }
+      ],
+      "github_url": "https://github.com/exa-labs/exa-mcp-server",
+      "docs_url": "https://exa.ai/docs/get-started/exa-mcp.md",
+      "install_command": "claude mcp add exa --transport http https://mcp.exa.ai/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "search",
+      "mcp_endpoint": "https://mcp.exa.ai/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.exa.ai/mcp"
+    },
+    {
+      "id": "bigquery",
+      "slug": "bigquery",
+      "name": "BigQuery",
+      "description": "Official BigQuery remote MCP at https://bigquery.googleapis.com/mcp over Streamable HTTP. OAuth 2.0 / IAM. Not a SAFE badge.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "run_query",
+          "description": "Execute BigQuery SQL"
+        },
+        {
+          "name": "list_datasets",
+          "description": "List datasets in a project"
+        },
+        {
+          "name": "get_table_schema",
+          "description": "Describe table schema"
+        }
+      ],
+      "docs_url": "https://docs.cloud.google.com/bigquery/docs/use-bigquery-mcp",
+      "install_command": "claude mcp add bigquery --transport http https://bigquery.googleapis.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "bar-chart",
+      "mcp_endpoint": "https://bigquery.googleapis.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://bigquery.googleapis.com/mcp"
+    },
+    {
+      "id": "airtable",
+      "slug": "airtable",
+      "name": "Airtable",
+      "description": "Official Airtable remote MCP at https://mcp.airtable.com/mcp. OAuth (DCR) or PAT. Not a SAFE badge.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_records",
+          "description": "List records in a table"
+        },
+        {
+          "name": "create_record",
+          "description": "Create a new record"
+        },
+        {
+          "name": "update_record",
+          "description": "Update record fields"
+        }
+      ],
+      "docs_url": "https://airtable.com/developers/agents/mcp/getting-started",
+      "install_command": "claude mcp add airtable --transport http https://mcp.airtable.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "bar-chart",
+      "mcp_endpoint": "https://mcp.airtable.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.airtable.com/mcp"
+    },
+    {
+      "id": "asana",
+      "slug": "asana",
+      "name": "Asana",
+      "description": "Official Asana remote MCP at https://mcp.asana.com/v2/mcp over Streamable HTTP. OAuth. SSE /sse is deprecated. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_tasks",
+          "description": "List tasks in a project"
+        },
+        {
+          "name": "create_task",
+          "description": "Create a new task"
+        },
+        {
+          "name": "update_task",
+          "description": "Update task status"
+        }
+      ],
+      "docs_url": "https://developers.asana.com/docs/using-asanas-mcp-server",
+      "install_command": "claude mcp add asana --transport http https://mcp.asana.com/v2/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "layout-list",
+      "mcp_endpoint": "https://mcp.asana.com/v2/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.asana.com/v2/mcp"
+    },
+    {
+      "id": "aws",
+      "slug": "aws",
+      "name": "AWS",
+      "description": "Managed AWS MCP Server at https://aws-mcp.us-east-1.api.aws/mcp (also us-west-2, eu-west-1, and other regions). OAuth 2.1 or SigV4. Not a SAFE badge.",
+      "category": "Cloud & Infra",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_s3_buckets",
+          "description": "List S3 buckets"
+        },
+        {
+          "name": "describe_ec2_instances",
+          "description": "Describe EC2 instances"
+        },
+        {
+          "name": "invoke_lambda",
+          "description": "Invoke a Lambda function"
+        }
+      ],
+      "github_url": "https://github.com/awslabs/mcp",
+      "docs_url": "https://docs.aws.amazon.com/agent-toolkit/latest/userguide/getting-started-aws-mcp-server.md",
+      "install_command": "claude mcp add aws --transport http https://aws-mcp.us-east-1.api.aws/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "cloud",
+      "mcp_endpoint": "https://aws-mcp.us-east-1.api.aws/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://aws-mcp.us-east-1.api.aws/mcp"
+    },
+    {
+      "id": "canva",
+      "slug": "canva",
+      "name": "Canva",
+      "description": "Canva remote MCP at https://mcp.canva.com/mcp over Streamable HTTP. OAuth per-user. Handshake is 401 without a token. Not a SAFE badge.",
+      "category": "Design",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "create_design",
+          "description": "Create a new design from template"
+        },
+        {
+          "name": "export_design",
+          "description": "Export design assets"
+        },
+        {
+          "name": "list_templates",
+          "description": "Browse design templates"
+        }
+      ],
+      "docs_url": "https://www.canva.dev/docs",
+      "install_command": "claude mcp add canva --transport http https://mcp.canva.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "image",
+      "mcp_endpoint": "https://mcp.canva.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.canva.com/mcp"
+    },
+    {
+      "id": "confluence",
+      "slug": "confluence",
+      "name": "Confluence",
+      "description": "Atlassian Rovo MCP (Confluence, Jira, Bitbucket) at https://mcp.atlassian.com/v2/mcp. OAuth 2.1 or API token. Same host as the atlassian-mcp listing. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_pages",
+          "description": "Search Confluence pages"
+        },
+        {
+          "name": "get_page",
+          "description": "Get page content"
+        },
+        {
+          "name": "create_page",
+          "description": "Create a wiki page"
+        }
+      ],
+      "docs_url": "https://www.atlassian.com/platform/remote-mcp-server",
+      "install_command": "claude mcp add confluence --transport http https://mcp.atlassian.com/v2/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "file-text",
+      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.atlassian.com/v2/mcp"
+    },
+    {
+      "id": "datadog",
+      "slug": "datadog",
+      "name": "Datadog",
+      "description": "Official Datadog remote MCP at https://mcp.datadoghq.com/v1/mcp. OAuth or API keys. Not a SAFE badge.",
+      "category": "Security & Monitoring",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "query_metrics",
+          "description": "Query timeseries metrics"
+        },
+        {
+          "name": "search_logs",
+          "description": "Search log indexes"
+        },
+        {
+          "name": "list_monitors",
+          "description": "List configured monitors"
+        }
+      ],
+      "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
+      "docs_url": "https://docs.datadoghq.com/bits_ai/mcp_server/setup/",
+      "install_command": "claude mcp add datadog --transport http https://mcp.datadoghq.com/v1/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "activity",
+      "mcp_endpoint": "https://mcp.datadoghq.com/v1/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.datadoghq.com/v1/mcp"
+    },
+    {
+      "id": "dropbox",
+      "slug": "dropbox",
+      "name": "Dropbox",
+      "description": "Official Dropbox remote MCP at https://mcp.dropbox.com/mcp. Dropbox OAuth. Not a SAFE badge.",
+      "category": "Files & Docs",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_folder",
+          "description": "List folder contents"
+        },
+        {
+          "name": "download_file",
+          "description": "Download a file"
+        },
+        {
+          "name": "upload_file",
+          "description": "Upload a file"
+        }
+      ],
+      "docs_url": "https://help.dropbox.com/integrations/connect-dropbox-mcp-server",
+      "install_command": "claude mcp add dropbox --transport http https://mcp.dropbox.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "hard-drive",
+      "mcp_endpoint": "https://mcp.dropbox.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.dropbox.com/mcp"
     },
     {
       "id": "figma",
@@ -3158,10 +3650,79 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "figma",
       "mcp_endpoint": "https://mcp.figma.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.figma.com/mcp"
+    },
+    {
+      "id": "google-calendar",
+      "slug": "google-calendar",
+      "name": "Google Calendar",
+      "description": "Official Google Calendar remote MCP at https://calendarmcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_events",
+          "description": "List upcoming events"
+        },
+        {
+          "name": "create_event",
+          "description": "Create a calendar event"
+        },
+        {
+          "name": "find_free_time",
+          "description": "Find available time slots"
+        }
+      ],
+      "docs_url": "https://developers.google.com/workspace/calendar/api/guides/configure-mcp-server",
+      "install_command": "claude mcp add google-calendar --transport http https://calendarmcp.googleapis.com/mcp/v1",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "calendar",
+      "mcp_endpoint": "https://calendarmcp.googleapis.com/mcp/v1",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://calendarmcp.googleapis.com/mcp/v1"
+    },
+    {
+      "id": "google-sheets",
+      "slug": "google-sheets",
+      "name": "Google Sheets",
+      "description": "Official Google Sheets remote MCP at https://sheetsmcp.googleapis.com/mcp/v1 over Streamable HTTP. OAuth 2.0. Not a SAFE badge.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "read_range",
+          "description": "Read cell range values"
+        },
+        {
+          "name": "write_range",
+          "description": "Write values to cells"
+        },
+        {
+          "name": "list_sheets",
+          "description": "List tabs in a spreadsheet"
+        }
+      ],
+      "docs_url": "https://developers.google.com/workspace/sheets/api/guides/configure-mcp-server",
+      "install_command": "claude mcp add google-sheets --transport http https://sheetsmcp.googleapis.com/mcp/v1",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "bar-chart",
+      "mcp_endpoint": "https://sheetsmcp.googleapis.com/mcp/v1",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://sheetsmcp.googleapis.com/mcp/v1"
     },
     {
       "id": "hubspot",
@@ -3191,10 +3752,348 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "boxes",
       "mcp_endpoint": "https://mcp.hubspot.com",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.hubspot.com"
+    },
+    {
+      "id": "jira",
+      "slug": "jira",
+      "name": "Jira",
+      "description": "Atlassian Rovo MCP (Jira, Confluence, Bitbucket) at https://mcp.atlassian.com/v2/mcp. OAuth 2.1 or API token. Same host as the atlassian-mcp listing. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_issues",
+          "description": "Search Jira issues"
+        },
+        {
+          "name": "create_issue",
+          "description": "Create a ticket"
+        },
+        {
+          "name": "transition_issue",
+          "description": "Move issue through workflow"
+        }
+      ],
+      "docs_url": "https://developer.atlassian.com/cloud/rovo-mcp/",
+      "install_command": "claude mcp add jira --transport http https://mcp.atlassian.com/v2/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "layout-list",
+      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.atlassian.com/v2/mcp"
+    },
+    {
+      "id": "keboola",
+      "slug": "keboola",
+      "name": "Keboola",
+      "description": "Official Keboola remote MCP. US: https://mcp.keboola.com/mcp ; EU: https://mcp.eu-central-1.keboola.com/mcp. OAuth on the remote. Not a SAFE badge.",
+      "category": "Data & Analytics",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_tables",
+          "description": "List storage tables"
+        },
+        {
+          "name": "run_transformation",
+          "description": "Execute a transformation"
+        },
+        {
+          "name": "create_flow",
+          "description": "Configure a data flow"
+        }
+      ],
+      "github_url": "https://github.com/keboola/mcp-server",
+      "docs_url": "https://github.com/keboola/mcp-server",
+      "install_command": "claude mcp add keboola --transport http https://mcp.keboola.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "bar-chart",
+      "mcp_endpoint": "https://mcp.keboola.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.keboola.com/mcp"
+    },
+    {
+      "id": "mem0",
+      "slug": "mem0",
+      "name": "Mem0",
+      "description": "Official Mem0 remote MCP at https://mcp.mem0.ai/mcp over Streamable HTTP. OAuth or Bearer API key. Not a SAFE badge.",
+      "category": "AI & Memory",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "add_memory",
+          "description": "Store a new memory"
+        },
+        {
+          "name": "search_memory",
+          "description": "Retrieve relevant memories"
+        },
+        {
+          "name": "list_memories",
+          "description": "List stored memories"
+        }
+      ],
+      "github_url": "https://github.com/mem0ai/mem0",
+      "docs_url": "https://docs.mem0.ai/platform/mem0-mcp",
+      "install_command": "claude mcp add mem0 --transport http https://mcp.mem0.ai/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "brain",
+      "mcp_endpoint": "https://mcp.mem0.ai/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.mem0.ai/mcp"
+    },
+    {
+      "id": "mercado-libre",
+      "slug": "mercado-libre",
+      "name": "Mercado Libre",
+      "description": "Mercado Libre remote MCP at https://mcp.mercadolibre.com/mcp. Bearer token auth. Official repo mercadolibre/mercadolibre-mcp-server. Not a SAFE badge.",
+      "category": "Payments & Commerce",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_listings",
+          "description": "Search marketplace listings"
+        },
+        {
+          "name": "get_item",
+          "description": "Get product listing details"
+        },
+        {
+          "name": "update_listing",
+          "description": "Update a product listing"
+        }
+      ],
+      "github_url": "https://github.com/mercadolibre/mercadolibre-mcp-server",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "credit-card",
+      "mcp_endpoint": "https://mcp.mercadolibre.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.mercadolibre.com/mcp"
+    },
+    {
+      "id": "mercado-pago",
+      "slug": "mercado-pago",
+      "name": "Mercado Pago",
+      "description": "Official Mercado Pago remote MCP at https://mcp.mercadopago.com/mcp. OAuth login. Not a SAFE badge.",
+      "category": "Payments & Commerce",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "create_payment",
+          "description": "Create a payment"
+        },
+        {
+          "name": "get_payment_status",
+          "description": "Check payment status"
+        },
+        {
+          "name": "refund_payment",
+          "description": "Issue a refund"
+        }
+      ],
+      "docs_url": "https://www.mercadopago.com.ar/developers/en/docs/mcp-server/connection",
+      "install_command": "claude mcp add mercado-pago --transport http https://mcp.mercadopago.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "credit-card",
+      "mcp_endpoint": "https://mcp.mercadopago.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.mercadopago.com/mcp"
+    },
+    {
+      "id": "microsoft-teams",
+      "slug": "microsoft-teams",
+      "name": "Microsoft Teams",
+      "description": "Microsoft Agent 365 Teams MCP (preview, Entra auth). Per-tenant host: https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_TeamsServer. Not a single public host. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_channels",
+          "description": "List Teams channels"
+        },
+        {
+          "name": "send_message",
+          "description": "Post a Teams message"
+        },
+        {
+          "name": "list_chats",
+          "description": "List recent chats"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/microsoftteams",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "message-square",
+      "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_TeamsServer"
+    },
+    {
+      "id": "monday",
+      "slug": "monday",
+      "name": "Monday.com",
+      "description": "Official monday.com remote MCP at https://mcp.monday.com/mcp over Streamable HTTP. OAuth 2.0 or API token. /sse is deprecated. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_boards",
+          "description": "List workspace boards"
+        },
+        {
+          "name": "create_item",
+          "description": "Add an item to a board"
+        },
+        {
+          "name": "update_column",
+          "description": "Update column values"
+        }
+      ],
+      "docs_url": "https://developer.monday.com/api-reference/docs/integrate-with-monday-mcp",
+      "install_command": "claude mcp add monday --transport http https://mcp.monday.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "layout-list",
+      "mcp_endpoint": "https://mcp.monday.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.monday.com/mcp"
+    },
+    {
+      "id": "mongodb",
+      "slug": "mongodb",
+      "name": "MongoDB",
+      "description": "Atlas Managed MCP Server at https://mcp.mongodb.com. OAuth only; Atlas clusters only; public preview. Not a SAFE badge.",
+      "category": "Databases",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "find",
+          "description": "Query documents in a collection"
+        },
+        {
+          "name": "aggregate",
+          "description": "Run aggregation pipelines"
+        },
+        {
+          "name": "list_collections",
+          "description": "List collections in a database"
+        }
+      ],
+      "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
+      "docs_url": "https://www.mongodb.com/docs/atlas/managed-mcp-server/",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint": "https://mcp.mongodb.com",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.mongodb.com"
+    },
+    {
+      "id": "motherduck",
+      "slug": "motherduck",
+      "name": "MotherDuck",
+      "description": "Official MotherDuck remote MCP at https://api.motherduck.com/mcp. OAuth or Bearer token. Not a SAFE badge.",
+      "category": "Databases",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "query",
+          "description": "Run DuckDB SQL queries"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables and views"
+        },
+        {
+          "name": "attach_database",
+          "description": "Attach a MotherDuck database"
+        }
+      ],
+      "github_url": "https://github.com/motherduckdb/mcp-server-motherduck",
+      "docs_url": "https://motherduck.com/docs/sql-reference/mcp",
+      "install_command": "claude mcp add motherduck --transport http https://api.motherduck.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint": "https://api.motherduck.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://api.motherduck.com/mcp"
+    },
+    {
+      "id": "n8n",
+      "slug": "n8n",
+      "name": "n8n",
+      "description": "n8n MCP is per-instance: https://{instance}/mcp-server/http. Not a single public host. Self-host or your cloud workspace URL. Not a SAFE badge.",
+      "category": "Automation",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_workflows",
+          "description": "List n8n workflows"
+        },
+        {
+          "name": "execute_workflow",
+          "description": "Trigger a workflow run"
+        },
+        {
+          "name": "get_execution",
+          "description": "Get execution status"
+        }
+      ],
+      "github_url": "https://github.com/n8n-io/n8n",
+      "docs_url": "https://docs.n8n.io",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "boxes",
+      "mcp_endpoint_template": "https://{instance}/mcp-server/http"
     },
     {
       "id": "netlify",
@@ -3224,10 +4123,206 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "cloud",
       "mcp_endpoint": "https://netlify-mcp.netlify.app/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://netlify-mcp.netlify.app/mcp"
+    },
+    {
+      "id": "onedrive",
+      "slug": "onedrive",
+      "name": "OneDrive",
+      "description": "Microsoft Agent 365 OneDrive MCP (preview, Entra auth). Per-tenant host: https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_OneDriveRemoteServer. Not a single public host. Not a SAFE badge.",
+      "category": "Files & Docs",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_items",
+          "description": "List OneDrive items"
+        },
+        {
+          "name": "read_file",
+          "description": "Read file content"
+        },
+        {
+          "name": "upload_file",
+          "description": "Upload a file"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/graph/onedrive",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "hard-drive",
+      "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_OneDriveRemoteServer"
+    },
+    {
+      "id": "outlook",
+      "slug": "outlook",
+      "name": "Outlook",
+      "description": "Microsoft Agent 365 Mail MCP (preview, Entra auth). Per-tenant host: https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_MailTools. Not a single public host. Not a SAFE badge.",
+      "category": "Communication",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_messages",
+          "description": "List Outlook messages"
+        },
+        {
+          "name": "send_mail",
+          "description": "Send an email"
+        },
+        {
+          "name": "list_events",
+          "description": "List calendar events"
+        }
+      ],
+      "docs_url": "https://learn.microsoft.com/graph",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "mail",
+      "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_MailTools"
+    },
+    {
+      "id": "pagerduty",
+      "slug": "pagerduty",
+      "name": "PagerDuty",
+      "description": "Official PagerDuty remote MCP at https://mcp.pagerduty.com/mcp (EU: https://mcp.eu.pagerduty.com/mcp). API token or OAuth. Not a SAFE badge.",
+      "category": "Security & Monitoring",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_incidents",
+          "description": "List open incidents"
+        },
+        {
+          "name": "acknowledge_incident",
+          "description": "Acknowledge an incident"
+        },
+        {
+          "name": "create_incident",
+          "description": "Create a new incident"
+        }
+      ],
+      "docs_url": "https://support.pagerduty.com/main/docs/pagerduty-mcp-server",
+      "install_command": "claude mcp add pagerduty --transport http https://mcp.pagerduty.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "shield-alert",
+      "mcp_endpoint": "https://mcp.pagerduty.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.pagerduty.com/mcp"
+    },
+    {
+      "id": "salesforce",
+      "slug": "salesforce",
+      "name": "Salesforce",
+      "description": "Salesforce Platform MCP at https://api.salesforce.com/platform/mcp/v1/platform/sobject-all (also /v1/data360 and /v1/analytics/tableau-next). Sandbox twins insert sandbox/ after v1/. Not a SAFE badge.",
+      "category": "Automation",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "query_records",
+          "description": "Run SOQL queries"
+        },
+        {
+          "name": "create_record",
+          "description": "Create a CRM record"
+        },
+        {
+          "name": "update_record",
+          "description": "Update record fields"
+        }
+      ],
+      "docs_url": "https://developer.salesforce.com",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "boxes",
+      "mcp_endpoint": "https://api.salesforce.com/platform/mcp/v1/platform/sobject-all",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://api.salesforce.com/platform/mcp/v1/platform/sobject-all"
+    },
+    {
+      "id": "shopify",
+      "slug": "shopify",
+      "name": "Shopify",
+      "description": "Shopify store MCP is per-shop, not a single public host: https://{shop}/api/mcp and https://{shop}/api/ucp/mcp. Customer Accounts MCP is discovered via /.well-known/customer-account-api. Influzer does not handshake a placeholder shop. Not a SAFE badge.",
+      "category": "Payments & Commerce",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "list_products",
+          "description": "List store products"
+        },
+        {
+          "name": "get_order",
+          "description": "Retrieve order details"
+        },
+        {
+          "name": "update_inventory",
+          "description": "Update product inventory"
+        }
+      ],
+      "docs_url": "https://shopify.dev/docs/api",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "credit-card",
+      "mcp_endpoint_template": "https://{shop}/api/mcp"
+    },
+    {
+      "id": "slidespeak",
+      "slug": "slidespeak",
+      "name": "SlideSpeak",
+      "description": "Official SlideSpeak remote MCP at https://mcp.slidespeak.co/mcp. Bearer API key. Not a SAFE badge.",
+      "category": "Design",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "create_presentation",
+          "description": "Generate a slide deck from a brief"
+        },
+        {
+          "name": "add_slide",
+          "description": "Add a slide to an existing deck"
+        },
+        {
+          "name": "export_pptx",
+          "description": "Export to PowerPoint format"
+        }
+      ],
+      "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
+      "docs_url": "https://github.com/SlideSpeak/slidespeak-mcp",
+      "install_command": "claude mcp add slidespeak --transport http https://mcp.slidespeak.co/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-10-10",
+      "icon": "file-text",
+      "mcp_endpoint": "https://mcp.slidespeak.co/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://mcp.slidespeak.co/mcp"
     },
     {
       "id": "supabase",
@@ -3258,9 +4353,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "database",
       "mcp_endpoint": "https://mcp.supabase.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.supabase.com/mcp"
     },
     {
@@ -3287,9 +4383,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://ignav.com/mcp"
     },
     {
@@ -3412,7 +4509,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/subwayinfo",
-      "tools_validated_at": "2026-10-09T12:01:57.035Z",
+      "tools_validated_at": "2026-10-10T11:18:33.170Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3464,7 +4561,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-10-09T12:01:56.420Z",
+      "tools_validated_at": "2026-10-10T11:18:32.110Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3532,7 +4629,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-10-09T12:01:57.655Z",
+      "tools_validated_at": "2026-10-10T11:18:33.832Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -3563,8 +4660,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "monitor"
+      "last_updated": "2026-10-10",
+      "icon": "monitor",
+      "mcp_endpoint_template": null
     },
     {
       "id": "notebooklm-mcp",
@@ -3593,8 +4691,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "book-open"
+      "last_updated": "2026-10-10",
+      "icon": "book-open",
+      "mcp_endpoint_template": null
     },
     {
       "id": "mcp360-ai",
@@ -3632,9 +4731,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "globe",
       "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://www.npmjs.com/package/@mcp360ai/unified-gateway"
     },
     {
@@ -3668,44 +4768,11 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "globe",
       "mcp_endpoint": "https://corvid.perch-app.workers.dev/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://corvid.perch-app.workers.dev/mcp"
-    },
-    {
-      "id": "desktop-commander",
-      "slug": "desktop-commander",
-      "name": "Desktop Commander",
-      "description": "Terminal access, process management, and ripgrep-powered search on the local machine.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "execute_command",
-          "description": "Run shell commands in a controlled environment"
-        },
-        {
-          "name": "list_processes",
-          "description": "List running processes"
-        },
-        {
-          "name": "search_files",
-          "description": "Ripgrep search across directories"
-        },
-        {
-          "name": "read_file",
-          "description": "Read file contents from disk"
-        }
-      ],
-      "github_url": "https://github.com/wonderwhy-er/desktop-commander-mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "terminal"
     },
     {
       "id": "e2b",
@@ -3739,76 +4806,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "sandbox"
-    },
-    {
-      "id": "gitlab",
-      "slug": "gitlab",
-      "name": "GitLab",
-      "description": "GitLab repositories, merge requests, CI/CD pipelines, and project management.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_projects",
-          "description": "List accessible GitLab projects"
-        },
-        {
-          "name": "get_merge_requests",
-          "description": "List and inspect merge requests"
-        },
-        {
-          "name": "get_pipeline_status",
-          "description": "Check CI pipeline status"
-        },
-        {
-          "name": "search_code",
-          "description": "Search code across repositories"
-        }
-      ],
-      "github_url": "https://github.com/zereight/gitlab-mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "gitlab"
-    },
-    {
-      "id": "replit",
-      "slug": "replit",
-      "name": "Replit",
-      "description": "Cloud coding environments: create repls, run code, and manage projects remotely.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "create_repl",
-          "description": "Create a new Replit project"
-        },
-        {
-          "name": "run_code",
-          "description": "Execute code in a repl"
-        },
-        {
-          "name": "list_files",
-          "description": "List project files"
-        },
-        {
-          "name": "deploy",
-          "description": "Deploy a repl application"
-        }
-      ],
-      "docs_url": "https://docs.replit.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "cloud-code"
+      "last_updated": "2026-10-10",
+      "icon": "sandbox",
+      "mcp_endpoint_template": null
     },
     {
       "id": "google-cloud",
@@ -3838,9 +4838,10 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "cloud",
       "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://cloudcli.googleapis.com/mcp"
     },
     {
@@ -3872,222 +4873,74 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
+      "last_updated": "2026-10-10",
       "icon": "database",
       "mcp_endpoint": "https://mcp.neon.tech/mcp",
+      "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.neon.tech/mcp"
     },
     {
-      "id": "shopify",
-      "slug": "shopify",
-      "name": "Shopify",
-      "description": "Shopify store MCP is per-shop, not a single public host: https://{shop}.myshopify.com/api/mcp (storefront), https://{shop-domain}/api/ucp/mcp (catalog/orders). Customer Accounts MCP is discovered via /.well-known/customer-account-api. Influzer does not handshake a placeholder shop. Not a SAFE badge.",
-      "category": "Payments & Commerce",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_products",
-          "description": "List store products"
-        },
-        {
-          "name": "get_order",
-          "description": "Retrieve order details"
-        },
-        {
-          "name": "update_inventory",
-          "description": "Update product inventory"
-        }
-      ],
-      "docs_url": "https://shopify.dev/docs/api",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "credit-card"
-    },
-    {
-      "id": "gmail",
-      "slug": "gmail",
-      "name": "Gmail",
-      "description": "Read, compose, and search email via Gmail API.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_messages",
-          "description": "Search inbox messages"
-        },
-        {
-          "name": "send_email",
-          "description": "Compose and send email"
-        },
-        {
-          "name": "read_thread",
-          "description": "Read an email thread"
-        }
-      ],
-      "github_url": "https://github.com/GongRzhe/Gmail-MCP-Server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "mail"
-    },
-    {
-      "id": "exa",
-      "slug": "exa",
-      "name": "Exa",
-      "description": "Neural semantic web search for research and retrieval.",
-      "category": "Search & Web",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search",
-          "description": "Semantic web search"
-        },
-        {
-          "name": "find_similar",
-          "description": "Find pages similar to a URL"
-        },
-        {
-          "name": "get_contents",
-          "description": "Fetch full text for result URLs"
-        }
-      ],
-      "github_url": "https://github.com/exa-labs/exa-mcp-server",
-      "docs_url": "https://docs.exa.ai",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "search"
-    },
-    {
-      "id": "bigquery",
-      "slug": "bigquery",
-      "name": "BigQuery",
-      "description": "Google analytics warehouse queries and table management.",
+      "id": "snowflake",
+      "slug": "snowflake",
+      "name": "Snowflake",
+      "description": "Snowflake MCP is account/instance-specific — no single public HTTPS host in the Influzer listing. Self-host or your Snowflake account URL. Not a SAFE badge.",
       "category": "Data & Analytics",
       "official": false,
       "transport": "stdio",
       "tools": [
         {
           "name": "run_query",
-          "description": "Execute BigQuery SQL"
+          "description": "Execute a SQL query"
         },
         {
-          "name": "list_datasets",
-          "description": "List datasets in a project"
+          "name": "list_databases",
+          "description": "List available databases"
         },
         {
-          "name": "get_table_schema",
-          "description": "Describe table schema"
+          "name": "describe_table",
+          "description": "Show table columns and types"
         }
       ],
-      "docs_url": "https://cloud.google.com/bigquery/docs",
+      "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "bar-chart"
+      "last_updated": "2026-10-10",
+      "icon": "bar-chart",
+      "mcp_endpoint_template": null
     },
     {
-      "id": "airtable",
-      "slug": "airtable",
-      "name": "Airtable",
-      "description": "Base and table operations for structured data.",
-      "category": "Data & Analytics",
+      "id": "sourcegraph-cody",
+      "slug": "sourcegraph-cody",
+      "name": "Sourcegraph Cody",
+      "description": "Sourcegraph Cody MCP is instance-specific — no single public HTTPS host in the Influzer listing. Point at your Sourcegraph instance. Not a SAFE badge.",
+      "category": "Dev Tools",
       "official": false,
       "transport": "stdio",
       "tools": [
         {
-          "name": "list_records",
-          "description": "List records in a table"
+          "name": "search_code",
+          "description": "Semantic search across codebases"
         },
         {
-          "name": "create_record",
-          "description": "Create a new record"
+          "name": "find_references",
+          "description": "Find symbol references"
         },
         {
-          "name": "update_record",
-          "description": "Update record fields"
+          "name": "explain_symbol",
+          "description": "Explain a function or type in context"
         }
       ],
-      "docs_url": "https://airtable.com/developers/web/api",
+      "github_url": "https://github.com/sourcegraph/cody",
+      "docs_url": "https://sourcegraph.com/cody",
       "stars": 0,
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "bar-chart"
-    },
-    {
-      "id": "asana",
-      "slug": "asana",
-      "name": "Asana",
-      "description": "Tasks and project management in Asana.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_tasks",
-          "description": "List tasks in a project"
-        },
-        {
-          "name": "create_task",
-          "description": "Create a new task"
-        },
-        {
-          "name": "update_task",
-          "description": "Update task status"
-        }
-      ],
-      "docs_url": "https://developers.asana.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "layout-list"
-    },
-    {
-      "id": "aws",
-      "slug": "aws",
-      "name": "AWS",
-      "description": "S3, Lambda, EC2, and other AWS service operations.",
-      "category": "Cloud & Infra",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_s3_buckets",
-          "description": "List S3 buckets"
-        },
-        {
-          "name": "describe_ec2_instances",
-          "description": "Describe EC2 instances"
-        },
-        {
-          "name": "invoke_lambda",
-          "description": "Invoke a Lambda function"
-        }
-      ],
-      "github_url": "https://github.com/awslabs/mcp",
-      "docs_url": "https://aws.amazon.com/blogs/aws/aws-mcp-servers/",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "cloud"
+      "last_updated": "2026-10-10",
+      "icon": "code",
+      "mcp_endpoint_template": null
     },
     {
       "id": "azure",
@@ -4116,8 +4969,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "cloud"
+      "last_updated": "2026-10-10",
+      "icon": "cloud",
+      "mcp_endpoint_template": null
     },
     {
       "id": "bluesky",
@@ -4146,98 +5000,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "globe"
-    },
-    {
-      "id": "canva",
-      "slug": "canva",
-      "name": "Canva",
-      "description": "Design generation and editing through the Canva API.",
-      "category": "Design",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "create_design",
-          "description": "Create a new design from template"
-        },
-        {
-          "name": "export_design",
-          "description": "Export design assets"
-        },
-        {
-          "name": "list_templates",
-          "description": "Browse design templates"
-        }
-      ],
-      "docs_url": "https://www.canva.dev/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "image"
-    },
-    {
-      "id": "confluence",
-      "slug": "confluence",
-      "name": "Confluence",
-      "description": "Atlassian wiki access for documentation search and edits.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_pages",
-          "description": "Search Confluence pages"
-        },
-        {
-          "name": "get_page",
-          "description": "Get page content"
-        },
-        {
-          "name": "create_page",
-          "description": "Create a wiki page"
-        }
-      ],
-      "docs_url": "https://developer.atlassian.com/cloud/confluence",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "file-text"
-    },
-    {
-      "id": "datadog",
-      "slug": "datadog",
-      "name": "Datadog",
-      "description": "Logs, metrics, and APM for observability-driven debugging.",
-      "category": "Security & Monitoring",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query_metrics",
-          "description": "Query timeseries metrics"
-        },
-        {
-          "name": "search_logs",
-          "description": "Search log indexes"
-        },
-        {
-          "name": "list_monitors",
-          "description": "List configured monitors"
-        }
-      ],
-      "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "activity"
+      "last_updated": "2026-10-10",
+      "icon": "globe",
+      "mcp_endpoint_template": null
     },
     {
       "id": "docker",
@@ -4266,98 +5031,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "boxes"
-    },
-    {
-      "id": "dropbox",
-      "slug": "dropbox",
-      "name": "Dropbox",
-      "description": "File access and sharing in Dropbox.",
-      "category": "Files & Docs",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_folder",
-          "description": "List folder contents"
-        },
-        {
-          "name": "download_file",
-          "description": "Download a file"
-        },
-        {
-          "name": "upload_file",
-          "description": "Upload a file"
-        }
-      ],
-      "docs_url": "https://www.dropbox.com/developers/documentation",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "hard-drive"
-    },
-    {
-      "id": "google-calendar",
-      "slug": "google-calendar",
-      "name": "Google Calendar",
-      "description": "Events, scheduling, and calendar management.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_events",
-          "description": "List upcoming events"
-        },
-        {
-          "name": "create_event",
-          "description": "Create a calendar event"
-        },
-        {
-          "name": "find_free_time",
-          "description": "Find available time slots"
-        }
-      ],
-      "docs_url": "https://developers.google.com/calendar",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "calendar"
-    },
-    {
-      "id": "google-sheets",
-      "slug": "google-sheets",
-      "name": "Google Sheets",
-      "description": "Spreadsheet read and write via Google Sheets API.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "read_range",
-          "description": "Read cell range values"
-        },
-        {
-          "name": "write_range",
-          "description": "Write values to cells"
-        },
-        {
-          "name": "list_sheets",
-          "description": "List tabs in a spreadsheet"
-        }
-      ],
-      "docs_url": "https://developers.google.com/sheets/api",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "bar-chart"
+      "last_updated": "2026-10-10",
+      "icon": "boxes",
+      "mcp_endpoint_template": null
     },
     {
       "id": "imessage",
@@ -4386,69 +5062,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "message-square"
-    },
-    {
-      "id": "jira",
-      "slug": "jira",
-      "name": "Jira",
-      "description": "Tickets, sprints, and project tracking in Jira.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_issues",
-          "description": "Search Jira issues"
-        },
-        {
-          "name": "create_issue",
-          "description": "Create a ticket"
-        },
-        {
-          "name": "transition_issue",
-          "description": "Move issue through workflow"
-        }
-      ],
-      "docs_url": "https://developer.atlassian.com/cloud/jira",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "layout-list"
-    },
-    {
-      "id": "keboola",
-      "slug": "keboola",
-      "name": "Keboola",
-      "description": "Data workflows, integrations, and analytics pipelines.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_tables",
-          "description": "List storage tables"
-        },
-        {
-          "name": "run_transformation",
-          "description": "Execute a transformation"
-        },
-        {
-          "name": "create_flow",
-          "description": "Configure a data flow"
-        }
-      ],
-      "github_url": "https://github.com/keboola/mcp-server",
-      "docs_url": "https://developers.keboola.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "bar-chart"
+      "last_updated": "2026-10-10",
+      "icon": "message-square",
+      "mcp_endpoint_template": null
     },
     {
       "id": "kubernetes",
@@ -4477,129 +5093,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "boxes"
-    },
-    {
-      "id": "mem0",
-      "slug": "mem0",
-      "name": "Mem0",
-      "description": "Long-term memory layer for AI agents across conversations.",
-      "category": "AI & Memory",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "add_memory",
-          "description": "Store a new memory"
-        },
-        {
-          "name": "search_memory",
-          "description": "Retrieve relevant memories"
-        },
-        {
-          "name": "list_memories",
-          "description": "List stored memories"
-        }
-      ],
-      "github_url": "https://github.com/mem0ai/mem0",
-      "docs_url": "https://docs.mem0.ai",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "brain"
-    },
-    {
-      "id": "mercado-libre",
-      "slug": "mercado-libre",
-      "name": "Mercado Libre",
-      "description": "Marketplace interaction and product integration for Latin America.",
-      "category": "Payments & Commerce",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_listings",
-          "description": "Search marketplace listings"
-        },
-        {
-          "name": "get_item",
-          "description": "Get product listing details"
-        },
-        {
-          "name": "update_listing",
-          "description": "Update a product listing"
-        }
-      ],
-      "github_url": "https://github.com/mercadolibre/mcp-mercadolibre",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "credit-card"
-    },
-    {
-      "id": "mercado-pago",
-      "slug": "mercado-pago",
-      "name": "Mercado Pago",
-      "description": "Latin America payments API for charges and refunds.",
-      "category": "Payments & Commerce",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "create_payment",
-          "description": "Create a payment"
-        },
-        {
-          "name": "get_payment_status",
-          "description": "Check payment status"
-        },
-        {
-          "name": "refund_payment",
-          "description": "Issue a refund"
-        }
-      ],
-      "docs_url": "https://www.mercadopago.com/developers",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "credit-card"
-    },
-    {
-      "id": "microsoft-teams",
-      "slug": "microsoft-teams",
-      "name": "Microsoft Teams",
-      "description": "Teams messaging and channel collaboration.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_channels",
-          "description": "List Teams channels"
-        },
-        {
-          "name": "send_message",
-          "description": "Post a Teams message"
-        },
-        {
-          "name": "list_chats",
-          "description": "List recent chats"
-        }
-      ],
-      "docs_url": "https://learn.microsoft.com/microsoftteams",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "message-square"
+      "last_updated": "2026-10-10",
+      "icon": "boxes",
+      "mcp_endpoint_template": null
     },
     {
       "id": "milvus",
@@ -4628,8 +5124,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "mindsdb",
@@ -4659,99 +5156,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
-    },
-    {
-      "id": "monday",
-      "slug": "monday",
-      "name": "Monday.com",
-      "description": "Boards, items, and workflow automation on Monday.com.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_boards",
-          "description": "List workspace boards"
-        },
-        {
-          "name": "create_item",
-          "description": "Add an item to a board"
-        },
-        {
-          "name": "update_column",
-          "description": "Update column values"
-        }
-      ],
-      "docs_url": "https://developer.monday.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "layout-list"
-    },
-    {
-      "id": "mongodb",
-      "slug": "mongodb",
-      "name": "MongoDB",
-      "description": "Document database queries and collection management.",
-      "category": "Databases",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "find",
-          "description": "Query documents in a collection"
-        },
-        {
-          "name": "aggregate",
-          "description": "Run aggregation pipelines"
-        },
-        {
-          "name": "list_collections",
-          "description": "List collections in a database"
-        }
-      ],
-      "github_url": "https://github.com/mongodb-js/mongodb-mcp-server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
-    },
-    {
-      "id": "motherduck",
-      "slug": "motherduck",
-      "name": "MotherDuck",
-      "description": "Analytical SQL with DuckDB in-process and MotherDuck cloud sync.",
-      "category": "Databases",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query",
-          "description": "Run DuckDB SQL queries"
-        },
-        {
-          "name": "list_tables",
-          "description": "List tables and views"
-        },
-        {
-          "name": "attach_database",
-          "description": "Attach a MotherDuck database"
-        }
-      ],
-      "github_url": "https://github.com/motherduckdb/mcp-server-motherduck",
-      "docs_url": "https://motherduck.com/docs",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "mysql",
@@ -4780,129 +5187,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
-    },
-    {
-      "id": "n8n",
-      "slug": "n8n",
-      "name": "n8n",
-      "description": "Conversational workflow automation and node orchestration.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_workflows",
-          "description": "List n8n workflows"
-        },
-        {
-          "name": "execute_workflow",
-          "description": "Trigger a workflow run"
-        },
-        {
-          "name": "get_execution",
-          "description": "Get execution status"
-        }
-      ],
-      "github_url": "https://github.com/n8n-io/n8n",
-      "docs_url": "https://docs.n8n.io",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "boxes"
-    },
-    {
-      "id": "onedrive",
-      "slug": "onedrive",
-      "name": "OneDrive",
-      "description": "Microsoft cloud storage file operations.",
-      "category": "Files & Docs",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_items",
-          "description": "List OneDrive items"
-        },
-        {
-          "name": "read_file",
-          "description": "Read file content"
-        },
-        {
-          "name": "upload_file",
-          "description": "Upload a file"
-        }
-      ],
-      "docs_url": "https://learn.microsoft.com/graph/onedrive",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "hard-drive"
-    },
-    {
-      "id": "outlook",
-      "slug": "outlook",
-      "name": "Outlook",
-      "description": "Microsoft email and calendar access.",
-      "category": "Communication",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_messages",
-          "description": "List Outlook messages"
-        },
-        {
-          "name": "send_mail",
-          "description": "Send an email"
-        },
-        {
-          "name": "list_events",
-          "description": "List calendar events"
-        }
-      ],
-      "docs_url": "https://learn.microsoft.com/graph",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "mail"
-    },
-    {
-      "id": "pagerduty",
-      "slug": "pagerduty",
-      "name": "PagerDuty",
-      "description": "Incident management and on-call workflows.",
-      "category": "Security & Monitoring",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "list_incidents",
-          "description": "List open incidents"
-        },
-        {
-          "name": "acknowledge_incident",
-          "description": "Acknowledge an incident"
-        },
-        {
-          "name": "create_incident",
-          "description": "Create a new incident"
-        }
-      ],
-      "docs_url": "https://developer.pagerduty.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "shield-alert"
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "redis",
@@ -4931,38 +5218,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
-    },
-    {
-      "id": "salesforce",
-      "slug": "salesforce",
-      "name": "Salesforce",
-      "description": "Enterprise CRM operations and record management.",
-      "category": "Automation",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "query_records",
-          "description": "Run SOQL queries"
-        },
-        {
-          "name": "create_record",
-          "description": "Create a CRM record"
-        },
-        {
-          "name": "update_record",
-          "description": "Update record fields"
-        }
-      ],
-      "docs_url": "https://developer.salesforce.com",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "boxes"
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "shopsavvy",
@@ -4991,99 +5249,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "credit-card"
-    },
-    {
-      "id": "slidespeak",
-      "slug": "slidespeak",
-      "name": "SlideSpeak",
-      "description": "Create presentations and PowerPoints using AI from outlines and data.",
-      "category": "Design",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "create_presentation",
-          "description": "Generate a slide deck from a brief"
-        },
-        {
-          "name": "add_slide",
-          "description": "Add a slide to an existing deck"
-        },
-        {
-          "name": "export_pptx",
-          "description": "Export to PowerPoint format"
-        }
-      ],
-      "github_url": "https://github.com/SlideSpeak/slidespeak-mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "file-text"
-    },
-    {
-      "id": "snowflake",
-      "slug": "snowflake",
-      "name": "Snowflake",
-      "description": "Cloud data warehouse SQL and schema inspection.",
-      "category": "Data & Analytics",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "run_query",
-          "description": "Execute a SQL query"
-        },
-        {
-          "name": "list_databases",
-          "description": "List available databases"
-        },
-        {
-          "name": "describe_table",
-          "description": "Show table columns and types"
-        }
-      ],
-      "github_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "bar-chart"
-    },
-    {
-      "id": "sourcegraph-cody",
-      "slug": "sourcegraph-cody",
-      "name": "Sourcegraph Cody",
-      "description": "Semantic codebase search and navigation across large repositories.",
-      "category": "Dev Tools",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "search_code",
-          "description": "Semantic search across codebases"
-        },
-        {
-          "name": "find_references",
-          "description": "Find symbol references"
-        },
-        {
-          "name": "explain_symbol",
-          "description": "Explain a function or type in context"
-        }
-      ],
-      "github_url": "https://github.com/sourcegraph/cody",
-      "docs_url": "https://sourcegraph.com/cody",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "code"
+      "last_updated": "2026-10-10",
+      "icon": "credit-card",
+      "mcp_endpoint_template": null
     },
     {
       "id": "sqlite",
@@ -5112,8 +5280,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "database"
+      "last_updated": "2026-10-10",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "stackblitz",
@@ -5142,8 +5311,9 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-10-09",
-      "icon": "browser"
+      "last_updated": "2026-10-10",
+      "icon": "browser",
+      "mcp_endpoint_template": null
     }
   ]
 }
