@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-server-page.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
     <% if (server) { %>
       <script type="application/ld+json">
         <%- JSON.stringify({
@@ -230,6 +231,25 @@
               <% } %>
             </div>
             <% } %>
+          </section>
+
+          <section class="mcp-section mcp-recipes-block" aria-labelledby="serverRecipesHeading">
+            <h2 id="serverRecipesHeading">Recipes using this server</h2>
+            <% if (typeof serverRecipes !== 'undefined' && serverRecipes && serverRecipes.length) { %>
+              <div class="home-recipes__list">
+                <% serverRecipes.forEach(function(recipe) { %>
+                  <a class="home-recipe-row" href="/recipes/<%= recipe.slug %>">
+                    <div class="home-recipe-row__title"><%= recipe.revision.title %></div>
+                    <div class="home-recipe-row__meta"><%= recipe.revision.use_case %><% if (recipe.author) { %> · <%= recipe.author.name %><% } %></div>
+                  </a>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <p class="mcp-step__help">No published recipes yet for this server.</p>
+            <% } %>
+            <p style="margin-top:0.85rem;">
+              <a class="mcp-btn-outline" href="/recipes/new?server=<%= server.slug %>">Share a recipe using this server</a>
+            </p>
           </section>
 
           <% if (server.quality) { %>

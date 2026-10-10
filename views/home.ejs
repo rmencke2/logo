@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
       ogDescription: seo.metaDescription,
@@ -192,6 +193,34 @@
               No servers match “<span id="homeEmptyQuery"></span>” in this preview — the live directory searches all <%= toolCountDisplay %> indexed tools. <a href="/mcp">Browse all →</a>
             </div>
           </div>
+        </section>
+
+        <section class="home-section home-recipes" aria-labelledby="homeRecipesHeading">
+          <div class="home-section__head">
+            <h2 class="home-section__title" id="homeRecipesHeading">MCP Recipes</h2>
+            <a class="home-section__link" href="/recipes">All recipes →</a>
+          </div>
+          <% if (typeof homeRecipes !== 'undefined' && homeRecipes && homeRecipes.length) { %>
+            <div class="home-recipes__list">
+              <% homeRecipes.forEach(function(recipe) { %>
+                <a class="home-recipe-row" href="/recipes/<%= recipe.slug %>">
+                  <div class="home-recipe-row__title"><%= recipe.revision.title %></div>
+                  <div class="home-recipe-row__meta">
+                    <%= recipe.revision.use_case %>
+                    <% if (recipe.author) { %> · <%= recipe.author.name %><% } %>
+                    <% if (recipe.revision.servers && recipe.revision.servers.length) { %>
+                      · <%= recipe.revision.servers.map(function(s) { return s.name; }).slice(0, 3).join(', ') %>
+                    <% } %>
+                  </div>
+                </a>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <p class="recipe-note" style="margin:0;">
+              Practical examples from the community — none published yet.
+              <a href="/recipes/new">Share a recipe</a>
+            </p>
+          <% } %>
         </section>
 
         <% if (insightPosts && insightPosts.length) { %>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page recipes-page">
+    <%- include('partials/home-header') %>
+    <main class="recipes-main">
+      <header class="recipes-hero">
+        <p class="recipes-hero__kicker">MCP Recipes</p>
+        <h1>Get something working with MCP</h1>
+        <p class="recipes-hero__lead">
+          Practical, community-shared examples for real tasks using one or more MCP servers.
+          Submissions are reviewed before they appear here.
+        </p>
+        <div class="recipes-hero__actions">
+          <a class="recipe-btn recipe-btn--primary" href="/recipes/new">Share a recipe</a>
+          <a class="recipe-btn recipe-btn--ghost" href="/recipes/mine">My recipes</a>
+        </div>
+      </header>
+
+      <form class="recipes-filters" method="get" action="/recipes" role="search">
+        <label>
+          Search
+          <input type="search" name="q" value="<%= filters.q || '' %>" placeholder="weekly update, Slack, GitHub…" />
+        </label>
+        <label>
+          Use case
+          <select name="use_case">
+            <option value="">All</option>
+            <% useCases.forEach(function(uc) { %>
+              <option value="<%= uc %>"<%= filters.use_case === uc ? ' selected' : '' %>><%= uc %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>
+          MCP server slug
+          <input type="text" name="server" value="<%= filters.server || '' %>" placeholder="e.g. github" />
+        </label>
+        <label>
+          Client
+          <select name="client">
+            <option value="">All</option>
+            <% compatibleClients.forEach(function(c) { %>
+              <option value="<%= c %>"<%= filters.client === c ? ' selected' : '' %>><%= c %></option>
+            <% }) %>
+          </select>
+        </label>
+        <button type="submit" class="recipe-btn recipe-btn--primary">Filter</button>
+      </form>
+
+      <% if (loadError) { %>
+        <div class="recipes-status recipes-status--error" role="alert"><%= loadError %></div>
+      <% } else if (!recipes.length) { %>
+        <div class="recipes-status" role="status">
+          <% if (filters.q || filters.use_case || filters.server || filters.client) { %>
+            No published recipes match these filters.
+            <a href="/recipes">Clear filters</a>
+            or <a href="/recipes/new">share a recipe</a>.
+          <% } else { %>
+            No published recipes yet. Be the first to
+            <a href="/recipes/new">share a practical MCP example</a>.
+          <% } %>
+        </div>
+      <% } else { %>
+        <p class="recipe-note" style="margin-bottom:0.75rem;"><%= total %> published recipe<%= total === 1 ? '' : 's' %></p>
+        <div class="recipes-list">
+          <% recipes.forEach(function(recipe) { %>
+            <a class="recipe-row" href="/recipes/<%= recipe.slug %>">
+              <h2 class="recipe-row__title"><%= recipe.revision.title %></h2>
+              <p class="recipe-row__summary"><%= recipe.revision.summary %></p>
+              <div class="recipe-row__meta">
+                <span class="recipe-pill recipe-pill--accent"><%= recipe.revision.use_case %></span>
+                <% (recipe.revision.servers || []).slice(0, 4).forEach(function(s) { %>
+                  <span class="recipe-pill"><%= s.name %></span>
+                <% }) %>
+                <% (recipe.revision.compatible_clients || []).slice(0, 3).forEach(function(c) { %>
+                  <span class="recipe-pill"><%= c %></span>
+                <% }) %>
+                <% if (recipe.author) { %>
+                  <span>by <%= recipe.author.name %></span>
+                <% } %>
+                <% if (recipe.revision.last_tested_at) { %>
+                  <span>Last tested <%= recipe.revision.last_tested_at %></span>
+                <% } %>
+                <% if (recipe.verified_by_influzer) { %>
+                  <span class="recipe-pill recipe-pill--verified">Verified by Influzer</span>
+                <% } %>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </main>
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('influzer-theme') === 'dark') document.body.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </body>
+</html>

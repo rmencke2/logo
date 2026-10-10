@@ -25,6 +25,7 @@ const { initializeBlogFeedbackService } = require('./services/blogFeedbackServic
 const { initializeNewsletterService } = require('./services/newsletterService');
 const { initializeOtherNewsService } = require('./services/otherNewsService');
 const { initializeMcpSubmissionService } = require('./services/mcpSubmissionService');
+const { initializeMcpRecipeService } = require('./services/mcpRecipeService');
 const { registerWebmcpRoutes } = require('./services/webmcpDirectoryService');
 const { isEmailConfigured, isResendConfigured, getTransporter } = require('./emailService');
 
@@ -45,6 +46,9 @@ const PORT = process.env.PORT || 4000;
 
     // 3b. Blog feedback service (reactions + comments)
     await initializeBlogFeedbackService(app);
+
+    // 3b2. MCP Recipes (directory, submissions, moderation)
+    await initializeMcpRecipeService(app);
 
     // 3c. Newsletter signup service
     await initializeNewsletterService(app);

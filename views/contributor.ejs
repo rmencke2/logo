@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page recipes-page">
+    <%- include('partials/home-header') %>
+    <main class="recipes-main">
+      <header class="recipes-hero">
+        <p class="recipes-hero__kicker">Contributor</p>
+        <h1><%= contributor.name %></h1>
+        <% if (contributor.bio) { %>
+          <p class="recipes-hero__lead"><%= contributor.bio %></p>
+        <% } %>
+        <div class="recipe-detail__meta">
+          <% if (contributor.website_url) { %><a href="<%= contributor.website_url %>" rel="noopener noreferrer" target="_blank">Website</a><% } %>
+          <% if (contributor.github_url) { %><a href="<%= contributor.github_url %>" rel="noopener noreferrer" target="_blank">GitHub</a><% } %>
+          <% if (contributor.twitter_url) { %><a href="<%= contributor.twitter_url %>" rel="noopener noreferrer" target="_blank">X / Twitter</a><% } %>
+        </div>
+      </header>
+
+      <section class="recipe-section">
+        <h2>Published recipes</h2>
+        <% if (!recipes.length) { %>
+          <div class="recipes-status">No published recipes yet.</div>
+        <% } else { %>
+          <div class="recipes-list">
+            <% recipes.forEach(function(recipe) { %>
+              <a class="recipe-row" href="/recipes/<%= recipe.slug %>">
+                <h3 class="recipe-row__title"><%= recipe.revision.title %></h3>
+                <p class="recipe-row__summary"><%= recipe.revision.summary %></p>
+                <div class="recipe-row__meta">
+                  <span class="recipe-pill recipe-pill--accent"><%= recipe.revision.use_case %></span>
+                </div>
+              </a>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+    </main>
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('influzer-theme') === 'dark') document.body.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </body>
+</html>
