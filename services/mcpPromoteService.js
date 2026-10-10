@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { findMcpServerBySlug } = require('./mcpDirectoryService');
+const { getPromoteTerms, hasAcceptedPromoteTerms, TERMS_VERSION, TERMS_PATH } = require('./mcpPromoteTerms');
 
 const SITE_BASE = 'https://www.influzer.ai';
 const SLOTS_PATH = path.join(__dirname, '..', 'data', 'mcp-promote-slots.json');
@@ -182,6 +183,9 @@ function getPromoteOffer(now = Date.now()) {
       'Does not change live_ok / auth_required / unreachable',
       'Does not buy Top 100 catalog rank',
     ],
+    terms: getPromoteTerms(),
+    terms_path: TERMS_PATH,
+    terms_version: TERMS_VERSION,
     safety_badge: null,
   };
 }
@@ -210,6 +214,11 @@ function validatePromoteInput(body) {
   const company = String(body?.company || '').trim().slice(0, 120);
   const url = String(body?.url || '').trim();
   const note = String(body?.note || '').trim().slice(0, 500);
+  if (!hasAcceptedPromoteTerms(body)) {
+    const err = new Error('You must accept the Sponsored Placement Terms before checkout.');
+    err.status = 400;
+    throw err;
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     const err = new Error('A real email is required.');
     err.status = 400;
@@ -220,7 +229,15 @@ function validatePromoteInput(body) {
     err.status = 400;
     throw err;
   }
-  return { email, slug, company, url, note };
+  return {
+    email,
+    slug,
+    company,
+    url,
+    note,
+    accept_terms: true,
+    terms_version: TERMS_VERSION,
+  };
 }
 
 async function createStripeCheckout(input) {
@@ -240,6 +257,8 @@ async function createStripeCheckout(input) {
   params.set('metadata[slug]', input.slug || '');
   params.set('metadata[company]', input.company || '');
   params.set('metadata[product]', product.id);
+  params.set('metadata[terms_version]', input.terms_version || TERMS_VERSION);
+  params.set('metadata[terms_accepted]', '1');
   if (priceId) {
     params.set('line_items[0][price]', priceId);
     params.set('line_items[0][quantity]', '1');
@@ -290,6 +309,8 @@ async function submitPromoteRequest(body) {
     created_at: new Date().toISOString(),
     product_id: offer.product.id,
     price_usd: offer.product.price_usd,
+    terms_path: TERMS_PATH,
+    terms_accepted_at: new Date().toISOString(),
   };
   appendRequest(record);
 
@@ -307,7 +328,9 @@ async function submitPromoteRequest(body) {
     checkout_url: checkout?.url || paymentLink,
     invoice: !checkout && !paymentLink,
     contact: 'hello@influzer.ai',
-    note: 'Sponsored placement is an ad on the homepage, directory, and scoreboard. Handshake status is not for sale.',
+    note: 'Sponsored placement is an ad on the homepage, directory, and scoreboard. Handshake status is not for sale. Policy violations may be removed without refund.',
+    terms_version: TERMS_VERSION,
+    terms_path: TERMS_PATH,
     safety_badge: null,
   };
 }
@@ -326,4 +349,7 @@ module.exports = {
   isSlotActive,
   DEFAULT_PRODUCT,
   PLACEMENTS,
+  getPromoteTerms,
+  TERMS_VERSION,
+  TERMS_PATH,
 };
