@@ -46,6 +46,12 @@ const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
 const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
 const { getDisplayArticles } = require('./otherNewsService');
+const { getDatabase } = require('../database');
+const {
+  listPublishedRecipes,
+  listRecipesForServer,
+  getSitemapRecipeEntries,
+} = require('./mcpRecipeService');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -483,7 +489,7 @@ function getRelatedMcpServers(server, limit = 4) {
   });
 }
 
-function renderHomepage(req, res) {
+async function renderHomepage(req, res) {
   const topServers = getHomeTopServers(6);
   const heroStats = getMcpHeroStats();
   const { featuredPost, morePosts } = getHomeBlogContent();
@@ -510,6 +516,14 @@ function renderHomepage(req, res) {
     seoContent.faqs,
     `${SITE_BASE_URL}/`,
   );
+  let homeRecipes = [];
+  try {
+    const db = await getDatabase();
+    const listed = await listPublishedRecipes(db, { limit: 4 });
+    homeRecipes = listed.recipes || [];
+  } catch (err) {
+    console.error('Home recipes load failed:', err.message || err);
+  }
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -517,6 +531,7 @@ function renderHomepage(req, res) {
     heroStats,
     toolCountDisplay: formatHomeToolCount(heroStats.totalTools),
     topServers,
+    homeRecipes,
     categories: ['Databases', 'Search & Web', 'Files & Docs', 'AI & Memory', 'Browser automation'],
     indexingServers,
     indexingMore,
@@ -593,7 +608,10 @@ function initializeStaticService(app) {
       const qs = params.toString();
       return res.redirect(302, `/login${qs ? `?${qs}` : ''}`);
     }
-    renderHomepage(req, res);
+    renderHomepage(req, res).catch((err) => {
+      console.error('Homepage render failed:', err);
+      res.status(500).render('404', { title: 'Unavailable' });
+    });
   });
 
   app.get('/preview/newsletter-bar', (req, res) => {
@@ -1105,6 +1123,13 @@ ${itemsXml}
       });
     }
     server = await refreshListingHandshake(server, probeMcpUrl);
+    let serverRecipes = [];
+    try {
+      const db = await getDatabase();
+      serverRecipes = await listRecipesForServer(db, server.slug, 8);
+    } catch (err) {
+      console.error('Server recipes load failed:', err.message || err);
+    }
     return res.render('mcp-server', {
       server,
       installSnippets: buildInstallSnippets(server),
@@ -1114,6 +1139,7 @@ ${itemsXml}
       sponsored: isSponsoredSlug(server.slug),
       catalogTotals: getMcpCatalogTotals(),
       relatedServers: getRelatedMcpServers(server, 4),
+      serverRecipes,
       discoveryPromo: getDiscoveryPromo(),
       assetVersion,
       navPath: req.path,
@@ -1175,7 +1201,7 @@ ${itemsXml}
   });
 
   // Serve sitemap.xml
-  app.get('/sitemap.xml', (req, res) => {
+  app.get('/sitemap.xml', async (req, res) => {
     const posts = getAllBlogPosts();
     const newsItems = getAllNewsItems();
     const latestPostDate = posts.length ? posts[0].date : new Date().toISOString().slice(0, 10);
@@ -1199,6 +1225,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/scoreboard`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/promote`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/mcp/promote/terms`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.55' },
+      { loc: `${SITE_BASE_URL}/recipes`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
       { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
@@ -1231,7 +1258,22 @@ ${itemsXml}
       priority: '0.75',
     }));
     const webmcpUrls = getWebmcpSitemapEntries();
-    const allUrls = [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...mcpUrls, ...webmcpUrls];
+    let recipeUrls = [];
+    try {
+      const db = await getDatabase();
+      recipeUrls = await getSitemapRecipeEntries(db);
+    } catch (err) {
+      console.error('Sitemap recipes load failed:', err.message || err);
+    }
+    const allUrls = [
+      ...staticUrls,
+      ...postUrls,
+      ...newsUrls,
+      ...topicUrls,
+      ...mcpUrls,
+      ...webmcpUrls,
+      ...recipeUrls,
+    ];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls

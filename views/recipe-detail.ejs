@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      ogType: 'article',
+      noindex: typeof noindex !== 'undefined' ? noindex : false,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+      <script type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
+    <% } %>
+  </head>
+  <body class="registry-page recipes-page">
+    <%- include('partials/home-header') %>
+    <main class="recipes-main" data-recipe-id="<%= recipe.id %>" data-recipe-slug="<%= recipe.slug %>">
+      <% if (isPreview) { %>
+        <div class="recipe-banner recipe-banner--preview" role="status">
+          Preview — not published. <a href="/recipes/<%= recipe.slug %>/edit">Back to editor</a>
+        </div>
+      <% } %>
+
+      <p class="recipe-note"><a href="/recipes">← All recipes</a></p>
+
+      <header class="recipe-detail__header">
+        <p class="recipes-hero__kicker">MCP Recipe</p>
+        <h1><%= recipe.revision.title %></h1>
+        <p class="recipe-detail__summary"><%= recipe.revision.summary %></p>
+        <div class="recipe-detail__badges">
+          <span class="recipe-pill recipe-pill--accent"><%= recipe.revision.use_case %></span>
+          <% if (recipe.verified_by_influzer) { %>
+            <span class="recipe-pill recipe-pill--verified" title="An Influzer administrator independently verified this recipe">Verified by Influzer</span>
+          <% } else if (recipe.revision.author_reports_tested) { %>
+            <span class="recipe-pill" title="Testing details provided by the author — not independently verified">Author reports tested</span>
+          <% } %>
+        </div>
+        <div class="recipe-detail__meta">
+          <% if (recipe.author) { %>
+            <span>By <a href="<%= recipe.author.profile_url %>"><%= recipe.author.name %></a></span>
+          <% } %>
+          <% if (recipe.published_at) { %>
+            <span>Published <%= String(recipe.published_at).slice(0, 10) %></span>
+          <% } %>
+          <% if (recipe.updated_at) { %>
+            <span>Updated <%= String(recipe.updated_at).slice(0, 10) %></span>
+          <% } %>
+          <% if (recipe.revision.last_tested_at) { %>
+            <span>Last tested <%= recipe.revision.last_tested_at %></span>
+          <% } %>
+          <span><%= recipe.worked_for_me_count || 0 %> worked for me</span>
+        </div>
+      </header>
+
+      <section class="recipe-section" aria-labelledby="serversHeading">
+        <h2 id="serversHeading">MCP servers used</h2>
+        <div class="recipe-servers">
+          <% (recipe.revision.servers || []).forEach(function(s) { %>
+            <a class="recipe-server-chip" href="/mcp/<%= s.slug %>" data-recipe-server-link="<%= s.slug %>"><%= s.name %></a>
+          <% }) %>
+        </div>
+        <p class="recipe-note" style="margin-top:0.65rem;">
+          Compatible clients (author-reported, not verified by Influzer):
+          <%= (recipe.revision.compatible_clients || []).join(', ') || '—' %>
+        </p>
+        <% if (recipe.revision.tested_client_versions || recipe.revision.tested_server_versions) { %>
+          <p class="recipe-note">
+            <% if (recipe.revision.tested_client_versions) { %>Client versions: <%= recipe.revision.tested_client_versions %>. <% } %>
+            <% if (recipe.revision.tested_server_versions) { %>Server versions: <%= recipe.revision.tested_server_versions %>.<% } %>
+          </p>
+        <% } %>
+      </section>
+
+      <% if (recipe.revision.prerequisites) { %>
+        <section class="recipe-section">
+          <h2>Prerequisites</h2>
+          <div class="recipe-md"><%- recipe.revision.html.prerequisites %></div>
+        </section>
+      <% } %>
+
+      <% if (recipe.revision.permissions) { %>
+        <section class="recipe-section">
+          <h2>Required permissions</h2>
+          <div class="recipe-md"><%- recipe.revision.html.permissions %></div>
+        </section>
+      <% } %>
+
+      <section class="recipe-section" aria-labelledby="stepsHeading">
+        <h2 id="stepsHeading">Setup</h2>
+        <% (recipe.revision.html.blocks || []).forEach(function(block, i) { %>
+          <div class="recipe-block" data-block-type="<%= block.block_type %>">
+            <div class="recipe-block__head">
+              <span>
+                <%= i + 1 %>.
+                <%= block.title || (block.block_type === 'instruction' ? 'Step' : block.block_type) %>
+                <% if (block.language) { %> · <%= block.language %><% } %>
+              </span>
+              <% if (block.block_type !== 'instruction') { %>
+                <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" data-copy-block>Copy</button>
+              <% } %>
+            </div>
+            <div class="recipe-block__body<%= block.block_type !== 'instruction' ? ' recipe-block__body--code' : '' %>">
+              <%- block.body_html %>
+            </div>
+          </div>
+        <% }) %>
+      </section>
+
+      <% if (recipe.revision.expected_result) { %>
+        <section class="recipe-section">
+          <h2>Expected result</h2>
+          <div class="recipe-md"><%- recipe.revision.html.expected_result %></div>
+        </section>
+      <% } %>
+
+      <% if (recipe.revision.sample_output) { %>
+        <section class="recipe-section">
+          <h2>Sample output</h2>
+          <div class="recipe-md"><%- recipe.revision.html.sample_output %></div>
+        </section>
+      <% } %>
+
+      <% if (recipe.revision.troubleshooting) { %>
+        <section class="recipe-section">
+          <h2>Troubleshooting</h2>
+          <div class="recipe-md"><%- recipe.revision.html.troubleshooting %></div>
+        </section>
+      <% } %>
+
+      <% if (recipe.revision.source_repo_url) { %>
+        <section class="recipe-section">
+          <h2>Source repository</h2>
+          <p><a href="<%= recipe.revision.source_repo_url %>" rel="noopener noreferrer" target="_blank"><%= recipe.revision.source_repo_url %></a></p>
+        </section>
+      <% } %>
+
+      <% if (!isPreview) { %>
+        <div class="recipe-actions">
+          <button type="button" class="recipe-btn recipe-btn--primary" id="recipeWorkedBtn" aria-pressed="<%= userReaction ? 'true' : 'false' %>">
+            <%= userReaction ? '✓ Worked for me' : 'Worked for me' %>
+          </button>
+          <button type="button" class="recipe-btn recipe-btn--ghost" id="recipeReportBtn">Report an issue</button>
+          <button type="button" class="recipe-btn recipe-btn--ghost" id="recipeShareBtn">Share link</button>
+          <span class="recipe-note" id="recipeActionStatus" aria-live="polite"></span>
+        </div>
+
+        <dialog id="recipeReportDialog">
+          <form method="dialog" id="recipeReportForm" style="padding:1rem;min-width:min(360px,90vw);">
+            <h3 style="margin:0 0 0.75rem;">Report an issue</h3>
+            <label class="recipe-form__field">
+              Reason
+              <select name="reason" required>
+                <% issueReasons.forEach(function(r) { %>
+                  <option value="<%= r.id %>"><%= r.label %></option>
+                <% }) %>
+              </select>
+            </label>
+            <label class="recipe-form__field" style="margin-top:0.75rem;">
+              Details (optional)
+              <textarea name="details" rows="3" maxlength="2000"></textarea>
+            </label>
+            <div class="recipe-form__actions" style="margin-top:1rem;">
+              <button type="submit" class="recipe-btn recipe-btn--primary" value="submit">Submit report</button>
+              <button type="submit" class="recipe-btn recipe-btn--ghost" value="cancel">Cancel</button>
+            </div>
+          </form>
+        </dialog>
+      <% } %>
+    </main>
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('influzer-theme') === 'dark') document.body.classList.add('dark');
+        } catch (e) {}
+
+        function track(name, params) {
+          try {
+            if (typeof gtag === 'function') gtag('event', name, params || {});
+          } catch (e) {}
+        }
+
+        track('recipe_viewed', { recipe_slug: document.querySelector('[data-recipe-slug]')?.dataset.recipeSlug });
+
+        document.querySelectorAll('[data-copy-block]').forEach(function (btn) {
+          btn.addEventListener('click', async function () {
+            const code = btn.closest('.recipe-block')?.querySelector('pre code, pre');
+            const text = code ? code.textContent : '';
+            try {
+              await navigator.clipboard.writeText(text);
+              btn.textContent = 'Copied';
+              setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+              track('recipe_code_copied', {
+                recipe_slug: document.querySelector('[data-recipe-slug]')?.dataset.recipeSlug,
+                block_type: btn.closest('[data-block-type]')?.dataset.blockType,
+              });
+            } catch (e) {
+              btn.textContent = 'Select & copy';
+            }
+          });
+        });
+
+        document.querySelectorAll('[data-recipe-server-link]').forEach(function (a) {
+          a.addEventListener('click', function () {
+            track('recipe_server_clicked', {
+              recipe_slug: document.querySelector('[data-recipe-slug]')?.dataset.recipeSlug,
+              server_slug: a.dataset.recipeServerLink,
+            });
+          });
+        });
+
+        const statusEl = document.getElementById('recipeActionStatus');
+        const recipeId = document.querySelector('[data-recipe-id]')?.dataset.recipeId;
+
+        document.getElementById('recipeShareBtn')?.addEventListener('click', async function () {
+          const url = window.location.href;
+          try {
+            if (navigator.share) {
+              await navigator.share({ title: document.title, url: url });
+            } else {
+              await navigator.clipboard.writeText(url);
+              if (statusEl) statusEl.textContent = 'Link copied.';
+            }
+          } catch (e) {
+            try {
+              await navigator.clipboard.writeText(url);
+              if (statusEl) statusEl.textContent = 'Link copied.';
+            } catch (e2) {
+              if (statusEl) statusEl.textContent = 'Copy this page URL from the address bar.';
+            }
+          }
+        });
+
+        document.getElementById('recipeWorkedBtn')?.addEventListener('click', async function () {
+          const btn = this;
+          try {
+            const res = await fetch('/api/recipes/' + recipeId + '/reactions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'same-origin',
+              body: '{}',
+            });
+            const data = await res.json();
+            if (res.status === 401) {
+              window.location = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+              return;
+            }
+            if (!res.ok) throw new Error(data.error || 'Failed');
+            btn.textContent = data.reacted ? '✓ Worked for me' : 'Worked for me';
+            btn.setAttribute('aria-pressed', data.reacted ? 'true' : 'false');
+            if (statusEl) statusEl.textContent = data.count + ' worked for me';
+            track('recipe_worked_for_me', { recipe_slug: document.querySelector('[data-recipe-slug]')?.dataset.recipeSlug });
+          } catch (e) {
+            if (statusEl) statusEl.textContent = e.message || 'Could not save reaction.';
+          }
+        });
+
+        const dialog = document.getElementById('recipeReportDialog');
+        const form = document.getElementById('recipeReportForm');
+        document.getElementById('recipeReportBtn')?.addEventListener('click', function () {
+          dialog?.showModal();
+        });
+        form?.addEventListener('submit', async function (ev) {
+          const submitter = ev.submitter;
+          if (submitter && submitter.value === 'cancel') return;
+          ev.preventDefault();
+          const fd = new FormData(form);
+          try {
+            const res = await fetch('/api/recipes/' + recipeId + '/reports', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'same-origin',
+              body: JSON.stringify({ reason: fd.get('reason'), details: fd.get('details') }),
+            });
+            const data = await res.json();
+            if (res.status === 401) {
+              window.location = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+              return;
+            }
+            if (!res.ok) throw new Error(data.error || 'Failed');
+            dialog.close();
+            if (statusEl) statusEl.textContent = 'Thanks — report submitted.';
+            track('recipe_issue_reported', {
+              recipe_slug: document.querySelector('[data-recipe-slug]')?.dataset.recipeSlug,
+              reason: fd.get('reason'),
+            });
+          } catch (e) {
+            if (statusEl) statusEl.textContent = e.message || 'Could not submit report.';
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
