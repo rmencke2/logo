@@ -386,6 +386,7 @@
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
       <button class="tab" data-tab="activity">Top Activity</button>
       <button class="tab" data-tab="mcp">MCP Submissions</button>
+      <button class="tab" data-tab="recipes">Recipes</button>
       <button class="tab" data-tab="mcpdiscovery">MCP Discovery</button>
       <button class="tab" data-tab="othernews">Around the web</button>
     </div>
@@ -527,6 +528,29 @@
         </div>
         <div id="mcpCatalogResultsContainer">
           <div class="loading" style="color:#8e8e93;">Type at least two characters to search the catalog.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MCP Recipes moderation Tab -->
+    <div class="tab-content" id="recipesTab">
+      <div class="section">
+        <h2>MCP Recipe moderation</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Pending recipe submissions and edits. Publication status is separate from “Verified by Influzer”.
+          Preview at <code>/recipes/&lt;slug&gt;/preview</code> (admin or author).
+        </p>
+        <div class="search-bar">
+          <button class="btn btn-primary" onclick="loadRecipeModeration()">Refresh</button>
+        </div>
+        <div id="recipePendingContainer">
+          <div class="loading">Loading pending recipes…</div>
+        </div>
+      </div>
+      <div class="section" style="margin-top:40px;border-top:1px solid #2a2a2a;padding-top:32px;">
+        <h2>Open issue reports</h2>
+        <div id="recipeReportsContainer">
+          <div class="loading">Loading reports…</div>
         </div>
       </div>
     </div>
@@ -931,6 +955,7 @@
           loadMcpSubmissions();
           initMcpCatalogSearch();
         }
+        if (tabName === 'recipes') loadRecipeModeration();
         if (tabName === 'mcpdiscovery') loadMcpDiscoveryAnalytics();
         if (tabName === 'othernews') loadOtherNewsItems();
       });
@@ -2460,6 +2485,125 @@
         }
       });
     });
+
+    async function loadRecipeModeration() {
+      const pendingEl = document.getElementById('recipePendingContainer');
+      const reportsEl = document.getElementById('recipeReportsContainer');
+      pendingEl.innerHTML = '<div class="loading">Loading pending recipes…</div>';
+      reportsEl.innerHTML = '<div class="loading">Loading reports…</div>';
+      try {
+        const res = await fetch('/admin/api/recipes/pending');
+        if (!res.ok) throw new Error('Failed to load');
+        const data = await res.json();
+        const pending = data.pending || [];
+        if (!pending.length) {
+          pendingEl.innerHTML = '<p style="color:#8e8e93;">No recipes awaiting review.</p>';
+        } else {
+          pendingEl.innerHTML = pending.map((r) => `
+            <div class="section" style="border:1px solid #2a2a2a;border-radius:8px;padding:16px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                <div>
+                  <strong style="color:#fff;">${escapeHtml(r.pending_title || r.slug)}</strong>
+                  <div style="color:#8e8e93;font-size:13px;margin-top:4px;">
+                    /recipes/${escapeHtml(r.slug)} · by ${escapeHtml(r.author_name || r.author_email || 'user #' + r.author_user_id)}
+                    · submitted ${escapeHtml(r.submitted_at || '')}
+                    · status ${escapeHtml(r.status)}
+                    ${r.published_revision_id ? '· live revision stays public until approve' : ''}
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <a class="btn btn-secondary" href="/recipes/${encodeURIComponent(r.slug)}/preview" target="_blank" rel="noopener">Preview</a>
+                  <button class="btn btn-primary" onclick="approveRecipe(${r.id})">Approve</button>
+                  <button class="btn btn-secondary" onclick="rejectRecipe(${r.id})">Reject</button>
+                  <button class="btn btn-secondary" onclick="verifyRecipe(${r.id}, true)">Mark verified</button>
+                  <button class="btn btn-secondary" onclick="verifyRecipe(${r.id}, false)">Clear verified</button>
+                  <button class="btn btn-secondary" onclick="unpublishRecipe(${r.id})">Unpublish</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+        const reports = data.reports || [];
+        if (!reports.length) {
+          reportsEl.innerHTML = '<p style="color:#8e8e93;">No open issue reports.</p>';
+        } else {
+          reportsEl.innerHTML = `
+            <table>
+              <thead><tr><th>Recipe</th><th>Reason</th><th>Reporter</th><th>Details</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${reports.map((ir) => `
+                  <tr>
+                    <td><a href="/recipes/${encodeURIComponent(ir.recipe_slug)}" target="_blank" rel="noopener">${escapeHtml(ir.recipe_title || ir.recipe_slug)}</a></td>
+                    <td>${escapeHtml(ir.reason)}</td>
+                    <td>${escapeHtml(ir.reporter_email || ir.reporter_name || '')}</td>
+                    <td>${escapeHtml(ir.details || '')}</td>
+                    <td>
+                      <button class="btn btn-primary" onclick="resolveRecipeReport(${ir.id}, 'resolved')">Resolve</button>
+                      <button class="btn btn-secondary" onclick="resolveRecipeReport(${ir.id}, 'dismissed')">Dismiss</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (err) {
+        pendingEl.innerHTML = `<div class="error">Failed to load: ${escapeHtml(err.message)}</div>`;
+        reportsEl.innerHTML = '';
+      }
+    }
+
+    async function approveRecipe(id) {
+      const res = await fetch('/admin/api/recipes/' + id + '/approve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error || 'Approve failed');
+      loadRecipeModeration();
+    }
+
+    async function rejectRecipe(id) {
+      const feedback = prompt('Feedback for the author:');
+      if (feedback == null) return;
+      const res = await fetch('/admin/api/recipes/' + id + '/reject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ feedback }),
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error || 'Reject failed');
+      loadRecipeModeration();
+    }
+
+    async function unpublishRecipe(id) {
+      if (!confirm('Unpublish this recipe from the public directory?')) return;
+      const res = await fetch('/admin/api/recipes/' + id + '/unpublish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error || 'Unpublish failed');
+      loadRecipeModeration();
+    }
+
+    async function verifyRecipe(id, verified) {
+      const notes = verified ? (prompt('Verification notes (optional):') || '') : '';
+      const res = await fetch('/admin/api/recipes/' + id + '/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ verified, notes }),
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error || 'Verify failed');
+      alert(verified ? 'Marked Verified by Influzer' : 'Verification cleared');
+      loadRecipeModeration();
+    }
+
+    async function resolveRecipeReport(id, status) {
+      const res = await fetch('/admin/api/recipes/reports/' + id + '/resolve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error || 'Failed');
+      loadRecipeModeration();
+    }
 
     // Initialize
     checkAuth().then(() => {
