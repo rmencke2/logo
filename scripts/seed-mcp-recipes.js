@@ -10,6 +10,7 @@
  * Usage:
  *   node scripts/seed-mcp-recipes.js
  *   node scripts/seed-mcp-recipes.js --dry-run
+ *   node scripts/seed-mcp-recipes.js --force   # replace existing starter recipes
  */
 
 const { getDatabase } = require('../database');
@@ -22,6 +23,7 @@ const {
 const { findMcpServerBySlug } = require('../services/mcpDirectoryService');
 
 const DRY_RUN = process.argv.includes('--dry-run');
+const FORCE = process.argv.includes('--force');
 const AUTHOR_EMAIL = 'recipes@influzer.ai';
 const AUTHOR_NAME = 'Influzer';
 
@@ -341,16 +343,21 @@ async function seedOne(db, authorId, adminId, recipeDef) {
   // Prefer stable slug from hint
   const desiredSlug = recipeDef.slugHint;
   const existing = await findBySlug(db, desiredSlug);
-  if (existing && existing.status === 'published' && existing.published_revision_id) {
+  if (
+    existing &&
+    existing.status === 'published' &&
+    existing.published_revision_id &&
+    !FORCE
+  ) {
     return { slug: desiredSlug, action: 'skipped-exists' };
   }
 
   if (DRY_RUN) {
-    return { slug: desiredSlug, action: 'dry-run' };
+    return { slug: desiredSlug, action: FORCE ? 'dry-run-force' : 'dry-run' };
   }
 
   if (existing) {
-    // Remove incomplete prior seed attempt so we can recreate cleanly
+    // Replace prior seed row (cascade removes revisions/blocks)
     await _internals.dbRun(db, 'DELETE FROM recipes WHERE id = ?', [existing.id]);
   }
 

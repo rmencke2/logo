@@ -63,9 +63,15 @@ function getClientIp(req) {
   return req.ip || req.connection?.remoteAddress || 'unknown';
 }
 
-function cleanText(input, maxLen) {
+function cleanText(input, maxLen, { allowNewlines = false } = {}) {
   if (typeof input !== 'string') return '';
-  return input.replace(/[\u0000-\u001F\u007F]/g, '').trim().slice(0, maxLen);
+  let value = input.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+  if (allowNewlines) {
+    value = value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  } else {
+    value = value.replace(/[\t\n\r]+/g, ' ');
+  }
+  return value.trim().slice(0, maxLen);
 }
 
 function slugify(value) {
@@ -286,7 +292,7 @@ function parseBlocks(raw) {
       sort_order: i,
       block_type: type,
       title: cleanText(String(b?.title || ''), 160),
-      body: cleanText(String(b?.body || ''), MAX_BLOCK_BODY),
+      body: cleanText(String(b?.body || ''), MAX_BLOCK_BODY, { allowNewlines: true }),
       language: type === 'instruction' ? '' : cleanText(String(b?.language || ''), 40),
     };
   });
@@ -297,11 +303,11 @@ function validateRecipePayload(body, { requireBlocks = true } = {}) {
   const title = cleanText(body?.title, MAX_TITLE);
   const summary = cleanText(body?.summary, MAX_SUMMARY);
   const useCase = cleanText(body?.use_case, 60);
-  const prerequisites = cleanText(body?.prerequisites, MAX_MD);
-  const permissions = cleanText(body?.permissions, MAX_MD);
-  const expectedResult = cleanText(body?.expected_result, MAX_MD);
-  const sampleOutput = cleanText(body?.sample_output, MAX_MD);
-  const troubleshooting = cleanText(body?.troubleshooting, MAX_MD);
+  const prerequisites = cleanText(body?.prerequisites, MAX_MD, { allowNewlines: true });
+  const permissions = cleanText(body?.permissions, MAX_MD, { allowNewlines: true });
+  const expectedResult = cleanText(body?.expected_result, MAX_MD, { allowNewlines: true });
+  const sampleOutput = cleanText(body?.sample_output, MAX_MD, { allowNewlines: true });
+  const troubleshooting = cleanText(body?.troubleshooting, MAX_MD, { allowNewlines: true });
   const sourceRepoCheck = validateExternalUrl(body?.source_repo_url);
   const lastTestedAt = cleanText(body?.last_tested_at, 32);
   const testedClientVersions = cleanText(body?.tested_client_versions, 400);

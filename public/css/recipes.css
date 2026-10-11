@@ -327,6 +327,7 @@
 
 .recipe-block__body--code {
   padding: 0;
+  position: relative;
 }
 
 .recipe-block__body--code pre,
@@ -335,11 +336,44 @@
   margin: 0;
   padding: 1rem;
   overflow-x: auto;
+  overflow-y: hidden;
   background: #12141a;
   color: #e8eaef;
   font-family: var(--hp-mono);
   font-size: 0.82rem;
-  line-height: 1.5;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+  max-height: 14.5rem;
+}
+
+.recipe-block.is-expanded .recipe-block__body--code pre,
+.recipe-block.is-expanded .recipe-code {
+  max-height: none;
+  overflow-y: visible;
+}
+
+.recipe-block__fade {
+  display: none;
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.75rem;
+  background: linear-gradient(to bottom, rgba(18, 20, 26, 0), #12141a 85%);
+}
+
+.recipe-block.is-clamped:not(.is-expanded) .recipe-block__fade {
+  display: block;
+}
+
+.recipe-block__head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
 }
 
 .recipe-md__code {
