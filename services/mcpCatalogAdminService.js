@@ -486,15 +486,24 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
         req.body || {},
         req.user?.email || req.user?.name || 'admin',
       );
+      const slug = result.slug || result.server?.slug;
       let message = `Added ${result.server.name} to the catalog`;
       if (result.emailSent) {
-        message += '. Approval email sent to submitter.';
+        message +=
+          '. Approval email sent to submitter (includes Sponsored placement + Share a recipe CTAs).';
       } else if (result.emailError) {
         message += `. Warning: approval email failed (${result.emailError}).`;
       }
       res.json({
         success: true,
         message,
+        nextSteps: slug
+          ? {
+              promoteUrl: `/mcp/promote?slug=${encodeURIComponent(slug)}`,
+              recipeUrl: `/recipes/new?server=${encodeURIComponent(slug)}`,
+              listingUrl: result.pageUrl,
+            }
+          : null,
         ...result,
       });
     } catch (err) {
