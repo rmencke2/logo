@@ -4,6 +4,16 @@
   const submit = document.getElementById('promoteSubmit');
   if (!form) return;
 
+  try {
+    const params = new URLSearchParams(window.location.search || '');
+    const slug = (params.get('slug') || '').trim();
+    if (slug && form.elements.namedItem('slug') && !form.elements.namedItem('slug').value) {
+      form.elements.namedItem('slug').value = slug;
+    }
+  } catch {
+    /* ignore */
+  }
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());

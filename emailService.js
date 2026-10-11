@@ -486,27 +486,44 @@ async function sendMcpFeedbackEmail({ submission, note }) {
   }
 }
 
-async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
-  ensureMcpEmailTransportReady();
+function buildMcpApprovalEmailContent({ submission, server, pageUrl, baseUrl } = {}) {
+  const base = String(baseUrl || process.env.BASE_URL || 'https://www.influzer.ai').replace(
+    /\/$/,
+    '',
+  );
+  const listingPath = pageUrl || (server?.slug ? `/mcp/${server.slug}` : '/mcp');
+  const listingUrl = `${base}${listingPath.startsWith('/') ? listingPath : `/${listingPath}`}`;
+  const greeting = submission?.submitterName || 'there';
+  const serverName = server?.name || submission?.serverName || 'your MCP server';
+  const slug = String(server?.slug || '').trim();
+  const toolCount = Array.isArray(server?.tools) ? server.tools.length : 0;
 
-  const to = String(submission.submitterEmail || '').trim();
-  if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
-    throw new Error('Submitter email is missing or invalid');
+  let priceUsd = 249;
+  try {
+    const { getPromoteOffer } = require('./services/mcpPromoteService');
+    priceUsd = getPromoteOffer().product.price_usd || priceUsd;
+  } catch {
+    /* keep default */
   }
 
-  const base = (process.env.BASE_URL || 'https://www.influzer.ai').replace(/\/$/, '');
-  const listingUrl = `${base}${pageUrl}`;
-  const fromAddress = getFromAddress();
-  const greeting = submission.submitterName || 'there';
-  const serverName = server.name || submission.serverName;
-  const toolCount = Array.isArray(server.tools) ? server.tools.length : 0;
+  const promoteUrl = slug
+    ? `${base}/mcp/promote?slug=${encodeURIComponent(slug)}`
+    : `${base}/mcp/promote`;
+  const recipeUrl = slug
+    ? `${base}/recipes/new?server=${encodeURIComponent(slug)}`
+    : `${base}/recipes/new`;
+  const recipesBrowseUrl = slug
+    ? `${base}/recipes?server=${encodeURIComponent(slug)}`
+    : `${base}/recipes`;
 
-  const mailOptions = {
-    from: fromAddress,
-    to,
-    replyTo: process.env.MCP_SUBMISSION_EMAIL || process.env.EMAIL_USER || undefined,
-    subject: `Your MCP server is live on Influzer.ai — ${serverName}`,
-    html: `
+  const nextSteps = {
+    promoteUrl,
+    recipeUrl,
+    recipesBrowseUrl,
+    priceUsd,
+  };
+
+  const html = `
       <!DOCTYPE html>
       <html>
         <body style="font-family:Arial,sans-serif;line-height:1.6;color:#333;">
@@ -519,38 +536,109 @@ async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
             </p>
             <p style="word-break:break-all;font-size:14px;color:#555;">${escapeHtml(listingUrl)}</p>
             <ul style="font-size:14px;color:#444;padding-left:20px;">
-              <li><strong>Category:</strong> ${escapeHtml(server.category || submission.category || '—')}</li>
+              <li><strong>Category:</strong> ${escapeHtml(server?.category || submission?.category || '—')}</li>
               <li><strong>Tools indexed:</strong> ${toolCount}</li>
             </ul>
-            <p style="font-size:14px;color:#666;">Share the link with your users or add it to your docs. If anything looks wrong, reply to this email.</p>
+
+            <div style="margin:28px 0 8px;padding:18px 18px 8px;background:#f5f3ff;border:1px solid #e0e7ff;border-radius:12px;">
+              <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#4f46e5;font-weight:700;">Grow the listing</p>
+              <p style="margin:0 0 14px;font-size:15px;color:#312e81;">
+                Directory listing is free. If you want more visibility — or a practical walkthrough for users — these next steps help:
+              </p>
+              <div style="margin:0 0 14px;padding:14px;background:#fff;border-radius:10px;">
+                <p style="margin:0 0 6px;font-size:16px;font-weight:700;color:#18181b;">Promote with a labeled Sponsored placement</p>
+                <p style="margin:0 0 12px;font-size:14px;color:#52525b;">
+                  $${priceUsd}/month for a labeled top spot on the homepage, /mcp, /webmcp, and the handshake scoreboard. Rank is not for sale — this is advertising.
+                </p>
+                <a href="${escapeHtml(promoteUrl)}" style="display:inline-block;padding:10px 18px;background:#18181b;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">See Sponsored placements →</a>
+              </div>
+              <div style="margin:0 0 14px;padding:14px;background:#fff;border-radius:10px;">
+                <p style="margin:0 0 6px;font-size:16px;font-weight:700;color:#18181b;">Share a recipe using ${escapeHtml(serverName)}</p>
+                <p style="margin:0 0 12px;font-size:14px;color:#52525b;">
+                  Publish a short how-to that shows a real task with your server (and others). Recipes help developers get something working and link back to your listing.
+                </p>
+                <a href="${escapeHtml(recipeUrl)}" style="display:inline-block;padding:10px 18px;background:#6366f1;color:#fff;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Share a recipe →</a>
+                <p style="margin:10px 0 0;font-size:13px;"><a href="${escapeHtml(recipesBrowseUrl)}" style="color:#4f46e5;text-decoration:none;">Browse recipes →</a></p>
+              </div>
+            </div>
+
+            <p style="font-size:14px;color:#666;">Share the listing link with your users or add it to your docs. If anything looks wrong, reply to this email.</p>
             <p style="margin-top:28px;font-size:13px;color:#888;">— Influzer.ai MCP Directory</p>
           </div>
         </body>
       </html>
-    `,
-    text: [
-      `Hi ${greeting},`,
-      '',
-      `Thanks for submitting ${serverName}. We've reviewed and published it in the Influzer.ai MCP server directory.`,
-      '',
-      `View your listing: ${listingUrl}`,
-      '',
-      `Category: ${server.category || submission.category || '—'}`,
-      `Tools indexed: ${toolCount}`,
-      '',
-      'If anything looks wrong, reply to this email.',
-      '',
-      '— Influzer.ai MCP Directory',
-    ].join('\n'),
+    `;
+
+  const text = [
+    `Hi ${greeting},`,
+    '',
+    `Thanks for submitting ${serverName}. We've reviewed and published it in the Influzer.ai MCP server directory.`,
+    '',
+    `View your listing: ${listingUrl}`,
+    '',
+    `Category: ${server?.category || submission?.category || '—'}`,
+    `Tools indexed: ${toolCount}`,
+    '',
+    'Grow the listing',
+    '',
+    `1) Promote with a labeled Sponsored placement ($${priceUsd}/mo)`,
+    '   Labeled top spot on the homepage, /mcp, /webmcp, and handshake scoreboard. Rank is not for sale.',
+    `   ${promoteUrl}`,
+    '',
+    `2) Share a recipe using ${serverName}`,
+    '   A short how-to that helps developers get something working and links back to your listing.',
+    `   ${recipeUrl}`,
+    `   Browse recipes: ${recipesBrowseUrl}`,
+    '',
+    'If anything looks wrong, reply to this email.',
+    '',
+    '— Influzer.ai MCP Directory',
+  ].join('\n');
+
+  return {
+    subject: `Your MCP server is live on Influzer.ai — ${serverName}`,
+    html,
+    text,
+    listingUrl,
+    nextSteps,
+  };
+}
+
+async function sendMcpApprovalEmail({ submission, server, pageUrl }) {
+  ensureMcpEmailTransportReady();
+
+  const to = String(submission.submitterEmail || '').trim();
+  if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    throw new Error('Submitter email is missing or invalid');
+  }
+
+  const content = buildMcpApprovalEmailContent({ submission, server, pageUrl });
+  const fromAddress = getFromAddress();
+
+  const mailOptions = {
+    from: fromAddress,
+    to,
+    replyTo: process.env.MCP_SUBMISSION_EMAIL || process.env.EMAIL_USER || undefined,
+    subject: content.subject,
+    html: content.html,
+    text: content.text,
   };
 
   try {
     const info = await deliverEmail(mailOptions);
     console.log('✅ MCP approval email sent to submitter');
     console.log('   To:', to);
-    console.log('   Listing:', listingUrl);
+    console.log('   Listing:', content.listingUrl);
+    console.log('   Promote CTA:', content.nextSteps.promoteUrl);
+    console.log('   Recipe CTA:', content.nextSteps.recipeUrl);
     console.log('   Message ID:', info.messageId || '(none)');
-    return { success: true, messageId: info.messageId, to, listingUrl };
+    return {
+      success: true,
+      messageId: info.messageId,
+      to,
+      listingUrl: content.listingUrl,
+      nextSteps: content.nextSteps,
+    };
   } catch (error) {
     console.error('❌ MCP approval email failed:', error.message);
     if (error.response) console.error('   SMTP response:', error.response);
@@ -1162,6 +1250,7 @@ module.exports = {
   sendMcpSubmissionEmail,
   sendMcpFeedbackEmail,
   sendMcpApprovalEmail,
+  buildMcpApprovalEmailContent,
   sendBlogNewsletterEmail,
   sendWebmcpScanReportEmail,
   buildWebmcpScanReportHtml,

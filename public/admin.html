@@ -2231,7 +2231,13 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Approve failed');
         closeModal('mcpReviewModal');
-        alert(`${data.message}\n\nLive at ${data.pageUrl}`);
+        const next = data.nextSteps || {};
+        const extras = [
+          data.pageUrl ? `Live listing: ${data.pageUrl}` : '',
+          next.promoteUrl ? `Offer Sponsored ad: ${next.promoteUrl}` : '',
+          next.recipeUrl ? `Invite a recipe: ${next.recipeUrl}` : '',
+        ].filter(Boolean);
+        alert([data.message, '', ...extras].join('\n'));
         loadMcpSubmissions();
       } catch (err) {
         alert(err.message);
