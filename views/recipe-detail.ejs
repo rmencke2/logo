@@ -106,12 +106,18 @@
                 <%= block.title || (block.block_type === 'instruction' ? 'Step' : block.block_type) %>
                 <% if (block.language) { %> · <%= block.language %><% } %>
               </span>
-              <% if (block.block_type !== 'instruction') { %>
-                <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" data-copy-block>Copy</button>
-              <% } %>
+              <div class="recipe-block__head-actions">
+                <% if (block.block_type !== 'instruction') { %>
+                  <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" data-expand-block hidden aria-expanded="false">Expand</button>
+                  <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" data-copy-block>Copy</button>
+                <% } %>
+              </div>
             </div>
             <div class="recipe-block__body<%= block.block_type !== 'instruction' ? ' recipe-block__body--code' : '' %>">
               <%- block.body_html %>
+              <% if (block.block_type !== 'instruction') { %>
+                <div class="recipe-block__fade" aria-hidden="true"></div>
+              <% } %>
             </div>
           </div>
         <% }) %>
@@ -209,6 +215,29 @@
             }
           });
         });
+
+        function syncCodeBlockExpand() {
+          document.querySelectorAll('.recipe-block[data-block-type]:not([data-block-type="instruction"])').forEach(function (block) {
+            const pre = block.querySelector('pre');
+            const btn = block.querySelector('[data-expand-block]');
+            if (!pre || !btn) return;
+            const needsClamp = pre.scrollHeight > pre.clientHeight + 8;
+            block.classList.toggle('is-clamped', needsClamp || block.classList.contains('is-expanded'));
+            btn.hidden = !(needsClamp || block.classList.contains('is-expanded'));
+          });
+        }
+
+        document.querySelectorAll('[data-expand-block]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const block = btn.closest('.recipe-block');
+            const expanded = block.classList.toggle('is-expanded');
+            btn.textContent = expanded ? 'Collapse' : 'Expand';
+            btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            syncCodeBlockExpand();
+          });
+        });
+        syncCodeBlockExpand();
+        window.addEventListener('resize', syncCodeBlockExpand);
 
         document.querySelectorAll('[data-recipe-server-link]').forEach(function (a) {
           a.addEventListener('click', function () {

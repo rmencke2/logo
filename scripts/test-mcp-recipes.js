@@ -136,6 +136,23 @@ async function main() {
   );
   assert.ok(secretValidation.errors.some((e) => /secret|key|credential/i.test(e)));
 
+  const multiline = validateRecipePayload(
+    validPayload({
+      blocks: [
+        {
+          block_type: 'config',
+          title: 'mcp.json',
+          language: 'json',
+          body: '{\n  "mcpServers": {\n    "x": { "url": "https://example.com/mcp" }\n  }\n}',
+        },
+      ],
+      prerequisites: '- one\n- two',
+    }),
+  );
+  assert.equal(multiline.errors.length, 0);
+  assert.match(multiline.data.blocks[0].body, /\n/);
+  assert.match(multiline.data.prerequisites, /\n/);
+
   // —— Ownership / create / submit ——
   const authorId = await createUser(db, { email: 'author@example.com', name: 'Author' });
   const otherId = await createUser(db, { email: 'other@example.com', name: 'Other' });
