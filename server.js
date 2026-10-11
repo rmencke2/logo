@@ -87,7 +87,7 @@ const PORT = process.env.PORT || 4000;
     initializeUtilityService(app);
 
     // 8. Admin service (user management, monitoring)
-    initializeAdminService(app);
+    await initializeAdminService(app);
     
     // 404 catch-all (must be after all valid routes)
     app.use((req, res) => {
