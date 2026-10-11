@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      noindex: true,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page recipes-page">
+    <%- include('partials/home-header') %>
+    <main class="recipes-main">
+      <header class="recipes-hero">
+        <p class="recipes-hero__kicker">MCP Recipes</p>
+        <h1><%= mode === 'edit' ? 'Edit recipe' : 'Share a recipe' %></h1>
+        <p class="recipes-hero__lead">
+          Submissions need original or authorized content and must not include credentials.
+          New recipes and edits to published recipes require admin review. Automated secret detection
+          cannot guarantee a submission is secret-free — double-check placeholders.
+        </p>
+        <p class="recipe-note">
+          Missing a server?
+          <a href="/mcp/submit">Submit it to the directory</a> first, then come back.
+          <% if (mode === 'edit' && recipe) { %>
+            · Status: <strong><%= recipe.status %></strong>
+            <% if (recipe.pending_revision && recipe.pending_revision.moderation_status === 'submitted') { %>
+              · Awaiting review
+            <% } %>
+            <% if (recipe.working_revision && recipe.working_revision.moderation_feedback) { %>
+              · Feedback: <%= recipe.working_revision.moderation_feedback %>
+            <% } %>
+          <% } %>
+        </p>
+      </header>
+
+      <div class="recipe-form__feedback" id="recipeFormFeedback" role="status"></div>
+
+      <form class="recipe-form" id="recipeForm" novalidate>
+        <fieldset>
+          <legend>Basics</legend>
+          <div class="recipe-form__grid">
+            <label class="recipe-form__field recipe-form__field--wide">
+              Title (outcome-focused)
+              <input type="text" name="title" required maxlength="160" placeholder="Create a weekly engineering update with GitHub and Slack" />
+            </label>
+            <label class="recipe-form__field recipe-form__field--wide">
+              Short summary
+              <textarea name="summary" required maxlength="400" rows="3" placeholder="What someone will accomplish and which servers are involved."></textarea>
+            </label>
+            <label class="recipe-form__field">
+              Use case
+              <select name="use_case" required>
+                <option value="">Select…</option>
+                <% useCases.forEach(function(uc) { %>
+                  <option value="<%= uc %>"><%= uc %></option>
+                <% }) %>
+              </select>
+            </label>
+            <label class="recipe-form__field">
+              Source repository URL (optional)
+              <input type="url" name="source_repo_url" maxlength="500" placeholder="https://github.com/…" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>MCP servers</legend>
+          <div class="recipe-ac">
+            <label class="recipe-form__field">
+              Search directory
+              <input type="search" id="serverSearch" autocomplete="off" placeholder="Type a server name…" />
+            </label>
+            <ul class="recipe-ac__list" id="serverSearchResults"></ul>
+          </div>
+          <div class="recipe-server-picks" id="serverPicks"></div>
+          <p class="recipe-form__help">Select one or more existing directory servers. <a href="/mcp/submit">Server missing?</a></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Compatible clients</legend>
+          <p class="recipe-form__help">Author-reported only — does not mean Influzer verified compatibility.</p>
+          <div class="recipe-clients" id="clientChecks">
+            <% compatibleClients.forEach(function(c) { %>
+              <label><input type="checkbox" name="compatible_clients" value="<%= c %>" /> <%= c %></label>
+            <% }) %>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Prerequisites & permissions</legend>
+          <div class="recipe-form__grid">
+            <label class="recipe-form__field recipe-form__field--wide">
+              Prerequisites (Markdown OK)
+              <textarea name="prerequisites" rows="4" maxlength="12000" placeholder="- Accounts needed&#10;- Packages to install"></textarea>
+            </label>
+            <label class="recipe-form__field recipe-form__field--wide">
+              Required permissions
+              <textarea name="permissions" rows="3" maxlength="12000" placeholder="OAuth scopes, repo access, etc. Use placeholders for secrets."></textarea>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Setup steps</legend>
+          <div class="recipe-blocks-editor" id="blocksEditor"></div>
+          <div class="recipe-form__actions">
+            <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" id="addInstruction">+ Instruction</button>
+            <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" id="addCode">+ Code</button>
+            <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" id="addConfig">+ Config</button>
+            <button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small" id="addPrompt">+ Prompt</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Results & testing</legend>
+          <div class="recipe-form__grid">
+            <label class="recipe-form__field recipe-form__field--wide">
+              Expected result
+              <textarea name="expected_result" rows="3" maxlength="12000"></textarea>
+            </label>
+            <label class="recipe-form__field recipe-form__field--wide">
+              Sample output (optional)
+              <textarea name="sample_output" rows="3" maxlength="12000"></textarea>
+            </label>
+            <label class="recipe-form__field recipe-form__field--wide">
+              Troubleshooting (optional)
+              <textarea name="troubleshooting" rows="3" maxlength="12000"></textarea>
+            </label>
+            <label class="recipe-form__field">
+              <span><input type="checkbox" name="author_reports_tested" value="1" /> I tested this recipe</span>
+            </label>
+            <label class="recipe-form__field">
+              Last tested (YYYY-MM-DD)
+              <input type="date" name="last_tested_at" />
+            </label>
+            <label class="recipe-form__field">
+              Tested client versions
+              <input type="text" name="tested_client_versions" maxlength="400" placeholder="Cursor 1.2, Claude Desktop…" />
+            </label>
+            <label class="recipe-form__field">
+              Tested server versions
+              <input type="text" name="tested_server_versions" maxlength="400" />
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="recipe-form__actions">
+          <button type="submit" class="recipe-btn recipe-btn--ghost" data-action="draft">Save draft</button>
+          <button type="submit" class="recipe-btn recipe-btn--primary" data-action="submit">Submit for review</button>
+          <% if (mode === 'edit' && recipe) { %>
+            <a class="recipe-btn recipe-btn--ghost" href="/recipes/<%= recipe.slug %>/preview">Preview</a>
+          <% } %>
+          <a class="recipe-btn recipe-btn--ghost" href="/recipes/mine">Cancel</a>
+        </div>
+      </form>
+    </main>
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('influzer-theme') === 'dark') document.body.classList.add('dark');
+        } catch (e) {}
+
+        const mode = <%- JSON.stringify(mode) %>;
+        const existing = <%- JSON.stringify(recipe ? (recipe.working_revision || recipe.revision) : null) %>;
+        const recipeId = <%- JSON.stringify(recipe ? recipe.id : null) %>;
+        const recipeSlug = <%- JSON.stringify(recipe ? recipe.slug : null) %>;
+        const prefillServer = <%- JSON.stringify(prefillServer || '') %>;
+
+        function track(name, params) {
+          try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch (e) {}
+        }
+        track('recipe_submission_started', { mode: mode });
+
+        const form = document.getElementById('recipeForm');
+        const feedback = document.getElementById('recipeFormFeedback');
+        const picksEl = document.getElementById('serverPicks');
+        const resultsEl = document.getElementById('serverSearchResults');
+        const blocksEl = document.getElementById('blocksEditor');
+        let selectedServers = [];
+        let submitAction = 'draft';
+
+        function showFeedback(msg, ok) {
+          feedback.textContent = msg;
+          feedback.className = 'recipe-form__feedback ' + (ok ? 'is-ok' : 'is-error');
+        }
+
+        function renderPicks() {
+          picksEl.innerHTML = '';
+          selectedServers.forEach(function (s) {
+            const chip = document.createElement('span');
+            chip.className = 'recipe-server-pick';
+            chip.innerHTML = '<span></span><button type="button" aria-label="Remove">&times;</button>';
+            chip.querySelector('span').textContent = s.name || s.slug;
+            chip.querySelector('button').addEventListener('click', function () {
+              selectedServers = selectedServers.filter(function (x) { return x.slug !== s.slug; });
+              renderPicks();
+            });
+            picksEl.appendChild(chip);
+          });
+        }
+
+        function addServer(s) {
+          if (selectedServers.some(function (x) { return x.slug === s.slug; })) return;
+          selectedServers.push({ slug: s.slug, name: s.name || s.slug });
+          renderPicks();
+          resultsEl.classList.remove('is-open');
+          document.getElementById('serverSearch').value = '';
+        }
+
+        let searchTimer = null;
+        document.getElementById('serverSearch').addEventListener('input', function (e) {
+          clearTimeout(searchTimer);
+          const q = e.target.value.trim();
+          if (q.length < 1) {
+            resultsEl.classList.remove('is-open');
+            return;
+          }
+          searchTimer = setTimeout(async function () {
+            const res = await fetch('/api/recipes/servers/search?q=' + encodeURIComponent(q), { credentials: 'same-origin' });
+            const data = await res.json();
+            resultsEl.innerHTML = '';
+            (data.results || []).forEach(function (s) {
+              const li = document.createElement('li');
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.textContent = s.name + ' (' + s.slug + ')';
+              btn.addEventListener('click', function () { addServer(s); });
+              li.appendChild(btn);
+              resultsEl.appendChild(li);
+            });
+            resultsEl.classList.toggle('is-open', (data.results || []).length > 0);
+          }, 200);
+        });
+
+        function addBlock(type, data) {
+          const wrap = document.createElement('div');
+          wrap.className = 'recipe-block-editor';
+          wrap.dataset.type = type;
+          wrap.innerHTML =
+            '<div class="recipe-block-editor__row">' +
+            '<select class="block-type">' +
+            '<option value="instruction">Instruction</option>' +
+            '<option value="code">Code</option>' +
+            '<option value="config">Config</option>' +
+            '<option value="prompt">Prompt</option>' +
+            '</select>' +
+            '<input type="text" class="block-title" maxlength="160" placeholder="Title (optional)" />' +
+            '<button type="button" class="recipe-btn recipe-btn--ghost recipe-btn--small block-remove">Remove</button>' +
+            '</div>' +
+            '<label class="recipe-form__field lang-field" style="display:none;margin-bottom:0.5rem;">Language' +
+            '<input type="text" class="block-lang" maxlength="40" placeholder="json, bash, markdown…" /></label>' +
+            '<textarea class="block-body" rows="5" maxlength="16000" required placeholder="Step content or code (no secrets)"></textarea>';
+          wrap.querySelector('.block-type').value = type;
+          if (data) {
+            wrap.querySelector('.block-title').value = data.title || '';
+            wrap.querySelector('.block-body').value = data.body || '';
+            wrap.querySelector('.block-lang').value = data.language || '';
+          }
+          function syncLang() {
+            const t = wrap.querySelector('.block-type').value;
+            wrap.querySelector('.lang-field').style.display = t === 'instruction' ? 'none' : 'flex';
+          }
+          wrap.querySelector('.block-type').addEventListener('change', syncLang);
+          wrap.querySelector('.block-remove').addEventListener('click', function () { wrap.remove(); });
+          syncLang();
+          blocksEl.appendChild(wrap);
+        }
+
+        document.getElementById('addInstruction').addEventListener('click', function () { addBlock('instruction'); });
+        document.getElementById('addCode').addEventListener('click', function () { addBlock('code'); });
+        document.getElementById('addConfig').addEventListener('click', function () { addBlock('config'); });
+        document.getElementById('addPrompt').addEventListener('click', function () { addBlock('prompt'); });
+
+        form.querySelectorAll('[data-action]').forEach(function (btn) {
+          btn.addEventListener('click', function () { submitAction = btn.dataset.action; });
+        });
+
+        function collectPayload() {
+          const fd = new FormData(form);
+          const clients = [];
+          form.querySelectorAll('input[name="compatible_clients"]:checked').forEach(function (el) {
+            clients.push(el.value);
+          });
+          const blocks = [];
+          blocksEl.querySelectorAll('.recipe-block-editor').forEach(function (wrap) {
+            blocks.push({
+              block_type: wrap.querySelector('.block-type').value,
+              title: wrap.querySelector('.block-title').value,
+              body: wrap.querySelector('.block-body').value,
+              language: wrap.querySelector('.block-lang').value,
+            });
+          });
+          return {
+            title: fd.get('title'),
+            summary: fd.get('summary'),
+            use_case: fd.get('use_case'),
+            source_repo_url: fd.get('source_repo_url'),
+            prerequisites: fd.get('prerequisites'),
+            permissions: fd.get('permissions'),
+            expected_result: fd.get('expected_result'),
+            sample_output: fd.get('sample_output'),
+            troubleshooting: fd.get('troubleshooting'),
+            author_reports_tested: form.querySelector('[name="author_reports_tested"]').checked,
+            last_tested_at: fd.get('last_tested_at') || '',
+            tested_client_versions: fd.get('tested_client_versions'),
+            tested_server_versions: fd.get('tested_server_versions'),
+            compatible_clients: clients,
+            server_slugs: selectedServers.map(function (s) { return s.slug; }),
+            blocks: blocks,
+            submit: submitAction === 'submit',
+          };
+        }
+
+        form.addEventListener('submit', async function (ev) {
+          ev.preventDefault();
+          const payload = collectPayload();
+          showFeedback(payload.submit ? 'Submitting…' : 'Saving…', true);
+          try {
+            const url = recipeId ? '/api/recipes/' + recipeId : '/api/recipes';
+            const method = recipeId ? 'PUT' : 'POST';
+            const res = await fetch(url, {
+              method: method,
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'same-origin',
+              body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error((data.errors && data.errors.join(' ')) || data.error || 'Save failed');
+            if (payload.submit) track('recipe_submitted', { recipe_slug: data.recipe && data.recipe.slug });
+            showFeedback(payload.submit ? 'Submitted for review.' : 'Draft saved.', true);
+            if (!recipeId && data.recipe) {
+              window.location = '/recipes/' + data.recipe.slug + '/edit';
+            } else if (data.recipe && data.recipe.slug !== recipeSlug) {
+              window.location = '/recipes/' + data.recipe.slug + '/edit';
+            }
+          } catch (e) {
+            showFeedback(e.message || 'Save failed', false);
+          }
+        });
+
+        // Prefill
+        if (existing) {
+          form.title.value = existing.title || '';
+          form.summary.value = existing.summary || '';
+          form.use_case.value = existing.use_case || '';
+          form.source_repo_url.value = existing.source_repo_url || '';
+          form.prerequisites.value = existing.prerequisites || '';
+          form.permissions.value = existing.permissions || '';
+          form.expected_result.value = existing.expected_result || '';
+          form.sample_output.value = existing.sample_output || '';
+          form.troubleshooting.value = existing.troubleshooting || '';
+          form.last_tested_at.value = existing.last_tested_at || '';
+          form.tested_client_versions.value = existing.tested_client_versions || '';
+          form.tested_server_versions.value = existing.tested_server_versions || '';
+          form.author_reports_tested.checked = !!existing.author_reports_tested;
+          (existing.compatible_clients || []).forEach(function (c) {
+            const el = form.querySelector('input[name="compatible_clients"][value="' + c + '"]');
+            if (el) el.checked = true;
+          });
+          selectedServers = (existing.servers || []).map(function (s) {
+            return { slug: s.slug, name: s.name };
+          });
+          renderPicks();
+          (existing.blocks || []).forEach(function (b) { addBlock(b.block_type, b); });
+        } else {
+          addBlock('instruction');
+          if (prefillServer) addServer({ slug: prefillServer, name: prefillServer });
+        }
+      })();
+    </script>
+  </body>
+</html>

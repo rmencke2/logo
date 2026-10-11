@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+      noindex: true,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page recipes-page">
+    <%- include('partials/home-header') %>
+    <main class="recipes-main">
+      <header class="recipes-hero">
+        <p class="recipes-hero__kicker">MCP Recipes</p>
+        <h1>My recipes</h1>
+        <p class="recipes-hero__lead">Drafts, submissions awaiting review, and your published recipes.</p>
+        <div class="recipes-hero__actions">
+          <a class="recipe-btn recipe-btn--primary" href="/recipes/new">Share a recipe</a>
+          <a class="recipe-btn recipe-btn--ghost" href="/recipes">Browse recipes</a>
+          <% if (profile) { %>
+            <a class="recipe-btn recipe-btn--ghost" href="<%= profile.profile_url %>">Public profile</a>
+          <% } %>
+        </div>
+      </header>
+
+      <section class="recipe-section">
+        <h2>Contributor profile</h2>
+        <form class="recipe-form" id="profileForm">
+          <div class="recipe-form__grid">
+            <label class="recipe-form__field">
+              Display name
+              <input type="text" name="display_name" maxlength="80" value="<%= profile && profile.name ? profile.name : '' %>" />
+            </label>
+            <label class="recipe-form__field recipe-form__field--wide">
+              Bio
+              <textarea name="bio" rows="3" maxlength="600"><%= profile && profile.bio ? profile.bio : '' %></textarea>
+            </label>
+            <label class="recipe-form__field">
+              Website
+              <input type="url" name="website_url" value="<%= profile && profile.website_url ? profile.website_url : '' %>" />
+            </label>
+            <label class="recipe-form__field">
+              GitHub
+              <input type="url" name="github_url" value="<%= profile && profile.github_url ? profile.github_url : '' %>" />
+            </label>
+            <label class="recipe-form__field">
+              X / Twitter
+              <input type="url" name="twitter_url" value="<%= profile && profile.twitter_url ? profile.twitter_url : '' %>" />
+            </label>
+          </div>
+          <div class="recipe-form__actions">
+            <button type="submit" class="recipe-btn recipe-btn--ghost">Save profile</button>
+            <span class="recipe-note" id="profileStatus" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <% if (!recipes.length) { %>
+        <div class="recipes-status">You have not created any recipes yet. <a href="/recipes/new">Share one</a>.</div>
+      <% } else { %>
+        <div class="recipes-list">
+          <% recipes.forEach(function(recipe) { %>
+            <div class="recipe-row" style="cursor:default;">
+              <h2 class="recipe-row__title"><%= recipe.revision ? recipe.revision.title : recipe.slug %></h2>
+              <p class="recipe-row__summary"><%= recipe.revision ? recipe.revision.summary : '' %></p>
+              <div class="recipe-row__meta">
+                <span class="recipe-pill"><%= recipe.status %></span>
+                <% if (recipe.pending_revision_id && recipe.status === 'published') { %>
+                  <span class="recipe-pill recipe-pill--accent">Edit awaiting review</span>
+                <% } %>
+                <% if (recipe.status === 'published') { %>
+                  <a href="/recipes/<%= recipe.slug %>">View</a>
+                <% } else { %>
+                  <a href="/recipes/<%= recipe.slug %>/preview">Preview</a>
+                <% } %>
+                <a href="/recipes/<%= recipe.slug %>/edit">Edit</a>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </main>
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('influzer-theme') === 'dark') document.body.classList.add('dark');
+        } catch (e) {}
+        document.getElementById('profileForm').addEventListener('submit', async function (ev) {
+          ev.preventDefault();
+          const fd = new FormData(ev.target);
+          const status = document.getElementById('profileStatus');
+          try {
+            const res = await fetch('/api/recipes/profile', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'same-origin',
+              body: JSON.stringify(Object.fromEntries(fd.entries())),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Failed');
+            status.textContent = 'Profile saved.';
+          } catch (e) {
+            status.textContent = e.message || 'Could not save profile.';
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
