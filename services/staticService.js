@@ -52,6 +52,7 @@ const {
   listRecipesForServer,
   getSitemapRecipeEntries,
 } = require('./mcpRecipeService');
+const { getHomeTopServersByTraffic } = require('./mcpListingTrafficService');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -351,13 +352,14 @@ function homeTransportKind(transport) {
   return 'Remote';
 }
 
-function mapHomeServerRow(server) {
+function mapHomeServerRow(server, traffic = null) {
   const toolNames = (server.tools || [])
     .map((tool) => (typeof tool === 'string' ? tool : tool.name || ''))
     .filter(Boolean)
     .join(' ');
   const desc = String(server.description || '').replace(/\s+/g, ' ').trim();
   const isOurs = server.slug === 'influzer-mcp-discovery';
+  const views = traffic?.views || 0;
   return {
     slug: server.slug,
     name: server.name,
@@ -368,18 +370,43 @@ function mapHomeServerRow(server) {
     handshake_svg: server.quality && server.quality.handshake_svg ? server.quality.handshake_svg : '',
     initial: String(server.name || '?').charAt(0).toUpperCase(),
     shortDesc: desc.length > 140 ? `${desc.slice(0, 137)}…` : desc,
+    weeklyViews: views,
+    trafficSource: traffic?.source || 'catalog',
     searchText: [server.name, desc, server.category, toolNames, server.slug]
       .join(' ')
       .toLowerCase(),
   };
 }
 
-function getHomeTopServers(limit = 6) {
-  const preview = getMcpHomepagePreview(limit).servers || [];
-  const discovery = findMcpServerBySlug('influzer-mcp-discovery');
-  const rest = preview.filter((s) => s.slug !== 'influzer-mcp-discovery');
-  const ordered = discovery ? [discovery, ...rest].slice(0, limit) : preview.slice(0, limit);
-  return ordered.map(mapHomeServerRow);
+function formatWeeklyViews(n) {
+  const value = Number(n) || 0;
+  if (value <= 0) return '';
+  if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1).replace(/\.0$/, '')}k views`;
+  return `${value} view${value === 1 ? '' : 's'}`;
+}
+
+async function getHomeTopServers(limit = 6) {
+  try {
+    const { items, trafficCount } = await getHomeTopServersByTraffic(limit, { days: 7 });
+    return {
+      servers: items.map((item) =>
+        mapHomeServerRow(item.server, {
+          views: item.views,
+          source: item.source,
+        }),
+      ),
+      trafficCount,
+      dynamic: trafficCount > 0,
+    };
+  } catch (err) {
+    console.error('Weekly traffic top servers failed, falling back to catalog:', err.message || err);
+    const preview = getMcpHomepagePreview(limit).servers || [];
+    return {
+      servers: preview.slice(0, limit).map((s) => mapHomeServerRow(s)),
+      trafficCount: 0,
+      dynamic: false,
+    };
+  }
 }
 
 function formatBriefSourceTag(article) {
@@ -490,7 +517,8 @@ function getRelatedMcpServers(server, limit = 4) {
 }
 
 async function renderHomepage(req, res) {
-  const topServers = getHomeTopServers(6);
+  const topServersPayload = await getHomeTopServers(6);
+  const topServers = topServersPayload.servers;
   const heroStats = getMcpHeroStats();
   const { featuredPost, morePosts } = getHomeBlogContent();
   const insightPosts = [featuredPost, ...morePosts].filter(Boolean).slice(0, 2);
@@ -531,6 +559,8 @@ async function renderHomepage(req, res) {
     heroStats,
     toolCountDisplay: formatHomeToolCount(heroStats.totalTools),
     topServers,
+    topServersDynamic: topServersPayload.dynamic,
+    formatWeeklyViews,
     homeRecipes,
     categories: ['Databases', 'Search & Web', 'Files & Docs', 'AI & Memory', 'Browser automation'],
     indexingServers,

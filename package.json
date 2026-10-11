@@ -24,6 +24,8 @@
     "test-mcp-install-snippets": "node scripts/test-mcp-install-snippets.js",
     "test-mcp-recipes": "node scripts/test-mcp-recipes.js",
     "test-mcp-approval-email": "node scripts/test-mcp-approval-email.js",
+    "test-mcp-listing-traffic": "node scripts/test-mcp-listing-traffic.js",
+    "mcp-weekly-traffic": "node scripts/send-mcp-weekly-traffic.js",
     "migrate-mcp-recipes": "node scripts/migrate-mcp-recipes.js",
     "seed-mcp-recipes": "node scripts/seed-mcp-recipes.js",
     "test-mcp-skill": "node scripts/test-mcp-skill.js",

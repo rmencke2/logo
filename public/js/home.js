@@ -15,7 +15,7 @@
   const emptyEl = document.getElementById('homeServerEmpty');
   const emptyQuery = document.getElementById('homeEmptyQuery');
   const countEl = document.getElementById('homeServerCount');
-  const defaultHeading = heading ? heading.textContent : 'Top servers this week';
+  const defaultHeading = 'Top servers this week';
 
   function filterServers(query) {
     const q = String(query || '').trim().toLowerCase();

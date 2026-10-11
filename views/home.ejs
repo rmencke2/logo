@@ -165,6 +165,13 @@
             <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
             <a class="home-section__link" href="/mcp">Browse all <%= heroStats.totalServers.toLocaleString() %> →</a>
           </div>
+          <p class="home-section__note" style="margin:-4px 0 12px;">
+            <% if (typeof topServersDynamic !== 'undefined' && topServersDynamic) { %>
+              Ranked by Influzer listing page views over the last 7 days.
+            <% } else { %>
+              Building from live listing traffic — showing catalog leaders until enough visits accumulate.
+            <% } %>
+          </p>
           <div class="home-server-list" id="homeServerList">
             <% topServers.forEach(function(server) { %>
               <a
@@ -184,7 +191,12 @@
                   <div class="home-server-row__desc"><%= server.shortDesc %></div>
                 </div>
                 <div class="home-server-row__meta">
-                  <div class="home-server-row__kind"><%= server.kind %></div>
+                  <% const viewsLabel = typeof formatWeeklyViews === 'function' ? formatWeeklyViews(server.weeklyViews) : ''; %>
+                  <% if (viewsLabel) { %>
+                    <div class="home-server-row__kind"><%= viewsLabel %></div>
+                  <% } else { %>
+                    <div class="home-server-row__kind"><%= server.kind %></div>
+                  <% } %>
                   <div class="home-server-row__cat"><%= server.category %></div>
                 </div>
               </a>

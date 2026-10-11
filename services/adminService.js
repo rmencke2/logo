@@ -36,7 +36,7 @@ async function requireAdmin(req, res, next) {
  * Initialize admin service
  * @param {express.Application} app - Express application instance
  */
-function initializeAdminService(app) {
+async function initializeAdminService(app) {
   // Serve admin dashboard page (requires auth + admin)
   app.get('/admin', async (req, res, next) => {
     // Check authentication first
@@ -435,6 +435,9 @@ function initializeAdminService(app) {
   });
 
   registerMcpCatalogAdminRoutes(app, requireAdmin);
+
+  const { initializeMcpListingTrafficService } = require('./mcpListingTrafficService');
+  await initializeMcpListingTrafficService(app, requireAdmin);
 
   app.get('/admin/api/mcp-discovery/analytics', requireAuth, requireAdmin, async (req, res) => {
     try {
