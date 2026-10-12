@@ -1126,7 +1126,42 @@ ${itemsXml}
     'https-mcp-xgr-network-mcp': 'xgr-mcp',
     macaly: 'macaly-cloud',
     'macaly-com': 'macaly-cloud',
+    // Renamed / Smithery-style slugs still crawled by Google
+    'retro-diffusion-retro-diffusion-mcp': 'ai-retrodiffusion-pixel-art',
+    'ambix-ai-ambix-ai': 'ai-ambix-ambix',
   };
+
+  function renderMissingMcpListing(req, res, assetVersion) {
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    return res.status(404).render('mcp-server', {
+      server: null,
+      iconEmoji: '',
+      transportLabel: '',
+      catalogTotals: getMcpCatalogTotals(),
+      relatedServers: [],
+      discoveryPromo: getDiscoveryPromo(),
+      assetVersion,
+      navPath: req.path,
+      noindex: true,
+    });
+  }
+
+  function renderMcpListingPage(req, res, server, serverRecipes, assetVersion) {
+    return res.render('mcp-server', {
+      server,
+      installSnippets: buildInstallSnippets(server),
+      iconEmoji: getMcpIconEmoji(server.icon),
+      transportLabel: transportLabel(server.transport),
+      inTop100: isInTop100(server.slug),
+      sponsored: isSponsoredSlug(server.slug),
+      catalogTotals: getMcpCatalogTotals(),
+      relatedServers: getRelatedMcpServers(server, 4),
+      serverRecipes: Array.isArray(serverRecipes) ? serverRecipes : [],
+      discoveryPromo: getDiscoveryPromo(),
+      assetVersion,
+      navPath: req.path,
+    });
+  }
 
   app.get('/mcp/:slug', async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -1137,43 +1172,37 @@ ${itemsXml}
     if (isReservedMcpPath(req.params.slug)) {
       return res.status(404).render('404', { title: 'Page Not Found' });
     }
-    let server = findMcpServerBySlug(req.params.slug);
+    const catalogServer = findMcpServerBySlug(req.params.slug);
     const assetVersion = getHomeAssetVersion();
-    if (!server) {
-      return res.status(404).render('mcp-server', {
-        server: null,
-        iconEmoji: '',
-        transportLabel: '',
-        catalogTotals: getMcpCatalogTotals(),
-        relatedServers: [],
-        discoveryPromo: getDiscoveryPromo(),
-        assetVersion,
-        navPath: req.path,
-        noindex: true,
-      });
+    if (!catalogServer) {
+      return renderMissingMcpListing(req, res, assetVersion);
     }
-    server = await refreshListingHandshake(server, probeMcpUrl);
-    let serverRecipes = [];
+
+    // Never let handshake / snippets / recipes / EJS blow up into the global
+    // JSON 500 handler — Google indexes that as "Server error (5xx)".
     try {
-      const db = await getDatabase();
-      serverRecipes = await listRecipesForServer(db, server.slug, 8);
+      const server = await refreshListingHandshake(catalogServer, probeMcpUrl);
+      let serverRecipes = [];
+      try {
+        const db = await getDatabase();
+        serverRecipes = await listRecipesForServer(db, server.slug, 8);
+      } catch (err) {
+        console.error('Server recipes load failed:', err.message || err);
+      }
+      return renderMcpListingPage(req, res, server, serverRecipes, assetVersion);
     } catch (err) {
-      console.error('Server recipes load failed:', err.message || err);
+      console.error('MCP listing render failed:', req.params.slug, err.message || err);
+      try {
+        return renderMcpListingPage(req, res, catalogServer, [], assetVersion);
+      } catch (fallbackErr) {
+        console.error(
+          'MCP listing fallback failed:',
+          req.params.slug,
+          fallbackErr.message || fallbackErr,
+        );
+        return renderMissingMcpListing(req, res, assetVersion);
+      }
     }
-    return res.render('mcp-server', {
-      server,
-      installSnippets: buildInstallSnippets(server),
-      iconEmoji: getMcpIconEmoji(server.icon),
-      transportLabel: transportLabel(server.transport),
-      inTop100: isInTop100(server.slug),
-      sponsored: isSponsoredSlug(server.slug),
-      catalogTotals: getMcpCatalogTotals(),
-      relatedServers: getRelatedMcpServers(server, 4),
-      serverRecipes,
-      discoveryPromo: getDiscoveryPromo(),
-      assetVersion,
-      navPath: req.path,
-    });
   });
 
   // Blog post detail
