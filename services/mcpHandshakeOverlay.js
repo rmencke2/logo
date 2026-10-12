@@ -256,17 +256,46 @@ function reattachQuality(server) {
   return attachQuality(copy);
 }
 
+function safeReattachQuality(server) {
+  try {
+    return reattachQuality(server);
+  } catch (err) {
+    console.error('Listing handshake reattach failed:', err.message || err);
+    return server;
+  }
+}
+
+function runListingProbe(probeMcpUrl, url, slug) {
+  return Promise.resolve()
+    .then(() => probeMcpUrl(url))
+    .then((result) => {
+      rememberFromProbe(result, slug);
+      return result;
+    })
+    .catch(() => {
+      rememberHandshake({
+        url,
+        slug,
+        liveStatus: 'unreachable',
+        probedAt: new Date().toISOString(),
+      });
+      return null;
+    });
+}
+
 /**
  * Listing page: if the catalog has no handshake yet, probe once and overlay.
+ * Never block the HTML response longer than the budget — slow remotes used to
+ * surface as Search Console 5xx (nginx/proxy timeout → JSON error middleware).
  */
-async function refreshListingHandshake(server, probeMcpUrl) {
+async function refreshListingHandshake(server, probeMcpUrl, opts = {}) {
   if (!server) return server;
   const url = httpsRemoteUrl(server);
-  if (!url) return reattachQuality(server);
+  if (!url) return safeReattachQuality(server);
 
   const current = server.quality?.live_status;
   if (current === 'live_ok' || current === 'auth_required' || current === 'unreachable') {
-    return reattachQuality(server);
+    return safeReattachQuality(server);
   }
 
   const cached = peekHandshake({ url, slug: server.slug });
@@ -276,23 +305,30 @@ async function refreshListingHandshake(server, probeMcpUrl) {
       cached.endpoint_status === 'auth_required' ||
       cached.endpoint_status === 'unreachable')
   ) {
-    return reattachQuality(server);
+    return safeReattachQuality(server);
   }
 
-  if (typeof probeMcpUrl !== 'function') return reattachQuality(server);
+  if (typeof probeMcpUrl !== 'function') return safeReattachQuality(server);
 
-  try {
-    const result = await probeMcpUrl(url);
-    rememberFromProbe(result, server.slug);
-  } catch {
-    rememberHandshake({
-      url,
-      slug: server.slug,
-      liveStatus: 'unreachable',
-      probedAt: new Date().toISOString(),
-    });
+  const rawBudget = opts.budgetMs ?? process.env.MCP_LISTING_PROBE_BUDGET_MS;
+  const budgetMs = Math.max(1, Number(rawBudget) || 1500);
+  const probePromise = runListingProbe(probeMcpUrl, url, server.slug);
+  let budgetTimer;
+  const winner = await Promise.race([
+    probePromise.then((result) => ({ kind: 'done', result })),
+    new Promise((resolve) => {
+      budgetTimer = setTimeout(() => resolve({ kind: 'timeout' }), budgetMs);
+    }),
+  ]);
+  if (budgetTimer) clearTimeout(budgetTimer);
+
+  if (winner.kind === 'timeout') {
+    // Keep probing in the background so the next request can use the overlay.
+    probePromise.catch(() => {});
+    return safeReattachQuality(server);
   }
-  return reattachQuality(server);
+
+  return safeReattachQuality(server);
 }
 
 function clearHandshakeOverlay() {

@@ -10,6 +10,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const {
+  findMcpServerBySlug,
   getAllMcpServers,
   getSitemapMcpServers,
   getTop100McpServers,
@@ -63,6 +64,16 @@ function main() {
   assert.match(staticSrc, /app\.get\('\/index\.html'/);
   assert.match(staticSrc, /getSitemapMcpServers\(\)/);
   assert.match(staticSrc, /favicon-generator[\s\S]*redirect\(301/);
+  assert.match(staticSrc, /X-Robots-Tag.*noindex/);
+  assert.match(staticSrc, /MCP listing render failed/);
+  assert.match(
+    staticSrc,
+    /retro-diffusion-retro-diffusion-mcp['"]:\s*['"]ai-retrodiffusion-pixel-art['"]/,
+  );
+  assert.ok(
+    findMcpServerBySlug('ai-retrodiffusion-pixel-art'),
+    'GSC 5xx alias target should exist in catalog',
+  );
 
   console.log(
     `SEO indexing tests passed (catalog ${all.length} → sitemap MCP ${sitemapServers.length})`,

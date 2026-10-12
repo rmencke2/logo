@@ -92,6 +92,38 @@ async function main() {
   assert.equal(refreshed.quality.live_status, 'auth_required');
   assert.match(refreshed.quality.handshake_svg, /auth_required/);
 
+  clearHandshakeOverlay();
+  let slowProbeStarted = false;
+  let slowProbeFinished = false;
+  const budgeted = await refreshListingHandshake(
+    attachQuality({
+      slug: 'slow-remote',
+      transport: 'http',
+      mcp_endpoint: 'https://slow.example.com/mcp',
+      tools: [{ name: 'a' }],
+    }),
+    async () => {
+      slowProbeStarted = true;
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      slowProbeFinished = true;
+      return {
+        ok: true,
+        url: 'https://slow.example.com/mcp',
+        live_status: 'live_ok',
+        probed_at: '2026-10-07T00:00:00.000Z',
+        catalog: [],
+      };
+    },
+    { budgetMs: 20 },
+  );
+  assert.equal(slowProbeStarted, true);
+  assert.equal(slowProbeFinished, false);
+  assert.equal(budgeted.quality.live_status, 'not_probed');
+  // Background probe should still complete and populate the overlay.
+  await new Promise((resolve) => setTimeout(resolve, 120));
+  assert.equal(slowProbeFinished, true);
+  assert.equal(peekHandshake({ slug: 'slow-remote' })?.endpoint_status, 'ok');
+
   clearMcpCache();
   const discovery = findMcpServerBySlug('influzer-mcp-discovery');
   assert.ok(discovery);
