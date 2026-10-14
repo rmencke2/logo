@@ -69,6 +69,9 @@ const STANDARD_CATEGORIES = [
 
 let cached;
 let validationStateCache;
+/** Enriched list caches — avoid remapping ~12k servers + handshake SVGs per request. */
+let enrichedAllCache;
+let enrichedTop100Cache;
 
 function readJsonIfExists(filePath) {
   if (!fs.existsSync(filePath)) return null;
@@ -242,11 +245,20 @@ function loadCatalog() {
     categories = manualData.categories || STANDARD_CATEGORIES;
   }
 
+  const bySlug = new Map();
+  for (const server of allServers) {
+    const slug = String(server.slug || '').trim().toLowerCase();
+    if (slug) bySlug.set(slug, server);
+    const id = String(server.id || '').trim().toLowerCase();
+    if (id && id !== slug) bySlug.set(id, server);
+  }
+
   cached = {
     allServers,
     top100Servers,
     categories,
     generatedAt,
+    bySlug,
   };
   return cached;
 }
@@ -277,16 +289,20 @@ function getMcpLastUpdated() {
 }
 
 function getAllMcpServers() {
-  return sortServers(
+  if (enrichedAllCache) return enrichedAllCache;
+  enrichedAllCache = sortServers(
     loadCatalog()
       .allServers.filter((s) => !s.hidden)
       .map((s) => attachQuality(attachSetupInfo(s))),
   );
+  return enrichedAllCache;
 }
 
 function getTop100McpServers() {
+  if (enrichedTop100Cache) return enrichedTop100Cache;
   const { top100Servers } = loadCatalog();
-  return top100Servers.map((s) => attachQuality(attachSetupInfo(s)));
+  enrichedTop100Cache = top100Servers.map((s) => attachQuality(attachSetupInfo(s)));
+  return enrichedTop100Cache;
 }
 
 /**
@@ -318,8 +334,13 @@ function getMcpCategories() {
 }
 
 function findMcpServerBySlug(slug) {
-  const server = getAllMcpServers().find((s) => s.slug === slug || s.id === slug);
-  return server ? attachBranding(attachQuality(server)) : null;
+  const key = String(slug || '')
+    .trim()
+    .toLowerCase();
+  if (!key) return null;
+  const server = loadCatalog().bySlug.get(key);
+  if (!server || server.hidden) return null;
+  return attachBranding(attachQuality(attachSetupInfo(server)));
 }
 
 function normalizeMcpEndpoint(url) {
@@ -376,9 +397,15 @@ function withDisplay(servers) {
 }
 
 function getMcpHeroStats() {
-  const all = getAllMcpServers();
-  const totalTools = all.reduce((sum, s) => sum + (s.tools?.length || 0), 0);
-  const serversWithIndexedTools = all.filter((s) => hasIndexedTools(s)).length;
+  // Counts only — never attachQuality/SVG across the full catalog (that pegged prod CPU).
+  const all = loadCatalog().allServers.filter((s) => !s.hidden);
+  let totalTools = 0;
+  let serversWithIndexedTools = 0;
+  for (const server of all) {
+    const n = Array.isArray(server.tools) ? server.tools.length : 0;
+    totalTools += n;
+    if (n > 0) serversWithIndexedTools += 1;
+  }
   return {
     totalServers: all.length,
     totalTools,
@@ -520,6 +547,8 @@ function isInTop100(slug) {
 function clearMcpCache() {
   cached = null;
   validationStateCache = null;
+  enrichedAllCache = null;
+  enrichedTop100Cache = null;
 }
 
 function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {

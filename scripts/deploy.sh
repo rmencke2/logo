@@ -105,16 +105,30 @@ if ! node scripts/verify-native-deps.js; then
 fi
 
 echo "==> Restarting PM2 app: ${PM2_APP_NAME}"
-if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
-  pm2 restart "${PM2_APP_NAME}"
+if [[ -f "${PROJECT_ROOT}/ecosystem.config.cjs" ]]; then
+  if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+    pm2 delete "${PM2_APP_NAME}" >/dev/null 2>&1 || true
+  fi
+  pm2 start "${PROJECT_ROOT}/ecosystem.config.cjs"
 else
-  pm2 start server.js --name "${PM2_APP_NAME}"
+  if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+    pm2 restart "${PM2_APP_NAME}"
+  else
+    pm2 start server.js --name "${PM2_APP_NAME}"
+  fi
 fi
 
 pm2 save
 
 echo "==> PM2 status"
 pm2 status "${PM2_APP_NAME}"
+
+if [[ "${SERVER_MODE}" == 1 ]] && [[ -x "${SCRIPT_DIR}/install-watchdog.sh" ]]; then
+  echo "==> Ensuring health watchdog cron"
+  # Default alert inbox; override with WATCHDOG_ALERT_EMAIL in the environment.
+  WATCHDOG_ALERT_EMAIL="${WATCHDOG_ALERT_EMAIL:-mencke@gmail.com}" \
+    "${SCRIPT_DIR}/install-watchdog.sh" || echo "WARN: watchdog install failed"
+fi
 
 echo "==> Current git revision"
 git rev-parse --short HEAD

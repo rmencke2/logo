@@ -32,6 +32,10 @@ const { isEmailConfigured, isResendConfigured, getTransporter } = require('./ema
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Liveness before heavy init — watchdog curls this when the event loop is wedged.
+const { registerHealthRoutes } = require('./services/healthService');
+registerHealthRoutes(app);
+
 // Initialize all services
 (async () => {
   try {
