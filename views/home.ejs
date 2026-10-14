@@ -154,6 +154,12 @@
             <span class="home-tool__desc">Top 100 × last handshake. Sponsored pins are ads — they do not buy live_ok.</span>
             <code class="home-tool__code">/mcp/scoreboard</code>
           </a>
+          <a class="home-tool" href="/modelspend">
+            <span class="home-tool__kicker">Open source</span>
+            <span class="home-tool__name">ModelSpend</span>
+            <span class="home-tool__desc">Route agents to the cheapest suitable LLM. Cost per project &amp; agent. Star it on GitHub.</span>
+            <code class="home-tool__code">github.com/rmencke2/modelspend</code>
+          </a>
         </div>
       </div>
     </section>
@@ -307,6 +313,8 @@
             · <a href="<%= discoveryPromo && discoveryPromo.startersUrl ? discoveryPromo.startersUrl : '/mcp/discovery/starters' %>">Starters</a>
           </p>
         </div>
+
+        <%- include('partials/partner-modelspend', { partnerVariant: 'aside' }) %>
 
         <div class="home-aside-card">
           <h3 class="home-aside-card__title">Built an MCP server?</h3>

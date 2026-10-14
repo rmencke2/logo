@@ -782,6 +782,16 @@ function initializeStaticService(app) {
     res.redirect(301, `/insights${qs}`);
   });
 
+  // ModelSpend — open-source LLM cost router (sister asset)
+  app.get('/modelspend', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.render('modelspend', {
+      assetVersion: getHomeAssetVersion(),
+      navPath: req.path,
+      releaseTag: 'v0.3.0b1',
+    });
+  });
+
   // News index (before /news/:slug)
   app.get('/news', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -1284,6 +1294,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/scoreboard`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/promote`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/mcp/promote/terms`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.55' },
+      { loc: `${SITE_BASE_URL}/modelspend`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.87' },
       { loc: `${SITE_BASE_URL}/recipes`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },

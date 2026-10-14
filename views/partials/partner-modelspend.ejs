@@ -1,0 +1,38 @@
+<%#
+  Sister open-source asset: ModelSpend
+  variant: 'compact' | 'aside' | 'full'
+%>
+<% const variant = typeof partnerVariant !== 'undefined' ? partnerVariant : 'compact'; %>
+<% if (variant === 'aside') { %>
+  <div class="home-aside-card" style="border-color:rgba(19,64,54,0.28);">
+    <h3 class="home-aside-card__title">ModelSpend</h3>
+    <p class="home-aside-card__desc">
+      Open-source LLM cost router — cheapest suitable model, spend per project/agent, hard budgets. Your keys.
+    </p>
+    <div class="home-aside-card__code">github.com/rmencke2/modelspend</div>
+    <a class="home-aside-card__btn" href="/modelspend">Use ModelSpend</a>
+    <p class="home-aside-card__desc" style="margin-top:12px;margin-bottom:0;">
+      <a href="https://github.com/rmencke2/modelspend" rel="noopener noreferrer" target="_blank">Star on GitHub</a>
+      · <a href="https://github.com/rmencke2/modelspend/releases" rel="noopener noreferrer" target="_blank">Releases</a>
+    </p>
+  </div>
+<% } else if (variant === 'full') { %>
+  <section class="partner-modelspend partner-modelspend--full" aria-label="ModelSpend open source">
+    <h2 class="partner-modelspend__title">From the same team</h2>
+    <p class="partner-modelspend__lead">
+      <a href="/modelspend">ModelSpend</a> routes agent LLM calls to the lowest-cost model expected to fit,
+      and shows tokens and dollars per project and agent — Apache-2.0, your API keys.
+    </p>
+    <p class="partner-modelspend__cta">
+      <a href="https://github.com/rmencke2/modelspend" rel="noopener noreferrer" target="_blank">Star on GitHub →</a>
+    </p>
+  </section>
+<% } else { %>
+  <p class="partner-modelspend partner-modelspend--compact">
+    <strong>Open source:</strong>
+    Route agents to the cheapest suitable LLM with
+    <a href="/modelspend">ModelSpend</a>
+    —
+    <a href="https://github.com/rmencke2/modelspend" rel="noopener noreferrer" target="_blank">star the repo</a>.
+  </p>
+<% } %>

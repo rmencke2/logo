@@ -70,6 +70,20 @@ function main() {
     staticSrc,
     /retro-diffusion-retro-diffusion-mcp['"]:\s*['"]ai-retrodiffusion-pixel-art['"]/,
   );
+  assert.match(staticSrc, /app\.get\('\/modelspend'/);
+  assert.match(staticSrc, /\/modelspend['"]/);
+
+  const modelspendTpl = fs.readFileSync(
+    path.join(__dirname, '..', 'views', 'modelspend.ejs'),
+    'utf8',
+  );
+  assert.match(modelspendTpl, /github\.com\/rmencke2\/modelspend/);
+  assert.match(modelspendTpl, /Star on GitHub/);
+  assert.match(modelspendTpl, /ModelSpend/);
+
+  const homeTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'home.ejs'), 'utf8');
+  assert.match(homeTpl, /href="\/modelspend"/);
+  assert.match(homeTpl, /partner-modelspend/);
   assert.ok(
     findMcpServerBySlug('ai-retrodiffusion-pixel-art'),
     'GSC 5xx alias target should exist in catalog',
