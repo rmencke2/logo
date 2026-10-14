@@ -90,6 +90,7 @@ async function initializeCore(app) {
         p === '/favicon-32x32.png' ||
         p === '/apple-touch-icon.png' ||
         p === '/health' ||
+        p === '/healthz' ||
         p === '/robots.txt' ||
         p === '/sitemap.xml'
       ) {

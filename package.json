@@ -49,6 +49,8 @@
     "deploy:remote": "bash scripts/deploy-remote.sh",
     "deploy:prod": "bash scripts/deploy-remote.sh --push",
     "deploy:sync": "bash scripts/deploy-remote.sh --sync",
+    "watchdog:install": "bash scripts/install-watchdog.sh",
+    "test:healthz": "node scripts/test-healthz.js",
     "newsletter:send": "node scripts/send-newsletter.js",
     "email:test": "node scripts/test-email-config.js",
     "newsletter:backfill-mcp": "node scripts/backfill-mcp-submit-newsletter.js",

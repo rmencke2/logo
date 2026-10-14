@@ -11,10 +11,7 @@ const { checkUserLimits } = require('../abuseProtection');
  * @param {express.Application} app - Express application instance
  */
 function initializeUtilityService(app) {
-  // Health check endpoint for service monitoring
-  app.get('/health', (req, res) => {
-    res.json({ status: 'ok' });
-  });
+  // /health and /healthz are registered early in server.js (healthService).
 
   // Get user location from IP address
   app.get('/api/location', async (req, res) => {
