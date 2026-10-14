@@ -81,9 +81,10 @@ if in_cooldown; then
   exit 0
 fi
 
-# If PM2 says the process is stopped/errored, count as failure
+# If PM2 says the process is stopped/errored, count as failure.
+# Note: env must be on `node`, not only on `pm2` (pipes don't inherit VAR= for the RHS).
 pm2_status="$(
-  PM2_APP_NAME="${PM2_APP_NAME}" pm2 jlist 2>/dev/null | node -e '
+  pm2 jlist 2>/dev/null | PM2_APP_NAME="${PM2_APP_NAME}" node -e '
     let raw = "";
     process.stdin.on("data", (d) => { raw += d; });
     process.stdin.on("end", () => {
@@ -98,15 +99,22 @@ pm2_status="$(
     });
   ' 2>/dev/null || echo unknown
 )"
+pm2_status="$(printf '%s' "${pm2_status}" | tr -d '\r' | head -n 1)"
 
 http_code="000"
 if [[ "${pm2_status}" == "online" ]]; then
+  set +e
   http_code="$(
     curl -sS -o /tmp/watchdog-healthz.body -w '%{http_code}' \
       --connect-timeout "${TIMEOUT_S}" \
       --max-time "${TIMEOUT_S}" \
-      "${HEALTH_URL}" 2>/dev/null || echo 000
+      "${HEALTH_URL}" 2>/dev/null
   )"
+  curl_rc=$?
+  set -e
+  if [[ -z "${http_code}" || "${curl_rc}" -ne 0 ]]; then
+    http_code="000"
+  fi
 fi
 
 if [[ "${http_code}" == "200" ]]; then
