@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>ModelSpend — Cheapest suitable LLM routing &amp; cost visibility - Influzer.ai</title>
+    <meta
+      name="description"
+      content="Open-source ModelSpend routes each task to the lowest-cost LLM expected to fit, and shows token spend per project and agent. Your keys. Apache-2.0."
+    />
+    <link rel="canonical" href="https://www.influzer.ai/modelspend" />
+    <%- include('partials/seo-social', {
+      ogTitle: 'ModelSpend — cheapest suitable LLM routing',
+      ogDescription: 'Open-source cost control for LLM agents: route by price and suitability, tag spend by project and agent, hard budgets. Apache-2.0.',
+      ogUrl: 'https://www.influzer.ai/modelspend',
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/modelspend.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page ms-page">
+    <%- include('partials/home-header') %>
+
+    <header class="ms-hero" aria-labelledby="msBrand">
+      <div class="ms-hero__grid" aria-hidden="true"></div>
+      <div class="ms-hero__glow" aria-hidden="true"></div>
+      <div class="ms-hero__inner">
+        <p class="ms-brand" id="msBrand">Model<span>Spend</span></p>
+        <h1 class="ms-headline">Route every agent call to the cheapest LLM that still fits.</h1>
+        <p class="ms-lead">
+          Open-source cost control for LLM usage — your OpenAI, Anthropic, Google, and xAI keys.
+          See spend per project and agent, then route with <code>model=&quot;auto&quot;</code>.
+        </p>
+        <div class="ms-cta">
+          <a
+            class="ms-btn ms-btn--primary"
+            href="https://github.com/rmencke2/modelspend"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Star on GitHub</a>
+          <a
+            class="ms-btn ms-btn--ghost"
+            href="https://github.com/rmencke2/modelspend/releases"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Get the release</a>
+        </div>
+        <p class="ms-meta">Apache-2.0 · Python 3.10+ · beta <%= releaseTag %></p>
+
+        <aside class="ms-visual" aria-hidden="true">
+          <div class="ms-meter">
+            <p class="ms-meter__label">Route preview</p>
+            <div class="ms-meter__row">
+              <span>Task → economy path</span>
+              <strong>$0.0012</strong>
+            </div>
+            <div class="ms-meter__bar"><span></span></div>
+            <p class="ms-meter__note">Tokens first. Cost only when the catalog has a price. Hard budgets refuse before the call.</p>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="ms-section" aria-labelledby="msSeeHeading">
+      <p class="ms-kicker">What you get</p>
+      <h2 id="msSeeHeading">Know the spend. Then spend less.</h2>
+      <p>
+        ModelSpend is built for agents and code that already speak OpenAI-compatible APIs.
+        Tag calls, read the report, set budgets — or pin a model and only measure.
+      </p>
+      <ul class="ms-points">
+        <li>
+          <strong>Cost per project and agent</strong>
+          <span>Tag with project / agent / labels. Report tokens by type, cost, and overhead from retries and escalations.</span>
+        </li>
+        <li>
+          <strong>Cheapest suitable route</strong>
+          <span>Hard constraints first, then the lowest-cost model with enough suitability evidence — inside your USD or token budget.</span>
+        </li>
+        <li>
+          <strong>Drop-in local server</strong>
+          <span>OpenAI-compatible <code>/v1/chat/completions</code> on localhost. Point any agent at it with <code>model=&quot;auto&quot;</code>.</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="ms-section" aria-labelledby="msInstallHeading">
+      <p class="ms-kicker">Install</p>
+      <h2 id="msInstallHeading">Five minutes to a local router</h2>
+      <p>Clone the repo, install editable, then preview routing with no API keys (synthetic catalog).</p>
+      <pre class="ms-code" id="msInstallCode"><code>git clone https://github.com/rmencke2/modelspend.git
+cd modelspend
+python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+python -m pip install --upgrade pip &amp;&amp; pip install -e .
+modelspend policy
+modelspend preview "Classify this ticket" --catalog synthetic --assume-keys</code></pre>
+      <div class="ms-cta" style="margin-top:20px;">
+        <button type="button" class="ms-btn ms-btn--primary" id="msCopyInstall">Copy install</button>
+        <a
+          class="ms-btn ms-btn--ghost"
+          style="color:var(--ms-ink) !important;border-color:var(--ms-line);"
+          href="https://github.com/rmencke2/modelspend/releases/tag/<%= releaseTag %>"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Release notes</a>
+      </div>
+    </section>
+
+    <section class="ms-footer-cta" aria-labelledby="msStarHeading">
+      <div class="ms-section">
+        <p class="ms-kicker" style="color:var(--ms-mint);">Open source</p>
+        <h2 id="msStarHeading">Star it if agents should know their bill.</h2>
+        <p>
+          ModelSpend is from the Influzer team — Apache-2.0, stores no prompts, uses your keys.
+          Issues from Gemini, xAI, and Windows runners are especially welcome.
+        </p>
+        <div class="ms-cta">
+          <a
+            class="ms-btn ms-btn--primary"
+            href="https://github.com/rmencke2/modelspend"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Star rmencke2/modelspend</a>
+          <a
+            class="ms-btn ms-btn--ghost"
+            href="https://github.com/rmencke2/modelspend/releases"
+            rel="noopener noreferrer"
+            target="_blank"
+          >All releases</a>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/registry-footer') %>
+
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script>
+      (function () {
+        var btn = document.getElementById('msCopyInstall');
+        var pre = document.getElementById('msInstallCode');
+        if (!btn || !pre) return;
+        btn.addEventListener('click', function () {
+          var text = pre.innerText.replace(/\u00a0/g, ' ').trim();
+          var done = function () {
+            var prev = btn.textContent;
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = prev; }, 1600);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(function () {});
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
