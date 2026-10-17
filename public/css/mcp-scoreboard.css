@@ -332,6 +332,217 @@
   }
 }
 
+.promote-kit-jump {
+  margin-top: -8px !important;
+  font-size: 14px !important;
+}
+
+.promote-kit-jump a {
+  font-weight: 600;
+  color: var(--hp-text);
+}
+
+.promote-kit {
+  margin: 0 0 28px;
+  padding: 20px 22px;
+  border: 1px solid var(--hp-border);
+  border-radius: 14px;
+  background: var(--hp-card);
+}
+
+.promote-kit__head h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.promote-kit h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.promote-kit__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 14px;
+}
+
+.promote-kit__stat {
+  padding: 12px 14px;
+  border: 1px solid var(--hp-border);
+  border-radius: 12px;
+  background: var(--hp-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.promote-kit__stat b {
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.promote-kit__stat span {
+  font-size: 12px;
+  color: var(--hp-muted);
+  line-height: 1.35;
+}
+
+.promote-kit__note {
+  margin: 0 0 16px;
+  font-size: 12px;
+  color: var(--hp-muted2);
+  line-height: 1.45;
+}
+
+.promote-kit__cols {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 22px;
+}
+
+.promote-kit__placements,
+.promote-kit__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.promote-kit__placements li,
+.promote-kit__surfaces li {
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hp-border);
+  font-size: 13px;
+}
+
+.promote-kit__placements li:first-child,
+.promote-kit__surfaces li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.promote-kit__placements span,
+.promote-kit__surfaces span {
+  color: var(--hp-muted);
+}
+
+.promote-kit__placements a,
+.promote-kit__surfaces a {
+  font-weight: 600;
+  color: var(--hp-accent);
+  text-decoration: none;
+  width: fit-content;
+}
+
+.promote-kit__scarcity {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  font-size: 13px;
+  color: var(--hp-muted);
+}
+
+.promote-kit__scarcity b {
+  color: var(--hp-text);
+}
+
+.promote-prospects {
+  margin: 0 0 28px;
+  padding: 18px 20px;
+  border: 1px solid var(--hp-border);
+  border-radius: 14px;
+  background: var(--hp-card);
+}
+
+.promote-prospects__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.promote-prospects__head h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.promote-prospects__copy {
+  flex: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-text);
+  color: #fff;
+  cursor: pointer;
+}
+
+.promote-prospects__copy:hover {
+  background: var(--hp-near);
+}
+
+.promote-prospects__tsv {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+}
+
+.promote-prospects__table-wrap {
+  overflow-x: auto;
+  margin: 0 0 10px;
+}
+
+.promote-prospects__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.promote-prospects__table th,
+.promote-prospects__table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--hp-border);
+  vertical-align: top;
+}
+
+.promote-prospects__table th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--hp-muted2);
+  font-weight: 600;
+}
+
+.promote-prospects__table td a {
+  font-weight: 600;
+  color: var(--hp-text);
+  text-decoration: none;
+}
+
+.promote-prospects__table td code {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--hp-muted2);
+}
+
+.promote-prospects__table tr.is-sponsored td {
+  background: #fffbeb;
+}
+
 @media (max-width: 800px) {
   .promote-grid {
     grid-template-columns: 1fr;
@@ -339,5 +550,17 @@
 
   .board-promote-cta {
     margin-left: 0;
+  }
+
+  .promote-kit__stats,
+  .promote-kit__cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .promote-kit__stats,
+  .promote-kit__cols {
+    grid-template-columns: 1fr;
   }
 }

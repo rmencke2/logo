@@ -1157,13 +1157,19 @@ ${itemsXml}
   }
 
   function renderMcpListingPage(req, res, server, serverRecipes, assetVersion) {
+    const inTop100 = isInTop100(server.slug);
+    const sponsored = isSponsoredSlug(server.slug);
+    // Lean offer — listing CTA only needs price / scarcity, not the full media kit.
+    const promoteOffer = getPromoteOffer();
     return res.render('mcp-server', {
       server,
       installSnippets: buildInstallSnippets(server),
       iconEmoji: getMcpIconEmoji(server.icon),
       transportLabel: transportLabel(server.transport),
-      inTop100: isInTop100(server.slug),
-      sponsored: isSponsoredSlug(server.slug),
+      inTop100,
+      sponsored,
+      promoteOffer,
+      showPromoteCta: Boolean(inTop100 && !sponsored),
       catalogTotals: getMcpCatalogTotals(),
       relatedServers: getRelatedMcpServers(server, 4),
       serverRecipes: Array.isArray(serverRecipes) ? serverRecipes : [],

@@ -7,12 +7,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findMcpServerBySlug } = require('./mcpDirectoryService');
+const { findMcpServerBySlug, getTop100McpServers } = require('./mcpDirectoryService');
+const { remoteHostPresentation } = require('./mcpInstallSnippets');
 const { getPromoteTerms, hasAcceptedPromoteTerms, TERMS_VERSION, TERMS_PATH } = require('./mcpPromoteTerms');
 
 const SITE_BASE = 'https://www.influzer.ai';
 const SLOTS_PATH = path.join(__dirname, '..', 'data', 'mcp-promote-slots.json');
+const MEDIA_KIT_PATH = path.join(__dirname, '..', 'data', 'mcp-sponsor-media-kit.json');
 const DEFAULT_REQUESTS_PATH = path.join(__dirname, '..', 'data', 'mcp-promote-requests.json');
+const PROSPECT_STATUSES = new Set(['live_ok', 'auth_required']);
+const DEFAULT_PROSPECT_LIMIT = 25;
 
 const DEFAULT_PRODUCT = {
   id: 'scoreboard-pin',
@@ -152,14 +156,119 @@ function slotsRemaining(now = Date.now()) {
   return Math.max(0, product.max_concurrent - getActivePins(now).length);
 }
 
-function getPromoteOffer(now = Date.now()) {
+/**
+ * Public media kit for /mcp/promote — curated audience stats + live scarcity.
+ */
+function getSponsorMediaKit(now = Date.now()) {
+  const curated = readJson(MEDIA_KIT_PATH, {});
+  const offerBits = (() => {
+    const { product } = loadConfig();
+    const remaining = slotsRemaining(now);
+    return {
+      price_usd: product.price_usd,
+      max_concurrent: product.max_concurrent,
+      remaining,
+      slots_sold: product.max_concurrent - remaining,
+      monthly_if_sold_out_usd: product.price_usd * product.max_concurrent,
+    };
+  })();
+  const top100 = getTop100McpServers();
+  let liveOk = 0;
+  let authRequired = 0;
+  let httpsHosts = 0;
+  for (const server of top100) {
+    const status = (server.quality && server.quality.live_status) || 'not_probed';
+    if (status === 'live_ok') liveOk += 1;
+    if (status === 'auth_required') authRequired += 1;
+    if (remoteHostPresentation(server).kind === 'fixed') httpsHosts += 1;
+  }
+  return {
+    as_of: curated.as_of || null,
+    methodology: curated.methodology || '',
+    pitch: curated.pitch || null,
+    audience: curated.audience || null,
+    intent_surfaces: Array.isArray(curated.intent_surfaces) ? curated.intent_surfaces : [],
+    placements: PLACEMENTS.map((p) => ({
+      ...p,
+      see_live: p.id === 'home' ? '/' : p.id === 'directory' ? '/mcp' : p.id === 'webmcp' ? '/webmcp' : p.id === 'scoreboard' ? '/mcp/scoreboard' : '/mcp/promote',
+    })),
+    live: {
+      top100: top100.length,
+      live_ok: liveOk,
+      auth_required: authRequired,
+      https_hosts: httpsHosts,
+      ...offerBits,
+    },
+    contact: 'hello@influzer.ai',
+    terms_path: TERMS_PATH,
+  };
+}
+
+/**
+ * Scoreboard pull for outbound: Top 100 with a real handshake signal + HTTPS host.
+ * Public facts only — same data as /mcp/scoreboard.
+ */
+function getPromoteProspects(limit = DEFAULT_PROSPECT_LIMIT) {
+  const capped = Math.max(1, Math.min(Number(limit) || DEFAULT_PROSPECT_LIMIT, 100));
+  const sponsored = new Set(getActivePins().map((s) => String(s.slug || '').toLowerCase()).filter(Boolean));
+  const rows = [];
+  getTop100McpServers().forEach((server, i) => {
+    const status = (server.quality && server.quality.live_status) || 'not_probed';
+    if (!PROSPECT_STATUSES.has(status)) return;
+    const host = remoteHostPresentation(server);
+    if (host.kind !== 'fixed' || !host.remote_url) return;
+    const slug = server.slug;
+    rows.push({
+      rank: i + 1,
+      slug,
+      name: server.name,
+      category: server.category || '',
+      live_status: status,
+      live_status_label: (server.quality && server.quality.live_status_label) || status,
+      host_label: host.label,
+      remote_url: host.remote_url,
+      page_url: `/mcp/${slug}`,
+      promote_url: `/mcp/promote?slug=${encodeURIComponent(slug)}`,
+      sponsored: sponsored.has(String(slug).toLowerCase()),
+      official: Boolean(server.official),
+    });
+  });
+  return {
+    generated_at: new Date().toISOString(),
+    limit: capped,
+    total: rows.length,
+    note: 'Public Top 100 handshake pull — live_ok / auth_required with a fixed HTTPS host. For outbound, not a private CRM.',
+    items: rows.slice(0, capped),
+  };
+}
+
+function formatProspectsTsv(prospects) {
+  const pack = prospects || getPromoteProspects();
+  const header = ['rank', 'name', 'slug', 'status', 'host', 'listing', 'promote', 'sponsored'].join('\t');
+  const lines = (pack.items || []).map((r) =>
+    [
+      r.rank,
+      r.name,
+      r.slug,
+      r.live_status,
+      r.host_label,
+      `${SITE_BASE}${r.page_url}`,
+      `${SITE_BASE}${r.promote_url}`,
+      r.sponsored ? 'yes' : 'no',
+    ].join('\t'),
+  );
+  return [header, ...lines].join('\n');
+}
+
+function getPromoteOffer(now = Date.now(), opts = {}) {
+  const includeMediaKit = Boolean(opts && opts.includeMediaKit);
   const { product } = loadConfig();
   const remaining = slotsRemaining(now);
   const monthlyIfSoldOut = product.price_usd * product.max_concurrent;
   const slotsSold = product.max_concurrent - remaining;
   const fundedUsd = slotsSold * product.price_usd;
   const fundedPct = monthlyIfSoldOut ? Math.round((fundedUsd / monthlyIfSoldOut) * 100) : 0;
-  return {
+  const offer = {
     product,
     remaining,
     slots_sold: slotsSold,
@@ -188,6 +297,13 @@ function getPromoteOffer(now = Date.now()) {
     terms_version: TERMS_VERSION,
     safety_badge: null,
   };
+  if (includeMediaKit) {
+    const prospects = getPromoteProspects();
+    offer.media_kit = getSponsorMediaKit(now);
+    offer.prospects = prospects;
+    offer.prospects_tsv = formatProspectsTsv(prospects);
+  }
+  return offer;
 }
 
 function requestsPath() {
@@ -343,6 +459,9 @@ module.exports = {
   presentSponsorRail,
   isSponsoredSlug,
   slotsRemaining,
+  getSponsorMediaKit,
+  getPromoteProspects,
+  formatProspectsTsv,
   getPromoteOffer,
   submitPromoteRequest,
   validatePromoteInput,

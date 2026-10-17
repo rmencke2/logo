@@ -1,0 +1,49 @@
+{
+  "as_of": "2026-10-17",
+  "methodology": "Production page_views with a user-agent bot/crawler filter. Unique visitors = distinct IPs. Empty UAs counted as bots. Not GA4 sessions.",
+  "audience": {
+    "human_uv_7d": 8806,
+    "human_pv_7d": 15487,
+    "human_uv_30d": 42712,
+    "human_pv_30d": 77341,
+    "typical_human_uv_per_day": "1,800–2,000",
+    "bot_share_raw_7d_pct": 78,
+    "note": "Builders using the MCP directory, handshake probe, install snippets, and scoreboard — not general consumer traffic."
+  },
+  "intent_surfaces": [
+    {
+      "path": "/",
+      "label": "Homepage",
+      "why": "Search + sponsor rail + fund meter — first stop for discovery"
+    },
+    {
+      "path": "/mcp",
+      "label": "MCP directory",
+      "why": "Top 100 catalog browsers comparing servers"
+    },
+    {
+      "path": "/mcp/scoreboard",
+      "label": "Handshake scoreboard",
+      "why": "Live_ok / auth / unreachable watchers — high install intent"
+    },
+    {
+      "path": "/mcp/probe",
+      "label": "Handshake probe",
+      "why": "Operators validating HTTPS MCP URLs before paste"
+    },
+    {
+      "path": "/webmcp",
+      "label": "WebMCP directory",
+      "why": "Adjacent audience; Sponsored slot is still an MCP ad"
+    }
+  ],
+  "pitch": {
+    "headline": "Reach MCP builders where they pick a server",
+    "bullets": [
+      "Two labeled Sponsored slots — $249/month each",
+      "Homepage, /mcp, /webmcp, and scoreboard — always labeled Sponsored",
+      "Handshake rank is never for sale",
+      "Sold out = $498/month — enough to keep the registry free"
+    ]
+  }
+}

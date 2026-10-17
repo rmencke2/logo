@@ -100,9 +100,34 @@
                 <% if (server.docs_url && server.docs_url !== server.github_url) { %>
                   <a class="mcp-btn-outline" href="<%= server.docs_url %>" target="_blank" rel="noopener noreferrer">Docs ↗</a>
                 <% } %>
+                <% if (typeof showPromoteCta !== 'undefined' && showPromoteCta && typeof promoteOffer !== 'undefined' && promoteOffer) { %>
+                  <a class="mcp-btn-outline mcp-btn-promote" href="/mcp/promote?slug=<%= encodeURIComponent(server.slug) %>">
+                    <%= promoteOffer.sold_out ? 'Sponsored waitlist' : ('Promote · $' + promoteOffer.product.price_usd + '/mo') %>
+                  </a>
+                <% } %>
               </div>
             </div>
           </header>
+
+          <% if (typeof showPromoteCta !== 'undefined' && showPromoteCta && typeof promoteOffer !== 'undefined' && promoteOffer) { %>
+            <aside class="sponsor-pitch mcp-listing-promote" aria-label="Promote this MCP server">
+              <p>
+                <% if (promoteOffer.sold_out) { %>
+                  <b>Top 100 listing.</b> Sponsored slots are full this month — join the waitlist for a labeled homepage + scoreboard placement. Rank is not for sale.
+                <% } else { %>
+                  <b>On the Top 100.</b> Get a labeled Sponsored slot on the homepage, directory, and handshake scoreboard —
+                  $<%= promoteOffer.product.price_usd %>/mo
+                  <% if (promoteOffer.remaining) { %>
+                    · <%= promoteOffer.remaining %> open
+                  <% } %>.
+                  Rank is not for sale.
+                <% } %>
+              </p>
+              <a class="sponsor-pitch__cta" href="/mcp/promote?slug=<%= encodeURIComponent(server.slug) %>">
+                <%= promoteOffer.sold_out ? 'Join waitlist' : 'Promote this server' %>
+              </a>
+            </aside>
+          <% } %>
 
           <section class="mcp-section" id="install">
             <h2>How to connect</h2>
