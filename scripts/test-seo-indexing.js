@@ -80,6 +80,9 @@ function main() {
   assert.match(modelspendTpl, /github\.com\/rmencke2\/modelspend/);
   assert.match(modelspendTpl, /Star on GitHub/);
   assert.match(modelspendTpl, /ModelSpend/);
+  assert.match(modelspendTpl, /shadow/i);
+  assert.match(modelspendTpl, /savings/i);
+  assert.match(staticSrc, /releaseTag:\s*'v0\.7\.0b1'/);
 
   const homeTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'home.ejs'), 'utf8');
   assert.match(homeTpl, /href="\/modelspend"/);
