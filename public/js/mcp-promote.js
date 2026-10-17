@@ -2,6 +2,35 @@
   const form = document.getElementById('promoteForm');
   const status = document.getElementById('promoteStatus');
   const submit = document.getElementById('promoteSubmit');
+  const copyBtn = document.getElementById('prospectsCopy');
+  const tsvEl = document.getElementById('prospectsTsv');
+  const copyStatus = document.getElementById('prospectsCopyStatus');
+
+  if (copyBtn && tsvEl) {
+    copyBtn.addEventListener('click', async () => {
+      const text = tsvEl.value || '';
+      if (!text) return;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          tsvEl.hidden = false;
+          tsvEl.focus();
+          tsvEl.select();
+          document.execCommand('copy');
+          tsvEl.hidden = true;
+        }
+        copyBtn.textContent = 'Copied';
+        if (copyStatus) copyStatus.textContent = 'TSV copied — paste into a sheet or CRM for outreach.';
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy TSV';
+        }, 2000);
+      } catch {
+        copyBtn.textContent = 'Copy failed';
+      }
+    });
+  }
+
   if (!form) return;
 
   try {

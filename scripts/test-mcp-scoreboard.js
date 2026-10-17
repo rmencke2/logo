@@ -7,6 +7,9 @@ const path = require('node:path');
 const { buildScoreboard } = require('../services/mcpScoreboardService');
 const {
   getPromoteOffer,
+  getSponsorMediaKit,
+  getPromoteProspects,
+  formatProspectsTsv,
   submitPromoteRequest,
   validatePromoteInput,
   isSlotActive,
@@ -42,7 +45,10 @@ async function main() {
   assert.match(webmcpTpl, /promotePitchSurface: 'webmcp'/);
   assert.match(webmcpTpl, /promoteOffer/);
   const promoteTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-promote.ejs'), 'utf8');
-  assert.match(promoteTpl, /Where you appear/);
+  assert.match(promoteTpl, /media-kit/);
+  assert.match(promoteTpl, /prospect-pack/);
+  assert.match(promoteTpl, /Sponsor media kit/);
+  assert.match(promoteTpl, /Outbound prospect pack/);
   assert.match(promoteTpl, /offer\.placements/);
   assert.match(promoteTpl, /accept_terms/);
   assert.match(promoteTpl, /\/mcp\/promote\/terms/);
@@ -53,6 +59,9 @@ async function main() {
   assert.match(termsTpl, /keep money already paid/i);
   const listingTpl = fs.readFileSync(path.join(__dirname, '..', 'views', 'mcp-server.ejs'), 'utf8');
   assert.match(listingTpl, /mcp-pill--sponsored/);
+  assert.match(listingTpl, /showPromoteCta/);
+  assert.match(listingTpl, /mcp-listing-promote/);
+  assert.match(listingTpl, /\/mcp\/promote\?slug=/);
 
   const board = buildScoreboard();
   assert.equal(board.total, 100);
@@ -105,6 +114,23 @@ async function main() {
   assert.ok(offer.includes.some((line) => /\/mcp/i.test(line)));
   assert.ok(offer.includes.some((line) => /webmcp/i.test(line)));
   assert.ok(offer.placements.some((p) => p.id === 'webmcp'));
+  assert.equal(offer.media_kit, undefined);
+
+  const kitOffer = getPromoteOffer(Date.now(), { includeMediaKit: true });
+  assert.ok(kitOffer.media_kit);
+  assert.ok(kitOffer.media_kit.audience);
+  assert.equal(kitOffer.media_kit.audience.human_uv_7d, 8806);
+  assert.ok(kitOffer.media_kit.placements.some((p) => p.see_live === '/mcp'));
+  assert.ok(kitOffer.prospects);
+  assert.ok(kitOffer.prospects.items.length >= 1);
+  assert.ok(kitOffer.prospects_tsv.includes('rank\tname\tslug'));
+  const kit = getSponsorMediaKit();
+  assert.ok(kit.live.top100 >= 1);
+  assert.ok(typeof kit.live.live_ok === 'number');
+  const prospects = getPromoteProspects(5);
+  assert.ok(prospects.items.length <= 5);
+  assert.ok(prospects.items.every((r) => r.promote_url.includes('/mcp/promote?slug=')));
+  assert.ok(formatProspectsTsv(prospects).split('\n').length >= 2);
 
   const rail = presentSponsorRail();
   assert.equal(rail.items.length, 2);

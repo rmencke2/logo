@@ -33,6 +33,11 @@
         Sold out that is <b>$<%= offer.monthly_if_sold_out_usd %></b> / month — enough to run the directory.
         You buy traffic and a Sponsored label. You do not buy <code>live_ok</code>.
       </p>
+      <p class="setup-lead promote-kit-jump">
+        <a href="#media-kit">Media kit</a>
+        · <a href="#prospect-pack">Outbound prospect pack</a>
+        · <a href="#promoteForm">Checkout</a>
+      </p>
 
       <% if (paid) { %>
         <p class="promote-flash promote-flash--ok">Payment received. We place the labeled cards on the next cycle (subject to the <a href="/mcp/promote/terms">Sponsored Placement Terms</a>) and email <code>hello@influzer.ai</code> confirmation.</p>
@@ -41,20 +46,134 @@
         <p class="promote-flash">Checkout canceled. The slot is still open if you want it.</p>
       <% } %>
 
-      <section class="promote-where" aria-label="Where you appear">
-        <h2>Where you appear</h2>
-        <p class="promote-where__lead">This is the product: labeled, on top, on the pages people already use to pick a server.</p>
-        <ol>
-          <% offer.placements.forEach(function(place) { %>
-            <li>
-              <b><%= place.label %></b>
-              <span><%= place.where %></span>
-            </li>
-          <% }); %>
-        </ol>
-      </section>
+      <% const kit = typeof mediaKit !== 'undefined' && mediaKit ? mediaKit : (offer.media_kit || null); %>
+      <% if (kit && kit.audience) { %>
+        <section class="promote-kit" id="media-kit" aria-label="Sponsor media kit">
+          <div class="promote-kit__head">
+            <h2>Sponsor media kit</h2>
+            <p class="promote-where__lead">
+              <%= kit.pitch && kit.pitch.headline ? kit.pitch.headline : 'Reach MCP builders where they pick a server' %>.
+              Numbers as of <b><%= kit.as_of || 'latest pull' %></b>.
+              API: <a href="/api/v1/promote/media-kit"><code>/api/v1/promote/media-kit</code></a>
+            </p>
+          </div>
+          <div class="promote-kit__stats" role="list">
+            <div class="promote-kit__stat" role="listitem">
+              <b><%= Number(kit.audience.human_uv_7d).toLocaleString() %></b>
+              <span>Human unique visitors · 7d</span>
+            </div>
+            <div class="promote-kit__stat" role="listitem">
+              <b><%= Number(kit.audience.human_pv_7d).toLocaleString() %></b>
+              <span>Human pageviews · 7d</span>
+            </div>
+            <div class="promote-kit__stat" role="listitem">
+              <b><%= kit.audience.typical_human_uv_per_day %></b>
+              <span>Typical human UV / day</span>
+            </div>
+            <div class="promote-kit__stat" role="listitem">
+              <b><%= kit.live.live_ok %></b>
+              <span>Top 100 · live_ok now</span>
+            </div>
+          </div>
+          <p class="promote-kit__note"><%= kit.audience.note %> <%= kit.methodology %></p>
+          <div class="promote-kit__cols">
+            <div>
+              <h3>Where the ad sits</h3>
+              <ol class="promote-kit__placements">
+                <% (kit.placements || offer.placements).forEach(function(place) { %>
+                  <li>
+                    <b><%= place.label %></b>
+                    <span><%= place.where %></span>
+                    <% if (place.see_live) { %>
+                      <a href="<%= place.see_live %>">See live →</a>
+                    <% } %>
+                  </li>
+                <% }); %>
+              </ol>
+            </div>
+            <div>
+              <h3>Intent surfaces</h3>
+              <ul class="promote-kit__surfaces">
+                <% (kit.intent_surfaces || []).forEach(function(s) { %>
+                  <li>
+                    <a href="<%= s.path %>"><code><%= s.path %></code></a>
+                    <span><%= s.why %></span>
+                  </li>
+                <% }); %>
+              </ul>
+              <p class="promote-kit__scarcity">
+                <% if (offer.sold_out) { %>
+                  Both slots taken this month · email <a href="mailto:<%= offer.contact %>"><%= offer.contact %></a> for waitlist
+                <% } else { %>
+                  <b><%= offer.remaining %></b> of <%= offer.product.max_concurrent %> slots open · $<%= offer.product.price_usd %>/mo · sold out = $<%= offer.monthly_if_sold_out_usd %>/mo
+                <% } %>
+              </p>
+            </div>
+          </div>
+        </section>
+      <% } else { %>
+        <section class="promote-where" aria-label="Where you appear">
+          <h2>Where you appear</h2>
+          <p class="promote-where__lead">This is the product: labeled, on top, on the pages people already use to pick a server.</p>
+          <ol>
+            <% offer.placements.forEach(function(place) { %>
+              <li>
+                <b><%= place.label %></b>
+                <span><%= place.where %></span>
+              </li>
+            <% }); %>
+          </ol>
+        </section>
+      <% } %>
 
       <%- include('partials/mcp-sponsor-rail') %>
+
+      <% const pack = typeof prospects !== 'undefined' && prospects ? prospects : (offer.prospects || null); %>
+      <% if (pack && pack.items && pack.items.length) { %>
+        <section class="promote-prospects" id="prospect-pack" aria-label="Outbound prospect pack">
+          <div class="promote-prospects__head">
+            <div>
+              <h2>Outbound prospect pack</h2>
+              <p class="promote-where__lead">
+                Public Top 100 handshake pull — <b><%= pack.total %></b> servers with <code>live_ok</code> or <code>auth_required</code> and a fixed HTTPS host.
+                Copy for outreach. Same facts as the <a href="/mcp/scoreboard">scoreboard</a>.
+              </p>
+            </div>
+            <button type="button" class="promote-prospects__copy" id="prospectsCopy">
+              Copy TSV
+            </button>
+          </div>
+          <textarea id="prospectsTsv" class="promote-prospects__tsv" readonly hidden aria-hidden="true"><%= offer.prospects_tsv || '' %></textarea>
+          <div class="promote-prospects__table-wrap">
+            <table class="promote-prospects__table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Server</th>
+                  <th>Status</th>
+                  <th>Host</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% pack.items.forEach(function(row) { %>
+                  <tr<%= row.sponsored ? ' class="is-sponsored"' : '' %>>
+                    <td><%= row.rank %></td>
+                    <td>
+                      <a href="<%= row.page_url %>"><%= row.name %></a>
+                      <code><%= row.slug %></code>
+                    </td>
+                    <td><%= row.live_status_label %></td>
+                    <td><code><%= row.host_label %></code></td>
+                    <td><a href="<%= row.promote_url %>"><%= row.sponsored ? 'Sponsored' : 'Promote' %></a></td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <p class="promote-kit__note" id="prospectsCopyStatus"><%= pack.note %></p>
+        </section>
+      <% } %>
 
       <section class="promote-terms-block promote-terms-block--ban" aria-label="Advertising rules">
         <h2>Advertising rules</h2>
@@ -109,7 +228,7 @@
           </label>
           <label>
             Influzer slug (optional)
-            <input type="text" name="slug" placeholder="asana" autocomplete="off" />
+            <input type="text" name="slug" placeholder="asana" autocomplete="off" value="<%= typeof presetSlug !== 'undefined' && presetSlug ? presetSlug : '' %>" />
           </label>
           <label>
             HTTPS MCP URL (if no slug)

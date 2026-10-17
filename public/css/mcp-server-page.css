@@ -240,6 +240,21 @@
   flex-wrap: wrap;
 }
 
+.mcp-btn-promote {
+  border-color: #fde68a !important;
+  background: #fffbeb !important;
+  color: #92400e !important;
+}
+
+.mcp-btn-promote:hover {
+  border-color: #e8c36a !important;
+  background: #fef3c7 !important;
+}
+
+.mcp-listing-promote {
+  margin: 0 0 22px;
+}
+
 .mcp-btn-primary {
   background: var(--hp-text);
   color: var(--hp-card);
