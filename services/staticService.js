@@ -788,7 +788,7 @@ function initializeStaticService(app) {
     res.render('modelspend', {
       assetVersion: getHomeAssetVersion(),
       navPath: req.path,
-      releaseTag: 'v0.3.0b1',
+      releaseTag: 'v0.7.0b1',
     });
   });
 

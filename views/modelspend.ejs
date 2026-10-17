@@ -6,12 +6,12 @@
     <title>ModelSpend — Cheapest suitable LLM routing &amp; cost visibility - Influzer.ai</title>
     <meta
       name="description"
-      content="Open-source ModelSpend routes each task to the lowest-cost LLM expected to fit, and shows token spend per project and agent. Your keys. Apache-2.0."
+      content="Open-source ModelSpend shows LLM spend per project and agent, routes to the cheapest suitable model, and can shadow cheaper models on your real traffic to project savings. Your keys. Apache-2.0."
     />
     <link rel="canonical" href="https://www.influzer.ai/modelspend" />
     <%- include('partials/seo-social', {
       ogTitle: 'ModelSpend — cheapest suitable LLM routing',
-      ogDescription: 'Open-source cost control for LLM agents: route by price and suitability, tag spend by project and agent, hard budgets. Apache-2.0.',
+      ogDescription: 'See LLM cost per project and agent, route with model=auto, and shadow cheaper models on real traffic to project savings. Your keys. Apache-2.0.',
       ogUrl: 'https://www.influzer.ai/modelspend',
     }) %>
     <%- include('partials/favicon-links') %>
@@ -29,10 +29,10 @@
       <div class="ms-hero__glow" aria-hidden="true"></div>
       <div class="ms-hero__inner">
         <p class="ms-brand" id="msBrand">Model<span>Spend</span></p>
-        <h1 class="ms-headline">Route every agent call to the cheapest LLM that still fits.</h1>
+        <h1 class="ms-headline">See what your LLM calls cost — then route to the cheapest model that still fits.</h1>
         <p class="ms-lead">
-          Open-source cost control for LLM usage — your OpenAI, Anthropic, Google, and xAI keys.
-          See spend per project and agent, then route with <code>model=&quot;auto&quot;</code>.
+          Open-source cost control for private projects and small teams — your OpenAI, Anthropic, Google, and xAI keys.
+          Tag spend, hard budgets before the call, <code>model=&quot;auto&quot;</code> routing, and optional shadow evals that learn which cheaper models are safe from your real traffic.
         </p>
         <div class="ms-cta">
           <a
@@ -43,22 +43,22 @@
           >Star on GitHub</a>
           <a
             class="ms-btn ms-btn--ghost"
-            href="https://github.com/rmencke2/modelspend/releases"
+            href="https://github.com/rmencke2/modelspend/releases/tag/<%= releaseTag %>"
             rel="noopener noreferrer"
             target="_blank"
-          >Get the release</a>
+          >Get <%= releaseTag %></a>
         </div>
         <p class="ms-meta">Apache-2.0 · Python 3.10+ · beta <%= releaseTag %></p>
 
         <aside class="ms-visual" aria-hidden="true">
           <div class="ms-meter">
-            <p class="ms-meter__label">Route preview</p>
+            <p class="ms-meter__label">Savings preview</p>
             <div class="ms-meter__row">
-              <span>Task → economy path</span>
-              <strong>$0.0012</strong>
+              <span>classification → cheaper candidate</span>
+              <strong>~95% less</strong>
             </div>
             <div class="ms-meter__bar"><span></span></div>
-            <p class="ms-meter__note">Tokens first. Cost only when the catalog has a price. Hard budgets refuse before the call.</p>
+            <p class="ms-meter__note">Shadow a sample of real requests. Project savings only when evidence clears the bar. Off by default.</p>
           </div>
         </aside>
       </div>
@@ -68,8 +68,8 @@
       <p class="ms-kicker">What you get</p>
       <h2 id="msSeeHeading">Know the spend. Then spend less.</h2>
       <p>
-        ModelSpend is built for agents and code that already speak OpenAI-compatible APIs.
-        Tag calls, read the report, set budgets — or pin a model and only measure.
+        ModelSpend sits in front of agents and code that already speak OpenAI-compatible APIs.
+        Built because private projects still need a bill with project names on it.
       </p>
       <ul class="ms-points">
         <li>
@@ -78,25 +78,34 @@
         </li>
         <li>
           <strong>Cheapest suitable route</strong>
-          <span>Hard constraints first, then the lowest-cost model with enough suitability evidence — inside your USD or token budget.</span>
+          <span>Hard constraints first, then the lowest-cost model with enough suitability evidence — inside your USD or token budget. Hard budgets refuse before the call.</span>
+        </li>
+        <li>
+          <strong>Shadow evals on your traffic</strong>
+          <span>Opt in: sample real requests on cheaper models in the background, compare answers, and project savings. Never stores prompts or answers — verdicts and reason codes only.</span>
         </li>
         <li>
           <strong>Drop-in local server</strong>
-          <span>OpenAI-compatible <code>/v1/chat/completions</code> on localhost. Point any agent at it with <code>model=&quot;auto&quot;</code>.</span>
+          <span>OpenAI-compatible <code>/v1/chat/completions</code> on localhost (or a small shared server with a token). Point any agent at it with <code>model=&quot;auto&quot;</code>.</span>
         </li>
       </ul>
     </section>
 
     <section class="ms-section" aria-labelledby="msInstallHeading">
-      <p class="ms-kicker">Install</p>
-      <h2 id="msInstallHeading">Five minutes to a local router</h2>
-      <p>Clone the repo, install editable, then preview routing with no API keys (synthetic catalog).</p>
+      <p class="ms-kicker">Try shadow</p>
+      <h2 id="msInstallHeading">Two minutes to a savings sample</h2>
+      <p>
+        Install editable, turn on a capped shadow sample (default $5 / month ceiling), use your tools as usual, then ask what you would save.
+        Shadow stays off until you enable it.
+      </p>
       <pre class="ms-code" id="msInstallCode"><code>git clone https://github.com/rmencke2/modelspend.git
 cd modelspend
 python3 -m venv .venv &amp;&amp; source .venv/bin/activate
 python -m pip install --upgrade pip &amp;&amp; pip install -e .
-modelspend policy
-modelspend preview "Classify this ticket" --catalog synthetic --assume-keys</code></pre>
+modelspend shadow set --rate 0.05 --budget 5
+modelspend shadow on
+# ... use your tools through ModelSpend ...
+modelspend savings</code></pre>
       <div class="ms-cta" style="margin-top:20px;">
         <button type="button" class="ms-btn ms-btn--primary" id="msCopyInstall">Copy install</button>
         <a
@@ -107,6 +116,9 @@ modelspend preview "Classify this ticket" --catalog synthetic --assume-keys</cod
           target="_blank"
         >Release notes</a>
       </div>
+      <p style="margin-top:18px;font-size:0.95rem;">
+        No keys yet? <code>modelspend preview &quot;Classify this ticket&quot; --catalog synthetic --assume-keys</code> still works for a dry routing preview.
+      </p>
     </section>
 
     <section class="ms-footer-cta" aria-labelledby="msStarHeading">
