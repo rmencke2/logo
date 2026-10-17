@@ -31,6 +31,10 @@ function main() {
   assert.match(core, /domain:\s*cookieDomain|\.\.\.\(cookieDomain/);
   assert.match(core, /\.influzer\.ai/);
   assert.match(core, /startsWith\('\/auth'\)/);
+  // GA4 tag is in the HTML; CSP must allow the hosts or Analytics stays empty.
+  assert.match(core, /www\.googletagmanager\.com/);
+  assert.match(core, /www\.google-analytics\.com/);
+  assert.match(core, /\*\.google-analytics\.com/);
 
   console.log('Auth host / siteUrl tests passed');
 }
