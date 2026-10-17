@@ -39,17 +39,32 @@ async function initializeCore(app) {
     return next();
   });
 
-  // Security middleware — CSP allows inline scripts/styles used by EJS pages and admin.html
+  // Security middleware — CSP allows inline scripts/styles used by EJS pages and admin.html.
+  // GA4 (G-Q8WMQQWLT7) needs googletagmanager + google-analytics hosts or the browser
+  // blocks the tag and the property shows near-zero traffic while page_views still grow.
   app.use(
     helmet({
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", 'https://challenges.cloudflare.com'],
+          scriptSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            'https://challenges.cloudflare.com',
+            'https://www.googletagmanager.com',
+          ],
           styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
           fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
           imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
-          connectSrc: ["'self'", 'https://challenges.cloudflare.com'],
+          connectSrc: [
+            "'self'",
+            'https://challenges.cloudflare.com',
+            'https://www.googletagmanager.com',
+            'https://www.google-analytics.com',
+            'https://analytics.google.com',
+            'https://*.google-analytics.com',
+            'https://*.analytics.google.com',
+          ],
           frameSrc: ["'self'", 'https://challenges.cloudflare.com'],
           objectSrc: ["'none'"],
           baseUri: ["'self'"],
