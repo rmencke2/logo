@@ -67,11 +67,12 @@ ssh -i ~/Downloads/your-key.pem ubuntu@your-static-ip
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install Node.js (if not pre-installed)
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+# Node 22.23.4 or newer. 22.18 and older 22.x miss the 21 Oct 2026 security release.
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Verify installation
-node --version  # Should show v18.x or higher
+node --version  # v22.23.4 or newer
 npm --version
 
 # Install PM2 (process manager)

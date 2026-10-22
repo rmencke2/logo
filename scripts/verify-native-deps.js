@@ -2,9 +2,14 @@
 
 /**
  * Smoke-test native addons after npm ci on production (glibc-sensitive).
- * Exits non-zero if sqlite3 cannot load or query.
+ * Exits non-zero if sqlite3, sharp, or bcrypt cannot load.
  */
 const sqlite3 = require('sqlite3');
+
+require('sharp');
+require('bcrypt');
+console.log(`sharp ${require('sharp/package.json').version} OK`);
+console.log(`bcrypt ${require('bcrypt/package.json').version} OK`);
 
 const version = require('sqlite3/package.json').version;
 const db = new sqlite3.Database(':memory:');
