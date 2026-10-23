@@ -11,8 +11,10 @@
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install Node.js (if not already installed)
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+# Node 22.23.4 or newer. 22.18 and older 22.x miss the 21 Oct 2026 security release.
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs
+node -v   # must print v22.23.4 or newer
 
 # Install PM2
 sudo npm install -g pm2

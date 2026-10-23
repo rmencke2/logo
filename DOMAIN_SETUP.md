@@ -90,7 +90,8 @@ Since you're already using AWS, here are the best AWS options:
    sudo apt-get update && sudo apt-get upgrade -y
    
    # Install Node.js (if not pre-installed)
-   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+   # Node 22.23.4 or newer. 22.18 and older 22.x miss the 21 Oct 2026 security release.
+   curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
    sudo apt-get install -y nodejs
    
    # Install PM2
