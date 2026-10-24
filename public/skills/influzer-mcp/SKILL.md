@@ -52,6 +52,8 @@ A website is not an MCP server. An MCP App is not WebMCP. ACP is not MCP.
 Read-only. No auth. Endpoint: `https://www.influzer.ai/mcp/discovery`
 
 Skill file: `https://www.influzer.ai/skills/influzer-mcp/SKILL.md`  
+Claude chat: `https://www.influzer.ai/skills/influzer-mcp-claude/SKILL.md`  
+ChatGPT: `https://www.influzer.ai/skills/influzer-mcp-chatgpt/SKILL.md`  
 Snippets: `https://www.influzer.ai/api/v1/install/<slug>`  
 Probe: `https://www.influzer.ai/mcp/probe`  
 Page: `https://www.influzer.ai/mcp/discovery/skill`
