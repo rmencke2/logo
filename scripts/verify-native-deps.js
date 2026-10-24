@@ -5,11 +5,19 @@
  * Exits non-zero if sqlite3, sharp, or bcrypt cannot load.
  */
 const sqlite3 = require('sqlite3');
+const sharp = require('sharp');
+const bcrypt = require('bcrypt');
 
-require('sharp');
-require('bcrypt');
-console.log(`sharp ${require('sharp/package.json').version} OK`);
-console.log(`bcrypt ${require('bcrypt/package.json').version} OK`);
+if (typeof sharp !== 'function') {
+  console.error('sharp failed to load');
+  process.exit(1);
+}
+if (typeof bcrypt.hash !== 'function') {
+  console.error('bcrypt failed to load');
+  process.exit(1);
+}
+console.log('sharp OK');
+console.log('bcrypt OK');
 
 const version = require('sqlite3/package.json').version;
 const db = new sqlite3.Database(':memory:');
