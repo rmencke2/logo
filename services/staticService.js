@@ -437,6 +437,7 @@ function getHomeAssetVersion() {
       'mcp-sponsor.css',
       'insights-index.css',
       'mcp-setup-page.css',
+      'legal.css',
       'briefs-page.css',
       'site-header.css',
     ];
@@ -1256,18 +1257,72 @@ ${itemsXml}
     });
   });
 
-  // Serve policy pages
-  app.get('/terms', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'terms.html'));
-  });
+  // Policy and support pages (registry design)
+  const legalPages = {
+    '/terms': {
+      view: 'terms',
+      pageTitle: 'Terms and Conditions',
+      metaDescription:
+        'Terms for the Influzer.ai MCP directory, Discovery MCP, newsletter, accounts, and free tools.',
+    },
+    '/privacy': {
+      view: 'privacy',
+      pageTitle: 'Privacy Policy',
+      metaDescription:
+        'What Influzer.ai collects for the MCP directory, Discovery MCP, accounts, newsletter, and free tools, and how to ask for deletion.',
+    },
+    '/cookie': {
+      view: 'cookie',
+      pageTitle: 'Cookie Policy',
+      metaDescription:
+        'Cookies and local storage on Influzer.ai: session, Google Analytics, and AdSense on the logo generator.',
+    },
+    '/support': {
+      view: 'support',
+      pageTitle: 'Contact Influzer',
+      metaDescription:
+        'Contact Influzer at hello@influzer.ai for MCP listings, Discovery MCP, the newsletter, privacy requests, and sponsored placements.',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'ContactPage',
+        url: `${SITE_BASE_URL}/support`,
+        mainEntity: {
+          '@type': 'Organization',
+          name: 'Influzer.ai',
+          url: SITE_BASE_URL,
+          email: 'hello@influzer.ai',
+          contactPoint: {
+            '@type': 'ContactPoint',
+            email: 'hello@influzer.ai',
+            contactType: 'customer support',
+            url: `${SITE_BASE_URL}/support`,
+          },
+        },
+      },
+    },
+  };
 
-  app.get('/privacy', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'privacy.html'));
-  });
+  function renderLegalPage(req, res) {
+    const page = legalPages[req.path];
+    if (!page) return res.status(404).end();
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    return res.render(page.view, {
+      pageTitle: page.pageTitle,
+      metaDescription: page.metaDescription,
+      canonicalUrl: `${SITE_BASE_URL}${req.path}`,
+      assetVersion: getHomeAssetVersion(),
+      navPath: req.path,
+      jsonLd: page.jsonLd || null,
+    });
+  }
 
-  app.get('/cookie', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'cookie.html'));
+  app.get(['/terms', '/privacy', '/cookie', '/support'], renderLegalPage);
+  app.get(['/contact', '/contact.html', '/support.html'], (req, res) => {
+    res.redirect(301, '/support');
   });
+  app.get('/privacy.html', (req, res) => res.redirect(301, '/privacy'));
+  app.get('/terms.html', (req, res) => res.redirect(301, '/terms'));
+  app.get('/cookie.html', (req, res) => res.redirect(301, '/cookie'));
 
   // Serve robots.txt
   app.get('/robots.txt', (req, res) => {
@@ -1303,9 +1358,10 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/modelspend`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.87' },
       { loc: `${SITE_BASE_URL}/recipes`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/logo-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.7' },
-      { loc: `${SITE_BASE_URL}/terms`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
-      { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
-      { loc: `${SITE_BASE_URL}/cookie`, lastmod: '2025-01-16', changefreq: 'yearly', priority: '0.5' },
+      { loc: `${SITE_BASE_URL}/terms`, lastmod: '2026-10-24', changefreq: 'yearly', priority: '0.5' },
+      { loc: `${SITE_BASE_URL}/privacy`, lastmod: '2026-10-24', changefreq: 'yearly', priority: '0.5' },
+      { loc: `${SITE_BASE_URL}/cookie`, lastmod: '2026-10-24', changefreq: 'yearly', priority: '0.5' },
+      { loc: `${SITE_BASE_URL}/support`, lastmod: '2026-10-24', changefreq: 'yearly', priority: '0.5' },
     ];
     const postUrls = posts.map((post) => ({
       loc: `${SITE_BASE_URL}/insights/${post.slug}`,

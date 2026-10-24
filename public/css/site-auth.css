@@ -42,6 +42,12 @@
   gap: 8px;
 }
 
+/* display:flex above would otherwise beat the hidden attribute */
+.site-header-user[hidden],
+#siteHeaderAuthGuest[hidden] {
+  display: none !important;
+}
+
 .site-header-user-menu {
   position: relative;
 }
