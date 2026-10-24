@@ -210,6 +210,17 @@
   background: var(--hp-bg);
 }
 
+/* Accent indigo is ~3:1 on the dark strip. Use a light indigo for the slots link. */
+.home-page.dark .sponsor-rail__buy,
+.registry-page.dark .sponsor-rail__buy {
+  color: #c7d2fe !important;
+}
+
+.home-page.dark .sponsor-rail__buy:hover,
+.registry-page.dark .sponsor-rail__buy:hover {
+  color: #e0e7ff !important;
+}
+
 .home-sponsors .sponsor-rail {
   max-width: 1200px;
   margin: 0 auto;
