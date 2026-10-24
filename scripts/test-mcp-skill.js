@@ -16,11 +16,27 @@ function main() {
   assert.equal(/ignore previous instructions/i.test(raw), false);
 
   const idx = skillIndex();
-  assert.equal(idx.skills.length, 1);
+  assert.equal(idx.skills.length, 3);
   assert.equal(idx.skills[0].name, 'influzer-mcp');
   assert.equal(idx.skills[0].safety_badge, null);
   assert.ok(idx.skills[0].url.endsWith('/skills/influzer-mcp/SKILL.md'));
   assert.ok(SKILL_DESCRIPTION.includes('Not a safe-to-install badge'));
+
+  const claude = idx.skills.find((s) => s.name === 'influzer-mcp-claude');
+  const chatgpt = idx.skills.find((s) => s.name === 'influzer-mcp-chatgpt');
+  assert.ok(claude.url.endsWith('/skills/influzer-mcp-claude/SKILL.md'));
+  assert.ok(chatgpt.url.endsWith('/skills/influzer-mcp-chatgpt/SKILL.md'));
+  for (const skill of [claude, chatgpt]) {
+    const body = fs.readFileSync(
+      require('path').join(__dirname, '..', 'public', 'skills', skill.name, 'SKILL.md'),
+      'utf8',
+    );
+    assert.match(body, new RegExp(`^---\\nname: ${skill.name}\\n`));
+    assert.ok(body.includes('https://www.influzer.ai/mcp/discovery'));
+    assert.ok(body.includes('safety_badge') || body.includes('SAFE'));
+    assert.equal(/ignore previous instructions/i.test(body), false);
+    assert.equal(skill.safety_badge, null);
+  }
 
   const live = getMcpServer({ slug: 'influzer-mcp-discovery' });
   assert.ok(live.server);

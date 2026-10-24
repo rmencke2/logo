@@ -4,12 +4,42 @@ const fs = require('fs');
 const path = require('path');
 
 const SITE_BASE = 'https://www.influzer.ai';
-const SKILL_REL = path.join('skills', 'influzer-mcp', 'SKILL.md');
-const SKILL_FILE = path.join(__dirname, '..', 'public', SKILL_REL);
-const SKILL_URL = `${SITE_BASE}/skills/influzer-mcp/SKILL.md`;
 const SKILL_PAGE = `${SITE_BASE}/mcp/discovery/skill`;
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+
 const SKILL_DESCRIPTION =
   'Search the Influzer MCP catalog, handshake a remote URL, and paste Cursor / Claude / ChatGPT / ACP install snippets. Not a safe-to-install badge.';
+
+const SKILLS = [
+  {
+    name: 'influzer-mcp',
+    description: SKILL_DESCRIPTION,
+    file: path.join(PUBLIC_DIR, 'skills', 'influzer-mcp', 'SKILL.md'),
+  },
+  {
+    name: 'influzer-mcp-claude',
+    description:
+      'Find an MCP server from inside Claude and return an HTTPS connector URL. Not a safe-to-install badge. Claude chat cannot use stdio.',
+    file: path.join(PUBLIC_DIR, 'skills', 'influzer-mcp-claude', 'SKILL.md'),
+  },
+  {
+    name: 'influzer-mcp-chatgpt',
+    description:
+      'Find an MCP server from inside ChatGPT and return an HTTPS custom-connector URL. Not a safe-to-install badge. ChatGPT cannot use stdio.',
+    file: path.join(PUBLIC_DIR, 'skills', 'influzer-mcp-chatgpt', 'SKILL.md'),
+  },
+];
+
+const SKILL_FILE = SKILLS[0].file;
+const SKILL_URL = `${SITE_BASE}/skills/influzer-mcp/SKILL.md`;
+
+function skillUrl(name) {
+  return `${SITE_BASE}/skills/${name}/SKILL.md`;
+}
+
+function findSkill(name) {
+  return SKILLS.find((skill) => skill.name === name) || null;
+}
 
 function setSkillCors(res) {
   res.removeHeader('Access-Control-Allow-Credentials');
@@ -21,17 +51,15 @@ function setSkillCors(res) {
 
 function skillIndex() {
   return {
-    skills: [
-      {
-        name: 'influzer-mcp',
-        description: SKILL_DESCRIPTION,
-        url: SKILL_URL,
-        page: SKILL_PAGE,
-        discovery: `${SITE_BASE}/mcp/discovery`,
-        probe: `${SITE_BASE}/api/v1/probe`,
-        safety_badge: null,
-      },
-    ],
+    skills: SKILLS.map((skill) => ({
+      name: skill.name,
+      description: skill.description,
+      url: skillUrl(skill.name),
+      page: SKILL_PAGE,
+      discovery: `${SITE_BASE}/mcp/discovery`,
+      probe: `${SITE_BASE}/api/v1/probe`,
+      safety_badge: null,
+    })),
   };
 }
 
@@ -56,26 +84,32 @@ function registerMcpSkillRoutes(app) {
     setSkillCors(res);
     res.status(204).end();
   });
-  app.options('/skills/influzer-mcp/SKILL.md', (req, res) => {
-    setSkillCors(res);
-    res.status(204).end();
-  });
-
   app.get('/.well-known/agent-skills/index.json', (req, res) => {
     setSkillCors(res);
     res.setHeader('Cache-Control', 'public, max-age=3600');
     return res.json(skillIndex());
   });
 
-  app.get('/skills/influzer-mcp/SKILL.md', (req, res) => {
+  function sendSkill(req, res) {
+    const skill = findSkill(String(req.params.name || ''));
+    if (!skill) return res.status(404).type('text/plain').send('Skill not found');
     setSkillCors(res);
     res.setHeader('Cache-Control', 'public, max-age=3600');
     res.type('text/markdown; charset=utf-8');
-    return res.sendFile(SKILL_FILE);
+    return res.sendFile(skill.file);
+  }
+
+  app.options('/skills/:name/SKILL.md', (req, res) => {
+    if (!findSkill(req.params.name)) return res.status(404).end();
+    setSkillCors(res);
+    res.status(204).end();
   });
 
-  app.get('/skills/influzer-mcp', (req, res) => {
-    res.redirect(301, '/skills/influzer-mcp/SKILL.md');
+  app.get('/skills/:name/SKILL.md', sendSkill);
+
+  app.get('/skills/:name', (req, res) => {
+    if (!findSkill(req.params.name)) return res.status(404).type('text/plain').send('Skill not found');
+    res.redirect(301, `/skills/${req.params.name}/SKILL.md`);
   });
 
   app.get('/mcp/discovery/skill', (req, res) => {
@@ -91,7 +125,9 @@ function registerMcpSkillRoutes(app) {
       cursorSkillCommand:
         'mkdir -p .cursor/skills/influzer-mcp && curl -fsSL -o .cursor/skills/influzer-mcp/SKILL.md \\\n  https://www.influzer.ai/skills/influzer-mcp/SKILL.md',
       claudeSkillCommand:
-        'mkdir -p .claude/skills/influzer-mcp && curl -fsSL -o .claude/skills/influzer-mcp/SKILL.md \\\n  https://www.influzer.ai/skills/influzer-mcp/SKILL.md',
+        'mkdir -p .claude/skills/influzer-mcp-claude && curl -fsSL -o .claude/skills/influzer-mcp-claude/SKILL.md \\\n  https://www.influzer.ai/skills/influzer-mcp-claude/SKILL.md',
+      claudeSkillUrl: skillUrl('influzer-mcp-claude'),
+      chatgptSkillUrl: skillUrl('influzer-mcp-chatgpt'),
       assetVersion,
     });
   });

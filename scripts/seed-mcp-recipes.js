@@ -90,6 +90,51 @@ function starterRecipes() {
       ],
     },
     {
+      slugHint: 'discover-mcp-servers-from-claude-and-chatgpt',
+      title: 'Discover MCP servers from Claude and ChatGPT',
+      summary:
+        'Influzer starter recipe: add the read-only Influzer Discovery connector in Claude and in ChatGPT, then ask either chat to find an HTTPS MCP server without leaving the conversation.',
+      use_case: 'Engineering',
+      server_slugs: requireServers(['influzer-mcp-discovery']),
+      compatible_clients: ['Claude Desktop', 'ChatGPT'],
+      prerequisites:
+        '- Claude (web or desktop) or ChatGPT with custom connectors\n- Network access to `https://www.influzer.ai/mcp/discovery`\n- No API key for Discovery',
+      permissions:
+        'Read-only catalog search. Discovery does not install the servers it finds. Claude chat and ChatGPT can only use public HTTPS connectors, not local or stdio servers.',
+      expected_result:
+        'The chat names a matching MCP server, gives its Influzer slug, and returns the HTTPS URL to add as a second connector.',
+      sample_output:
+        'For website scraping, Firecrawl (`firecrawl`) has a public HTTPS connector.\nURL: https://mcp.firecrawl.dev/v2/mcp\nHandshake: live. Add it as a custom connector. I did not install it.',
+      troubleshooting:
+        '- No Discovery tools: start a new chat and enable the Influzer Discovery connector\n- ChatGPT: Developer mode must be on before a custom connector can be created\n- If the result says stdio or localhost, skip it in Claude chat and ChatGPT\n- Discovery is not a safe-to-install badge',
+      source_repo_url: 'https://www.influzer.ai/mcp/discovery/skill',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Add Discovery in Claude',
+          body: 'Claude → Settings → Connectors → Add → Custom → Web. Name it Influzer Discovery. URL: https://www.influzer.ai/mcp/discovery. No OAuth. Save, open a new chat, and enable the connector. Optional skill file: https://www.influzer.ai/skills/influzer-mcp-claude/SKILL.md',
+        },
+        {
+          block_type: 'instruction',
+          title: 'Add Discovery in ChatGPT',
+          body: 'Settings → Apps & Connectors → Advanced → Developer mode ON. Create a custom connector named Influzer Discovery with MCP server URL https://www.influzer.ai/mcp/discovery and no auth. New chat → + → Developer mode → enable it. Optional skill file: https://www.influzer.ai/skills/influzer-mcp-chatgpt/SKILL.md',
+        },
+        {
+          block_type: 'prompt',
+          title: 'Ask for a server',
+          language: 'markdown',
+          body: 'Using Influzer Discovery, find an MCP server that can scrape a public documentation page. Return the name, Influzer slug, and the HTTPS connector URL. If the listing is local or stdio only, say ChatGPT and Claude chat cannot use it and pick another. Do not install it.',
+        },
+        {
+          block_type: 'instruction',
+          title: 'Add the server you picked',
+          body: 'Open https://www.influzer.ai/mcp/<slug> and add that HTTPS URL as a second connector, the same way you added Discovery. Leave write tools off until you mean to allow them.',
+        },
+      ],
+    },
+    {
       slugHint: 'scrape-docs-then-check-current-api-with-firecrawl-and-context7',
       title: 'Scrape docs, then check the current API with Firecrawl and Context7',
       summary:

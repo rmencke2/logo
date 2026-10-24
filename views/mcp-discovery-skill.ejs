@@ -43,8 +43,20 @@
       <h2 class="setup-prompts__title">Cursor</h2>
       <pre class="setup-code"><code><%= cursorSkillCommand %></code></pre>
 
-      <h2 class="setup-prompts__title">Claude Code</h2>
+      <h2 class="setup-prompts__title">Claude</h2>
+      <p class="setup-lead">
+        In Claude, add a custom connector named Influzer Discovery at
+        <code><%= discoveryEndpoint %></code>, then give the chat this skill.
+      </p>
+      <pre class="setup-code"><code><%= claudeSkillUrl %></code></pre>
       <pre class="setup-code"><code><%= claudeSkillCommand %></code></pre>
+
+      <h2 class="setup-prompts__title">ChatGPT</h2>
+      <p class="setup-lead">
+        Turn on developer mode, create a custom connector for the same URL,
+        then give the chat this skill. ChatGPT cannot use a local server.
+      </p>
+      <pre class="setup-code"><code><%= chatgptSkillUrl %></code></pre>
 
       <h2 class="setup-prompts__title">What the skill does</h2>
       <ul class="setup-steps probe-facts">
@@ -55,7 +67,9 @@
       </ul>
 
       <p class="setup-links">
-        <a href="<%= skillUrl %>">Raw SKILL.md</a>
+        <a href="<%= skillUrl %>">Cursor skill</a>
+        · <a href="<%= claudeSkillUrl %>">Claude skill</a>
+        · <a href="<%= chatgptSkillUrl %>">ChatGPT skill</a>
         · <a href="<%= skillIndexUrl %>">Skill index</a>
         · <a href="/mcp/discovery/setup">Connect Discovery</a>
         · <a href="/mcp/influzer-mcp-discovery#install">Install snippets</a>
