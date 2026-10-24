@@ -179,6 +179,16 @@
     }
   }
 
+  async function renderReportWithStarter(scan) {
+    renderReport(scan);
+    if (scan.status !== 'completed' || !scan.id) {
+      renderStarter(null);
+      return;
+    }
+    const starter = await fetchStarter(scan.id);
+    renderStarter(starter);
+  }
+
   async function fetchScan(id) {
     const res = await fetch(`/api/webmcp/v1/scans/${encodeURIComponent(id)}`, {
       headers: { Accept: 'application/json' },
@@ -186,6 +196,70 @@
     const data = await res.json();
     if (!res.ok || !data.ok) throw new Error(data.message || data.error || 'Scan not found');
     return data.scan;
+  }
+
+  async function fetchStarter(id) {
+    const res = await fetch(`/api/webmcp/v1/scans/${encodeURIComponent(id)}/starter`, {
+      headers: { Accept: 'application/json' },
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) return null;
+    return data.starter;
+  }
+
+  function renderStarter(starter) {
+    const wrap = document.getElementById('scanStarter');
+    if (!wrap || !starter) {
+      if (wrap) wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
+    const meta = document.getElementById('scanStarterMeta');
+    if (meta) {
+      meta.textContent = `${starter.tool_count} suggested tool(s) · estimated grade after install: ${starter.estimated_grade_after || 'R2'}`;
+    }
+
+    const toolsEl = document.getElementById('scanStarterTools');
+    if (toolsEl) {
+      toolsEl.innerHTML = '';
+      (starter.tools_suggested || []).forEach((t) => {
+        const li = document.createElement('li');
+        li.dataset.tone = 'good';
+        const code = document.createElement('code');
+        code.textContent = t.name;
+        li.appendChild(code);
+        li.appendChild(document.createTextNode(` (${t.kind}) — ${t.description}`));
+        toolsEl.appendChild(li);
+      });
+    }
+
+    const stepsEl = document.getElementById('scanStarterSteps');
+    if (stepsEl) {
+      stepsEl.innerHTML = '';
+      (starter.install_steps || []).forEach((step) => {
+        const li = document.createElement('li');
+        li.textContent = step;
+        stepsEl.appendChild(li);
+      });
+    }
+
+    const codeEl = document.getElementById('scanStarterCode');
+    if (codeEl) codeEl.textContent = starter.starter_js || '';
+
+    const copyBtn = document.getElementById('scanStarterCopy');
+    if (copyBtn) {
+      copyBtn.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(starter.starter_js || '');
+          copyBtn.textContent = 'Copied';
+          setTimeout(() => {
+            copyBtn.textContent = 'Copy code';
+          }, 1600);
+        } catch {
+          copyBtn.textContent = 'Copy failed';
+        }
+      };
+    }
   }
 
   function stopPoll() {
@@ -205,7 +279,7 @@
         if (scan.status === 'completed' || scan.status === 'failed') {
           stopPoll();
           renderProgress(scan);
-          renderReport(scan);
+          renderReportWithStarter(scan);
           submitBtn.disabled = false;
           const url = new URL(window.location.href);
           url.searchParams.set('scan', id);
@@ -280,7 +354,7 @@
     fetchScan(initial)
       .then((scan) => {
         renderProgress(scan);
-        if (scan.status === 'completed' || scan.status === 'failed') renderReport(scan);
+        if (scan.status === 'completed' || scan.status === 'failed') renderReportWithStarter(scan);
         else poll(initial);
       })
       .catch((err) => {

@@ -89,6 +89,23 @@
         <div class="webmcp-scan__banner" id="scanBanner"></div>
         <ul class="webmcp-scan__findings" id="scanFindings"></ul>
         <div class="webmcp-scan__tools" id="scanTools"></div>
+        <section class="webmcp-scan__starter" id="scanStarter" hidden>
+          <h2>WebMCP Starter Kit</h2>
+          <p class="webmcp-note" id="scanStarterIntro">
+            Copy-paste integration code generated from your scan. Install on your site, then rescan to improve your grade.
+          </p>
+          <p class="webmcp-scan__starter-meta" id="scanStarterMeta"></p>
+          <ul class="webmcp-scan__findings" id="scanStarterTools"></ul>
+          <ol class="webmcp-scan__next" id="scanStarterSteps"></ol>
+          <div class="webmcp-scan__code-wrap">
+            <div class="webmcp-scan__code-head">
+              <span>webmcp-starter.js</span>
+              <button type="button" class="webmcp-btn webmcp-btn--ghost" id="scanStarterCopy">Copy code</button>
+            </div>
+            <pre class="webmcp-scan__code" id="scanStarterCode"></pre>
+          </div>
+          <p class="webmcp-note" id="scanStarterPayNote">Stripe checkout for paid delivery can be enabled later — starter kit is included during beta.</p>
+        </section>
         <div class="webmcp-cta-row" id="scanReportActions"></div>
         <section class="webmcp-scan__journeys" id="scanJourneys" hidden>
           <h2>Suggested journeys</h2>

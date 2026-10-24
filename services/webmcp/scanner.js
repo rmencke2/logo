@@ -232,12 +232,103 @@ async function collectFromPage(page) {
       .map((a) => a.getAttribute('href'))
       .filter(Boolean)
       .slice(0, 40);
+
+    const origin = window.location.origin;
+    const navLinks = [];
+    for (const a of document.querySelectorAll('a[href]')) {
+      const href = a.getAttribute('href');
+      const text = (a.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 80);
+      if (!href || !text || text.length < 2) continue;
+      try {
+        const u = new URL(href, origin);
+        if (u.origin !== origin) continue;
+        if (/\.(css|js|png|jpe?g|gif|svg|webp|ico|pdf)$/i.test(u.pathname)) continue;
+        navLinks.push({ path: `${u.pathname}${u.search}` || '/', text });
+      } catch {
+        /* ignore */
+      }
+    }
+
+    const searchInputs = [];
+    for (const el of document.querySelectorAll(
+      'input[type="search"], input[name*="search" i], input[id*="search" i], [role="search"] input',
+    )) {
+      searchInputs.push({
+        name: el.getAttribute('name') || el.getAttribute('id') || 'search',
+        placeholder: el.getAttribute('placeholder') || '',
+        aria_label: el.getAttribute('aria-label') || '',
+      });
+    }
+
+    const formSignals = [];
+    for (const form of document.querySelectorAll('form')) {
+      const hasTool =
+        form.getAttribute('toolname') ||
+        form.getAttribute('toolName') ||
+        form.getAttribute('data-toolname');
+      const action = form.getAttribute('action') || '';
+      const method = (form.getAttribute('method') || 'get').toLowerCase();
+      const fields = [];
+      for (const control of form.querySelectorAll('input[name], select[name], textarea[name]')) {
+        const key = control.getAttribute('name');
+        if (!key || key.startsWith('_')) continue;
+        fields.push({
+          name: key,
+          type:
+            control.tagName === 'SELECT'
+              ? 'string'
+              : control.getAttribute('type') === 'email'
+                ? 'string'
+                : control.getAttribute('type') === 'number'
+                  ? 'number'
+                  : control.getAttribute('type') === 'checkbox'
+                    ? 'boolean'
+                    : 'string',
+          placeholder: control.getAttribute('placeholder') || '',
+          required: Boolean(control.required),
+        });
+      }
+      if (!fields.length && !hasTool) continue;
+      const legend =
+        form.getAttribute('aria-label') ||
+        form.querySelector('legend')?.textContent?.trim() ||
+        form.id ||
+        '';
+      formSignals.push({
+        id: form.id || '',
+        action,
+        method,
+        legend: String(legend).slice(0, 120),
+        fields: fields.slice(0, 12),
+        has_declarative_tool: Boolean(hasTool),
+      });
+    }
+
+    const headings = Array.from(document.querySelectorAll('h1, h2'))
+      .map((h) => (h.textContent || '').trim().replace(/\s+/g, ' '))
+      .filter((t) => t.length >= 2)
+      .slice(0, 8);
+
+    const buttons = Array.from(
+      document.querySelectorAll('button, input[type="submit"], [role="button"]'),
+    )
+      .map((el) => (el.textContent || el.getAttribute('value') || '').trim().replace(/\s+/g, ' '))
+      .filter((t) => t.length >= 2 && t.length <= 80)
+      .slice(0, 12);
+
     return {
       tools: [...merged.values()],
       title: document.title || '',
       description:
         document.querySelector('meta[name="description"]')?.getAttribute('content') || '',
       anchors,
+      signals: {
+        nav_links: navLinks.slice(0, 24),
+        search_inputs: searchInputs.slice(0, 4),
+        forms: formSignals.slice(0, 6),
+        headings,
+        buttons,
+      },
       native: Boolean(scan.native),
       bootError: scan.bootError || null,
       bootInstalled: Boolean(window.__INFLUZER_WEBMCP_SCAN__),
@@ -420,8 +511,10 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
           ok: true,
           status: response?.status() || null,
           title: pageResult.title,
+          description: pageResult.description || '',
           tool_count: (pageResult.tools || []).length,
           native_webmcp: pageResult.native,
+          signals: pageResult.signals || null,
         });
       } catch (err) {
         crashes += 1;
@@ -457,10 +550,13 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
       pages.find((p) => p.ok && p.title)?.title ||
       `WebMCP tools discovered on ${safe.host}`;
 
+    const siteSignals = aggregatePageSignals(pages);
+
     return {
       ok: true,
       host: safe.host,
       canonical_url: safe.canonical,
+      site_signals: siteSignals,
       started_at: new Date(started).toISOString(),
       finished_at: new Date().toISOString(),
       elapsed_ms: Date.now() - started,
@@ -481,8 +577,41 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
   }
 }
 
+function aggregatePageSignals(pages = []) {
+  const navByPath = new Map();
+  const searchInputs = [];
+  const forms = [];
+  const headings = [];
+  const buttons = new Set();
+
+  for (const page of pages) {
+    if (!page.ok || !page.signals) continue;
+    const sig = page.signals;
+    for (const link of sig.nav_links || []) {
+      if (!navByPath.has(link.path)) navByPath.set(link.path, { ...link, page_url: page.path });
+    }
+    for (const s of sig.search_inputs || []) {
+      searchInputs.push({ ...s, page_url: page.path });
+    }
+    for (const f of sig.forms || []) {
+      forms.push({ ...f, page_url: page.path });
+    }
+    for (const h of sig.headings || []) headings.push(h);
+    for (const b of sig.buttons || []) buttons.add(b);
+  }
+
+  return {
+    nav_links: [...navByPath.values()].slice(0, 32),
+    search_inputs: searchInputs.slice(0, 8),
+    forms: forms.slice(0, 12),
+    headings: [...new Set(headings)].slice(0, 12),
+    buttons: [...buttons].slice(0, 16),
+  };
+}
+
 module.exports = {
   scanWebsite,
+  aggregatePageSignals,
   CHROME_PATH,
   MAX_PAGES,
 };
