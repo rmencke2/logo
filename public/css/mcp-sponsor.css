@@ -170,9 +170,44 @@
   background: var(--hp-near);
 }
 
+.home-page.dark .sponsor-pitch,
+.registry-page.dark .sponsor-pitch {
+  border-color: #92400e;
+  background: #2a2113;
+}
+
+.home-page.dark .sponsor-pitch p,
+.registry-page.dark .sponsor-pitch p {
+  color: #e7d7b1;
+}
+
+.home-page.dark .sponsor-pitch b,
+.registry-page.dark .sponsor-pitch b,
+.home-page.dark .sponsor-pitch a:not(.sponsor-pitch__cta),
+.registry-page.dark .sponsor-pitch a:not(.sponsor-pitch__cta) {
+  color: #fef3c7;
+}
+
+.home-page.dark .sponsor-pitch__cta,
+.registry-page.dark .sponsor-pitch__cta {
+  background: #fef3c7;
+  color: #1c1917 !important;
+}
+
+.home-page.dark .sponsor-pitch__cta:hover,
+.registry-page.dark .sponsor-pitch__cta:hover {
+  background: #fff;
+  color: #1c1917 !important;
+}
+
 .home-sponsors {
   border-bottom: 1px solid var(--hp-border);
   background: #fffdf6;
+}
+
+.home-page.dark .home-sponsors,
+.registry-page.dark .home-sponsors {
+  background: var(--hp-bg);
 }
 
 .home-sponsors .sponsor-rail {

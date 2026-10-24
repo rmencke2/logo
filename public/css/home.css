@@ -603,6 +603,19 @@ body.registry-page.site-header-active {
   background: var(--hp-near);
 }
 
+/* Dark mode flips --hp-text to near-white. Keep the label dark on that fill. */
+.home-page.dark .home-board__btn--primary,
+.registry-page.dark .home-board__btn--primary {
+  color: var(--hp-bg) !important;
+}
+
+.home-page.dark .home-board__btn--primary:hover,
+.registry-page.dark .home-board__btn--primary:hover {
+  background: #fff;
+  border-color: #fff;
+  color: #16181d !important;
+}
+
 .home-board__btn--ghost {
   border: none;
   background: transparent;
