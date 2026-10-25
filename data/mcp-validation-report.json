@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-24T10:08:55.448Z",
+  "generated_at": "2026-10-25T10:23:05.998Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-10-23T11:28:34.607Z",
+  "catalog_generated_at": "2026-10-24T10:08:55.545Z",
   "summary": {
     "checked": 283,
     "skipped_manual": 107,
     "skipped_no_endpoint": 14348,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 281,
-    "tools_changed": 1,
+    "unchanged": 282,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -18,30 +18,13 @@
     "live_ok": 1,
     "smithery_fallback": 14630,
     "errors": 0,
-    "tools_added_total": 3,
+    "tools_added_total": 0,
     "tools_removed_total": 0,
     "catalog_total": 14738,
     "http_endpoints": 282,
     "with_tools_before": 383,
     "with_tools_after": 383
   },
-  "changes": [
-    {
-      "slug": "kangletian-paper-mcp",
-      "name": "Paper Search (arXiv + Semantic Scholar + OpenAlex)",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 38,
-      "afterToolCount": 41,
-      "added": [
-        "lint_latex",
-        "extract_pdf",
-        "extract_pdf_result"
-      ],
-      "removed": [],
-      "changed": []
-    }
-  ],
+  "changes": [],
   "errors": []
 }
