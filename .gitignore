@@ -56,6 +56,9 @@ data/mcp-promote-requests.json
 # Runtime handshake overlay from boot warm-probe
 data/mcp-handshake-warm.json
 
+# Probe flips recorded on the server between deploys
+data/mcp-handshake-diff.local.json
+
 # Expo (mobile subproject)
 .expo/
 dist/

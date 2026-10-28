@@ -157,6 +157,42 @@ function overlayRecord({ url, slug, liveStatus, probedAt, expires }) {
   };
 }
 
+function previousLiveStatus(slug) {
+  const rec = peekHandshake({ slug });
+  if (rec) {
+    if (HANDSHAKE_DONE.has(rec.live_status)) return rec.live_status;
+    const mapped = resolveLiveStatus({}, rec);
+    if (HANDSHAKE_DONE.has(mapped)) return mapped;
+  }
+  try {
+    const { findMcpServerBySlug } = require('./mcpDirectoryService');
+    const status = findMcpServerBySlug(slug)?.quality?.live_status;
+    if (HANDSHAKE_DONE.has(status)) return status;
+  } catch {
+    /* catalog lookup is optional */
+  }
+  return null;
+}
+
+function noteOverlayFlip(slug, rec) {
+  if (!slug || !rec || !HANDSHAKE_DONE.has(rec.live_status)) return;
+  const from = previousLiveStatus(slug);
+  if (from === rec.live_status) return;
+  try {
+    const { handshakeFlipEvent, appendHandshakeEvents } = require('./mcpHandshakeDiffService');
+    const event = handshakeFlipEvent({
+      slug,
+      from_status: from,
+      to_status: rec.live_status,
+      at: rec.validated_at,
+      source: 'probe',
+    });
+    if (event) appendHandshakeEvents([event], { local: true });
+  } catch (err) {
+    console.error('Handshake diff record failed:', err.message || err);
+  }
+}
+
 function rememberHandshake({ url, slug, slugs, liveStatus, probedAt } = {}) {
   const rec = overlayRecord({
     url,
@@ -166,8 +202,10 @@ function rememberHandshake({ url, slug, slugs, liveStatus, probedAt } = {}) {
     expires: Date.now() + OVERLAY_TTL_MS,
   });
   if (!rec) return;
-  if (url) byUrl.set(String(url).trim().toLowerCase(), rec);
   const ids = [slug, ...(slugs || [])].filter(Boolean);
+  const primary = slug || ids[0];
+  if (primary) noteOverlayFlip(primary, rec);
+  if (url) byUrl.set(String(url).trim().toLowerCase(), rec);
   for (const id of ids) {
     bySlug.set(String(id).trim().toLowerCase(), rec);
   }

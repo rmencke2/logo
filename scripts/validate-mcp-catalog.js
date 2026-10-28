@@ -20,6 +20,10 @@ const {
   toolFingerprint,
   getHttpMcpEndpoint,
 } = require('./utils/mcp-validator');
+const {
+  diffValidationEntry,
+  appendHandshakeEvents,
+} = require('../services/mcpHandshakeDiffService');
 
 const ROOT = path.join(__dirname, '..');
 const GENERATED_PATH = path.join(ROOT, 'data', 'servers-generated.json');
@@ -221,10 +225,11 @@ async function main() {
   state.last_run = report.generated_at;
   state.validation = 'live_mcp_tools_list';
   state.servers = state.servers || {};
+  const handshakeEvents = [];
   for (const r of results) {
     if (!r.slug || r.status?.startsWith('skipped')) continue;
     const server = servers.find((s) => s.slug === r.slug);
-    state.servers[r.slug] = {
+    const nextEntry = {
       validated_at: server?.tools_validated_at || report.generated_at,
       tool_count: r.afterToolCount ?? server?.tools?.length ?? 0,
       tool_fingerprint: toolFingerprint(server?.tools || []),
@@ -232,6 +237,17 @@ async function main() {
       validation_method: r.validationMethod,
       endpoint_status: r.endpointStatus || r.liveProbe?.status || null,
     };
+    const change = diffValidationEntry(state.servers[r.slug], nextEntry, {
+      slug: r.slug,
+      at: report.generated_at,
+      source: 'validation',
+    });
+    if (change) handshakeEvents.push(change);
+    state.servers[r.slug] = nextEntry;
+  }
+  if (handshakeEvents.length) {
+    const recorded = appendHandshakeEvents(handshakeEvents);
+    console.log(`   Handshake diff: ${recorded} change(s) recorded`);
   }
 
   fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2) + '\n');

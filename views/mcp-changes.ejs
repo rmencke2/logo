@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <link rel="alternate" type="application/rss+xml" title="Influzer MCP handshake diff" href="/mcp/changes/rss.xml" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <header class="dir-hero">
+      <div class="dir-hero__inner">
+        <p class="dir-hero__eyebrow">Last <%= diff.days %> days</p>
+        <h1 class="dir-hero__title">MCP handshake diff</h1>
+        <p class="dir-hero__lead">
+          Servers that became live, hit an auth gate, went unreachable, or changed their tool list.
+          Same clock as the <a href="/mcp/scoreboard">scoreboard</a>: <code>initialize</code> then <code>tools/list</code>.
+          <strong>Not a safe-to-install badge.</strong>
+        </p>
+        <div class="board-stats" aria-label="Handshake changes">
+          <a class="board-stat<%= !diff.status && !diff.kind ? ' is-active' : '' %>" href="/mcp/changes?days=<%= diff.days %>">
+            <b><%= diff.counts.total %></b><span>Changes</span>
+          </a>
+          <a class="board-stat board-stat--ok<%= diff.status === 'live_ok' ? ' is-active' : '' %>" href="/mcp/changes?days=<%= diff.days %>&status=live_ok">
+            <b><%= diff.counts.live_ok %></b><span>Became live</span>
+          </a>
+          <a class="board-stat board-stat--auth<%= diff.status === 'auth_required' ? ' is-active' : '' %>" href="/mcp/changes?days=<%= diff.days %>&status=auth_required">
+            <b><%= diff.counts.auth_required %></b><span>Auth gate</span>
+          </a>
+          <a class="board-stat board-stat--down<%= diff.status === 'unreachable' ? ' is-active' : '' %>" href="/mcp/changes?days=<%= diff.days %>&status=unreachable">
+            <b><%= diff.counts.unreachable %></b><span>Unreachable</span>
+          </a>
+          <a class="board-stat<%= diff.kind === 'tools' ? ' is-active' : '' %>" href="/mcp/changes?days=<%= diff.days %>&kind=tools">
+            <b><%= diff.counts.tools %></b><span>Tool list</span>
+          </a>
+        </div>
+        <p class="change-feeds">
+          <a href="/mcp/changes?days=7">7 days</a>
+          <a href="/mcp/changes?days=30<%= diff.status ? '&status=' + diff.status : '' %><%= diff.kind ? '&kind=' + diff.kind : '' %>">30 days</a>
+          <a href="/api/mcp/changes?days=<%= diff.days %>">JSON</a>
+          <a href="/mcp/changes/rss.xml">RSS</a>
+        </p>
+      </div>
+    </header>
+
+    <main class="dir-shell board-shell" id="main">
+      <div class="dir-controls">
+        <nav class="dir-tabs" aria-label="Directory scope">
+          <a href="/mcp">Top 100</a>
+          <a href="/mcp/scoreboard">Scoreboard</a>
+          <a href="/mcp/changes" class="is-active">Changes</a>
+          <a href="/mcp/all">Full directory</a>
+        </nav>
+      </div>
+
+      <% if (!diff.groups.length) { %>
+        <p class="change-empty">No handshake or tool-list changes in this window. The probe still ran. Nothing flipped.</p>
+      <% } else { %>
+        <ol class="change-list">
+          <% diff.groups.forEach(function(group) { %>
+            <li>
+              <h2 class="change-day"><%= group.date %></h2>
+              <% group.events.forEach(function(event) { %>
+                <article class="change-row">
+                  <a class="change-row__name" href="<%= event.page_url %>"><%= event.name %></a>
+                  <% if (event.kind === 'handshake') { %>
+                    <p class="change-row__move"><%= event.from_label %> → <b><%= event.to_label %></b></p>
+                  <% } else { %>
+                    <p class="change-row__move">Tool list changed<% if (event.to_label) { %> · <%= event.to_label %><% } %></p>
+                  <% } %>
+                  <% if (event.tools_added_count || event.tools_removed_count) { %>
+                    <p class="change-row__tools">
+                      <% if (event.tools_added_count) { %>+<%= event.tools_added_count %> <%= event.tools_added.join(', ') %><% } %>
+                      <% if (event.tools_removed_count) { %> −<%= event.tools_removed_count %> <%= event.tools_removed.join(', ') %><% } %>
+                    </p>
+                  <% } %>
+                </article>
+              <% }); %>
+            </li>
+          <% }); %>
+        </ol>
+      <% } %>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>
