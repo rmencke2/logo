@@ -1348,7 +1348,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/news`, lastmod: latestNewsDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
-      { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-06-03', changefreq: 'monthly', priority: '0.6' },
+      { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-10-29', changefreq: 'weekly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },

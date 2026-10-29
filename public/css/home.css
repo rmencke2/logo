@@ -225,19 +225,33 @@ body.registry-page.site-header-active {
   color: var(--hp-text);
 }
 
-.home-nav__subscribe {
+.home-nav__submit {
   background: var(--hp-accent);
   color: #fff !important;
   font-size: 13px;
   font-weight: 600;
-  padding: 9px 18px;
+  padding: 9px 14px;
   border-radius: 7px;
   text-decoration: none;
+  white-space: nowrap;
+}
+
+.home-nav__submit:hover,
+.home-nav__submit.is-active {
+  background: var(--hp-accent-hover);
+  color: #fff !important;
+}
+
+.home-nav__subscribe {
+  font-size: 13.5px;
+  color: var(--hp-muted);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .home-nav__subscribe:hover {
-  background: var(--hp-accent-hover);
-  color: #fff !important;
+  color: var(--hp-text);
 }
 
 .home-nav__menu-btn {
@@ -413,6 +427,35 @@ body.registry-page.site-header-active {
 
 .home-hero__search button[type='submit']:hover {
   background: var(--hp-accent-deep);
+}
+
+.home-hero__list {
+  display: flex;
+  gap: 12px 16px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 16px auto 0;
+  max-width: 640px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--hp-muted);
+}
+
+.home-hero__list-btn {
+  background: var(--hp-accent);
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.home-hero__list-btn:hover {
+  background: var(--hp-accent-hover);
+  color: #fff !important;
 }
 
 .home-hero__chips {
@@ -1439,5 +1482,13 @@ body.registry-page.site-header-active {
 
   .home-nav__login {
     display: none;
+  }
+
+  .home-nav__right {
+    gap: 10px;
+  }
+
+  .home-nav__submit {
+    padding: 8px 10px;
   }
 }

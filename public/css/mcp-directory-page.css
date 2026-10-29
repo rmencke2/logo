@@ -58,6 +58,42 @@
   font-weight: 600;
 }
 
+.dir-hero__submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin: 18px 0 0;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--hp-muted);
+}
+
+.dir-hero__submit-btn {
+  display: inline-block;
+  background: var(--hp-accent);
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.dir-hero__submit-btn:hover {
+  background: var(--hp-accent-hover);
+  color: #fff !important;
+}
+
+.dir-empty__submit {
+  margin: 10px 0 0;
+  font-size: 14px;
+}
+
+.dir-empty__submit a {
+  font-weight: 600;
+}
+
 .dir-shell {
   max-width: 1200px;
   margin: 0 auto;

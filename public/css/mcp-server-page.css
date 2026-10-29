@@ -7,6 +7,7 @@
   box-sizing: border-box;
   padding: 20px 32px 0;
   display: flex;
+  flex-wrap: wrap;
   gap: 14px;
   align-items: center;
   font-size: 12.5px;
@@ -24,6 +25,12 @@
 
 .mcp-crumb__sep {
   color: var(--hp-faint);
+}
+
+.mcp-crumb__submit {
+  margin-left: auto;
+  color: var(--hp-text) !important;
+  font-weight: 600 !important;
 }
 
 .mcp-detail-main {

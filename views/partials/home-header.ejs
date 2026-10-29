@@ -10,6 +10,7 @@
   const activeRecipes = path === '/recipes' || path.startsWith('/recipes/') || path.startsWith('/contributors/');
   const activeInsights = path.startsWith('/insights') || path.startsWith('/blog');
   const activeBriefs = path.startsWith('/news');
+  const activeSubmit = path.startsWith('/mcp/submit');
 %>
 <header class="home-nav" id="siteHeader">
   <div class="home-nav__inner">
@@ -50,6 +51,7 @@
             </button>
             <div class="site-header-user-panel" role="menu">
               <div class="site-header-user-email" id="siteHeaderUserEmail"></div>
+              <a href="/mcp/submit" role="menuitem">Submit an MCP server</a>
               <a href="/mcp/my-listings" role="menuitem">My MCP listings</a>
               <a href="/recipes/mine" role="menuitem">My recipes</a>
               <a href="/admin" id="siteHeaderAdminLink" role="menuitem" hidden>Admin dashboard</a>
@@ -58,6 +60,7 @@
           </div>
         </div>
       </div>
+      <a href="/mcp/submit" class="home-nav__submit<%= activeSubmit ? ' is-active' : '' %>">Submit server</a>
       <a href="#newsletter" class="home-nav__subscribe">Subscribe</a>
     </div>
   </div>

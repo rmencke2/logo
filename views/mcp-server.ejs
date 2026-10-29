@@ -43,12 +43,14 @@
       <a href="/mcp">← Top 100</a>
       <span class="mcp-crumb__sep">/</span>
       <a href="/mcp/all">Full directory (<%= catalogTotals ? catalogTotals.total.toLocaleString() : '…' %>)</a>
+      <a class="mcp-crumb__submit" href="/mcp/submit">Submit a server</a>
     </div>
 
     <% if (!server) { %>
       <main class="mcp-detail-main" style="display:block;padding:48px 32px;">
         <h1>Server not found</h1>
-        <p>This MCP server is not in our directory yet.</p>
+        <p>This MCP server is not in the directory yet.</p>
+        <p><a class="home-nav__submit" href="/mcp/submit">Submit an MCP server</a></p>
       </main>
     <% } else { %>
       <main class="mcp-detail-main">
