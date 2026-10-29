@@ -24,6 +24,21 @@ function main() {
   assert.match(robots, /Disallow:\s+\/mcp\/discovery/);
   assert.match(robots, /Allow:\s+\/mcp\/discovery\/setup/);
   assert.match(robots, /Allow:\s+\/mcp\/discovery\/starters/);
+  assert.match(robots, /LLM crawlers/);
+  assert.match(robots, /Disallow:\s+\/api\//);
+
+  const { buildLlmsTxt } = require('../services/llmsTxt');
+  const llms = buildLlmsTxt({
+    countSentence: '14,159 servers listed',
+    updated: 'October 29, 2026',
+  });
+  assert.match(llms, /14,159 servers listed/);
+  assert.match(llms, /https:\/\/www\.influzer\.ai\/methodology/);
+  assert.match(llms, /robots\.txt disallows \/api\//);
+  assert.match(llms, /does not include every catalog row/);
+  const bare = buildLlmsTxt({});
+  assert.doesNotMatch(bare, /servers listed/);
+  assert.doesNotMatch(bare, /\d{4,}/);
 
   const all = getAllMcpServers();
   const sitemapServers = getSitemapMcpServers();
@@ -55,11 +70,15 @@ function main() {
     'utf8',
   );
   assert.match(mcpServerTpl, /noindex:\s*typeof noindex/);
+  assert.match(mcpServerTpl, /listingDescription/);
+  assert.match(mcpServerTpl, /'vscode'/);
+  assert.match(mcpServerTpl, /verification\.history/);
 
   const staticSrc = fs.readFileSync(
     path.join(__dirname, '..', 'services', 'staticService.js'),
     'utf8',
   );
+  assert.match(staticSrc, /app\.get\('\/llms\.txt'/);
   assert.match(staticSrc, /host === 'influzer\.ai'/);
   assert.match(staticSrc, /app\.get\('\/index\.html'/);
   assert.match(staticSrc, /getSitemapMcpServers\(\)/);

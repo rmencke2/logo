@@ -119,6 +119,9 @@ const summary = history.buildVerificationSummary({
 }, now);
 assert.strictEqual(summary.grade_letter, signals.verification_grade_letter);
 assert.strictEqual(summary.latency_ms, 80);
+assert.strictEqual(summary.history.length, 2);
+assert.strictEqual(summary.history[0].status, 'auth_required');
+assert.strictEqual(summary.history[0].latency_ms, 80);
 assert.strictEqual(summary.uptime_label, '100% of 2 samples over 2 days');
 assert.match(summary.transport, /HTTPS/);
 fs.unlinkSync(process.env.MCP_PROBE_HISTORY_PATH);

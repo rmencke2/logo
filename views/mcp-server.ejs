@@ -3,12 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <%
+      const listingDescription = !server
+        ? 'The requested MCP server could not be found.'
+        : (String(server.description || '').trim() || (server.name + ' MCP server' + (server.category ? ' in ' + server.category : '') + '.'));
+    %>
     <title><%= server ? `${server.name} — MCP Server Directory - Influzer.ai` : 'Server Not Found - Influzer.ai' %></title>
-    <meta name="description" content="<%= server ? server.description : 'The requested MCP server could not be found.' %>" />
+    <meta name="description" content="<%= listingDescription %>" />
     <link rel="canonical" href="<%= server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp' %>" />
     <%- include('partials/seo-social', {
       ogTitle: (server ? server.name : 'Server Not Found') + ' - Influzer.ai',
-      ogDescription: server ? server.description : 'MCP server not found in the Influzer.ai directory.',
+      ogDescription: listingDescription,
       ogUrl: server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp',
       ogType: 'website',
       noindex: typeof noindex !== 'undefined' ? noindex : !server,
@@ -27,7 +32,7 @@
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
           name: server.name,
-          description: server.description,
+          description: listingDescription,
           applicationCategory: 'DeveloperApplication',
           operatingSystem: 'Web',
           url: `https://www.influzer.ai/mcp/${server.slug}`,
@@ -145,12 +150,12 @@
                 <% } %>
               </p>
               <div class="mcp-install-tabs" role="tablist" aria-label="MCP client">
-                <% ['cursor','claude','chatgpt','claude-code','acp','embed'].forEach(function(id, i) { %>
+                <% ['cursor','vscode','claude','chatgpt','claude-code','acp','embed'].forEach(function(id, i) { %>
                   <% const label = id === 'claude-code' ? 'Claude Code' : (id === 'acp' ? 'ACP' : (id === 'embed' ? 'Embed' : snippets.clients[id].label)); %>
                   <button type="button" class="mcp-install-tab<%= i === 0 ? ' is-active' : '' %>" role="tab" aria-selected="<%= i === 0 ? 'true' : 'false' %>" data-install-tab="<%= id %>"><%= label %></button>
                 <% }); %>
               </div>
-              <% ['cursor','claude','chatgpt','claude-code','acp'].forEach(function(id, i) { %>
+              <% ['cursor','vscode','claude','chatgpt','claude-code','acp'].forEach(function(id, i) { %>
                 <% const client = snippets.clients[id]; %>
                 <div class="mcp-install-panel" data-install-panel="<%= id %>" <%= i === 0 ? '' : 'hidden' %>>
                   <p class="mcp-step__help"><%= client.summary %></p>
@@ -328,6 +333,18 @@
                   <div><dt>30-day uptime</dt><dd><%= verification.uptime_label %></dd></div>
                 <% } %>
               </dl>
+              <% if (verification.history && verification.history.length) { %>
+                <h3>Probe history</h3>
+                <ul>
+                  <% verification.history.forEach(function(sample) { %>
+                    <li>
+                      <time datetime="<%= sample.at %>"><%= sample.at %></time>
+                      · <%= sample.status %>
+                      <% if (sample.latency_ms != null) { %> · <%= sample.latency_ms %> ms<% } %>
+                    </li>
+                  <% }); %>
+                </ul>
+              <% } %>
             </section>
           <% } %>
 

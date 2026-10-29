@@ -1,3 +1,6 @@
+# User-agent: * covers search engines and LLM crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot).
+# Do not add a bot-specific group that only says Allow: / — that group would not inherit the Disallow rules below.
+# /api/ stays disallowed. Install and probe URLs are linked from HTML; /llms.txt describes them.
 User-agent: *
 Allow: /
 

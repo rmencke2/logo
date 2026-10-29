@@ -38,6 +38,10 @@ function main() {
   assert.equal(remote.safety_badge, null);
   assert.equal(remote.has_remote, true);
   assert.ok(remote.clients.cursor.code.includes('https://www.influzer.ai/mcp/discovery'));
+  assert.equal(remote.clients.vscode.code, remote.clients.cursor.code);
+  assert.match(remote.clients.vscode.summary, /\.vscode\/mcp\.json/);
+  assert.equal(remote.clients.vscode.label, 'VS Code');
+  assert.ok(remote.markdown.includes('VS Code'));
   assert.ok(remote.clients['claude-code'].code.includes('--transport http'));
   assert.ok(remote.clients.acp.code.includes('"type": "http"'));
   assert.equal(remote.clients.claude.available, true);
@@ -58,6 +62,8 @@ function main() {
   assert.equal(local.clients.chatgpt.available, false);
   assert.equal(local.clients.cursor.available, true);
   assert.ok(local.clients.cursor.code.includes('"command": "npx"'));
+  assert.equal(local.clients.vscode.code, local.clients.cursor.code);
+  assert.match(local.clients.vscode.summary, /Local stdio in \.vscode\/mcp\.json/);
   assert.ok(local.clients.acp.code.includes('"type": "stdio"'));
   assert.equal(local.badge_url, null);
   assert.equal(local.badge_markdown, null);

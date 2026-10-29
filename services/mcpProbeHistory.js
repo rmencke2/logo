@@ -123,7 +123,20 @@ function buildVerificationSummary(server, now = new Date()) {
     uptime_label: uptime
       ? `${Math.round(uptime.ratio * 100)}% of ${uptime.samples} samples over ${uptime.days} days`
       : null,
+    history: recentProbeSamples(samples),
   };
+}
+
+function recentProbeSamples(samples, limit = 5) {
+  return (Array.isArray(samples) ? samples : [])
+    .slice()
+    .sort((a, b) => Date.parse(b.at) - Date.parse(a.at))
+    .slice(0, limit)
+    .map((sample) => ({
+      at: sample.at,
+      status: sample.status,
+      latency_ms: Number.isFinite(Number(sample.latency_ms)) ? Math.round(Number(sample.latency_ms)) : null,
+    }));
 }
 
 function latestLatencyMs(samples) {

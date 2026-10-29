@@ -275,6 +275,18 @@ function buildInstallSnippets(server) {
           },
   };
 
+  clients.vscode = {
+    available: clients.cursor.available,
+    label: 'VS Code',
+    summary: clients.cursor.available
+      ? remoteUrl
+        ? 'Paste into .vscode/mcp.json.'
+        : 'Local stdio in .vscode/mcp.json. Laptop only.'
+      : 'No remote URL or npx install command on this listing.',
+    language: clients.cursor.language,
+    code: clients.cursor.code,
+  };
+
   const note =
     quality.note ||
     'Observable listing facts — not a safe-to-install badge. Handshake tools/list before you connect.';
@@ -291,6 +303,8 @@ function buildInstallSnippets(server) {
     note,
     '',
     markdownBlock('Cursor', 'json', clients.cursor.code).trim(),
+    '',
+    markdownBlock('VS Code', 'json', clients.vscode.code).trim(),
     '',
     markdownBlock('Claude Code', 'bash', clients['claude-code'].code).trim(),
     '',
@@ -343,7 +357,7 @@ function slimInstallForAgent(server) {
   const snippets = buildInstallSnippets(server);
   if (!snippets) return null;
   const clients = {};
-  for (const id of ['cursor', 'claude', 'chatgpt', 'claude-code', 'acp']) {
+  for (const id of ['cursor', 'vscode', 'claude', 'chatgpt', 'claude-code', 'acp']) {
     const client = snippets.clients[id];
     if (!client) continue;
     clients[id] = {

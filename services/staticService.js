@@ -58,6 +58,7 @@ const { getHomeTopServersByTraffic, getDirectoryAudienceStats, getListingViewCou
 const { LIST_ORDER, DIRECTORY_SORT_CAPTIONS, homeListCaption, presentSponsorAudience } = require('./mcpListOrder');
 const { directoryQueryIsFiltered } = require('../public/js/mcp-directory-query');
 const { buildVerificationSummary } = require('./mcpProbeHistory');
+const { buildLlmsTxt } = require('./llmsTxt');
 const { getMethodology } = require('../data/mcp-methodology');
 
 function getAllBlogPosts() {
@@ -1364,6 +1365,13 @@ ${itemsXml}
   app.get('/terms.html', (req, res) => res.redirect(301, '/terms'));
   app.get('/cookie.html', (req, res) => res.redirect(301, '/cookie'));
 
+  app.get('/llms.txt', (req, res) => {
+    const copy = getMcpHeroStats().copy || {};
+    res.type('text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(buildLlmsTxt(copy));
+  });
+
   // Serve robots.txt
   app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
@@ -1388,6 +1396,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-10-29', changefreq: 'weekly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/methodology`, lastmod: '2026-10-29', changefreq: 'monthly', priority: '0.7' },
+      { loc: `${SITE_BASE_URL}/llms.txt`, lastmod: '2026-10-29', changefreq: 'weekly', priority: '0.4' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
