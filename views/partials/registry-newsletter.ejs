@@ -17,13 +17,13 @@
     : (isInline ? 'GET PRACTICAL AI PLAYBOOKS WEEKLY' : isBand ? 'ONE EMAIL PER WEEK' : 'EVERY THURSDAY');
   const title = typeof newsletterTitle !== 'undefined' && newsletterTitle
     ? newsletterTitle
-    : (isInline ? 'One clear email each Thursday' : isBand ? 'Get weekly executive AI insights' : 'The MCP briefing 4,200+ builders read');
+    : (isInline ? 'One clear email each Thursday' : isBand ? 'Get weekly executive AI insights' : 'The MCP briefing');
   const desc = typeof newsletterDesc !== 'undefined' && newsletterDesc
     ? newsletterDesc
     : (isInline
-      ? 'Actionable frameworks on AI execution, agents, and MCP. Join 4,200+ builders.'
+      ? 'Actionable frameworks on AI execution, agents, and MCP.'
       : isBand
-        ? 'Practical frameworks you can apply immediately. Join 4,200+ leaders.'
+        ? 'Practical frameworks you can apply immediately.'
         : 'Original analysis on MCP, agents, and what to connect next. No aggregated links.');
   const success = typeof newsletterSuccess !== 'undefined' && newsletterSuccess
     ? newsletterSuccess
@@ -67,10 +67,4 @@
     <p class="home-nl__status" data-newsletter-status role="status" aria-live="polite"></p>
   </form>
   <div class="home-nl__success" data-newsletter-success role="status"><%= success %></div>
-  <% if (!isInline && !isBand) { %>
-    <div class="home-nl__quote">
-      “The only MCP roundup I actually finish.”<br />
-      <cite>— Staff engineer, fintech</cite>
-    </div>
-  <% } %>
 </div>
