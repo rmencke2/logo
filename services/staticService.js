@@ -362,6 +362,8 @@ function mapHomeServerRow(server, traffic = null) {
     official: isOurs,
     category: server.category || 'Dev Tools',
     kind: homeTransportKind(server.transport),
+    statusLabel: server.quality && server.quality.live_status_label ? server.quality.live_status_label : '',
+    gradeLetter: server.quality && server.quality.verification_grade_letter ? server.quality.verification_grade_letter : '',
     handshake_svg: server.quality && server.quality.handshake_svg ? server.quality.handshake_svg : '',
     initial: String(server.name || '?').charAt(0).toUpperCase(),
     shortDesc: desc.length > 140 ? `${desc.slice(0, 137)}…` : desc,

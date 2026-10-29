@@ -576,6 +576,17 @@
   color: var(--hp-faint);
 }
 
+.dir-card__status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hp-text);
+}
+
+.dir-card__cat {
+  font-size: 12px;
+  color: var(--hp-muted2);
+}
+
 .dir-card__stars {
   font-size: 12px;
   font-weight: 600;

@@ -28,13 +28,6 @@
     );
   }
 
-  function fmtStars(n) {
-    const num = Number(n) || 0;
-    if (num >= 10000) return Math.round(num / 1000) + 'k';
-    if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-    return String(num);
-  }
-
   function logoHtml(s, opts) {
     const options = opts || {};
     const registry = Boolean(options.registry);
@@ -164,63 +157,37 @@
     );
   }
 
-  function renderRegistryDirCard(s) {
-    const toolList = s.tools || [];
-    const shown = toolList.slice(0, 2);
-    const extra = toolList.length - shown.length;
-    const tags =
-      shown
-        .map((t) => '<span class="dir-card__tag">' + esc(t.name || t) + '</span>')
-        .join('') +
-      (extra > 0 ? '<span class="dir-card__tag dir-card__tag--more">+' + extra + '</span>' : '');
-    const starLabel =
-      s.stars > 0 ? '★ ' + fmtStars(s.stars) : 'Curated';
-    const transport = s.transportBadge || (s.isRemote ? 'Remote' : 'Local');
-    const qualityBadges = (s.quality && s.quality.badges) || [];
-    const qualityHtml = qualityBadges.length
-      ? '<div class="dir-card__quality">' +
-        qualityBadges
-          .map(
-            (b) =>
-              '<span class="dir-card__qchip dir-card__qchip--' +
-              esc(b.kind || 'tools') +
-              '">' +
-              esc(b.label) +
-              '</span>',
-          )
-          .join('') +
-        '</div>'
-      : '';
+  function statusGradeLine(s) {
+    const quality = (s && s.quality) || {};
+    const parts = [];
+    if (quality.verification_grade_letter) parts.push(quality.verification_grade_letter);
+    if (quality.live_status_label) parts.push(quality.live_status_label);
+    return parts.join(' · ');
+  }
 
+  function shortText(value, max) {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (text.length <= max) return text;
+    return text.slice(0, max - 1) + '…';
+  }
+
+  function renderRegistryDirCard(s) {
     return (
       '<a class="dir-card" href="/mcp/' +
       esc(s.slug) +
       '">' +
-      '<div class="dir-card__head">' +
-      logoHtml(s, { registry: true }) +
-      '<div class="dir-card__titles">' +
-      '<div class="dir-card__name-row">' +
-      '<span class="dir-card__name">' +
+      '<div class="dir-card__name">' +
       esc(s.name) +
-      '</span>' +
-      (s.official ? '<span class="dir-card__official">OFFICIAL</span>' : '') +
-      handshakeChip(s) +
       '</div>' +
-      '<div class="dir-card__cat">' +
-      esc(s.category || '') +
-      '</div>' +
-      '</div></div>' +
       '<p class="dir-card__desc">' +
-      esc(s.description || '') +
+      esc(shortText(s.description, 140)) +
       '</p>' +
-      (tags ? '<div class="dir-card__tags">' + tags + '</div>' : '') +
-      qualityHtml +
       '<div class="dir-card__foot">' +
-      '<span class="dir-card__stars">' +
-      esc(starLabel) +
+      '<span class="dir-card__status">' +
+      esc(statusGradeLine(s)) +
       '</span>' +
-      '<span class="dir-card__transport">' +
-      esc(transport) +
+      '<span class="dir-card__cat">' +
+      esc(s.category || '') +
       '</span>' +
       '</div></a>'
     );

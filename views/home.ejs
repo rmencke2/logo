@@ -51,13 +51,8 @@
         </form>
         <p class="home-hero__list">
           <a class="home-hero__list-btn" href="/mcp/submit">Submit an MCP server</a>
-          <span>Free to list. A person reviews it. Paying does not change rank.</span>
+          <span>Paying does not change rank.</span>
         </p>
-        <div class="home-hero__chips" role="list">
-          <% categories.forEach(function(cat) { %>
-            <button type="button" class="home-hero__chip" data-query="<%= cat %>" role="listitem"><%= cat %></button>
-          <% }); %>
-        </div>
         <div class="home-hero__stats" aria-label="Directory statistics" data-count-sentence="<%= heroStats.copy.countSentence %>">
           <% if (heroStats.copy.listed != null) { %>
             <span class="home-hero__stat"><b id="homeServerCount" data-target="<%= heroStats.serversListed %>"><%= heroStats.copy.listed %></b> <%= heroStats.copy.captions.serversListed %></span>
@@ -78,158 +73,80 @@
             <span class="home-hero__stat"><b><%= heroStats.copy.updated %></b> <%= heroStats.copy.captions.catalogUpdated %></span>
           <% } %>
         </div>
-        <p class="home-hero__embed">
-          Search the catalog here — or drop Influzer into the agent, CI, and docs.
-          <a href="#embed">Embed tools →</a>
-          · <a href="/mcp/scoreboard">Handshake scoreboard →</a>
-        </p>
-        <div class="home-hero__indexing">
-          <span>Indexing</span>
-          <div class="home-hero__indexing-list">
-            <% indexingServers.forEach(function(name) { %>
-              <span class="home-hero__index-chip"><%= name %></span>
-            <% }); %>
-            <% if (indexingMoreLabel) { %>
-              <span class="home-hero__index-chip home-hero__index-chip--more">+<%= indexingMoreLabel %></span>
-            <% } %>
-          </div>
-        </div>
       </div>
     </header>
 
-    <section class="home-sponsors" aria-label="Sponsored placements">
-      <%- include('partials/mcp-sponsor-rail') %>
-    </section>
-
-    <section class="home-board" id="scoreboard" aria-labelledby="homeBoardHeading">
-      <div class="home-board__inner">
-        <div class="home-board__copy">
-          <p class="home-board__eyebrow">No VC · No tracking · No pay-to-rank</p>
-          <h2 class="home-board__title" id="homeBoardHeading">Influzer is run by one person and funded by its sponsors.</h2>
+    <main id="main">
+    <div class="home-lead">
+      <section class="home-section" aria-labelledby="homeServersHeading">
+        <div class="home-section__head">
+          <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
+          <a class="home-section__link" href="/mcp">Top 100<% if (heroStats.copy.listed != null) { %> · all <%= heroStats.copy.listed %><% } %> →</a>
         </div>
-        <div class="home-board__fund">
-          <p class="home-board__lead">
-            Every handshake, crawl, and index rebuild costs money. Two sponsor slots a month keep the registry free — and never touch the ranking.
-          </p>
-          <% if (typeof sponsorAudience !== 'undefined' && sponsorAudience && sponsorAudience.available) { %>
-            <ul class="home-board__audience">
-              <% if (sponsorAudience.visitorsLabel != null) { %>
-                <li><b><%= sponsorAudience.visitorsLabel %></b> <%= sponsorAudience.visitorsCaption %></li>
-              <% } %>
-              <% if (sponsorAudience.listingViewsLabel != null) { %>
-                <li><b><%= sponsorAudience.listingViewsLabel %></b> <%= sponsorAudience.listingViewsCaption %></li>
-              <% } %>
-              <% if (sponsorAudience.slotsRemainingLabel != null) { %>
-                <li><b><%= sponsorAudience.slotsRemainingLabel %></b> <%= sponsorAudience.slotsCaption %></li>
-              <% } %>
-            </ul>
-          <% } %>
-          <div class="home-board__actions">
-            <a class="home-board__btn home-board__btn--primary" href="/mcp/promote">Promote your server · $<%= promoteOffer.product.price_usd %></a>
-            <a class="home-board__btn home-board__btn--ghost" href="/mcp/promote">How slots work</a>
+        <p class="home-section__note"><%= topServersCaption %></p>
+        <div class="home-server-list" id="homeServerList">
+          <% topServers.forEach(function(server) { %>
+            <a class="home-server-row" href="/mcp/<%= server.slug %>" data-search="<%= server.searchText %>">
+              <span class="home-server-row__icon" aria-hidden="true"><%= server.initial %></span>
+              <div class="home-server-row__body">
+                <div class="home-server-row__name"><%= server.name %></div>
+                <div class="home-server-row__desc"><%= server.shortDesc %></div>
+              </div>
+              <div class="home-server-row__meta">
+                <div class="home-server-row__kind"><% if (server.gradeLetter) { %><%= server.gradeLetter %><% if (server.statusLabel) { %> · <% } %><% } %><%= server.statusLabel || '' %></div>
+                <div class="home-server-row__cat"><%= server.category %></div>
+              </div>
+            </a>
+          <% }); %>
+          <div class="home-server-empty" id="homeServerEmpty" role="status">
+            No servers match “<span id="homeEmptyQuery"></span>” in this preview<% if (heroStats.copy.tools != null) { %> — the live directory searches <%= heroStats.copy.tools %> <%= heroStats.copy.captions.toolsIndexed %><% } %>. <a href="/mcp">Browse all →</a>
           </div>
-          <p class="home-board__clock">
-            Top 100 handshake:
-            <a href="/mcp/scoreboard"><b><%= scoreboard.counts.live_ok %></b> live</a>
-            · <b><%= scoreboard.counts.auth_required %></b> auth
-            · <b><%= scoreboard.https_hosts %></b> HTTPS hosts
-            · <a href="/mcp/changes">what changed</a>
-          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="home-tools" id="embed" aria-labelledby="homeToolsHeading">
-      <div class="home-tools__inner">
-        <div class="home-tools__head">
-          <h2 class="home-tools__title" id="homeToolsHeading">Put Influzer in the workflow</h2>
-          <p class="home-tools__lead">
-            Search, handshake, paste, teach the agent — or watch the Top 100 clock.
-            None of them is a safe-to-install badge.
-          </p>
+      <section class="home-section" id="homeCategories" aria-labelledby="homeCategoriesHeading">
+        <div class="home-section__head">
+          <h2 class="home-section__title" id="homeCategoriesHeading">Categories</h2>
+          <a class="home-section__link" href="/mcp/all">Full directory →</a>
         </div>
-        <div class="home-tools__grid">
-          <a class="home-tool" href="/mcp/discovery/setup">
-            <span class="home-tool__kicker">MCP</span>
-            <span class="home-tool__name">Discovery</span>
-            <span class="home-tool__desc">Read-only server. Search the catalog from Cursor, Claude, or ChatGPT — no auth.</span>
-            <code class="home-tool__code">/mcp/discovery</code>
-          </a>
-          <a class="home-tool" href="/mcp/influzer-mcp-discovery#install">
-            <span class="home-tool__kicker">Snippets</span>
-            <span class="home-tool__name">Install JSON</span>
-            <span class="home-tool__desc">Cursor, Claude, ChatGPT, Claude Code, ACP. Embed the widget on any docs page.</span>
-            <code class="home-tool__code">/api/v1/install/:slug</code>
-          </a>
-          <a class="home-tool" href="/mcp/probe">
-            <span class="home-tool__kicker">API</span>
-            <span class="home-tool__name">Handshake probe</span>
-            <span class="home-tool__desc">Live <code>tools/list</code> for an HTTPS URL. CI on mcp.json, or a README SVG badge.</span>
-            <code class="home-tool__code">/api/v1/probe/badge</code>
-          </a>
-          <a class="home-tool" href="/mcp/discovery/skill">
-            <span class="home-tool__kicker">Skill</span>
-            <span class="home-tool__name">Search → paste</span>
-            <span class="home-tool__desc">SKILL.md so the agent searches, handshakes, then pastes — it does not auto-connect.</span>
-            <code class="home-tool__code">/skills/influzer-mcp/SKILL.md</code>
-          </a>
-          <a class="home-tool" href="/mcp/scoreboard">
-            <span class="home-tool__kicker">Live</span>
-            <span class="home-tool__name">Scoreboard</span>
-            <span class="home-tool__desc">Handshake status for the Top 100. Sponsored pins are ads and do not change the row.</span>
-            <code class="home-tool__code">/mcp/scoreboard</code>
-          </a>
-          <a class="home-tool" href="/modelspend">
-            <span class="home-tool__kicker">Open source</span>
-            <span class="home-tool__name">ModelSpend</span>
-            <span class="home-tool__desc">See LLM cost per project &amp; agent, route to the cheapest suitable model, shadow savings. Star it on GitHub.</span>
-            <code class="home-tool__code">github.com/rmencke2/modelspend</code>
-          </a>
+        <div class="home-hero__chips" role="list">
+          <% categories.forEach(function(cat) { %>
+            <button type="button" class="home-hero__chip" data-query="<%= cat %>" role="listitem"><%= cat %></button>
+          <% }); %>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <main class="home-main" id="main">
+      <section class="home-section home-verify" aria-labelledby="homeVerifyHeading">
+        <div class="home-section__head">
+          <h2 class="home-section__title" id="homeVerifyHeading">How we verify</h2>
+          <a class="home-section__link" href="/methodology">Methodology →</a>
+        </div>
+        <p class="home-section__note">
+          A handshake is a timed HTTPS request: <code>initialize</code>, then <code>tools/list</code>.
+          The verification grade adds that result to indexed tools, HTTPS or local transport, and a probe timestamp inside 7 days.
+          It is not a safety score. Tools are not called.
+        </p>
+      </section>
+
+      <section class="home-section home-discovery" id="embed" aria-labelledby="homeDiscoveryHeading">
+        <div class="home-section__head">
+          <h2 class="home-section__title" id="homeDiscoveryHeading">Discovery MCP and API</h2>
+        </div>
+        <p class="home-section__note">
+          <%= discoveryPromo && discoveryPromo.promoBlurb ? discoveryPromo.promoBlurb : 'Read-only search of this catalog from Cursor, Claude, or ChatGPT. No auth.' %>
+        </p>
+        <p class="home-discovery__code">https://www.influzer.ai/mcp/discovery</p>
+        <p class="home-discovery__links">
+          <a href="<%= discoveryPromo && discoveryPromo.setupUrl ? discoveryPromo.setupUrl : '/mcp/discovery/setup' %>">Connect Discovery</a>
+          · <a href="/api/v1/install/influzer-mcp-discovery">Install JSON</a>
+          · <a href="/mcp/probe">Probe badge</a>
+          · <a href="/mcp/discovery/skill">Agent skill</a>
+        </p>
+      </section>
+    </div>
+
+    <div class="home-main">
       <div class="home-col">
-        <section class="home-section" aria-labelledby="homeServersHeading">
-          <div class="home-section__head">
-            <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
-            <a class="home-section__link" href="/mcp">Browse all<% if (heroStats.copy.listed != null) { %> <%= heroStats.copy.listed %><% } %> →</a>
-          </div>
-          <p class="home-section__note" style="margin:-4px 0 12px;"><%= topServersCaption %></p>
-          <div class="home-server-list" id="homeServerList">
-            <% topServers.forEach(function(server) { %>
-              <a
-                class="home-server-row"
-                href="/mcp/<%= server.slug %>"
-                data-search="<%= server.searchText %>"
-              >
-                <span class="home-server-row__icon<%= server.official ? ' home-server-row__icon--official' : '' %>" aria-hidden="true"><%= server.initial %></span>
-                <div class="home-server-row__body">
-                  <div class="home-server-row__name">
-                    <%= server.name %>
-                    <% if (server.official) { %><span class="home-server-row__official">OFFICIAL</span><% } %>
-                    <%- include('partials/mcp-handshake-badge', { handshakeSvg: server.handshake_svg }) %>
-                  </div>
-                  <div class="home-server-row__desc"><%= server.shortDesc %></div>
-                </div>
-                <div class="home-server-row__meta">
-                  <% const viewsLabel = typeof formatWeeklyViews === 'function' ? formatWeeklyViews(server.weeklyViews) : ''; %>
-                  <% if (viewsLabel) { %>
-                    <div class="home-server-row__kind"><%= viewsLabel %></div>
-                  <% } else { %>
-                    <div class="home-server-row__kind"><%= server.kind %></div>
-                  <% } %>
-                  <div class="home-server-row__cat"><%= server.category %></div>
-                </div>
-              </a>
-            <% }); %>
-            <div class="home-server-empty" id="homeServerEmpty" role="status">
-              No servers match “<span id="homeEmptyQuery"></span>” in this preview<% if (heroStats.copy.tools != null) { %> — the live directory searches <%= heroStats.copy.tools %> <%= heroStats.copy.captions.toolsIndexed %><% } %>. <a href="/mcp">Browse all →</a>
-            </div>
-          </div>
-        </section>
-
         <section class="home-section home-recipes" aria-labelledby="homeRecipesHeading">
           <div class="home-section__head">
             <h2 class="home-section__title" id="homeRecipesHeading">MCP Recipes</h2>
@@ -316,29 +233,119 @@
       <aside class="home-aside">
         <%- include('partials/registry-newsletter', { newsletterSource: 'home-newsletter-card', newsletterId: 'newsletter' }) %>
 
-        <div class="home-aside-card">
-          <h3 class="home-aside-card__title">Search from inside your agent</h3>
-          <p class="home-aside-card__desc"><%= discoveryPromo && discoveryPromo.promoBlurb ? discoveryPromo.promoBlurb : 'Our official MCP server works in Claude, Cursor & ChatGPT. No auth required.' %></p>
-          <div class="home-aside-card__code">influzer.ai/mcp/discovery</div>
-          <a class="home-aside-card__btn" href="<%= discoveryPromo && discoveryPromo.setupUrl ? discoveryPromo.setupUrl : '/mcp/discovery/setup' %>">Connect in 2 minutes</a>
-          <p class="home-aside-card__desc" style="margin-top:12px;margin-bottom:0;">
-            <a href="/mcp/discovery/skill">Agent skill</a>
-            · <a href="/mcp/influzer-mcp-discovery#install">Snippets</a>
-            · <a href="/mcp/probe">Probe</a>
-            · <a href="/mcp/scoreboard">Scoreboard</a>
-            · <a href="/mcp/promote">Promote</a>
-            · <a href="<%= discoveryPromo && discoveryPromo.startersUrl ? discoveryPromo.startersUrl : '/mcp/discovery/starters' %>">Starters</a>
-          </p>
-        </div>
-
         <%- include('partials/partner-modelspend', { partnerVariant: 'aside' }) %>
 
-        <div class="home-aside-card">
-          <h3 class="home-aside-card__title">Built an MCP server?</h3>
-          <p class="home-aside-card__desc">Get listed and reach teams choosing their production stack.</p>
-          <a class="home-aside-card__btn" href="/mcp/submit">Submit a server</a>
-        </div>
       </aside>
+    </div>
+    <section class="home-sponsors" aria-label="Sponsored placements">
+      <%- include('partials/mcp-sponsor-rail') %>
+    </section>
+
+    <section class="home-board" id="scoreboard" aria-labelledby="homeBoardHeading">
+      <div class="home-board__inner">
+        <div class="home-board__copy">
+          <p class="home-board__eyebrow">No VC · No tracking · No pay-to-rank</p>
+          <h2 class="home-board__title" id="homeBoardHeading">Influzer is run by one person and funded by its sponsors.</h2>
+        </div>
+        <div class="home-board__fund">
+          <p class="home-board__lead">
+            Every handshake, crawl, and index rebuild costs money. Two sponsor slots a month keep the registry free — and never touch the ranking.
+          </p>
+          <% if (typeof sponsorAudience !== 'undefined' && sponsorAudience && sponsorAudience.available) { %>
+            <ul class="home-board__audience">
+              <% if (sponsorAudience.visitorsLabel != null) { %>
+                <li><b><%= sponsorAudience.visitorsLabel %></b> <%= sponsorAudience.visitorsCaption %></li>
+              <% } %>
+              <% if (sponsorAudience.listingViewsLabel != null) { %>
+                <li><b><%= sponsorAudience.listingViewsLabel %></b> <%= sponsorAudience.listingViewsCaption %></li>
+              <% } %>
+              <% if (sponsorAudience.slotsRemainingLabel != null) { %>
+                <li><b><%= sponsorAudience.slotsRemainingLabel %></b> <%= sponsorAudience.slotsCaption %></li>
+              <% } %>
+            </ul>
+          <% } %>
+          <div class="home-board__actions">
+            <a class="home-board__btn home-board__btn--primary" href="/mcp/promote">Promote your server · $<%= promoteOffer.product.price_usd %></a>
+            <a class="home-board__btn home-board__btn--ghost" href="/mcp/promote">How slots work</a>
+          </div>
+          <p class="home-board__clock">
+            Top 100 handshake:
+            <a href="/mcp/scoreboard"><b><%= scoreboard.counts.live_ok %></b> live</a>
+            · <b><%= scoreboard.counts.auth_required %></b> auth
+            · <b><%= scoreboard.https_hosts %></b> HTTPS hosts
+            · <a href="/mcp/changes">what changed</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-tools" id="utilities" aria-labelledby="homeToolsHeading">
+      <div class="home-tools__inner">
+        <div class="home-tools__head">
+          <h2 class="home-tools__title" id="homeToolsHeading">Put Influzer in the workflow</h2>
+          <p class="home-tools__lead">
+            Search, handshake, paste, teach the agent — or watch the Top 100 clock.
+            None of them is a safe-to-install badge.
+          </p>
+        </div>
+        <div class="home-tools__grid">
+          <a class="home-tool" href="/mcp/discovery/setup">
+            <span class="home-tool__kicker">MCP</span>
+            <span class="home-tool__name">Discovery</span>
+            <span class="home-tool__desc">Read-only server. Search the catalog from Cursor, Claude, or ChatGPT — no auth.</span>
+            <code class="home-tool__code">/mcp/discovery</code>
+          </a>
+          <a class="home-tool" href="/mcp/influzer-mcp-discovery#install">
+            <span class="home-tool__kicker">Snippets</span>
+            <span class="home-tool__name">Install JSON</span>
+            <span class="home-tool__desc">Cursor, Claude, ChatGPT, Claude Code, ACP. Embed the widget on any docs page.</span>
+            <code class="home-tool__code">/api/v1/install/:slug</code>
+          </a>
+          <a class="home-tool" href="/mcp/probe">
+            <span class="home-tool__kicker">API</span>
+            <span class="home-tool__name">Handshake probe</span>
+            <span class="home-tool__desc">Live <code>tools/list</code> for an HTTPS URL. CI on mcp.json, or a README SVG badge.</span>
+            <code class="home-tool__code">/api/v1/probe/badge</code>
+          </a>
+          <a class="home-tool" href="/mcp/discovery/skill">
+            <span class="home-tool__kicker">Skill</span>
+            <span class="home-tool__name">Search → paste</span>
+            <span class="home-tool__desc">SKILL.md so the agent searches, handshakes, then pastes — it does not auto-connect.</span>
+            <code class="home-tool__code">/skills/influzer-mcp/SKILL.md</code>
+          </a>
+          <a class="home-tool" href="/mcp/scoreboard">
+            <span class="home-tool__kicker">Live</span>
+            <span class="home-tool__name">Scoreboard</span>
+            <span class="home-tool__desc">Handshake status for the Top 100. Sponsored pins are ads and do not change the row.</span>
+            <code class="home-tool__code">/mcp/scoreboard</code>
+          </a>
+          <a class="home-tool" href="/modelspend">
+            <span class="home-tool__kicker">Open source</span>
+            <span class="home-tool__name">ModelSpend</span>
+            <span class="home-tool__desc">See LLM cost per project &amp; agent, route to the cheapest suitable model, shadow savings. Star it on GitHub.</span>
+            <code class="home-tool__code">github.com/rmencke2/modelspend</code>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="home-tools" aria-label="Servers currently being indexed">
+      <div class="home-tools__inner">
+        <div class="home-hero__indexing">
+          <span>Indexing</span>
+          <div class="home-hero__indexing-list">
+            <% indexingServers.forEach(function(name) { %>
+              <span class="home-hero__index-chip"><%= name %></span>
+            <% }); %>
+            <% if (indexingMoreLabel) { %>
+              <span class="home-hero__index-chip home-hero__index-chip--more">+<%= indexingMoreLabel %></span>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
     </main>
 
     <%- include('partials/registry-footer', { showFooterLang: true }) %>
