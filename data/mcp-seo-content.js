@@ -3,6 +3,7 @@
  */
 
 const SITE_BASE = 'https://www.influzer.ai';
+const { describeCatalogStats } = require('../services/mcpCatalogStats');
 
 function buildFaqJsonLd(faqs, pageUrl) {
   return {
@@ -41,8 +42,8 @@ function featuredServerLinks() {
 }
 
 function getHomeSeoContent(heroStats) {
-  const registry = heroStats.totalServers.toLocaleString();
-  const indexed = heroStats.serversWithIndexedTools.toLocaleString();
+  const copy = heroStats?.copy || describeCatalogStats(heroStats || {});
+  const sentence = copy.countSentence;
 
   const faqs = [
     {
@@ -53,8 +54,12 @@ function getHomeSeoContent(heroStats) {
     },
     {
       q: 'What is Influzer.ai?',
-      a: `Influzer.ai is an MCP server directory and insights site. We catalog <strong>${registry} integrations</strong> (${indexed} with indexed, searchable tools), publish setup steps and connection URLs, and write executive guides on <a href="/insights">AI agents and operating systems</a>.`,
-      aPlain: `Influzer.ai is an MCP server directory and insights site cataloging ${registry} integrations with searchable tools and executive AI guides.`,
+      a: sentence
+        ? `Influzer.ai is an MCP server directory and insights site. Right now: <strong>${sentence}</strong>. We publish setup steps and connection URLs, and write executive guides on <a href="/insights">AI agents and operating systems</a>.`
+        : 'Influzer.ai is an MCP server directory and insights site. We publish setup steps and connection URLs, and write executive guides on <a href="/insights">AI agents and operating systems</a>.',
+      aPlain: sentence
+        ? `Influzer.ai is an MCP server directory and insights site. Right now: ${sentence}.`
+        : 'Influzer.ai is an MCP server directory and insights site.',
     },
     {
       q: 'How do I find the right MCP server?',
@@ -64,22 +69,25 @@ function getHomeSeoContent(heroStats) {
     },
     {
       q: 'What does “indexed tools” mean?',
-      a: `We store the tool names and descriptions exposed by each MCP server (${indexed} servers today). That lets you search for capabilities like “search the web”, “create issue”, or “read spreadsheet” across the catalog — not just server names.`,
+      a: copy.withTools
+        ? `We store the tool names and descriptions exposed by each MCP server (${copy.withTools} servers with at least one indexed tool${copy.tools ? `, ${copy.tools} tools indexed` : ''}). That lets you search for capabilities like “search the web”, “create issue”, or “read spreadsheet” across the catalog — not just server names.`
+        : 'We store the tool names and descriptions exposed by each MCP server. That lets you search for capabilities like “search the web”, “create issue”, or “read spreadsheet” across the catalog — not just server names.',
       aPlain:
         'Indexed tools are the callable tool names and descriptions we store for each MCP server so you can search by capability.',
     },
     {
       q: 'How often is the directory updated?',
-      a: 'The registry is refreshed weekly from Glama, Smithery, and community sources. Tool lists are re-validated daily against live MCP endpoints and registry APIs. New submissions are reviewed via <a href="/mcp/submit">Submit an MCP server</a>.',
-      aPlain:
-        'The registry is refreshed weekly; tool lists are re-validated daily. New submissions are reviewed manually.',
+      a: `${copy.updated ? `The catalog file was last updated <strong>${copy.updated}</strong>. ` : ''}The registry refresh workflow runs weekly from Glama, Smithery, and community sources. Tool lists are re-validated daily against live MCP endpoints and registry APIs. New submissions are reviewed via <a href="/mcp/submit">Submit an MCP server</a>.`,
+      aPlain: `${copy.updated ? `The catalog file was last updated ${copy.updated}. ` : ''}The registry refresh workflow runs weekly; tool lists are re-validated daily. New submissions are reviewed manually.`,
     },
   ];
 
   return {
     introTitle: 'What is Influzer.ai?',
     introParagraphs: [
-      `Influzer.ai helps developers and teams choose MCP servers for production AI workflows. Our directory lists <strong>${registry} Model Context Protocol servers</strong>, with <strong>${indexed}</strong> that include searchable tool indexes, setup instructions, and connection URLs.`,
+      sentence
+        ? `Influzer.ai helps developers and teams choose MCP servers for production AI workflows. Our directory currently has <strong>${sentence}</strong>, plus setup instructions and connection URLs.`
+        : 'Influzer.ai helps developers and teams choose MCP servers for production AI workflows. Listings include setup instructions and connection URLs when we have them.',
       'Use our <a href="/mcp/discovery/setup">official MCP Discovery server</a> in Claude, ChatGPT, or Cursor to search the catalog by tool capability — or browse the <a href="/mcp">Top 100</a> on the web.',
     ],
     faqs,
@@ -88,7 +96,7 @@ function getHomeSeoContent(heroStats) {
         title: 'Explore the directory',
         links: [
           { href: '/mcp', label: 'Top 100 MCP servers', desc: 'Curated leaders with indexed tools' },
-          { href: '/mcp/all', label: `Full directory (${registry})`, desc: 'Search every registered server' },
+          { href: '/mcp/all', label: copy.listed ? `Full directory (${copy.listed})` : 'Full directory', desc: 'Search every listed server' },
           { href: '/mcp/topics', label: 'MCP topic guides', desc: 'Browser automation, RAG, PDF, and more' },
           { href: '/mcp/submit', label: 'Submit a server', desc: 'Suggest a listing we are missing' },
         ],
@@ -117,8 +125,8 @@ function getHomeSeoContent(heroStats) {
 }
 
 function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Directory' } = {}) {
-  const registry = heroStats.totalServers.toLocaleString();
-  const indexed = heroStats.serversWithIndexedTools.toLocaleString();
+  const copy = heroStats?.copy || describeCatalogStats(heroStats || {});
+  const sentence = copy.countSentence;
   const isTop = scope === 'top';
 
   const faqs = isTop
@@ -137,8 +145,12 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         },
         {
           q: 'Top 100 vs full directory — which should I use?',
-          a: `Use <strong>Top 100</strong> (this page) to discover proven servers quickly. Use the <a href="/mcp/all">full directory (${registry} servers)</a> when you need a niche integration or want to filter all ${indexed} servers with indexed tools.`,
-          aPlain: `Use Top 100 for proven servers; use the full directory (${registry} servers) for niche integrations.`,
+          a: sentence
+            ? `Use <strong>Top 100</strong> (this page) to discover proven servers quickly. Use the <a href="/mcp/all">full directory</a> for the rest. Right now: ${sentence}.`
+            : 'Use <strong>Top 100</strong> (this page) to discover proven servers quickly. Use the <a href="/mcp/all">full directory</a> when you need a niche integration.',
+          aPlain: sentence
+            ? `Use Top 100 for proven servers; use the full directory for the rest. Right now: ${sentence}.`
+            : 'Use Top 100 for proven servers; use the full directory for niche integrations.',
         },
         {
           q: 'What are remote vs local MCP servers?',
@@ -148,19 +160,23 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         },
         {
           q: 'Missing a server?',
-          a: 'Use <a href="/mcp/submit">Submit an MCP server</a> and we will review it manually. The registry also syncs weekly from Glama, Smithery, and community lists.',
-          aPlain: 'Submit a server via our form; we review every suggestion manually.',
+          a: `Use <a href="/mcp/submit">Submit an MCP server</a> and we will review it manually. ${copy.updated ? `The catalog file was last updated ${copy.updated}. ` : ''}The registry refresh workflow also runs weekly from Glama, Smithery, and community lists.`,
+          aPlain: `Submit a server via our form; we review every suggestion manually. ${copy.updated ? `Catalog file last updated ${copy.updated}. ` : ''}The registry refresh workflow runs weekly.`,
         },
       ]
     : [
         {
           q: 'What is the full MCP server directory?',
-          a: `This page lists every MCP server in our registry (${registry} total, ${indexed} with indexed tools by default). Filter by category, sort by popularity or tool count, and open any server for setup steps.`,
-          aPlain: `The full directory lists every MCP server in our registry (${registry} total).`,
+          a: sentence
+            ? `This page lists the MCP servers in our registry. Right now: ${sentence}. Filter by category, sort by popularity or tool count, and open any server for setup steps.`
+            : 'This page lists the MCP servers in our registry. Filter by category, sort by popularity or tool count, and open any server for setup steps.',
+          aPlain: sentence
+            ? `The full directory lists the MCP servers in our registry. Right now: ${sentence}.`
+            : 'The full directory lists the MCP servers in our registry.',
         },
         {
           q: 'Why do some servers have no tools listed?',
-          a: 'Tool indexes come from live MCP endpoints and registry APIs. Servers without indexed tools may be stdio-only, require authentication, or not yet validated. Toggle “Only show servers with indexed tools” to focus on searchable entries, or try the <a href="/mcp">Top 100</a> curated list.',
+          a: 'Tool indexes come from live MCP endpoints and registry APIs. Servers without indexed tools may be stdio-only, require authentication, or not yet validated. Toggle “Only show servers with at least one indexed tool” to focus on searchable entries, or try the <a href="/mcp">Top 100</a> curated list.',
           aPlain:
             'Some servers lack tool indexes until validated or because they require authentication.',
         },
@@ -176,10 +192,14 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
     introParagraphs: isTop
       ? [
           `Browse the <strong>top MCP servers</strong> teams use with Claude, Cursor, and VS Code. Each card shows indexed tools, transport (remote or local), and links to full setup on the server page.`,
-          `Need more than 100? Explore the <a href="/mcp/all">full directory</a> (${registry} servers, ${indexed} with searchable tools) or return to the <a href="/">Influzer.ai homepage</a> for insights and weekly digests.`,
+          sentence
+            ? `Need more than the Top 100? Explore the <a href="/mcp/all">full directory</a>. Right now: ${sentence}. Or return to the <a href="/">Influzer.ai homepage</a>.`
+            : 'Need more than the Top 100? Explore the <a href="/mcp/all">full directory</a> or return to the <a href="/">Influzer.ai homepage</a>.',
         ]
       : [
-          `Search all <strong>${registry} registered MCP servers</strong>. By default we show ${indexed} entries with indexed tool lists; uncheck the filter to see the entire registry.`,
+          sentence
+            ? `Search the registry. Right now: <strong>${sentence}</strong>. By default we show servers with at least one indexed tool; uncheck the filter to see every listed server.`
+            : 'Search the registry. By default we show servers with at least one indexed tool; uncheck the filter to see every listed server.',
           `New to MCP? Read <a href="/insights/what-is-model-context-protocol">What is the Model Context Protocol?</a> or start with the curated <a href="/mcp">Top 100</a>. Browse <a href="/mcp/topics">topic guides</a> for browser automation, RAG, and coding-agent stacks.`,
         ],
     faqs,
@@ -188,7 +208,7 @@ function getMcpSeoContent(heroStats, { scope = 'top', pageTitle = 'MCP Server Di
         title: 'Directory pages',
         links: [
           { href: '/', label: 'Homepage', desc: 'Search and weekly digest' },
-          { href: isTop ? '/mcp/all' : '/mcp', label: isTop ? `Full directory (${registry})` : 'Top 100 MCP servers', desc: isTop ? 'Every registered server' : 'Curated leaders' },
+          { href: isTop ? '/mcp/all' : '/mcp', label: isTop ? (copy.listed ? `Full directory (${copy.listed})` : 'Full directory') : 'Top 100 MCP servers', desc: isTop ? 'Every listed server' : 'Curated leaders' },
           { href: '/mcp/topics', label: 'Topic guides', desc: 'Browser automation, RAG, PDF, coding agents' },
           { href: '/mcp/submit', label: 'Submit a server', desc: 'Add a missing integration' },
         ],

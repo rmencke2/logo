@@ -408,15 +408,13 @@ function getAroundTheWebForNewsletter(limit = 3) {
 
 function getCatalogStatForNewsletter() {
   try {
-    const { getMcpHeroStats } = require('./mcpDirectoryService');
-    const stats = getMcpHeroStats();
-    const total = Number(stats.totalServers) || 0;
-    const withTools = Number(stats.serversWithIndexedTools) || 0;
-    if (!total) return null;
-    const pct = Math.round((withTools / total) * 100);
+    const { getCatalogStats } = require('./mcpDirectoryService');
+    const { describeCatalogStats } = require('./mcpCatalogStats');
+    const copy = describeCatalogStats(getCatalogStats());
+    if (!copy.countSentence) return null;
     return {
-      label: `${total.toLocaleString('en-US')} MCP servers in the directory`,
-      detail: `${withTools.toLocaleString('en-US')} have indexed tools (${pct}%). Search first — then allowlist before you install.`,
+      label: copy.countSentence,
+      detail: 'Search first — then allowlist before you install.',
     };
   } catch (error) {
     console.warn('Newsletter catalog stat lookup failed:', error.message);

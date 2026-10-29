@@ -1,5 +1,6 @@
 /**
- * Temporary celebration promo for the 6,000+ MCP server milestone.
+ * Temporary celebration promo for the catalog range recorded in MILESTONE.
+ * Inactive after endsOn. Displayed counts always use the live total passed in.
  * Returns null when inactive so banners disappear cleanly.
  */
 
@@ -11,12 +12,11 @@ const MILESTONE = {
   /** Hard stop date (UTC), even if still under maxServers. */
   endsOn: '2026-09-30',
   eyebrow: 'We hit it',
-  headline: '6,000 MCP servers. This is huge.',
-  blurb:
-    'From 1,500 in June to six thousand now — the MCP registry just crossed a line you cannot unsee. Browse the catalog, or submit the next one.',
+  headline: 'MCP servers listed. This is huge.',
+  blurb: 'Browse the catalog, or submit the next one.',
   primaryCta: 'Read the story',
   primaryHref: '/news/mcp-directory-passes-6000-servers',
-  secondaryCta: 'Browse all 6,000+',
+  secondaryCta: 'Browse the directory',
   secondaryHref: '/mcp/all',
   tertiaryCta: 'Submit a server',
   tertiaryHref: '/mcp/submit',
@@ -30,11 +30,13 @@ function getMilestonePromo(totalServers, now = new Date()) {
   const n = Number(totalServers) || 0;
   if (n < MILESTONE.minServers || n > MILESTONE.maxServers) return null;
   if (now.toISOString().slice(0, 10) > MILESTONE.endsOn) return null;
+  const label = n.toLocaleString('en-US');
   return {
     ...MILESTONE,
     serverCount: n,
-    serverCountLabel: n.toLocaleString(),
-    secondaryCta: `Browse all ${n.toLocaleString()}`,
+    serverCountLabel: label,
+    headline: `${label} MCP servers listed.`,
+    secondaryCta: `Browse all ${label}`,
   };
 }
 

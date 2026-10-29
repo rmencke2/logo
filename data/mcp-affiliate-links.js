@@ -5,12 +5,6 @@
 const { getDiscoveryPromo } = require('./mcp-discovery-promo');
 
 const MCP_AFFILIATE_LINKS = {
-  'influzer-mcp-discovery': {
-    ...getDiscoveryPromo(),
-    url: '/mcp/discovery/setup',
-    promoHref: '/mcp/discovery/setup',
-    cta: 'Connect in Claude, ChatGPT, or Cursor →',
-  },
   webnode: {
     url: 'https://www.webnode.com',
     promoHref: '/mcp/webnode',
@@ -37,6 +31,20 @@ const MCP_AFFILIATE_LINKS = {
   },
 };
 
+// Resolved on read so catalog stats are not loaded while the directory module is still starting.
+Object.defineProperty(MCP_AFFILIATE_LINKS, 'influzer-mcp-discovery', {
+  enumerable: true,
+  configurable: true,
+  get() {
+    return {
+      ...getDiscoveryPromo(),
+      url: '/mcp/discovery/setup',
+      promoHref: '/mcp/discovery/setup',
+      cta: 'Connect in Claude, ChatGPT, or Cursor →',
+    };
+  },
+});
+
 /** Default promo shown on homepage and MCP directory */
 const DEFAULT_PROMO_SLUG = 'influzer-mcp-discovery';
 
@@ -56,7 +64,6 @@ function getSitePromo(slug = DEFAULT_PROMO_SLUG) {
 }
 
 module.exports = {
-  ...MCP_AFFILIATE_LINKS,
   MCP_AFFILIATE_LINKS,
   getSitePromo,
   DEFAULT_PROMO_SLUG,

@@ -485,13 +485,20 @@ body.registry-page.site-header-active {
 
 .home-hero__stats {
   display: flex;
-  gap: 40px;
+  gap: 12px 22px;
   justify-content: center;
   margin-top: 38px;
   font-family: var(--hp-mono);
   font-size: 13px;
   color: var(--hp-muted);
   flex-wrap: wrap;
+}
+
+.home-hero__stat {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  max-width: 100%;
 }
 
 .home-hero__stats b {

@@ -9,6 +9,7 @@ const { attachSetupInfo } = require('../scripts/utils/setup-info');
 const { attachBranding } = require('../utils/mcpBranding');
 const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
 const { mergeHandshakeEntry, listingHandshakeSvg } = require('./mcpHandshakeOverlay');
+const { computeCatalogStats, describeCatalogStats } = require('./mcpCatalogStats');
 
 const GENERATED_PATH = path.join(__dirname, '..', 'data', 'servers-generated.json');
 const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
@@ -321,11 +322,46 @@ function getSitemapMcpServers() {
   );
 }
 
+function readValidationForStats() {
+  if (!fs.existsSync(VALIDATION_STATE_PATH)) {
+    return { validationBySlug: null, validationAvailable: false };
+  }
+  try {
+    return { validationBySlug: loadValidationStateBySlug(), validationAvailable: true };
+  } catch (err) {
+    console.warn('Catalog stats: validation state unreadable:', err.message);
+    return { validationBySlug: null, validationAvailable: false };
+  }
+}
+
+function getCatalogStats(now = new Date()) {
+  const catalog = loadCatalog();
+  const last = getMcpLastUpdated();
+  const validation = readValidationForStats();
+  return computeCatalogStats({
+    servers: catalog.allServers,
+    validationBySlug: validation.validationBySlug,
+    validationAvailable: validation.validationAvailable,
+    categoryCount: Array.isArray(catalog.categories) ? catalog.categories.length : 0,
+    catalogUpdatedDisplay: last.display || null,
+    catalogUpdatedIso: last.iso || null,
+    now,
+  });
+}
+
 function getMcpCatalogTotals() {
-  const { allServers, top100Servers } = loadCatalog();
+  const stats = getCatalogStats();
+  const copy = describeCatalogStats(stats);
   return {
-    total: allServers.length,
-    top100: top100Servers.length,
+    total: stats.serversListed,
+    top100: loadCatalog().top100Servers.length,
+    listedLabel: copy.listed,
+    withToolsLabel: copy.withTools,
+    toolsLabel: copy.tools,
+    handshakeLabel: copy.handshake,
+    categoryLabel: copy.categories,
+    updatedLabel: copy.updated,
+    countSentence: copy.countSentence,
   };
 }
 
@@ -396,21 +432,18 @@ function withDisplay(servers) {
   );
 }
 
-function getMcpHeroStats() {
+function getMcpHeroStats(now = new Date()) {
   // Counts only — never attachQuality/SVG across the full catalog (that pegged prod CPU).
-  const all = loadCatalog().allServers.filter((s) => !s.hidden);
-  let totalTools = 0;
-  let serversWithIndexedTools = 0;
-  for (const server of all) {
-    const n = Array.isArray(server.tools) ? server.tools.length : 0;
-    totalTools += n;
-    if (n > 0) serversWithIndexedTools += 1;
-  }
+  const stats = getCatalogStats(now);
+  const copy = describeCatalogStats(stats);
   return {
-    totalServers: all.length,
-    totalTools,
-    serversWithIndexedTools,
-    categoryCount: getMcpCategories().length,
+    ...stats,
+    copy,
+    // Aliases kept so older callers read the same numbers, not a second count.
+    totalServers: stats.serversListed,
+    totalTools: stats.toolsIndexed,
+    serversWithIndexedTools: stats.serversWithIndexedTools,
+    categoryCount: stats.categoryCount,
   };
 }
 
@@ -420,7 +453,6 @@ function getMcpHeroStats() {
  */
 function getMcpCatalogPayload(scope = 'all', opts = {}) {
   const catalog = loadCatalog();
-  const lastUpdated = getMcpLastUpdated();
   const toolsOnly = opts.toolsOnly ?? scope === 'top';
   const qualityFilter = String(opts.quality || '').trim().toLowerCase();
   let servers = scope === 'top' ? getTop100McpServers() : getAllMcpServers();
@@ -435,7 +467,7 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
     servers = servers.filter((s) => matchesQualityFilter(attachQuality(s), qualityFilter));
   }
 
-  const withToolsCount = getAllMcpServers().filter((s) => hasIndexedTools(s)).length;
+  const stats = getCatalogStats();
   const displayed = withDisplay(servers);
 
   return {
@@ -450,11 +482,15 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
       return { ...s, quality };
     }),
     total: displayed.length,
-    total_catalog: catalog.allServers.length,
-    total_with_tools: withToolsCount,
+    total_catalog: stats.serversListed,
+    total_with_tools: stats.serversWithIndexedTools,
+    tools_indexed: stats.toolsIndexed,
+    servers_with_successful_handshake_last_7_days: stats.serversWithSuccessfulHandshakeLast7Days,
+    category_count: stats.categoryCount,
+    count_sentence: describeCatalogStats(stats).countSentence,
     quality_counts: countQualityBuckets(scope === 'top' ? getTop100McpServers() : getAllMcpServers()),
     generated_at: catalog.generatedAt,
-    last_updated: lastUpdated.display,
+    last_updated: stats.catalogUpdatedDisplay,
   };
 }
 
@@ -520,13 +556,18 @@ function getMcpHomepagePreview(limit = 6) {
   const servers = getTop100McpServers()
     .filter((s) => hasIndexedTools(s))
     .slice(0, limit);
-  const totals = getMcpCatalogTotals();
-  const lastUpdated = getMcpLastUpdated();
+  const stats = getCatalogStats();
+  const copy = describeCatalogStats(stats);
   return {
     servers: withDisplay(servers),
-    total_top100: totals.top100,
-    total_catalog: totals.total,
-    last_updated: lastUpdated.display,
+    total_top100: loadCatalog().top100Servers.length,
+    total_catalog: stats.serversListed,
+    total_with_tools: stats.serversWithIndexedTools,
+    tools_indexed: stats.toolsIndexed,
+    servers_with_successful_handshake_last_7_days: stats.serversWithSuccessfulHandshakeLast7Days,
+    category_count: stats.categoryCount,
+    last_updated: copy.updated,
+    count_sentence: copy.countSentence,
   };
 }
 
@@ -631,6 +672,7 @@ module.exports = {
   getMcpLastUpdated,
   getMcpCatalogPayload,
   getMcpHomepagePreview,
+  getCatalogStats,
   getMcpHeroStats,
   searchMcpServers,
   isInTop100,

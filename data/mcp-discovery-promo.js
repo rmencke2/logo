@@ -18,14 +18,27 @@ const CURSOR_CONFIG = {
 const CLAUDE_CODE_COMMAND =
   'claude mcp add --transport http influzer-discovery \\\n  https://www.influzer.ai/mcp/discovery';
 
-function formatServerCount(n) {
-  if (!Number.isFinite(n) || n <= 0) return '6,000+';
-  if (n >= 1000) return `${Math.floor(n / 100) * 100}+`;
-  return String(n);
+function resolveListedCount(explicit) {
+  const n = Number(explicit);
+  if (Number.isFinite(n) && n >= 0) return Math.trunc(n);
+  if (explicit != null && explicit !== '') return null;
+  try {
+    const { getCatalogStats } = require('../services/mcpDirectoryService');
+    const listed = getCatalogStats().serversListed;
+    return Number.isFinite(listed) ? listed : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+function listedPhrase(explicit) {
+  const { formatExactCount } = require('../services/mcpCatalogStats');
+  const label = formatExactCount(resolveListedCount(explicit));
+  return label ? `${label} servers listed` : null;
 }
 
 function getDiscoveryPromo(options = {}) {
-  const countLabel = formatServerCount(options.serverCount ?? 6000);
+  const countPhrase = listedPhrase(options.serverCount);
   const ref = options.ref ? `?ref=${encodeURIComponent(options.ref)}` : '';
   return {
     slug: 'influzer-mcp-discovery',
@@ -35,10 +48,14 @@ function getDiscoveryPromo(options = {}) {
     startersUrl: `${MCP_DISCOVERY_STARTERS}${ref}`,
     provider: 'Influzer.ai',
     headline: 'Search MCP servers from inside Claude, Cursor, or ChatGPT',
-    blurb: `Before you add another MCP, search Influzer from inside your chat. Our official Discovery server indexes ${countLabel} integrations by tool capability — Postgres, browser automation, scrape-to-markdown, and more.`,
+    blurb: countPhrase
+      ? `Before you add another MCP, search Influzer from inside your chat. Our official Discovery server indexes ${countPhrase} by tool capability — Postgres, browser automation, scrape-to-markdown, and more.`
+      : 'Before you add another MCP, search Influzer from inside your chat. Our official Discovery server indexes the catalog by tool capability — Postgres, browser automation, scrape-to-markdown, and more.',
     cta: 'Setup guide',
     promoCta: 'Connect in 2 minutes',
-    promoBlurb: `Use Influzer MCP Discovery in Claude, ChatGPT, or Cursor — search ${countLabel} servers by capability without leaving your chat.`,
+    promoBlurb: countPhrase
+      ? `Use Influzer MCP Discovery in Claude, ChatGPT, or Cursor — search ${countPhrase} by capability without leaving your chat.`
+      : 'Use Influzer MCP Discovery in Claude, ChatGPT, or Cursor — search listed servers by capability without leaving your chat.',
     directoryHref: MCP_DISCOVERY_PAGE,
     featured: true,
     tools: ['search_mcp_servers', 'get_mcp_server', 'recommend_mcp_servers', 'list_mcp_topics'],

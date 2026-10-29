@@ -41,6 +41,7 @@ const { getSitePromo } = require('../data/mcp-affiliate-links');
 const { getDiscoveryPromo } = require('../data/mcp-discovery-promo');
 const { getMilestonePromo } = require('../data/mcp-milestone-promo');
 const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../data/mcp-seo-content');
+const { describeCatalogStats, formatExactCount } = require('./mcpCatalogStats');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
 const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
@@ -200,11 +201,8 @@ function getHomeBlogContent() {
 }
 
 function buildHomeSeo({ heroStats, featuredPost }) {
-  const registryCount = heroStats.totalServers.toLocaleString();
-  const indexedCount = heroStats.serversWithIndexedTools.toLocaleString();
-  const metaDescription = featuredPost
-    ? `${registryCount} MCP servers in our registry (${indexedCount} with indexed tools). Featured insight: ${featuredPost.title}`
-    : `Browse ${registryCount} Model Context Protocol servers (${indexedCount} with indexed tools). Weekly directory updates and executive AI insights from Influzer.ai.`;
+  const catalogCopy = heroStats.copy || describeCatalogStats(heroStats);
+  const metaDescription = catalogCopy.metaDescription(featuredPost ? featuredPost.title : '');
   const pageTitle = 'MCP Server Directory & AI Insights | Influzer.ai';
   const metaKeywords = [
     'MCP server directory',
@@ -218,7 +216,7 @@ function buildHomeSeo({ heroStats, featuredPost }) {
     'executive AI strategy',
   ].join(', ');
   const ogImage = featuredPost?.coverImageAbsolute || SITE_DEFAULT_OG_IMAGE;
-  return { pageTitle, metaDescription, metaKeywords, ogImage };
+  return { pageTitle, metaDescription, metaKeywords, ogImage, catalogCopy };
 }
 
 function buildMcpCollectionJsonLd({ pageUrl, pageName, description, servers }) {
@@ -249,7 +247,7 @@ function buildMcpCollectionJsonLd({ pageUrl, pageName, description, servers }) {
   return { '@context': 'https://schema.org', '@graph': graph };
 }
 
-function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts }) {
+function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts, description }) {
   const graph = [
     {
       '@type': 'WebSite',
@@ -281,7 +279,7 @@ function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts }) {
       '@id': `${SITE_BASE_URL}/#webpage`,
       url: SITE_BASE_URL,
       name: 'MCP Server Directory & AI Insights',
-      description: `Browse ${heroStats.totalServers} MCP servers (${heroStats.serversWithIndexedTools} with indexed tools) and read weekly AI execution insights.`,
+      description: description || (heroStats.copy || describeCatalogStats(heroStats)).metaDescription(''),
       isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
       about: [
         { '@type': 'Thing', name: 'Model Context Protocol' },
@@ -337,14 +335,6 @@ function buildHomeJsonLd({ heroStats, topServers, featuredPost, morePosts }) {
   }
 
   return { '@context': 'https://schema.org', '@graph': graph };
-}
-
-function formatHomeToolCount(totalTools) {
-  if (totalTools >= 1000) {
-    const k = totalTools / 1000;
-    return k >= 100 ? `${Math.round(k)}k` : `${k.toFixed(1).replace(/\.0$/, '')}k`;
-  }
-  return totalTools.toLocaleString();
 }
 
 function homeTransportKind(transport) {
@@ -522,6 +512,7 @@ async function renderHomepage(req, res) {
   const topServersPayload = await getHomeTopServers(6);
   const topServers = topServersPayload.servers;
   const heroStats = getMcpHeroStats();
+  const catalogCopy = heroStats.copy;
   const { featuredPost, morePosts } = getHomeBlogContent();
   const insightPosts = [featuredPost, ...morePosts].filter(Boolean).slice(0, 2);
   const indexingServers = [
@@ -533,7 +524,8 @@ async function renderHomepage(req, res) {
     'Firecrawl',
     'Context7',
   ];
-  const indexingMore = Math.max(0, heroStats.totalServers - indexingServers.length);
+  const indexingMore = Math.max(0, heroStats.serversListed - indexingServers.length);
+  const indexingMoreLabel = formatExactCount(indexingMore);
   const seo = buildHomeSeo({ heroStats, featuredPost });
   const seoContent = getHomeSeoContent(heroStats);
   const jsonLd = appendFaqToJsonLd(
@@ -542,6 +534,7 @@ async function renderHomepage(req, res) {
       topServers,
       featuredPost,
       morePosts,
+      description: seo.metaDescription,
     }),
     seoContent.faqs,
     `${SITE_BASE_URL}/`,
@@ -559,7 +552,7 @@ async function renderHomepage(req, res) {
   res.setHeader('Expires', '0');
   res.render('home', {
     heroStats,
-    toolCountDisplay: formatHomeToolCount(heroStats.totalTools),
+    catalogCopy,
     topServers,
     topServersDynamic: topServersPayload.dynamic,
     formatWeeklyViews,
@@ -567,6 +560,7 @@ async function renderHomepage(req, res) {
     categories: ['Databases', 'Search & Web', 'Files & Docs', 'AI & Memory', 'Browser automation'],
     indexingServers,
     indexingMore,
+    indexingMoreLabel,
     featuredPost,
     morePosts,
     insightPosts,
@@ -969,7 +963,9 @@ ${itemsXml}
     const previewServers = catalogPayload.servers.slice(0, 60);
     const heroStats = getMcpHeroStats();
     const canonicalUrl = `${SITE_BASE_URL}/mcp/all`;
-    const metaDescription = `Search ${totals.total.toLocaleString()} MCP servers in our registry — ${catalogPayload.total_with_tools.toLocaleString()} with indexed tools, setup steps, and connection URLs.`;
+    const metaDescription = totals.countSentence
+      ? `Search the MCP registry. ${totals.countSentence}.`
+      : 'Search the MCP registry. Setup steps and connection URLs.';
     const seoContent = getMcpSeoContent(heroStats, { scope: 'all', pageTitle: 'Full MCP Server Directory' });
     res.render('mcp-index', {
       catalogScope: 'all',
@@ -1019,7 +1015,9 @@ ${itemsXml}
     const previewServers = catalogPayload.servers.slice(0, 60);
     const heroStats = getMcpHeroStats();
     const canonicalUrl = `${SITE_BASE_URL}/mcp`;
-    const metaDescription = `Top 100 Model Context Protocol servers for AI development — curated list with indexed tools, connection URLs, and setup steps. Full registry: ${totals.total.toLocaleString()} servers.`;
+    const metaDescription = totals.countSentence
+      ? `Top 100 Model Context Protocol servers. Full registry: ${totals.countSentence}.`
+      : 'Top 100 Model Context Protocol servers for AI development.';
     const seoContent = getMcpSeoContent(heroStats, { scope: 'top', pageTitle: 'Top 100 MCP Servers' });
     res.render('mcp-index', {
       catalogScope: 'top',
@@ -1046,7 +1044,7 @@ ${itemsXml}
       totalCatalog: totals.total,
       totalWithTools: catalogPayload.total_with_tools,
       sisterHref: '/mcp/all',
-      sisterLabel: `Browse all ${totals.total.toLocaleString()} servers`,
+      sisterLabel: totals.listedLabel ? `Browse all ${totals.listedLabel} servers` : 'Browse the full directory',
       inlineCatalogJson: JSON.stringify(catalogPayload).replace(/</g, '\\u003c'),
       previewServers,
       promo: getSitePromo(),

@@ -345,7 +345,16 @@ function registerWebmcpRoutes(app) {
 
   app.get('/webmcp/challenge', (req, res) => {
     const manifest = loadSelfToolsManifest();
+    let mcpServersListedLabel = null;
+    try {
+      const { getCatalogStats } = require('./mcpDirectoryService');
+      const { describeCatalogStats } = require('./mcpCatalogStats');
+      mcpServersListedLabel = describeCatalogStats(getCatalogStats()).listed;
+    } catch (err) {
+      mcpServersListedLabel = null;
+    }
     res.render('webmcp-challenge', renderLocals(req, {
+      mcpServersListedLabel,
       title: 'Agent Discovery Copilot — Build with WebMCP + MCP | Influzer.ai',
       description:
         'Open in ChatGPT’s browser: discover WebMCP websites and classic MCP servers while building an app. recommend_agent_stack, inspect tools, open sites — human + agent together.',

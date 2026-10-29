@@ -202,8 +202,8 @@
     if (countEl) {
       countEl.textContent =
         total === servers.length
-          ? total.toLocaleString() + ' servers'
-          : total.toLocaleString() + ' of ' + servers.length.toLocaleString() + ' servers';
+          ? total.toLocaleString('en-US') + ' servers'
+          : total.toLocaleString('en-US') + ' of ' + servers.length.toLocaleString('en-US') + ' servers';
     }
     if (clearBtn) clearBtn.hidden = !hasActiveFilters();
     if (loadMoreBtn) loadMoreBtn.hidden = visibleCount >= total;

@@ -58,11 +58,25 @@
             <button type="button" class="home-hero__chip" data-query="<%= cat %>" role="listitem"><%= cat %></button>
           <% }); %>
         </div>
-        <div class="home-hero__stats" aria-label="Directory statistics">
-          <span><b id="homeServerCount" data-target="<%= heroStats.totalServers %>"><%= heroStats.totalServers.toLocaleString() %></b> servers</span>
-          <span><b><%= toolCountDisplay %></b> indexed tools</span>
-          <span><b><%= heroStats.categoryCount %></b> categories</span>
-          <span><b>weekly</b> updates</span>
+        <div class="home-hero__stats" aria-label="Directory statistics" data-count-sentence="<%= heroStats.copy.countSentence %>">
+          <% if (heroStats.copy.listed != null) { %>
+            <span class="home-hero__stat"><b id="homeServerCount" data-target="<%= heroStats.serversListed %>"><%= heroStats.copy.listed %></b> <%= heroStats.copy.captions.serversListed %></span>
+          <% } %>
+          <% if (heroStats.copy.withTools != null) { %>
+            <span class="home-hero__stat"><b><%= heroStats.copy.withTools %></b> <%= heroStats.copy.captions.serversWithIndexedTools %></span>
+          <% } %>
+          <% if (heroStats.copy.tools != null) { %>
+            <span class="home-hero__stat"><b><%= heroStats.copy.tools %></b> <%= heroStats.copy.captions.toolsIndexed %></span>
+          <% } %>
+          <% if (heroStats.copy.handshake != null) { %>
+            <span class="home-hero__stat"><b><%= heroStats.copy.handshake %></b> <%= heroStats.copy.captions.serversWithSuccessfulHandshakeLast7Days %></span>
+          <% } %>
+          <% if (heroStats.copy.categories != null) { %>
+            <span class="home-hero__stat"><b><%= heroStats.copy.categories %></b> <%= heroStats.copy.captions.categories %></span>
+          <% } %>
+          <% if (heroStats.copy.updated) { %>
+            <span class="home-hero__stat"><b><%= heroStats.copy.updated %></b> <%= heroStats.copy.captions.catalogUpdated %></span>
+          <% } %>
         </div>
         <p class="home-hero__embed">
           Search the catalog here — or drop Influzer into the agent, CI, and docs.
@@ -75,7 +89,9 @@
             <% indexingServers.forEach(function(name) { %>
               <span class="home-hero__index-chip"><%= name %></span>
             <% }); %>
-            <span class="home-hero__index-chip home-hero__index-chip--more">+<%= indexingMore.toLocaleString() %></span>
+            <% if (indexingMoreLabel) { %>
+              <span class="home-hero__index-chip home-hero__index-chip--more">+<%= indexingMoreLabel %></span>
+            <% } %>
           </div>
         </div>
       </div>
@@ -174,7 +190,7 @@
         <section class="home-section" aria-labelledby="homeServersHeading">
           <div class="home-section__head">
             <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
-            <a class="home-section__link" href="/mcp">Browse all <%= heroStats.totalServers.toLocaleString() %> →</a>
+            <a class="home-section__link" href="/mcp">Browse all<% if (heroStats.copy.listed != null) { %> <%= heroStats.copy.listed %><% } %> →</a>
           </div>
           <p class="home-section__note" style="margin:-4px 0 12px;">
             <% if (typeof topServersDynamic !== 'undefined' && topServersDynamic) { %>
@@ -213,7 +229,7 @@
               </a>
             <% }); %>
             <div class="home-server-empty" id="homeServerEmpty" role="status">
-              No servers match “<span id="homeEmptyQuery"></span>” in this preview — the live directory searches all <%= toolCountDisplay %> indexed tools. <a href="/mcp">Browse all →</a>
+              No servers match “<span id="homeEmptyQuery"></span>” in this preview<% if (heroStats.copy.tools != null) { %> — the live directory searches <%= heroStats.copy.tools %> <%= heroStats.copy.captions.toolsIndexed %><% } %>. <a href="/mcp">Browse all →</a>
             </div>
           </div>
         </section>
@@ -331,12 +347,6 @@
 
     <%- include('partials/registry-footer', { showFooterLang: true }) %>
 
-    <script>
-      window.__HOME_HERO__ = {
-        toolCountDisplay: <%- JSON.stringify(toolCountDisplay) %>,
-        totalServers: <%= heroStats.totalServers %>
-      };
-    </script>
     <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
     <script src="/js/home.js?v=<%= assetVersion %>" defer></script>
     <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>

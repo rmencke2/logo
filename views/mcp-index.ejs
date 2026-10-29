@@ -36,24 +36,33 @@
       <div class="dir-hero__inner">
         <p class="dir-hero__eyebrow">Model Context Protocol</p>
         <h1 class="dir-hero__title"><%= catalogScope === 'top' ? 'Top 100 MCP Servers' : 'Full MCP Server Directory' %></h1>
-        <% if (typeof heroStats !== 'undefined' && heroStats) { %>
+        <% if (typeof heroStats !== 'undefined' && heroStats && heroStats.copy) { %>
           <p class="dir-hero__lead">
             <% if (catalogScope === 'top') { %>
               Curated leaders with indexed tools, transport, and setup steps.
-              <b><%= totalCatalog.toLocaleString() %></b> servers in the full registry ·
-              <b><%= (typeof totalWithTools !== 'undefined' ? totalWithTools : heroStats.serversWithIndexedTools).toLocaleString() %></b> with searchable tools.
             <% } else { %>
               Search the full registry — connect URLs, tool indexes, and setup steps.
-              <b><%= totalCatalog.toLocaleString() %></b> servers ·
-              <b><%= (typeof totalWithTools !== 'undefined' ? totalWithTools : heroStats.serversWithIndexedTools).toLocaleString() %></b> with searchable tools.
             <% } %>
           </p>
-          <div class="dir-hero__stats" aria-label="Directory stats">
-            <span><b><%= totalCatalog.toLocaleString() %></b> servers</span>
-            <span aria-hidden="true">·</span>
-            <span><b><%= heroStats.totalTools.toLocaleString() %></b> tools indexed</span>
-            <span aria-hidden="true">·</span>
-            <span><b><%= heroStats.categoryCount %></b> categories</span>
+          <div class="dir-hero__stats" aria-label="Directory stats" data-count-sentence="<%= heroStats.copy.countSentence %>">
+            <% if (heroStats.copy.listed != null) { %>
+              <span><b><%= heroStats.copy.listed %></b> <%= heroStats.copy.captions.serversListed %></span>
+            <% } %>
+            <% if (heroStats.copy.withTools != null) { %>
+              <span><b><%= heroStats.copy.withTools %></b> <%= heroStats.copy.captions.serversWithIndexedTools %></span>
+            <% } %>
+            <% if (heroStats.copy.tools != null) { %>
+              <span><b><%= heroStats.copy.tools %></b> <%= heroStats.copy.captions.toolsIndexed %></span>
+            <% } %>
+            <% if (heroStats.copy.handshake != null) { %>
+              <span><b><%= heroStats.copy.handshake %></b> <%= heroStats.copy.captions.serversWithSuccessfulHandshakeLast7Days %></span>
+            <% } %>
+            <% if (heroStats.copy.categories != null) { %>
+              <span><b><%= heroStats.copy.categories %></b> <%= heroStats.copy.captions.categories %></span>
+            <% } %>
+            <% if (heroStats.copy.updated) { %>
+              <span><b><%= heroStats.copy.updated %></b> <%= heroStats.copy.captions.catalogUpdated %></span>
+            <% } %>
           </div>
           <p class="dir-hero__submit">
             <a class="dir-hero__submit-btn" href="/mcp/submit">Submit an MCP server</a>
@@ -87,7 +96,7 @@
           <a href="/mcp" class="<%= catalogScope === 'top' ? 'is-active' : '' %>">Top 100</a>
           <a href="/mcp/scoreboard">Scoreboard</a>
           <a href="/mcp/changes">Changes</a>
-          <a href="/mcp/all" class="<%= catalogScope === 'all' ? 'is-active' : '' %>">Full directory (<%= totalCatalog.toLocaleString() %>)</a>
+          <a href="/mcp/all" class="<%= catalogScope === 'all' ? 'is-active' : '' %>">Full directory<% if (heroStats && heroStats.copy && heroStats.copy.listed != null) { %> (<%= heroStats.copy.listed %>)<% } %></a>
         </nav>
         <div class="dir-search">
           <span class="dir-search__glyph" aria-hidden="true">⌕</span>
@@ -115,7 +124,7 @@
       <% if (catalogScope === 'all') { %>
         <label class="dir-tools-only">
           <input type="checkbox" id="mcpToolsOnly" <%= defaultToolsOnly !== false ? 'checked' : '' %> />
-          Only show servers with indexed tools (<%= typeof totalWithTools !== 'undefined' ? totalWithTools.toLocaleString() : '—' %> of <%= totalCatalog.toLocaleString() %>)
+          Only show servers with at least one indexed tool<% if (heroStats && heroStats.copy && heroStats.copy.withTools != null && heroStats.copy.listed != null) { %> (<%= heroStats.copy.withTools %> of <%= heroStats.copy.listed %>)<% } %>
         </label>
       <% } %>
 
@@ -149,12 +158,12 @@
 
       <div class="dir-bottom">
         <% if (catalogScope === 'top') { %>
-          <a class="dir-bottom__cta" href="/mcp/all">Browse all <%= totalCatalog.toLocaleString() %> servers →</a>
+          <a class="dir-bottom__cta" href="/mcp/all">Browse all<% if (heroStats && heroStats.copy && heroStats.copy.listed != null) { %> <%= heroStats.copy.listed %><% } %> servers →</a>
         <% } else { %>
           <a class="dir-bottom__cta" href="/mcp">← Back to Top 100</a>
         <% } %>
-        <% if (lastUpdated) { %>
-          <p class="dir-bottom__note">Data last refreshed <%= lastUpdated %> · tool indexes re-validated daily</p>
+        <% if (heroStats && heroStats.copy && heroStats.copy.updated) { %>
+          <p class="dir-bottom__note"><%= heroStats.copy.captions.catalogUpdated %> <%= heroStats.copy.updated %> · tool indexes re-validated daily</p>
         <% } %>
       </div>
 

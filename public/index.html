@@ -186,12 +186,12 @@
         <div style="max-width: 900px; margin: 0 auto;">
           <h2 style="text-align: center;">MCP Server Directory</h2>
           <p style="text-align: center; margin-bottom: 32px; color: var(--color-charcoal-light);">
-            Discover Model Context Protocol servers for your AI stack. Start with the <strong>Top 100</strong>, then search the full catalog of <span id="homepageMcpTotal">1,500+</span> integrations.
+            Discover Model Context Protocol servers for your AI stack. Start with the <strong>Top 100</strong>, then search the full catalog<span id="homepageMcpTotal"></span>.
           </p>
           <div id="homepageMcpGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
             <a href="/mcp" class="feature-card" style="text-decoration: none; color: inherit;">
               <h3>Top 100 MCP Servers</h3>
-              <p>Curated leaders by popularity, official status, and tool coverage — updated weekly from Glama, Smithery, and community lists.</p>
+              <p>Curated leaders by popularity, official status, and tool coverage.</p>
             </a>
           </div>
           <div style="text-align: center; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
@@ -1211,14 +1211,14 @@
         fetch('/api/mcp/preview?limit=6', { headers: { Accept: 'application/json' } })
           .then((res) => (res.ok ? res.json() : null))
           .then((data) => {
-            if (!data || !Array.isArray(data.servers) || !data.servers.length) return;
-            if (totalEl && data.total_catalog) {
-              totalEl.textContent = data.total_catalog.toLocaleString();
+            if (!data) return;
+            if (totalEl && Number.isFinite(Number(data.total_catalog))) {
+              totalEl.textContent = ` of ${Number(data.total_catalog).toLocaleString('en-US')} servers listed`;
             }
             if (metaEl) {
-              const refreshed = data.last_updated ? `Updated ${data.last_updated}` : '';
-              metaEl.textContent = [refreshed, `Top ${data.total_top100 || 100} featured`].filter(Boolean).join(' · ');
+              metaEl.textContent = data.count_sentence || (data.last_updated ? `Catalog updated ${data.last_updated}` : '');
             }
+            if (!Array.isArray(data.servers) || !data.servers.length) return;
             gridEl.innerHTML = data.servers
               .map((s) => {
                 const desc = s.description || '';

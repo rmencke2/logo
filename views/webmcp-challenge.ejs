@@ -23,7 +23,17 @@
         <p class="webmcp-prose">
           Open <strong>influzer.ai</strong> inside <strong>ChatGPT’s browser</strong> (or Chrome with WebMCP enabled).
           This page exposes <code>document.modelContext</code> tools so you and your agent can
-          <strong>search 358+ WebMCP websites</strong> and <strong>14k+ classic MCP servers</strong>,
+          <% if (stats && Number.isFinite(Number(stats.site_count))) { %>
+            <strong>search <%= Number(stats.site_count).toLocaleString('en-US') %> WebMCP websites</strong>
+          <% } else { %>
+            <strong>search WebMCP websites</strong>
+          <% } %>
+          and
+          <% if (typeof mcpServersListedLabel !== 'undefined' && mcpServersListedLabel) { %>
+            <strong><%= mcpServersListedLabel %> classic MCP servers listed</strong>
+          <% } else { %>
+            <strong>classic MCP servers</strong>
+          <% } %>,
           inspect available tools, and open the best match — without leaving the build session.
         </p>
         <div class="webmcp-metrics">

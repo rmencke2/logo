@@ -42,7 +42,7 @@
     <div class="mcp-crumb">
       <a href="/mcp">← Top 100</a>
       <span class="mcp-crumb__sep">/</span>
-      <a href="/mcp/all">Full directory (<%= catalogTotals ? catalogTotals.total.toLocaleString() : '…' %>)</a>
+      <a href="/mcp/all">Full directory<% if (catalogTotals && catalogTotals.listedLabel) { %> (<%= catalogTotals.listedLabel %>)<% } %></a>
       <a class="mcp-crumb__submit" href="/mcp/submit">Submit a server</a>
     </div>
 
