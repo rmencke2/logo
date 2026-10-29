@@ -250,6 +250,14 @@
   flex: none;
 }
 
+.dir-order {
+  flex: 1 0 100%;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--hp-muted2);
+}
+
 .dir-sort select {
   border: 1px solid var(--hp-border2);
   border-radius: 8px;

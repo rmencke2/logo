@@ -253,8 +253,17 @@ async function resolveListingContacts(slugs) {
   return out;
 }
 
+function isSponsoredListing(slug) {
+  try {
+    return require('./mcpPromoteService').isSponsoredSlug(slug);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Homepage list: traffic leaders first, fill from Top 100 preview.
+ * Paid pins stay on the sponsor rail and are not inserted into this list.
  */
 async function getHomeTopServersByTraffic(limit = 6, { days = 7 } = {}) {
   const ranked = await getWeeklyListingRanking({ days, limit: limit * 3, useCache: true });
@@ -264,7 +273,7 @@ async function getHomeTopServersByTraffic(limit = 6, { days = 7 } = {}) {
   for (const row of ranked) {
     if (picked.length >= limit) break;
     const server = findMcpServerBySlug(row.slug);
-    if (!server || seen.has(row.slug)) continue;
+    if (!server || seen.has(row.slug) || isSponsoredListing(row.slug)) continue;
     seen.add(row.slug);
     picked.push({
       server,
@@ -278,7 +287,7 @@ async function getHomeTopServersByTraffic(limit = 6, { days = 7 } = {}) {
     const fallback = getMcpHomepagePreview(limit * 2).servers || [];
     for (const server of fallback) {
       if (picked.length >= limit) break;
-      if (seen.has(server.slug)) continue;
+      if (seen.has(server.slug) || isSponsoredListing(server.slug)) continue;
       seen.add(server.slug);
       picked.push({
         server,
@@ -293,7 +302,7 @@ async function getHomeTopServersByTraffic(limit = 6, { days = 7 } = {}) {
   if (picked.length < limit) {
     for (const server of getAllMcpServers()) {
       if (picked.length >= limit) break;
-      if (seen.has(server.slug)) continue;
+      if (seen.has(server.slug) || isSponsoredListing(server.slug)) continue;
       seen.add(server.slug);
       picked.push({ server, views: 0, unique_visitors: 0, source: 'catalog' });
     }
@@ -304,6 +313,50 @@ async function getHomeTopServersByTraffic(limit = 6, { days = 7 } = {}) {
     trafficCount: ranked.length,
     items: picked.slice(0, limit),
   };
+}
+
+/**
+ * Real page_views totals for the sponsor block. available is false when the
+ * query cannot run — callers must hide the figures.
+ */
+async function getDirectoryAudienceStats({ days = 30 } = {}) {
+  const windowDays = Math.max(1, Math.min(90, Number(days) || 30));
+  try {
+    const db = await getDatabase();
+    const since = sinceIso(windowDays);
+    const site = await dbGet(
+      db,
+      `SELECT COUNT(*) AS views, COUNT(DISTINCT ip_address) AS visitors
+       FROM page_views
+       WHERE created_at > ?`,
+      [since],
+    );
+    const listings = await dbGet(
+      db,
+      `SELECT COUNT(*) AS views
+       FROM page_views
+       WHERE created_at > ?
+         AND page LIKE '/mcp/%'
+         AND page NOT LIKE '/mcp/%/%'`,
+      [since],
+    );
+    return {
+      available: true,
+      days: windowDays,
+      visitors: Number(site?.visitors) || 0,
+      page_views: Number(site?.views) || 0,
+      listingViews: Number(listings?.views) || 0,
+    };
+  } catch (err) {
+    console.warn('Sponsor audience stats unavailable:', err.message || err);
+    return {
+      available: false,
+      days: windowDays,
+      visitors: null,
+      page_views: null,
+      listingViews: null,
+    };
+  }
 }
 
 async function wasCongratsSent(db, week, slug, email) {
@@ -546,6 +599,7 @@ module.exports = {
   slugFromMcpPage,
   getWeeklyListingRanking,
   getHomeTopServersByTraffic,
+  getDirectoryAudienceStats,
   resolveListingContacts,
   sendWeeklyTrafficCongrats,
   buildWeeklyCongratsEmail,

@@ -16,6 +16,15 @@
   const loadMoreBtn = document.getElementById('mcpLoadMore');
   const searchEl = document.getElementById('mcpSearch');
   const sortEl = document.getElementById('mcpSort');
+  const sortCaptionEl = document.getElementById('mcpSortCaption');
+  let sortCaptions = {};
+  if (sortCaptionEl) {
+    try {
+      sortCaptions = JSON.parse(sortCaptionEl.getAttribute('data-captions') || '{}');
+    } catch (err) {
+      sortCaptions = {};
+    }
+  }
   const toolsOnlyToggle = document.getElementById('mcpToolsOnly');
   const catalogScope = grid.dataset.scope || 'top';
   const defaultToolsOnly = grid.dataset.toolsOnly !== '0';
@@ -193,12 +202,18 @@
     render(true);
   }
 
+  function updateSortCaption() {
+    if (!sortCaptionEl) return;
+    sortCaptionEl.textContent = sortCaptions[sort] || sortCaptions.stars || '';
+  }
+
   function render(resetVisible) {
     if (resetVisible) visibleCount = PAGE_SIZE;
     filteredList = sortList(servers.filter(matches));
     const list = filteredList.slice(0, visibleCount);
     const total = filteredList.length;
 
+    updateSortCaption();
     if (countEl) {
       countEl.textContent =
         total === servers.length
@@ -306,5 +321,6 @@
     });
   }
 
+  updateSortCaption();
   loadCatalog();
 })();

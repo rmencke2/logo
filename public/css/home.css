@@ -593,6 +593,23 @@ body.registry-page.site-header-active {
   color: var(--hp-muted);
 }
 
+.home-board__audience {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  font-family: var(--hp-mono);
+  font-size: 13px;
+  color: var(--hp-muted);
+}
+
+.home-board__audience b {
+  color: var(--hp-text);
+  font-variant-numeric: tabular-nums;
+}
+
 .home-board__meter {
   margin: 0 0 16px;
 }

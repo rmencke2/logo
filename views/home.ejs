@@ -51,7 +51,7 @@
         </form>
         <p class="home-hero__list">
           <a class="home-hero__list-btn" href="/mcp/submit">Submit an MCP server</a>
-          <span>Free to list. A person reviews it. Rank stays catalog order.</span>
+          <span>Free to list. A person reviews it. Paying does not change rank.</span>
         </p>
         <div class="home-hero__chips" role="list">
           <% categories.forEach(function(cat) { %>
@@ -111,15 +111,19 @@
           <p class="home-board__lead">
             Every handshake, crawl, and index rebuild costs money. Two sponsor slots a month keep the registry free — and never touch the ranking.
           </p>
-          <div class="home-board__meter" aria-label="Sponsor funding this month">
-            <div class="home-board__meter-labels">
-              <span>This month · $<%= promoteOffer.funded_usd %> funded</span>
-              <span>Goal $<%= promoteOffer.monthly_if_sold_out_usd %></span>
-            </div>
-            <div class="home-board__bar" role="progressbar" aria-valuemin="0" aria-valuemax="<%= promoteOffer.monthly_if_sold_out_usd %>" aria-valuenow="<%= promoteOffer.funded_usd %>">
-              <span style="width: <%= Math.max(promoteOffer.funded_pct, promoteOffer.funded_usd ? 8 : 0) %>%"></span>
-            </div>
-          </div>
+          <% if (typeof sponsorAudience !== 'undefined' && sponsorAudience && sponsorAudience.available) { %>
+            <ul class="home-board__audience">
+              <% if (sponsorAudience.visitorsLabel != null) { %>
+                <li><b><%= sponsorAudience.visitorsLabel %></b> <%= sponsorAudience.visitorsCaption %></li>
+              <% } %>
+              <% if (sponsorAudience.listingViewsLabel != null) { %>
+                <li><b><%= sponsorAudience.listingViewsLabel %></b> <%= sponsorAudience.listingViewsCaption %></li>
+              <% } %>
+              <% if (sponsorAudience.slotsRemainingLabel != null) { %>
+                <li><b><%= sponsorAudience.slotsRemainingLabel %></b> <%= sponsorAudience.slotsCaption %></li>
+              <% } %>
+            </ul>
+          <% } %>
           <div class="home-board__actions">
             <a class="home-board__btn home-board__btn--primary" href="/mcp/promote">Promote your server · $<%= promoteOffer.product.price_usd %></a>
             <a class="home-board__btn home-board__btn--ghost" href="/mcp/promote">How slots work</a>
@@ -172,7 +176,7 @@
           <a class="home-tool" href="/mcp/scoreboard">
             <span class="home-tool__kicker">Live</span>
             <span class="home-tool__name">Scoreboard</span>
-            <span class="home-tool__desc">Top 100 × last handshake. Sponsored pins are ads — they do not buy live_ok.</span>
+            <span class="home-tool__desc">Handshake status for the Top 100. Sponsored pins are ads and do not change the row.</span>
             <code class="home-tool__code">/mcp/scoreboard</code>
           </a>
           <a class="home-tool" href="/modelspend">
@@ -192,13 +196,7 @@
             <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
             <a class="home-section__link" href="/mcp">Browse all<% if (heroStats.copy.listed != null) { %> <%= heroStats.copy.listed %><% } %> →</a>
           </div>
-          <p class="home-section__note" style="margin:-4px 0 12px;">
-            <% if (typeof topServersDynamic !== 'undefined' && topServersDynamic) { %>
-              Ranked by Influzer listing page views over the last 7 days.
-            <% } else { %>
-              Building from live listing traffic — showing catalog leaders until enough visits accumulate.
-            <% } %>
-          </p>
+          <p class="home-section__note" style="margin:-4px 0 12px;"><%= topServersCaption %></p>
           <div class="home-server-list" id="homeServerList">
             <% topServers.forEach(function(server) { %>
               <a

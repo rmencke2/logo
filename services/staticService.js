@@ -54,7 +54,8 @@ const {
   listRecipesForServer,
   getSitemapRecipeEntries,
 } = require('./mcpRecipeService');
-const { getHomeTopServersByTraffic } = require('./mcpListingTrafficService');
+const { getHomeTopServersByTraffic, getDirectoryAudienceStats } = require('./mcpListingTrafficService');
+const { LIST_ORDER, DIRECTORY_SORT_CAPTIONS, homeListCaption, presentSponsorAudience } = require('./mcpListOrder');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -379,6 +380,7 @@ function formatWeeklyViews(n) {
 async function getHomeTopServers(limit = 6) {
   try {
     const { items, trafficCount } = await getHomeTopServersByTraffic(limit, { days: 7 });
+    const dynamic = trafficCount > 0;
     return {
       servers: items.map((item) =>
         mapHomeServerRow(item.server, {
@@ -387,7 +389,8 @@ async function getHomeTopServers(limit = 6) {
         }),
       ),
       trafficCount,
-      dynamic: trafficCount > 0,
+      dynamic,
+      caption: homeListCaption(items, dynamic),
     };
   } catch (err) {
     console.error('Weekly traffic top servers failed, falling back to catalog:', err.message || err);
@@ -396,6 +399,7 @@ async function getHomeTopServers(limit = 6) {
       servers: preview.slice(0, limit).map((s) => mapHomeServerRow(s)),
       trafficCount: 0,
       dynamic: false,
+      caption: homeListCaption([], false),
     };
   }
 }
@@ -555,6 +559,7 @@ async function renderHomepage(req, res) {
     catalogCopy,
     topServers,
     topServersDynamic: topServersPayload.dynamic,
+    topServersCaption: topServersPayload.caption || LIST_ORDER.homeCatalog,
     formatWeeklyViews,
     homeRecipes,
     categories: ['Databases', 'Search & Web', 'Files & Docs', 'AI & Memory', 'Browser automation'],
@@ -573,6 +578,10 @@ async function renderHomepage(req, res) {
     milestonePromo: getMilestonePromo(heroStats.totalServers),
     scoreboard: buildScoreboard(),
     promoteOffer: getPromoteOffer(),
+    sponsorAudience: presentSponsorAudience({
+      ...(await getDirectoryAudienceStats({ days: 30 })),
+      slotsRemaining: getPromoteOffer().remaining,
+    }),
     sponsorRail: presentSponsorRail(),
     assetVersion: getHomeAssetVersion(),
   });
@@ -969,6 +978,8 @@ ${itemsXml}
     const seoContent = getMcpSeoContent(heroStats, { scope: 'all', pageTitle: 'Full MCP Server Directory' });
     res.render('mcp-index', {
       catalogScope: 'all',
+      listOrderNote: LIST_ORDER.fullDirectory,
+      sortCaptions: DIRECTORY_SORT_CAPTIONS,
       defaultToolsOnly: true,
       heroStats,
       pageTitle: 'Full MCP Server Directory',
@@ -1021,6 +1032,8 @@ ${itemsXml}
     const seoContent = getMcpSeoContent(heroStats, { scope: 'top', pageTitle: 'Top 100 MCP Servers' });
     res.render('mcp-index', {
       catalogScope: 'top',
+      listOrderNote: LIST_ORDER.top100Membership,
+      sortCaptions: DIRECTORY_SORT_CAPTIONS,
       defaultToolsOnly: true,
       heroStats,
       pageTitle: 'Top 100 MCP Servers',

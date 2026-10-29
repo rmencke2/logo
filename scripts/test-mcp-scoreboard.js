@@ -32,7 +32,9 @@ async function main() {
   assert.match(homeTpl, /Promote your server/);
   assert.match(homeTpl, /run by one person/);
   assert.match(homeTpl, /No pay-to-rank/);
-  assert.match(homeTpl, /funded_usd/);
+  assert.match(homeTpl, /home-board__audience/);
+  assert.match(homeTpl, /listing page views, last 30 days/);
+  assert.doesNotMatch(homeTpl, /funded_usd/);
   assert.match(homeTpl, /home-sponsors/);
   assert.match(homeTpl, /mcp-sponsor-rail/);
 

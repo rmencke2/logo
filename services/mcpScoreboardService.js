@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Top 100 × last handshake. Organic rank is catalog order.
+ * Handshake status for the Top 100. Organic row order is Top 100 catalog order
+ * (editorial pins, then catalog score), not last-handshake time.
  * Sponsored pins sit above the table and never rewrite live_status.
  */
 
@@ -20,6 +21,7 @@ const {
   presentSponsorRail,
   submitPromoteRequest,
 } = require('./mcpPromoteService');
+const { LIST_ORDER } = require('./mcpListOrder');
 
 const STATUS_ORDER = ['live_ok', 'auth_required', 'unreachable', 'not_probed', 'local_unprobed'];
 
@@ -134,6 +136,7 @@ function buildScoreboard() {
     rows,
     pins,
     note: 'Observable initialize + tools/list facts — not a safe-to-install badge. Sponsored pins are ads.',
+    orderCaption: LIST_ORDER.scoreboard,
     safety_badge: null,
   };
 }
@@ -170,7 +173,7 @@ function registerMcpScoreboardRoutes(app) {
     res.render('mcp-scoreboard', {
       pageTitle: 'MCP handshake scoreboard',
       metaDescription:
-        'Top 100 MCP servers by last handshake: live, auth gate, unreachable, or stdio-only. Not a safe-to-install badge. Sponsored placements are ads at the top.',
+        'Handshake status for the Top 100. Organic rows follow catalog order, not last handshake. Sponsored pins are labeled ads above the table. Not a safe-to-install badge.',
       canonicalUrl: 'https://www.influzer.ai/mcp/scoreboard',
       board,
       offer,

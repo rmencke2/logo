@@ -102,6 +102,9 @@
           <span class="dir-search__glyph" aria-hidden="true">⌕</span>
           <input type="search" id="mcpSearch" placeholder="Search servers or tools…" aria-label="Search MCP servers" autocomplete="off" />
         </div>
+        <% if (typeof listOrderNote !== 'undefined' && listOrderNote) { %>
+          <p class="dir-order" id="mcpListOrder"><%= listOrderNote %></p>
+        <% } %>
         <div class="dir-sort">
           <label class="visually-hidden" for="mcpSort" style="position:absolute;left:-9999px;">Sort</label>
           <select id="mcpSort">
@@ -112,6 +115,7 @@
             <option value="official">Official first</option>
           </select>
         </div>
+        <p class="dir-order" id="mcpSortCaption" data-captions="<%= JSON.stringify(typeof sortCaptions !== 'undefined' && sortCaptions ? sortCaptions : {}) %>"></p>
       </div>
 
       <div class="dir-pills" id="mcpFilters" role="group" aria-label="Filter by category"></div>
