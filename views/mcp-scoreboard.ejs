@@ -97,7 +97,7 @@
                 </td>
                 <td>
                   <% if (row.handshake_svg) { %>
-                    <span class="mcp-handshake-badge" title="MCP handshake — not a SAFE badge"><%- row.handshake_svg %></span>
+                    <%- include('partials/mcp-handshake-badge', { handshakeSvg: row.handshake_svg }) %>
                   <% } else { %>
                     <span class="board-status board-status--<%= row.live_status %>"><%= row.live_status_label %></span>
                   <% } %>

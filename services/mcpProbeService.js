@@ -270,6 +270,20 @@ async function probeMcpUrl(rawUrl, opts = {}) {
     tool_count: tools.length,
   });
 
+  try {
+    const { appendProbeSamples } = require('./mcpProbeHistory');
+    appendProbeSamples(
+      catalogHits(safe.href).map((hit) => ({
+        slug: hit.slug,
+        at: probedAt,
+        status: quality.live_status,
+        latency_ms: live.latency_ms,
+      })),
+    );
+  } catch (err) {
+    console.warn('Probe history append failed:', err.message || err);
+  }
+
   const payload = {
     ok: true,
     probed_at: probedAt,
@@ -283,6 +297,9 @@ async function probeMcpUrl(rawUrl, opts = {}) {
     tools,
     tools_truncated: (live.tools || []).length > MAX_TOOLS,
     tools_source: tools.length ? 'live' : 'none',
+    latency_ms: Number.isFinite(Number(live.latency_ms)) ? Math.round(Number(live.latency_ms)) : null,
+    verification_grade: quality.verification_grade,
+    verification_grade_letter: quality.verification_grade_letter,
     transport_hint: 'http',
     server_info: live.serverInfo
       ? {

@@ -135,6 +135,64 @@ function resolveDemowareTier(server, liveStatus, toolCount) {
  * @param {object|null|undefined} [validationEntry]
  * @returns {object}
  */
+const GRADE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Verification grade from stored signals only. Not a safety score.
+ * live_ok +40, auth_required +25, at least one indexed tool +20,
+ * five or more indexed tools +10, HTTPS endpoint +15 (else known local transport +10),
+ * probe timestamp within 7 days +15. Score is capped at 100.
+ * Letters: A 80–100, B 60–79, C 40–59, D 0–39.
+ * Latency is not included.
+ * @param {object} server
+ * @param {{ liveStatus: string, toolCount: number, probedAt?: string|null, now?: Date }} signals
+ */
+function computeVerificationGrade(server, signals) {
+  const liveStatus = signals.liveStatus;
+  const toolCount = Number(signals.toolCount) || 0;
+  const nowMs = signals.now instanceof Date ? signals.now.getTime() : Date.parse(signals.now || new Date());
+  let score = 0;
+  const parts = [];
+
+  if (liveStatus === 'live_ok') {
+    score += 40;
+    parts.push('live_ok +40');
+  } else if (liveStatus === 'auth_required') {
+    score += 25;
+    parts.push('auth_required +25');
+  }
+
+  if (toolCount >= 1) {
+    score += 20;
+    parts.push('indexed_tool +20');
+  }
+  if (toolCount >= 5) {
+    score += 10;
+    parts.push('five_tools +10');
+  }
+
+  const url = String(
+    server.mcp_endpoint || server.deployment_url || server.connection_url || server.primary_url || '',
+  );
+  if (/^https:\/\//i.test(url)) {
+    score += 15;
+    parts.push('https +15');
+  } else if (isLocalTransport(server)) {
+    score += 10;
+    parts.push('local_transport +10');
+  }
+
+  const probedMs = Date.parse(signals.probedAt || '');
+  if (Number.isFinite(probedMs) && Number.isFinite(nowMs) && nowMs - probedMs >= 0 && nowMs - probedMs <= GRADE_WINDOW_MS) {
+    score += 15;
+    parts.push('probed_within_7d +15');
+  }
+
+  score = Math.max(0, Math.min(100, score));
+  const letter = score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D';
+  return { score, letter, parts };
+}
+
 function computeQualitySignals(server, validationEntry = null) {
   const toolCount = Array.isArray(server.tools) ? server.tools.length : 0;
   const liveStatus = resolveLiveStatus(server, validationEntry);
@@ -143,6 +201,11 @@ function computeQualitySignals(server, validationEntry = null) {
   const demowareTier = resolveDemowareTier(server, liveStatus, toolCount);
   const probedAt = validationEntry?.validated_at || server.tools_validated_at || null;
   const validationMethod = validationEntry?.validation_method || server.tools_validation_method || null;
+  const verificationGrade = computeVerificationGrade(server, {
+    liveStatus,
+    toolCount,
+    probedAt,
+  });
 
   const badges = [];
   // Primary: demoware / tools honesty
@@ -181,6 +244,10 @@ function computeQualitySignals(server, validationEntry = null) {
     demoware_tier_label: DEMOWARE_TIER_LABELS[demowareTier],
     probed_at: probedAt,
     validation_method: validationMethod,
+    verification_grade: verificationGrade.score,
+    verification_grade_letter: verificationGrade.letter,
+    verification_grade_parts: verificationGrade.parts,
+    verification_grade_label: 'Verification grade',
     badges: badges.slice(0, 2),
     // Explicit: this is not a safety verdict
     safety_badge: null,
@@ -235,6 +302,7 @@ function summarizeQuality(quality) {
 
 module.exports = {
   computeQualitySignals,
+  computeVerificationGrade,
   resolveLiveStatus,
   qualityRankBoost,
   summarizeQuality,

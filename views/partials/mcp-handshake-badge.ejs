@@ -1,0 +1,4 @@
+<% const svg = typeof handshakeSvg !== 'undefined' ? handshakeSvg : ''; %>
+<% if (svg) { %>
+  <a class="mcp-handshake-badge<%= typeof inline !== 'undefined' && inline ? ' mcp-handshake-badge--inline' : '' %>" href="/methodology" title="How this handshake works. Not a safety score."><%- svg %></a>
+<% } %>

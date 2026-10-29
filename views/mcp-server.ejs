@@ -68,9 +68,7 @@
             <div class="mcp-detail-header__body">
               <h1>
                 <%= server.name %>
-                <% if (server.quality && server.quality.handshake_svg) { %>
-                  <span class="mcp-handshake-badge" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
-                <% } %>
+                <%- include('partials/mcp-handshake-badge', { handshakeSvg: server.quality && server.quality.handshake_svg }) %>
               </h1>
               <div class="mcp-detail-badges">
                 <span class="mcp-pill mcp-pill--cat"><%= server.category %></span>
@@ -292,9 +290,7 @@
                   <dt>Live handshake</dt>
                   <dd>
                     <%= server.quality.live_status_label %>
-                    <% if (server.quality.handshake_svg) { %>
-                      <span class="mcp-handshake-badge mcp-handshake-badge--inline" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
-                    <% } %>
+                    <%- include('partials/mcp-handshake-badge', { handshakeSvg: server.quality.handshake_svg, inline: true }) %>
                   </dd>
                 </div>
                 <div>
@@ -306,7 +302,32 @@
                   <dd><%= server.quality.tools_source_label %></dd>
                 </div>
               </dl>
-              <p class="mcp-quality-panel__note"><%= server.quality.note %></p>
+              <p class="mcp-quality-panel__note"><%= server.quality.note %> <a href="/methodology">How we verify</a>.</p>
+            </section>
+          <% } %>
+
+          <% if (typeof verification !== 'undefined' && verification) { %>
+            <section class="mcp-section" aria-labelledby="verificationHeading">
+              <h2 id="verificationHeading">Verification summary</h2>
+              <p class="mcp-quality-panel__lead">Stored signals only. <a href="/methodology">Not a safety score</a>.</p>
+              <dl class="mcp-quality-grid">
+                <% if (verification.grade_letter) { %>
+                  <div><dt>Verification grade</dt><dd><%= verification.grade_letter %> (<%= verification.grade %>)</dd></div>
+                <% } %>
+                <% if (verification.probed_at) { %>
+                  <div><dt>Last verified</dt><dd><time datetime="<%= verification.probed_at %>"><%= verification.probed_at_label %></time></dd></div>
+                <% } %>
+                <div><dt>Status</dt><dd><%= verification.status %></dd></div>
+                <% if (verification.latency_ms != null) { %>
+                  <div><dt>Response time</dt><dd><%= verification.latency_ms %> ms</dd></div>
+                <% } %>
+                <div><dt>Auth</dt><dd><%= verification.auth %></dd></div>
+                <div><dt>Transport</dt><dd><%= verification.transport %></dd></div>
+                <div><dt>Tools indexed</dt><dd><%= verification.tool_count %></dd></div>
+                <% if (verification.uptime_label) { %>
+                  <div><dt>30-day uptime</dt><dd><%= verification.uptime_label %></dd></div>
+                <% } %>
+              </dl>
             </section>
           <% } %>
 
@@ -378,7 +399,7 @@
                 <span class="mcp-glance__key">Handshake</span>
                 <span class="mcp-glance__val">
                   <% if (server.quality.handshake_svg) { %>
-                    <span class="mcp-handshake-badge mcp-handshake-badge--inline" title="MCP handshake — not a SAFE badge"><%- server.quality.handshake_svg %></span>
+                    <%- include('partials/mcp-handshake-badge', { handshakeSvg: server.quality.handshake_svg, inline: true }) %>
                   <% } else { %>
                     <%= server.quality.live_status_label %>
                   <% } %>

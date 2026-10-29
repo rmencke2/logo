@@ -56,6 +56,8 @@ const {
 } = require('./mcpRecipeService');
 const { getHomeTopServersByTraffic, getDirectoryAudienceStats } = require('./mcpListingTrafficService');
 const { LIST_ORDER, DIRECTORY_SORT_CAPTIONS, homeListCaption, presentSponsorAudience } = require('./mcpListOrder');
+const { buildVerificationSummary } = require('./mcpProbeHistory');
+const { getMethodology } = require('../data/mcp-methodology');
 
 function getAllBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_DIR)) {
@@ -1186,6 +1188,7 @@ ${itemsXml}
       showPromoteCta: Boolean(inTop100 && !sponsored),
       catalogTotals: getMcpCatalogTotals(),
       relatedServers: getRelatedMcpServers(server, 4),
+      verification: buildVerificationSummary(server),
       serverRecipes: Array.isArray(serverRecipes) ? serverRecipes : [],
       discoveryPromo: getDiscoveryPromo(),
       assetVersion,
@@ -1329,6 +1332,15 @@ ${itemsXml}
     });
   }
 
+  app.get('/methodology', (req, res) => {
+    const page = getMethodology();
+    res.render('methodology', {
+      page,
+      assetVersion: getHomeAssetVersion(),
+      navPath: req.path,
+    });
+  });
+
   app.get(['/terms', '/privacy', '/cookie', '/support'], renderLegalPage);
   app.get(['/contact', '/contact.html', '/support.html'], (req, res) => {
     res.redirect(301, '/support');
@@ -1360,6 +1372,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-10-29', changefreq: 'weekly', priority: '0.8' },
+      { loc: `${SITE_BASE_URL}/methodology`, lastmod: '2026-10-29', changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },

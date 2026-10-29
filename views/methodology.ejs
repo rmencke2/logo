@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= page.title %> | Influzer.ai</title>
+    <meta name="description" content="<%= page.summary %>" />
+    <link rel="canonical" href="https://www.influzer.ai/methodology" />
+    <%- include('partials/seo-social', { ogTitle: page.title, ogDescription: page.summary, ogUrl: 'https://www.influzer.ai/methodology' }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell" id="main" style="max-width:760px;padding:2rem 1.25rem 4rem;">
+      <p class="dir-hero__eyebrow">Handshake methodology</p>
+      <h1 class="dir-hero__title"><%= page.title %></h1>
+      <p class="dir-hero__lead"><%= page.summary %></p>
+
+      <h2>What is tested</h2>
+      <ul>
+        <% page.tested.forEach(function(item) { %><li><%= item %></li><% }); %>
+      </ul>
+
+      <h2>How often</h2>
+      <ul>
+        <% page.cadence.forEach(function(item) { %><li><%= item %></li><% }); %>
+      </ul>
+
+      <h2>Probe statuses</h2>
+      <ul>
+        <% page.probeStatuses.forEach(function(row) { %>
+          <li><code><%= row.key %></code> — <%= row.meaning %></li>
+        <% }); %>
+      </ul>
+
+      <h2>Directory statuses</h2>
+      <ul>
+        <% page.liveStatuses.forEach(function(row) { %>
+          <li><strong><%= row.label %></strong> (<code><%= row.key %></code>) — <%= row.meaning %></li>
+        <% }); %>
+      </ul>
+
+      <h2>Auth labels</h2>
+      <ul>
+        <% page.authGates.forEach(function(row) { %>
+          <li><strong><%= row.label %></strong> (<code><%= row.key %></code>) — <%= row.meaning %></li>
+        <% }); %>
+      </ul>
+
+      <h2>Tool source labels</h2>
+      <ul>
+        <% page.toolSources.forEach(function(row) { %>
+          <li><strong><%= row.label %></strong> (<code><%= row.key %></code>) — <%= row.meaning %></li>
+        <% }); %>
+      </ul>
+
+      <h2>Listing surface labels</h2>
+      <ul>
+        <% page.tiers.forEach(function(row) { %>
+          <li><strong><%= row.label %></strong> (<code><%= row.key %></code>) — <%= row.meaning %></li>
+        <% }); %>
+      </ul>
+
+      <h2>Verification grade</h2>
+      <ul>
+        <% page.grade.forEach(function(item) { %><li><%= item %></li><% }); %>
+      </ul>
+
+      <h2>What this does not prove</h2>
+      <ul>
+        <% page.notProven.forEach(function(item) { %><li><%= item %></li><% }); %>
+      </ul>
+    </main>
+    <%- include('partials/registry-footer') %>
+  </body>
+</html>

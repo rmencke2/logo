@@ -20,6 +20,7 @@ const {
   toolFingerprint,
   getHttpMcpEndpoint,
 } = require('./utils/mcp-validator');
+const { appendProbeSamples } = require('../services/mcpProbeHistory');
 const {
   diffValidationEntry,
   appendHandshakeEvents,
@@ -226,6 +227,7 @@ async function main() {
   state.validation = 'live_mcp_tools_list';
   state.servers = state.servers || {};
   const handshakeEvents = [];
+  const probeSamples = [];
   for (const r of results) {
     if (!r.slug || r.status?.startsWith('skipped')) continue;
     const server = servers.find((s) => s.slug === r.slug);
@@ -244,6 +246,20 @@ async function main() {
     });
     if (change) handshakeEvents.push(change);
     state.servers[r.slug] = nextEntry;
+    if (nextEntry.endpoint_status) {
+      probeSamples.push({
+        slug: r.slug,
+        at: nextEntry.validated_at || report.generated_at,
+        status: nextEntry.endpoint_status,
+        latency_ms: r.liveProbe?.latency_ms,
+      });
+    }
+  }
+  try {
+    const recordedSamples = appendProbeSamples(probeSamples);
+    if (recordedSamples) console.log(`   Probe history: ${recordedSamples} sample(s)`);
+  } catch (err) {
+    console.warn('   Probe history append failed:', err.message || err);
   }
   if (handshakeEvents.length) {
     const recorded = appendHandshakeEvents(handshakeEvents);

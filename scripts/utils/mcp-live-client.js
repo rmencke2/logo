@@ -166,6 +166,15 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
  * @param {{ timeoutMs?: number; redirect?: RequestRedirect; clientInfo?: { name: string; version: string } }} [opts]
  */
 async function fetchLiveMcpTools(endpoint, opts = {}) {
+  const started = Date.now();
+  const result = await probeLiveMcpTools(endpoint, opts);
+  if (result && typeof result === 'object' && result.latency_ms == null) {
+    result.latency_ms = Math.max(0, Date.now() - started);
+  }
+  return result;
+}
+
+async function probeLiveMcpTools(endpoint, opts = {}) {
   if (!endpoint || !/^https?:\/\//i.test(endpoint)) {
     return { status: 'skipped', reason: 'no_http_endpoint', tools: [] };
   }
