@@ -68,8 +68,21 @@ assert.match(scoreboard, /board\.orderCaption/);
 assert.doesNotMatch(scoreboard, /Top 100 × last handshake/);
 
 const client = read('public/js/mcp-directory-page.js');
-assert.match(client, /sortCaptions\[sort\]/);
-assert.match(client, /\(b\.stars \|\| 0\) - \(a\.stars \|\| 0\)/);
+const queryJs = read('public/js/mcp-directory-query.js');
+assert.match(client, /sortCaptions\[key\]/);
+assert.match(client, /mcpDirectoryQuery\.sortDirectory|applyDirectoryQuery/);
+assert.match(queryJs, /\(b\.stars \|\| 0\) - \(a\.stars \|\| 0\)/);
+assert.strictEqual(DIRECTORY_SORT_CAPTIONS.views, LIST_ORDER.directoryViews);
+assert.match(LIST_ORDER.directoryViews, /listing page views, last 7 days/);
+assert.match(LIST_ORDER.directoryVerified, /last stored probe time/);
+assert.match(LIST_ORDER.directoryLatency, /stored probe latency/);
+assert.match(LIST_ORDER.directoryAdded, /catalog last_updated/);
+assert.match(LIST_ORDER.directoryGrade, /verification grade/);
+assert.match(queryJs, /views_7d/);
+assert.match(queryJs, /latency_ms/);
+assert.match(queryJs, /last_updated/);
+assert.match(queryJs, /verification_grade/);
+assert.match(queryJs, /probed_at/);
 
 const traffic = read('services/mcpListingTrafficService.js');
 assert.match(traffic, /ORDER BY views DESC/);

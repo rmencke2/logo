@@ -1,10 +1,12 @@
 /**
- * MCP directory page — search, category, quality filters, sort, pagination.
+ * MCP directory page — search, filters, sort, pagination.
+ * Filter and sort rules live in mcp-directory-query.js.
  */
 (function () {
   const PAGE_SIZE = 60;
+  const queryApi = window.mcpDirectoryQuery;
   const grid = document.getElementById('mcpGrid');
-  if (!grid || typeof window.renderRegistryDirCard !== 'function') return;
+  if (!grid || typeof window.renderRegistryDirCard !== 'function' || !queryApi) return;
 
   const countEl = document.getElementById('mcpCount');
   const emptyEl = document.getElementById('mcpEmpty');
@@ -17,6 +19,13 @@
   const searchEl = document.getElementById('mcpSearch');
   const sortEl = document.getElementById('mcpSort');
   const sortCaptionEl = document.getElementById('mcpSortCaption');
+  const statusEl = document.getElementById('mcpStatus');
+  const verifiedEl = document.getElementById('mcpVerified');
+  const authEl = document.getElementById('mcpAuth');
+  const transportEl = document.getElementById('mcpTransport');
+  const emptyTipEl = emptyEl ? emptyEl.querySelector('[data-empty-tip]') : null;
+  const emptyHintEl = emptyEl ? emptyEl.querySelector('[data-empty-hint]') : null;
+  const emptyBrowseEl = document.getElementById('mcpEmptyBrowse');
   let sortCaptions = {};
   if (sortCaptionEl) {
     try {
@@ -30,7 +39,7 @@
   const defaultToolsOnly = grid.dataset.toolsOnly !== '0';
   const preferredCats = (grid.dataset.preferredCats || '')
     .split('|')
-    .map((s) => s.trim())
+    .map(function (s) { return s.trim(); })
     .filter(Boolean);
 
   const QUALITY_FILTERS = [
@@ -43,33 +52,65 @@
     { id: 'unverified', label: 'Unverified' },
   ];
 
+  const initial = queryApi.parseDirectoryQuery(
+    Object.fromEntries(new URLSearchParams(window.location.search).entries()),
+  );
+
   let data = { categories: [], servers: [] };
   let servers = [];
   let categories = ['All'];
   let visibleCount = PAGE_SIZE;
-  let query = '';
-  let category = 'All';
-  let quality = 'all';
-  let sort = sortEl ? sortEl.value : 'stars';
-  let toolsOnly = catalogScope === 'top' || defaultToolsOnly;
+  let query = initial.q;
+  let category = initial.category || 'All';
+  let quality = initial.quality || 'all';
+  let status = initial.status || '';
+  let verified = initial.verified || '';
+  let auth = initial.auth || '';
+  let transport = initial.transport || '';
+  let sort = initial.sort || (sortEl ? sortEl.value : 'stars');
+  let toolsOnly = catalogScope === 'top' ? true : initial.toolsOnly == null ? defaultToolsOnly : initial.toolsOnly;
+  let viewsAvailable = false;
   let filteredList = [];
 
-  function esc(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+  function currentFilters() {
+    return {
+      q: query,
+      category: category,
+      status: status,
+      verified: verified,
+      auth: auth,
+      transport: transport,
+      quality: quality,
+      sort: sort,
+      toolsOnly: toolsOnly,
+    };
+  }
+
+  function syncControls() {
+    if (searchEl) searchEl.value = query;
+    if (sortEl) sortEl.value = sort;
+    if (statusEl) statusEl.value = status;
+    if (verifiedEl) verifiedEl.value = verified;
+    if (authEl) authEl.value = auth;
+    if (transportEl) transportEl.value = transport;
+    if (toolsOnlyToggle) toolsOnlyToggle.checked = toolsOnly;
+  }
+
+  function writeUrl() {
+    const qs = queryApi.toQueryString(currentFilters(), { includeTools: catalogScope === 'all' });
+    const next = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+    const current = window.location.pathname + window.location.search + window.location.hash;
+    if (next !== current) history.replaceState(null, '', next);
   }
 
   function buildCategoryList() {
     const fromData = data.categories || [];
     const ordered = [];
-    preferredCats.forEach((cat) => {
-      if (fromData.includes(cat) && !ordered.includes(cat)) ordered.push(cat);
+    preferredCats.forEach(function (cat) {
+      if (fromData.indexOf(cat) >= 0 && ordered.indexOf(cat) < 0) ordered.push(cat);
     });
-    fromData.forEach((cat) => {
-      if (!ordered.includes(cat)) ordered.push(cat);
+    fromData.forEach(function (cat) {
+      if (ordered.indexOf(cat) < 0) ordered.push(cat);
     });
     categories = ['All'].concat(ordered);
   }
@@ -77,15 +118,15 @@
   function buildFilters() {
     if (!filtersEl) return;
     filtersEl.innerHTML = '';
-    categories.forEach((cat) => {
+    categories.forEach(function (cat) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'dir-pill' + (cat === category ? ' is-active' : '');
       btn.dataset.category = cat;
       btn.textContent = cat;
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', function () {
         category = cat;
-        filtersEl.querySelectorAll('.dir-pill').forEach((b) => {
+        filtersEl.querySelectorAll('.dir-pill').forEach(function (b) {
           b.classList.toggle('is-active', b.dataset.category === cat);
         });
         render(true);
@@ -97,15 +138,15 @@
   function buildQualityFilters() {
     if (!qualityFiltersEl) return;
     qualityFiltersEl.innerHTML = '';
-    QUALITY_FILTERS.forEach((item) => {
+    QUALITY_FILTERS.forEach(function (item) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'dir-pill dir-pill--quality' + (item.id === quality ? ' is-active' : '');
       btn.dataset.quality = item.id;
       btn.textContent = item.label;
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', function () {
         quality = item.id;
-        qualityFiltersEl.querySelectorAll('.dir-pill').forEach((b) => {
+        qualityFiltersEl.querySelectorAll('.dir-pill').forEach(function (b) {
           b.classList.toggle('is-active', b.dataset.quality === item.id);
         });
         render(true);
@@ -114,106 +155,58 @@
     });
   }
 
-  function matchesQuality(s) {
-    if (quality === 'all') return true;
-    const q = s.quality || {};
-    if (quality === 'indexed') return Boolean(q.tools_indexed) || (s.tools && s.tools.length);
-    if (quality === 'ready') return q.demoware_tier === 'ready';
-    if (quality === 'thin') return q.demoware_tier === 'thin';
-    if (quality === 'unverified') return q.demoware_tier === 'unverified';
-    if (quality === 'probed') {
-      return q.live_status === 'live_ok' || q.live_status === 'auth_required' || q.live_status === 'unreachable';
-    }
-    if (quality === 'auth_required') {
-      return q.live_status === 'auth_required' || q.auth_gate === 'required';
-    }
-    return true;
-  }
-
-  function matches(s) {
-    const q = query.trim().toLowerCase();
-    if (category !== 'All' && s.category !== category) return false;
-    if (toolsOnly && !(s.tools && s.tools.length)) return false;
-    if (!matchesQuality(s)) return false;
-    if (!q) return true;
-    if ((s.name || '').toLowerCase().includes(q)) return true;
-    if ((s.description || '').toLowerCase().includes(q)) return true;
-    if ((s.category || '').toLowerCase().includes(q)) return true;
-    return (s.tools || []).some(
-      (t) =>
-        (t.name || '').toLowerCase().includes(q) ||
-        (t.description || '').toLowerCase().includes(q),
-    );
-  }
-
-  function tierRank(tier) {
-    if (tier === 'ready') return 4;
-    if (tier === 'indexed') return 3;
-    if (tier === 'thin') return 2;
-    return 1;
-  }
-
-  function sortList(list) {
-    const copy = list.slice();
-    if (sort === 'stars' || sort === 'popular') {
-      return copy.sort(
-        (a, b) => (b.stars || 0) - (a.stars || 0) || a.name.localeCompare(b.name),
-      );
-    }
-    if (sort === 'tools') {
-      return copy.sort((a, b) => (b.tools?.length || 0) - (a.tools?.length || 0));
-    }
-    if (sort === 'official') {
-      return copy.sort((a, b) => {
-        if (Boolean(a.official) !== Boolean(b.official)) return a.official ? -1 : 1;
-        return a.name.localeCompare(b.name);
-      });
-    }
-    if (sort === 'quality') {
-      return copy.sort((a, b) => {
-        const ta = tierRank(a.quality && a.quality.demoware_tier);
-        const tb = tierRank(b.quality && b.quality.demoware_tier);
-        if (tb !== ta) return tb - ta;
-        return (b.tools?.length || 0) - (a.tools?.length || 0);
-      });
-    }
-    return copy.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
   function hasActiveFilters() {
-    return query.trim() !== '' || category !== 'All' || quality !== 'all';
+    return queryApi.directoryQueryIsFiltered(currentFilters()) || (catalogScope === 'all' && toolsOnly === false);
   }
 
   function clearFilters() {
+    const reloadTools = catalogScope === 'all' && toolsOnly === false;
     query = '';
     category = 'All';
     quality = 'all';
-    if (searchEl) searchEl.value = '';
+    status = '';
+    verified = '';
+    auth = '';
+    transport = '';
+    sort = 'stars';
+    if (catalogScope === 'all') toolsOnly = true;
+    syncControls();
     if (filtersEl) {
-      filtersEl.querySelectorAll('.dir-pill').forEach((b) => {
+      filtersEl.querySelectorAll('.dir-pill').forEach(function (b) {
         b.classList.toggle('is-active', b.dataset.category === 'All');
       });
     }
     if (qualityFiltersEl) {
-      qualityFiltersEl.querySelectorAll('.dir-pill').forEach((b) => {
+      qualityFiltersEl.querySelectorAll('.dir-pill').forEach(function (b) {
         b.classList.toggle('is-active', b.dataset.quality === 'all');
       });
+    }
+    if (reloadTools) {
+      loadCatalog();
+      return;
     }
     render(true);
   }
 
-  function updateSortCaption() {
+  function updateSortCaption(key) {
     if (!sortCaptionEl) return;
-    sortCaptionEl.textContent = sortCaptions[sort] || sortCaptions.stars || '';
+    sortCaptionEl.textContent = sortCaptions[key] || sortCaptions[sort] || sortCaptions.stars || '';
   }
 
   function render(resetVisible) {
     if (resetVisible) visibleCount = PAGE_SIZE;
-    filteredList = sortList(servers.filter(matches));
+    const filters = currentFilters();
+    const applied = queryApi.applyDirectoryQuery(servers, filters, {
+      now: new Date(),
+      viewsAvailable: viewsAvailable,
+      toolsOnlyDefault: toolsOnly,
+    });
+    filteredList = applied.servers;
     const list = filteredList.slice(0, visibleCount);
     const total = filteredList.length;
 
-    updateSortCaption();
+    updateSortCaption(applied.captionKey);
+    writeUrl();
     if (countEl) {
       countEl.textContent =
         total === servers.length
@@ -221,25 +214,28 @@
           : total.toLocaleString('en-US') + ' of ' + servers.length.toLocaleString('en-US') + ' servers';
     }
     if (clearBtn) clearBtn.hidden = !hasActiveFilters();
-    if (loadMoreBtn) loadMoreBtn.hidden = visibleCount >= total;
+    if (loadMoreBtn) loadMoreBtn.hidden = visibleCount >= total || !total;
 
     if (!total) {
       grid.innerHTML = '';
       grid.hidden = true;
       if (emptyEl) {
         emptyEl.hidden = false;
-        const tip = query.trim()
-          ? 'No servers match “' + esc(query.trim()) + '”. Try a tool name like “scrape” or “create_issue”, or browse the full directory.'
-          : 'No servers match your filters.';
-        const tipEl = emptyEl.querySelector('[data-empty-tip]');
-        if (tipEl) tipEl.innerHTML = tip;
+        const copy = queryApi.emptyDirectoryMessage(filters, catalogScope);
+        if (emptyTipEl) emptyTipEl.textContent = copy.message;
+        if (emptyHintEl) emptyHintEl.textContent = copy.hint;
+        if (emptyBrowseEl) {
+          const qs = queryApi.toQueryString(filters, { includeTools: true });
+          emptyBrowseEl.hidden = catalogScope !== 'top';
+          emptyBrowseEl.href = '/mcp/all' + (qs ? '?' + qs : '');
+        }
       }
       return;
     }
 
     if (emptyEl) emptyEl.hidden = true;
     grid.hidden = false;
-    grid.innerHTML = list.map((s) => window.renderRegistryDirCard(s)).join('');
+    grid.innerHTML = list.map(function (s) { return window.renderRegistryDirCard(s); }).join('');
   }
 
   function catalogUrl() {
@@ -251,16 +247,32 @@
   function applyCatalog(payload) {
     data = payload || { categories: [], servers: [] };
     servers = data.servers || [];
+    viewsAvailable = queryApi.catalogHasViews(servers);
     buildCategoryList();
     buildFilters();
     buildQualityFilters();
     if (loadingEl) loadingEl.hidden = true;
     render(true);
+    loadViews();
+  }
+
+  function loadViews() {
+    fetch('/api/mcp/listing-views')
+      .then(function (r) { return r.json(); })
+      .then(function (payload) {
+        if (!payload || payload.available !== true || !payload.views || typeof payload.views !== 'object') return;
+        const applied = queryApi.applyViewCounts(servers, payload.views);
+        servers = applied.servers;
+        viewsAvailable = applied.viewsAvailable;
+        render(false);
+      })
+      .catch(function () {});
   }
 
   function loadCatalog() {
     const inline = document.getElementById('mcpCatalogData');
-    if (inline && inline.textContent.trim()) {
+    const skipInline = catalogScope === 'all' && !toolsOnly;
+    if (!skipInline && inline && inline.textContent.trim()) {
       try {
         applyCatalog(JSON.parse(inline.textContent));
         return;
@@ -270,9 +282,9 @@
     }
     if (loadingEl) loadingEl.hidden = false;
     fetch(catalogUrl())
-      .then((r) => r.json())
+      .then(function (r) { return r.json(); })
       .then(applyCatalog)
-      .catch(() => {
+      .catch(function () {
         if (loadingEl) {
           loadingEl.hidden = false;
           loadingEl.textContent = 'Could not load catalog. Refresh to try again.';
@@ -281,31 +293,28 @@
   }
 
   if (searchEl) {
-    searchEl.addEventListener('input', (e) => {
+    searchEl.addEventListener('input', function (e) {
       query = e.target.value || '';
       render(true);
     });
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get('q');
-    if (q) {
-      searchEl.value = q;
-      query = q;
-    }
-    const qualityParam = params.get('quality');
-    if (qualityParam && QUALITY_FILTERS.some((f) => f.id === qualityParam)) {
-      quality = qualityParam;
-    }
   }
 
-  if (sortEl) {
-    sortEl.addEventListener('change', (e) => {
-      sort = e.target.value;
+  function bindSelect(el, assign) {
+    if (!el) return;
+    el.addEventListener('change', function (e) {
+      assign(e.target.value);
       render(true);
     });
   }
 
+  bindSelect(sortEl, function (value) { sort = value; });
+  bindSelect(statusEl, function (value) { status = value; });
+  bindSelect(verifiedEl, function (value) { verified = value; });
+  bindSelect(authEl, function (value) { auth = value; });
+  bindSelect(transportEl, function (value) { transport = value; });
+
   if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', () => {
+    loadMoreBtn.addEventListener('click', function () {
       visibleCount += PAGE_SIZE;
       render(false);
     });
@@ -315,12 +324,12 @@
   if (clearEmptyBtn) clearEmptyBtn.addEventListener('click', clearFilters);
 
   if (toolsOnlyToggle) {
-    toolsOnlyToggle.addEventListener('change', () => {
+    toolsOnlyToggle.addEventListener('change', function () {
       toolsOnly = toolsOnlyToggle.checked;
       loadCatalog();
     });
   }
 
-  updateSortCaption();
+  syncControls();
   loadCatalog();
 })();

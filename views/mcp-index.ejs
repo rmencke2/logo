@@ -11,6 +11,7 @@
       ogDescription: metaDescription,
       ogUrl: canonicalUrl,
       ogImage: typeof ogImage !== 'undefined' ? ogImage : undefined,
+      noindex: typeof noindex !== 'undefined' && noindex,
     }) %>
     <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
       <script type="application/ld+json">
@@ -108,7 +109,12 @@
         <div class="dir-sort">
           <label class="visually-hidden" for="mcpSort" style="position:absolute;left:-9999px;">Sort</label>
           <select id="mcpSort">
-            <option value="stars" selected>Most popular</option>
+            <option value="stars">Most popular</option>
+            <option value="views">Most viewed</option>
+            <option value="verified">Recently verified</option>
+            <option value="latency">Fastest response</option>
+            <option value="added">Recently added</option>
+            <option value="grade">Verification grade</option>
             <option value="quality">Best listing quality</option>
             <option value="name">Name A–Z</option>
             <option value="tools">Most tools</option>
@@ -116,6 +122,40 @@
           </select>
         </div>
         <p class="dir-order" id="mcpSortCaption" data-captions="<%= JSON.stringify(typeof sortCaptions !== 'undefined' && sortCaptions ? sortCaptions : {}) %>"></p>
+      </div>
+
+      <div class="dir-filter-row">
+        <label>Handshake
+          <select id="mcpStatus">
+            <option value="">Any status</option>
+            <option value="live_ok">Live OK</option>
+            <option value="auth_required">Auth required</option>
+            <option value="unreachable">Unreachable</option>
+            <option value="not_probed">Not probed</option>
+            <option value="local_unprobed">Local only</option>
+          </select>
+        </label>
+        <label>Verified
+          <select id="mcpVerified">
+            <option value="">Any time</option>
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+        </label>
+        <label>Auth required
+          <select id="mcpAuth">
+            <option value="">Any</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+        <label>Transport
+          <select id="mcpTransport">
+            <option value="">Any</option>
+            <option value="remote">Remote</option>
+            <option value="local">Local</option>
+          </select>
+        </label>
       </div>
 
       <div class="dir-pills" id="mcpFilters" role="group" aria-label="Filter by category"></div>
@@ -155,8 +195,10 @@
       <button type="button" class="dir-load-more" id="mcpLoadMore" hidden>Show more servers</button>
 
       <div class="dir-empty" id="mcpEmpty" hidden>
-        <p data-empty-tip>No servers match your search or filters.</p>
-        <p class="dir-empty__submit"><a href="/mcp/submit">Submit an MCP server</a> if it should be listed.</p>
+        <p data-empty-tip>No servers match these filters.</p>
+        <p data-empty-hint>Clear a filter, or submit the server if it should be listed.</p>
+        <p class="dir-empty__submit"><a href="/mcp/submit">Submit an MCP server</a></p>
+        <p class="dir-empty__submit"><a id="mcpEmptyBrowse" href="/mcp/all"<%= catalogScope === 'top' ? '' : ' hidden' %>>Search the full directory</a></p>
         <button type="button" id="mcpClearEmpty" style="margin-top:12px;background:none;border:none;color:var(--hp-link);font-family:var(--hp-font);font-weight:600;cursor:pointer;">Clear filters</button>
       </div>
 
@@ -194,6 +236,7 @@
 
     <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
     <script src="/js/mcp-cards.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-directory-query.js?v=<%= assetVersion %>" defer></script>
     <script src="/js/mcp-directory-page.js?v=<%= assetVersion %>" defer></script>
     <%- include('partials/influzer-webmcp-script') %>
   </body>

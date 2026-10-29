@@ -8,6 +8,7 @@ const { pickTop100, TOP100_SIZE } = require('../scripts/utils/normalize');
 const { attachSetupInfo } = require('../scripts/utils/setup-info');
 const { attachBranding } = require('../utils/mcpBranding');
 const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
+const { latencyBySlug } = require('./mcpProbeHistory');
 const { mergeHandshakeEntry, listingHandshakeSvg } = require('./mcpHandshakeOverlay');
 const { computeCatalogStats, describeCatalogStats } = require('./mcpCatalogStats');
 
@@ -469,6 +470,7 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
 
   const stats = getCatalogStats();
   const displayed = withDisplay(servers);
+  const latencies = latencyBySlug();
 
   return {
     scope,
@@ -476,10 +478,14 @@ function getMcpCatalogPayload(scope = 'all', opts = {}) {
     quality_filter: qualityFilter || 'all',
     categories: catalog.categories,
     servers: displayed.map((s) => {
-      if (!s.quality || !s.quality.handshake_svg) return s;
-      const quality = { ...s.quality };
-      delete quality.handshake_svg;
-      return { ...s, quality };
+      let next = s;
+      if (s.quality && s.quality.handshake_svg) {
+        const quality = { ...s.quality };
+        delete quality.handshake_svg;
+        next = { ...s, quality };
+      }
+      if (latencies[s.slug] != null) next = { ...next, latency_ms: latencies[s.slug] };
+      return next;
     }),
     total: displayed.length,
     total_catalog: stats.serversListed,

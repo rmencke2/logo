@@ -54,8 +54,9 @@ const {
   listRecipesForServer,
   getSitemapRecipeEntries,
 } = require('./mcpRecipeService');
-const { getHomeTopServersByTraffic, getDirectoryAudienceStats } = require('./mcpListingTrafficService');
+const { getHomeTopServersByTraffic, getDirectoryAudienceStats, getListingViewCounts } = require('./mcpListingTrafficService');
 const { LIST_ORDER, DIRECTORY_SORT_CAPTIONS, homeListCaption, presentSponsorAudience } = require('./mcpListOrder');
+const { directoryQueryIsFiltered } = require('../public/js/mcp-directory-query');
 const { buildVerificationSummary } = require('./mcpProbeHistory');
 const { getMethodology } = require('../data/mcp-methodology');
 
@@ -895,6 +896,16 @@ ${itemsXml}
   });
 
   // MCP catalog JSON (scope=top | all — loaded client-side)
+  app.get('/api/mcp/listing-views', async (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=120');
+    try {
+      const views = await getListingViewCounts({ days: 7 });
+      res.json({ available: true, days: 7, views });
+    } catch (err) {
+      res.json({ available: false, days: 7, views: null });
+    }
+  });
+
   app.get('/api/mcp/catalog', (req, res) => {
     const scope = req.query.scope === 'top' ? 'top' : 'all';
     const toolsOnly =
@@ -979,6 +990,7 @@ ${itemsXml}
       : 'Search the MCP registry. Setup steps and connection URLs.';
     const seoContent = getMcpSeoContent(heroStats, { scope: 'all', pageTitle: 'Full MCP Server Directory' });
     res.render('mcp-index', {
+      noindex: directoryQueryIsFiltered(req.query),
       catalogScope: 'all',
       listOrderNote: LIST_ORDER.fullDirectory,
       sortCaptions: DIRECTORY_SORT_CAPTIONS,
@@ -1033,6 +1045,7 @@ ${itemsXml}
       : 'Top 100 Model Context Protocol servers for AI development.';
     const seoContent = getMcpSeoContent(heroStats, { scope: 'top', pageTitle: 'Top 100 MCP Servers' });
     res.render('mcp-index', {
+      noindex: directoryQueryIsFiltered(req.query),
       catalogScope: 'top',
       listOrderNote: LIST_ORDER.top100Membership,
       sortCaptions: DIRECTORY_SORT_CAPTIONS,

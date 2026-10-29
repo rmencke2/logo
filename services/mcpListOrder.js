@@ -17,6 +17,16 @@ const LIST_ORDER = {
   directoryQuality:
     'Ranked by listing-quality tier (ready, indexed, thin, unverified), then indexed tool count.',
   directoryName: 'Ranked by name, A to Z.',
+  directoryViews: 'Ranked by listing page views, last 7 days.',
+  directoryViewsUnavailable: 'Listing page views were not available, so this list was not reordered.',
+  directoryVerified:
+    'Ranked by last stored probe time, newest first. Listings with no probe time stay at the end.',
+  directoryLatency:
+    'Ranked by latest stored probe latency, fastest first. Servers with no stored latency stay at the end.',
+  directoryLatencyNone: 'No stored probe latency yet, so this list was not reordered by response time.',
+  directoryAdded:
+    'Ranked by the catalog last_updated date, newest first. That date is not the day Influzer first saw the server.',
+  directoryGrade: 'Ranked by verification grade (0–100), highest first. Not a safety score.',
   top100Membership:
     'Top 100 membership is editorial pins first, then catalog score (capped stars, official, indexed tools, manual source, longer descriptions). Not ordered by last handshake. Sponsored slots are the labeled row above this list.',
   fullDirectory:
@@ -32,6 +42,13 @@ const DIRECTORY_SORT_CAPTIONS = {
   official: LIST_ORDER.directoryOfficial,
   quality: LIST_ORDER.directoryQuality,
   name: LIST_ORDER.directoryName,
+  views: LIST_ORDER.directoryViews,
+  viewsUnavailable: LIST_ORDER.directoryViewsUnavailable,
+  verified: LIST_ORDER.directoryVerified,
+  latency: LIST_ORDER.directoryLatency,
+  latencyNone: LIST_ORDER.directoryLatencyNone,
+  added: LIST_ORDER.directoryAdded,
+  grade: LIST_ORDER.directoryGrade,
 };
 
 function homeListCaption(items, dynamic) {

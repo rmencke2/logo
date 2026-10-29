@@ -135,12 +135,33 @@ function latestLatencyMs(samples) {
   return Math.round(Number(withLatency[0].latency_ms));
 }
 
+let latencyCache = { mtime: -1, map: {} };
+
+/** Latest stored latency per slug. Empty object when history has no latencies. */
+function latencyBySlug() {
+  try {
+    const st = fs.statSync(HISTORY_PATH);
+    if (latencyCache.map && latencyCache.mtime === st.mtimeMs) return latencyCache.map;
+    const map = {};
+    const samples = readHistory().samples || {};
+    for (const [slug, rows] of Object.entries(samples)) {
+      const ms = latestLatencyMs(rows);
+      if (ms != null) map[slug] = ms;
+    }
+    latencyCache = { mtime: st.mtimeMs, map };
+    return map;
+  } catch {
+    return {};
+  }
+}
+
 module.exports = {
   HISTORY_PATH,
   appendProbeSamples,
   samplesForSlug,
   uptimeFromSamples,
   latestLatencyMs,
+  latencyBySlug,
   buildVerificationSummary,
   readHistory,
 };

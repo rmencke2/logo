@@ -147,6 +147,33 @@ async function getWeeklyListingRanking({ days = 7, limit = 50, useCache = true }
   return ranked.slice(0, limit);
 }
 
+/**
+ * Every listing's view count for the last `days` days.
+ * Unlike the weekly ranking, this is not capped at 500.
+ * Throws when page_views cannot be read. Callers must hide the sort rather than store zeros.
+ */
+async function getListingViewCounts({ days = 7 } = {}) {
+  const db = await getDatabase();
+  const since = sinceIso(days);
+  const rows = await dbAll(
+    db,
+    `SELECT page, COUNT(*) AS views
+     FROM page_views
+     WHERE created_at > ?
+       AND page LIKE '/mcp/%'
+       AND page NOT LIKE '/mcp/%/%'
+     GROUP BY page`,
+    [since],
+  );
+  const views = {};
+  for (const row of rows) {
+    const slug = slugFromMcpPage(row.page);
+    if (!slug) continue;
+    views[slug] = (views[slug] || 0) + (Number(row.views) || 0);
+  }
+  return views;
+}
+
 function loadApprovedSubmissionContacts() {
   const bySlug = new Map();
   if (!fs.existsSync(SUBMISSIONS_DIR)) return bySlug;
@@ -598,6 +625,7 @@ async function initializeMcpListingTrafficService(app, requireAdmin) {
 module.exports = {
   slugFromMcpPage,
   getWeeklyListingRanking,
+  getListingViewCounts,
   getHomeTopServersByTraffic,
   getDirectoryAudienceStats,
   resolveListingContacts,
