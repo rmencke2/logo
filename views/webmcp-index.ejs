@@ -26,11 +26,22 @@
         <p class="dir-hero__lead">Browse websites that expose structured WebMCP tools for search, navigation, forms, carts, bookings, and more.</p>
         <p class="webmcp-diff"><a href="/webmcp/about">WebMCP is not an MCP server. Learn the difference →</a></p>
         <div class="webmcp-metrics" aria-label="Directory stats">
-          <span><b><%= stats.site_count.toLocaleString() %></b> websites</span>
-          <span><b><%= stats.tool_count.toLocaleString() %></b> tools</span>
-          <span><b><%= stats.live_count.toLocaleString() %></b> live</span>
-          <span><b><%= stats.category_count.toLocaleString() %></b> categories</span>
-          <% if (stats.refreshed_at) { %><span>Updated <%= String(stats.refreshed_at).slice(0, 10) %></span><% } %>
+          <% if (stats && stats.site_count != null && Number.isFinite(Number(stats.site_count))) { %>
+            <span><b><%= Number(stats.site_count).toLocaleString('en-US') %></b> websites listed</span>
+          <% } %>
+          <% if (stats && stats.tool_count != null && Number.isFinite(Number(stats.tool_count))) { %>
+            <span><b><%= Number(stats.tool_count).toLocaleString('en-US') %></b> tools</span>
+          <% } %>
+          <% if (stats && stats.live_count != null && Number.isFinite(Number(stats.live_count))) { %>
+            <span><b><%= Number(stats.live_count).toLocaleString('en-US') %></b> live</span>
+          <% } %>
+          <% if (stats && stats.category_count != null && Number.isFinite(Number(stats.category_count))) { %>
+            <span><b><%= Number(stats.category_count).toLocaleString('en-US') %></b> categories</span>
+          <% } %>
+          <% if (stats && stats.refreshed_at) { %><span>Updated <%= String(stats.refreshed_at).slice(0, 10) %></span><% } %>
+          <% if (stats && stats.coverage_note) { %>
+            <p class="webmcp-metrics__note"><%= stats.coverage_note %></p>
+          <% } %>
         </div>
         <div class="webmcp-cta-row">
           <a class="webmcp-btn webmcp-btn--primary" href="/webmcp/demo">Try Influzer’s WebMCP</a>

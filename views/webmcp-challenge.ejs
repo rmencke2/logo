@@ -23,8 +23,8 @@
         <p class="webmcp-prose">
           Open <strong>influzer.ai</strong> inside <strong>ChatGPT’s browser</strong> (or Chrome with WebMCP enabled).
           This page exposes <code>document.modelContext</code> tools so you and your agent can
-          <% if (stats && Number.isFinite(Number(stats.site_count))) { %>
-            <strong>search <%= Number(stats.site_count).toLocaleString('en-US') %> WebMCP websites</strong>
+          <% if (stats && stats.site_count != null && Number.isFinite(Number(stats.site_count))) { %>
+            <strong>search <%= Number(stats.site_count).toLocaleString('en-US') %> WebMCP websites in this catalog</strong>
           <% } else { %>
             <strong>search WebMCP websites</strong>
           <% } %>
@@ -36,6 +36,9 @@
           <% } %>,
           inspect available tools, and open the best match — without leaving the build session.
         </p>
+        <% if (stats && stats.coverage_note) { %>
+          <p class="webmcp-metrics__note"><%= stats.coverage_note %></p>
+        <% } %>
         <div class="webmcp-metrics">
           <span>Status: <b id="webmcp-demo-status" data-state="warn">Starting…</b></span>
           <span>Mode: <b id="webmcp-demo-mode">Detecting…</b></span>

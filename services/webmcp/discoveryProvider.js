@@ -7,7 +7,11 @@
 
 const DEFAULT_BASE = process.env.WEBMCP_DISCOVERY_BASE_URL || 'https://webmcp.com';
 const DEFAULT_TIMEOUT_MS = Number(process.env.WEBMCP_DISCOVERY_TIMEOUT_MS || 20000);
-const DEFAULT_LIMIT = 100;
+const DEFAULT_PAGE_LIMIT = 100;
+// Safety ceiling only. A default of 50 pages × 100 sites stopped the import at
+// exactly 5,000 while webmcp.com reported a larger total. Page until that
+// reported total, and stop here so a bad `total` cannot loop forever.
+const DEFAULT_MAX_PAGES = 200;
 
 async function fetchJson(url, { timeoutMs = DEFAULT_TIMEOUT_MS, attempt = 1 } = {}) {
   const controller = new AbortController();
@@ -46,7 +50,7 @@ class WebMcpDiscoveryProvider {
     return fetchJson(`${this.baseUrl}/api/v1/stats`);
   }
 
-  async listSitesPage({ offset = 0, limit = DEFAULT_LIMIT, fields = 'full', type = 'all' } = {}) {
+  async listSitesPage({ offset = 0, limit = DEFAULT_PAGE_LIMIT, fields = 'full', type = 'all' } = {}) {
     const params = new URLSearchParams({
       offset: String(offset),
       limit: String(Math.min(limit, 500)),
@@ -57,28 +61,43 @@ class WebMcpDiscoveryProvider {
   }
 
   /**
-   * Paginate the full directory. Returns raw upstream site objects.
+   * Paginate until the upstream `total`, or until maxPages (a safety ceiling).
+   * `truncated` is true when fewer sites came back than that reported total.
+   * Returns raw upstream site objects.
    */
-  async listAllSites({ fields = 'full', type = 'all', maxPages = 50, pageDelayMs = 150 } = {}) {
+  async listAllSites({ fields = 'full', type = 'all', maxPages = DEFAULT_MAX_PAGES, pageDelayMs = 150 } = {}) {
     const sites = [];
     let offset = 0;
-    let total = Infinity;
+    let total = null;
     let pages = 0;
+    const pageCap = Math.max(1, Number(maxPages) || DEFAULT_MAX_PAGES);
 
-    while (offset < total && pages < maxPages) {
-      const page = await this.listSitesPage({ offset, limit: DEFAULT_LIMIT, fields, type });
+    while ((total == null || offset < total) && pages < pageCap) {
+      const page = await this.listSitesPage({ offset, limit: DEFAULT_PAGE_LIMIT, fields, type });
       const batch = Array.isArray(page?.sites) ? page.sites : [];
-      total = Number(page?.total ?? sites.length + batch.length);
+      const reported = Number(page?.total);
+      if (Number.isFinite(reported) && reported >= 0) {
+        total = Math.trunc(reported);
+      } else if (total == null) {
+        total = offset + batch.length;
+      }
       sites.push(...batch);
       pages += 1;
       offset += batch.length;
       if (!batch.length) break;
-      if (offset < total && pageDelayMs > 0) {
+      if (total != null && offset < total && pageDelayMs > 0) {
         await new Promise((r) => setTimeout(r, pageDelayMs));
       }
     }
 
-    return { sites, total, pages, generatedAt: new Date().toISOString() };
+    const reportedTotal = Number.isFinite(total) ? total : sites.length;
+    return {
+      sites,
+      total: reportedTotal,
+      pages,
+      truncated: sites.length < reportedTotal,
+      generatedAt: new Date().toISOString(),
+    };
   }
 
   async getSite(host) {
@@ -95,4 +114,6 @@ class WebMcpDiscoveryProvider {
 module.exports = {
   WebMcpDiscoveryProvider,
   fetchJson,
+  DEFAULT_PAGE_LIMIT,
+  DEFAULT_MAX_PAGES,
 };

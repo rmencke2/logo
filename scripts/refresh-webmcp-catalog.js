@@ -125,11 +125,14 @@ async function main() {
 
   const provider = new WebMcpDiscoveryProvider();
   console.log('Fetching WebMCP discovery catalog…');
-  const { sites: rawSites, total, pages, generatedAt } = await provider.listAllSites({
+  const { sites: rawSites, total, pages, generatedAt, truncated } = await provider.listAllSites({
     fields: 'full',
     type: 'all',
   });
-  console.log(`Fetched ${rawSites.length} sites (reported total ${total}) across ${pages} pages`);
+  console.log(
+    `Fetched ${rawSites.length} sites (reported total ${total}) across ${pages} pages` +
+      (truncated ? ' — stopped before the reported total' : '')
+  );
 
   const now = new Date().toISOString();
   const normalized = [];
@@ -229,7 +232,8 @@ async function main() {
     live_count: liveCount,
     demo_count: demoCount,
     category_count: 0,
-    upstream_total: total,
+    upstream_total: Number.isFinite(Number(total)) ? Number(total) : null,
+    catalog_truncated: Boolean(truncated),
   };
 
   const categories = rebuildCategories(normalized);

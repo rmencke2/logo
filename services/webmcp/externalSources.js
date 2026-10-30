@@ -94,7 +94,7 @@ function makeCandidate({
 /** webmcp.com / webmcp.cool compatible JSON API */
 async function fetchWebmcpApi(source) {
   const provider = new WebMcpDiscoveryProvider({ baseUrl: source.base_url });
-  const { sites, total, pages } = await provider.listAllSites({ fields: 'full', type: 'all' });
+  const { sites, total, pages, truncated } = await provider.listAllSites({ fields: 'full', type: 'all' });
   const candidates = [];
   for (const raw of sites) {
     const c = makeCandidate({
@@ -114,7 +114,7 @@ async function fetchWebmcpApi(source) {
   }
   return {
     candidates,
-    meta: { fetched: sites.length, reported_total: total, pages },
+    meta: { fetched: sites.length, reported_total: total, pages, truncated: Boolean(truncated) },
   };
 }
 

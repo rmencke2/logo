@@ -11,6 +11,7 @@ const { startWebmcpScan, publicScanView, getScan } = require('./webmcp/scanServi
 const { clientErrorMessage } = require('../utils/safeError');
 const { ensureScanTables } = require('./webmcp/scanStore');
 const { getPromoteOffer, presentSponsorRail } = require('./mcpPromoteService');
+const { describeWebmcpCoverage } = require('./webmcp/coverage');
 
 const ROOT = path.join(__dirname, '..');
 const SITES_PATH = path.join(ROOT, 'data', 'webmcp-sites.json');
@@ -66,13 +67,20 @@ function loadCatalog() {
 
 function getWebmcpStats() {
   const { sites, meta, categories, generatedAt } = loadCatalog();
+  const coverage = describeWebmcpCoverage({
+    siteCount: meta.site_count ?? sites.length,
+    upstreamTotal: meta.upstream_total,
+  });
   return {
-    site_count: meta.site_count ?? sites.length,
+    site_count: coverage.site_count,
     tool_count: meta.tool_count ?? sites.reduce((n, s) => n + (s.tool_count || 0), 0),
     live_count: meta.live_count ?? sites.filter((s) => s.site_type === 'live').length,
     demo_count: meta.demo_count ?? sites.filter((s) => s.site_type === 'demo').length,
     category_count: meta.category_count ?? categories.length,
     verified_count: sites.filter((s) => s.verification_status === 'verified').length,
+    upstream_total: coverage.upstream_total,
+    catalog_truncated: coverage.catalog_truncated,
+    coverage_note: coverage.coverage_note,
     generated_at: generatedAt || meta.refreshed_at || null,
     refreshed_at: meta.refreshed_at || generatedAt || null,
   };
