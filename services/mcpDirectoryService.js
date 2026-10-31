@@ -11,6 +11,7 @@ const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
 const { latencyBySlug } = require('./mcpProbeHistory');
 const { mergeHandshakeEntry, listingHandshakeSvg } = require('./mcpHandshakeOverlay');
 const { computeCatalogStats, describeCatalogStats } = require('./mcpCatalogStats');
+const { applyListingBlocklist } = require('../scripts/utils/mcp-listing-blocklist');
 
 const GENERATED_PATH = path.join(__dirname, '..', 'data', 'servers-generated.json');
 const TOP100_PATH = path.join(__dirname, '..', 'data', 'servers-top100.json');
@@ -207,7 +208,7 @@ function mergeDiscoveredInto(servers, discoveredData) {
 function computeTop100FromAll(allServers) {
   const prepared = allServers.map((s) => attachSetupInfo(normalizeServer(s)));
   return pickTop100(prepared, loadPinnedSlugs(), TOP100_SIZE).filter(
-    (s) => hasIndexedTools(s) || s.source === 'manual',
+    (s) => !s.hidden && (hasIndexedTools(s) || s.source === 'manual'),
   );
 }
 
@@ -238,11 +239,13 @@ function loadCatalog() {
   // Discovered overlay first (stubs), then manual wins on conflicts.
   allServers = mergeDiscoveredInto(allServers, discoveredData);
   allServers = mergeManualInto(allServers, manualData);
+  allServers = applyListingBlocklist(allServers);
   top100Servers = computeTop100FromAll(allServers);
 
   if (!allServers.length && manualData?.servers?.length) {
     allServers = manualData.servers.map(normalizeLegacyManual);
     allServers = mergeDiscoveredInto(allServers, discoveredData);
+    allServers = applyListingBlocklist(allServers);
     top100Servers = computeTop100FromAll(allServers);
     categories = manualData.categories || STANDARD_CATEGORIES;
   }
@@ -303,7 +306,9 @@ function getAllMcpServers() {
 function getTop100McpServers() {
   if (enrichedTop100Cache) return enrichedTop100Cache;
   const { top100Servers } = loadCatalog();
-  enrichedTop100Cache = top100Servers.map((s) => attachQuality(attachSetupInfo(s)));
+  enrichedTop100Cache = top100Servers
+    .filter((s) => !s.hidden)
+    .map((s) => attachQuality(attachSetupInfo(s)));
   return enrichedTop100Cache;
 }
 

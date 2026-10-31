@@ -645,6 +645,12 @@ async function main() {
   stats.filtered = servers.length;
 
   servers = ensureUniqueSlugs(servers);
+  const { applyListingBlocklist } = require('./utils/mcp-listing-blocklist');
+  const beforeBlock = servers.length;
+  servers = applyListingBlocklist(servers).filter((server) => !server.hidden);
+  if (servers.length !== beforeBlock) {
+    console.log(`Blocked ${beforeBlock - servers.length} listing(s) on the adult-content blocklist`);
+  }
 
   const { enrichSmitheryTools } = require('./utils/enrich-tools');
   const { attachSetupInfo } = require('./utils/setup-info');

@@ -307,6 +307,7 @@ function top100RankScore(s) {
  * @param {Set<string>} pinnedSlugs
  */
 function isEligibleForTop100(s, pinnedSlugs) {
+  if (s.hidden) return false;
   if (pinnedSlugs.has(s.slug)) return true;
   if (s.source === 'manual') return true;
   return (s.tools?.length || 0) > 0;
@@ -320,7 +321,7 @@ function pickTop100(servers, pinnedSlugs = [], limit = TOP100_SIZE) {
 
   for (const slug of pinnedSlugs) {
     const s = bySlug.get(slug);
-    if (s && !seen.has(slug)) {
+    if (s && !s.hidden && !seen.has(slug)) {
       picked.push({ ...s, featured: true });
       seen.add(slug);
     }

@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { pickTop100, TOP100_SIZE } = require('./utils/normalize');
+const { applyListingBlocklist } = require('./utils/mcp-listing-blocklist');
 const { mergeManualInto } = require('../services/mcpDirectoryService');
 
 const ROOT = path.join(__dirname, '..');
@@ -34,7 +35,9 @@ function loadPinnedSlugs() {
 
 function buildTop100FromCatalog(catalog) {
   const manualData = loadManualData();
-  const servers = mergeManualInto(catalog.servers || [], manualData);
+  const servers = applyListingBlocklist(mergeManualInto(catalog.servers || [], manualData)).filter(
+    (server) => !server.hidden,
+  );
   const pinned = loadPinnedSlugs();
   const top100 = pickTop100(servers, pinned, TOP100_SIZE);
   return {
