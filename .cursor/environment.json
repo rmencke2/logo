@@ -1,0 +1,21 @@
+{
+  "name": "Influzer Logo Generator",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "user": "node",
+  "install": "npm ci --no-audit --no-fund",
+  "terminals": [
+    {
+      "name": "server",
+      "command": "npm start",
+      "description": "Runs the Express logo-generator / MCP directory server on port 4000."
+    }
+  ],
+  "ports": [
+    {
+      "name": "web server",
+      "port": 4000
+    }
+  ]
+}
