@@ -1,8 +1,38 @@
 {
-  "updated_at": "2026-10-28T09:48:01.654Z",
+  "updated_at": "2026-11-03T14:00:47.317Z",
   "note": "Handshake and tool-list changes between probes. Not a safe-to-install badge.",
   "safety_badge": null,
   "events": [
+    {
+      "at": "2026-11-03T12:57:47.050Z",
+      "slug": "janmacher02-xl8y-amazon-intel-mcp",
+      "kind": "handshake",
+      "from_status": null,
+      "to_status": "auth_required",
+      "tools_before": 0,
+      "tools_after": 6,
+      "tools_added": [],
+      "tools_removed": [],
+      "tools_added_count": 0,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "janmacher02-xl8y-amazon-intel-mcp|handshake||auth_required|0|6|2026-11-03"
+    },
+    {
+      "at": "2026-11-03T12:57:46.988Z",
+      "slug": "cyanheads-nonprofit-explorer-mcp-server",
+      "kind": "handshake",
+      "from_status": null,
+      "to_status": "auth_required",
+      "tools_before": 0,
+      "tools_after": 3,
+      "tools_added": [],
+      "tools_removed": [],
+      "tools_added_count": 0,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "cyanheads-nonprofit-explorer-mcp-server|handshake||auth_required|0|3|2026-11-03"
+    },
     {
       "at": "2026-10-24T09:44:05.349Z",
       "slug": "kangletian-paper-mcp",
