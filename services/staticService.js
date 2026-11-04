@@ -205,20 +205,62 @@ function getHomeBlogContent() {
   return { featuredPost, morePosts };
 }
 
-function buildHomeSeo({ heroStats, featuredPost }) {
+function getHomeWebmcpPreview(limit = 6) {
+  try {
+    const metaPath = path.join(__dirname, '..', 'data', 'webmcp-meta.json');
+    const sitesPath = path.join(__dirname, '..', 'data', 'webmcp-sites.json');
+    if (!fs.existsSync(metaPath) || !fs.existsSync(sitesPath)) {
+      return null;
+    }
+    const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+    const raw = JSON.parse(fs.readFileSync(sitesPath, 'utf8'));
+    const sites = Array.isArray(raw) ? raw : Array.isArray(raw.sites) ? raw.sites : [];
+    const featuredSites = [...sites]
+      .filter((site) => site && site.host && (site.site_type === 'live' || site.verification_status === 'verified'))
+      .sort((a, b) => (Number(b.tool_count) || 0) - (Number(a.tool_count) || 0))
+      .slice(0, limit)
+      .map((site) => ({
+        host: site.host,
+        slug: site.slug || site.host,
+        name: site.name || site.host,
+        description: String(site.description || '').slice(0, 120),
+        tool_count: Number(site.tool_count) || 0,
+        favicon_url: site.favicon_url || '',
+        site_type: site.site_type || 'live',
+      }));
+    return {
+      siteCount: Number(meta.site_count) || sites.length || 0,
+      toolCount: Number(meta.tool_count) || 0,
+      liveCount: Number(meta.live_count) || 0,
+      featuredSites,
+    };
+  } catch (error) {
+    console.error('Home WebMCP preview failed:', error.message);
+    return null;
+  }
+}
+
+function buildHomeSeo({ heroStats, featuredPost, webmcpPreview }) {
   const catalogCopy = heroStats.copy || describeCatalogStats(heroStats);
-  const metaDescription = catalogCopy.metaDescription(featuredPost ? featuredPost.title : '');
-  const pageTitle = 'MCP Server Directory & AI Insights | Influzer.ai';
+  const webmcpSites = webmcpPreview?.siteCount
+    ? Number(webmcpPreview.siteCount).toLocaleString('en-US')
+    : null;
+  const baseMeta = catalogCopy.metaDescription(featuredPost ? featuredPost.title : '');
+  const metaDescription = webmcpSites
+    ? `Browse ${webmcpSites} WebMCP websites with agent tools, plus ${baseMeta}`
+    : baseMeta;
+  const pageTitle = 'WebMCP Sites & MCP Server Directory | Influzer.ai';
   const metaKeywords = [
+    'WebMCP',
+    'WebMCP directory',
     'MCP server directory',
     'Model Context Protocol',
     'MCP tools',
     'AI agents',
-    'AI workflows',
+    'agent-ready websites',
     'Claude MCP',
     'Cursor MCP',
     'AI insights',
-    'executive AI strategy',
   ].join(', ');
   const ogImage = featuredPost?.coverImageAbsolute || SITE_DEFAULT_OG_IMAGE;
   return { pageTitle, metaDescription, metaKeywords, ogImage, catalogCopy };
@@ -523,6 +565,7 @@ async function renderHomepage(req, res) {
   const topServers = topServersPayload.servers;
   const heroStats = getMcpHeroStats();
   const catalogCopy = heroStats.copy;
+  const webmcpPreview = getHomeWebmcpPreview(6);
   const { featuredPost, morePosts } = getHomeBlogContent();
   const insightPosts = [featuredPost, ...morePosts].filter(Boolean).slice(0, 2);
   const indexingServers = [
@@ -536,7 +579,7 @@ async function renderHomepage(req, res) {
   ];
   const indexingMore = Math.max(0, heroStats.serversListed - indexingServers.length);
   const indexingMoreLabel = formatExactCount(indexingMore);
-  const seo = buildHomeSeo({ heroStats, featuredPost });
+  const seo = buildHomeSeo({ heroStats, featuredPost, webmcpPreview });
   const seoContent = getHomeSeoContent(heroStats);
   const jsonLd = appendFaqToJsonLd(
     buildHomeJsonLd({
@@ -563,6 +606,7 @@ async function renderHomepage(req, res) {
   res.render('home', {
     heroStats,
     catalogCopy,
+    webmcpPreview,
     topServers,
     topServersDynamic: topServersPayload.dynamic,
     topServersCaption: topServersPayload.caption || LIST_ORDER.homeCatalog,

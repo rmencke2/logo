@@ -35,49 +35,82 @@
 
     <header class="home-hero">
       <div class="home-hero__inner">
-        <p class="home-hero__eyebrow">The MCP server registry</p>
-        <h1 class="home-hero__title">Find the right MCP server<br />for your AI stack</h1>
-        <form class="home-hero__search" id="homeHeroSearch" action="/mcp" method="get" role="search">
+        <p class="home-hero__eyebrow">Influzer.ai · WebMCP &amp; MCP</p>
+        <h1 class="home-hero__title">Find websites agents<br />can actually use</h1>
+        <p class="home-hero__lead">
+          Browse WebMCP sites with declared tools for search, forms, and bookings — then pick MCP servers for your stack.
+        </p>
+        <div class="home-hero__cta" role="group" aria-label="Primary actions">
+          <a class="home-hero__cta-btn home-hero__cta-btn--primary" href="/webmcp">Browse WebMCP sites</a>
+          <a class="home-hero__cta-btn" href="/mcp">Search MCP servers</a>
+          <a class="home-hero__cta-btn home-hero__cta-btn--ghost" href="/webmcp/submit">List your site</a>
+        </div>
+        <div class="home-hero__stats" aria-label="Directory statistics" data-count-sentence="<%= heroStats.copy.countSentence %>">
+          <% if (webmcpPreview && webmcpPreview.siteCount) { %>
+            <span class="home-hero__stat"><b><%= Number(webmcpPreview.siteCount).toLocaleString('en-US') %></b> WebMCP sites</span>
+          <% } %>
+          <% if (webmcpPreview && webmcpPreview.toolCount) { %>
+            <span class="home-hero__stat"><b><%= Number(webmcpPreview.toolCount).toLocaleString('en-US') %></b> site tools</span>
+          <% } %>
+          <% if (heroStats.copy.listed != null) { %>
+            <span class="home-hero__stat"><b id="homeServerCount" data-target="<%= heroStats.serversListed %>"><%= heroStats.copy.listed %></b> MCP servers</span>
+          <% } %>
+          <% if (heroStats.copy.handshake != null) { %>
+            <span class="home-hero__stat"><b><%= heroStats.copy.handshake %></b> <%= heroStats.copy.captions.serversWithSuccessfulHandshakeLast7Days %></span>
+          <% } %>
+        </div>
+        <form class="home-hero__search home-hero__search--secondary" id="homeHeroSearch" action="/mcp" method="get" role="search">
           <label class="visually-hidden" for="homeMcpSearch" style="position:absolute;left:-9999px;">Search MCP servers</label>
           <input
             id="homeMcpSearch"
             type="search"
             name="q"
-            placeholder='Search by tool — "postgres", "browser automation", "scrape URLs"…'
+            placeholder='Or search MCP servers — "postgres", "browser", "scrape"…'
             autocomplete="off"
             enterkeyhint="search"
           />
-          <button type="submit">Search</button>
+          <button type="submit">Search MCP</button>
         </form>
         <p class="home-hero__list">
           <a class="home-hero__list-btn" href="/mcp/submit">Submit an MCP server</a>
           <span>Paying does not change rank.</span>
         </p>
-        <div class="home-hero__stats" aria-label="Directory statistics" data-count-sentence="<%= heroStats.copy.countSentence %>">
-          <% if (heroStats.copy.listed != null) { %>
-            <span class="home-hero__stat"><b id="homeServerCount" data-target="<%= heroStats.serversListed %>"><%= heroStats.copy.listed %></b> <%= heroStats.copy.captions.serversListed %></span>
-          <% } %>
-          <% if (heroStats.copy.withTools != null) { %>
-            <span class="home-hero__stat"><b><%= heroStats.copy.withTools %></b> <%= heroStats.copy.captions.serversWithIndexedTools %></span>
-          <% } %>
-          <% if (heroStats.copy.tools != null) { %>
-            <span class="home-hero__stat"><b><%= heroStats.copy.tools %></b> <%= heroStats.copy.captions.toolsIndexed %></span>
-          <% } %>
-          <% if (heroStats.copy.handshake != null) { %>
-            <span class="home-hero__stat"><b><%= heroStats.copy.handshake %></b> <%= heroStats.copy.captions.serversWithSuccessfulHandshakeLast7Days %></span>
-          <% } %>
-          <% if (heroStats.copy.categories != null) { %>
-            <span class="home-hero__stat"><b><%= heroStats.copy.categories %></b> <%= heroStats.copy.captions.categories %></span>
-          <% } %>
-          <% if (heroStats.copy.updated) { %>
-            <span class="home-hero__stat"><b><%= heroStats.copy.updated %></b> <%= heroStats.copy.captions.catalogUpdated %></span>
-          <% } %>
-        </div>
       </div>
     </header>
 
     <main id="main">
     <div class="home-lead">
+      <% if (webmcpPreview && webmcpPreview.featuredSites && webmcpPreview.featuredSites.length) { %>
+        <section class="home-section home-webmcp" aria-labelledby="homeWebmcpHeading">
+          <div class="home-section__head">
+            <h2 class="home-section__title" id="homeWebmcpHeading">Agent-ready websites</h2>
+            <a class="home-section__link" href="/webmcp">Browse all WebMCP →</a>
+          </div>
+          <p class="home-section__note">Sites that expose structured tools agents can call — not just scrape.</p>
+          <div class="home-webmcp-list">
+            <% webmcpPreview.featuredSites.forEach(function(site) { %>
+              <a class="home-webmcp-row" href="/webmcp/sites/<%= site.slug %>">
+                <% if (site.favicon_url) { %>
+                  <img class="home-webmcp-row__icon" src="<%= site.favicon_url %>" alt="" width="28" height="28" loading="lazy" />
+                <% } else { %>
+                  <span class="home-webmcp-row__icon home-webmcp-row__icon--fallback" aria-hidden="true"><%= String(site.name || '?').charAt(0).toUpperCase() %></span>
+                <% } %>
+                <div class="home-webmcp-row__body">
+                  <div class="home-webmcp-row__name"><%= site.name %></div>
+                  <div class="home-webmcp-row__desc"><%= site.host %><% if (site.tool_count) { %> · <%= site.tool_count %> tools<% } %></div>
+                </div>
+                <span class="home-webmcp-row__meta">WebMCP</span>
+              </a>
+            <% }); %>
+          </div>
+          <p class="home-webmcp-foot">
+            <a href="/webmcp/demo">Try Influzer’s WebMCP</a>
+            ·
+            <a href="/insights/webmcp-vs-mcp-which-do-you-need">WebMCP vs MCP →</a>
+          </p>
+        </section>
+      <% } %>
+
       <section class="home-section" aria-labelledby="homeServersHeading">
         <div class="home-section__head">
           <h2 class="home-section__title" id="homeServersHeading">Top servers this week</h2>
