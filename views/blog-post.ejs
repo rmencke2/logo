@@ -101,7 +101,11 @@
 
       <main class="article-main">
         <article class="article-prose">
+          <%- include('partials/insights-directory-cta') %>
+
           <%- post.contentHtml %>
+
+          <%- include('partials/insights-directory-cta') %>
 
           <%- include('partials/registry-newsletter', {
             newsletterVariant: 'inline',
