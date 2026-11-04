@@ -12,6 +12,7 @@ const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { fontCategories, styles } = require('../config/constants');
 const { getFontPath, generateShape } = require('../utils/logoUtils');
 const { computeLogoLayout, escapeXml, contrastRatio } = require('../utils/logoLayout');
+const { hasIcon, iconMarkup } = require('../utils/icons');
 
 /**
  * Initialize logo generation service
@@ -34,6 +35,7 @@ function initializeLogoService(app) {
       body('bgColor').matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/),
       body('shape').optional().isString().isIn(['none', 'circle', 'square', 'rounded']),
       body('layout').optional().isString().isIn(['none', 'left', 'top']),
+      body('icon').optional({ checkFalsy: true }).isString().isLength({ max: 32 }),
     ],
     async (req, res) => {
       const errors = validationResult(req);
@@ -86,7 +88,7 @@ function initializeLogoService(app) {
         const taglineSize = 60;
         const main = textToSVG.getMetrics(name, { fontSize: mainTextSize });
         const tag = tagline ? textToSVG.getMetrics(tagline, { fontSize: taglineSize }) : null;
-        const iconSize = icon ? 80 : 0;
+        const iconSize = icon ? 100 : 0;
 
         const geo = computeLogoLayout({ main, tagline: tag, iconSize, layout, shape });
         const { width, height } = geo;
@@ -112,10 +114,14 @@ function initializeLogoService(app) {
           });
         }
 
-        // Icon (emoji as text). Escaped: it is user input going into markup.
+        // Icon: a named vector icon is drawn as paths in the text colour. Anything
+        // else is treated as legacy emoji text, which is escaped because it is user
+        // input going into markup (and renders only if the host has an emoji font).
         let iconPath = '';
         if (icon && geo.icon) {
-          iconPath = `<text x="${geo.icon.x}" y="${geo.icon.y}" font-size="${iconSize}" text-anchor="middle" dominant-baseline="middle" fill="${fontColor}">${escapeXml(icon)}</text>`;
+          iconPath = hasIcon(icon)
+            ? iconMarkup(icon, geo.icon.x, geo.icon.y, iconSize, fontColor)
+            : `<text x="${geo.icon.x}" y="${geo.icon.y}" font-size="${iconSize}" text-anchor="middle" dominant-baseline="middle" fill="${fontColor}">${escapeXml(icon)}</text>`;
         }
 
         // Shape background
