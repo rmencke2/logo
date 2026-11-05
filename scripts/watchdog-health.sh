@@ -13,6 +13,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${PROJECT_ROOT}"
 
+# Cron has a minimal PATH — ensure Bitnami node/pm2 and common bins are visible.
+export PATH="/opt/bitnami/node/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+
 PORT="${PORT:-4000}"
 PM2_APP_NAME="${PM2_APP_NAME:-logo-generator}"
 HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:${PORT}/healthz}"
@@ -24,6 +27,16 @@ LOG_FILE="${WATCHDOG_LOG:-${STATE_DIR}/watchdog.log}"
 FAIL_FILE="${STATE_DIR}/fail_count"
 COOLDOWN_FILE="${STATE_DIR}/last_restart"
 ALERT_EMAIL="${WATCHDOG_ALERT_EMAIL:-}"
+
+# Resolve pm2 once so later calls don't depend on interactive shell PATH.
+PM2_BIN="${PM2_BIN:-$(command -v pm2 || true)}"
+if [[ -z "${PM2_BIN}" && -x /opt/bitnami/node/bin/pm2 ]]; then
+  PM2_BIN=/opt/bitnami/node/bin/pm2
+fi
+if [[ -z "${PM2_BIN}" ]]; then
+  echo "[watchdog] ERROR: pm2 not found in PATH=${PATH}" >&2
+  exit 1
+fi
 
 mkdir -p "${STATE_DIR}"
 
@@ -83,8 +96,12 @@ fi
 
 # If PM2 says the process is stopped/errored, count as failure.
 # Note: env must be on `node`, not only on `pm2` (pipes don't inherit VAR= for the RHS).
+NODE_BIN="$(command -v node || true)"
+if [[ -z "${NODE_BIN}" && -x /opt/bitnami/node/bin/node ]]; then
+  NODE_BIN=/opt/bitnami/node/bin/node
+fi
 pm2_status="$(
-  pm2 jlist 2>/dev/null | PM2_APP_NAME="${PM2_APP_NAME}" node -e '
+  "${PM2_BIN}" jlist 2>/dev/null | PM2_APP_NAME="${PM2_APP_NAME}" "${NODE_BIN}" -e '
     let raw = "";
     process.stdin.on("data", (d) => { raw += d; });
     process.stdin.on("end", () => {
@@ -101,22 +118,23 @@ pm2_status="$(
 )"
 pm2_status="$(printf '%s' "${pm2_status}" | tr -d '\r' | head -n 1)"
 
+# Always probe healthz. Stale /tmp bodies from prior runs must not decide status alone.
+: > /tmp/watchdog-healthz.body
 http_code="000"
-if [[ "${pm2_status}" == "online" ]]; then
-  set +e
-  http_code="$(
-    curl -sS -o /tmp/watchdog-healthz.body -w '%{http_code}' \
-      --connect-timeout "${TIMEOUT_S}" \
-      --max-time "${TIMEOUT_S}" \
-      "${HEALTH_URL}" 2>/dev/null
-  )"
-  curl_rc=$?
-  set -e
-  if [[ -z "${http_code}" || "${curl_rc}" -ne 0 ]]; then
-    http_code="000"
-  fi
+set +e
+http_code="$(
+  curl -sS -o /tmp/watchdog-healthz.body -w '%{http_code}' \
+    --connect-timeout "${TIMEOUT_S}" \
+    --max-time "${TIMEOUT_S}" \
+    "${HEALTH_URL}" 2>/dev/null
+)"
+curl_rc=$?
+set -e
+if [[ -z "${http_code}" || "${curl_rc}" -ne 0 ]]; then
+  http_code="000"
 fi
 
+# Trust a live /healthz 200 over a false pm2 "missing" (common when cron PATH lacks pm2).
 if [[ "${http_code}" == "200" ]]; then
   write_fail_count 0
   exit 0
@@ -136,16 +154,16 @@ log "RESTART ${PM2_APP_NAME} after ${fails} consecutive health failures"
 mark_restart
 write_fail_count 0
 
-if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+if "${PM2_BIN}" describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
   if [[ "${pm2_status}" == "stopped" || "${pm2_status}" == "missing" ]]; then
-    pm2 start "${PM2_APP_NAME}" || pm2 start "${PROJECT_ROOT}/ecosystem.config.cjs"
+    "${PM2_BIN}" start "${PM2_APP_NAME}" || "${PM2_BIN}" start "${PROJECT_ROOT}/ecosystem.config.cjs"
   else
-    pm2 restart "${PM2_APP_NAME}" --update-env
+    "${PM2_BIN}" restart "${PM2_APP_NAME}" --update-env
   fi
 else
-  pm2 start "${PROJECT_ROOT}/ecosystem.config.cjs"
+  "${PM2_BIN}" start "${PROJECT_ROOT}/ecosystem.config.cjs"
 fi
-pm2 save >/dev/null 2>&1 || true
+"${PM2_BIN}" save >/dev/null 2>&1 || true
 
 send_alert \
   "[influzer] watchdog restarted ${PM2_APP_NAME}" \
