@@ -3,6 +3,15 @@
    Scoped to .home-page so other routes keep editorial theme
    ================================ */
 
+.home-page h1,
+.home-page h2,
+.home-page h3,
+.registry-page h1,
+.registry-page h2,
+.registry-page h3 {
+  font-family: var(--font-display);
+}
+
 .home-page,
 .registry-page {
   --hp-bg: #fafaf8;
@@ -26,11 +35,11 @@
   --hp-accent-fg: #4338ca;
   --hp-link: #4f46e5;
   --hp-link-hover: #6366f1;
-  --hp-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --hp-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --hp-font: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  --hp-mono: 'Martian Mono', ui-monospace, monospace;
 
   /* Bridge editorial SEO partials used on registry pages */
-  --font-display: var(--hp-font);
+  --font-display: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
   --font-ui: var(--hp-font);
   --font-body: var(--hp-font);
   --color-ink: var(--hp-text);
