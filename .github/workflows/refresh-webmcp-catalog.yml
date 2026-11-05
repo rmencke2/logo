@@ -24,9 +24,8 @@ jobs:
         with:
           node-version: '22.23.4'
 
-      - name: Install dependencies
-        run: npm ci
-
+      # Pure Node (fetch + fs). Skip npm ci — canvas native rebuild broke the
+      # 2026-11-02 run (missing pixman-1) and this script has no package deps.
       - name: Refresh WebMCP catalog
         run: npm run refresh-webmcp
 
