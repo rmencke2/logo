@@ -1212,6 +1212,9 @@ ${itemsXml}
     'https-mcp-xgr-network-mcp': 'xgr-mcp',
     macaly: 'macaly-cloud',
     'macaly-com': 'macaly-cloud',
+    // Approved listing lives at /mcp/agentx; registry id still linked from elsewhere
+    'com-agentxhq-agentx': 'agentx',
+    'com-agentxhq-agentx-mcp': 'agentx',
     // Renamed / Smithery-style slugs still crawled by Google
     'retro-diffusion-retro-diffusion-mcp': 'ai-retrodiffusion-pixel-art',
     'ambix-ai-ambix-ai': 'ai-ambix-ambix',

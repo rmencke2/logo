@@ -185,7 +185,15 @@ function mergeOverlayInto(servers, overlayServers, { treatAsManual = false } = {
         (s) => (s.github_url || '').toLowerCase() === gh,
       );
       if (existingByGh) {
-        bySlug.set(existingByGh.slug, preferRicherServer(existingByGh, m));
+        const richer = preferRicherServer(existingByGh, m);
+        // Manual approvals keep their own public slug (e.g. /mcp/agentx) instead of
+        // staying trapped under the registry id (com-agentxhq-agentx). Drop the old key.
+        if (treatAsManual && richer.slug && richer.slug !== existingByGh.slug) {
+          bySlug.delete(existingByGh.slug);
+          bySlug.set(richer.slug, richer);
+        } else {
+          bySlug.set(existingByGh.slug, richer);
+        }
         continue;
       }
     }
