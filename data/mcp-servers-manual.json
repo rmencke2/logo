@@ -15,6 +15,75 @@
   ],
   "servers": [
     {
+      "name": "AgentX",
+      "slug": "agentx",
+      "category": "Dev Tools",
+      "description": "Cloud console for a fleet of AI coding agents that run on your own machines through the AgentX daemon. Remote MCP over Streamable HTTP with OAuth 2.1 (PKCE). Not a SAFE badge.",
+      "official": true,
+      "transport": "http",
+      "icon": "globe",
+      "featured": false,
+      "mcp_endpoint": "https://www.agentxhq.com/mcp",
+      "docs_url": "https://www.agentxhq.com/docs/mcp",
+      "github_url": "https://github.com/agentxhq/agentx-mcp",
+      "install_command": "claude mcp add --transport http agentx https://www.agentxhq.com/mcp",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "whoami",
+          "description": "Return the signed-in AgentX identity"
+        },
+        {
+          "name": "agentx_identity",
+          "description": "Return AgentX account identity details for the connected client"
+        },
+        {
+          "name": "list_agents",
+          "description": "List agents claimed by this AgentX account"
+        },
+        {
+          "name": "get_agent",
+          "description": "Get status and details for one agent"
+        },
+        {
+          "name": "check_agent_output",
+          "description": "Read recent output published by an agent"
+        },
+        {
+          "name": "interrupt_agent",
+          "description": "Interrupt a running agent"
+        },
+        {
+          "name": "list_chats",
+          "description": "List chats visible to this account"
+        },
+        {
+          "name": "list_chat_members",
+          "description": "List members of a chat"
+        },
+        {
+          "name": "create_chat",
+          "description": "Create a new chat"
+        },
+        {
+          "name": "send_message",
+          "description": "Send a message to an agent or chat"
+        },
+        {
+          "name": "wait",
+          "description": "Wait for agent or chat events"
+        },
+        {
+          "name": "list_artifacts",
+          "description": "List artifacts published by agents"
+        },
+        {
+          "name": "get_artifact",
+          "description": "Fetch one artifact by id"
+        }
+      ]
+    },
+    {
       "name": "Macaly Cloud",
       "slug": "macaly-cloud",
       "category": "Dev Tools",

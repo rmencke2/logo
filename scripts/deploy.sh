@@ -47,8 +47,39 @@ echo "==> Fetch latest from origin/${BRANCH}"
 git fetch origin "${BRANCH}"
 
 if [[ "${SERVER_MODE}" == 1 ]]; then
+  # Approvals write mcp-servers-manual.json on the server. Preserve local-only
+  # rows across reset --hard so an uncommitted approve is not wiped again.
+  if [[ -z "${DEPLOY_PRESERVE_DIR:-}" ]]; then
+    DEPLOY_PRESERVE_DIR="$(mktemp -d /tmp/influzer-deploy-preserve.XXXXXX)"
+    export DEPLOY_PRESERVE_DIR
+    if [[ -f data/mcp-servers-manual.json ]]; then
+      cp data/mcp-servers-manual.json "${DEPLOY_PRESERVE_DIR}/mcp-servers-manual.json"
+    fi
+    if [[ -d data/mcp-submissions ]]; then
+      cp -a data/mcp-submissions "${DEPLOY_PRESERVE_DIR}/mcp-submissions"
+    fi
+  fi
+
   echo "==> Reset to origin/${BRANCH}"
   git reset --hard "origin/${BRANCH}"
+
+  if [[ -f "${DEPLOY_PRESERVE_DIR}/mcp-servers-manual.json" ]]; then
+    echo "==> Re-applying local-only MCP manual listings"
+    node scripts/merge-preserved-mcp-manual.js "${DEPLOY_PRESERVE_DIR}/mcp-servers-manual.json"
+  fi
+  if [[ -d "${DEPLOY_PRESERVE_DIR}/mcp-submissions" ]]; then
+    mkdir -p data/mcp-submissions
+    # Keep submission review records that exist only on this host.
+    shopt -s nullglob
+    for f in "${DEPLOY_PRESERVE_DIR}/mcp-submissions"/*.json; do
+      base="$(basename "${f}")"
+      if [[ ! -f "data/mcp-submissions/${base}" ]]; then
+        cp "${f}" "data/mcp-submissions/${base}"
+      fi
+    done
+    shopt -u nullglob
+  fi
+
   # Script file updates on disk after reset, but this shell still runs the old
   # in-memory copy — re-exec so install steps (e.g. sqlite3 rebuild) apply.
   if [[ "${DEPLOY_SELF_REEXEC:-}" != 1 ]]; then
