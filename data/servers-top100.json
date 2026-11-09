@@ -1,12 +1,11 @@
 {
-  "generated_at": "2026-11-07T13:04:50.861Z",
+  "generated_at": "2026-11-08T13:48:57.274Z",
   "count": 100,
-  "total_catalog": 14687,
+  "total_catalog": 14685,
   "top100_slugs": [
     "influzer-mcp-discovery",
     "macaly-cloud",
     "firecrawl",
-    "brave-search",
     "postgres",
     "google-drive",
     "memory",
@@ -38,6 +37,7 @@
     "xgr-mcp",
     "loopertask-com",
     "nextjs-devtools-mcp",
+    "agentx",
     "webnode",
     "granola-mcp",
     "llm-pulse",
@@ -101,8 +101,8 @@
     "mysql",
     "redis",
     "shopsavvy",
-    "sqlite",
-    "stackblitz"
+    "stackblitz",
+    "taskade"
   ],
   "servers": [
     {
@@ -136,7 +136,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "search",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
       "mcp_endpoint_template": null,
@@ -230,7 +230,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud-code",
       "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
       "mcp_endpoint_template": null,
@@ -265,39 +265,11 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "flame",
       "mcp_endpoint": "https://mcp.firecrawl.dev/v2/mcp",
       "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.firecrawl.dev/v2/mcp"
-    },
-    {
-      "id": "brave-search",
-      "slug": "brave-search",
-      "name": "Brave Search",
-      "description": "Web search via the Brave Search API for up-to-date information retrieval.",
-      "category": "Search & Web",
-      "official": true,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "brave_web_search",
-          "description": "Search the web via Brave"
-        },
-        {
-          "name": "brave_local_search",
-          "description": "Search local businesses and places"
-        }
-      ],
-      "github_url": "https://github.com/modelcontextprotocol/servers",
-      "install_command": "claude mcp add brave-search -- npx -y @modelcontextprotocol/server-brave-search",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-08",
-      "icon": "search",
-      "mcp_endpoint_template": null
     },
     {
       "id": "postgres",
@@ -327,7 +299,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint_template": null
     },
@@ -360,7 +332,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "hard-drive",
       "mcp_endpoint": "https://drivemcp.googleapis.com/mcp/v1",
       "mcp_endpoint_template": null,
@@ -394,7 +366,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "brain",
       "mcp_endpoint_template": null
     },
@@ -431,7 +403,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "layout-list",
       "mcp_endpoint": "https://mcp.linear.app/mcp",
       "mcp_endpoint_template": null,
@@ -462,7 +434,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "book-open",
       "mcp_endpoint": "https://mcp.context7.com/mcp",
       "mcp_endpoint_template": null,
@@ -497,7 +469,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "credit-card",
       "mcp_endpoint": "https://mcp.stripe.com",
       "mcp_endpoint_template": null,
@@ -532,7 +504,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "shield-alert",
       "mcp_endpoint": "https://mcp.sentry.dev/mcp",
       "mcp_endpoint_template": null,
@@ -567,7 +539,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "file-text",
       "mcp_endpoint": "https://mcp.notion.com/mcp",
       "mcp_endpoint_template": null,
@@ -600,7 +572,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "monitor-play",
       "mcp_endpoint_template": null
     },
@@ -639,7 +611,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "monitor",
       "mcp_endpoint_template": null
     },
@@ -679,7 +651,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "message-square",
       "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
       "mcp_endpoint_template": null,
@@ -718,7 +690,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud",
       "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
       "mcp_endpoint_template": null,
@@ -756,7 +728,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud",
       "mcp_endpoint": "https://mcp.railway.com",
       "mcp_endpoint_template": null,
@@ -789,7 +761,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "calendar",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
       "mcp_endpoint_template": null,
@@ -875,7 +847,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-11-08T12:05:26.897Z",
+      "tools_validated_at": "2026-11-09T14:12:01.366Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -939,7 +911,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-11-08T12:05:26.413Z",
+      "tools_validated_at": "2026-11-09T14:11:59.985Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1171,7 +1143,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-11-08T12:05:26.780Z",
+      "tools_validated_at": "2026-11-09T14:12:01.496Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1335,7 +1307,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-11-08T12:05:25.988Z",
+      "tools_validated_at": "2026-11-09T14:12:00.372Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1468,7 +1440,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-11-08T12:05:26.621Z",
+      "tools_validated_at": "2026-11-09T14:12:01.102Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1564,7 +1536,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-11-08T12:05:26.026Z",
+      "tools_validated_at": "2026-11-09T14:12:00.084Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1668,7 +1640,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-11-08T12:05:26.869Z",
+      "tools_validated_at": "2026-11-09T14:12:01.747Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1728,7 +1700,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-11-08T12:05:27.010Z",
+      "tools_validated_at": "2026-11-09T14:12:02.015Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1856,7 +1828,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-11-08T12:05:27.182Z",
+      "tools_validated_at": "2026-11-09T14:12:02.077Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1920,7 +1892,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-11-08T12:05:27.271Z",
+      "tools_validated_at": "2026-11-09T14:12:02.207Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2152,7 +2124,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-11-08T12:05:27.339Z",
+      "tools_validated_at": "2026-11-09T14:12:02.633Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2320,7 +2292,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-11-08T12:05:27.701Z",
+      "tools_validated_at": "2026-11-09T14:12:02.968Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2552,7 +2524,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-11-08T12:05:27.429Z",
+      "tools_validated_at": "2026-11-09T14:12:03.108Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2784,7 +2756,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-11-08T12:05:27.617Z",
+      "tools_validated_at": "2026-11-09T14:12:02.984Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2864,7 +2836,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
       "mcp_endpoint_template": null,
@@ -2946,7 +2918,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint": "https://loopertask.com/mcp",
       "mcp_endpoint_template": null,
@@ -2979,9 +2951,84 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "code",
       "mcp_endpoint_template": null
+    },
+    {
+      "id": "agentx",
+      "slug": "agentx",
+      "name": "AgentX",
+      "description": "Cloud console for a fleet of AI coding agents that run on your own machines through the AgentX daemon. Remote MCP over Streamable HTTP with OAuth 2.1 (PKCE). Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "whoami",
+          "description": "Return the signed-in AgentX identity"
+        },
+        {
+          "name": "agentx_identity",
+          "description": "Return AgentX account identity details for the connected client"
+        },
+        {
+          "name": "list_agents",
+          "description": "List agents claimed by this AgentX account"
+        },
+        {
+          "name": "get_agent",
+          "description": "Get status and details for one agent"
+        },
+        {
+          "name": "check_agent_output",
+          "description": "Read recent output published by an agent"
+        },
+        {
+          "name": "interrupt_agent",
+          "description": "Interrupt a running agent"
+        },
+        {
+          "name": "list_chats",
+          "description": "List chats visible to this account"
+        },
+        {
+          "name": "list_chat_members",
+          "description": "List members of a chat"
+        },
+        {
+          "name": "create_chat",
+          "description": "Create a new chat"
+        },
+        {
+          "name": "send_message",
+          "description": "Send a message to an agent or chat"
+        },
+        {
+          "name": "wait",
+          "description": "Wait for agent or chat events"
+        },
+        {
+          "name": "list_artifacts",
+          "description": "List artifacts published by agents"
+        },
+        {
+          "name": "get_artifact",
+          "description": "Fetch one artifact by id"
+        }
+      ],
+      "github_url": "https://github.com/agentxhq/agentx-mcp",
+      "docs_url": "https://www.agentxhq.com/docs/mcp",
+      "install_command": "claude mcp add --transport http agentx https://www.agentxhq.com/mcp",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-09",
+      "icon": "globe",
+      "mcp_endpoint": "https://www.agentxhq.com/mcp",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://www.agentxhq.com/mcp"
     },
     {
       "id": "webnode",
@@ -3006,7 +3053,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
       "mcp_endpoint_template": null,
@@ -3040,7 +3087,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "message-square",
       "mcp_endpoint": "https://mcp.granola.ai/mcp",
       "mcp_endpoint_template": null,
@@ -3094,7 +3141,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
       "mcp_endpoint_template": null,
@@ -3127,7 +3174,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "activity",
       "mcp_endpoint_template": null
     },
@@ -3158,7 +3205,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "image",
       "mcp_endpoint_template": null
     },
@@ -3195,7 +3242,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "terminal",
       "mcp_endpoint": "https://mcp.desktopcommander.app/mcp",
       "mcp_endpoint_template": null,
@@ -3234,7 +3281,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "gitlab",
       "mcp_endpoint": "https://gitlab.com/api/v4/mcp",
       "mcp_endpoint_template": null,
@@ -3272,7 +3319,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud-code",
       "mcp_endpoint": "https://mcp.replit.com/server/mcp",
       "mcp_endpoint_template": null,
@@ -3307,7 +3354,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "mail",
       "mcp_endpoint": "https://gmailmcp.googleapis.com/mcp/v1",
       "mcp_endpoint_template": null,
@@ -3342,7 +3389,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "search",
       "mcp_endpoint": "https://mcp.exa.ai/mcp",
       "mcp_endpoint_template": null,
@@ -3376,7 +3423,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "bar-chart",
       "mcp_endpoint": "https://bigquery.googleapis.com/mcp",
       "mcp_endpoint_template": null,
@@ -3410,7 +3457,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "bar-chart",
       "mcp_endpoint": "https://mcp.airtable.com/mcp",
       "mcp_endpoint_template": null,
@@ -3444,7 +3491,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "layout-list",
       "mcp_endpoint": "https://mcp.asana.com/v2/mcp",
       "mcp_endpoint_template": null,
@@ -3479,7 +3526,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud",
       "mcp_endpoint": "https://aws-mcp.us-east-1.api.aws/mcp",
       "mcp_endpoint_template": null,
@@ -3513,7 +3560,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "image",
       "mcp_endpoint": "https://mcp.canva.com/mcp",
       "mcp_endpoint_template": null,
@@ -3547,7 +3594,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "file-text",
       "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
       "mcp_endpoint_template": null,
@@ -3582,7 +3629,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "activity",
       "mcp_endpoint": "https://mcp.datadoghq.com/v1/mcp",
       "mcp_endpoint_template": null,
@@ -3616,7 +3663,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "hard-drive",
       "mcp_endpoint": "https://mcp.dropbox.com/mcp",
       "mcp_endpoint_template": null,
@@ -3650,7 +3697,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "figma",
       "mcp_endpoint": "https://mcp.figma.com/mcp",
       "mcp_endpoint_template": null,
@@ -3684,7 +3731,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "calendar",
       "mcp_endpoint": "https://calendarmcp.googleapis.com/mcp/v1",
       "mcp_endpoint_template": null,
@@ -3718,7 +3765,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "bar-chart",
       "mcp_endpoint": "https://sheetsmcp.googleapis.com/mcp/v1",
       "mcp_endpoint_template": null,
@@ -3752,7 +3799,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "boxes",
       "mcp_endpoint": "https://mcp.hubspot.com",
       "mcp_endpoint_template": null,
@@ -3786,7 +3833,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "layout-list",
       "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
       "mcp_endpoint_template": null,
@@ -3821,7 +3868,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "bar-chart",
       "mcp_endpoint": "https://mcp.keboola.com/mcp",
       "mcp_endpoint_template": null,
@@ -3856,7 +3903,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "brain",
       "mcp_endpoint": "https://mcp.mem0.ai/mcp",
       "mcp_endpoint_template": null,
@@ -3889,7 +3936,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "credit-card",
       "mcp_endpoint": "https://mcp.mercadolibre.com/mcp",
       "mcp_endpoint_template": null,
@@ -3923,7 +3970,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "credit-card",
       "mcp_endpoint": "https://mcp.mercadopago.com/mcp",
       "mcp_endpoint_template": null,
@@ -3956,7 +4003,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "message-square",
       "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_TeamsServer"
     },
@@ -3988,7 +4035,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "layout-list",
       "mcp_endpoint": "https://mcp.monday.com/mcp",
       "mcp_endpoint_template": null,
@@ -4022,7 +4069,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint": "https://mcp.mongodb.com",
       "mcp_endpoint_template": null,
@@ -4057,7 +4104,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint": "https://api.motherduck.com/mcp",
       "mcp_endpoint_template": null,
@@ -4091,7 +4138,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "boxes",
       "mcp_endpoint_template": "https://{instance}/mcp-server/http"
     },
@@ -4123,7 +4170,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud",
       "mcp_endpoint": "https://netlify-mcp.netlify.app/mcp",
       "mcp_endpoint_template": null,
@@ -4156,7 +4203,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "hard-drive",
       "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_OneDriveRemoteServer"
     },
@@ -4187,7 +4234,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "mail",
       "mcp_endpoint_template": "https://agent365.svc.cloud.microsoft/agents/tenants/{tenantId}/servers/mcp_MailTools"
     },
@@ -4219,7 +4266,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "shield-alert",
       "mcp_endpoint": "https://mcp.pagerduty.com/mcp",
       "mcp_endpoint_template": null,
@@ -4252,7 +4299,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "boxes",
       "mcp_endpoint": "https://api.salesforce.com/platform/mcp/v1/platform/sobject-all",
       "mcp_endpoint_template": null,
@@ -4285,7 +4332,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "credit-card",
       "mcp_endpoint_template": "https://{shop}/api/mcp"
     },
@@ -4318,7 +4365,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "file-text",
       "mcp_endpoint": "https://mcp.slidespeak.co/mcp",
       "mcp_endpoint_template": null,
@@ -4353,7 +4400,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint": "https://mcp.supabase.com/mcp",
       "mcp_endpoint_template": null,
@@ -4383,7 +4430,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint": "https://ignav.com/mcp",
       "mcp_endpoint_template": null,
@@ -4509,7 +4556,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/subwayinfo",
-      "tools_validated_at": "2026-11-08T12:05:28.492Z",
+      "tools_validated_at": "2026-11-09T14:12:04.191Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -4561,7 +4608,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/nitrofire-q/gread",
-      "tools_validated_at": "2026-11-08T12:05:27.778Z",
+      "tools_validated_at": "2026-11-09T14:12:03.585Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -4629,7 +4676,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlecalendar",
-      "tools_validated_at": "2026-11-08T12:05:28.508Z",
+      "tools_validated_at": "2026-11-09T14:12:04.494Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -4660,7 +4707,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "monitor",
       "mcp_endpoint_template": null
     },
@@ -4691,7 +4738,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "book-open",
       "mcp_endpoint_template": null
     },
@@ -4731,7 +4778,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
       "mcp_endpoint_template": null,
@@ -4768,7 +4815,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint": "https://corvid.perch-app.workers.dev/mcp",
       "mcp_endpoint_template": null,
@@ -4806,7 +4853,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "sandbox",
       "mcp_endpoint_template": null
     },
@@ -4838,7 +4885,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud",
       "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
       "mcp_endpoint_template": null,
@@ -4873,7 +4920,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint": "https://mcp.neon.tech/mcp",
       "mcp_endpoint_template": null,
@@ -4906,7 +4953,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "bar-chart",
       "mcp_endpoint_template": null
     },
@@ -4938,7 +4985,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "code",
       "mcp_endpoint_template": null
     },
@@ -4969,7 +5016,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "cloud",
       "mcp_endpoint_template": null
     },
@@ -5000,7 +5047,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -5031,7 +5078,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "boxes",
       "mcp_endpoint_template": null
     },
@@ -5062,7 +5109,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "message-square",
       "mcp_endpoint_template": null
     },
@@ -5093,7 +5140,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "boxes",
       "mcp_endpoint_template": null
     },
@@ -5124,7 +5171,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint_template": null
     },
@@ -5156,7 +5203,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint_template": null
     },
@@ -5187,7 +5234,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint_template": null
     },
@@ -5218,7 +5265,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "database",
       "mcp_endpoint_template": null
     },
@@ -5249,39 +5296,8 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "credit-card",
-      "mcp_endpoint_template": null
-    },
-    {
-      "id": "sqlite",
-      "slug": "sqlite",
-      "name": "SQLite",
-      "description": "Local SQLite database operations with schema discovery.",
-      "category": "Databases",
-      "official": false,
-      "transport": "stdio",
-      "tools": [
-        {
-          "name": "read_query",
-          "description": "Run SELECT queries"
-        },
-        {
-          "name": "write_query",
-          "description": "Run INSERT/UPDATE/DELETE"
-        },
-        {
-          "name": "list_tables",
-          "description": "List all tables"
-        }
-      ],
-      "github_url": "https://github.com/modelcontextprotocol/servers",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-08",
-      "icon": "database",
       "mcp_endpoint_template": null
     },
     {
@@ -5311,8 +5327,39 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-08",
+      "last_updated": "2026-11-09",
       "icon": "browser",
+      "mcp_endpoint_template": null
+    },
+    {
+      "id": "taskade",
+      "slug": "taskade",
+      "name": "Taskade",
+      "description": "Workspace memory plus agent automation for tasks.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "create_task",
+          "description": "Create a workspace task"
+        },
+        {
+          "name": "run_agent",
+          "description": "Trigger an automation agent"
+        },
+        {
+          "name": "search_workspace",
+          "description": "Search workspace content"
+        }
+      ],
+      "docs_url": "https://www.taskade.com/api",
+      "stars": 0,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-09",
+      "icon": "brain",
       "mcp_endpoint_template": null
     }
   ]
