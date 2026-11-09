@@ -79,6 +79,12 @@ if [[ "${SERVER_MODE}" == 1 ]]; then
     done
     shopt -u nullglob
   fi
+  # Approvals that were wiped before manuals were preserved still leave
+  # reviewStatus=approved submission files — rebuild those listings here.
+  if [[ -d data/mcp-submissions ]]; then
+    echo "==> Rehydrating approved MCP listings from submissions"
+    node scripts/rehydrate-approved-mcp-manual.js
+  fi
 
   # Script file updates on disk after reset, but this shell still runs the old
   # in-memory copy — re-exec so install steps (e.g. sqlite3 rebuild) apply.
