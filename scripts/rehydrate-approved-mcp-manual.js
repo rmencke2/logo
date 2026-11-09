@@ -69,6 +69,17 @@ function main() {
   const restored = [];
   const skipped = [];
 
+  const byGithub = new Map(
+    manual.servers
+      .filter((s) => s.github_url)
+      .map((s) => [(s.github_url || '').toLowerCase(), s.slug]),
+  );
+  const byEndpoint = new Map(
+    manual.servers
+      .filter((s) => s.mcp_endpoint)
+      .map((s) => [(s.mcp_endpoint || '').toLowerCase().replace(/\/$/, ''), s.slug]),
+  );
+
   for (const sub of listApprovedSubmissions()) {
     const slug = String(sub.approvedSlug || sub.suggestedSlug || '').trim();
     if (existing.has(slug)) {
@@ -77,8 +88,17 @@ function main() {
     }
     try {
       const server = buildServer(sub);
+      const gh = (server.github_url || '').toLowerCase();
+      const ep = (server.mcp_endpoint || '').toLowerCase().replace(/\/$/, '');
+      const conflict = (gh && byGithub.get(gh)) || (ep && byEndpoint.get(ep));
+      if (conflict && conflict !== slug) {
+        skipped.push({ slug, reason: `conflicts-with:${conflict}` });
+        continue;
+      }
       manual.servers.unshift(server);
       existing.add(slug);
+      if (gh) byGithub.set(gh, slug);
+      if (ep) byEndpoint.set(ep, slug);
       restored.push(slug);
     } catch (err) {
       skipped.push({ slug, reason: err.message });
