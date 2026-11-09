@@ -92,7 +92,17 @@ function testAgentxManualPresent() {
   assert.ok(agentx.tools?.length >= 10, 'agentx should list its documented tools');
 }
 
+function testImagesvgManualPresent() {
+  const manual = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/mcp-servers-manual.json'), 'utf8'));
+  const imagesvg = manual.servers.find((s) => s.slug === 'imagesvg');
+  assert.ok(imagesvg, 'imagesvg must be in mcp-servers-manual.json');
+  assert.strictEqual(imagesvg.mcp_endpoint, 'https://imagesvg.com/mcp');
+  assert.strictEqual(imagesvg.docs_url, 'https://imagesvg.com/en/developers');
+  assert.ok(imagesvg.tools?.some((t) => t.name === 'imagesvg_vectorize'));
+}
+
 testMergeKeepsApprovedSlug();
 testPreserveScriptRestoresLocalOnly();
 testAgentxManualPresent();
+testImagesvgManualPresent();
 console.log('mcp manual preserve ok');
