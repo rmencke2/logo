@@ -7,7 +7,7 @@
   const activeMcp =
     typeof activeNav !== 'undefined'
       ? activeNav === 'mcp'
-      : path === '/mcp' || (path.startsWith('/mcp/') && !path.startsWith('/mcp/discovery') && !path.startsWith('/mcp/probe'));
+      : path === '/mcp' || (path.startsWith('/mcp/') && !path.startsWith('/mcp/discovery') && !path.startsWith('/mcp/probe') && !path.startsWith('/mcp/check'));
   const activeWebmcp =
     typeof activeNav !== 'undefined' ? activeNav === 'webmcp' : path === '/webmcp' || path.startsWith('/webmcp/');
   const activeInsights =
@@ -44,7 +44,7 @@
       <a href="/mcp" class="site-header-link<%= activeMcp ? ' is-active' : '' %>">MCP Servers</a>
       <a href="/webmcp" class="site-header-link<%= activeWebmcp ? ' is-active' : '' %>">WebMCP</a>
       <a href="/recipes" class="site-header-link<%= activeRecipes ? ' is-active' : '' %>">Recipes</a>
-      <a href="/mcp/discovery/setup" class="site-header-link<%= path.startsWith('/mcp/discovery') || path.startsWith('/mcp/probe') ? ' is-active' : '' %>">Our MCP</a>
+      <a href="/mcp/discovery/setup" class="site-header-link<%= path.startsWith('/mcp/discovery') || path.startsWith('/mcp/probe') || path.startsWith('/mcp/check') ? ' is-active' : '' %>">Our MCP</a>
       <a href="/insights" class="site-header-link<%= activeInsights ? ' is-active' : '' %>">Insights</a>
       <a href="/news" class="site-header-link<%= activeNews ? ' is-active' : '' %>">Briefs</a>
       <div class="site-header-dropdown" id="toolsDropdown">
@@ -78,6 +78,7 @@
           </button>
           <div class="site-header-user-panel" role="menu">
             <div class="site-header-user-email" id="siteHeaderUserEmail"></div>
+            <a href="/mcp/check" role="menuitem">Check an MCP server</a>
             <a href="/mcp/my-listings" role="menuitem">My MCP listings</a>
             <a href="/recipes/mine" role="menuitem">My recipes</a>
             <a href="/admin" id="siteHeaderAdminLink" role="menuitem" hidden>Admin dashboard</a>

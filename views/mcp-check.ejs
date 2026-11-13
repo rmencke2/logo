@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: title,
+      ogDescription: description,
+      ogUrl: canonicalUrl,
+      noindex: typeof noindex !== 'undefined' && noindex,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <main class="setup-shell" id="main">
+      <a class="setup-back" href="/mcp">← MCP directory</a>
+      <p class="setup-eyebrow">Verified account · Live handshake · Not a safe badge</p>
+      <h1 class="setup-title">Check an MCP server</h1>
+
+      <% if (!check) { %>
+        <p class="setup-lead">
+          Paste a public MCP URL, including one that is not in the directory.
+          Influzer runs <code>initialize</code> and <code>tools/list</code> with the same client as the handshake probe,
+          then shows each tool’s schema and annotations next to the catalog verification grade.
+        </p>
+
+        <% if (!canCheck) { %>
+          <div class="check-banner <%= formError ? 'check-banner--bad' : 'check-banner--warn' %>" role="<%= formError ? 'alert' : 'status' %>">
+            <p class="check-banner__title"><%= formError ? 'Check not started' : 'Sign in to check a server' %></p>
+            <p><%= formError || 'Anonymous checks are not allowed. A verified account is required before Influzer connects to a URL you enter.' %></p>
+          </div>
+          <% if (!formError) { %>
+            <p><a class="probe-form__submit check-signin" href="/login?redirect=/mcp/check">Sign in to check a server</a></p>
+          <% } %>
+        <% } else { %>
+          <% if (formError) { %>
+            <div class="check-banner check-banner--bad" role="alert">
+              <p class="check-banner__title">Check not started</p>
+              <p><%= formError %></p>
+            </div>
+          <% } %>
+          <form class="probe-form" id="mcpCheckForm" method="post" action="/mcp/check" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <label class="probe-form__label" for="checkUrl">MCP server URL</label>
+            <div class="probe-form__row">
+              <input
+                class="probe-form__input"
+                id="checkUrl"
+                name="url"
+                type="url"
+                required
+                maxlength="2000"
+                placeholder="https://example.com/mcp"
+                value="<%= prefillUrl || '' %>"
+                spellcheck="false"
+              />
+              <button type="submit" class="probe-form__submit" id="checkSubmit">Check server</button>
+            </div>
+            <label class="probe-form__label" for="checkTransport">Transport</label>
+            <select class="probe-form__input check-select" id="checkTransport" name="transport">
+              <option value="http" <%= prefillTransport === 'sse' ? '' : 'selected' %>>Streamable HTTP</option>
+              <option value="sse" <%= prefillTransport === 'sse' ? 'selected' : '' %>>SSE</option>
+            </select>
+            <label class="probe-form__label" for="checkToken">Bearer token <span class="check-optional">optional</span></label>
+            <input
+              class="probe-form__input"
+              id="checkToken"
+              name="token"
+              type="password"
+              maxlength="2048"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Only if the server returns 401"
+            />
+            <p class="setup-note">
+              HTTPS only. Private, link-local, metadata, and localhost addresses are rejected, including redirects to those addresses.
+              The token is sent with this check only. It is not stored, not logged, and not put in the page address.
+              SSE and Streamable HTTP both use the existing POST handshake, which accepts JSON or event-stream responses.
+            </p>
+          </form>
+        <% } %>
+
+        <p class="setup-links">
+          <a href="/mcp/probe">Handshake probe API</a>
+          · <a href="/mcp/scoreboard">Scoreboard</a>
+          · <a href="/methodology">How we verify</a>
+        </p>
+      <% } else { %>
+        <% const server = check.server || {}; %>
+        <% const summary = check.summary || {}; %>
+        <% const tools = check.tools || []; %>
+        <% const bannerClass = check.status === 'completed' && summary.tool_count ? 'check-banner--ok' : (check.status === 'rejected' || check.status === 'error' ? 'check-banner--bad' : 'check-banner--warn'); %>
+
+        <p class="setup-lead">Result for <code><%= check.url %></code></p>
+        <div class="check-banner <%= bannerClass %>" role="<%= check.status === 'completed' ? 'status' : 'alert' %>">
+          <p class="check-banner__title"><%= check.status_label || 'Check' %></p>
+          <p><%= check.message %></p>
+          <% if (check.redirect_blocked) { %>
+            <p>Did not follow redirect to <code><%= check.redirect_blocked %></code>.</p>
+          <% } %>
+        </div>
+
+        <section class="check-facts" aria-label="Server facts">
+          <h2 class="setup-prompts__title">Server</h2>
+          <dl class="check-dl">
+            <div><dt>Name</dt><dd><%= server.name || 'Not provided' %></dd></div>
+            <div><dt>Version</dt><dd><%= server.version || 'Not provided' %></dd></div>
+            <div><dt>Protocol</dt><dd><%= server.protocol_version || 'Not provided' %></dd></div>
+            <div><dt>Transport</dt><dd><%= check.transport_label %><% if (check.response_type) { %> · response <%= check.response_type %><% } %></dd></div>
+            <div><dt>Catalog</dt><dd>
+              <% if (check.in_catalog && check.catalog && check.catalog.length) { %>
+                Already listed:
+                <% check.catalog.forEach(function(hit, index) { %>
+                  <% if (index) { %>, <% } %>
+                  <a href="<%= hit.page_path %>"><%= hit.name %></a>
+                <% }); %>
+              <% } else { %>
+                Not in the Influzer catalog
+              <% } %>
+            </dd></div>
+            <div><dt>Resources</dt><dd>
+              <% if (!check.resources_advertised) { %>Not advertised<% } else if (check.resource_count == null) { %>Advertised, list failed<% } else { %><%= check.resource_count %><% if (check.resource_truncated) { %>+<% } %><% } %>
+            </dd></div>
+            <div><dt>Prompts</dt><dd>
+              <% if (!check.prompts_advertised) { %>Not advertised<% } else if (check.prompt_count == null) { %>Advertised, list failed<% } else { %><%= check.prompt_count %><% if (check.prompt_truncated) { %>+<% } %><% } %>
+            </dd></div>
+            <div><dt>Capabilities</dt><dd><%= (server.capability_keys || []).length ? server.capability_keys.join(', ') : 'Not provided' %></dd></div>
+            <% if (check.http_status) { %><div><dt>HTTP</dt><dd><%= check.http_status %></dd></div><% } %>
+            <% if (check.latency_ms != null) { %><div><dt>Latency</dt><dd><%= check.latency_ms %> ms</dd></div><% } %>
+            <% if (check.token_sent) { %><div><dt>Token</dt><dd>Sent with this check, not stored</dd></div><% } %>
+          </dl>
+          <% if (server.instructions) { %>
+            <h3 class="check-subhead">Instructions</h3>
+            <pre class="setup-code check-instructions"><code><%= server.instructions %></code></pre>
+          <% } else if (check.status === 'completed' || check.status === 'auth_required') { %>
+            <p class="setup-note">The server did not send instructions.</p>
+          <% } %>
+        </section>
+
+        <% if (check.quality) { %>
+          <section class="check-quality" aria-label="Standards alignment">
+            <h2 class="setup-prompts__title">Standards alignment</h2>
+            <div class="check-grade">
+              <div class="check-grade__mark" aria-hidden="true"><%= check.quality.letter %></div>
+              <div>
+                <p class="check-grade__label">Verification grade <%= check.quality.letter %> (<%= check.quality.score %>/100)</p>
+                <p class="setup-note"><%= check.quality.tier_label %> · <%= check.quality.live_status_label %> · <%= check.quality.auth_gate_label %></p>
+                <p class="setup-note"><%= check.quality.note %></p>
+                <p class="setup-note">safety_badge is null. This is not a safe-to-install badge.</p>
+              </div>
+            </div>
+            <div class="check-split">
+              <div>
+                <h3 class="check-subhead">Passes</h3>
+                <% if (check.quality.parts && check.quality.parts.length) { %>
+                  <ul class="check-list">
+                    <% check.quality.parts.forEach(function(part) { %><li><%= part %></li><% }); %>
+                  </ul>
+                <% } else { %>
+                  <p class="setup-note">No rubric points were awarded.</p>
+                <% } %>
+              </div>
+              <div>
+                <h3 class="check-subhead">Missing</h3>
+                <ul class="check-list">
+                  <% (check.quality.missing || []).forEach(function(item) { %><li><%= item %></li><% }); %>
+                  <% (check.quality.tool_gaps || []).forEach(function(item) { %><li><%= item %></li><% }); %>
+                  <% if (!(check.quality.missing || []).length && !(check.quality.tool_gaps || []).length) { %>
+                    <li>Nothing missing from the rubric or the tool checklist.</li>
+                  <% } %>
+                </ul>
+              </div>
+            </div>
+          </section>
+        <% } %>
+
+        <section aria-label="Tools">
+          <h2 class="setup-prompts__title">Tools<% if (summary.tool_count) { %> (<%= summary.tool_count %>)<% } %></h2>
+          <% if (summary.tools_truncated) { %>
+            <p class="setup-note">The tool list was truncated. Showing the first <%= tools.length %>.</p>
+          <% } %>
+          <% if (!tools.length) { %>
+            <div class="check-banner check-banner--warn">
+              <p class="check-banner__title">No tools</p>
+              <p>
+                <% if (check.status === 'rejected') { %>
+                  Nothing was fetched, because the URL was rejected.
+                <% } else if (check.status === 'unreachable') { %>
+                  The server could not be reached, so there is no tool list.
+                <% } else if (check.status === 'auth_required') { %>
+                  Tools stay hidden until the server accepts a bearer token.
+                <% } else if (check.status === 'error') { %>
+                  The handshake failed before a tool list was available.
+                <% } else { %>
+                  tools/list completed and returned an empty list. A reviewer would treat this as an empty surface.
+                <% } %>
+              </p>
+            </div>
+          <% } %>
+          <% tools.forEach(function(tool) { %>
+            <article class="check-tool">
+              <header class="check-tool__head">
+                <h3><code><%= tool.name %></code></h3>
+                <% if (tool.title) { %><p class="check-tool__title"><%= tool.title %></p><% } %>
+              </header>
+              <% if (tool.gaps && tool.gaps.length) { %>
+                <ul class="check-gaps">
+                  <% tool.gaps.forEach(function(gap) { %><li class="check-gap"><%= gap %></li><% }); %>
+                </ul>
+              <% } else { %>
+                <p class="check-gap check-gap--ok">Description, input schema, and annotations present</p>
+              <% } %>
+              <p class="check-tool__desc"><%= tool.description || 'No description.' %></p>
+              <h4 class="check-subhead">Input schema — <%= tool.input_note %></h4>
+              <% if (tool.fields && tool.fields.length) { %>
+                <table class="check-table">
+                  <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                  <tbody>
+                    <% tool.fields.forEach(function(field) { %>
+                      <tr>
+                        <td><code><%= field.name %></code></td>
+                        <td><%= field.type %></td>
+                        <td><%= field.required ? 'Yes' : 'No' %></td>
+                        <td><%= field.description || '—' %></td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+                <% if (tool.field_overflow) { %><p class="setup-note">And <%= tool.field_overflow %> more field<%= tool.field_overflow === 1 ? '' : 's' %>.</p><% } %>
+              <% } else { %>
+                <p class="setup-note">No fields to show.</p>
+              <% } %>
+              <h4 class="check-subhead">Annotations</h4>
+              <dl class="check-dl check-dl--hints">
+                <% (tool.hints || []).forEach(function(hint) { %>
+                  <div>
+                    <dt><%= hint.key %></dt>
+                    <dd><%= hint.set ? hint.value : 'Not set' %></dd>
+                  </div>
+                <% }); %>
+              </dl>
+              <% if (tool.other_annotations && tool.other_annotations.length) { %>
+                <ul class="check-list">
+                  <% tool.other_annotations.forEach(function(item) { %>
+                    <li><code><%= item.key %></code> <%= item.value %></li>
+                  <% }); %>
+                </ul>
+              <% } %>
+              <p class="setup-note">Output schema: <%= tool.output_schema === 'present' ? 'present' : 'not set' %>.</p>
+            </article>
+          <% }); %>
+        </section>
+
+        <p class="setup-links">
+          <a href="/mcp/check">Check another URL</a>
+          · <a href="/mcp/probe">Handshake probe API</a>
+          · <a href="/methodology">How we verify</a>
+        </p>
+      <% } %>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script src="/js/mcp-check-page.js?v=<%= assetVersion %>" defer></script>
+  </body>
+</html>

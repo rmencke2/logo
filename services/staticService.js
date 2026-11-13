@@ -30,6 +30,7 @@ const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmiss
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { registerMcpProbeRoutes, probeMcpUrl } = require('./mcpProbeService');
+const { registerMcpServerCheckRoutes } = require('./mcpServerCheck');
 const { registerMcpScoreboardRoutes, buildScoreboard } = require('./mcpScoreboardService');
 const { registerMcpHandshakeDiffRoutes } = require('./mcpHandshakeDiffService');
 const { getPromoteOffer, presentSponsorRail, isSponsoredSlug } = require('./mcpPromoteService');
@@ -1030,6 +1031,7 @@ ${itemsXml}
   // MCP Server Directory (must be registered before /insights/:slug)
   registerMcpDiscoveryRoutes(app);
   registerMcpProbeRoutes(app);
+  registerMcpServerCheckRoutes(app);
   registerMcpInstallRoutes(app);
   registerMcpScoreboardRoutes(app);
   registerMcpHandshakeDiffRoutes(app);
@@ -1478,6 +1480,7 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/skill`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/mcp/probe`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.84' },
+      { loc: `${SITE_BASE_URL}/mcp/check`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.84' },
       { loc: `${SITE_BASE_URL}/mcp/scoreboard`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/changes`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/mcp/promote`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },

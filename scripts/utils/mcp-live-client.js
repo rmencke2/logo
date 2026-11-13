@@ -99,8 +99,23 @@ function pickJsonRpcReply(messages, id) {
 /**
  * @param {string} endpoint
  * @param {object} payload
- * @param {{ sessionId?: string; timeoutMs?: number; redirect?: RequestRedirect }} [opts]
+ * @param {{ sessionId?: string; timeoutMs?: number; redirect?: RequestRedirect; bearerToken?: string }} [opts]
  */
+function bearerAuthorization(token) {
+  const value = String(token || '').trim();
+  if (!value || value.length > 2048 || /[\r\n\0]/.test(value)) return null;
+  return `Bearer ${value}`;
+}
+
+function followUpOpts(opts, sessionId) {
+  return {
+    sessionId: sessionId || undefined,
+    timeoutMs: opts.timeoutMs,
+    redirect: opts.redirect,
+    bearerToken: opts.bearerToken,
+  };
+}
+
 async function postMcpMessage(endpoint, payload, opts = {}) {
   const timeoutMs = opts.timeoutMs || DEFAULT_TIMEOUT_MS;
   const controller = new AbortController();
@@ -111,6 +126,8 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
     Accept: 'application/json, text/event-stream',
   };
   if (opts.sessionId) headers['Mcp-Session-Id'] = opts.sessionId;
+  const authorization = bearerAuthorization(opts.bearerToken);
+  if (authorization) headers.Authorization = authorization;
 
   try {
     const res = await fetch(endpoint, {
@@ -123,6 +140,7 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
 
     const contentType = res.headers.get('content-type');
     const sessionId = res.headers.get('mcp-session-id') || opts.sessionId || null;
+    const location = res.headers.get('location') || null;
     const body = await res.text();
     const authError = res.status === 401 || res.status === 403;
     let messages = [];
@@ -140,6 +158,7 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
       status: res.status,
       contentType,
       sessionId,
+      location,
       body,
       messages,
       authError,
@@ -224,13 +243,13 @@ async function probeLiveMcpTools(endpoint, opts = {}) {
   await postMcpMessage(
     endpoint,
     { jsonrpc: '2.0', method: 'notifications/initialized', params: {} },
-    { sessionId, timeoutMs: opts.timeoutMs },
+    followUpOpts(opts, sessionId),
   );
 
   const toolsRes = await postMcpMessage(
     endpoint,
     { jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} },
-    { sessionId, timeoutMs: opts.timeoutMs },
+    followUpOpts(opts, sessionId),
   );
 
   if (toolsRes.authError) {
@@ -286,8 +305,252 @@ async function probeLiveMcpTools(endpoint, opts = {}) {
   };
 }
 
+function capabilityAdvertised(capabilities, key) {
+  return Boolean(capabilities && typeof capabilities === 'object' && Object.prototype.hasOwnProperty.call(capabilities, key));
+}
+
+/**
+ * Count a list method without keeping the items. Stops early so a huge
+ * catalog cannot be pulled into the check record.
+ */
+async function countListed(endpoint, sessionId, method, resultKey, idBase, opts) {
+  let count = 0;
+  let cursor = '';
+  for (let page = 0; page < 4; page += 1) {
+    const res = await postMcpMessage(
+      endpoint,
+      {
+        jsonrpc: '2.0',
+        id: idBase + page,
+        method,
+        params: cursor ? { cursor } : {},
+      },
+      followUpOpts(opts, sessionId),
+    );
+    if (res.networkError || res.authError || !res.ok || (res.status >= 300 && res.status < 400)) {
+      return { count: null, truncated: false, location: res.location || null, failed: true };
+    }
+    const reply = pickJsonRpcReply(res.messages, idBase + page);
+    if (!reply?.result || reply.error) return { count: null, truncated: false, failed: true };
+    const batch = reply.result[resultKey];
+    count += Array.isArray(batch) ? batch.length : 0;
+    cursor = reply.result.nextCursor ? String(reply.result.nextCursor) : '';
+    if (!cursor) return { count, truncated: false, failed: false };
+    if (count >= 500) return { count, truncated: true, failed: false };
+  }
+  return { count, truncated: true, failed: false };
+}
+
+/**
+ * Same handshake client as fetchLiveMcpTools, with the raw tool objects,
+ * server instructions, and resource/prompt counts kept for a reviewer.
+ * Redirects are returned, not followed.
+ *
+ * @param {string} endpoint
+ * @param {{ timeoutMs?: number; bearerToken?: string; clientInfo?: { name: string; version: string } }} [opts]
+ */
+async function inspectLiveMcpServer(endpoint, opts = {}) {
+  const started = Date.now();
+  const finish = (result) => {
+    if (result && result.latency_ms == null) result.latency_ms = Math.max(0, Date.now() - started);
+    return result;
+  };
+  const callOpts = {
+    timeoutMs: opts.timeoutMs,
+    redirect: 'manual',
+    bearerToken: opts.bearerToken,
+    clientInfo: opts.clientInfo,
+  };
+
+  if (!endpoint || !/^https?:\/\//i.test(endpoint)) {
+    return finish({ status: 'skipped', reason: 'no_http_endpoint', tools: [] });
+  }
+
+  const initRes = await postMcpMessage(
+    endpoint,
+    {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'initialize',
+      params: {
+        protocolVersion: PROTOCOL_VERSION,
+        capabilities: {},
+        clientInfo: opts.clientInfo || CLIENT_INFO,
+      },
+    },
+    callOpts,
+  );
+
+  if (initRes.status >= 300 && initRes.status < 400) {
+    return finish({
+      status: 'redirect',
+      location: initRes.location,
+      httpStatus: initRes.status,
+      tools: [],
+      contentType: initRes.contentType,
+    });
+  }
+  if (initRes.networkError) {
+    return finish({ status: 'unreachable', reason: initRes.networkError, tools: [], httpStatus: initRes.status });
+  }
+  if (initRes.authError) {
+    return finish({
+      status: 'auth_required',
+      reason: initRes.rawError || 'Authentication required',
+      tools: [],
+      httpStatus: initRes.status,
+    });
+  }
+  if (!initRes.ok) {
+    return finish({
+      status: 'error',
+      reason: humanizeHandshakeFailure(initRes),
+      tools: [],
+      httpStatus: initRes.status,
+      contentType: initRes.contentType,
+    });
+  }
+
+  const initReply = pickJsonRpcReply(initRes.messages, 1);
+  if (initReply?.error) {
+    return finish({ status: 'error', reason: initReply.error.message || 'initialize failed', tools: [] });
+  }
+  if (!initReply?.result) {
+    return finish({ status: 'error', reason: 'No initialize result', tools: [] });
+  }
+
+  const sessionId = initRes.sessionId;
+  const initResult = initReply.result;
+  const serverContext = {
+    serverInfo: initResult.serverInfo || null,
+    instructions: typeof initResult.instructions === 'string' ? initResult.instructions : null,
+    capabilities: initResult.capabilities && typeof initResult.capabilities === 'object' ? initResult.capabilities : null,
+    protocolVersion: initResult.protocolVersion || null,
+    contentType: initRes.contentType || null,
+  };
+
+  await postMcpMessage(
+    endpoint,
+    { jsonrpc: '2.0', method: 'notifications/initialized', params: {} },
+    followUpOpts(callOpts, sessionId),
+  );
+
+  const tools = [];
+  let cursor = '';
+  let toolsTruncated = false;
+  let toolsHttp = initRes.status;
+  for (let page = 0; page < 4; page += 1) {
+    const toolsRes = await postMcpMessage(
+      endpoint,
+      {
+        jsonrpc: '2.0',
+        id: 2 + page,
+        method: 'tools/list',
+        params: cursor ? { cursor } : {},
+      },
+      followUpOpts(callOpts, sessionId),
+    );
+    if (toolsRes.status >= 300 && toolsRes.status < 400) {
+      return finish({
+        ...serverContext,
+        status: 'error',
+        reason: 'tools/list returned a redirect, which was not followed',
+        location: toolsRes.location,
+        tools,
+        httpStatus: toolsRes.status,
+        tools_truncated: toolsTruncated,
+      });
+    }
+    if (toolsRes.authError) {
+      return finish({
+        ...serverContext,
+        status: 'auth_required',
+        reason: toolsRes.rawError || 'Authentication required',
+        tools: [],
+        httpStatus: toolsRes.status,
+      });
+    }
+    if (toolsRes.networkError) {
+      return finish({
+        ...serverContext,
+        status: 'unreachable',
+        reason: toolsRes.networkError,
+        tools,
+        httpStatus: toolsRes.status,
+      });
+    }
+    if (!toolsRes.ok) {
+      return finish({
+        ...serverContext,
+        status: 'error',
+        reason: toolsRes.rawError || `tools/list HTTP ${toolsRes.status}`,
+        tools,
+        httpStatus: toolsRes.status,
+      });
+    }
+    const toolsReply = pickJsonRpcReply(toolsRes.messages, 2 + page);
+    if (toolsReply?.error) {
+      return finish({
+        ...serverContext,
+        status: 'error',
+        reason: toolsReply.error.message || 'tools/list failed',
+        tools,
+        httpStatus: toolsRes.status,
+      });
+    }
+    const batch = toolsReply?.result?.tools;
+    if (Array.isArray(batch)) tools.push(...batch);
+    toolsHttp = toolsRes.status;
+    serverContext.contentType = toolsRes.contentType || serverContext.contentType;
+    cursor = toolsReply?.result?.nextCursor ? String(toolsReply.result.nextCursor) : '';
+    if (!cursor) break;
+    if (tools.length >= 80) {
+      toolsTruncated = true;
+      break;
+    }
+  }
+  if (cursor) toolsTruncated = true;
+
+  let resourceCount = null;
+  let resourceTruncated = false;
+  let promptCount = null;
+  let promptTruncated = false;
+  let listLocation = null;
+  const resourcesAdvertised = capabilityAdvertised(serverContext.capabilities, 'resources');
+  const promptsAdvertised = capabilityAdvertised(serverContext.capabilities, 'prompts');
+  if (resourcesAdvertised) {
+    const listed = await countListed(endpoint, sessionId, 'resources/list', 'resources', 20, callOpts);
+    resourceCount = listed.count;
+    resourceTruncated = listed.truncated;
+    if (listed.location) listLocation = listed.location;
+  }
+  if (promptsAdvertised) {
+    const listed = await countListed(endpoint, sessionId, 'prompts/list', 'prompts', 30, callOpts);
+    promptCount = listed.count;
+    promptTruncated = listed.truncated;
+    if (listed.location) listLocation = listed.location;
+  }
+
+  const kept = tools.slice(0, 80);
+  return finish({
+    ...serverContext,
+    status: kept.length ? 'ok' : 'ok_empty',
+    tools: kept,
+    tools_truncated: toolsTruncated || tools.length > kept.length,
+    httpStatus: toolsHttp,
+    resource_count: resourceCount,
+    resource_truncated: resourceTruncated,
+    resources_advertised: resourcesAdvertised,
+    prompt_count: promptCount,
+    prompt_truncated: promptTruncated,
+    prompts_advertised: promptsAdvertised,
+    location: listLocation,
+  });
+}
+
 module.exports = {
   fetchLiveMcpTools,
+  inspectLiveMcpServer,
   parseMcpResponseBody,
   parseSseJsonMessages,
   looksLikeWebsiteOrCdnError,

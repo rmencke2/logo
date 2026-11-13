@@ -180,6 +180,7 @@ const RESERVED_MCP_PATHS = new Set([
   'topics',
   'discovery',
   'probe',
+  'check',
   'install',
   'skill',
   'scoreboard',
