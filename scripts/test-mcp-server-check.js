@@ -7,6 +7,7 @@ process.env.DB_PATH = path.join(os.tmpdir(), `mcp-check-test-${process.pid}.db`)
 const assert = require('node:assert/strict');
 const ejs = require('ejs');
 const { computeQualitySignals } = require('./utils/mcp-quality');
+const { cspNonceMiddleware } = require('../middleware/cspNonce');
 const { buildCheckReport, checkMcpServer } = require('../services/mcpServerCheck');
 
 const annotated = {
@@ -71,6 +72,7 @@ async function render(check) {
     noindex: Boolean(check),
     prefillUrl: '',
     prefillTransport: 'http',
+    cspNonce: 'test-nonce',
   });
 }
 
@@ -261,6 +263,7 @@ async function main() {
 
   const form = await render(null);
   assert.match(form, /action="\/mcp\/check"/);
+  assert.match(form, /<script nonce="test-nonce" src="\/js\/mcp-check-page\.js/);
   assert.equal(form.includes('?token='), false);
 
   const signedOut = await ejs.renderFile(path.join(__dirname, '..', 'views', 'mcp-check.ejs'), {
@@ -276,6 +279,7 @@ async function main() {
     noindex: false,
     prefillUrl: '',
     prefillTransport: 'http',
+    cspNonce: 'test-nonce',
   });
   assert.match(signedOut, /Sign in to check a server/);
   assert.equal(signedOut.includes('name="url"'), false);
@@ -360,6 +364,7 @@ async function assertHttpGate() {
   app.set('views', path.join(__dirname, '..', 'views'));
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+  app.use(cspNonceMiddleware);
   app.use(session({ secret: 'mcp-check-test', resave: false, saveUninitialized: false }));
   app.post('/__verify_login', (req, res) => {
     req.session.userId = Number(req.body.userId);
