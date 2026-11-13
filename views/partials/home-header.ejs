@@ -67,7 +67,8 @@
   </div>
 </header>
 <link rel="stylesheet" href="/css/site-auth.css?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" />
-<script src="/js/site-auth.js?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" defer></script>
+<script nonce="<%= cspNonce %>" src="/js/img-fallback.js"></script>
+<script nonce="<%= cspNonce %>" src="/js/site-auth.js?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" defer></script>
 <select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;">
   <option value="en">English</option>
   <option value="da">Dansk</option>

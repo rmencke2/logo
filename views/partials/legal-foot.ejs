@@ -1,5 +1,5 @@
     </main>
     <%- include('registry-footer') %>
-    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

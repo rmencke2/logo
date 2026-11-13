@@ -2508,3 +2508,10 @@ button:active:enabled {
 @media (max-width: 900px) {
   .hero-insight-strip { grid-template-columns: 1fr; }
 }
+
+.favicon-option {
+  border: 1px solid #2a2a2a;
+}
+.favicon-option:hover {
+  border-color: #10a37f;
+}

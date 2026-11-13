@@ -92,7 +92,8 @@
 </header>
 <!-- Hidden language selector for i18n (footer controls language) -->
 <link rel="stylesheet" href="/css/site-auth.css" />
-<script src="/js/site-auth.js" defer></script>
+<script nonce="<%= cspNonce %>" src="/js/img-fallback.js"></script>
+<script nonce="<%= cspNonce %>" src="/js/site-auth.js" defer></script>
 <select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1">
   <option value="en">English</option>
   <option value="da">Dansk</option>

@@ -4,7 +4,6 @@
 
 const express = require('express');
 const session = require('express-session');
-const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { getDatabase } = require('../database');
 const { initializeAuth, requireAuth } = require('../auth');
@@ -12,6 +11,7 @@ const authRoutes = require('../routes/auth');
 const { shouldBypassRateLimit, getSessionSecret } = require('../utils/rateLimitBypass');
 const { csrfTokenHandler, requireCsrfToken } = require('../middleware/csrf');
 const { getPublicSiteOrigin } = require('../utils/siteUrl');
+const { mountCsp } = require('../middleware/cspNonce');
 
 require('dotenv').config();
 
@@ -41,44 +41,10 @@ async function initializeCore(app) {
     return next();
   });
 
-  // Security middleware — CSP allows inline scripts/styles used by EJS pages and admin.html.
-  // GA4 (G-Q8WMQQWLT7) needs googletagmanager + google-analytics hosts or the browser
-  // blocks the tag and the property shows near-zero traffic while page_views still grow.
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: [
-            "'self'",
-            "'unsafe-inline'",
-            'https://challenges.cloudflare.com',
-            'https://www.googletagmanager.com',
-          ],
-          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-          fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
-          imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
-          connectSrc: [
-            "'self'",
-            'https://challenges.cloudflare.com',
-            'https://www.googletagmanager.com',
-            'https://www.google-analytics.com',
-            'https://analytics.google.com',
-            'https://*.google-analytics.com',
-            'https://*.analytics.google.com',
-          ],
-          frameSrc: ["'self'", 'https://challenges.cloudflare.com'],
-          objectSrc: ["'none'"],
-          baseUri: ["'self'"],
-          formAction: ["'self'"],
-          // Helmet defaults script-src-attr to 'none', which breaks admin.html onclick handlers
-          scriptSrcAttr: ["'unsafe-inline'"],
-        },
-      },
-      crossOriginOpenerPolicy: false,
-      originAgentCluster: false,
-    }),
-  );
+  // CSP: per-request script nonce. script-src and script-src-attr do not allow
+  // 'unsafe-inline'. style-src still allows inline styles. GA4 (G-Q8WMQQWLT7) needs
+  // googletagmanager + google-analytics hosts or the browser blocks the tag.
+  mountCsp(app);
 
   // Global rate limiter — protects APIs/auth; skip static assets and light page browsing.
   // Previously max:100 counted every CSS/JS request and blocked the whole site after ~1–2 pages.

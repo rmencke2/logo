@@ -22,8 +22,8 @@
     <div id="authMessage" class="auth-message" style="display: none;">
       <p>Please sign in to use this tool</p>
       <div class="auth-buttons-inline">
-        <button class="cta-button primary" onclick="showLoginModal()">Sign In</button>
-        <button class="cta-button secondary" onclick="showSignupModal()">Sign Up</button>
+        <button type="button" class="cta-button primary" data-auth-action="login">Sign In</button>
+        <button type="button" class="cta-button secondary" data-auth-action="signup">Sign Up</button>
       </div>
     </div>
 
@@ -47,7 +47,7 @@
   <%- include('../partials/auth-scripts') %>
 
   <% if (typeof extraScripts !== 'undefined') { %>
-  <script>
+  <script nonce="<%= cspNonce %>">
     <%- extraScripts %>
   </script>
   <% } %>

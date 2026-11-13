@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="/css/mcp-setup-page.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/legal.css?v=<%= assetVersion %>" />
     <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
-      <script type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
+      <script nonce="<%= cspNonce %>" type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
     <% } %>
   </head>
   <body class="registry-page">

@@ -14,7 +14,7 @@
       noindex: typeof noindex !== 'undefined' && noindex,
     }) %>
     <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
-      <script type="application/ld+json">
+      <script nonce="<%= cspNonce %>" type="application/ld+json">
         <%- JSON.stringify(jsonLd) %>
       </script>
     <% } %>
@@ -178,7 +178,7 @@
       </div>
 
       <% if (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) { %>
-        <script id="mcpCatalogData" type="application/json"><%- inlineCatalogJson %></script>
+        <script nonce="<%= cspNonce %>" id="mcpCatalogData" type="application/json"><%- inlineCatalogJson %></script>
       <% } %>
 
       <p class="dir-loading" id="mcpLoading"<%= (typeof previewServers !== 'undefined' && previewServers && previewServers.length) || (typeof inlineCatalogJson !== 'undefined' && inlineCatalogJson) ? ' hidden' : '' %>>Loading MCP server catalog…</p>
@@ -234,10 +234,10 @@
 
     <%- include('partials/registry-footer') %>
 
-    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/mcp-cards.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/mcp-directory-query.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/mcp-directory-page.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-cards.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-directory-query.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-directory-page.js?v=<%= assetVersion %>" defer></script>
     <%- include('partials/influzer-webmcp-script') %>
   </body>
 </html>

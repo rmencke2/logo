@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
     <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
-      <script type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
+      <script nonce="<%= cspNonce %>" type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
     <% } %>
   </head>
   <body class="registry-page recipes-page">
@@ -184,7 +184,7 @@
         </dialog>
       <% } %>
     </main>
-    <script>
+    <script nonce="<%= cspNonce %>">
       (function () {
         try {
           if (localStorage.getItem('influzer-theme') === 'dark') document.body.classList.add('dark');

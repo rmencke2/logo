@@ -6,6 +6,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { clientErrorMessage } = require('../utils/safeError');
+const { applyNoncesToHtml } = require('../middleware/cspNonce');
 
 const BLOG_POSTS_DIR = path.join(__dirname, '..', 'content', 'blog');
 const SITE_BASE_URL = 'https://www.influzer.ai';
@@ -781,8 +782,34 @@ function initializeStaticService(app) {
   // Skill markdown + index need CORS/CORP before express.static.
   registerMcpSkillRoutes(app);
 
+  // Old static copies of the tool pages. The live routes render EJS.
+  // Redirect before static so those files are not served with inline handlers.
+  app.get(
+    ['/meme-generator.html', '/video-converter.html', '/video-to-gif.html', '/video-metadata.html'],
+    (req, res) => {
+      res.redirect(301, req.path.replace(/\.html$/, ''));
+    },
+  );
+
+  const publicDir = path.join(__dirname, '..', 'public');
+  // express.static streams HTML and cannot add a per-request nonce.
+  app.use((req, res, next) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+    if (!req.path.toLowerCase().endsWith('.html')) return next();
+    const rel = req.path.replace(/^\/+/, '');
+    if (!rel || rel.includes('..') || rel.includes('\0')) return next();
+    const filePath = path.resolve(publicDir, rel);
+    if (!filePath.startsWith(publicDir + path.sep)) return next();
+    fs.readFile(filePath, 'utf8', (err, html) => {
+      if (err) return next();
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.type('html');
+      res.send(applyNoncesToHtml(html, res.locals.cspNonce));
+    });
+  });
+
   // Serve static files from public directory
-  app.use(express.static(path.join(__dirname, '..', 'public'), {
+  app.use(express.static(publicDir, {
     maxAge: '1d',
     etag: true,
     lastModified: true,

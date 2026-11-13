@@ -1,4 +1,4 @@
-<script>
+<script nonce="<%= cspNonce %>">
   let currentUser = null;
 
   // Check authentication
@@ -120,4 +120,12 @@
 
   // Initialize auth
   checkAuth();
+
+  document.addEventListener('click', (event) => {
+    const el = event.target && event.target.closest && event.target.closest('[data-auth-action]');
+    if (!el) return;
+    const action = el.getAttribute('data-auth-action');
+    if (action === 'login') showLoginModal();
+    else if (action === 'signup') showSignupModal();
+  });
 </script>

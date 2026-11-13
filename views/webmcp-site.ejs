@@ -135,8 +135,8 @@
       </ul>
     </main>
     <%- include('partials/registry-footer') %>
-    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
-    <script>
+    <script nonce="<%= cspNonce %>" src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>">
       (function () {
         var btn = document.getElementById('copySchemaBtn');
         var pre = document.getElementById('rawSchema');

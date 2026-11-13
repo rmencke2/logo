@@ -98,8 +98,8 @@
     <div id="authMessage" class="auth-message" style="display: none;">
       <p>Please sign in to use the meme generator</p>
       <div class="auth-buttons-inline">
-        <button class="cta-button primary" onclick="showLoginModal()">Sign In</button>
-        <button class="cta-button secondary" onclick="showSignupModal()">Sign Up</button>
+        <button type="button" class="cta-button primary" data-auth-action="login">Sign In</button>
+        <button type="button" class="cta-button secondary" data-auth-action="signup">Sign Up</button>
       </div>
     </div>
 
@@ -278,7 +278,7 @@
   <%- include('partials/footer-loader') %>
   <%- include('partials/auth-scripts') %>
 
-  <script>
+  <script nonce="<%= cspNonce %>">
     let selectedStyle = '';
 
     // File input handling

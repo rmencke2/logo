@@ -42,7 +42,7 @@
         esc(src) +
         '"' +
         dataFallback +
-        ' alt="" width="38" height="38" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(this.dataset.fallback&amp;&amp;!this.dataset.fallbackUsed){this.dataset.fallbackUsed=\'1\';this.src=this.dataset.fallback;return;}this.classList.add(\'is-hidden\');var f=this.parentElement.querySelector(\'.mcp-logo-fallback\');if(f)f.classList.add(\'is-visible\');">'
+        ' alt="" width="38" height="38" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
       : '';
     const fallbackVisible = src ? '' : ' is-visible';
     const initial = esc(s.logoInitial || (s.name || '?').charAt(0).toUpperCase());

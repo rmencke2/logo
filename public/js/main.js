@@ -637,11 +637,9 @@
         // Display options
         if (faviconAutoOptions) {
           faviconAutoOptions.innerHTML = options.map((option, index) => `
-            <div style="background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s;" 
-                 class="favicon-option" 
+            <div class="favicon-option" 
                  data-option-index="${index}"
-                 onmouseover="this.style.borderColor='#10a37f'" 
-                 onmouseout="this.style.borderColor='#2a2a2a'">
+                 style="background: #1f1f1f; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.2s;">
               <div style="width: 64px; height: 64px; margin: 0 auto 12px; border-radius: ${option.shape === 'circle' ? '50%' : option.shape === 'rounded' ? '12px' : '4px'}; background: ${option.bgColor === 'transparent' ? '#0d0d0d' : option.bgColor}; display: flex; align-items: center; justify-content: center; border: ${option.bgColor === 'transparent' ? '2px solid ' + option.fontColor : 'none'};">
                 <span style="color: ${option.fontColor}; font-size: 32px; font-weight: 600;">${option.text}</span>
               </div>
@@ -1653,3 +1651,55 @@
           loadAllFooters();
         }
       }, 100);
+
+      function bindClick(id, handler) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('click', (event) => {
+          event.preventDefault();
+          handler(event);
+        });
+      }
+
+      bindClick('legacyLogoutBtn', () => logout());
+      bindClick('websiteBuilderSoonBtn', () => alert('Website builder coming soon!'));
+      bindClick('socialKitSoonBtn', () => alert('Social media kit coming soon!'));
+      bindClick('authGateSignupBtn', () => {
+        if (typeof window.openSignupModal === 'function') window.openSignupModal();
+        if (typeof window.closeAuthGate === 'function') window.closeAuthGate();
+      });
+      bindClick('authGateLoginBtn', () => {
+        if (typeof window.openLoginModal === 'function') window.openLoginModal();
+        if (typeof window.closeAuthGate === 'function') window.closeAuthGate();
+      });
+      bindClick('authGateCloseBtn', () => {
+        if (typeof window.closeAuthGate === 'function') window.closeAuthGate();
+      });
+      bindClick('loginModalCloseBtn', () => {
+        if (typeof window.closeLoginModal === 'function') window.closeLoginModal();
+      });
+      bindClick('signupModalCloseBtn', () => {
+        if (typeof window.closeSignupModal === 'function') window.closeSignupModal();
+      });
+      bindClick('forgotPasswordModalCloseBtn', () => {
+        if (typeof window.closeForgotPasswordModal === 'function') window.closeForgotPasswordModal();
+      });
+      bindClick('forgotPasswordLink', () => {
+        if (typeof window.openForgotPasswordModal === 'function') window.openForgotPasswordModal();
+        if (typeof window.closeLoginModal === 'function') window.closeLoginModal();
+      });
+      bindClick('loginToSignupLink', () => {
+        if (typeof window.closeLoginModal === 'function') window.closeLoginModal();
+        if (typeof window.openSignupModal === 'function') window.openSignupModal();
+      });
+      bindClick('signupToLoginLink', () => {
+        if (typeof window.closeSignupModal === 'function') window.closeSignupModal();
+        if (typeof window.openLoginModal === 'function') window.openLoginModal();
+      });
+
+      const loginFormEl = document.getElementById('loginForm');
+      if (loginFormEl) loginFormEl.addEventListener('submit', handleLogin);
+      const signupFormEl = document.getElementById('signupForm');
+      if (signupFormEl) signupFormEl.addEventListener('submit', handleSignup);
+      const forgotPasswordFormEl = document.getElementById('forgotPasswordForm');
+      if (forgotPasswordFormEl) forgotPasswordFormEl.addEventListener('submit', handleForgotPassword);
