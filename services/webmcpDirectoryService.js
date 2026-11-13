@@ -12,6 +12,7 @@ const { clientErrorMessage } = require('../utils/safeError');
 const { ensureScanTables } = require('./webmcp/scanStore');
 const { getPromoteOffer, presentSponsorRail } = require('./mcpPromoteService');
 const { describeWebmcpCoverage } = require('./webmcp/coverage');
+const { loadSlimCatalog, readSiteRange } = require('./webmcp/catalogIndex');
 
 const ROOT = path.join(__dirname, '..');
 const SITES_PATH = path.join(ROOT, 'data', 'webmcp-sites.json');
@@ -25,6 +26,8 @@ const SELF_TOOLS_PATH = path.join(ROOT, 'data', 'influzer-webmcp-tools.json');
 const SITE_BASE = 'https://www.influzer.ai';
 
 let cache = null;
+let fullSiteCache = new Map();
+const FULL_SITE_CACHE_MAX = 12;
 
 function readJson(filePath, fallback) {
   try {
@@ -38,31 +41,48 @@ function readJson(filePath, fallback) {
 
 function clearWebmcpCache() {
   cache = null;
+  fullSiteCache = new Map();
 }
 
 function loadCatalog() {
   if (cache) return cache;
-  const sitesFile = readJson(SITES_PATH, { sites: [] });
   const meta = readJson(META_PATH, {});
   const categoriesFile = readJson(CATEGORIES_PATH, { categories: [] });
   const ecosystem = readJson(ECOSYSTEM_PATH, { entries: [] });
   const resources = readJson(RESOURCES_PATH, { resources: [] });
   const manual = readJson(MANUAL_PATH, { sites: {} });
 
-  const sites = (sitesFile.sites || []).filter((s) => s && s.host && s.published !== false);
-  const byHost = new Map(sites.map((s) => [s.host, s]));
+  let slim = { sites: [], byHost: new Map(), rangeByHost: new Map() };
+  if (fs.existsSync(SITES_PATH)) {
+    try {
+      slim = loadSlimCatalog(SITES_PATH);
+    } catch (err) {
+      console.error('WebMCP: failed indexing sites:', err.message);
+    }
+  }
 
   cache = {
-    sites,
-    byHost,
+    sites: slim.sites,
+    byHost: slim.byHost,
+    rangeByHost: slim.rangeByHost,
     meta,
     categories: categoriesFile.categories || [],
     ecosystemEntries: (ecosystem.entries || []).slice().sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)),
     resources: (resources.resources || []).filter((r) => r.published !== false),
     manual,
-    generatedAt: sitesFile.generated_at || meta.generated_at || null,
+    generatedAt: meta.generated_at || null,
   };
+  fullSiteCache = new Map();
   return cache;
+}
+
+function rememberFullSite(host, site) {
+  if (fullSiteCache.has(host)) fullSiteCache.delete(host);
+  fullSiteCache.set(host, site);
+  while (fullSiteCache.size > FULL_SITE_CACHE_MAX) {
+    const oldest = fullSiteCache.keys().next().value;
+    fullSiteCache.delete(oldest);
+  }
 }
 
 function getWebmcpStats() {
@@ -116,6 +136,10 @@ function siteSummary(site) {
 
 function toolMatchesQuery(tool, q) {
   if (!q) return true;
+  if (typeof tool.search === 'string') {
+    const tokens = String(q).toLowerCase().split(/\s+/).filter(Boolean);
+    return tokens.every((token) => tool.search.includes(token));
+  }
   const hay = [
     tool.name,
     tool.description,
@@ -202,8 +226,19 @@ function paginate(items, page = 1, limit = 24) {
 }
 
 function findSiteByHost(hostOrSlug) {
+  const catalog = loadCatalog();
   const host = normalizeHost(hostOrSlug) || String(hostOrSlug || '').toLowerCase();
-  return loadCatalog().byHost.get(host) || null;
+  if (!catalog.byHost.has(host)) return null;
+  if (fullSiteCache.has(host)) {
+    const hit = fullSiteCache.get(host);
+    rememberFullSite(host, hit);
+    return hit;
+  }
+  const range = catalog.rangeByHost.get(host);
+  if (!range) return catalog.byHost.get(host);
+  const full = readSiteRange(SITES_PATH, range);
+  rememberFullSite(host, full);
+  return full;
 }
 
 function loadSelfToolsManifest() {

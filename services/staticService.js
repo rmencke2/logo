@@ -55,6 +55,7 @@ const {
   getSitemapRecipeEntries,
 } = require('./mcpRecipeService');
 const { getHomeTopServersByTraffic, getDirectoryAudienceStats, getListingViewCounts } = require('./mcpListingTrafficService');
+const { readHomePreviewSync } = require('./webmcp/homePreview');
 const { LIST_ORDER, DIRECTORY_SORT_CAPTIONS, homeListCaption, presentSponsorAudience } = require('./mcpListOrder');
 const { directoryQueryIsFiltered } = require('../public/js/mcp-directory-query');
 const { buildVerificationSummary } = require('./mcpProbeHistory');
@@ -205,6 +206,8 @@ function getHomeBlogContent() {
   return { featuredPost, morePosts };
 }
 
+let homeWebmcpPreviewCache = null;
+
 function getHomeWebmcpPreview(limit = 6) {
   try {
     const metaPath = path.join(__dirname, '..', 'data', 'webmcp-meta.json');
@@ -213,23 +216,30 @@ function getHomeWebmcpPreview(limit = 6) {
       return null;
     }
     const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-    const raw = JSON.parse(fs.readFileSync(sitesPath, 'utf8'));
-    const sites = Array.isArray(raw) ? raw : Array.isArray(raw.sites) ? raw.sites : [];
-    const featuredSites = [...sites]
-      .filter((site) => site && site.host && (site.site_type === 'live' || site.verification_status === 'verified'))
-      .sort((a, b) => (Number(b.tool_count) || 0) - (Number(a.tool_count) || 0))
-      .slice(0, limit)
-      .map((site) => ({
-        host: site.host,
-        slug: site.slug || site.host,
-        name: site.name || site.host,
-        description: String(site.description || '').slice(0, 120),
-        tool_count: Number(site.tool_count) || 0,
-        favicon_url: site.favicon_url || '',
-        site_type: site.site_type || 'live',
-      }));
+    const stat = fs.statSync(sitesPath);
+    const want = Math.max(1, Number(limit) || 6);
+    if (
+      !homeWebmcpPreviewCache ||
+      homeWebmcpPreviewCache.mtimeMs !== stat.mtimeMs ||
+      homeWebmcpPreviewCache.limit !== want
+    ) {
+      homeWebmcpPreviewCache = {
+        mtimeMs: stat.mtimeMs,
+        limit: want,
+        sites: readHomePreviewSync(sitesPath, want),
+      };
+    }
+    const featuredSites = homeWebmcpPreviewCache.sites.map((site) => ({
+      host: site.host,
+      slug: site.slug || site.host,
+      name: site.name || site.host,
+      description: String(site.description || '').slice(0, 120),
+      tool_count: Number(site.tool_count) || 0,
+      favicon_url: site.favicon_url || '',
+      site_type: site.site_type || 'live',
+    }));
     return {
-      siteCount: Number(meta.site_count) || sites.length || 0,
+      siteCount: Number(meta.site_count) || featuredSites.length || 0,
       toolCount: Number(meta.tool_count) || 0,
       liveCount: Number(meta.live_count) || 0,
       featuredSites,
