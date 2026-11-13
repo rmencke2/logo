@@ -103,11 +103,11 @@
       </section>
     </main>
     <%- include('partials/registry-footer') %>
-    <script>
+    <script nonce="<%= cspNonce %>">
       window.__WEBMCP_SCAN_INITIAL__ = <%= JSON.stringify(initialScanId || null) %>;
     </script>
-    <script src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/webmcp-scan.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/site-auth.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/webmcp-scan.js?v=<%= assetVersion %>" defer></script>
     <%- include('partials/influzer-webmcp-script') %>
   </body>
 </html>

@@ -28,6 +28,6 @@
   <body class="home-page">
     <p class="preview-note">Isolated preview — newsletter card only</p>
     <%- include('partials/home-newsletter-card') %>
-    <script src="/js/home-newsletter.js" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/home-newsletter.js" defer></script>
   </body>
 </html>

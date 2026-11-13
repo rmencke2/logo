@@ -13,7 +13,7 @@
       ogImage: typeof ogImage !== 'undefined' ? ogImage : undefined,
     }) %>
     <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
-      <script type="application/ld+json">
+      <script nonce="<%= cspNonce %>" type="application/ld+json">
         <%- JSON.stringify(jsonLd) %>
       </script>
     <% } %>
@@ -38,7 +38,7 @@
   </head>
   <body>
     <%- include('partials/site-header', { navPath: '/mcp' }) %>
-    <script src="/js/site-header.js" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/site-header.js" defer></script>
 
     <main class="mcp-page">
       <header class="mcp-header">

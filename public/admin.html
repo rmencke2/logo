@@ -397,7 +397,7 @@
         <h2>User Management</h2>
         <div class="search-bar">
           <input type="text" id="userSearch" placeholder="Search by email or name...">
-          <button class="btn btn-primary" onclick="searchUsers()">Search</button>
+          <button type="button" class="btn btn-primary" data-admin-action="searchUsers">Search</button>
         </div>
         <div id="usersTableContainer">
           <div class="loading">Loading users...</div>
@@ -417,7 +417,7 @@
             <option value="approved">Approved</option>
             <option value="pending">Hidden</option>
           </select>
-          <button class="btn btn-primary" onclick="loadComments()">Refresh</button>
+          <button type="button" class="btn btn-primary" data-admin-action="loadComments">Refresh</button>
         </div>
         <div id="commentsTableContainer">
           <div class="loading">Loading comments...</div>
@@ -438,7 +438,7 @@
           <select id="newsletterPostSelect" style="min-width:320px;flex:1;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
             <option value="">Select a blog post…</option>
           </select>
-          <button class="btn btn-secondary" onclick="loadNewsletterSendPanel()">Refresh posts</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="loadNewsletterSendPanel">Refresh posts</button>
         </div>
         <div class="form-group" style="margin-top:16px;">
           <label for="newsletterCustomIntro" style="display:block;color:#8e8e93;font-size:13px;margin-bottom:8px;">Optional intro (shown above the excerpt)</label>
@@ -447,9 +447,9 @@
         <div id="newsletterPostMeta" style="color:#8e8e93;font-size:13px;margin:12px 0 16px;"></div>
         <p id="newsletterTestRecipient" style="color:#8e8e93;font-size:13px;margin:0 0 12px;display:none;"></p>
         <div class="search-bar">
-          <button class="btn btn-secondary" onclick="previewNewsletterEmail()">Preview email</button>
-          <button class="btn btn-secondary" onclick="sendNewsletterTest()">Send test to my email</button>
-          <button class="btn btn-primary" onclick="sendNewsletterBroadcast()">Send to all subscribers</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="previewNewsletterEmail">Preview email</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="sendNewsletterTest">Send test to my email</button>
+          <button type="button" class="btn btn-primary" data-admin-action="sendNewsletterBroadcast">Send to all subscribers</button>
         </div>
         <div id="newsletterPreviewContainer" style="margin-top:20px;display:none;">
           <h3 style="color:#fff;font-size:16px;margin-bottom:8px;">Email preview</h3>
@@ -461,8 +461,8 @@
         <h2>Newsletter Subscribers</h2>
         <div class="search-bar">
           <input type="number" id="newsletterLimit" min="1" max="1000" value="500" placeholder="Limit (max 1000)">
-          <button class="btn btn-primary" onclick="loadNewsletterSubscribers()">Refresh</button>
-          <button class="btn btn-secondary" onclick="exportNewsletterCsv()">Export CSV</button>
+          <button type="button" class="btn btn-primary" data-admin-action="loadNewsletterSubscribers">Refresh</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="exportNewsletterCsv">Export CSV</button>
         </div>
         <div id="newsletterTableContainer">
           <div class="loading">Loading subscribers...</div>
@@ -511,7 +511,7 @@
             <option value="dismissed">Dismissed</option>
             <option value="all">All</option>
           </select>
-          <button class="btn btn-primary" onclick="loadMcpSubmissions()">Refresh</button>
+          <button type="button" class="btn btn-primary" data-admin-action="loadMcpSubmissions">Refresh</button>
         </div>
         <div id="mcpSubmissionsContainer">
           <div class="loading">Loading submissions...</div>
@@ -541,7 +541,7 @@
           Preview at <code>/recipes/&lt;slug&gt;/preview</code> (admin or author).
         </p>
         <div class="search-bar">
-          <button class="btn btn-primary" onclick="loadRecipeModeration()">Refresh</button>
+          <button type="button" class="btn btn-primary" data-admin-action="loadRecipeModeration">Refresh</button>
         </div>
         <div id="recipePendingContainer">
           <div class="loading">Loading pending recipes…</div>
@@ -564,12 +564,12 @@
           Handshake traffic (<code>initialize</code>, <code>tools/list</code>) is counted separately from actual tool calls.
         </p>
         <div class="search-bar">
-          <select id="mcpDiscoveryDays" onchange="loadMcpDiscoveryAnalytics()" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
+          <select id="mcpDiscoveryDays" data-admin-change="loadMcpDiscoveryAnalytics" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
             <option value="1">Last 24 hours</option>
             <option value="7" selected>Last 7 days</option>
             <option value="30">Last 30 days</option>
           </select>
-          <button class="btn btn-primary" onclick="loadMcpDiscoveryAnalytics()">Refresh</button>
+          <button type="button" class="btn btn-primary" data-admin-action="loadMcpDiscoveryAnalytics">Refresh</button>
         </div>
         <div class="stats-grid" style="margin-bottom:24px;" id="mcpDiscoveryStatCards">
           <div class="stat-card"><h3>RPC calls</h3><div class="value" id="mcpDiscTotal">-</div></div>
@@ -592,7 +592,7 @@
           Shown on the homepage and MCP pages — not in Insights or Briefs. See <code>docs/OTHER_NEWS.md</code>.
         </p>
         <div class="search-bar">
-          <button class="btn btn-primary" onclick="loadOtherNewsItems()">Refresh</button>
+          <button type="button" class="btn btn-primary" data-admin-action="loadOtherNewsItems">Refresh</button>
         </div>
         <div id="otherNewsTableContainer">
           <div class="loading">Loading articles...</div>
@@ -615,13 +615,13 @@
   <div class="modal" id="blockUserModal">
     <div class="modal-content">
       <h3>Block User</h3>
-      <form id="blockUserForm" onsubmit="handleBlockUser(event)">
+      <form id="blockUserForm" data-admin-submit="handleBlockUser">
         <div class="form-group">
           <label>Reason (optional)</label>
           <textarea id="blockReason" placeholder="Enter reason for blocking..."></textarea>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('blockUserModal')">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="closeModal" data-admin-args="%5B%22blockUserModal%22%5D">Cancel</button>
           <button type="submit" class="btn btn-danger">Block User</button>
         </div>
       </form>
@@ -632,7 +632,7 @@
   <div class="modal" id="limitsModal">
     <div class="modal-content">
       <h3>Set Custom User Limits</h3>
-      <form id="limitsForm" onsubmit="handleSetLimits(event)">
+      <form id="limitsForm" data-admin-submit="handleSetLimits">
         <div class="form-group">
           <label>Daily Limit</label>
           <input type="number" id="dailyLimit" min="1" required>
@@ -646,7 +646,7 @@
           <textarea id="limitsNotes" placeholder="Add notes about this limit..."></textarea>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('limitsModal')">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="closeModal" data-admin-args="%5B%22limitsModal%22%5D">Cancel</button>
           <button type="submit" class="btn btn-primary">Set Limits</button>
         </div>
       </form>
@@ -658,7 +658,7 @@
     <div class="modal-content modal-content--wide">
       <h3>Review MCP submission</h3>
       <div id="mcpReviewAlert"></div>
-      <form id="mcpReviewForm" onsubmit="handleMcpApprove(event)">
+      <form id="mcpReviewForm" data-admin-submit="handleMcpApprove">
         <input type="hidden" id="mcpReviewId" />
         <div class="form-group">
           <label>Server name</label>
@@ -714,7 +714,7 @@
           <label>Tools (one per line: <code>tool_name — description</code>)</label>
           <textarea id="mcpTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
           <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-            <button type="button" class="btn btn-sm btn-secondary" id="mcpRefreshToolsBtn" onclick="refreshMcpToolsFromLive('review')">Refresh tools from live endpoint</button>
+            <button type="button" class="btn btn-sm btn-secondary" id="mcpRefreshToolsBtn" data-admin-action="refreshMcpToolsFromLive" data-admin-args="%5B%22review%22%5D">Refresh tools from live endpoint</button>
             <span id="mcpRefreshToolsStatus" style="font-size:12px;color:#8e8e93;"></span>
           </div>
         </div>
@@ -731,14 +731,14 @@
           <p style="margin:0 0 8px;font-size:12px;color:#8e8e93;">Sends an email and keeps this submission in the pending queue so you can approve later. Use Dismiss only to drop it.</p>
           <textarea id="mcpFeedbackNote" placeholder="Please reply with your MCP tools (one per line: tool_name — description) so we can approve the listing." style="min-height:100px;font-size:13px;"></textarea>
           <div style="margin-top:8px;">
-            <button type="button" class="btn btn-sm btn-secondary" onclick="fillMcpMissingToolsTemplate()">Use missing-tools template</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-admin-action="fillMcpMissingToolsTemplate">Use missing-tools template</button>
           </div>
           <div id="mcpPriorFeedback" style="display:none;margin-top:10px;font-size:12px;color:#fbbf24;"></div>
         </div>
         <div class="form-actions" style="flex-wrap:wrap;gap:8px;">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('mcpReviewModal')">Cancel</button>
-          <button type="button" class="btn btn-secondary" id="mcpRequestChangesBtn" onclick="handleMcpRequestChanges()">Send message &amp; wait</button>
-          <button type="button" class="btn btn-danger" onclick="handleMcpDismiss()">Dismiss</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="closeModal" data-admin-args="%5B%22mcpReviewModal%22%5D">Cancel</button>
+          <button type="button" class="btn btn-secondary" id="mcpRequestChangesBtn" data-admin-action="handleMcpRequestChanges">Send message &amp; wait</button>
+          <button type="button" class="btn btn-danger" data-admin-action="handleMcpDismiss">Dismiss</button>
           <button type="submit" class="btn btn-primary" id="mcpApproveBtn">Approve &amp; publish</button>
         </div>
       </form>
@@ -750,7 +750,7 @@
     <div class="modal-content modal-content--wide">
       <h3>Edit catalog listing</h3>
       <div id="mcpCatalogEditAlert"></div>
-      <form id="mcpCatalogEditForm" onsubmit="handleMcpCatalogSave(event)">
+      <form id="mcpCatalogEditForm" data-admin-submit="handleMcpCatalogSave">
         <input type="hidden" id="mcpEditOriginalSlug" />
         <div class="form-group">
           <label>Server name</label>
@@ -810,12 +810,12 @@
           <label>Tools (one per line: <code>tool_name — description</code>)</label>
           <textarea id="mcpEditTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
           <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-            <button type="button" class="btn btn-sm btn-secondary" id="mcpEditRefreshToolsBtn" onclick="refreshMcpToolsFromLive('edit')">Refresh tools from live endpoint</button>
+            <button type="button" class="btn btn-sm btn-secondary" id="mcpEditRefreshToolsBtn" data-admin-action="refreshMcpToolsFromLive" data-admin-args="%5B%22edit%22%5D">Refresh tools from live endpoint</button>
             <span id="mcpEditRefreshToolsStatus" style="font-size:12px;color:#8e8e93;"></span>
           </div>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('mcpCatalogEditModal')">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="closeModal" data-admin-args="%5B%22mcpCatalogEditModal%22%5D">Cancel</button>
           <button type="submit" class="btn btn-primary" id="mcpCatalogSaveBtn">Save changes</button>
         </div>
       </form>
@@ -826,13 +826,13 @@
   <div class="modal" id="blockIPModal">
     <div class="modal-content">
       <h3>Block IP Address</h3>
-      <form id="blockIPForm" onsubmit="handleBlockIP(event)">
+      <form id="blockIPForm" data-admin-submit="handleBlockIP">
         <div class="form-group">
           <label>Duration (hours)</label>
           <input type="number" id="blockDuration" value="24" min="1" required>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('blockIPModal')">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="closeModal" data-admin-args="%5B%22blockIPModal%22%5D">Cancel</button>
           <button type="submit" class="btn btn-danger">Block IP</button>
         </div>
       </form>
@@ -840,6 +840,46 @@
   </div>
 
   <script>
+
+    function adminInvoke(name, args) {
+      const encoded = encodeURIComponent(JSON.stringify(args || []));
+      return 'data-admin-action="' + name + '" data-admin-args="' + encoded + '"';
+    }
+
+    function readAdminArgs(el) {
+      const raw = el.getAttribute('data-admin-args');
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(decodeURIComponent(raw));
+        return Array.isArray(parsed) ? parsed : [parsed];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    document.addEventListener('click', (event) => {
+      const el = event.target && event.target.closest && event.target.closest('[data-admin-action]');
+      if (!el) return;
+      const fn = window[el.getAttribute('data-admin-action')];
+      if (typeof fn !== 'function') return;
+      fn.apply(window, readAdminArgs(el));
+    });
+
+    document.addEventListener('submit', (event) => {
+      const form = event.target;
+      if (!form || !form.getAttribute) return;
+      const name = form.getAttribute('data-admin-submit');
+      if (!name) return;
+      const fn = window[name];
+      if (typeof fn === 'function') fn(event);
+    });
+
+    document.addEventListener('change', (event) => {
+      const el = event.target && event.target.closest && event.target.closest('[data-admin-change]');
+      if (!el) return;
+      const fn = window[el.getAttribute('data-admin-change')];
+      if (typeof fn === 'function') fn();
+    });
     let currentUserId = null;
     let currentUserEmail = null;
     let currentIP = null;
@@ -1092,10 +1132,10 @@
               <td>${statusBadges.join(' ')}</td>
               <td>${created}</td>
               <td>
-                <button class="btn btn-sm btn-primary" onclick="viewUser(${Number(user.id)})">View</button>
+                <button class="btn btn-sm btn-primary" ${adminInvoke('viewUser', [Number(user.id)])}>View</button>
                 ${user.is_blocked 
-                  ? `<button class="btn btn-sm btn-secondary" onclick="unblockUser(${user.id})">Unblock</button>`
-                  : `<button class="btn btn-sm btn-danger" onclick="openBlockUserModal(${user.id})">Block</button>`
+                  ? `<button class="btn btn-sm btn-secondary" ${adminInvoke('unblockUser', [user.id])}>Unblock</button>`
+                  : `<button class="btn btn-sm btn-danger" ${adminInvoke('openBlockUserModal', [user.id])}>Block</button>`
                 }
               </td>
             </tr>
@@ -1155,10 +1195,10 @@
               <td>${c.approved ? '<span class="badge admin">Approved</span>' : '<span class="badge blocked">Hidden</span>'}</td>
               <td>${new Date(c.created_at).toLocaleString()}</td>
               <td>
-                <button class="btn btn-sm btn-secondary" onclick="toggleCommentApproval(${c.id}, ${c.approved ? 'false' : 'true'})">
+                <button class="btn btn-sm btn-secondary" ${adminInvoke('toggleCommentApproval', [c.id, c.approved ? false : true])}>
                   ${c.approved ? 'Hide' : 'Approve'}
                 </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteComment(${c.id})">Delete</button>
+                <button class="btn btn-sm btn-danger" ${adminInvoke('deleteComment', [c.id])}>Delete</button>
               </td>
             </tr>
           `;
@@ -1499,10 +1539,10 @@
             ${customLimits 
               ? `<p>Daily: ${Number(customLimits.daily_limit)}, Hourly: ${Number(customLimits.hourly_limit)}</p>
                  ${customLimits.notes ? `<p><strong>Notes:</strong> ${escapeHtml(customLimits.notes)}</p>` : ''}
-                 <button class="btn btn-sm btn-secondary" onclick="removeCustomLimits(${Number(userId)})">Remove Custom Limits</button>`
+                 <button class="btn btn-sm btn-secondary" ${adminInvoke('removeCustomLimits', [Number(userId)])}>Remove Custom Limits</button>`
               : '<p>No custom limits set</p>'
             }
-            <button class="btn btn-sm btn-primary" onclick="openLimitsModal(${Number(userId)})" style="margin-top: 8px;">Set Custom Limits</button>
+            <button class="btn btn-sm btn-primary" ${adminInvoke('openLimitsModal', [Number(userId)])} style="margin-top: 8px;">Set Custom Limits</button>
           </div>
           
           <div>
@@ -1527,12 +1567,12 @@
           </div>
           
           <div class="form-actions" style="margin-top: 24px;">
-            <button class="btn btn-secondary" onclick="closeModal('userModal')">Close</button>
+            <button class="btn btn-secondary" ${adminInvoke('closeModal', ['userModal'])}>Close</button>
             ${user.is_blocked 
-              ? `<button class="btn btn-primary" onclick="unblockUser(${userId})">Unblock User</button>`
-              : `<button class="btn btn-danger" onclick="openBlockUserModal(${userId})">Block User</button>`
+              ? `<button class="btn btn-primary" ${adminInvoke('unblockUser', [userId])}>Unblock User</button>`
+              : `<button class="btn btn-danger" ${adminInvoke('openBlockUserModal', [userId])}>Block User</button>`
             }
-            <button class="btn btn-primary" onclick="toggleAdminStatus(${userId}, ${!user.is_admin})">
+            <button class="btn btn-primary" ${adminInvoke('toggleAdminStatus', [userId, !user.is_admin])}>
               ${user.is_admin ? 'Remove Admin' : 'Make Admin'}
             </button>
           </div>
@@ -1700,10 +1740,10 @@
           </div>
           
           <div class="form-actions" style="margin-top: 24px;">
-            <button class="btn btn-secondary" onclick="closeModal('userModal')">Close</button>
+            <button class="btn btn-secondary" ${adminInvoke('closeModal', ['userModal'])}>Close</button>
             ${data.isBlocked 
-              ? `<button class="btn btn-primary" onclick="unblockIP('${escapeJsString(ipAddress)}')">Unblock IP</button>`
-              : `<button class="btn btn-danger" onclick="openBlockIPModal('${escapeJsString(ipAddress)}')">Block IP</button>`
+              ? `<button class="btn btn-primary" ${adminInvoke('unblockIP', [ipAddress])}>Unblock IP</button>`
+              : `<button class="btn btn-danger" ${adminInvoke('openBlockIPModal', [ipAddress])}>Block IP</button>`
             }
           </div>
         `;
@@ -1833,7 +1873,7 @@
                 <td>${escapeHtml(user.name || '-')}</td>
                 <td>${escapeHtml(user.email || '-')}</td>
                 <td>${user.activity_count || 0}</td>
-                <td><button class="btn btn-sm btn-primary" onclick="viewUser(${Number(user.id)})">View</button></td>
+                <td><button class="btn btn-sm btn-primary" ${adminInvoke('viewUser', [Number(user.id)])}>View</button></td>
               </tr>
             `;
           });
@@ -1853,7 +1893,7 @@
                 <td>${escapeHtml(ip.ip_address)}</td>
                 <td>${ip.activity_count}</td>
                 <td>${ip.unique_users || 0}</td>
-                <td><button class="btn btn-sm btn-primary" onclick="viewIP('${escapeJsString(ip.ip_address)}')">View</button></td>
+                <td><button class="btn btn-sm btn-primary" ${adminInvoke('viewIP', [ip.ip_address])}>View</button></td>
               </tr>
             `;
           });
@@ -2005,10 +2045,10 @@
             <td>${escapeHtml(item.source || '')}</td>
             <td>${item.matched_server_slug ? `<a href="/mcp/${escapeHtml(item.matched_server_slug)}">${escapeHtml(item.matched_server_name)}</a>` : '—'}</td>
             <td style="white-space:nowrap;">
-              <button class="btn btn-sm btn-secondary" onclick="setOtherNewsStatus(decodeURIComponent('${urlArg}'), 'pinned')">Pin</button>
-              <button class="btn btn-sm btn-secondary" onclick="setOtherNewsStatus(decodeURIComponent('${urlArg}'), 'hidden')">Hide</button>
-              <button class="btn btn-sm btn-secondary" onclick="setOtherNewsStatus(decodeURIComponent('${urlArg}'), 'published')">Publish</button>
-              <button class="btn btn-sm btn-secondary" onclick="resetOtherNewsStatus(decodeURIComponent('${urlArg}'))">Reset</button>
+              <button class="btn btn-sm btn-secondary" ${adminInvoke('setOtherNewsStatus', [decodeURIComponent(urlArg), 'pinned'])}>Pin</button>
+              <button class="btn btn-sm btn-secondary" ${adminInvoke('setOtherNewsStatus', [decodeURIComponent(urlArg), 'hidden'])}>Hide</button>
+              <button class="btn btn-sm btn-secondary" ${adminInvoke('setOtherNewsStatus', [decodeURIComponent(urlArg), 'published'])}>Publish</button>
+              <button class="btn btn-sm btn-secondary" ${adminInvoke('resetOtherNewsStatus', [decodeURIComponent(urlArg)])}>Reset</button>
             </td>
           </tr>`;
         }
@@ -2082,7 +2122,7 @@
             <td>${row.toolCount || 0}</td>
             <td>${mcpStatusBadge(row.reviewStatus)}</td>
             <td>${scanCell}</td>
-            <td><button class="btn btn-sm btn-secondary" onclick="openMcpReview('${escapeJsString(row.id)}')">Review</button></td>
+            <td><button class="btn btn-sm btn-secondary" ${adminInvoke('openMcpReview', [row.id])}>Review</button></td>
           </tr>`;
         }
         html += '</tbody></table>';
@@ -2348,7 +2388,7 @@
             <td>${escapeHtml(row.transport || '')}</td>
             <td>${row.toolCount || 0}</td>
             <td>${sourceLabel}</td>
-            <td><button class="btn btn-sm btn-secondary" onclick="openMcpCatalogEdit('${escapeJsString(row.slug)}')">Edit</button></td>
+            <td><button class="btn btn-sm btn-secondary" ${adminInvoke('openMcpCatalogEdit', [row.slug])}>Edit</button></td>
           </tr>`;
         }
         html += '</tbody></table>';
@@ -2519,11 +2559,11 @@
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
                   <a class="btn btn-secondary" href="/recipes/${encodeURIComponent(r.slug)}/preview" target="_blank" rel="noopener">Preview</a>
-                  <button class="btn btn-primary" onclick="approveRecipe(${r.id})">Approve</button>
-                  <button class="btn btn-secondary" onclick="rejectRecipe(${r.id})">Reject</button>
-                  <button class="btn btn-secondary" onclick="verifyRecipe(${r.id}, true)">Mark verified</button>
-                  <button class="btn btn-secondary" onclick="verifyRecipe(${r.id}, false)">Clear verified</button>
-                  <button class="btn btn-secondary" onclick="unpublishRecipe(${r.id})">Unpublish</button>
+                  <button class="btn btn-primary" ${adminInvoke('approveRecipe', [r.id])}>Approve</button>
+                  <button class="btn btn-secondary" ${adminInvoke('rejectRecipe', [r.id])}>Reject</button>
+                  <button class="btn btn-secondary" ${adminInvoke('verifyRecipe', [r.id, true])}>Mark verified</button>
+                  <button class="btn btn-secondary" ${adminInvoke('verifyRecipe', [r.id, false])}>Clear verified</button>
+                  <button class="btn btn-secondary" ${adminInvoke('unpublishRecipe', [r.id])}>Unpublish</button>
                 </div>
               </div>
             </div>
@@ -2544,8 +2584,8 @@
                     <td>${escapeHtml(ir.reporter_email || ir.reporter_name || '')}</td>
                     <td>${escapeHtml(ir.details || '')}</td>
                     <td>
-                      <button class="btn btn-primary" onclick="resolveRecipeReport(${ir.id}, 'resolved')">Resolve</button>
-                      <button class="btn btn-secondary" onclick="resolveRecipeReport(${ir.id}, 'dismissed')">Dismiss</button>
+                      <button class="btn btn-primary" ${adminInvoke('resolveRecipeReport', [ir.id, 'resolved'])}>Resolve</button>
+                      <button class="btn btn-secondary" ${adminInvoke('resolveRecipeReport', [ir.id, 'dismissed'])}>Dismiss</button>
                     </td>
                   </tr>
                 `).join('')}

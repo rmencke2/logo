@@ -1,6 +1,6 @@
 <!-- Footer -->
 <div id="footer-container"></div>
-<script>
+<script nonce="<%= cspNonce %>">
   // Load footer
   function loadFooter() {
     const footerContainer = document.getElementById('footer-container');
@@ -12,6 +12,24 @@
       })
       .then(html => {
         footerContainer.innerHTML = html;
+        const footerSelector = footerContainer.querySelector('#footerLanguageSelector');
+        if (!footerSelector || footerSelector.dataset.bound === '1') return;
+        footerSelector.dataset.bound = '1';
+        const mainSelector = document.getElementById('languageSelector');
+        if (mainSelector) {
+          footerSelector.value = mainSelector.value || 'en';
+          mainSelector.addEventListener('change', () => {
+            footerSelector.value = mainSelector.value;
+          });
+        }
+        footerSelector.addEventListener('change', () => {
+          if (mainSelector) mainSelector.value = footerSelector.value;
+          if (window.i18n && typeof window.i18n.setLanguage === 'function') {
+            window.i18n.setLanguage(footerSelector.value);
+          } else {
+            window.location.href = '/?lang=' + encodeURIComponent(footerSelector.value);
+          }
+        });
       })
       .catch(err => console.error('Error loading footer:', err));
   }

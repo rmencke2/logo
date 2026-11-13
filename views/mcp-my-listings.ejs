@@ -14,7 +14,7 @@
   </head>
   <body>
     <%- include('partials/site-header', { activeNav: 'mcp' }) %>
-    <script src="/js/site-header.js" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/site-header.js" defer></script>
 
     <main class="mcp-submit-page">
       <header class="mcp-submit-header">
@@ -31,6 +31,6 @@
       </div>
     </main>
 
-    <script src="/js/mcp-my-listings.js" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-my-listings.js" defer></script>
   </body>
 </html>

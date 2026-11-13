@@ -155,7 +155,7 @@
         <div class="user-name" id="userName">User</div>
         <div class="usage-info" id="usageInfo" data-i18n="usage.loading">Loading...</div>
       </div>
-      <button class="auth-btn secondary" onclick="logout()" data-i18n="auth.logout">Logout</button>
+      <button type="button" class="auth-btn secondary" id="legacyLogoutBtn" data-i18n="auth.logout">Logout</button>
     </div>
     <script src="/js/site-header.js" defer></script>
 
@@ -766,7 +766,7 @@
               <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;" data-i18n="nextSteps.websiteHostingDesc">
                 Get your business online with a professional website.
               </p>
-              <button type="button" data-i18n="nextSteps.getStarted" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Website builder coming soon!')">
+              <button type="button" id="websiteBuilderSoonBtn" data-i18n="nextSteps.getStarted" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
                 Get Started
               </button>
             </div>
@@ -775,7 +775,7 @@
               <p style="font-size: 13px; color: #8e8e93; margin-bottom: 12px; line-height: 1.4;" data-i18n="nextSteps.socialMediaKitDesc">
                 Business cards, social profiles, and brand guidelines.
               </p>
-              <button type="button" data-i18n="nextSteps.learnMore" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onclick="alert('Social media kit coming soon!')">
+              <button type="button" id="socialKitSoonBtn" data-i18n="nextSteps.learnMore" style="width: 100%; padding: 10px 16px; background: #1f1f1f; border: 1px solid #2a2a2a; color: #ececec; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
                 Learn More
               </button>
             </div>
@@ -985,10 +985,10 @@
         <h2 data-i18n="authGate.title">Sign Up to Get Started</h2>
         <p data-i18n="authGate.description">Create a free account to start generating professional logos and favicons for your business</p>
         <div class="auth-gate-buttons">
-          <button class="cta-button primary" onclick="if(typeof window.openSignupModal === 'function') { window.openSignupModal(); window.closeAuthGate(); }" data-i18n="authGate.signup">Sign Up Free</button>
-          <button class="cta-button secondary" onclick="if(typeof window.openLoginModal === 'function') { window.openLoginModal(); window.closeAuthGate(); }" data-i18n="authGate.login">Log In</button>
+          <button type="button" class="cta-button primary" id="authGateSignupBtn" data-i18n="authGate.signup">Sign Up Free</button>
+          <button type="button" class="cta-button secondary" id="authGateLoginBtn" data-i18n="authGate.login">Log In</button>
         </div>
-        <button onclick="if(typeof window.closeAuthGate === 'function') { window.closeAuthGate(); }" style="margin-top: 24px; background: none; border: none; color: #8e8e93; font-size: 14px; cursor: pointer; text-decoration: underline;" data-i18n="authGate.close">Maybe later</button>
+        <button type="button" id="authGateCloseBtn" style="margin-top: 24px; background: none; border: none; color: #8e8e93; font-size: 14px; cursor: pointer; text-decoration: underline;" data-i18n="authGate.close">Maybe later</button>
       </div>
     </div>
 
@@ -998,7 +998,7 @@
     <div class="modal" id="loginModal">
       <div class="modal-content">
         <div class="modal-header">
-          <button class="modal-close" onclick="if(typeof window.closeLoginModal === 'function') { window.closeLoginModal(); }">&times;</button>
+          <button type="button" class="modal-close" id="loginModalCloseBtn">&times;</button>
           <h2 data-i18n="auth.login">Log In</h2>
           <p class="subtitle" data-i18n="auth.signInToAccount">Sign in to your account</p>
         </div>
@@ -1007,7 +1007,7 @@
           <a href="/auth/google" class="oauth-btn" data-i18n="auth.continueWithGoogle">Sign in with Google</a>
         </div>
         <div class="divider" data-i18n="modal.or">or</div>
-        <form id="loginForm" onsubmit="handleLogin(event)">
+        <form id="loginForm">
           <div class="form-group">
             <label for="loginEmail" data-i18n="auth.email">Email</label>
             <input type="email" id="loginEmail" data-i18n="auth.emailPlaceholder" placeholder="Enter your email" required />
@@ -1019,10 +1019,10 @@
           <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;" data-i18n="auth.login">Log In</button>
         </form>
         <div style="text-align: center; margin-top: 16px;">
-          <a href="#" onclick="if(typeof window.openForgotPasswordModal === 'function' && typeof window.closeLoginModal === 'function') { window.openForgotPasswordModal(); window.closeLoginModal(); }" style="color: #10a37f; font-size: 14px;" data-i18n="auth.forgotPassword">Forgot password?</a>
+          <a href="#" id="forgotPasswordLink" style="color: #10a37f; font-size: 14px;" data-i18n="auth.forgotPassword">Forgot password?</a>
         </div>
         <div style="text-align: center; margin-top: 16px; font-size: 14px; color: #8e8e93;">
-          <span data-i18n="auth.dontHaveAccount">Don't have an account?</span> <a href="#" onclick="if(typeof window.closeLoginModal === 'function' && typeof window.openSignupModal === 'function') { window.closeLoginModal(); window.openSignupModal(); }" style="color: #10a37f;" data-i18n="auth.signup">Sign up</a>
+          <span data-i18n="auth.dontHaveAccount">Don't have an account?</span> <a href="#" id="loginToSignupLink" style="color: #10a37f;" data-i18n="auth.signup">Sign up</a>
         </div>
       </div>
     </div>
@@ -1031,7 +1031,7 @@
     <div class="modal" id="signupModal">
       <div class="modal-content">
         <div class="modal-header">
-          <button class="modal-close" onclick="if(typeof window.closeSignupModal === 'function') { window.closeSignupModal(); }">&times;</button>
+          <button type="button" class="modal-close" id="signupModalCloseBtn">&times;</button>
           <h2>Sign Up</h2>
           <p class="subtitle">Create your free account</p>
         </div>
@@ -1040,7 +1040,7 @@
           <a href="/auth/google" class="oauth-btn">Sign in with Google</a>
         </div>
         <div class="divider">or</div>
-        <form id="signupForm" onsubmit="handleSignup(event)">
+        <form id="signupForm">
           <div class="form-group">
             <label for="signupEmail">Email address</label>
             <input type="email" id="signupEmail" placeholder="Enter your email" required />
@@ -1063,7 +1063,7 @@
           <button type="submit" class="auth-btn primary" style="width: 100%; margin-top: 8px;">Sign Up</button>
         </form>
         <div style="text-align: center; margin-top: 16px; font-size: 14px; color: #8e8e93;">
-          Already have an account? <a href="#" onclick="if(typeof window.closeSignupModal === 'function' && typeof window.openLoginModal === 'function') { window.closeSignupModal(); window.openLoginModal(); }" style="color: #10a37f;">Sign in here</a>
+          Already have an account? <a href="#" id="signupToLoginLink" style="color: #10a37f;">Sign in here</a>
         </div>
       </div>
     </div>
@@ -1072,12 +1072,12 @@
     <div class="modal" id="forgotPasswordModal">
       <div class="modal-content">
         <div class="modal-header">
-          <button class="modal-close" onclick="if(typeof window.closeForgotPasswordModal === 'function') { window.closeForgotPasswordModal(); }">&times;</button>
+          <button type="button" class="modal-close" id="forgotPasswordModalCloseBtn">&times;</button>
           <h2 data-i18n="auth.resetPassword">Reset Password</h2>
           <p class="subtitle" data-i18n="auth.resetPasswordSubtitle">Enter your email to receive a reset link</p>
         </div>
         <div id="forgotPasswordError"></div>
-        <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
+        <form id="forgotPasswordForm">
           <div class="form-group">
             <label for="forgotPasswordEmail" data-i18n="auth.email">Email</label>
             <input type="email" id="forgotPasswordEmail" data-i18n="auth.emailPlaceholder" placeholder="Enter your email" required />

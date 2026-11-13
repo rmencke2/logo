@@ -105,8 +105,8 @@ test "$STATUS" != "unreachable"</code></pre>
 
     <%- include('partials/registry-footer') %>
 
-    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/mcp-setup-page.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/mcp-probe-page.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-setup-page.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-probe-page.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

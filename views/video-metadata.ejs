@@ -120,7 +120,7 @@
   <%- include('partials/footer-loader') %>
   <%- include('partials/auth-scripts') %>
 
-  <script>
+  <script nonce="<%= cspNonce %>">
     // File input handling
     const videoFileInput = document.getElementById('videoFileInput');
     const extractBtn = document.getElementById('extractBtn');

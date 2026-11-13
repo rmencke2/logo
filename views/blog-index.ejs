@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/insights-index.css?v=<%= assetVersion %>" />
-    <script type="application/ld+json">
+    <script nonce="<%= cspNonce %>" type="application/ld+json">
       <%- JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Blog',
@@ -127,8 +127,8 @@
 
     <%- include('partials/registry-footer') %>
 
-    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/insights-index.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/insights-index.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

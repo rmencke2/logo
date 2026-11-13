@@ -120,6 +120,6 @@
     </main>
     <%- include('partials/registry-footer') %>
     <%- include('partials/influzer-webmcp-script') %>
-    <script src="/js/influzer-webmcp-demo.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/influzer-webmcp-demo.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

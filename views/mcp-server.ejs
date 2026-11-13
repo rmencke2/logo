@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
     <% if (server) { %>
-      <script type="application/ld+json">
+      <script nonce="<%= cspNonce %>" type="application/ld+json">
         <%- JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
@@ -64,7 +64,7 @@
             <div class="mcp-detail-icon" aria-hidden="true">
               <% if (server.logoUrl) { %>
                 <img src="<%= server.logoUrl %>" alt="" width="64" height="64" loading="eager"
-                  onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+                  data-hide-on-error="1" />
                 <span style="display:none;width:100%;height:100%;place-items:center;"><%= server.logoInitial || server.name.charAt(0) %></span>
               <% } else { %>
                 <%= server.logoInitial || server.name.charAt(0).toUpperCase() %>
@@ -445,8 +445,8 @@
 
     <%- include('partials/registry-footer') %>
 
-    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/mcp-server-page.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-server-page.js?v=<%= assetVersion %>" defer></script>
   </body>
 </html>

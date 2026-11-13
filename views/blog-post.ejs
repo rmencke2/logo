@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/css/article-page.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-discovery-promo.css?v=<%= assetVersion %>" />
     <% if (post) { %>
-      <script type="application/ld+json">
+      <script nonce="<%= cspNonce %>" type="application/ld+json">
         <%- JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
@@ -47,7 +47,7 @@
       </script>
     <% } %>
     <% if (turnstileSiteKey) { %>
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+      <script nonce="<%= cspNonce %>" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <% } %>
   </head>
   <body class="registry-page">
@@ -193,17 +193,17 @@
 
     <%- include('partials/registry-footer') %>
 
-    <script src="/js/registry.js?v=<%= assetVersion %>" defer></script>
-    <script src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
     <% if (post) { %>
-      <script src="/js/article-page.js?v=<%= assetVersion %>" defer></script>
-      <script>
+      <script nonce="<%= cspNonce %>" src="/js/article-page.js?v=<%= assetVersion %>" defer></script>
+      <script nonce="<%= cspNonce %>">
         window.__ARTICLE_FEEDBACK__ = {
           slug: <%- JSON.stringify(post.slug) %>,
           hasTurnstile: <%- JSON.stringify(Boolean(turnstileSiteKey)) %>,
         };
       </script>
-      <script src="/js/article-feedback.js?v=<%= assetVersion %>" defer></script>
+      <script nonce="<%= cspNonce %>" src="/js/article-feedback.js?v=<%= assetVersion %>" defer></script>
     <% } %>
   </body>
 </html>

@@ -14,7 +14,7 @@
   </head>
   <body>
     <%- include('partials/site-header', { activeNav: '' }) %>
-    <script src="/js/site-header.js" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/site-header.js" defer></script>
 
     <main class="login-page" id="main">
       <div class="login-card">
@@ -85,7 +85,7 @@
       </div>
     </main>
 
-    <script>
+    <script nonce="<%= cspNonce %>">
       (function () {
         const params = new URLSearchParams(window.location.search);
         const redirectTo = params.get('redirect') || '/';
