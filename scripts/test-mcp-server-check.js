@@ -411,6 +411,63 @@ async function main() {
   assert.match(signedOut, /Sign in to check a server/);
   assert.equal(signedOut.includes('name="url"'), false);
 
+  const flagged = buildCheckReport({
+    url: 'https://example.com/mcp',
+    catalog: [],
+    live: liveOk([
+      {
+        name: 'delete_row',
+        description: 'Delete a row.',
+        inputSchema: {
+          type: 'object',
+          required: ['id'],
+          properties: { id: { type: 'string', description: 'Row id' } },
+        },
+        annotations: { destructiveHint: true },
+      },
+      {
+        name: 'archive_row',
+        description: 'Archive a row.',
+        inputSchema: {
+          type: 'object',
+          required: ['id'],
+          properties: { id: { type: 'string' } },
+        },
+        annotations: { destructiveHint: true, idempotentHint: true },
+      },
+      {
+        name: 'purge_row',
+        description: 'Purge a row.',
+        inputSchema: {
+          type: 'object',
+          required: ['id'],
+          properties: { id: { type: 'string' } },
+        },
+        annotations: { destructiveHint: true, idempotentHint: false },
+      },
+      bare,
+    ]),
+  });
+  const deleteRow = flagged.tools.find((tool) => tool.name === 'delete_row');
+  const archiveRow = flagged.tools.find((tool) => tool.name === 'archive_row');
+  const purgeRow = flagged.tools.find((tool) => tool.name === 'purge_row');
+  const bareRow = flagged.tools.find((tool) => tool.name === 'do_thing');
+  assert.equal(deleteRow.trust_flag, 'Destructive, with no idempotency note');
+  assert.equal(purgeRow.trust_flag, 'Destructive, with no idempotency note');
+  assert.equal(archiveRow.trust_flag, null);
+  assert.equal(bareRow.trust_flag, null);
+  assert.equal(deleteRow.gaps.includes('Missing annotations'), false);
+  assert.equal(deleteRow.gaps.includes('Destructive, with no idempotency note'), false);
+  assert.ok(bareRow.gaps.includes('Missing annotations'));
+  const flaggedHtml = await render({ ...flagged, id: 'a'.repeat(24) });
+  assert.equal(flaggedHtml.split('Destructive, with no idempotency note').length - 1, 2);
+  assert.match(flaggedHtml, /Missing annotations/);
+  assert.match(flaggedHtml, /<span>This target is disposable<\/span>/);
+  assert.match(flaggedHtml, /method="post" action="\/mcp\/check\/a{24}\/call"/);
+  assert.equal(flaggedHtml.includes('?token='), false);
+  assert.doesNotMatch(flaggedHtml, /onclick=/);
+  assert.match(flaggedHtml, /<script nonce="test-nonce" src="\/js\/mcp-check-page\.js/);
+
   await assertHttpGate();
 
   console.log(

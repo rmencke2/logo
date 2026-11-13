@@ -12,6 +12,11 @@
  *
  * A bearer token is sent only on the hop that matches the host the user
  * named. It is never stored, logged, or placed on the result URL.
+ *
+ * A saved check can also try one listed tool. Read-only tools return their
+ * content. Any other tool is called only after the caller confirms the
+ * target is disposable and names the record. The verdict is the before/after
+ * read-back, not the tool payload. That call's bearer token is not stored.
  */
 
 const crypto = require('crypto');
@@ -22,6 +27,12 @@ const { inspectLiveMcpServer } = require('../scripts/utils/mcp-live-client');
 const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
 const { stripHiddenUnicode } = require('./mcpSourceSafety');
 const { assertSafePublicUrl } = require('./webmcp/ssrf');
+const {
+  assignReadBackDefaults,
+  decorateCheckTools,
+  executeToolTrial,
+  trustFlagFor,
+} = require('./mcpToolTrial');
 const { findMcpServersByEndpoint } = require('./mcpDirectoryService');
 const { getOptionalAuthUser } = require('../auth');
 const { ensureCsrfToken } = require('../middleware/csrf');
@@ -176,6 +187,9 @@ function reviewTool(raw) {
     }
   }
 
+  const destructive = annotations.destructiveHint === true;
+  const idempotent = annotations.idempotentHint === true;
+  const readOnly = annotations.readOnlyHint === true && !destructive;
   const missingDescription = !description;
   const missingSchema = !schemaObject || names.length === 0;
   const missingAnnotations = hints.every((hint) => !hint.set);
@@ -204,6 +218,9 @@ function reviewTool(raw) {
     hints,
     other_annotations: other.slice(0, 12),
     missing_annotations: missingAnnotations,
+    destructive,
+    read_only: readOnly,
+    trust_flag: trustFlagFor(destructive, idempotent),
     output_schema: raw.outputSchema || raw.output_schema ? 'present' : 'absent',
     gaps,
   };
@@ -321,6 +338,7 @@ function buildCheckReport(input) {
       value: clip(redact(item.value, secret), 120),
     })),
   }));
+  assignReadBackDefaults(tools);
   const counts = toolGaps(tools);
   const catalog = Array.isArray(input.catalog) ? input.catalog : [];
   const url = displayUrl(input.url, secret);
@@ -672,6 +690,8 @@ async function getStoredCheck(id) {
     server: {},
     quality: null,
   };
+  decorateCheckTools(report.tools);
+  if (!Array.isArray(report.trials)) report.trials = [];
   return { user_id: row.user_id, report };
 }
 
@@ -683,10 +703,14 @@ function userMayCheck(user) {
 
 function getCheckAssetVersion() {
   try {
-    const files = ['home.css', 'mcp-setup-page.css'];
+    const files = [
+      ['css', 'home.css'],
+      ['css', 'mcp-setup-page.css'],
+      ['js', 'mcp-check-page.js'],
+    ];
     let latest = 0;
-    for (const file of files) {
-      latest = Math.max(latest, fs.statSync(path.join(__dirname, '..', 'public', 'css', file)).mtimeMs);
+    for (const [dir, file] of files) {
+      latest = Math.max(latest, fs.statSync(path.join(__dirname, '..', 'public', dir, file)).mtimeMs);
     }
     return String(Math.floor(latest));
   } catch {
@@ -718,6 +742,9 @@ function ownsCheck(user, stored) {
   return Number(stored.user_id) === Number(user.id);
 }
 
+const CALL_LIMIT = Number(process.env.MCP_CHECK_CALL_RATE_LIMIT) || 10;
+const CALL_WINDOW_MS = 60 * 60 * 1000;
+
 const checkLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: Number(process.env.MCP_CHECK_RATE_LIMIT) || 20,
@@ -734,6 +761,32 @@ const checkLimiter = rateLimit({
     return res.status(429).render('mcp-check', formLocals(req, { canCheck: true, formError: message, noindex: true }));
   },
 });
+
+const callLimiter = rateLimit({
+  windowMs: CALL_WINDOW_MS,
+  max: CALL_LIMIT,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipFailedRequests: true,
+  keyGenerator(req) {
+    return `mcp-check-call:${req.session?.userId || getClientIp(req)}`;
+  },
+  handler(req, res) {
+    const message = `Too many tool trials from this account. You can try ${CALL_LIMIT} tools an hour.`;
+    if (wantsJson(req)) return res.status(429).json({ ok: false, error: 'rate_limited', message });
+    return res.status(429).render('mcp-check', formLocals(req, {
+      canCheck: true,
+      formError: message,
+      noindex: true,
+    }));
+  },
+});
+
+let trialClientForTests = null;
+
+function setTrialClientForTests(fn) {
+  trialClientForTests = typeof fn === 'function' ? fn : null;
+}
 
 function wantsJson(req) {
   return String(req.path || '').startsWith('/api/');
@@ -837,14 +890,149 @@ async function handleCheckGet(req, res) {
       return 'MCP server';
     }
   })();
+  const canTry = userMayCheck(user) || Boolean(user.is_admin);
   return res.render('mcp-check', formLocals(req, {
     title: `MCP check: ${host} — Influzer.ai`,
     description: 'Tools, annotations, and verification grade for a checked MCP server.',
     canonicalUrl: `${SITE_BASE}${CHECK_PATH}/${id}`,
     canCheck: userMayCheck(user),
+    csrfToken: canTry ? ensureCsrfToken(req) : '',
     check: stored.report,
     noindex: true,
   }));
+}
+
+function mayTryTool(user) {
+  return Boolean(user && (userMayCheck(user) || user.is_admin));
+}
+
+async function saveTrial(id, trial, secret) {
+  await ensureCheckTables();
+  const db = await getDatabase();
+  const row = await getDbRow(db, 'SELECT result_json FROM mcp_server_checks WHERE id = ?', [id]);
+  const report = safeJson(row?.result_json);
+  if (!report) {
+    const err = new Error('This check could not be read back.');
+    err.status = 404;
+    err.code = 'not_found';
+    throw err;
+  }
+  const hidden = String(secret || '');
+  let clean = trial;
+  if (hidden) {
+    let text = '';
+    try {
+      text = JSON.stringify(trial);
+    } catch {
+      text = '';
+    }
+    if (text.includes(hidden)) clean = JSON.parse(text.split(hidden).join('[redacted]'));
+  }
+  delete clean.secret;
+  delete clean.bearerToken;
+  delete clean.token;
+  report.trials = Array.isArray(report.trials) ? report.trials : [];
+  report.trials.push(clean);
+  if (report.trials.length > 40) report.trials = report.trials.slice(-40);
+  decorateCheckTools(report.tools);
+  let serialized = JSON.stringify(report);
+  if (hidden && serialized.includes(hidden)) serialized = serialized.split(hidden).join('[redacted]');
+  await runDb(db, 'UPDATE mcp_server_checks SET result_json = ? WHERE id = ?', [serialized, id]);
+  return safeJson(serialized);
+}
+
+function checkHost(report) {
+  try {
+    return new URL(report.url).host;
+  } catch {
+    return 'MCP server';
+  }
+}
+
+function trialPageLocals(req, user, stored, extras) {
+  const canTry = mayTryTool(user);
+  return formLocals(req, {
+    title: `MCP check: ${checkHost(stored.report)} — Influzer.ai`,
+    description: 'Tools, annotations, and verification grade for a checked MCP server.',
+    canonicalUrl: `${SITE_BASE}${CHECK_PATH}/${stored.report.id}`,
+    canCheck: userMayCheck(user),
+    csrfToken: canTry ? ensureCsrfToken(req) : '',
+    check: stored.report,
+    noindex: true,
+    ...extras,
+  });
+}
+
+async function handleTrialPost(req, res) {
+  const id = String(req.params.id || '');
+  const user = await getOptionalAuthUser(req);
+  if (!user) {
+    if (wantsJson(req)) {
+      return res.status(401).json({
+        ok: false,
+        error: 'auth_required',
+        message: 'Sign in with a verified account to try a tool.',
+      });
+    }
+    return res.redirect(302, `/login?redirect=${encodeURIComponent(`${CHECK_PATH}/${id}`)}`);
+  }
+  if (!mayTryTool(user)) {
+    const message = user.is_blocked
+      ? 'This account cannot try tools.'
+      : 'Verify your email before trying a tool. The trial connects to the checked server.';
+    if (wantsJson(req)) return res.status(403).json({ ok: false, error: 'verification_required', message });
+    return res.status(403).render('mcp-check', formLocals(req, { formError: message, noindex: true }));
+  }
+  const stored = await getStoredCheck(id);
+  if (!stored || !ownsCheck(user, stored)) {
+    if (wantsJson(req)) return res.status(404).json({ ok: false, error: 'not_found' });
+    return res.status(404).render('404', { title: 'Check not found' });
+  }
+  if (!csrfOk(req)) {
+    const message = 'The form expired. Refresh the page and submit it again.';
+    if (wantsJson(req)) return res.status(403).json({ ok: false, error: 'csrf', message });
+    return res.status(403).render('mcp-check', trialPageLocals(req, user, stored, { formError: message }));
+  }
+
+  const token = takeToken(req.body);
+  const tokenRead = readBearerToken(token);
+  if (tokenRead.error) {
+    if (wantsJson(req)) return res.status(400).json({ ok: false, error: 'token_invalid', message: tokenRead.error });
+    return res.status(400).render('mcp-check', trialPageLocals(req, user, stored, { formError: tokenRead.error }));
+  }
+
+  try {
+    const trial = await executeToolTrial({
+      report: stored.report,
+      toolName: req.body?.tool ?? req.body?.tool_name,
+      args: req.body?.arguments ?? req.body?.args ?? {},
+      recordId: req.body?.record_id ?? req.body?.recordId ?? '',
+      disposable: req.body?.disposable,
+      readBackName: req.body?.read_back ?? req.body?.readBack ?? '',
+      bearerToken: tokenRead.token,
+      callLiveMcpTools: trialClientForTests || undefined,
+    });
+    const report = await saveTrial(id, trial, tokenRead.token);
+    res.setHeader('Cache-Control', 'private, no-store');
+    if (wantsJson(req)) {
+      return res.status(200).json({
+        ok: true,
+        trial,
+        check: report,
+        page_path: `${CHECK_PATH}/${id}`,
+      });
+    }
+    return res.redirect(303, `${CHECK_PATH}/${id}`);
+  } catch (err) {
+    const message = err.status === 400 || err.status === 404
+      ? err.message
+      : 'The tool trial could not be saved. Try again.';
+    if (!err.status || err.status >= 500) console.error('MCP tool trial failed:', err.code || 'trial_failed');
+    if (wantsJson(req)) {
+      return res.status(err.status || 400).json({ ok: false, error: err.code || 'trial_failed', message });
+    }
+    return res.status(err.status || 400).render('mcp-check', trialPageLocals(req, user, stored, { formError: message }));
+  }
 }
 
 function registerMcpServerCheckRoutes(app) {
@@ -864,6 +1052,8 @@ function registerMcpServerCheckRoutes(app) {
 
   app.post(CHECK_PATH, checkLimiter, handleCheckPost);
   app.post('/api/mcp/v1/checks', checkLimiter, handleCheckPost);
+  app.post(`${CHECK_PATH}/:id/call`, callLimiter, handleTrialPost);
+  app.post('/api/mcp/v1/checks/:id/calls', callLimiter, handleTrialPost);
 
   app.get(`${CHECK_PATH}/:id`, handleCheckGet);
   app.get('/api/mcp/v1/checks/:id', async (req, res) => {
@@ -886,4 +1076,7 @@ module.exports = {
   reviewTools,
   reviewTool,
   userMayCheck,
+  setTrialClientForTests,
+  CALL_LIMIT,
+  CALL_WINDOW_MS,
 };

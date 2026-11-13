@@ -1,6 +1,8 @@
 /**
- * Minimal MCP HTTP client — initialize + tools/list against live server endpoints.
- * Supports JSON and SSE (streamable HTTP) responses.
+ * Minimal MCP HTTP client — initialize, tools/list, and tools/call against live
+ * server endpoints. Supports JSON and SSE (streamable HTTP) responses.
+ * tools/call uses this same POST helper. Redirects stay manual for callers
+ * that pass redirect: 'manual'.
  */
 
 const { normalizeTools } = require('./normalize');
@@ -548,9 +550,174 @@ async function inspectLiveMcpServer(endpoint, opts = {}) {
   });
 }
 
+/**
+ * initialize + notifications/initialized + one or more tools/call on the
+ * existing POST client. Does not follow redirects.
+ *
+ * @param {string} endpoint
+ * @param {{ name: string, arguments?: object, role?: string }[]} calls
+ * @param {{ timeoutMs?: number, bearerToken?: string, redirect?: RequestRedirect, clientInfo?: { name: string, version: string } }} [opts]
+ */
+async function callLiveMcpTools(endpoint, calls, opts = {}) {
+  const started = Date.now();
+  const finish = (result) => {
+    if (result && result.latency_ms == null) result.latency_ms = Math.max(0, Date.now() - started);
+    return result;
+  };
+  const callOpts = {
+    timeoutMs: opts.timeoutMs,
+    redirect: opts.redirect || 'manual',
+    bearerToken: opts.bearerToken,
+    clientInfo: opts.clientInfo,
+  };
+
+  if (!endpoint || !/^https?:\/\//i.test(endpoint)) {
+    return finish({ status: 'skipped', reason: 'no_http_endpoint', calls: [] });
+  }
+  if (!Array.isArray(calls) || calls.length === 0) {
+    return finish({ status: 'error', reason: 'No tool call was requested', calls: [] });
+  }
+
+  const initRes = await postMcpMessage(
+    endpoint,
+    {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'initialize',
+      params: {
+        protocolVersion: PROTOCOL_VERSION,
+        capabilities: {},
+        clientInfo: opts.clientInfo || CLIENT_INFO,
+      },
+    },
+    callOpts,
+  );
+
+  if (initRes.status >= 300 && initRes.status < 400) {
+    return finish({
+      status: 'redirect',
+      location: initRes.location,
+      httpStatus: initRes.status,
+      reason: 'initialize returned a redirect, which was not followed',
+      calls: [],
+    });
+  }
+  if (initRes.networkError) {
+    return finish({ status: 'unreachable', reason: initRes.networkError, calls: [], httpStatus: initRes.status });
+  }
+  if (initRes.authError) {
+    return finish({
+      status: 'auth_required',
+      reason: initRes.rawError || 'Authentication required',
+      calls: [],
+      httpStatus: initRes.status,
+    });
+  }
+  if (!initRes.ok) {
+    return finish({
+      status: 'error',
+      reason: humanizeHandshakeFailure(initRes),
+      calls: [],
+      httpStatus: initRes.status,
+    });
+  }
+
+  const initReply = pickJsonRpcReply(initRes.messages, 1);
+  if (initReply?.error || !initReply?.result) {
+    return finish({
+      status: 'error',
+      reason: initReply?.error?.message || 'initialize failed',
+      calls: [],
+    });
+  }
+
+  const sessionId = initRes.sessionId;
+  await postMcpMessage(
+    endpoint,
+    { jsonrpc: '2.0', method: 'notifications/initialized', params: {} },
+    followUpOpts(callOpts, sessionId),
+  );
+
+  const results = [];
+  for (let index = 0; index < calls.length; index += 1) {
+    const call = calls[index] || {};
+    const id = index + 2;
+    const args = call.arguments && typeof call.arguments === 'object' && !Array.isArray(call.arguments)
+      ? call.arguments
+      : {};
+    const res = await postMcpMessage(
+      endpoint,
+      {
+        jsonrpc: '2.0',
+        id,
+        method: 'tools/call',
+        params: { name: String(call.name || ''), arguments: args },
+      },
+      followUpOpts(callOpts, sessionId),
+    );
+    if (res.status >= 300 && res.status < 400) {
+      return finish({
+        status: 'redirect',
+        location: res.location,
+        httpStatus: res.status,
+        reason: 'tools/call returned a redirect, which was not followed',
+        calls: results,
+      });
+    }
+    if (res.networkError) {
+      return finish({
+        status: 'unreachable',
+        reason: res.networkError,
+        httpStatus: res.status,
+        calls: results,
+      });
+    }
+    if (res.authError) {
+      return finish({
+        status: 'auth_required',
+        reason: res.rawError || 'Authentication required',
+        httpStatus: res.status,
+        calls: results,
+      });
+    }
+    if (!res.ok) {
+      return finish({
+        status: 'error',
+        reason: res.rawError || `tools/call HTTP ${res.status}`,
+        httpStatus: res.status,
+        calls: results,
+      });
+    }
+    const reply = pickJsonRpcReply(res.messages, id);
+    if (reply?.error) {
+      results.push({
+        name: call.name,
+        role: call.role || null,
+        ok: false,
+        isError: true,
+        error: reply.error.message || 'tools/call failed',
+        result: null,
+      });
+      continue;
+    }
+    const result = reply?.result && typeof reply.result === 'object' ? reply.result : null;
+    results.push({
+      name: call.name,
+      role: call.role || null,
+      ok: true,
+      isError: Boolean(result?.isError),
+      error: result?.isError ? 'Tool reported an error' : null,
+      result,
+    });
+  }
+
+  return finish({ status: 'ok', httpStatus: 200, calls: results });
+}
+
 module.exports = {
   fetchLiveMcpTools,
   inspectLiveMcpServer,
+  callLiveMcpTools,
   parseMcpResponseBody,
   parseSseJsonMessages,
   looksLikeWebsiteOrCdnError,

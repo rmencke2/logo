@@ -43,6 +43,19 @@
     });
   }
 
+  document.querySelectorAll('.check-trial').forEach(function (trialForm) {
+    trialForm.addEventListener('submit', function () {
+      const action = trialForm.getAttribute('action') || '';
+      const clean = action.split('?')[0];
+      if (clean && clean !== action) trialForm.setAttribute('action', clean);
+      const button = trialForm.querySelector('button[type="submit"]');
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Trying…';
+      }
+    });
+  });
+
   if (!form || !submit) return;
 
   const prepareUrl = function () {

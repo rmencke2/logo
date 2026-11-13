@@ -99,6 +99,8 @@
         <% const server = check.server || {}; %>
         <% const summary = check.summary || {}; %>
         <% const tools = check.tools || []; %>
+        <% const canTryTool = Boolean(check.id && csrfToken); %>
+        <% const readBackChoices = tools.filter(function(candidate) { return candidate.read_only; }); %>
         <% const bannerClass = check.status === 'completed' && summary.tool_count ? 'check-banner--ok' : (check.status === 'rejected' || check.status === 'error' ? 'check-banner--bad' : 'check-banner--warn'); %>
 
         <p class="setup-lead">Result for <code><%= check.url %></code></p>
@@ -109,6 +111,12 @@
             <p>Did not follow redirect to <code><%= check.redirect_blocked %></code>.</p>
           <% } %>
         </div>
+        <% if (formError) { %>
+          <div class="check-banner check-banner--bad" role="alert">
+            <p class="check-banner__title">Tool was not called</p>
+            <p><%= formError %></p>
+          </div>
+        <% } %>
 
         <section class="check-facts" aria-label="Server facts">
           <h2 class="setup-prompts__title">Server</h2>
@@ -186,6 +194,7 @@
 
         <section aria-label="Tools">
           <h2 class="setup-prompts__title">Tools<% if (summary.tool_count) { %> (<%= summary.tool_count %>)<% } %></h2>
+          <p class="setup-note">The tool list and schemas are the server’s claim. A red flag is the trust signal.</p>
           <% if (summary.tools_truncated) { %>
             <p class="setup-note">The tool list was truncated. Showing the first <%= tools.length %>.</p>
           <% } %>
@@ -214,6 +223,9 @@
                 <% if (tool.title) { %><p class="check-tool__title"><%= tool.title %></p><% } %>
               </header>
               <div class="check-tool__status">
+                <% if (tool.trust_flag) { %>
+                  <p class="check-flag"><%= tool.trust_flag %></p>
+                <% } %>
                 <% if (tool.gaps && tool.gaps.length) { %>
                   <ul class="check-gaps">
                     <% tool.gaps.forEach(function(gap) { %><li class="check-gap"><%= gap %></li><% }); %>
@@ -268,6 +280,105 @@
                 <% } %>
                 <p class="setup-note">Output schema: <%= tool.output_schema === 'present' ? 'present' : 'not set' %>.</p>
               </section>
+              <% const toolTrials = (check.trials || []).filter(function(trial) { return trial.tool_name === tool.name; }).slice().reverse(); %>
+              <% if (toolTrials.length || canTryTool) { %>
+                <section class="check-tool__section check-try">
+                  <h4 class="check-subhead">Try this tool</h4>
+                  <% if (tool.read_only) { %>
+                    <p class="setup-note">This tool is marked read-only, so it can be tried now. The result shows the returned content.</p>
+                  <% } else { %>
+                    <p class="setup-note">This tool is not called until you confirm the target is disposable and name the record id. A write reads that record, calls the tool, then reads it again. The verdict is that difference. The tool’s own response is shown, and it is not the verdict.</p>
+                  <% } %>
+                  <% toolTrials.forEach(function(trial) { %>
+                    <article class="check-trial-result">
+                      <p class="check-trial-result__when"><%= trial.created_at %></p>
+                      <% if (trial.verdict) { %>
+                        <p class="check-verdict"><%= trial.verdict %></p>
+                      <% } %>
+                      <% if (trial.error) { %>
+                        <p class="check-trial-result__error"><%= trial.error %></p>
+                      <% } %>
+                      <% if (trial.record_id) { %>
+                        <p class="setup-note">Record id: <code><%= trial.record_id %></code></p>
+                      <% } %>
+                      <% if (trial.kind === 'read') { %>
+                        <h5 class="check-subhead">Returned content</h5>
+                        <pre class="setup-code"><code><%= trial.content_text || 'No content returned.' %></code></pre>
+                        <% if (trial.id_note) { %><p><%= trial.id_note %></p><% } %>
+                      <% } else { %>
+                        <% if (trial.read_back_tool) { %>
+                          <h5 class="check-subhead">Before</h5>
+                          <pre class="setup-code"><code><%= trial.before == null ? 'No record' : JSON.stringify(trial.before, null, 2) %></code></pre>
+                          <h5 class="check-subhead">After</h5>
+                          <pre class="setup-code"><code><%= trial.after == null ? 'No record' : JSON.stringify(trial.after, null, 2) %></code></pre>
+                          <h5 class="check-subhead">Field changes</h5>
+                          <% if (trial.diff && trial.diff.length) { %>
+                            <div class="check-table-wrap">
+                              <table class="check-table">
+                                <thead><tr><th>Field</th><th>Before</th><th>After</th></tr></thead>
+                                <tbody>
+                                  <% trial.diff.forEach(function(row) { %>
+                                    <tr>
+                                      <td><code><%= row.field %></code></td>
+                                      <td><%= typeof row.before === 'string' ? row.before : JSON.stringify(row.before) %></td>
+                                      <td><%= typeof row.after === 'string' ? row.after : JSON.stringify(row.after) %></td>
+                                    </tr>
+                                  <% }); %>
+                                </tbody>
+                              </table>
+                            </div>
+                          <% } else { %>
+                            <p class="setup-note">No fields changed.</p>
+                          <% } %>
+                          <p class="setup-note">Read back with <code><%= trial.read_back_tool %></code>.</p>
+                        <% } %>
+                        <h5 class="check-subhead">Tool response</h5>
+                        <p class="setup-note">This is the tool’s own payload. It is not the verdict.</p>
+                        <pre class="setup-code"><code><%= trial.payload == null ? 'No payload' : JSON.stringify(trial.payload, null, 2) %></code></pre>
+                      <% } %>
+                      <% if (trial.arguments) { %>
+                        <h5 class="check-subhead">Arguments sent</h5>
+                        <pre class="setup-code"><code><%= JSON.stringify(trial.arguments, null, 2) %></code></pre>
+                      <% } %>
+                    </article>
+                  <% }); %>
+                  <% if (canTryTool) { %>
+                    <form class="check-trial" method="post" action="/mcp/check/<%= check.id %>/call" autocomplete="off" data-tool="<%= tool.name %>">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                      <input type="hidden" name="tool" value="<%= tool.name %>" />
+                      <label class="probe-form__label" for="args-<%= tool.name %>">Arguments (JSON)</label>
+                      <textarea class="probe-form__input check-trial__args" id="args-<%= tool.name %>" name="arguments" rows="5" maxlength="20000" spellcheck="false">{}</textarea>
+                      <% if (tool.read_only) { %>
+                        <label class="probe-form__label" for="record-<%= tool.name %>">Record id <span class="check-optional">optional</span></label>
+                        <input class="probe-form__input" id="record-<%= tool.name %>" name="record_id" type="text" maxlength="200" spellcheck="false" autocomplete="off" />
+                        <p class="setup-note">If you name a record id, the result says whether that id appears. It is not added to the arguments.</p>
+                      <% } else { %>
+                        <label class="check-trial__confirm">
+                          <input type="checkbox" name="disposable" value="1" />
+                          <span>This target is disposable</span>
+                        </label>
+                        <label class="probe-form__label" for="record-<%= tool.name %>">Record id</label>
+                        <input class="probe-form__input" id="record-<%= tool.name %>" name="record_id" type="text" maxlength="200" spellcheck="false" autocomplete="off" required />
+                        <label class="probe-form__label" for="readback-<%= tool.name %>">Read-back tool</label>
+                        <select class="probe-form__input check-select" id="readback-<%= tool.name %>" name="read_back">
+                          <option value=""><%= tool.default_read_back ? ('Default: ' + tool.default_read_back) : 'No read-back tool' %></option>
+                          <% readBackChoices.forEach(function(candidate) { %>
+                            <option value="<%= candidate.name %>"><%= candidate.name %></option>
+                          <% }); %>
+                        </select>
+                        <% if (tool.default_read_back) { %>
+                          <p class="setup-note">Read-back defaults to <code><%= tool.default_read_back %></code>, a read-only tool that takes the same id argument. You can pick a different one.</p>
+                        <% } else { %>
+                          <p class="setup-note">No read-only tool on this server takes the same id argument. Without a read-back, a success response is not proof the right record changed.</p>
+                        <% } %>
+                      <% } %>
+                      <label class="probe-form__label" for="token-<%= tool.name %>">Bearer token <span class="check-optional">optional, not stored</span></label>
+                      <input class="probe-form__input" id="token-<%= tool.name %>" name="token" type="password" maxlength="2048" autocomplete="off" spellcheck="false" />
+                      <button type="submit" class="probe-form__submit">Try this tool</button>
+                    </form>
+                  <% } %>
+                </section>
+              <% } %>
             </article>
           <% }); %>
         </section>

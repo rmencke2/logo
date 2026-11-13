@@ -544,6 +544,66 @@
   background: color-mix(in srgb, var(--hp-accent) 16%, var(--hp-card));
 }
 
+.check-flag {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #b91c1c;
+  color: #fff;
+  font-family: var(--hp-mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.check-try {
+  display: grid;
+  gap: 10px;
+}
+
+.check-trial {
+  display: grid;
+  gap: 8px;
+}
+
+.check-trial__args {
+  width: 100%;
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.check-trial__confirm {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.check-trial-result {
+  border: 1px solid var(--hp-border);
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.check-trial-result__when {
+  margin: 0;
+  color: var(--hp-muted);
+  font-family: var(--hp-mono);
+  font-size: 12px;
+}
+
+.check-trial-result__error {
+  margin: 0;
+  color: #b91c1c;
+}
+
+.check-verdict {
+  margin: 0;
+  font-weight: 700;
+}
+
 .check-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--hp-border);
