@@ -3,17 +3,26 @@
 
 async function main() {
   const assert = require('assert');
-  const { isPrivateIp, assertSafePublicUrl } = require('../services/webmcp/ssrf');
+  const { isPrivateIp, assertSafePublicUrl, isUnsafeFetchTarget } = require('../services/webmcp/ssrf');
   const { buildScorecard, suggestJourneys } = require('../services/webmcp/scorecard');
 
   assert.equal(isPrivateIp('127.0.0.1'), true);
   assert.equal(isPrivateIp('10.0.0.2'), true);
   assert.equal(isPrivateIp('192.168.1.1'), true);
   assert.equal(isPrivateIp('8.8.8.8'), false);
+  assert.equal(isPrivateIp('172.16.0.1'), true);
+  assert.equal(isPrivateIp('::ffff:172.16.0.1'), true);
+  assert.equal(isPrivateIp('::ffff:169.254.169.254'), true);
+  assert.equal(isPrivateIp('::ffff:8.8.8.8'), false);
+  assert.equal(isPrivateIp('169.254.169.254'), true);
 
   await assert.rejects(() => assertSafePublicUrl('http://example.com'), /https/);
   await assert.rejects(() => assertSafePublicUrl('https://localhost/'), /Local/);
   await assert.rejects(() => assertSafePublicUrl('https://127.0.0.1/'), /Private|private|not allowed/);
+  await assert.rejects(() => assertSafePublicUrl('https://2130706433/'), /Private|Numeric/);
+  assert.equal(await isUnsafeFetchTarget('https://169.254.169.254/latest/meta-data/'), true);
+  assert.equal(await isUnsafeFetchTarget('http://127.0.0.1/'), true);
+  assert.equal(await isUnsafeFetchTarget('https://[::ffff:172.16.0.1]/'), true);
 
   const { coerceHttpsUrl } = require('../services/webmcp/ssrf');
   assert.equal(coerceHttpsUrl('www.influzer.ai'), 'https://www.influzer.ai');

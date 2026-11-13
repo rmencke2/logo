@@ -23,6 +23,9 @@ function main() {
   assert.equal(isSafeInternalRedirect('/admin'), true);
   assert.equal(isSafeInternalRedirect('//evil.com'), false);
   assert.equal(isSafeInternalRedirect('https://evil.com'), false);
+  assert.equal(isSafeInternalRedirect('/\\evil.com'), false);
+  assert.equal(isSafeInternalRedirect('/%2F%2Fevil.com'), false);
+  assert.equal(isSafeInternalRedirect('/login?redirect=/admin'), true);
 
   if (prev === undefined) delete process.env.BASE_URL;
   else process.env.BASE_URL = prev;

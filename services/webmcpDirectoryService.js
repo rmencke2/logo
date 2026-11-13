@@ -9,6 +9,9 @@ const path = require('path');
 const { normalizeHost, normalizeHttpsUrl, slugifyCategory } = require('./webmcp/normalize');
 const { startWebmcpScan, publicScanView, getScan } = require('./webmcp/scanService');
 const { clientErrorMessage } = require('../utils/safeError');
+const { requireAuth, requireVerified } = require('../auth');
+const { getRequestUser } = require('../utils/rateLimitBypass');
+const { getClientIp } = require('../utils/clientIp');
 const { ensureScanTables } = require('./webmcp/scanStore');
 const { getPromoteOffer, presentSponsorRail } = require('./mcpPromoteService');
 const { describeWebmcpCoverage } = require('./webmcp/coverage');
@@ -424,14 +427,27 @@ function registerWebmcpRoutes(app) {
     }));
   });
 
-  app.get('/webmcp/submit', (req, res) => {
-    res.render('webmcp-submit', renderLocals(req, {
-      title: 'Scan & list your WebMCP website | Influzer.ai',
-      description:
-        'Scan your site for WebMCP tools, get an Influzer scorecard, and list in the directory. Email required — we’ll also add you to the Influzer newsletter.',
-      canonicalUrl: `${SITE_BASE}/webmcp/submit`,
-      initialScanId: req.query.scan || null,
-    }));
+  app.get('/webmcp/submit', async (req, res, next) => {
+    try {
+      const user = await getRequestUser(req);
+      const canScan = Boolean(
+        user &&
+          user.email &&
+          !user.is_blocked &&
+          (user.email_verified || user.provider !== 'local'),
+      );
+      res.render('webmcp-submit', renderLocals(req, {
+        title: 'Scan & list your WebMCP website | Influzer.ai',
+        description:
+          'Scan your site for WebMCP tools, get an Influzer scorecard, and list in the directory. A verified account is required.',
+        canonicalUrl: `${SITE_BASE}/webmcp/submit`,
+        initialScanId: canScan ? req.query.scan || null : null,
+        canScan,
+        scanEmail: canScan ? user.email : '',
+      }));
+    } catch (err) {
+      next(err);
+    }
   });
 
   app.get('/webmcp/submit/:scanId', (req, res) => {
@@ -439,7 +455,7 @@ function registerWebmcpRoutes(app) {
   });
 
   // JSON scan API (primary path for the live UI)
-  app.post('/api/webmcp/v1/scans', async (req, res) => {
+  app.post('/api/webmcp/v1/scans', requireAuth, requireVerified, async (req, res) => {
     try {
       await ensureScanTables();
       const body = req.body || {};
@@ -447,7 +463,7 @@ function registerWebmcpRoutes(app) {
         return res.json({ ok: true, ignored: true });
       }
       const url = String(body.url || '').trim();
-      const email = String(body.email || '').trim().toLowerCase();
+      const email = String(req.user?.email || '').trim().toLowerCase();
       const relationship = String(body.relationship || 'owner').slice(0, 40);
       const newsletterOptIn = body.newsletter !== false && body.newsletter !== '0';
       if (!url || !email.includes('@')) {
@@ -457,22 +473,27 @@ function registerWebmcpRoutes(app) {
         url,
         email,
         relationship,
-        ip: req.ip || 'unknown',
+        ip: getClientIp(req),
         newsletterOptIn,
         clearCache: clearWebmcpCache,
       });
       res.status(202).json({ ok: true, scan: publicScanView(scan) });
     } catch (err) {
-      const status = err.code === 'RATE_LIMIT' ? 429 : 400;
+      const status = err.code === 'RATE_LIMIT' || err.code === 'BUSY' ? 429 : 400;
       if (err.retryAfterSec) res.set('Retry-After', String(err.retryAfterSec));
       res.status(status).json({ ok: false, error: err.code || 'scan_start_failed', message: err.message });
     }
   });
 
-  app.get('/api/webmcp/v1/scans/:id', async (req, res) => {
+  app.get('/api/webmcp/v1/scans/:id', requireAuth, requireVerified, async (req, res) => {
     try {
       const scan = await getScan(req.params.id);
       if (!scan) return res.status(404).json({ ok: false, error: 'not_found' });
+      const owner = String(scan.email || '').toLowerCase();
+      const viewer = String(req.user?.email || '').toLowerCase();
+      if (!req.user?.is_admin && owner !== viewer) {
+        return res.status(404).json({ ok: false, error: 'not_found' });
+      }
       res.set('Cache-Control', 'no-store');
       res.json({ ok: true, scan: publicScanView(scan) });
     } catch (err) {

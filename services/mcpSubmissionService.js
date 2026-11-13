@@ -19,11 +19,7 @@ const MCP_SUBMIT_ENDPOINT = 'mcp-submit';
 
 const TRANSPORTS = ['stdio', 'http', 'sse', 'unknown'];
 
-function getClientIp(req) {
-  const forwardedFor = req.headers['x-forwarded-for'];
-  if (forwardedFor) return String(forwardedFor).split(',')[0].trim();
-  return req.ip || req.connection?.remoteAddress || 'unknown';
-}
+const { getClientIp } = require('../utils/clientIp');
 
 function cleanText(input, maxLen = MAX_FIELD) {
   if (typeof input !== 'string') return '';

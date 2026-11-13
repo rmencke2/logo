@@ -75,11 +75,7 @@ async function ensureMcpDiscoveryAnalyticsTables() {
   await run(db, 'CREATE INDEX IF NOT EXISTS idx_mcp_discovery_calls_tool ON mcp_discovery_calls(tool_name)');
 }
 
-function getClientIp(req) {
-  const forwardedFor = req?.headers?.['x-forwarded-for'];
-  if (forwardedFor) return String(forwardedFor).split(',')[0].trim() || null;
-  return req?.ip || req?.connection?.remoteAddress || null;
-}
+const { getClientIp } = require('../utils/clientIp');
 
 function inferClientName(rpcMethod, params, userAgent) {
   const fromInit =

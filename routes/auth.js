@@ -13,6 +13,10 @@ const { clientErrorPayload } = require('../utils/safeError');
 const { absoluteSiteUrl, isSafeInternalRedirect } = require('../utils/siteUrl');
 const crypto = require('crypto');
 
+function hashResetToken(token) {
+  return crypto.createHash('sha256').update(String(token)).digest('hex');
+}
+
 const router = express.Router();
 
 function saveSession(req) {
@@ -25,16 +29,6 @@ function loginWithPassport(req, user) {
   return new Promise((resolve, reject) => {
     req.login(user, (err) => (err ? reject(err) : resolve()));
   });
-}
-
-// Helper to get client IP
-function getClientIP(req) {
-  return (
-    req.headers['x-forwarded-for']?.split(',')[0] ||
-    req.headers['x-real-ip'] ||
-    req.connection.remoteAddress ||
-    'unknown'
-  );
 }
 
 // Helper to normalize email addresses for Gmail plus addressing
@@ -382,39 +376,29 @@ router.post(
       const normalizedEmail = normalizeEmailForLookup(email);
       const user = await db.getUserByEmail(normalizedEmail);
 
-      if (!user) {
-        return res.json({
-          success: true,
-          message: 'If the email exists, a password reset link has been sent.',
-        });
+      const generic = {
+        success: true,
+        message: 'If the email exists, a password reset link has been sent.',
+      };
+      if (!user || user.provider !== 'local') {
+        return res.json(generic);
       }
 
-      if (user.provider !== 'local') {
-        return res.json({
-          success: true,
-          oauthAccount: true,
-          message:
-            'This email uses Google sign-in. Password reset emails are not sent for Google accounts — use “Continue with Google” on the login page instead.',
-        });
-      }
-
-      // Generate reset token
+      // Generate reset token. Only a hash is stored.
       const token = crypto.randomBytes(32).toString('hex');
       const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-      // Store reset token
       await db.db.run(
         'INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)',
-        [user.id, token, expiresAt.toISOString()]
+        [user.id, hashResetToken(token), expiresAt.toISOString()]
       );
 
       try {
         await sendPasswordResetEmail(email, token, user.name);
-        res.json({ success: true, message: 'Password reset email sent' });
       } catch (emailError) {
         console.error('Failed to send password reset email:', emailError);
-        res.status(500).json({ error: 'Failed to send password reset email' });
       }
+      return res.json(generic);
     } catch (err) {
       console.error('Forgot password error:', err);
       res.status(500).json({ error: 'Failed to process password reset request' });
@@ -444,7 +428,7 @@ router.post(
       const resetRecord = await new Promise((resolve, reject) => {
         db.db.get(
           'SELECT * FROM password_resets WHERE token = ? AND expires_at > ? AND used = 0',
-          [token, new Date().toISOString()],
+          [hashResetToken(token), new Date().toISOString()],
           (err, row) => {
             if (err) reject(err);
             else resolve(row);

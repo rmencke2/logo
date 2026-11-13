@@ -33,7 +33,17 @@ function absoluteSiteUrl(pathOrUrl) {
 }
 
 function isSafeInternalRedirect(path) {
-  return typeof path === 'string' && path.startsWith('/') && !path.startsWith('//');
+  if (typeof path !== 'string' || !path.startsWith('/') || path.startsWith('//')) return false;
+  if (path.includes('\\') || path.includes('://') || /[\u0000-\u001F\u007F]/.test(path)) return false;
+  let decoded = path;
+  try {
+    decoded = decodeURIComponent(path);
+  } catch {
+    return false;
+  }
+  if (!decoded.startsWith('/') || decoded.startsWith('//')) return false;
+  if (decoded.includes('\\') || decoded.includes('://') || /[\u0000-\u001F\u007F]/.test(decoded)) return false;
+  return true;
 }
 
 module.exports = {

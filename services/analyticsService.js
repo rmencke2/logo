@@ -6,6 +6,7 @@ const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
 const { clientErrorMessage } = require('../utils/safeError');
+const { getClientIp } = require('../utils/clientIp');
 const {
   ensureMcpDiscoveryAnalyticsTables,
   getMcpDiscoveryAnalytics,
@@ -1145,8 +1146,7 @@ function trackPageViews(app) {
     if (req.method === 'GET' && !req.path.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|map)$/)) {
       try {
         const userId = req.user?.id || req.session?.userId || null;
-        const forwardedFor = req.headers['x-forwarded-for'];
-        const ipAddress = forwardedFor ? forwardedFor.split(',')[0].trim() : req.ip || req.connection?.remoteAddress;
+        const ipAddress = getClientIp(req);
         const userAgent = req.headers['user-agent'];
         const referrer = req.headers['referer'] || req.headers['referrer'];
 
@@ -1174,7 +1174,7 @@ function trackService(serviceName) {
   return async (req, res, next) => {
     const startTime = Date.now();
     const userId = req.user?.id || req.session?.userId || null;
-    const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection?.remoteAddress;
+    const ipAddress = getClientIp(req);
 
     // Store original end function
     const originalEnd = res.end;

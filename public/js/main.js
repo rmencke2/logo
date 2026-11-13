@@ -1426,8 +1426,20 @@
               // Check for redirect parameter
               const urlParams = new URLSearchParams(window.location.search);
               const redirect = urlParams.get('redirect');
-              if (redirect) {
-                window.location.href = redirect;
+              const safeRedirect = (() => {
+                if (!redirect || !redirect.startsWith('/') || redirect.startsWith('//')) return '';
+                if (redirect.includes('\\') || redirect.includes('://')) return '';
+                try {
+                  const decoded = decodeURIComponent(redirect);
+                  if (!decoded.startsWith('/') || decoded.startsWith('//')) return '';
+                  if (decoded.includes('\\') || decoded.includes('://')) return '';
+                } catch {
+                  return '';
+                }
+                return redirect;
+              })();
+              if (safeRedirect) {
+                window.location.href = safeRedirect;
               } else {
                 // After successful login, logo generator will be shown via updateAuthUI
                 // Refresh the page to ensure all state is updated

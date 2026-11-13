@@ -19,10 +19,11 @@ const {
 const { subscribeToNewsletter } = require('../newsletterService');
 const { sendWebmcpScanReportEmail } = require('../../emailService');
 
-// Public submit flow is intentionally generous — enough for real testing without
-// opening the door to unbounded Chromium jobs. Override via WEBMCP_SCAN_RATE_LIMIT.
-const RATE_LIMIT_PER_HOUR = Number(process.env.WEBMCP_SCAN_RATE_LIMIT || 30);
+// Verified accounts only. One Chrome at a time, and a small hourly cap.
+const RATE_LIMIT_PER_HOUR = Number(process.env.WEBMCP_SCAN_RATE_LIMIT || 5);
+const MAX_CONCURRENT_SCANS = Math.max(1, Number(process.env.WEBMCP_SCAN_CONCURRENCY || 1));
 const running = new Set();
+let activeScans = 0;
 
 function publicScanView(scan) {
   if (!scan) return null;
@@ -79,32 +80,49 @@ async function startWebmcpScan({
   const recent = await countRecentScansByIp(ip);
   if (recent >= RATE_LIMIT_PER_HOUR) {
     const err = new Error(
-      `Too many scans from this IP (${RATE_LIMIT_PER_HOUR}/hour). Please try again in a bit.`
+      `Too many scans from this network (${RATE_LIMIT_PER_HOUR}/hour). Please try again in a bit.`
     );
     err.code = 'RATE_LIMIT';
     err.retryAfterSec = 3600;
     throw err;
   }
+  if (activeScans >= MAX_CONCURRENT_SCANS) {
+    const err = new Error('A scan is already running. Please try again in a minute.');
+    err.code = 'BUSY';
+    err.retryAfterSec = 60;
+    throw err;
+  }
 
   const safe = await assertSafePublicUrl(url);
-  const id = await createScan({
-    url: safe.href,
-    host: safe.host,
-    email,
-    relationship,
-    ip,
-  });
+  activeScans += 1;
+  let id;
+  try {
+    id = await createScan({
+      url: safe.href,
+      host: safe.host,
+      email,
+      relationship,
+      ip,
+    });
+  } catch (err) {
+    activeScans = Math.max(0, activeScans - 1);
+    throw err;
+  }
 
-  // Fire-and-forget worker
+  // Fire-and-forget worker. The slot is held until Chrome finishes.
   setImmediate(() => {
     runScanJob(id, {
       url: safe.href,
       email,
       newsletterOptIn,
       clearCache,
-    }).catch((err) => {
-      console.error('WebMCP scan job failed:', id, err);
-    });
+    })
+      .catch((err) => {
+        console.error('WebMCP scan job failed:', id, err);
+      })
+      .finally(() => {
+        activeScans = Math.max(0, activeScans - 1);
+      });
   });
 
   return getScan(id);

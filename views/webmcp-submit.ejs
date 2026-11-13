@@ -21,14 +21,18 @@
         <h1>Add your WebMCP site</h1>
         <p class="webmcp-prose">
           We scan your public pages for <code>document.modelContext</code> tools, score Agent Readiness (R0–R5), and list verified sites in the Influzer directory.
-          Your email is required so we can share the report — and subscribe you to the Influzer newsletter (unsubscribe anytime).
+          A verified Influzer account is required. The report is sent to that account’s email.
         </p>
       </header>
 
+      <% if (!canScan) { %>
+        <p class="webmcp-prose">Sign in with a verified account to start a scan.</p>
+        <p><a class="webmcp-btn webmcp-btn--primary" href="/login?redirect=/webmcp/submit">Sign in to scan</a></p>
+      <% } else { %>
       <form id="webmcpScanForm" class="webmcp-scan__form" novalidate>
         <label>
-          Your email
-          <input id="scanEmail" name="email" type="email" required autocomplete="email" placeholder="you@company.com" />
+          Report email
+          <input id="scanEmail" name="email" type="email" required readonly value="<%= scanEmail %>" />
         </label>
         <label>
           Your site URL
@@ -54,6 +58,7 @@
         <p class="webmcp-note" id="scanFormNote">Usually finishes in under 60 seconds. We do not execute third-party act/transact tools.</p>
         <p class="webmcp-scan__error" id="scanFormError" hidden></p>
       </form>
+      <% } %>
 
       <section class="webmcp-scan__live" id="scanLive" hidden>
         <div class="webmcp-scan__live-top">

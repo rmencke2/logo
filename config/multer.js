@@ -18,7 +18,7 @@ if (!fs.existsSync(videoOutputDir)) {
 const upload = multer({
   dest: videoOutputDir,
   limits: {
-    fileSize: 500 * 1024 * 1024, // 500MB max file size
+    fileSize: 80 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     // Accept AVI files
@@ -34,7 +34,7 @@ const upload = multer({
 const uploadVideo = multer({
   dest: videoOutputDir,
   limits: {
-    fileSize: 500 * 1024 * 1024, // 500MB max file size
+    fileSize: 80 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     // Accept common video formats and GIFs

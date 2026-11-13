@@ -25,13 +25,7 @@ function getBlogHelpers() {
 const MAX_EMAIL_LENGTH = 254;
 const SEND_DELAY_MS = 250;
 
-function getClientIp(req) {
-  const forwardedFor = req.headers['x-forwarded-for'];
-  if (forwardedFor) {
-    return String(forwardedFor).split(',')[0].trim();
-  }
-  return req.ip || req.connection?.remoteAddress || 'unknown';
-}
+const { getClientIp } = require('../utils/clientIp');
 
 function sanitizeEmail(input) {
   if (typeof input !== 'string') return '';

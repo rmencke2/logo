@@ -182,6 +182,7 @@
   async function fetchScan(id) {
     const res = await fetch(`/api/webmcp/v1/scans/${encodeURIComponent(id)}`, {
       headers: { Accept: 'application/json' },
+      credentials: 'same-origin',
     });
     const data = await res.json();
     if (!res.ok || !data.ok) throw new Error(data.message || data.error || 'Scan not found');
@@ -232,9 +233,15 @@
     const res = await fetch('/api/webmcp/v1/scans', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      credentials: 'same-origin',
       body: JSON.stringify(payload),
     });
     const data = await res.json().catch(() => ({}));
+    if (res.status === 401 || res.status === 403) {
+      showError('Sign in with a verified account to scan a site.');
+      submitBtn.disabled = false;
+      return;
+    }
     if (!res.ok || !data.ok) {
       showError(data.message || data.error || 'Could not start scan');
       submitBtn.disabled = false;
@@ -273,7 +280,7 @@
   }
 
   const initial = window.__WEBMCP_SCAN_INITIAL__;
-  if (initial) {
+  if (initial && form) {
     startedAt = Date.now();
     form.hidden = true;
     live.hidden = false;

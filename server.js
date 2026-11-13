@@ -31,6 +31,7 @@ const { isEmailConfigured, isResendConfigured, getTransporter } = require('./ema
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const HOST = process.env.HOST || (process.env.NODE_ENV === 'production' ? '127.0.0.1' : '0.0.0.0');
 
 // Liveness before heavy init — watchdog curls this when the event loop is wedged.
 const { registerHealthRoutes } = require('./services/healthService');
@@ -105,7 +106,7 @@ registerHealthRoutes(app);
       // Handle Multer errors
       if (err instanceof multer.MulterError) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-          return res.status(400).json({ error: 'File too large. Maximum size is 500MB.' });
+          return res.status(400).json({ error: 'File too large. Maximum size is 80MB.' });
         }
         return res.status(400).json({ error: clientErrorMessage(err, 'Invalid upload') });
       }
@@ -113,7 +114,7 @@ registerHealthRoutes(app);
       // Handle 413 Payload Too Large errors
       if (err.status === 413 || err.statusCode === 413) {
         return res.status(413).json({ 
-          error: 'File too large. Maximum file size is 500MB. If using Nginx, ensure client_max_body_size is set to at least 500m.' 
+          error: 'File too large. Maximum file size is 80MB.' 
         });
       }
 
@@ -184,20 +185,20 @@ if (USE_DIRECT_HTTPS && process.env.NODE_ENV === 'production') {
       console.error('❌ Error starting HTTPS server:', err.message);
       console.error('💡 Tip: If you get EACCES error, you need root privileges or use Nginx instead');
       console.error('💡 Falling back to HTTP on port', PORT);
-      app.listen(PORT, () => {
-        console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
+      app.listen(PORT, HOST, () => {
+        console.log(`🚀 Logo Generator running at http://${HOST}:${PORT}`);
       });
     }
   } else {
     console.warn('⚠️  SSL certificates not found, falling back to HTTP');
-    app.listen(PORT, () => {
-      console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
+    app.listen(PORT, HOST, () => {
+      console.log(`🚀 Logo Generator running at http://${HOST}:${PORT}`);
     });
   }
 } else {
   // Standard mode: Use HTTP on configured PORT (Nginx handles HTTPS)
-  app.listen(PORT, () => {
-    console.log(`🚀 Logo Generator running at http://localhost:${PORT}`);
+  app.listen(PORT, HOST, () => {
+    console.log(`🚀 Logo Generator running at http://${HOST}:${PORT}`);
     if (process.env.NODE_ENV === 'production') {
       console.log('💡 Using Nginx for HTTPS - make sure Nginx is configured to proxy to this port');
     }

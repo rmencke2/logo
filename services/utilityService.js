@@ -5,6 +5,7 @@
 const express = require('express');
 const { requireAuth } = require('../auth');
 const { checkUserLimits } = require('../abuseProtection');
+const { getClientIp } = require('../utils/clientIp');
 
 /**
  * Initialize utility service endpoints
@@ -16,14 +17,14 @@ function initializeUtilityService(app) {
   // Get user location from IP address
   app.get('/api/location', async (req, res) => {
     try {
-      const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || 
-                       req.headers['x-real-ip'] || 
-                       req.connection.remoteAddress || 
-                       req.socket.remoteAddress ||
-                       '8.8.8.8'; // Fallback IP
+      const clientIp = getClientIp(req);
+      if (!clientIp || clientIp === 'unknown') {
+        return res.json({ location: null });
+      }
 
-      // Use a free IP geolocation service
-      const geoResponse = await fetch(`http://ip-api.com/json/${clientIp}?fields=status,message,city,regionName,country`);
+      const geoResponse = await fetch(
+        `http://ip-api.com/json/${encodeURIComponent(clientIp)}?fields=status,message,city,regionName,country`,
+      );
       const geoData = await geoResponse.json();
 
       if (geoData.status === 'success') {

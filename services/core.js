@@ -22,7 +22,9 @@ require('dotenv').config();
  */
 async function initializeCore(app) {
   // Trust proxy - required when behind Nginx to detect HTTPS correctly
-  app.set('trust proxy', true);
+  // One reverse proxy (nginx). Trusting every hop would let a caller pick
+  // the client address by sending X-Forwarded-For.
+  app.set('trust proxy', 1);
 
   // Increase server timeout for long-running video processing tasks
   app.timeout = 600000; // 10 minutes in milliseconds
@@ -182,8 +184,8 @@ async function initializeCore(app) {
   });
 
   // Body parser middleware
-  app.use(express.json({ limit: '50mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+  app.use(express.json({ limit: '1mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
   // CORS configuration
   app.use((req, res, next) => {

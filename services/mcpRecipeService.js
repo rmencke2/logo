@@ -57,11 +57,7 @@ function nowIso() {
   return new Date().toISOString();
 }
 
-function getClientIp(req) {
-  const forwardedFor = req.headers['x-forwarded-for'];
-  if (forwardedFor) return String(forwardedFor).split(',')[0].trim();
-  return req.ip || req.connection?.remoteAddress || 'unknown';
-}
+const { getClientIp } = require('../utils/clientIp');
 
 function cleanText(input, maxLen, { allowNewlines = false } = {}) {
   if (typeof input !== 'string') return '';

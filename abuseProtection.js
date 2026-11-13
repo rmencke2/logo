@@ -5,6 +5,7 @@
 const { getDatabase } = require('./database');
 const rateLimit = require('express-rate-limit');
 const { shouldBypassRateLimit } = require('./utils/rateLimitBypass');
+const { getClientIp } = require('./utils/clientIp');
 
 // Configuration
 const ABUSE_CONFIG = {
@@ -29,15 +30,8 @@ const ABUSE_CONFIG = {
   DAY_MS: 24 * 60 * 60 * 1000,
 };
 
-// Get client IP address
 function getClientIP(req) {
-  return (
-    req.headers['x-forwarded-for']?.split(',')[0] ||
-    req.headers['x-real-ip'] ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    'unknown'
-  );
+  return getClientIp(req);
 }
 
 // Check if identifier is blocked

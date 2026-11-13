@@ -6,18 +6,11 @@ const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { requireAdmin } = require('./adminService');
 const { clientErrorMessage } = require('../utils/safeError');
+const { getClientIp } = require('../utils/clientIp');
 
 const VALID_REACTIONS = new Set(['up', 'down']);
 const MAX_NAME_LENGTH = 60;
 const MAX_COMMENT_LENGTH = 1000;
-
-function getClientIp(req) {
-  const forwardedFor = req.headers['x-forwarded-for'];
-  if (forwardedFor) {
-    return String(forwardedFor).split(',')[0].trim();
-  }
-  return req.ip || req.connection?.remoteAddress || 'unknown';
-}
 
 function sanitizeText(input) {
   if (typeof input !== 'string') return '';

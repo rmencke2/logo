@@ -7,7 +7,7 @@
 
 const path = require('path');
 const puppeteer = require('puppeteer-core');
-const { assertSafePublicUrl, isSameOrigin } = require('./ssrf');
+const { assertSafePublicUrl, isSameOrigin, isUnsafeFetchTarget } = require('./ssrf');
 const { normalizeKind } = require('./normalize');
 
 const fs = require('fs');
@@ -121,18 +121,25 @@ function captureBootstrap() {
   })();`;
 }
 
-async function launchBrowser() {
+async function launchBrowser(pin) {
+  const args = [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--no-first-run',
+    '--no-default-browser-check',
+  ];
+  // Pin the submitted host to the address that passed the SSRF check so a
+  // later DNS answer cannot move that host onto a private or metadata IP.
+  if (pin?.host && pin?.address && !/[\s,]/u.test(pin.host) && !/[\s,]/u.test(pin.address)) {
+    const target = pin.address.includes(':') ? `[${pin.address}]` : pin.address;
+    args.push(`--host-resolver-rules=MAP ${pin.host} ${target}`);
+  }
   return puppeteer.launch({
     executablePath: CHROME_PATH,
     headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--no-first-run',
-      '--no-default-browser-check',
-    ],
+    args,
   });
 }
 
@@ -303,8 +310,25 @@ async function scanWebsite({ url, onProgress = () => {} } = {}) {
   });
 
   try {
-    browser = await launchBrowser();
+    const pinHost = new URL(safe.href).hostname;
+    browser = await launchBrowser({ host: pinHost, address: safe.address });
     const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on('request', async (request) => {
+      try {
+        if (await isUnsafeFetchTarget(request.url())) {
+          await request.abort('blockedbyclient');
+          return;
+        }
+        await request.continue();
+      } catch {
+        try {
+          await request.abort('blockedbyclient');
+        } catch {
+          /* request already settled */
+        }
+      }
+    });
     // Use a normal Chrome UA — some sites gate scripts on bot-looking agents.
     await page.setUserAgent(
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 InfluzerWebMcpScanner/1.1 (+https://www.influzer.ai/webmcp/about)',

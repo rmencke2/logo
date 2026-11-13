@@ -11,6 +11,36 @@ const { requireAuth, requireVerified } = require('../auth');
 const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { trackService } = require('./analyticsService');
 const { clientErrorPayload } = require('../utils/safeError');
+const { sanitizeMemeText, finiteInRange } = require('../utils/memeText');
+
+const MAX_UPLOAD_BYTES = 80 * 1024 * 1024;
+let activeVideoJobs = 0;
+
+function reserveVideoJob(req, res, next) {
+  if (activeVideoJobs >= 1) {
+    if (req.file?.path) fs.unlink(req.file.path, () => {});
+    return res.status(429).json({ error: 'A video conversion is already running. Try again shortly.' });
+  }
+  activeVideoJobs += 1;
+  let released = false;
+  const release = () => {
+    if (released) return;
+    released = true;
+    activeVideoJobs -= 1;
+  };
+  res.on('finish', release);
+  res.on('close', release);
+  next();
+}
+
+function captionFilter(videoOutputDir, text, yExpr, files) {
+  const safe = sanitizeMemeText(text);
+  if (!safe) return null;
+  const filePath = path.join(videoOutputDir, `meme-caption-${Date.now()}-${files.length}.txt`);
+  fs.writeFileSync(filePath, safe, { encoding: 'utf8', mode: 0o600 });
+  files.push(filePath);
+  return `drawtext=textfile=${filePath}:fontcolor=white:fontsize=40:x=(w-text_w)/2:y=${yExpr}:borderw=3:bordercolor=black`;
+}
 
 /**
  * Initialize video processing service
@@ -25,7 +55,7 @@ function initializeVideoService(app) {
   const upload = multer({
     dest: videoOutputDir,
     limits: {
-      fileSize: 500 * 1024 * 1024, // 500MB max file size
+      fileSize: MAX_UPLOAD_BYTES,
     },
     fileFilter: (req, file, cb) => {
       if (file.mimetype === 'video/x-msvideo' || file.originalname.toLowerCase().endsWith('.avi')) {
@@ -40,7 +70,7 @@ function initializeVideoService(app) {
   const uploadVideo = multer({
     dest: videoOutputDir,
     limits: {
-      fileSize: 500 * 1024 * 1024, // 500MB max file size
+      fileSize: MAX_UPLOAD_BYTES,
     },
     fileFilter: (req, file, cb) => {
       const videoMimeTypes = [
@@ -70,6 +100,7 @@ function initializeVideoService(app) {
     requireVerified,
     abuseProtectionMiddleware,
     upload.single('video'),
+    reserveVideoJob,
     async (req, res) => {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -146,6 +177,7 @@ function initializeVideoService(app) {
     requireVerified,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
+    reserveVideoJob,
     async (req, res) => {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -223,6 +255,7 @@ function initializeVideoService(app) {
     requireVerified,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
+    reserveVideoJob,
     async (req, res) => {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -312,6 +345,7 @@ function initializeVideoService(app) {
     requireVerified,
     abuseProtectionMiddleware,
     uploadVideo.single('video'),
+    reserveVideoJob,
     async (req, res) => {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -333,22 +367,29 @@ function initializeVideoService(app) {
    ➡ Style: ${memeStyle}
    ➡ File size: ${(req.file.size / 1024 / 1024).toFixed(2)} MB`);
 
+      const captionFiles = [];
+      const cleanupCaptions = () => {
+        for (const file of captionFiles) {
+          try { fs.unlinkSync(file); } catch { /* caption already gone */ }
+        }
+      };
+
       try {
         let ffmpegCommand = ffmpeg(inputPath);
         const filters = [];
+        const addCaption = (text, yExpr) => {
+          const filter = captionFilter(videoOutputDir, text, yExpr, captionFiles);
+          if (filter) filters.push(filter);
+        };
 
         switch (memeStyle) {
           case 'text':
-            if (topText) {
-              filters.push(`drawtext=text='${topText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=20:borderw=3:bordercolor=black`);
-            }
-            if (bottomText) {
-              filters.push(`drawtext=text='${bottomText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=h-th-20:borderw=3:bordercolor=black`);
-            }
+            addCaption(topText, '20');
+            addCaption(bottomText, 'h-th-20');
             break;
 
           case 'zoom':
-            const zoomAmount = parseFloat(zoomSpeed) || 1.5;
+            const zoomAmount = finiteInRange(zoomSpeed, 1.5, 1, 3);
             filters.push(`zoompan=z='min(zoom+0.0015,${zoomAmount})':s=500x500:d=250`);
             break;
 
@@ -370,18 +411,15 @@ function initializeVideoService(app) {
             break;
 
           case 'speed':
-            const speed = parseFloat(speedMultiplier) || 1.0;
-            if (speed > 1) {
-              filters.push(`setpts=${1/speed}*PTS`);
-              ffmpegCommand = ffmpegCommand.audioFilters(`atempo=${speed}`);
-            } else if (speed < 1) {
-              filters.push(`setpts=${1/speed}*PTS`);
+            const speed = finiteInRange(speedMultiplier, 1, 0.5, 2);
+            if (speed !== 1) {
+              filters.push(`setpts=${1 / speed}*PTS`);
               ffmpegCommand = ffmpegCommand.audioFilters(`atempo=${speed}`);
             }
             break;
 
           case 'freeze':
-            const freeze = parseFloat(freezeDuration) || 2.0;
+            const freeze = finiteInRange(freezeDuration, 2, 0, 5);
             filters.push(`tpad=stop_mode=clone:stop_duration=${freeze}`);
             break;
 
@@ -394,31 +432,24 @@ function initializeVideoService(app) {
             break;
 
           case 'text_zoom':
-            if (topText) {
-              filters.push(`drawtext=text='${topText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=20:borderw=3:bordercolor=black`);
-            }
-            if (bottomText) {
-              filters.push(`drawtext=text='${bottomText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=h-th-20:borderw=3:bordercolor=black`);
-            }
-            const zoom = parseFloat(zoomSpeed) || 1.5;
+            addCaption(topText, '20');
+            addCaption(bottomText, 'h-th-20');
+            const zoom = finiteInRange(zoomSpeed, 1.5, 1, 3);
             filters.push(`zoompan=z='min(zoom+0.0015,${zoom})':s=500x500:d=250`);
             break;
 
           case 'text_speed':
-            if (topText) {
-              filters.push(`drawtext=text='${topText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=20:borderw=3:bordercolor=black`);
-            }
-            if (bottomText) {
-              filters.push(`drawtext=text='${bottomText.replace(/'/g, "\\'")}':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=h-th-20:borderw=3:bordercolor=black`);
-            }
-            const speed2 = parseFloat(speedMultiplier) || 1.0;
+            addCaption(topText, '20');
+            addCaption(bottomText, 'h-th-20');
+            const speed2 = finiteInRange(speedMultiplier, 1, 0.5, 2);
             if (speed2 !== 1) {
-              filters.push(`setpts=${1/speed2}*PTS`);
+              filters.push(`setpts=${1 / speed2}*PTS`);
               ffmpegCommand = ffmpegCommand.audioFilters(`atempo=${speed2}`);
             }
             break;
 
           default:
+            cleanupCaptions();
             return res.status(400).json({ error: 'Invalid meme style' });
         }
 
@@ -470,6 +501,7 @@ function initializeVideoService(app) {
         } catch (cleanupErr) {
           console.warn('⚠️  Could not delete input file:', cleanupErr);
         }
+        cleanupCaptions();
 
         await logUsage(req, '/convert-to-meme');
 
@@ -487,6 +519,7 @@ function initializeVideoService(app) {
         } catch (cleanupErr) {
           console.warn('⚠️  Error during cleanup:', cleanupErr);
         }
+        cleanupCaptions();
 
         res.status(500).json(clientErrorPayload('Meme conversion failed', err));
       }
