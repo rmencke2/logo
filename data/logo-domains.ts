@@ -1,6 +1,6 @@
 /**
- * Slug → Clearbit logo domain. Runtime uses logo-domains.js (Node).
- * Keep both files in sync when adding mappings.
+ * Slug → brand domain. Runtime uses logo-domains.js (Node).
+ * Keep both files in sync when adding mappings. Do not fetch these from a logo CDN.
  */
 export const SLUG_LOGO_DOMAINS: Record<string, string> = {
   slack: 'slack.com',

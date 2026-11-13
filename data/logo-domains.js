@@ -1,6 +1,6 @@
 /**
- * Slug → Clearbit logo domain (logo.clearbit.com/{domain})
- * Pre-populated for Top 100 and popular MCP servers.
+ * Slug → brand domain. Not used to request logos.
+ * MCP icons use a stored or same-origin image, then a letter tile.
  */
 
 /** @type {Record<string, string>} */

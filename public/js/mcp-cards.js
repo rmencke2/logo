@@ -28,15 +28,23 @@
     );
   }
 
+  function safeLogoSrc(url) {
+    const value = String(url || '').trim();
+    if (!value) return '';
+    const lower = value.toLowerCase();
+    if (lower.indexOf('clearbit') !== -1 || lower.indexOf('/s2/favicons') !== -1) return '';
+    return value;
+  }
+
   function logoHtml(s, opts) {
     const options = opts || {};
     const registry = Boolean(options.registry);
     const cs = s.categoryStyle || {};
-    const src = s.logoUrl || s.logoFallbackUrl || '';
+    const logoUrl = safeLogoSrc(s.logoUrl);
+    const logoFallbackUrl = safeLogoSrc(s.logoFallbackUrl);
+    const src = logoUrl || logoFallbackUrl;
     const dataFallback =
-      s.logoUrl && s.logoFallbackUrl
-        ? ' data-fallback="' + esc(s.logoFallbackUrl) + '"'
-        : '';
+      logoUrl && logoFallbackUrl ? ' data-fallback="' + esc(logoFallbackUrl) + '"' : '';
     const img = src
       ? '<img class="mcp-logo-img" src="' +
         esc(src) +

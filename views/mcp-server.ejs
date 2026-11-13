@@ -62,8 +62,13 @@
         <div class="mcp-detail-col">
           <header class="mcp-detail-header">
             <div class="mcp-detail-icon" aria-hidden="true">
-              <% if (server.logoUrl) { %>
-                <img src="<%= server.logoUrl %>" alt="" width="64" height="64" loading="eager"
+              <%
+                const detailLogoRaw = server.logoUrl ? String(server.logoUrl) : '';
+                const detailLogoBlocked = /clearbit/i.test(detailLogoRaw) || detailLogoRaw.indexOf('/s2/favicons') !== -1;
+                const detailLogo = detailLogoBlocked ? '' : detailLogoRaw;
+              %>
+              <% if (detailLogo) { %>
+                <img src="<%= detailLogo %>" alt="" width="64" height="64" loading="eager"
                   data-hide-on-error="1" />
                 <span style="display:none;width:100%;height:100%;place-items:center;"><%= server.logoInitial || server.name.charAt(0) %></span>
               <% } else { %>

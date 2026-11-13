@@ -1,7 +1,7 @@
 <%#
-  Logo: Clearbit image with letter-tile fallback.
+  Logo: stored or same-origin image, otherwise a letter tile.
   Expects: logoUrl, logoInitial, categoryStyle (tile colors)
-  Optional: size — 'sm' (28px, default) | 'lg' (56px detail)
+  Optional: logoFallbackUrl (same-origin only), size — 'sm' (28px, default) | 'lg' (56px detail)
 %>
 <% const sz = typeof size !== 'undefined' && size === 'lg' ? 'lg' : 'sm'; %>
 <% const dim = sz === 'lg' ? 56 : 28; %>

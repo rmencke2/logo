@@ -1,11 +1,18 @@
 /**
- * MCP directory branding: Clearbit logos, category colors, transport badges.
+ * MCP directory branding: stored or same-origin logos, category colors, transport badges.
+ * Remote logo CDNs (Clearbit and similar) are not requested.
  */
 
-const { SLUG_LOGO_DOMAINS, GITHUB_OWNER_DOMAINS } = require('../data/logo-domains');
+const fs = require('fs');
+const path = require('path');
 const { MCP_AFFILIATE_LINKS } = require('../data/mcp-affiliate-links');
 
-const CLEARBIT_LOGO_BASE = 'https://logo.clearbit.com';
+const LOCAL_LOGO_DIR = path.join(__dirname, '..', 'public', 'images', 'mcp-logos');
+const LOCAL_LOGO_EXT = new Set(['.png', '.svg', '.webp', '.jpg', '.jpeg']);
+const STORED_LOGO_FIELDS = ['logo_url', 'logo', 'icon_url', 'logoUrl'];
+
+/** @type {Map<string, string> | null} */
+let localLogoIndex = null;
 
 /** @type {Record<string, { border: string; badgeBg: string; badgeText: string; tileBg: string; tileText: string; borderDark: string; badgeBgDark: string; badgeTextDark: string; tileBgDark: string; tileTextDark: string }>} */
 const CATEGORY_STYLES = {
@@ -161,73 +168,89 @@ function getCategoryStyle(category) {
   return CATEGORY_STYLES[category] || DEFAULT_CATEGORY_STYLE;
 }
 
-function hostnameFromUrl(url) {
-  if (!url) return null;
+function readLocalLogoIndex() {
+  if (localLogoIndex) return localLogoIndex;
+  localLogoIndex = new Map();
+  let names = [];
   try {
-    const host = new URL(url).hostname.replace(/^www\./, '');
-    if (host === 'github.com' || host === 'gitlab.com' || host === 'localhost') return null;
-    return host;
+    names = fs.readdirSync(LOCAL_LOGO_DIR);
   } catch {
-    return null;
+    return localLogoIndex;
   }
+  for (const name of names) {
+    const ext = path.extname(name).toLowerCase();
+    if (!LOCAL_LOGO_EXT.has(ext)) continue;
+    const slug = path.basename(name, path.extname(name)).toLowerCase();
+    if (!/^[a-z0-9][a-z0-9_-]*$/.test(slug) || localLogoIndex.has(slug)) continue;
+    localLogoIndex.set(slug, `/images/mcp-logos/${name}`);
+  }
+  return localLogoIndex;
 }
 
-function githubOwnerFromUrl(url) {
-  if (!url) return null;
-  try {
-    const u = new URL(url);
-    if (u.hostname !== 'github.com') return null;
-    const parts = u.pathname.split('/').filter(Boolean);
-    return parts[0] ? parts[0].toLowerCase() : null;
-  } catch {
-    return null;
-  }
+function isSafeSameOriginPath(value) {
+  if (!value.startsWith('/') || value.startsWith('//')) return false;
+  if (value.includes('..') || value.includes('\\') || value.includes('\0')) return false;
+  return /^\/[A-Za-z0-9._~/-]+(?:\?[A-Za-z0-9._~%=&+-]*)?$/.test(value);
 }
 
-function domainFromSlug(slug) {
-  if (!slug) return null;
-  if (SLUG_LOGO_DOMAINS[slug]) return SLUG_LOGO_DOMAINS[slug];
-  const normalized = slug.replace(/_/g, '-');
-  if (SLUG_LOGO_DOMAINS[normalized]) return SLUG_LOGO_DOMAINS[normalized];
+/** Logo CDNs and favicon proxies. Listings must not hotlink these. */
+function isLogoCdnUrl(urlString) {
+  const lower = String(urlString || '').toLowerCase();
+  if (lower.includes('clearbit') || lower.includes('/s2/favicons')) return true;
+  let host = '';
+  try {
+    host = new URL(urlString, 'https://www.influzer.ai').hostname.toLowerCase();
+  } catch {
+    return true;
+  }
+  if (host === 'clearbit.com' || host.endsWith('.clearbit.com')) return true;
+  if (host === 'logo.dev' || host.endsWith('.logo.dev')) return true;
+  if (host === 'unavatar.io' || host.endsWith('.unavatar.io')) return true;
+  if (host === 'icons.duckduckgo.com' || host === 'logo.uplead.com') return true;
+  if (host === 'favicon.yandex.net' || host === 'icon.horse') return true;
+  return false;
+}
+
+function storedLogoUrl(server) {
+  for (const field of STORED_LOGO_FIELDS) {
+    const raw = server?.[field];
+    if (typeof raw !== 'string') continue;
+    const value = raw.trim();
+    if (!value || isLogoCdnUrl(value)) continue;
+    if (isSafeSameOriginPath(value)) return value;
+    try {
+      const parsed = new URL(value);
+      if (parsed.username || parsed.password || parsed.protocol !== 'https:') continue;
+      const host = parsed.hostname.toLowerCase();
+      if (host === 'influzer.ai' || host === 'www.influzer.ai') {
+        const pathAndQuery = `${parsed.pathname}${parsed.search}`;
+        if (isSafeSameOriginPath(pathAndQuery)) return pathAndQuery;
+        continue;
+      }
+      if (!isLogoCdnUrl(value)) return value;
+    } catch {
+      continue;
+    }
+  }
   return null;
+}
+
+function localLogoUrl(server) {
+  const slug = String(server?.slug || server?.id || '')
+    .trim()
+    .toLowerCase();
+  if (!slug) return null;
+  return readLocalLogoIndex().get(slug) || null;
 }
 
 /**
+ * 1. Logo already stored on the listing (same-origin, or a non-CDN URL).
+ * 2. Same-origin file public/images/mcp-logos/{slug}.
+ * 3. null — templates show the letter tile. No remote logo host is invented.
  * @param {object} server
  */
-function resolveLogoDomain(server) {
-  const slug = server.slug || server.id;
-  const mapped = domainFromSlug(slug);
-  if (mapped) return mapped;
-
-  const owner = githubOwnerFromUrl(server.github_url);
-  if (owner && GITHUB_OWNER_DOMAINS[owner]) return GITHUB_OWNER_DOMAINS[owner];
-
-  const docsHost = hostnameFromUrl(server.docs_url);
-  if (docsHost && !docsHost.includes('smithery.ai') && !docsHost.includes('glama.ai')) {
-    return docsHost;
-  }
-
-  const ghHost = hostnameFromUrl(server.github_url);
-  if (ghHost) return ghHost;
-
-  if (owner) return `${owner}.com`;
-
-  const smitheryHost = hostnameFromUrl(server.smithery_page_url);
-  if (smitheryHost && smitheryHost !== 'smithery.ai') return smitheryHost;
-
-  return null;
-}
-
-function clearbitLogoUrl(domain) {
-  if (!domain) return null;
-  return `${CLEARBIT_LOGO_BASE}/${domain}`;
-}
-
-/** Reliable fallback when Clearbit has no logo or hotlink fails */
-function faviconLogoUrl(domain) {
-  if (!domain) return null;
-  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
+function resolveServerLogoUrl(server) {
+  return storedLogoUrl(server) || localLogoUrl(server) || null;
 }
 
 function logoInitial(name) {
@@ -267,24 +290,24 @@ function getAffiliateForServer(server) {
 
 function attachBranding(server) {
   const categoryStyle = getCategoryStyle(server.category);
-  const logoDomain = resolveLogoDomain(server);
-  const logoUrl = clearbitLogoUrl(logoDomain);
-  const logoFallbackUrl = faviconLogoUrl(logoDomain);
+  const logoUrl = resolveServerLogoUrl(server);
   const initial = logoInitial(server.name);
   const remote = isRemoteServer(server);
   const affiliate = getAffiliateForServer(server);
 
-  return {
+  const branded = {
     ...server,
-    logoDomain: logoDomain || undefined,
-    logoUrl: logoUrl || undefined,
-    logoFallbackUrl: logoFallbackUrl || undefined,
     logoInitial: initial,
     categoryStyle,
     transportBadge: transportBadgeLabel(server),
     isRemote: remote,
     affiliate: affiliate || undefined,
   };
+  delete branded.logoFallbackUrl;
+  delete branded.logoDomain;
+  if (logoUrl) branded.logoUrl = logoUrl;
+  else delete branded.logoUrl;
+  return branded;
 }
 
 function attachBrandingList(servers) {
@@ -297,10 +320,8 @@ function getCategoryStylesForClient() {
 
 module.exports = {
   CATEGORY_STYLES,
-  CLEARBIT_LOGO_BASE,
   getCategoryStyle,
-  resolveLogoDomain,
-  clearbitLogoUrl,
+  resolveServerLogoUrl,
   logoInitial,
   isRemoteServer,
   transportBadgeLabel,
