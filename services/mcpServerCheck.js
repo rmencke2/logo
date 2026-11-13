@@ -31,6 +31,8 @@ const { getDatabase } = require('../database');
 const SITE_BASE = 'https://www.influzer.ai';
 const CHECK_PATH = '/mcp/check';
 const MAX_REDIRECTS = 3;
+const TOOL_DESCRIPTION_MAX = 8000;
+const MAX_INPUT_FIELDS = 100;
 const HINTS = ['readOnlyHint', 'destructiveHint', 'idempotentHint', 'openWorldHint'];
 
 const STATUS_LABELS = {
@@ -45,6 +47,42 @@ function clip(value, max) {
   const text = String(value || '').replace(/\s+/g, ' ').trim();
   if (!text) return '';
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+/**
+ * Keep tool descriptions readable: preserve line breaks, and only stop at a
+ * sentence boundary once the text passes the hostile-payload cap.
+ */
+function clipDescription(value, max = TOOL_DESCRIPTION_MAX) {
+  let text = String(value || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  text = text.replace(/[ \t\f\v]+/g, ' ');
+  text = text.replace(/ *\n */g, '\n');
+  text = text.replace(/\n{3,}/g, '\n\n').trim();
+  if (!text || text.length <= max) return text;
+  const limited = text.slice(0, max);
+  if (/[.!?]/.test(limited[limited.length - 1] || '')) return limited.trimEnd();
+  let cut = -1;
+  for (const mark of ['. ', '.\n', '! ', '!\n', '? ', '?\n']) {
+    cut = Math.max(cut, limited.lastIndexOf(mark));
+  }
+  if (cut >= Math.floor(max / 2)) return limited.slice(0, cut + 1).trimEnd();
+  const line = limited.lastIndexOf('\n');
+  if (line >= Math.floor(max / 2)) return limited.slice(0, line).trimEnd();
+  const space = limited.lastIndexOf(' ');
+  if (space >= Math.floor(max / 2)) return limited.slice(0, space).trimEnd();
+  return limited.trimEnd();
+}
+
+function normalizeCheckUrl(value) {
+  let raw = String(value || '').trim().replace(/^['"]|['"]$/g, '');
+  if (!raw) return '';
+  while (/^https?:\/\/https?:\/\//i.test(raw)) {
+    raw = raw.replace(/^https?:\/\//i, '');
+  }
+  if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw)) {
+    raw = `https://${raw.replace(/^\/+/, '')}`;
+  }
+  return raw;
 }
 
 function redact(text, secret) {
@@ -100,7 +138,7 @@ function reviewTool(raw) {
     ? raw.annotations
     : {};
   const title = clip(raw.title || annotations.title || '', 160);
-  const description = clip(stripHiddenUnicode(redact(raw.description || '', '')), 1500);
+  const description = clipDescription(stripHiddenUnicode(redact(raw.description || '', '')));
   const schema = raw.inputSchema || raw.input_schema;
   const schemaObject = schema && typeof schema === 'object' && !Array.isArray(schema) ? schema : null;
   const properties = schemaObject?.properties && typeof schemaObject.properties === 'object'
@@ -113,7 +151,7 @@ function reviewTool(raw) {
   for (const requiredName of required) {
     if (!names.includes(requiredName)) names.push(requiredName);
   }
-  const fields = names.slice(0, 24).map((fieldName) => {
+  const fields = names.slice(0, MAX_INPUT_FIELDS).map((fieldName) => {
     const property = properties[fieldName] || {};
     return {
       name: clip(fieldName, 80),
@@ -150,7 +188,7 @@ function reviewTool(raw) {
   let inputNote = 'No input schema';
   if (schemaObject && names.length === 0) inputNote = 'Input schema has no fields';
   else if (schemaObject) {
-    const requiredCount = fields.filter((field) => field.required).length;
+    const requiredCount = names.filter((fieldName) => required.has(fieldName)).length;
     inputNote = `${names.length} field${names.length === 1 ? '' : 's'} · ${requiredCount} required`;
   }
 
@@ -271,7 +309,7 @@ function buildCheckReport(input) {
           : 'error';
   const tools = reviewTools(live.tools || []).map((tool) => ({
     ...tool,
-    description: clip(redact(tool.description, secret), 1500),
+    description: clipDescription(redact(tool.description, secret)),
     title: clip(redact(tool.title, secret), 160),
     input_note: redact(tool.input_note, secret),
     fields: tool.fields.map((field) => ({
@@ -415,7 +453,7 @@ async function checkMcpServer(opts) {
   const secret = tokenRead.token;
   const tokenSent = Boolean(secret);
   const inspect = opts.inspectLiveMcpServer || inspectLiveMcpServer;
-  const rawUrl = String(opts.url || '').trim();
+  const rawUrl = normalizeCheckUrl(opts.url);
 
   if (!rawUrl) {
     const err = new Error('URL is required');
@@ -775,7 +813,7 @@ async function handleCheckPost(req, res) {
       canCheck: true,
       csrfToken: ensureCsrfToken(req),
       formError: message,
-      prefillUrl: clip(req.body?.url || '', 500),
+      prefillUrl: clip(normalizeCheckUrl(req.body?.url || ''), 500),
       prefillTransport: readTransport(req.body?.transport),
     }));
   }

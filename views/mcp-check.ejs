@@ -60,8 +60,8 @@
                 type="url"
                 required
                 maxlength="2000"
-                placeholder="https://example.com/mcp"
-                value="<%= prefillUrl || '' %>"
+                placeholder="https://mcp.example.com"
+                value="<%= prefillUrl || 'https://' %>"
                 spellcheck="false"
               />
               <button type="submit" class="probe-form__submit" id="checkSubmit">Check server</button>
@@ -213,50 +213,61 @@
                 <h3><code><%= tool.name %></code></h3>
                 <% if (tool.title) { %><p class="check-tool__title"><%= tool.title %></p><% } %>
               </header>
-              <% if (tool.gaps && tool.gaps.length) { %>
-                <ul class="check-gaps">
-                  <% tool.gaps.forEach(function(gap) { %><li class="check-gap"><%= gap %></li><% }); %>
-                </ul>
-              <% } else { %>
-                <p class="check-gap check-gap--ok">Description, input schema, and annotations present</p>
-              <% } %>
-              <p class="check-tool__desc"><%= tool.description || 'No description.' %></p>
-              <h4 class="check-subhead">Input schema — <%= tool.input_note %></h4>
-              <% if (tool.fields && tool.fields.length) { %>
-                <table class="check-table">
-                  <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
-                  <tbody>
-                    <% tool.fields.forEach(function(field) { %>
-                      <tr>
-                        <td><code><%= field.name %></code></td>
-                        <td><%= field.type %></td>
-                        <td><%= field.required ? 'Yes' : 'No' %></td>
-                        <td><%= field.description || '—' %></td>
-                      </tr>
-                    <% }); %>
-                  </tbody>
-                </table>
-                <% if (tool.field_overflow) { %><p class="setup-note">And <%= tool.field_overflow %> more field<%= tool.field_overflow === 1 ? '' : 's' %>.</p><% } %>
-              <% } else { %>
-                <p class="setup-note">No fields to show.</p>
-              <% } %>
-              <h4 class="check-subhead">Annotations</h4>
-              <dl class="check-dl check-dl--hints">
-                <% (tool.hints || []).forEach(function(hint) { %>
-                  <div>
-                    <dt><%= hint.key %></dt>
-                    <dd><%= hint.set ? hint.value : 'Not set' %></dd>
+              <div class="check-tool__status">
+                <% if (tool.gaps && tool.gaps.length) { %>
+                  <ul class="check-gaps">
+                    <% tool.gaps.forEach(function(gap) { %><li class="check-gap"><%= gap %></li><% }); %>
+                  </ul>
+                <% } else { %>
+                  <p class="check-gap check-gap--ok">Description, input schema, and annotations present</p>
+                <% } %>
+              </div>
+              <section class="check-tool__section">
+                <h4 class="check-subhead">Description</h4>
+                <p class="check-tool__desc"><%= tool.description || 'No description.' %></p>
+              </section>
+              <section class="check-tool__section">
+                <h4 class="check-subhead">Input schema — <%= tool.input_note %></h4>
+                <% if (tool.fields && tool.fields.length) { %>
+                  <div class="check-table-wrap">
+                    <table class="check-table">
+                      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <% tool.fields.forEach(function(field) { %>
+                          <tr>
+                            <td><code><%= field.name %></code></td>
+                            <td><%= field.type %></td>
+                            <td><%= field.required ? 'Yes' : 'No' %></td>
+                            <td><%= field.description || '—' %></td>
+                          </tr>
+                        <% }); %>
+                      </tbody>
+                    </table>
                   </div>
-                <% }); %>
-              </dl>
-              <% if (tool.other_annotations && tool.other_annotations.length) { %>
-                <ul class="check-list">
-                  <% tool.other_annotations.forEach(function(item) { %>
-                    <li><code><%= item.key %></code> <%= item.value %></li>
+                  <% if (tool.field_overflow) { %><p class="setup-note">And <%= tool.field_overflow %> more field<%= tool.field_overflow === 1 ? '' : 's' %>.</p><% } %>
+                <% } else { %>
+                  <p class="setup-note">No fields to show.</p>
+                <% } %>
+              </section>
+              <section class="check-tool__section">
+                <h4 class="check-subhead">Annotations</h4>
+                <dl class="check-dl check-dl--hints">
+                  <% (tool.hints || []).forEach(function(hint) { %>
+                    <div>
+                      <dt><%= hint.key %></dt>
+                      <dd><%= hint.set ? hint.value : 'Not set' %></dd>
+                    </div>
                   <% }); %>
-                </ul>
-              <% } %>
-              <p class="setup-note">Output schema: <%= tool.output_schema === 'present' ? 'present' : 'not set' %>.</p>
+                </dl>
+                <% if (tool.other_annotations && tool.other_annotations.length) { %>
+                  <ul class="check-list">
+                    <% tool.other_annotations.forEach(function(item) { %>
+                      <li><code><%= item.key %></code> <%= item.value %></li>
+                    <% }); %>
+                  </ul>
+                <% } %>
+                <p class="setup-note">Output schema: <%= tool.output_schema === 'present' ? 'present' : 'not set' %>.</p>
+              </section>
             </article>
           <% }); %>
         </section>

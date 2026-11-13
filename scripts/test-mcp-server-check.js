@@ -157,6 +157,66 @@ async function main() {
   assert.match(html, /Query text/);
   assert.match(html, /Not set/);
 
+  const opening = 'Create a project from the brief. ';
+  const middle = 'Keep the full description on its own line. ';
+  const longDescription = `${opening}${middle.repeat(40)}\nSecond line stays visible.`;
+  assert.ok(longDescription.length > 1500);
+  assert.ok(longDescription.length < 8000);
+  const verbose = buildCheckReport({
+    url: 'https://example.com/mcp',
+    catalog: [],
+    live: liveOk([{
+      name: 'create_project',
+      description: `${longDescription} <script>alert(1)</script>`,
+      inputSchema: {
+        type: 'object',
+        required: ['name'],
+        properties: {
+          name: { type: 'string', description: 'Project name' },
+          slug: { type: 'string', description: 'URL slug' },
+          brief: { type: 'string', description: 'The brief' },
+          public: { type: 'boolean', description: 'Visible to the team' },
+          locale: { type: 'string', description: 'Locale' },
+          notes: { type: 'string', description: 'Notes' },
+        },
+      },
+    }]),
+  });
+  const created = verbose.tools[0];
+  assert.equal(created.fields.length, 6);
+  assert.equal(created.input_note.startsWith('6 fields'), true);
+  assert.equal(created.description.includes('…'), false);
+  assert.ok(created.description.length > 1500);
+  assert.equal(created.description.split('Keep the full description on its own line.').length - 1, 40);
+  assert.equal(created.description.includes('Create a project from the brief.'), true);
+  assert.equal(created.description.includes('\nSecond line stays visible.'), true);
+  assert.equal(created.description.includes('<script>alert(1)</script>'), true);
+  assert.ok(created.gaps.includes('Missing annotations'));
+  const verboseHtml = await render(verbose);
+  assert.match(verboseHtml, /Second line stays visible\./);
+  assert.match(verboseHtml, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+  assert.equal(verboseHtml.includes('<script>alert(1)</script>'), false);
+  for (const field of ['name', 'slug', 'brief', 'public', 'locale', 'notes']) {
+    assert.match(verboseHtml, new RegExp(`<code>${field}</code>`));
+  }
+  assert.match(verboseHtml, /Missing annotations/);
+  assert.match(verboseHtml, /Input schema — 6 fields/);
+
+  const filler = 'Middle sentence stays in view. ';
+  const huge = `${opening}${filler.repeat(300)}UNIQUE_TAIL_MUST_NOT_SHOW.`;
+  assert.ok(huge.length > 8000);
+  const capped = buildCheckReport({
+    url: 'https://example.com/mcp',
+    catalog: [],
+    live: liveOk([{ name: 'huge_tool', description: huge }]),
+  });
+  const shown = capped.tools[0].description;
+  assert.ok(shown.length <= 8000);
+  assert.equal(shown.includes('…'), false);
+  assert.equal(shown.startsWith(opening.trim()), true);
+  assert.equal(shown.endsWith('.'), true);
+  assert.equal(shown.includes('UNIQUE_TAIL_MUST_NOT_SHOW'), false);
+
   let calls = 0;
   const refused = await checkMcpServer({
     url: 'https://127.0.0.1/mcp',
@@ -174,6 +234,42 @@ async function main() {
   const refusedHtml = await render(refused);
   assert.match(refusedHtml, /URL not allowed/);
   assert.match(refusedHtml, /Nothing was fetched/);
+
+  let bareHostFetched = '';
+  const bareHost = await checkMcpServer({
+    url: '8.8.8.8/mcp',
+    persist: false,
+    inspectLiveMcpServer: async (url) => {
+      bareHostFetched = String(url);
+      return { status: 'ok_empty', tools: [], httpStatus: 200, serverInfo: { name: 'public-ip' } };
+    },
+  });
+  assert.equal(bareHostFetched, 'https://8.8.8.8/mcp');
+  assert.equal(bareHost.url, 'https://8.8.8.8/mcp');
+
+  let doubledFetched = '';
+  const doubled = await checkMcpServer({
+    url: 'https://https://8.8.8.8/mcp',
+    persist: false,
+    inspectLiveMcpServer: async (url) => {
+      doubledFetched = String(url);
+      return { status: 'ok_empty', tools: [], httpStatus: 200 };
+    },
+  });
+  assert.equal(doubledFetched, 'https://8.8.8.8/mcp');
+  assert.equal(doubled.url, 'https://8.8.8.8/mcp');
+
+  let httpCalls = 0;
+  const pastedHttp = await checkMcpServer({
+    url: 'https://http://8.8.8.8/mcp',
+    persist: false,
+    inspectLiveMcpServer: async () => {
+      httpCalls += 1;
+      return { status: 'ok_empty', tools: [] };
+    },
+  });
+  assert.equal(httpCalls, 0);
+  assert.equal(pastedHttp.status, 'rejected');
 
   for (const blocked of [
     'https://localhost/mcp',
@@ -263,6 +359,9 @@ async function main() {
 
   const form = await render(null);
   assert.match(form, /action="\/mcp\/check"/);
+  assert.match(form, /placeholder="https:\/\/mcp\.example\.com"/);
+  assert.match(form, /name="url"[\s\S]*value="https:\/\/"/);
+  assert.doesNotMatch(form, /onclick=/);
   assert.match(form, /<script nonce="test-nonce" src="\/js\/mcp-check-page\.js/);
   assert.equal(form.includes('?token='), false);
   assert.match(
