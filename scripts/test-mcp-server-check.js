@@ -265,6 +265,34 @@ async function main() {
   assert.match(form, /action="\/mcp\/check"/);
   assert.match(form, /<script nonce="test-nonce" src="\/js\/mcp-check-page\.js/);
   assert.equal(form.includes('?token='), false);
+  assert.match(
+    form,
+    /<a href="\/mcp" class="home-nav__link">MCP Servers<\/a>\s*<a href="\/mcp\/check" class="home-nav__link is-active">Check server<\/a>/,
+  );
+  assert.doesNotMatch(form, /<a href="\/mcp\/discovery\/setup" class="home-nav__link is-active">/);
+
+  const siteHeader = await ejs.renderFile(path.join(__dirname, '..', 'views', 'partials', 'site-header.ejs'), {
+    navPath: '/mcp/check',
+    cspNonce: 'test-nonce',
+  });
+  assert.match(
+    siteHeader,
+    /<a href="\/mcp" class="site-header-link">MCP Servers<\/a>\s*<a href="\/mcp\/check" class="site-header-link is-active">Check server<\/a>/,
+  );
+  assert.doesNotMatch(siteHeader, /onclick=/);
+
+  for (const navPath of ['/', '/mcp']) {
+    const header = await ejs.renderFile(path.join(__dirname, '..', 'views', 'partials', 'home-header.ejs'), {
+      navPath,
+      cspNonce: 'test-nonce',
+      assetVersion: '1',
+    });
+    assert.match(
+      header,
+      /<nav class="home-nav__links" id="mainSiteNav" aria-label="Main">\s*<a href="\/mcp" class="home-nav__link[^"]*">MCP Servers<\/a>\s*<a href="\/mcp\/check" class="home-nav__link">Check server<\/a>/,
+    );
+    assert.equal(header.includes('onclick='), false);
+  }
 
   const signedOut = await ejs.renderFile(path.join(__dirname, '..', 'views', 'mcp-check.ejs'), {
     title: 'Check an MCP server',
@@ -381,6 +409,7 @@ async function assertHttpGate() {
     const anon = await request(port, { path: '/mcp/check' });
     assert.equal(anon.status, 200);
     assert.match(anon.body, /Sign in to check a server/);
+    assert.match(anon.body, /<a href="\/mcp\/check" class="home-nav__link is-active">Check server<\/a>/);
     assert.equal(anon.body.includes('name="url"'), false);
 
     const anonPost = await request(port, {
