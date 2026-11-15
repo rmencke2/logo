@@ -541,6 +541,7 @@ function registerMcpClaimRoutes(app) {
 }
 
 function registerMcpClaimAdminRoutes(app, requireAdmin) {
+  const { requireAuth } = require('../auth');
   const { readServerCard, diffListingCopy } = require('./mcpListingCopy');
   const DRIFT_PATH = path.join(__dirname, '..', 'data', 'mcp-listing-drift.json');
 
