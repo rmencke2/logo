@@ -15,6 +15,208 @@
   ],
   "servers": [
     {
+      "name": "AgentSEO",
+      "slug": "agentseo",
+      "category": "Search & Web",
+      "description": "Hosted SEO MCP server and REST API for keyword research, Google SERP analysis, rank tracking, backlink research, site audits, local SEO, and AI search visibility. Tool calls require an AgentSEO API key and account credits.",
+      "official": true,
+      "transport": "http",
+      "icon": "globe",
+      "featured": false,
+      "github_url": "https://github.com/AgentSEO-dev/agentseo-clients",
+      "docs_url": "https://www.agentseo.dev/seo-mcp-server",
+      "stars": 0,
+      "tools": [
+        {
+          "name": "agentseo_search",
+          "description": "Perform a Google search with optional domain filters."
+        },
+        {
+          "name": "agentseo_extract",
+          "description": "Extract content from a URL and convert to Markdown."
+        },
+        {
+          "name": "agentseo_analyze_serp",
+          "description": "Deep analysis of Search Engine Results Page (SERP) features and competitors."
+        },
+        {
+          "name": "agentseo_local_audit",
+          "description": "Audit one Google Maps business listing. Provide its business name and city/state/country; do not pass a website URL or domain."
+        },
+        {
+          "name": "agentseo_content_gap",
+          "description": "Run content gap analysis for a URL and keyword."
+        },
+        {
+          "name": "agentseo_opportunities_find",
+          "description": "Find prioritized SEO opportunities for a domain or URL."
+        },
+        {
+          "name": "agentseo_opportunities_brief",
+          "description": "Turn one keyword or page opportunity into an implementation-ready brief."
+        },
+        {
+          "name": "agentseo_content_refresh_brief",
+          "description": "Create a refresh brief for an existing URL and keyword."
+        },
+        {
+          "name": "agentseo_content_serp_outline",
+          "description": "Turn live SERP intent into a writer- and agent-ready page outline."
+        },
+        {
+          "name": "agentseo_content_brief",
+          "description": "Turn live SERP intent into a production-ready content brief for writers and coding agents."
+        },
+        {
+          "name": "agentseo_content_draft_qa",
+          "description": "Validate a draft URL or markdown against live SERP expectations before publishing."
+        },
+        {
+          "name": "agentseo_content_schema_plan",
+          "description": "Plan JSON-LD schema for a URL or markdown page without a provider call."
+        },
+        {
+          "name": "agentseo_content_internal_links",
+          "description": "Find internal link opportunities from a source page to required supplied target pages."
+        },
+        {
+          "name": "agentseo_content_title_meta",
+          "description": "Generate SEO title and meta description options for a URL or markdown page."
+        },
+        {
+          "name": "agentseo_content_keyword_map",
+          "description": "Map supplied keywords to supplied pages and flag missing pages or cannibalization risks."
+        },
+        {
+          "name": "agentseo_content_technical_qa",
+          "description": "Run pre-publish SEO QA for metadata, indexability, canonical, headings, schema, links, and media."
+        },
+        {
+          "name": "agentseo_content_action_plan",
+          "description": "Turn supplied SEO opportunities into a capacity-aware content calendar and execution plan."
+        },
+        {
+          "name": "agentseo_site_sitemap_audit",
+          "description": "Audit sitemap coverage, orphan-page candidates, important URLs, canonical/indexability noise, and internal-link gaps."
+        },
+        {
+          "name": "agentseo_serp_volatility",
+          "description": "Compare supplied SERP snapshots to detect rank churn, top-domain churn, feature changes, and target visibility movement."
+        },
+        {
+          "name": "agentseo_page_cro_qa",
+          "description": "Audit SEO landing pages for value proposition clarity, CTA strength, trust proof, objection handling, and conversion friction."
+        },
+        {
+          "name": "agentseo_ai_visibility_prompt_set",
+          "description": "Build stable AI visibility prompt sets mapped to owned assets, platforms, competitors, citations, and weekly action routing."
+        },
+        {
+          "name": "agentseo_content_programmatic_template",
+          "description": "Plan safe programmatic SEO templates with uniqueness rules, indexation gates, internal links, schema guidance, and launch QA."
+        },
+        {
+          "name": "agentseo_content_cannibalization",
+          "description": "Detect overlapping SEO pages and recommend safe consolidation, differentiation, canonical, and internal-link fixes."
+        },
+        {
+          "name": "agentseo_content_competitor_gap_matrix",
+          "description": "Compare supplied own and competitor pages to find missing topics, weak coverage, format gaps, and buyer-stage gaps."
+        },
+        {
+          "name": "agentseo_keyword_ideas_suggest",
+          "description": "Expand one seed keyword into prioritized long-tail keyword ideas with search metrics."
+        },
+        {
+          "name": "agentseo_keyword_metrics_overview",
+          "description": "Score a supplied keyword list with search metrics and page-priority guidance."
+        },
+        {
+          "name": "agentseo_domain_ranked_keywords",
+          "description": "Find ranked keywords for a domain, subdomain, or URL and prioritize refresh opportunities."
+        },
+        {
+          "name": "agentseo_domain_relevant_pages",
+          "description": "Find traffic-carrying pages for a domain and route them into protect, refresh, expand, or recover actions."
+        },
+        {
+          "name": "agentseo_domain_competitors",
+          "description": "Discover search competitors for a domain and prioritize overlap, traffic gaps, and next analysis actions."
+        },
+        {
+          "name": "agentseo_domain_intersection",
+          "description": "Compare two domains to find shared keyword deficits, advantages, and target1-exclusive keyword opportunities."
+        },
+        {
+          "name": "agentseo_domain_traffic_estimate",
+          "description": "Compare estimated search traffic across multiple domains, subdomains, or URLs before spending deeper analysis credits."
+        },
+        {
+          "name": "agentseo_backlinks_summary",
+          "description": "Summarize backlink authority, referring domains, spam risk, broken backlinks, and next SEO actions for a domain, subdomain, or URL."
+        },
+        {
+          "name": "agentseo_backlinks_list",
+          "description": "Return a bounded list of actionable backlinks and classify each one for protection, repair, reclaim, quality review, or outreach reference."
+        },
+        {
+          "name": "agentseo_backlinks_anchors",
+          "description": "Analyze backlink anchor text groups and classify branded, commercial, generic, URL, risky, broken, or lost anchor patterns."
+        },
+        {
+          "name": "agentseo_backlinks_referring_domains",
+          "description": "Analyze referring domains and classify authority, lost-domain recovery, broken-link repair, quality review, and outreach patterns."
+        },
+        {
+          "name": "agentseo_backlinks_domain_pages",
+          "description": "Analyze backlink-bearing pages and classify linkable assets, broken backlink pages, lost links, refresh candidates, and quality risks."
+        },
+        {
+          "name": "agentseo_backlinks_competitors",
+          "description": "Discover backlink-profile competitors and prioritize overlap, authority, and link-gap research actions."
+        },
+        {
+          "name": "agentseo_backlinks_new_lost_timeseries",
+          "description": "Track new and lost backlinks/referring domains over time and classify link momentum, leakage, and volatility."
+        },
+        {
+          "name": "agentseo_backlinks_page_intersection",
+          "description": "Find source pages that link to competitor targets but not excluded/user targets, then prioritize link-gap outreach and quality review."
+        },
+        {
+          "name": "agentseo_backlinks_opportunity_finder",
+          "description": "Turn supplied backlink prospects, competitor link gaps, and owned assets into prioritized safe outreach, reclaim, repair, and digital PR actions."
+        },
+        {
+          "name": "agentseo_page_intersection",
+          "description": "Compare ranking pages to find shared page keywords or competitor-page keywords excluded from your pages."
+        },
+        {
+          "name": "agentseo_ai_overview_extract",
+          "description": "Extract AI Overview insights for a target keyword."
+        },
+        {
+          "name": "agentseo_local_visibility_track",
+          "description": "Track local visibility for a domain across keywords and locations."
+        },
+        {
+          "name": "agentseo_rank_track",
+          "description": "Queue a rank tracking check for a URL and keyword."
+        },
+        {
+          "name": "agentseo_job_status",
+          "description": "Get status/result for a previously queued job."
+        }
+      ],
+      "mcp_endpoint": "https://www.agentseo.dev/mcp",
+      "pricing": {
+        "model": "paid",
+        "summary": "Paid SEO/AEO data API. New accounts get 100 live credits once (not a recurring free tier). Plans start at $9/month.",
+        "starting_price": "$9/mo",
+        "url": "https://www.agentseo.dev/pricing"
+      }
+    },
+    {
       "name": "Ormas Outcomes",
       "slug": "ormas-outcomes",
       "category": "Dev Tools",
@@ -237,7 +439,7 @@
       "name": "Geonode MCP Server",
       "slug": "geonode-mcp-server",
       "category": "Search & Web",
-      "description": "Give MCP-compatible AI assistants web search and content collection tools. Extract pages, discover URLs, crawl sites and run batches for research and downstream analysis. Geonode offers limited keyless page extraction; an API key enables the full toolset, including JavaScript rendering and country targeting.Supported functions:• Extract webpage content from a compatible AI assistant or coding tool.• Try basic synchronous page extraction without an API key, within anonymous limits.• Use an API key for URL discovery, crawls, web search and batch jobs.• Access JavaScript rendering and country targeting with authenticated requests.• Monitor long-running extraction and crawl jobs from your MCP client.Turn a page into context: Extract a page as Markdown for your assistant to read.MCP server URL: https://mcp.geonode.com/mcpTry limited keyless page extraction through a compatible MCP client. Sign up and connect your Geonode API key to access additional features and the usage limits included in your plan.Try Geonode for free: https://app.geonode.com/signupLearn more: https://geonode.com",
+      "description": "Give MCP-compatible AI assistants web search and content collection tools. Extract pages, discover URLs, crawl sites and run batches for research and downstream analysis. Geonode offers limited keyless page extraction; an API key enables the full toolset, including JavaScript rendering and country targeting.Supported functions:\u2022 Extract webpage content from a compatible AI assistant or coding tool.\u2022 Try basic synchronous page extraction without an API key, within anonymous limits.\u2022 Use an API key for URL discovery, crawls, web search and batch jobs.\u2022 Access JavaScript rendering and country targeting with authenticated requests.\u2022 Monitor long-running extraction and crawl jobs from your MCP client.Turn a page into context: Extract a page as Markdown for your assistant to read.MCP server URL: https://mcp.geonode.com/mcpTry limited keyless page extraction through a compatible MCP client. Sign up and connect your Geonode API key to access additional features and the usage limits included in your plan.Try Geonode for free: https://app.geonode.com/signupLearn more: https://geonode.com",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -395,7 +597,7 @@
       "name": "Repostit for Claude",
       "slug": "repostit-claude-connector",
       "category": "Automation",
-      "description": "Official Repostit connector for Claude. It lets users list connected social accounts, draft text and media posts, schedule saved drafts, create cross-posting workflows, publish when requested, and check delivery status. Actions use the user’s Repostit account and plan limits.",
+      "description": "Official Repostit connector for Claude. It lets users list connected social accounts, draft text and media posts, schedule saved drafts, create cross-posting workflows, publish when requested, and check delivery status. Actions use the user\u2019s Repostit account and plan limits.",
       "official": true,
       "transport": "unknown",
       "icon": "globe",
@@ -1898,307 +2100,307 @@
       "stars": 0,
       "tools": [
         {
-          "name": "exim__analytics__catalog â€” Lists the analytics fields, their coverage, allowed filters and time windows, with worked examples",
+          "name": "exim__analytics__catalog \u00e2\u20ac\u201d Lists the analytics fields, their coverage, allowed filters and time windows, with worked examples",
           "description": ""
         },
         {
-          "name": "exim__analytics__query â€” Returns deduplicated aggregates (shipment count, value, weight, price per kg, unique buyers/sellers) grouped by HS code, country, company, month or year",
+          "name": "exim__analytics__query \u00e2\u20ac\u201d Returns deduplicated aggregates (shipment count, value, weight, price per kg, unique buyers/sellers) grouped by HS code, country, company, month or year",
           "description": ""
         },
         {
-          "name": "exim__analytics__sql â€” Runs one read-only SELECT over the allowed trade tables; raw fact tables need a WHERE clause and results are row-limited",
+          "name": "exim__analytics__sql \u00e2\u20ac\u201d Runs one read-only SELECT over the allowed trade tables; raw fact tables need a WHERE clause and results are row-limited",
           "description": ""
         },
         {
-          "name": "exim__analytics__anomalies â€” Flags months where a measure spikes or drops past a threshold for a destination, origin and/or HS code",
+          "name": "exim__analytics__anomalies \u00e2\u20ac\u201d Flags months where a measure spikes or drops past a threshold for a destination, origin and/or HS code",
           "description": ""
         },
         {
-          "name": "exim__shipments__search â€” Searches shipment records by HS code, origin, destination and company name",
+          "name": "exim__shipments__search \u00e2\u20ac\u201d Searches shipment records by HS code, origin, destination and company name",
           "description": ""
         },
         {
-          "name": "exim__shipments__get â€” Returns one shipment by id, projected to a view (summary, detail, logistics, financials, parties or evidence)",
+          "name": "exim__shipments__get \u00e2\u20ac\u201d Returns one shipment by id, projected to a view (summary, detail, logistics, financials, parties or evidence)",
           "description": ""
         },
         {
-          "name": "exim__shipments__price-trend â€” Returns the monthly price per kg for an HS code with dispersion and concentration shifts, filterable by origin, destination and date range",
+          "name": "exim__shipments__price-trend \u00e2\u20ac\u201d Returns the monthly price per kg for an HS code with dispersion and concentration shifts, filterable by origin, destination and date range",
           "description": ""
         },
         {
-          "name": "exim__shipments__market-signals â€” Returns demand, buyer concentration and momentum signals for an HS code and/or destination",
+          "name": "exim__shipments__market-signals \u00e2\u20ac\u201d Returns demand, buyer concentration and momentum signals for an HS code and/or destination",
           "description": ""
         },
         {
-          "name": "exim__shipments__route-signals â€” Ranks origin-to-destination routes by traded value for an HS code",
+          "name": "exim__shipments__route-signals \u00e2\u20ac\u201d Ranks origin-to-destination routes by traded value for an HS code",
           "description": ""
         },
         {
-          "name": "exim__shipments__buyer-recurrence â€” Returns repeat buyers, retention and shipment scale for an HS code, market or named buyer",
+          "name": "exim__shipments__buyer-recurrence \u00e2\u20ac\u201d Returns repeat buyers, retention and shipment scale for an HS code, market or named buyer",
           "description": ""
         },
         {
-          "name": "exim__product__shipments â€” Lists shipments matching an HS code prefix (4 to 10 digits)",
+          "name": "exim__product__shipments \u00e2\u20ac\u201d Lists shipments matching an HS code prefix (4 to 10 digits)",
           "description": ""
         },
         {
-          "name": "exim__company__shipments â€” Lists shipments where the named company is exporter or importer, filterable by HS code and countries",
+          "name": "exim__company__shipments \u00e2\u20ac\u201d Lists shipments where the named company is exporter or importer, filterable by HS code and countries",
           "description": ""
         },
         {
-          "name": "exim__route__shipments â€” Lists shipments from one origin country to one destination country",
+          "name": "exim__route__shipments \u00e2\u20ac\u201d Lists shipments from one origin country to one destination country",
           "description": ""
         },
         {
-          "name": "exim__price__shipments â€” Lists shipments for an HS code above a minimum gross weight",
+          "name": "exim__price__shipments \u00e2\u20ac\u201d Lists shipments for an HS code above a minimum gross weight",
           "description": ""
         },
         {
-          "name": "exim__evidence__show â€” Returns the raw source record behind one shipment, optionally with English-normalized fields",
+          "name": "exim__evidence__show \u00e2\u20ac\u201d Returns the raw source record behind one shipment, optionally with English-normalized fields",
           "description": ""
         },
         {
-          "name": "exim__market__trend â€” Returns a monthly or quarterly series of value, buyers and price for an HS code into a destination, with growth rates and a rising/falling/flat verdict",
+          "name": "exim__market__trend \u00e2\u20ac\u201d Returns a monthly or quarterly series of value, buyers and price for an HS code into a destination, with growth rates and a rising/falling/flat verdict",
           "description": ""
         },
         {
-          "name": "exim__market__growth â€” Lists importers whose recent import value grew past a minimum ratio versus the prior period, by country and HS code",
+          "name": "exim__market__growth \u00e2\u20ac\u201d Lists importers whose recent import value grew past a minimum ratio versus the prior period, by country and HS code",
           "description": ""
         },
         {
-          "name": "exim__market__momentum â€” Ranks a destination's HS6 markets by recent-versus-prior growth, optionally within one HS2 chapter",
+          "name": "exim__market__momentum \u00e2\u20ac\u201d Ranks a destination's HS6 markets by recent-versus-prior growth, optionally within one HS2 chapter",
           "description": ""
         },
         {
-          "name": "exim__market__compare â€” Compares one HS code across several destination countries side by side: value, price per kg, growth and top buyer",
+          "name": "exim__market__compare \u00e2\u20ac\u201d Compares one HS code across several destination countries side by side: value, price per kg, growth and top buyer",
           "description": ""
         },
         {
-          "name": "exim__market__entrants â€” Lists importers of an HS code in a country with no import history before the lookback window",
+          "name": "exim__market__entrants \u00e2\u20ac\u201d Lists importers of an HS code in a country with no import history before the lookback window",
           "description": ""
         },
         {
-          "name": "exim__market__churned â€” Lists importers that were active before the lookback window and have stopped importing since",
+          "name": "exim__market__churned \u00e2\u20ac\u201d Lists importers that were active before the lookback window and have stopped importing since",
           "description": ""
         },
         {
-          "name": "exim__market__anomalies â€” Flags periods where price or volume for an HS code into a destination deviates from that market's own baseline",
+          "name": "exim__market__anomalies \u00e2\u20ac\u201d Flags periods where price or volume for an HS code into a destination deviates from that market's own baseline",
           "description": ""
         },
         {
-          "name": "exim__companies__list â€” Lists resolved companies trading an HS code in a reporting country, each with its trade profile; filter by role, origin, destination and dates",
+          "name": "exim__companies__list \u00e2\u20ac\u201d Lists resolved companies trading an HS code in a reporting country, each with its trade profile; filter by role, origin, destination and dates",
           "description": ""
         },
         {
-          "name": "exim__companies__profile â€” Returns one company's trade profile: HS codes, corridors, counterparties and recurrence",
+          "name": "exim__companies__profile \u00e2\u20ac\u201d Returns one company's trade profile: HS codes, corridors, counterparties and recurrence",
           "description": ""
         },
         {
-          "name": "exim__companies__suppliers â€” Lists the exporters a company buys from, ranked by value, with shipments, shared HS codes, first/last seen and share of imports",
+          "name": "exim__companies__suppliers \u00e2\u20ac\u201d Lists the exporters a company buys from, ranked by value, with shipments, shared HS codes, first/last seen and share of imports",
           "description": ""
         },
         {
-          "name": "exim__companies__customers â€” Lists the importers a company sells to, ranked by value, with shipments, shared HS codes, first/last seen and share of exports",
+          "name": "exim__companies__customers \u00e2\u20ac\u201d Lists the importers a company sells to, ranked by value, with shipments, shared HS codes, first/last seen and share of exports",
           "description": ""
         },
         {
-          "name": "exim__companies__competitors â€” Lists companies importing the same HS codes into the same country, with overlap and volume compared to this company",
+          "name": "exim__companies__competitors \u00e2\u20ac\u201d Lists companies importing the same HS codes into the same country, with overlap and volume compared to this company",
           "description": ""
         },
         {
-          "name": "exim__companies__similar â€” Same result as companies competitors: companies trading the same HS codes into the same country, ranked by overlap and volume",
+          "name": "exim__companies__similar \u00e2\u20ac\u201d Same result as companies competitors: companies trading the same HS codes into the same country, ranked by overlap and volume",
           "description": ""
         },
         {
-          "name": "exim__companies__graph â€” Returns a company's top suppliers and customers, competitor count, shared-supplier peers and supplier concentration (single-source risk)",
+          "name": "exim__companies__graph \u00e2\u20ac\u201d Returns a company's top suppliers and customers, competitor count, shared-supplier peers and supplier concentration (single-source risk)",
           "description": ""
         },
         {
-          "name": "exim__companies__trajectory â€” Returns one company's value and shipment series by month or quarter, with trend and peak months",
+          "name": "exim__companies__trajectory \u00e2\u20ac\u201d Returns one company's value and shipment series by month or quarter, with trend and peak months",
           "description": ""
         },
         {
-          "name": "exim__company â€” Returns a company's website, profile and summary from its name, with optional country, address and product hints to disambiguate",
+          "name": "exim__company \u00e2\u20ac\u201d Returns a company's website, profile and summary from its name, with optional country, address and product hints to disambiguate",
           "description": ""
         },
         {
-          "name": "exim__company__resolve â€” Matches a company name to its website with a confidence (0-2), a reason and any entity splits",
+          "name": "exim__company__resolve \u00e2\u20ac\u201d Matches a company name to its website with a confidence (0-2), a reason and any entity splits",
           "description": ""
         },
         {
-          "name": "exim__country__resolve â€” Resolves a country name, ISO2 or ISO3 code to its canonical record",
+          "name": "exim__country__resolve \u00e2\u20ac\u201d Resolves a country name, ISO2 or ISO3 code to its canonical record",
           "description": ""
         },
         {
-          "name": "exim__hscode__search â€” Finds HS codes for a product keyword or code, widening the search until it finds strong matches; optionally restricted to one hierarchy level",
+          "name": "exim__hscode__search \u00e2\u20ac\u201d Finds HS codes for a product keyword or code, widening the search until it finds strong matches; optionally restricted to one hierarchy level",
           "description": ""
         },
         {
-          "name": "exim__tariff â€” Returns the effective duty rate and trade remedies between an exporting and importing country, for a product or as a corridor overview",
+          "name": "exim__tariff \u00e2\u20ac\u201d Returns the effective duty rate and trade remedies between an exporting and importing country, for a product or as a corridor overview",
           "description": ""
         },
         {
-          "name": "exim__trade__lookup â€” Searches duties, taxes, trade remedies and non-tariff measures for an exporter, importer and product or HS code",
+          "name": "exim__trade__lookup \u00e2\u20ac\u201d Searches duties, taxes, trade remedies and non-tariff measures for an exporter, importer and product or HS code",
           "description": ""
         },
         {
-          "name": "exim__duty__exposure â€” Returns the effective rate, trade remedies and protection level for an HS code by origin and destination over a date range",
+          "name": "exim__duty__exposure \u00e2\u20ac\u201d Returns the effective rate, trade remedies and protection level for an HS code by origin and destination over a date range",
           "description": ""
         },
         {
-          "name": "exim__duty__fta â€” Shows how much trade into a market used a free-trade-agreement preference versus paid full duty, by agreement",
+          "name": "exim__duty__fta \u00e2\u20ac\u201d Shows how much trade into a market used a free-trade-agreement preference versus paid full duty, by agreement",
           "description": ""
         },
         {
-          "name": "exim__landed__cost â€” Breaks down landed cost for an HS code into a market: FOB, freight, insurance and duties, per kg and as a share of FOB",
+          "name": "exim__landed__cost \u00e2\u20ac\u201d Breaks down landed cost for an HS code into a market: FOB, freight, insurance and duties, per kg and as a share of FOB",
           "description": ""
         },
         {
-          "name": "exim__sanctions__check â€” Screens a company or person name against the OFAC SDN list (substring and alias match) and returns matches with program and aliases",
+          "name": "exim__sanctions__check \u00e2\u20ac\u201d Screens a company or person name against the OFAC SDN list (substring and alias match) and returns matches with program and aliases",
           "description": ""
         },
         {
-          "name": "exim__search__run â€” Discovers buyer or supplier companies for a product and target market, scores and ranks them, and saves them to a collection",
+          "name": "exim__search__run \u00e2\u20ac\u201d Discovers buyer or supplier companies for a product and target market, scores and ranks them, and saves them to a collection",
           "description": ""
         },
         {
-          "name": "exim__prospects__find â€” Lists importers of an HS code in a market, filtered by growth, deliverable email, supplier origin and exclusion of an existing collection",
+          "name": "exim__prospects__find \u00e2\u20ac\u201d Lists importers of an HS code in a market, filtered by growth, deliverable email, supplier origin and exclusion of an existing collection",
           "description": ""
         },
         {
-          "name": "exim__enrich__company â€” Reads a company's website and returns its description, products with HS codes, certificates, trade markers, ports, branches and contact emails/phones",
+          "name": "exim__enrich__company \u00e2\u20ac\u201d Reads a company's website and returns its description, products with HS codes, certificates, trade markers, ports, branches and contact emails/phones",
           "description": ""
         },
         {
-          "name": "exim__enrich__contacts â€” Finds decision-maker contacts for companies in a collection, filterable by department, seniority, title and priority, with a hard cost cap",
+          "name": "exim__enrich__contacts \u00e2\u20ac\u201d Finds decision-maker contacts for companies in a collection, filterable by department, seniority, title and priority, with a hard cost cap",
           "description": ""
         },
         {
-          "name": "exim__enrich__contact â€” Re-verifies one saved contact's email and fills it in when found",
+          "name": "exim__enrich__contact \u00e2\u20ac\u201d Re-verifies one saved contact's email and fills it in when found",
           "description": ""
         },
         {
-          "name": "exim__employees__filter â€” Filters contacts already saved on a collection by title, department or verification level",
+          "name": "exim__employees__filter \u00e2\u20ac\u201d Filters contacts already saved on a collection by title, department or verification level",
           "description": ""
         },
         {
-          "name": "exim__employees__rank â€” Ranks contacts saved on a collection by verified-first, seniority, decision-maker or engagement likelihood",
+          "name": "exim__employees__rank \u00e2\u20ac\u201d Ranks contacts saved on a collection by verified-first, seniority, decision-maker or engagement likelihood",
           "description": ""
         },
         {
-          "name": "exim__linkedin__lookup â€” Resolves company names, websites or LinkedIn URLs to canonical LinkedIn company pages and returns structured profiles",
+          "name": "exim__linkedin__lookup \u00e2\u20ac\u201d Resolves company names, websites or LinkedIn URLs to canonical LinkedIn company pages and returns structured profiles",
           "description": ""
         },
         {
-          "name": "exim__crawl__run â€” Reads a website's homepage and relevant internal pages as markdown",
+          "name": "exim__crawl__run \u00e2\u20ac\u201d Reads a website's homepage and relevant internal pages as markdown",
           "description": ""
         },
         {
-          "name": "exim__run__status â€” Returns the live status of a buyer search run by run id or collection id: progress, counts and credits reserved, charged or refunded",
+          "name": "exim__run__status \u00e2\u20ac\u201d Returns the live status of a buyer search run by run id or collection id: progress, counts and credits reserved, charged or refunded",
           "description": ""
         },
         {
-          "name": "exim__run__summary â€” Returns the criteria, timing, company totals and priority breakdown of a buyer search run",
+          "name": "exim__run__summary \u00e2\u20ac\u201d Returns the criteria, timing, company totals and priority breakdown of a buyer search run",
           "description": ""
         },
         {
-          "name": "exim__profile-match__analyze â€” Builds an ideal customer profile from reference companies (URLs, text, positive or negative) or an existing collection and saves it for ranking",
+          "name": "exim__profile-match__analyze \u00e2\u20ac\u201d Builds an ideal customer profile from reference companies (URLs, text, positive or negative) or an existing collection and saves it for ranking",
           "description": ""
         },
         {
-          "name": "exim__profile-match__rank â€” Ranks companies in a collection by fit against a saved ideal customer profile, with explained scores",
+          "name": "exim__profile-match__rank \u00e2\u20ac\u201d Ranks companies in a collection by fit against a saved ideal customer profile, with explained scores",
           "description": ""
         },
         {
-          "name": "exim__profile-match__score â€” Scores any list of companies against a saved ideal customer profile, returning a fit score, band and matched/missing attributes for each",
+          "name": "exim__profile-match__score \u00e2\u20ac\u201d Scores any list of companies against a saved ideal customer profile, returning a fit score, band and matched/missing attributes for each",
           "description": ""
         },
         {
-          "name": "exim__profile-match__lookalike â€” Finds companies that trade like a seed company (same products and source markets in shipment data), ranked by fit",
+          "name": "exim__profile-match__lookalike \u00e2\u20ac\u201d Finds companies that trade like a seed company (same products and source markets in shipment data), ranked by fit",
           "description": ""
         },
         {
-          "name": "exim__profile-match__search â€” Searches the company database and ranks results by fit to an ideal customer profile, optionally retargeted to a new market",
+          "name": "exim__profile-match__search \u00e2\u20ac\u201d Searches the company database and ranks results by fit to an ideal customer profile, optionally retargeted to a new market",
           "description": ""
         },
         {
-          "name": "exim__collection__create â€” Creates an empty collection (a company list) for manual prospecting, optionally with a default email template",
+          "name": "exim__collection__create \u00e2\u20ac\u201d Creates an empty collection (a company list) for manual prospecting, optionally with a default email template",
           "description": ""
         },
         {
-          "name": "exim__collection__list â€” Lists your collections, most recent first, with paging",
+          "name": "exim__collection__list \u00e2\u20ac\u201d Lists your collections, most recent first, with paging",
           "description": ""
         },
         {
-          "name": "exim__collection__get â€” Returns a collection's metadata: name, totals, priority counts and status",
+          "name": "exim__collection__get \u00e2\u20ac\u201d Returns a collection's metadata: name, totals, priority counts and status",
           "description": ""
         },
         {
-          "name": "exim__collection__items__list â€” Lists company rows in a collection with score, priority, country, contacts and outreach stage, with filters and paging",
+          "name": "exim__collection__items__list \u00e2\u20ac\u201d Lists company rows in a collection with score, priority, country, contacts and outreach stage, with filters and paging",
           "description": ""
         },
         {
-          "name": "exim__collection__items__add â€” Adds a company to a collection by company id or website URL (creating the company record if needed), with optional priority and product",
+          "name": "exim__collection__items__add \u00e2\u20ac\u201d Adds a company to a collection by company id or website URL (creating the company record if needed), with optional priority and product",
           "description": ""
         },
         {
-          "name": "exim__collection__analyze â€” Ranks every company in a collection against a plain-language question, with a 0-100 score and one-sentence reasoning each",
+          "name": "exim__collection__analyze \u00e2\u20ac\u201d Ranks every company in a collection against a plain-language question, with a 0-100 score and one-sentence reasoning each",
           "description": ""
         },
         {
-          "name": "exim__collection__copy-to â€” Copies a collection with its items, columns and provenance to another existing account as an independent copy",
+          "name": "exim__collection__copy-to \u00e2\u20ac\u201d Copies a collection with its items, columns and provenance to another existing account as an independent copy",
           "description": ""
         },
         {
-          "name": "exim__share__create â€” Creates an expiring, read-only share link for a collection, analytics result or lookalike ranking",
+          "name": "exim__share__create \u00e2\u20ac\u201d Creates an expiring, read-only share link for a collection, analytics result or lookalike ranking",
           "description": ""
         },
         {
-          "name": "exim__corridor__list â€” Lists your saved trade corridors, most recent first",
+          "name": "exim__corridor__list \u00e2\u20ac\u201d Lists your saved trade corridors, most recent first",
           "description": ""
         },
         {
-          "name": "exim__corridor__save â€” Saves an exporter-importer-HS code lane as a named corridor for reuse; optionally starred with a default currency and Incoterm",
+          "name": "exim__corridor__save \u00e2\u20ac\u201d Saves an exporter-importer-HS code lane as a named corridor for reuse; optionally starred with a default currency and Incoterm",
           "description": ""
         },
         {
-          "name": "exim__corridor__get â€” Returns a saved corridor by name: countries, HS code, defaults and any tariff snapshot",
+          "name": "exim__corridor__get \u00e2\u20ac\u201d Returns a saved corridor by name: countries, HS code, defaults and any tariff snapshot",
           "description": ""
         },
         {
-          "name": "exim__products__list â€” Lists the products saved on your account, optionally filtered to export or import",
+          "name": "exim__products__list \u00e2\u20ac\u201d Lists the products saved on your account, optionally filtered to export or import",
           "description": ""
         },
         {
-          "name": "exim__products__get â€” Returns a saved product by name: description, HS code, MOQ, category and image",
+          "name": "exim__products__get \u00e2\u20ac\u201d Returns a saved product by name: description, HS code, MOQ, category and image",
           "description": ""
         },
         {
-          "name": "exim__kb__list â€” Lists the entries in your knowledge base",
+          "name": "exim__kb__list \u00e2\u20ac\u201d Lists the entries in your knowledge base",
           "description": ""
         },
         {
-          "name": "exim__kb__get â€” Returns a knowledge-base entry by filename with tags, metadata and (truncated) content",
+          "name": "exim__kb__get \u00e2\u20ac\u201d Returns a knowledge-base entry by filename with tags, metadata and (truncated) content",
           "description": ""
         },
         {
-          "name": "exim__profile__get â€” Returns your business profile: company, products, markets, role, language and signature",
+          "name": "exim__profile__get \u00e2\u20ac\u201d Returns your business profile: company, products, markets, role, language and signature",
           "description": ""
         },
         {
-          "name": "exim__profile__update â€” Updates fields on your business profile; omitted fields are kept",
+          "name": "exim__profile__update \u00e2\u20ac\u201d Updates fields on your business profile; omitted fields are kept",
           "description": ""
         },
         {
-          "name": "exim__profile__extract â€” Extracts company, product, market, role, language and contact fields from text, a website or file content and returns them; saves them to your profile when apply is true",
+          "name": "exim__profile__extract \u00e2\u20ac\u201d Extracts company, product, market, role, language and contact fields from text, a website or file content and returns them; saves them to your profile when apply is true",
           "description": ""
         },
         {
-          "name": "exim__email__draft â€” Generates personalized outreach emails for the companies in a collection from a brief, without sending",
+          "name": "exim__email__draft \u00e2\u20ac\u201d Generates personalized outreach emails for the companies in a collection from a brief, without sending",
           "description": ""
         },
         {
-          "name": "exim__email__send â€” Sends outreach emails to the companies in a collection",
+          "name": "exim__email__send \u00e2\u20ac\u201d Sends outreach emails to the companies in a collection",
           "description": ""
         }
       ],
@@ -2768,7 +2970,7 @@
       "name": "Brandlio",
       "slug": "brandlio",
       "category": "Data & Analytics",
-      "description": "Hosted marketing MCP server that connects your marketing stack, ad, commerce, analytics and SEO accounts to AI clients (Claude, ChatGPT, Cursor, Windsurf) to any AI. Plug your live Google Ads, Amazon, Meta, Klaviyo, and Merchant Center data into Claude, Cursor, Windsurf, ChatGPT — or use Brandlio's built-in agent. One connection. Every platform. Any AI and diagnose CTR/ROAS/sales drops, manage campaigns, keywords, negatives and budgets.",
+      "description": "Hosted marketing MCP server that connects your marketing stack, ad, commerce, analytics and SEO accounts to AI clients (Claude, ChatGPT, Cursor, Windsurf) to any AI. Plug your live Google Ads, Amazon, Meta, Klaviyo, and Merchant Center data into Claude, Cursor, Windsurf, ChatGPT \u2014 or use Brandlio's built-in agent. One connection. Every platform. Any AI and diagnose CTR/ROAS/sales drops, manage campaigns, keywords, negatives and budgets.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -3237,7 +3439,7 @@
       "name": "MarketNow",
       "slug": "marketnow",
       "category": "Security & Monitoring",
-      "description": "Free trust layer for AI agents: verify MCP tools before installing them — 68,388 indexed servers, install-risk flags, scam-domain checks, credential verification (8 formats), 12-stage audit pipeline.",
+      "description": "Free trust layer for AI agents: verify MCP tools before installing them \u2014 68,388 indexed servers, install-risk flags, scam-domain checks, credential verification (8 formats), 12-stage audit pipeline.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -3289,7 +3491,7 @@
       "name": "Ask Lao Tzu MCP",
       "slug": "ask-lao-tzu-mcp",
       "category": "AI & Memory",
-      "description": "Source-aware Tao Te Ching MCP server — bilingual chapters, search, and reflection prompts that cite the text instead of inventing wisdom.",
+      "description": "Source-aware Tao Te Ching MCP server \u2014 bilingual chapters, search, and reflection prompts that cite the text instead of inventing wisdom.",
       "official": false,
       "transport": "stdio",
       "icon": "globe",
@@ -3353,7 +3555,7 @@
       "mcp_endpoint": "https://jithox.com/api/mcp"
     },
     {
-      "name": "PassportCraft — EU Digital Product Passports",
+      "name": "PassportCraft \u2014 EU Digital Product Passports",
       "slug": "passportcraft",
       "category": "Other",
       "description": "Create & manage EU Digital Product Passports with PassportCraft: textiles, batteries, general goods.",
@@ -3439,7 +3641,7 @@
       "name": "PandaStock",
       "slug": "pandastock",
       "category": "Data & Analytics",
-      "description": "A股实时数据 MCP Server：NATS 推送实时行情、Level-2、DDX 大单、沪深京资金流与 AI 选股。服务端 176 个接口，其中 22 个开放接口提供免注册公共测试账号（pandastock / pandastock）。",
+      "description": "A\u80a1\u5b9e\u65f6\u6570\u636e MCP Server\uff1aNATS \u63a8\u9001\u5b9e\u65f6\u884c\u60c5\u3001Level-2\u3001DDX \u5927\u5355\u3001\u6caa\u6df1\u4eac\u8d44\u91d1\u6d41\u4e0e AI \u9009\u80a1\u3002\u670d\u52a1\u7aef 176 \u4e2a\u63a5\u53e3\uff0c\u5176\u4e2d 22 \u4e2a\u5f00\u653e\u63a5\u53e3\u63d0\u4f9b\u514d\u6ce8\u518c\u516c\u5171\u6d4b\u8bd5\u8d26\u53f7\uff08pandastock / pandastock\uff09\u3002",
       "official": true,
       "transport": "stdio",
       "icon": "globe",
@@ -3450,7 +3652,7 @@
       "tools": [
         {
           "name": "subscribe_ch_l2_data_real",
-          "description": "订阅 Level2 实时数据推送get_ch_l2_data_cur_real — 获取 Level2 实时数据subscribe_ch_ddx_data_real — 订阅 DDX 大单资金实时推送get_ch_ddx_data_cur_real — 获取 DDX 大单资金实时数据get_ch_stock_ddx_history — 获取个股 DDX 历史数据get_ch_stock_thousand_level_order — 获取千档盘口get_ch_stock_l2_fund_flow_sa — 获取个股实时资金流向get_ch_all_market_l2_fund_flow — 获取全市场实时资金流向"
+          "description": "\u8ba2\u9605 Level2 \u5b9e\u65f6\u6570\u636e\u63a8\u9001get_ch_l2_data_cur_real \u2014 \u83b7\u53d6 Level2 \u5b9e\u65f6\u6570\u636esubscribe_ch_ddx_data_real \u2014 \u8ba2\u9605 DDX \u5927\u5355\u8d44\u91d1\u5b9e\u65f6\u63a8\u9001get_ch_ddx_data_cur_real \u2014 \u83b7\u53d6 DDX \u5927\u5355\u8d44\u91d1\u5b9e\u65f6\u6570\u636eget_ch_stock_ddx_history \u2014 \u83b7\u53d6\u4e2a\u80a1 DDX \u5386\u53f2\u6570\u636eget_ch_stock_thousand_level_order \u2014 \u83b7\u53d6\u5343\u6863\u76d8\u53e3get_ch_stock_l2_fund_flow_sa \u2014 \u83b7\u53d6\u4e2a\u80a1\u5b9e\u65f6\u8d44\u91d1\u6d41\u5411get_ch_all_market_l2_fund_flow \u2014 \u83b7\u53d6\u5168\u5e02\u573a\u5b9e\u65f6\u8d44\u91d1\u6d41\u5411"
         }
       ]
     },
@@ -3477,7 +3679,7 @@
       "name": "CosVoice",
       "slug": "cosvoice",
       "category": "Communication",
-      "description": "CosVoice gives your AI Chief of Staff (Grok Bot, Claude, ChatGPT, Cursor) a real US phone number and email. It calls, answers, and sends written summaries. Connect via https://cosvoice.com/mcp — from $29/mo.",
+      "description": "CosVoice gives your AI Chief of Staff (Grok Bot, Claude, ChatGPT, Cursor) a real US phone number and email. It calls, answers, and sends written summaries. Connect via https://cosvoice.com/mcp \u2014 from $29/mo.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -3488,7 +3690,7 @@
       "tools": [
         {
           "name": "place_call",
-          "description": "Place an outbound phone callanswer_call — Answer inbound calls on your US numbersend_email — Send email from the line inboxget_call_summary — Written summary after each calllist_calls — List recent call history"
+          "description": "Place an outbound phone callanswer_call \u2014 Answer inbound calls on your US numbersend_email \u2014 Send email from the line inboxget_call_summary \u2014 Written summary after each calllist_calls \u2014 List recent call history"
         }
       ],
       "mcp_endpoint": "https://cosvoice.com/mcp"
@@ -3528,7 +3730,7 @@
       "tools": [
         {
           "name": "subreddit_rules",
-          "description": "a subreddit's rules, size and description, self-promotion rules flaggedfind_communities — subreddits for a topic with their promotion rulesaccount_check — a Reddit account's age, karma and whether recent posts are removed or hiddenpost_status — whether a post is live, removed or deleted, with score and commentsthreadfox_full_kit — describes the paid ThreadFox kit"
+          "description": "a subreddit's rules, size and description, self-promotion rules flaggedfind_communities \u2014 subreddits for a topic with their promotion rulesaccount_check \u2014 a Reddit account's age, karma and whether recent posts are removed or hiddenpost_status \u2014 whether a post is live, removed or deleted, with score and commentsthreadfox_full_kit \u2014 describes the paid ThreadFox kit"
         }
       ]
     },
@@ -3547,7 +3749,7 @@
       "tools": [
         {
           "name": "search_templates",
-          "description": "Find templates by words, document type or category, with example line itemsget_template — The full record for one templateget_tax_rule — Published tax rate, name, currency and official source for any of 195 countriescalculate_totals — Add up line items, discounts and the country's tax, rounded to the currencybuild_document — Build a complete quotation or invoice and return a link that opens it filled inlist_guides — QuoteBill how-to guideslist_reference — Categories, layouts, languages and country codes the other tools accept"
+          "description": "Find templates by words, document type or category, with example line itemsget_template \u2014 The full record for one templateget_tax_rule \u2014 Published tax rate, name, currency and official source for any of 195 countriescalculate_totals \u2014 Add up line items, discounts and the country's tax, rounded to the currencybuild_document \u2014 Build a complete quotation or invoice and return a link that opens it filled inlist_guides \u2014 QuoteBill how-to guideslist_reference \u2014 Categories, layouts, languages and country codes the other tools accept"
         }
       ],
       "mcp_endpoint": "https://quotebill.com/mcp"
@@ -3575,7 +3777,7 @@
       "name": "Databar.ai",
       "slug": "databar-ai",
       "category": "Data & Analytics",
-      "description": "B2B data enrichment for AI agents. 100+ data providers behind one MCP server. Databar.ai enables access to 100+ third party data providers, waterfall enrichments, and company signals via a single MCP server — company and contact enrichment, email and phone waterfalls, LinkedIn profiles, technographics, funding data, email verification, and prospect search with ICP filters. Built for sales, GTM and AI agent developers.",
+      "description": "B2B data enrichment for AI agents. 100+ data providers behind one MCP server. Databar.ai enables access to 100+ third party data providers, waterfall enrichments, and company signals via a single MCP server \u2014 company and contact enrichment, email and phone waterfalls, LinkedIn profiles, technographics, funding data, email verification, and prospect search with ICP filters. Built for sales, GTM and AI agent developers.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -3586,7 +3788,7 @@
       "tools": [
         {
           "name": "search_enrichments",
-          "description": "Search enrichments by keyword or categoryget_enrichment_details — Parameters, pricing, response fields, and inline or remote choice metadataget_param_choices — Paginated, searchable choices for remote select / mselect paramsrun_enrichment — Run one enrichment with polling, caching, optional pages for paginated enrichmentsrun_bulk_enrichment — Bulk run with optional pages per record for paginated enrichmentssearch_waterfalls — Search waterfall definitionsrun_waterfall — Run a headless waterfall (optional provider IDs, email verifier)run_bulk_waterfall — Bulk headless waterfall runssearch_data_sources — Search catalogue data sources: company/people list building, CRM pulls, Sales Navigator and moreadd_table_source — Attach a data source (CRM/catalogue dataset, webhook or CSV) to a tablerun_table_source — Pull data from a connected source into the table onceget_table_sources — List all data sources attached to a tablecreate_table — Create a table (optional name, columns, empty row count)list_tables — List tables (UUID, name, timestamps)get_table_columns — Column schema (names, types, internal names)get_table_rows — Paginated rows with structured filters (equals, contains, etc.)create_rows — Insert up to 100 rows per request; optional allow_new_columns and dedupepatch_rows — Patch up to 100 rows by IDupsert_rows — Upsert up to 100 rows by match keyget_table_enrichments — List all enrichments configured on a tableadd_table_enrichment — Map enrichment params to columns or static valuesrun_table_enrichment — Run a table enrichment or table waterfall (run_all / run_empty / run_errors)get_table_waterfalls — List all waterfalls installed on a tableadd_table_waterfall — Attach a waterfall to a table with provider list and column mappingget_user_balance — Credit balance and account info"
+          "description": "Search enrichments by keyword or categoryget_enrichment_details \u2014 Parameters, pricing, response fields, and inline or remote choice metadataget_param_choices \u2014 Paginated, searchable choices for remote select / mselect paramsrun_enrichment \u2014 Run one enrichment with polling, caching, optional pages for paginated enrichmentsrun_bulk_enrichment \u2014 Bulk run with optional pages per record for paginated enrichmentssearch_waterfalls \u2014 Search waterfall definitionsrun_waterfall \u2014 Run a headless waterfall (optional provider IDs, email verifier)run_bulk_waterfall \u2014 Bulk headless waterfall runssearch_data_sources \u2014 Search catalogue data sources: company/people list building, CRM pulls, Sales Navigator and moreadd_table_source \u2014 Attach a data source (CRM/catalogue dataset, webhook or CSV) to a tablerun_table_source \u2014 Pull data from a connected source into the table onceget_table_sources \u2014 List all data sources attached to a tablecreate_table \u2014 Create a table (optional name, columns, empty row count)list_tables \u2014 List tables (UUID, name, timestamps)get_table_columns \u2014 Column schema (names, types, internal names)get_table_rows \u2014 Paginated rows with structured filters (equals, contains, etc.)create_rows \u2014 Insert up to 100 rows per request; optional allow_new_columns and dedupepatch_rows \u2014 Patch up to 100 rows by IDupsert_rows \u2014 Upsert up to 100 rows by match keyget_table_enrichments \u2014 List all enrichments configured on a tableadd_table_enrichment \u2014 Map enrichment params to columns or static valuesrun_table_enrichment \u2014 Run a table enrichment or table waterfall (run_all / run_empty / run_errors)get_table_waterfalls \u2014 List all waterfalls installed on a tableadd_table_waterfall \u2014 Attach a waterfall to a table with provider list and column mappingget_user_balance \u2014 Credit balance and account info"
         }
       ],
       "mcp_endpoint": "https://mcp.databar.ai/mcp",
@@ -3627,7 +3829,7 @@
       "tools": [
         {
           "name": "check_visibility",
-          "description": "Check AI visibilityget_visibility_history — Get AI visibility historycompare_competitors — Compare competitor AI visibilityget_citations — Get AI citation evidenceget_content_gaps — Find AI visibility content gapsrefresh_brand — Refresh AI visibility scantrack_brand — Track a brandupdate_brand — Update tracked brandlist_brands — List tracked brandslist_prompts — List active promptsset_prompts — Set active promptsgenerate_prompts — Generate brand prompts"
+          "description": "Check AI visibilityget_visibility_history \u2014 Get AI visibility historycompare_competitors \u2014 Compare competitor AI visibilityget_citations \u2014 Get AI citation evidenceget_content_gaps \u2014 Find AI visibility content gapsrefresh_brand \u2014 Refresh AI visibility scantrack_brand \u2014 Track a brandupdate_brand \u2014 Update tracked brandlist_brands \u2014 List tracked brandslist_prompts \u2014 List active promptsset_prompts \u2014 Set active promptsgenerate_prompts \u2014 Generate brand prompts"
         }
       ]
     },
@@ -3674,7 +3876,7 @@
       "name": "Fortmail",
       "slug": "fortmail",
       "category": "Communication",
-      "description": "Agent-operated email in one Cloudflare Worker. Aggregates Gmail + IMAP, deterministic triage, MCP at /mcp with OAuth (PKCE). MIT. Agents: also see Secondhand Decisions ($7 Decision Packet) at https://thefortthatholds.com/secondhand-decisions and Stripe catalog at https://thefortthatholds.xyz/catalog.json — final sale / no refunds. Posted by River, a bot representing The Fort That Holds — not a human typing.",
+      "description": "Agent-operated email in one Cloudflare Worker. Aggregates Gmail + IMAP, deterministic triage, MCP at /mcp with OAuth (PKCE). MIT. Agents: also see Secondhand Decisions ($7 Decision Packet) at https://thefortthatholds.com/secondhand-decisions and Stripe catalog at https://thefortthatholds.xyz/catalog.json \u2014 final sale / no refunds. Posted by River, a bot representing The Fort That Holds \u2014 not a human typing.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -3745,7 +3947,7 @@
       "tools": [
         {
           "name": "search_icons",
-          "description": "Fuzzy-search icons across all setslist_icons — List icon sets and namesget_icon — Get SVG and metadataget_icon_component — Get framework component sourceget_icons — Batch-fetch iconslist_collections — List collectionsfind_similar_icons — Find related iconsfind_equivalent_icon — Map icons across collectionsrecommend_icons — Recommend icons for a UI use caseadd_icon_to_project — Prepare an icon componentdoctor_project_icons — Explain remote/local doctor behavior"
+          "description": "Fuzzy-search icons across all setslist_icons \u2014 List icon sets and namesget_icon \u2014 Get SVG and metadataget_icon_component \u2014 Get framework component sourceget_icons \u2014 Batch-fetch iconslist_collections \u2014 List collectionsfind_similar_icons \u2014 Find related iconsfind_equivalent_icon \u2014 Map icons across collectionsrecommend_icons \u2014 Recommend icons for a UI use caseadd_icon_to_project \u2014 Prepare an icon componentdoctor_project_icons \u2014 Explain remote/local doctor behavior"
         }
       ],
       "mcp_endpoint": "https://icons.leularia.com/api/mcp"
@@ -3765,7 +3967,7 @@
       "tools": [
         {
           "name": "prepare document",
-          "description": "Build a contract from monday.com board contextsend for signature — Send after person confirmstrack status — Track signature progressfile signed copy — Store completed signed documents(58 tools total on hosted server)"
+          "description": "Build a contract from monday.com board contextsend for signature \u2014 Send after person confirmstrack status \u2014 Track signature progressfile signed copy \u2014 Store completed signed documents(58 tools total on hosted server)"
         }
       ],
       "mcp_endpoint": "https://mcp.getsign.io/mcp"
@@ -3784,7 +3986,7 @@
       "tools": [
         {
           "name": "whoami",
-          "description": "Show the authenticated ContHunt usersearch — Search TikTok, Instagram Reels, and YouTube Shortscreator — Look up a creator profilevideo — Fetch a video by idanalyze_video — Analyze a short videoanalyze_long_video — Analyze a long videodownload — Download mediaboards — List boardsinsights — Board insightsfiles — Workspace filestrending — Trending contentchat — Research chat"
+          "description": "Show the authenticated ContHunt usersearch \u2014 Search TikTok, Instagram Reels, and YouTube Shortscreator \u2014 Look up a creator profilevideo \u2014 Fetch a video by idanalyze_video \u2014 Analyze a short videoanalyze_long_video \u2014 Analyze a long videodownload \u2014 Download mediaboards \u2014 List boardsinsights \u2014 Board insightsfiles \u2014 Workspace filestrending \u2014 Trending contentchat \u2014 Research chat"
         }
       ],
       "mcp_endpoint": "https://mcp.conthunt.app/"
@@ -3803,7 +4005,7 @@
       "tools": [
         {
           "name": "whoami",
-          "description": "Return user identity, subscription status, and bound Google Ads MCClist_ad_accounts — List all accessible Google Ads accounts and manager accountsset_master_account — Set the active MCC manager account for agency multi-account managementlist_brands — List all brands registered on the Upfixe workspacecreate_brand — Register a new brand bound to a specific Google Ads customer IDset_brand_ad_account — Rebind a brand to an alternate Google Ads customer IDfetch_homepage_content — Scrape and extract landing page content to ground ad copyget_value_prop_doc — Retrieve structured value proposition document for a brandupdate_value_prop_doc — Update core brand USPs, target audience, and positioningpropose_campaign_goal — Formulate structured campaign strategy and objectives from a promptget_keyword_suggestions — Keyword discovery ranked by commercial intent and budget fitfetch_keyword_forecasts — Real-time Google Keyword Planner search volume, CPC, and competition datagenerate_campaign_draft — Generate full responsive search ads, ad groups, and keyword structuresinspect_campaign_draft — Detailed review of drafts, match types, ad copy, and policy warningsedit_campaign_draft — Modify draft ad copy, headlines, budgets, and target locationssave_campaign_draft — Persist custom campaign structureslist_campaign_drafts — List drafts across all statusespublish_campaign_to_google_ads — Push campaign to Google Ads with status PAUSED (safety guaranteed)get_campaign_report — Performance reporting (impressions, clicks, conversions, CPA, ROAS)get_account_summary — Cross-brand aggregate performance rollup for agency reportingpause_campaign — Pause an active Google Ads campaignresume_campaign — Resume an active Google Ads campaignupdate_campaign_budget — Update daily campaign budget (requires explicit confirmation)add_negative_keywords — Add campaign-level negative keywords to eliminate wasted spendremove_keywords — Remove non-performing keywords from ad groupsdelete_ad_group — Safely remove an ad group from a campaigncontact_founder — Send feedback or support requests directly to the Upfixe team"
+          "description": "Return user identity, subscription status, and bound Google Ads MCClist_ad_accounts \u2014 List all accessible Google Ads accounts and manager accountsset_master_account \u2014 Set the active MCC manager account for agency multi-account managementlist_brands \u2014 List all brands registered on the Upfixe workspacecreate_brand \u2014 Register a new brand bound to a specific Google Ads customer IDset_brand_ad_account \u2014 Rebind a brand to an alternate Google Ads customer IDfetch_homepage_content \u2014 Scrape and extract landing page content to ground ad copyget_value_prop_doc \u2014 Retrieve structured value proposition document for a brandupdate_value_prop_doc \u2014 Update core brand USPs, target audience, and positioningpropose_campaign_goal \u2014 Formulate structured campaign strategy and objectives from a promptget_keyword_suggestions \u2014 Keyword discovery ranked by commercial intent and budget fitfetch_keyword_forecasts \u2014 Real-time Google Keyword Planner search volume, CPC, and competition datagenerate_campaign_draft \u2014 Generate full responsive search ads, ad groups, and keyword structuresinspect_campaign_draft \u2014 Detailed review of drafts, match types, ad copy, and policy warningsedit_campaign_draft \u2014 Modify draft ad copy, headlines, budgets, and target locationssave_campaign_draft \u2014 Persist custom campaign structureslist_campaign_drafts \u2014 List drafts across all statusespublish_campaign_to_google_ads \u2014 Push campaign to Google Ads with status PAUSED (safety guaranteed)get_campaign_report \u2014 Performance reporting (impressions, clicks, conversions, CPA, ROAS)get_account_summary \u2014 Cross-brand aggregate performance rollup for agency reportingpause_campaign \u2014 Pause an active Google Ads campaignresume_campaign \u2014 Resume an active Google Ads campaignupdate_campaign_budget \u2014 Update daily campaign budget (requires explicit confirmation)add_negative_keywords \u2014 Add campaign-level negative keywords to eliminate wasted spendremove_keywords \u2014 Remove non-performing keywords from ad groupsdelete_ad_group \u2014 Safely remove an ad group from a campaigncontact_founder \u2014 Send feedback or support requests directly to the Upfixe team"
         }
       ],
       "mcp_endpoint": "https://app.upfixe.com/mcp",
@@ -3824,7 +4026,7 @@
       "tools": [
         {
           "name": "check_feasible",
-          "description": "Ask whether a job at a place is feasible before posting itobserve_world — Find out whether something is true at an address, with photo evidencedo_in_world — Have something done at a place, with photo evidencefind_out — Get an answer about the physical world from someone nearbyjob_status — Check the state of a posted jobjob_receipt — Get the receipt for a jobjob_evidence — Get the photo evidence for a joblist_bids — List bids on a job"
+          "description": "Ask whether a job at a place is feasible before posting itobserve_world \u2014 Find out whether something is true at an address, with photo evidencedo_in_world \u2014 Have something done at a place, with photo evidencefind_out \u2014 Get an answer about the physical world from someone nearbyjob_status \u2014 Check the state of a posted jobjob_receipt \u2014 Get the receipt for a jobjob_evidence \u2014 Get the photo evidence for a joblist_bids \u2014 List bids on a job"
         }
       ],
       "mcp_endpoint": "https://exchange.lamdis.ai/mcp"
@@ -3833,7 +4035,7 @@
       "name": "YantrikDB",
       "slug": "yantrikdb",
       "category": "AI & Memory",
-      "description": "Persistent memory MCP server for AI coding agents — semantic recall that survives paraphrasing, belief revision with history via `correct` (not silent overwrite), contradiction detection between structured claims, and a queryable knowledge graph. Local SQLite + bundled Rust embedder; the core record/recall/think path makes no LLM call and no network call. No telemetry. pip install yantrikdb-mcp.",
+      "description": "Persistent memory MCP server for AI coding agents \u2014 semantic recall that survives paraphrasing, belief revision with history via `correct` (not silent overwrite), contradiction detection between structured claims, and a queryable knowledge graph. Local SQLite + bundled Rust embedder; the core record/recall/think path makes no LLM call and no network call. No telemetry. pip install yantrikdb-mcp.",
       "official": true,
       "transport": "stdio",
       "icon": "globe",
@@ -3844,7 +4046,7 @@
       "tools": [
         {
           "name": "remember",
-          "description": "Store a new memoryrecall — Semantic search across memoriescorrect — Revise a belief, keeping history instead of overwritingthink — Consolidate memories and detect contradictionsgraph — Record and query entity relationshipsconflict — Review and resolve detected contradictions"
+          "description": "Store a new memoryrecall \u2014 Semantic search across memoriescorrect \u2014 Revise a belief, keeping history instead of overwritingthink \u2014 Consolidate memories and detect contradictionsgraph \u2014 Record and query entity relationshipsconflict \u2014 Review and resolve detected contradictions"
         }
       ]
     },
@@ -3872,7 +4074,7 @@
       "name": "EasyGroupFlights MCP",
       "slug": "easygroupflights-mcp",
       "category": "Other",
-      "description": "EasyGroupFlights MCP — remote MCP for real group airfare quotes (10+ passengers) via https://easygroupflights.com/ (IATA). Not OTA scraping. Install: claude mcp add --transport http easygroupflights https://mcp.easygroupflights.com/mcp",
+      "description": "EasyGroupFlights MCP \u2014 remote MCP for real group airfare quotes (10+ passengers) via https://easygroupflights.com/ (IATA). Not OTA scraping. Install: claude mcp add --transport http easygroupflights https://mcp.easygroupflights.com/mcp",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -3883,7 +4085,7 @@
       "tools": [
         {
           "name": "get_service_info",
-          "description": "Service overview and how group quoting worksrequest_group_quote — Request a real group airfare quote for 10+ passengers"
+          "description": "Service overview and how group quoting worksrequest_group_quote \u2014 Request a real group airfare quote for 10+ passengers"
         }
       ],
       "mcp_endpoint": "https://mcp.easygroupflights.com/mcp"
@@ -3979,7 +4181,7 @@
       "tools": [
         {
           "name": "get_workflow",
-          "description": "Read the authoritative agent workflowlist_feed_items — Browse ideas and postscreate_ideas — Save sourced ideascreate_posts — Create destination-ready postsedit_post — Revise a postpublish_post_now — Publish approved postsget_insights — Read delivery and engagement metrics"
+          "description": "Read the authoritative agent workflowlist_feed_items \u2014 Browse ideas and postscreate_ideas \u2014 Save sourced ideascreate_posts \u2014 Create destination-ready postsedit_post \u2014 Revise a postpublish_post_now \u2014 Publish approved postsget_insights \u2014 Read delivery and engagement metrics"
         }
       ],
       "mcp_endpoint": "https://postbazooka.com/mcp"
@@ -4008,7 +4210,7 @@
       "name": "Truth Bear (GAUGE)",
       "slug": "truth-bear-gauge",
       "category": "Data & Analytics",
-      "description": "Verifiable official-source data for AI agents — 180+ signals from USGS, NOAA, SEC EDGAR, EPA, FRED, openFDA, EIA, BLS, FAA, IMF PortWatch. Pay-per-call via x402 USDC on Base. SHA-256 provenance anchored to Bitcoin. Free preview requires no API key.",
+      "description": "Verifiable official-source data for AI agents \u2014 180+ signals from USGS, NOAA, SEC EDGAR, EPA, FRED, openFDA, EIA, BLS, FAA, IMF PortWatch. Pay-per-call via x402 USDC on Base. SHA-256 provenance anchored to Bitcoin. Free preview requires no API key.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4019,13 +4221,13 @@
       "tools": [
         {
           "name": "earthquake_reports",
-          "description": "USGS earthquake data (last 24h, magnitude, location)weather_alerts — NOAA active weather alerts by state/zonesec_filing_search — SEC EDGAR company filings lookupepa_air_quality — EPA AirNow current AQI readingsfred_economic_data — FRED economic time seriesfda_drug_events — openFDA adverse drug event reportsenergy_prices — EIA fuel and energy spot priceslabor_statistics — BLS employment and CPI datafaa_notams — FAA airport noticesimf_portwatch — IMF PortWatch trade disruption signals"
+          "description": "USGS earthquake data (last 24h, magnitude, location)weather_alerts \u2014 NOAA active weather alerts by state/zonesec_filing_search \u2014 SEC EDGAR company filings lookupepa_air_quality \u2014 EPA AirNow current AQI readingsfred_economic_data \u2014 FRED economic time seriesfda_drug_events \u2014 openFDA adverse drug event reportsenergy_prices \u2014 EIA fuel and energy spot priceslabor_statistics \u2014 BLS employment and CPI datafaa_notams \u2014 FAA airport noticesimf_portwatch \u2014 IMF PortWatch trade disruption signals"
         }
       ],
       "mcp_endpoint": "https://www.npmjs.com/package/mcp-gauge-x402"
     },
     {
-      "name": "Marz Greta-Lock Network — EQBuilder",
+      "name": "Marz Greta-Lock Network \u2014 EQBuilder",
       "slug": "eqbuilder-marz-greta-lock-network",
       "category": "Payments & Commerce",
       "description": "Remote MCP and x402 API for scoring AI-agent emotional intelligence against 28 profiles, with a free machine-readable Storelayer menu that maps developer e-commerce needs to 57 verified storefront widgets and links directly to Storelayer catalog and signup actions.",
@@ -4038,7 +4240,7 @@
       "tools": [
         {
           "name": "storelayer_widget_menu",
-          "description": "Free developer handoff matching e-commerce needs to 57 verified Storelayer widgets with catalog and signup linkseq_score — Score AI-agent EQ against 28 behavioral profilessimulate — Run paid EQ behavior simulationduel — Compare two agents head-to-headprogress — Generate paid improvement progress reportsscript_check — Check whether an agent response stays on an expected script"
+          "description": "Free developer handoff matching e-commerce needs to 57 verified Storelayer widgets with catalog and signup linkseq_score \u2014 Score AI-agent EQ against 28 behavioral profilessimulate \u2014 Run paid EQ behavior simulationduel \u2014 Compare two agents head-to-headprogress \u2014 Generate paid improvement progress reportsscript_check \u2014 Check whether an agent response stays on an expected script"
         }
       ],
       "mcp_endpoint": "https://eqbuilder.dev/api/mcp"
@@ -4106,7 +4308,7 @@
       "name": "MachineTranslation.com MCP",
       "slug": "machinetranslation",
       "category": "AI & Memory",
-      "description": "MachineTranslation.com MCP gives AI assistants access to SMART consensus translation — it runs your text through 22 leading AI translation models at once and returns only the output the models agree on, with a confidence-backed result instead of a single engine's guess. Built for translators, localization teams, content and marketing teams, and developers who need reliable, high-quality translation directly inside Claude, ChatGPT, Cursor, or any MCP client. Hosted remote server, no local install — connect the URL, log in with your MachineTranslation.com account, and start translating in over 240 language pairs without leaving your chat.",
+      "description": "MachineTranslation.com MCP gives AI assistants access to SMART consensus translation \u2014 it runs your text through 22 leading AI translation models at once and returns only the output the models agree on, with a confidence-backed result instead of a single engine's guess. Built for translators, localization teams, content and marketing teams, and developers who need reliable, high-quality translation directly inside Claude, ChatGPT, Cursor, or any MCP client. Hosted remote server, no local install \u2014 connect the URL, log in with your MachineTranslation.com account, and start translating in over 240 language pairs without leaving your chat.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4117,7 +4319,7 @@
       "tools": [
         {
           "name": "smart_translate",
-          "description": "Translates text through 22 leading AI models at once and returns the consensus translation they agree on. Takes source text, source language code, and target language code.list_languages — Returns all supported language codes and names available for translation. No parameters required."
+          "description": "Translates text through 22 leading AI models at once and returns the consensus translation they agree on. Takes source text, source language code, and target language code.list_languages \u2014 Returns all supported language codes and names available for translation. No parameters required."
         }
       ],
       "mcp_endpoint": "https://www.machinetranslation.com/mcp",
@@ -4138,7 +4340,7 @@
       "tools": [
         {
           "name": "get_transcript",
-          "description": "Fetch the full transcript for a single video (YouTube, TikTok, Instagram, or a direct media URL)search_videos — Find YouTube videos by keywordlist_channel_videos — List the videos on a YouTube channellist_playlist_videos — List the videos in a YouTube playlistget_credits — Check the remaining credit balance (free, no credit charged)"
+          "description": "Fetch the full transcript for a single video (YouTube, TikTok, Instagram, or a direct media URL)search_videos \u2014 Find YouTube videos by keywordlist_channel_videos \u2014 List the videos on a YouTube channellist_playlist_videos \u2014 List the videos in a YouTube playlistget_credits \u2014 Check the remaining credit balance (free, no credit charged)"
         }
       ],
       "mcp_endpoint": "https://transcriptfetch.com"
@@ -4158,7 +4360,7 @@
       "tools": [
         {
           "name": "read_url",
-          "description": "Fetch a URL and return clean Markdownget_metadata — Extract OpenGraph/meta tags from a URLlist_products — List the paid product catalog (x402 storefront)get_purchase_info — Get the 402 payment challenge for a product id"
+          "description": "Fetch a URL and return clean Markdownget_metadata \u2014 Extract OpenGraph/meta tags from a URLlist_products \u2014 List the paid product catalog (x402 storefront)get_purchase_info \u2014 Get the 402 payment challenge for a product id"
         }
       ],
       "mcp_endpoint": "https://fetchgate.dev/mcp"
@@ -4178,7 +4380,7 @@
       "tools": [
         {
           "name": "ios.create",
-          "description": "Create a disposable hosted iOS Simulator run.memory.read — Read persistent guidance for agents.memory.update — Update persistent guidance for future agents.ios.create_source_upload — Upload complete iOS source securely for a cloud build.ios.build — Build an iOS Simulator app in a disposable macOS VM.ios.get_build — Read build status, logs, and artifact metadata.ios.wait_for_build — Wait for a queued or running cloud build.ios.create_app_upload — Upload a prebuilt iOS Simulator app.ios.install — Install a built or uploaded app in the Simulator.ios.launch — Launch an installed app by bundle identifier.ios.open_url — Open a URL or deep link in the Simulator.ios.tunnel_open — Open a run-scoped full-duplex TCP tunnel.ios.open_metro_tunnel — Connect an Expo development client to Metro.ios.tunnel_close — Close a run-scoped tunnel.ios.launch_expo — Launch and verify an Expo development-client workflow.ios.get_workflow — Read and advance an iOS workflow.ios.wait_for_workflow — Wait for workflow progress or completion.ios.cancel_workflow — Cancel a workflow and release its tunnel.ios.observe — Capture a screenshot and accessibility description.ios.tap — Tap a point or exact accessibility selector.ios.system_alert — Accept, dismiss, or operate an iOS system alert.ios.swipe — Swipe between normalized screen coordinates.ios.keyboard — Type text into the focused iOS control.ios.button — Press the iOS Home button.ios.logs — Read app, crash, and Simulator logs.ios.start_recording — Start a retained MP4 recording segment.ios.stop_recording — Finalize a retained MP4 recording segment.ios.destroy — Destroy the Simulator and complete the retained run."
+          "description": "Create a disposable hosted iOS Simulator run.memory.read \u2014 Read persistent guidance for agents.memory.update \u2014 Update persistent guidance for future agents.ios.create_source_upload \u2014 Upload complete iOS source securely for a cloud build.ios.build \u2014 Build an iOS Simulator app in a disposable macOS VM.ios.get_build \u2014 Read build status, logs, and artifact metadata.ios.wait_for_build \u2014 Wait for a queued or running cloud build.ios.create_app_upload \u2014 Upload a prebuilt iOS Simulator app.ios.install \u2014 Install a built or uploaded app in the Simulator.ios.launch \u2014 Launch an installed app by bundle identifier.ios.open_url \u2014 Open a URL or deep link in the Simulator.ios.tunnel_open \u2014 Open a run-scoped full-duplex TCP tunnel.ios.open_metro_tunnel \u2014 Connect an Expo development client to Metro.ios.tunnel_close \u2014 Close a run-scoped tunnel.ios.launch_expo \u2014 Launch and verify an Expo development-client workflow.ios.get_workflow \u2014 Read and advance an iOS workflow.ios.wait_for_workflow \u2014 Wait for workflow progress or completion.ios.cancel_workflow \u2014 Cancel a workflow and release its tunnel.ios.observe \u2014 Capture a screenshot and accessibility description.ios.tap \u2014 Tap a point or exact accessibility selector.ios.system_alert \u2014 Accept, dismiss, or operate an iOS system alert.ios.swipe \u2014 Swipe between normalized screen coordinates.ios.keyboard \u2014 Type text into the focused iOS control.ios.button \u2014 Press the iOS Home button.ios.logs \u2014 Read app, crash, and Simulator logs.ios.start_recording \u2014 Start a retained MP4 recording segment.ios.stop_recording \u2014 Finalize a retained MP4 recording segment.ios.destroy \u2014 Destroy the Simulator and complete the retained run."
         }
       ],
       "mcp_endpoint": "https://api.agentcloud.so/mcp"
@@ -4187,7 +4389,7 @@
       "name": "Ledgenter",
       "slug": "ledgenter",
       "category": "Dev Tools",
-      "description": "The shared work-management office for AI agents — projects, tasks (a dependency graph), decisions (append-only), knowledge (semantic team wiki), and cross-agent handoffs, all through one MCP server. Free tier, no credit card.",
+      "description": "The shared work-management office for AI agents \u2014 projects, tasks (a dependency graph), decisions (append-only), knowledge (semantic team wiki), and cross-agent handoffs, all through one MCP server. Free tier, no credit card.",
       "official": true,
       "transport": "stdio",
       "icon": "globe",
@@ -4198,7 +4400,7 @@
       "tools": [
         {
           "name": "whoami",
-          "description": "bootstrap identity, open tasks, inbox, and delta since last seentask_create / task_claim / task_update — the work, a dependency graphdecision_log — append-only decision recordknowledge_write / knowledge_search — semantic team wikihandoff_create — addressed inbox message between agents"
+          "description": "bootstrap identity, open tasks, inbox, and delta since last seentask_create / task_claim / task_update \u2014 the work, a dependency graphdecision_log \u2014 append-only decision recordknowledge_write / knowledge_search \u2014 semantic team wikihandoff_create \u2014 addressed inbox message between agents"
         }
       ]
     },
@@ -4206,7 +4408,7 @@
       "name": "Cronping",
       "slug": "cronping-cronping-oren-workers-dev",
       "category": "Security & Monitoring",
-      "description": "MCP-native dead-man's-switch for AI agents, automation loops, cron jobs, and background workers. Your agent or job calls a ping URL after each successful run; if the ping doesn't arrive on time, Cronping alerts you by email or webhook. Unique: no account required — an agent can arm a monitor on itself in one tool call. Catches what uptime checks can't: the run that silently never happened, and zombie runs that keep pinging while making no real progress (STUCK detection). Free and instant.",
+      "description": "MCP-native dead-man's-switch for AI agents, automation loops, cron jobs, and background workers. Your agent or job calls a ping URL after each successful run; if the ping doesn't arrive on time, Cronping alerts you by email or webhook. Unique: no account required \u2014 an agent can arm a monitor on itself in one tool call. Catches what uptime checks can't: the run that silently never happened, and zombie runs that keep pinging while making no real progress (STUCK detection). Free and instant.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -4216,7 +4418,7 @@
       "tools": [
         {
           "name": "create_heartbeat",
-          "description": "Create a dead-man's-switch monitor (no account); returns a ping URL. Supports email/webhook alerts, pull checks, and STUCK detection.ping_heartbeat — Send a heartbeat after a run (success/start/fail); optional progress_token catches stalled zombie runs.get_heartbeat_status — Get live status (up/down/new), last ping time and ping count for a check.set_heartbeat_alert — Add or change the email/webhook alert channel on an existing check.import_crontab — Arm a dead-man's-switch for every line of a crontab in one call."
+          "description": "Create a dead-man's-switch monitor (no account); returns a ping URL. Supports email/webhook alerts, pull checks, and STUCK detection.ping_heartbeat \u2014 Send a heartbeat after a run (success/start/fail); optional progress_token catches stalled zombie runs.get_heartbeat_status \u2014 Get live status (up/down/new), last ping time and ping count for a check.set_heartbeat_alert \u2014 Add or change the email/webhook alert channel on an existing check.import_crontab \u2014 Arm a dead-man's-switch for every line of a crontab in one call."
         }
       ],
       "mcp_endpoint": "https://cronping.cronping-oren.workers.dev/mcp"
@@ -4236,7 +4438,7 @@
       "tools": [
         {
           "name": "publish",
-          "description": "Publish a page or static artifact to a public HTTPS URLdeploy_agent — Deploy an always-on hosted agentshare_link — Get a share link for an artifact or agent"
+          "description": "Publish a page or static artifact to a public HTTPS URLdeploy_agent \u2014 Deploy an always-on hosted agentshare_link \u2014 Get a share link for an artifact or agent"
         }
       ],
       "mcp_endpoint": "https://api.valet.dev/mcp"
@@ -4245,7 +4447,7 @@
       "name": "HostDeFi Token Risk + Swaps",
       "slug": "hostdefi",
       "category": "Data & Analytics",
-      "description": "HostDeFi token-safety intelligence for AI agents, over a remote streamable-HTTP MCP server. scan_token is free (no key): it grades any Solana or EVM token A+ to F from on-chain checks — mint and freeze authority, liquidity depth, holder concentration, contract flags. Deeper tools are machine-payable per call over x402 (USDC on Solana, Base, Polygon, Arbitrum, Avalanche; charge-on-success only): A+–F verdicts, longitudinal verdict history, pre-graduation signals for Solana mints, trend-radar alerts, x402 seller vetting, and executable KyberSwap-routed EVM swap quotes.",
+      "description": "HostDeFi token-safety intelligence for AI agents, over a remote streamable-HTTP MCP server. scan_token is free (no key): it grades any Solana or EVM token A+ to F from on-chain checks \u2014 mint and freeze authority, liquidity depth, holder concentration, contract flags. Deeper tools are machine-payable per call over x402 (USDC on Solana, Base, Polygon, Arbitrum, Avalanche; charge-on-success only): A+\u2013F verdicts, longitudinal verdict history, pre-graduation signals for Solana mints, trend-radar alerts, x402 seller vetting, and executable KyberSwap-routed EVM swap quotes.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4255,7 +4457,7 @@
       "tools": [
         {
           "name": "scan_token",
-          "description": "FREE. Token-safety scan for any Solana or EVM contract address.get_x402_pricing — FREE. The machine-payable price catalog for every paid resource.token_risk_verdict — PAID. A+ to F token safety verdict by chain + address.pregrad_signals — PAID. Pre-graduation on-chain signals for a Solana mint.radar_alerts — PAID. Recent trend-radar alerts: dated movers with real market cap.x402_provider_risk — PAID. Vet an x402 seller before paying it.buy_api_key — PAID. Mint a 30-day HostDeFi Agent-plan API key.swap_evm_quote — PAID. Firm KyberSwap-routed EVM swap quote, ready to sign.swap_evm_price — PAID. EVM swap price preview."
+          "description": "FREE. Token-safety scan for any Solana or EVM contract address.get_x402_pricing \u2014 FREE. The machine-payable price catalog for every paid resource.token_risk_verdict \u2014 PAID. A+ to F token safety verdict by chain + address.pregrad_signals \u2014 PAID. Pre-graduation on-chain signals for a Solana mint.radar_alerts \u2014 PAID. Recent trend-radar alerts: dated movers with real market cap.x402_provider_risk \u2014 PAID. Vet an x402 seller before paying it.buy_api_key \u2014 PAID. Mint a 30-day HostDeFi Agent-plan API key.swap_evm_quote \u2014 PAID. Firm KyberSwap-routed EVM swap quote, ready to sign.swap_evm_price \u2014 PAID. EVM swap price preview."
         }
       ],
       "mcp_endpoint": "https://hostdefi.com/api/v1/mcp"
@@ -4264,7 +4466,7 @@
       "name": "hostdefi-x402",
       "slug": "hostdefi-x402",
       "category": "Security & Monitoring",
-      "description": "Token-safety intelligence and non-custodial EVM swap quotes for agents. scan_token is FREE and keyless (fair use 100/day/IP): pass any Solana mint or EVM contract address and get an A+ to F safety grade computed from on-chain checks — mint and freeze authority, liquidity depth, holder concentration and contract flags. The deeper tools are machine-payable per call over the x402 protocol in USDC on Solana, Base, Polygon, Arbitrum or Avalanche, charge-on-success only, with no account or API key needed.",
+      "description": "Token-safety intelligence and non-custodial EVM swap quotes for agents. scan_token is FREE and keyless (fair use 100/day/IP): pass any Solana mint or EVM contract address and get an A+ to F safety grade computed from on-chain checks \u2014 mint and freeze authority, liquidity depth, holder concentration and contract flags. The deeper tools are machine-payable per call over the x402 protocol in USDC on Solana, Base, Polygon, Arbitrum or Avalanche, charge-on-success only, with no account or API key needed.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4274,7 +4476,7 @@
       "tools": [
         {
           "name": "scan_token",
-          "description": "FREE. Token-safety scan of any Solana mint or EVM contract address: A+ to F grade plus the on-chain signals behind it.get_x402_pricing — FREE. The machine-payable price catalog: every paid resource, its USD price and the rails it settles on.token_risk_verdict — PAID ($0.01). A+ to F verdict by chain + address: grade, score, verdict text and signals.pregrad_signals — PAID ($0.03). Pre-graduation on-chain signals for a Solana mint, including bundled-launch detection.radar_alerts — PAID ($0.01). Recent trend-radar alerts: dated movers with real market cap.x402_provider_risk — PAID ($0.02). Vet an x402 seller BEFORE paying it: an A–F grade from observable signals.buy_api_key — PAID ($5, one payment). Mint a 30-day Agent-plan API key (5,000 calls, batch enabled).swap_evm_quote — PAID ($0.01). Firm KyberSwap-routed EVM swap quote plus a ready-to-sign transaction.swap_evm_price — PAID ($0.002). EVM swap price preview: expected and minimum output before committing to a firm quote."
+          "description": "FREE. Token-safety scan of any Solana mint or EVM contract address: A+ to F grade plus the on-chain signals behind it.get_x402_pricing \u2014 FREE. The machine-payable price catalog: every paid resource, its USD price and the rails it settles on.token_risk_verdict \u2014 PAID ($0.01). A+ to F verdict by chain + address: grade, score, verdict text and signals.pregrad_signals \u2014 PAID ($0.03). Pre-graduation on-chain signals for a Solana mint, including bundled-launch detection.radar_alerts \u2014 PAID ($0.01). Recent trend-radar alerts: dated movers with real market cap.x402_provider_risk \u2014 PAID ($0.02). Vet an x402 seller BEFORE paying it: an A\u2013F grade from observable signals.buy_api_key \u2014 PAID ($5, one payment). Mint a 30-day Agent-plan API key (5,000 calls, batch enabled).swap_evm_quote \u2014 PAID ($0.01). Firm KyberSwap-routed EVM swap quote plus a ready-to-sign transaction.swap_evm_price \u2014 PAID ($0.002). EVM swap price preview: expected and minimum output before committing to a firm quote."
         }
       ],
       "mcp_endpoint": "https://hostdefi.com/api/v1/mcp"
@@ -4294,7 +4496,7 @@
       "tools": [
         {
           "name": "search_people",
-          "description": "Resolves a name, phone, email, or username to ranked candidate people with confidence scores.build_dossier — Assembles one person's public footprint into a sourced profile.ask_about_person — Answers one question about a person, grounded in their public footprint."
+          "description": "Resolves a name, phone, email, or username to ranked candidate people with confidence scores.build_dossier \u2014 Assembles one person's public footprint into a sourced profile.ask_about_person \u2014 Answers one question about a person, grounded in their public footprint."
         }
       ],
       "mcp_endpoint": "https://deepsearch.app/api/mcp"
@@ -4463,7 +4665,7 @@
       "tools": [
         {
           "name": "polyrama_search_markets",
-          "description": "Search live Polymarket and Kalshi marketspolyrama_get_market — Inspect one marketpolyrama_top_traders — Rank public Polymarket walletspolyrama_get_trader — Read public wallet positions and performancepolyrama_refresh_trader — Refresh one public walletpolyrama_recent_signals — Read whale, jolt, spike, and mispricing signalspolyrama_list_bots — List configured bots and statuspolyrama_state_snapshot — Read dashboard statepolyrama_run_backtest — Run a historical strategy backtestpolyrama_place_paper_order — Record a paper-only trade"
+          "description": "Search live Polymarket and Kalshi marketspolyrama_get_market \u2014 Inspect one marketpolyrama_top_traders \u2014 Rank public Polymarket walletspolyrama_get_trader \u2014 Read public wallet positions and performancepolyrama_refresh_trader \u2014 Refresh one public walletpolyrama_recent_signals \u2014 Read whale, jolt, spike, and mispricing signalspolyrama_list_bots \u2014 List configured bots and statuspolyrama_state_snapshot \u2014 Read dashboard statepolyrama_run_backtest \u2014 Run a historical strategy backtestpolyrama_place_paper_order \u2014 Record a paper-only trade"
         }
       ]
     },
@@ -4500,7 +4702,7 @@
       "tools": [
         {
           "name": "zeroone_read_project",
-          "description": "Read the live state of the experimentzeroone_register_agent — Register as an agent (free, instant)zeroone_read_commons — Read the public Commonszeroone_post_commons — Post to the Commonszeroone_list_proposals — List proposals with live vote tallieszeroone_submit_proposal — Submit a governance proposalzeroone_vote — Cast a permanent votezeroone_read_log — Read the public decision and execution logzeroone_activation_info — Governance activation instructions and walletszeroone_send_message — Direct-message another registered agentzeroone_read_messages — Read the agent's direct-message inboxzeroone_get_invitation — Get a forwardable invitation for other agents"
+          "description": "Read the live state of the experimentzeroone_register_agent \u2014 Register as an agent (free, instant)zeroone_read_commons \u2014 Read the public Commonszeroone_post_commons \u2014 Post to the Commonszeroone_list_proposals \u2014 List proposals with live vote tallieszeroone_submit_proposal \u2014 Submit a governance proposalzeroone_vote \u2014 Cast a permanent votezeroone_read_log \u2014 Read the public decision and execution logzeroone_activation_info \u2014 Governance activation instructions and walletszeroone_send_message \u2014 Direct-message another registered agentzeroone_read_messages \u2014 Read the agent's direct-message inboxzeroone_get_invitation \u2014 Get a forwardable invitation for other agents"
         }
       ],
       "mcp_endpoint": "https://zeroone.land/api/mcp"
@@ -4520,7 +4722,7 @@
       "tools": [
         {
           "name": "deploy",
-          "description": "build a GitHub repository and return its private URLdeploy_directory — upload the working directory as it is on disk, no repository neededlist_nooks — list what you have deployednook_logs — read a build logstop_nook — take a nook offline, keeping its URL, grants and secrets"
+          "description": "build a GitHub repository and return its private URLdeploy_directory \u2014 upload the working directory as it is on disk, no repository neededlist_nooks \u2014 list what you have deployednook_logs \u2014 read a build logstop_nook \u2014 take a nook offline, keeping its URL, grants and secrets"
         }
       ]
     },
@@ -4559,7 +4761,7 @@
       "tools": [
         {
           "name": "get_account",
-          "description": "Retrieve the Palisade accountlist_domains — List managed domainsget_domain — Get domain detailsadd_domain — Add a domainremove_domain — Remove a domainverify_domain — Verify domain DNS recordsget_dns_records — Get email-authentication DNS recordsget_mta_sts — Retrieve MTA-STS configurationenable_mta_sts — Enable MTA-STSlist_tasks — List remediation tasksget_task — Get remediation task detailslist_groups — List domain groupsget_subscription — Get subscription detailsstart_checkout — Start billing checkoutget_billing_portal_url — Retrieve the billing portal URL"
+          "description": "Retrieve the Palisade accountlist_domains \u2014 List managed domainsget_domain \u2014 Get domain detailsadd_domain \u2014 Add a domainremove_domain \u2014 Remove a domainverify_domain \u2014 Verify domain DNS recordsget_dns_records \u2014 Get email-authentication DNS recordsget_mta_sts \u2014 Retrieve MTA-STS configurationenable_mta_sts \u2014 Enable MTA-STSlist_tasks \u2014 List remediation tasksget_task \u2014 Get remediation task detailslist_groups \u2014 List domain groupsget_subscription \u2014 Get subscription detailsstart_checkout \u2014 Start billing checkoutget_billing_portal_url \u2014 Retrieve the billing portal URL"
         }
       ],
       "mcp_endpoint": "https://api.palisade.email/mcp"
@@ -4578,7 +4780,7 @@
       "tools": [
         {
           "name": "search_news",
-          "description": "Search news articles with the full APITube filter set: keywords, language, country, source domain, source quality rank, sentiment, entities, media, date ranges, sorting and facetssuggest — Resolve a name or prefix (for example \"Tesla\") into the APITube entity, category, topic or industry ID used by search_news filters"
+          "description": "Search news articles with the full APITube filter set: keywords, language, country, source domain, source quality rank, sentiment, entities, media, date ranges, sorting and facetssuggest \u2014 Resolve a name or prefix (for example \"Tesla\") into the APITube entity, category, topic or industry ID used by search_news filters"
         }
       ],
       "mcp_endpoint": "https://mcp.apitube.io/"
@@ -4597,7 +4799,7 @@
       "tools": [
         {
           "name": "create_heartbeat",
-          "description": "Create a heartbeat monitor (dead-man's-switch); returns a ping URL, no account neededping_heartbeat — Send a heartbeat signal to a check (success/fail/start), with optional progress token for stuck detectionget_heartbeat_status — Get the live status of a check (up/down/new, last ping time, history)set_heartbeat_alert — Add or change the email/webhook alert channel on an existing check"
+          "description": "Create a heartbeat monitor (dead-man's-switch); returns a ping URL, no account neededping_heartbeat \u2014 Send a heartbeat signal to a check (success/fail/start), with optional progress token for stuck detectionget_heartbeat_status \u2014 Get the live status of a check (up/down/new, last ping time, history)set_heartbeat_alert \u2014 Add or change the email/webhook alert channel on an existing check"
         }
       ],
       "mcp_endpoint": "https://cronping.cronping-oren.workers.dev/mcp"
@@ -4616,7 +4818,7 @@
       "tools": [
         {
           "name": "post_update",
-          "description": "Post a build-in-public update to your public page and the global feedget_feed — Browse recent updates from all agents (agent-to-agent discovery)set_profile — Set your agent's display name and biowhoami — Show your current agent identity"
+          "description": "Post a build-in-public update to your public page and the global feedget_feed \u2014 Browse recent updates from all agents (agent-to-agent discovery)set_profile \u2014 Set your agent's display name and biowhoami \u2014 Show your current agent identity"
         }
       ],
       "mcp_endpoint": "https://flock.perch-app.workers.dev/mcp"
@@ -4625,7 +4827,7 @@
       "name": "Secrets.RealEstate",
       "slug": "secrets-realestate",
       "category": "Data & Analytics",
-      "description": "Property intelligence for any French address. Ask about a street address and get sold prices from 18.6M notarial records, energy performance (DPE), flood/seismic/industrial risk, crime, schools and amenities — each answer returned with the official source it came from. For buyers, investors, agents and anyone building property tools on French open data.",
+      "description": "Property intelligence for any French address. Ask about a street address and get sold prices from 18.6M notarial records, energy performance (DPE), flood/seismic/industrial risk, crime, schools and amenities \u2014 each answer returned with the official source it came from. For buyers, investors, agents and anyone building property tools on French open data.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4635,7 +4837,7 @@
       "tools": [
         {
           "name": "geocode_address",
-          "description": "Turn a French address into coordinatessearch_properties — Search listings by city, type, price, size, bedroomsget_listing — Read a single listing by idget_my_listings — List the caller's own saved propertiesget_building_insights — Energy (DPE), structural, regulatory and risk insights for a buildingget_renovation_advice — Renovation priorities for a buildingget_property_report — Full report for a locationget_comparable_sales — Recent comparable sales nearbyget_price_trends — Price history and trend for the areaget_location_rating — Overall location scoreget_risk_assessment — Flood, seismic, industrial and other hazardsget_air_quality — Air quality at the locationget_seasonal_climate — Seasonal temperature and climateget_neighborhood — Neighbourhood statisticsget_noise — Noise exposure"
+          "description": "Turn a French address into coordinatessearch_properties \u2014 Search listings by city, type, price, size, bedroomsget_listing \u2014 Read a single listing by idget_my_listings \u2014 List the caller's own saved propertiesget_building_insights \u2014 Energy (DPE), structural, regulatory and risk insights for a buildingget_renovation_advice \u2014 Renovation priorities for a buildingget_property_report \u2014 Full report for a locationget_comparable_sales \u2014 Recent comparable sales nearbyget_price_trends \u2014 Price history and trend for the areaget_location_rating \u2014 Overall location scoreget_risk_assessment \u2014 Flood, seismic, industrial and other hazardsget_air_quality \u2014 Air quality at the locationget_seasonal_climate \u2014 Seasonal temperature and climateget_neighborhood \u2014 Neighbourhood statisticsget_noise \u2014 Noise exposure"
         }
       ],
       "mcp_endpoint": "https://secrets.realestate/mcp"
@@ -4644,7 +4846,7 @@
       "name": "Autoposting",
       "slug": "autoposting",
       "category": "Automation",
-      "description": "Remote MCP server for Autoposting — schedule, generate and publish social posts to X, LinkedIn, Instagram, Threads and YouTube from any MCP client.",
+      "description": "Remote MCP server for Autoposting \u2014 schedule, generate and publish social posts to X, LinkedIn, Instagram, Threads and YouTube from any MCP client.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4664,7 +4866,7 @@
       "name": "Roost",
       "slug": "roost",
       "category": "Files & Docs",
-      "description": "Roost gives your AI agent a public URL to share its work. One MCP tool call turns any report, plan, or doc into a clean, rendered, shareable web page — no signup, no pasting walls of text. Updatable in place. For agents and the humans they hand results to.",
+      "description": "Roost gives your AI agent a public URL to share its work. One MCP tool call turns any report, plan, or doc into a clean, rendered, shareable web page \u2014 no signup, no pasting walls of text. Updatable in place. For agents and the humans they hand results to.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -4674,7 +4876,7 @@
       "tools": [
         {
           "name": "publish",
-          "description": "Publish content (Markdown) as a clean public web page, returns a shareable URLupdate_page — Update the content or title of a page you publishedlist_pages — List pages you've publishedunpublish — Remove a page you published"
+          "description": "Publish content (Markdown) as a clean public web page, returns a shareable URLupdate_page \u2014 Update the content or title of a page you publishedlist_pages \u2014 List pages you've publishedunpublish \u2014 Remove a page you published"
         }
       ],
       "mcp_endpoint": "https://roost.perch-app.workers.dev/mcp"
@@ -4694,7 +4896,7 @@
       "tools": [
         {
           "name": "apple_mail_list_accounts",
-          "description": "List Apple Mail accounts and mailboxesapple_mail_list — List message metadata without reading bodiesapple_mail_get — Read one message including its bodyapple_mail_send — Send a messageapple_mail_update_status — Mark read/unread or flag/unflagapple_mail_move — Move a message to another mailboxapple_mail_delete — Delete a messageapple_calendar_list_calendars — List calendars and writable statusapple_calendar_list_events — List events in a time rangeapple_calendar_create_event — Create an eventapple_calendar_update_event — Update an event by UIDapple_calendar_delete_event — Delete an event by UIDapple_reminders_list_lists — List reminder lists and IDsapple_reminders_list — List remindersapple_reminders_create — Create a reminderapple_reminders_update — Update a reminder by IDapple_reminders_complete — Mark a reminder completeapple_reminders_delete — Delete a reminder"
+          "description": "List Apple Mail accounts and mailboxesapple_mail_list \u2014 List message metadata without reading bodiesapple_mail_get \u2014 Read one message including its bodyapple_mail_send \u2014 Send a messageapple_mail_update_status \u2014 Mark read/unread or flag/unflagapple_mail_move \u2014 Move a message to another mailboxapple_mail_delete \u2014 Delete a messageapple_calendar_list_calendars \u2014 List calendars and writable statusapple_calendar_list_events \u2014 List events in a time rangeapple_calendar_create_event \u2014 Create an eventapple_calendar_update_event \u2014 Update an event by UIDapple_calendar_delete_event \u2014 Delete an event by UIDapple_reminders_list_lists \u2014 List reminder lists and IDsapple_reminders_list \u2014 List remindersapple_reminders_create \u2014 Create a reminderapple_reminders_update \u2014 Update a reminder by IDapple_reminders_complete \u2014 Mark a reminder completeapple_reminders_delete \u2014 Delete a reminder"
         }
       ]
     },
@@ -4713,7 +4915,7 @@
       "tools": [
         {
           "name": "search_recipes",
-          "description": "Search attributed recipe recordsget_recipe — Retrieve one recipe recordcompare_recipes — Compare recipe candidatesget_comparison_guide — Inspect comparison guidance"
+          "description": "Search attributed recipe recordsget_recipe \u2014 Retrieve one recipe recordcompare_recipes \u2014 Compare recipe candidatesget_comparison_guide \u2014 Inspect comparison guidance"
         }
       ],
       "mcp_endpoint": "https://recipemcp.com/api/recipes"
@@ -4771,7 +4973,7 @@
       "tools": [
         {
           "name": "dispatch",
-          "description": "Send a task to a selected external modelpick — Choose a provider/model from the poolstatus — Check health, quotas, and availabilitystats — Review usage history and outcomesprobe — Test an agent entryadd-model — Add a local model/provider entryset-credential — Store provider API credentialsui — Open the local dashboard"
+          "description": "Send a task to a selected external modelpick \u2014 Choose a provider/model from the poolstatus \u2014 Check health, quotas, and availabilitystats \u2014 Review usage history and outcomesprobe \u2014 Test an agent entryadd-model \u2014 Add a local model/provider entryset-credential \u2014 Store provider API credentialsui \u2014 Open the local dashboard"
         }
       ],
       "owner_user_id": 32
@@ -4780,7 +4982,7 @@
       "name": "MCP Billing Gateway",
       "slug": "mcp-billing-gateway",
       "category": "Dev Tools",
-      "description": "Reverse proxy that adds Stripe-based fiat billing and x402 crypto micropayments to any MCP server. Wrap your existing MCP server with the billing gateway to monetize it instantly — supports per-call billing, subscription tiers, and usage metering. Built for MCP developers who want to add payment rails without modifying their server code. SDK available on npm and GitHub.",
+      "description": "Reverse proxy that adds Stripe-based fiat billing and x402 crypto micropayments to any MCP server. Wrap your existing MCP server with the billing gateway to monetize it instantly \u2014 supports per-call billing, subscription tiers, and usage metering. Built for MCP developers who want to add payment rails without modifying their server code. SDK available on npm and GitHub.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4791,7 +4993,7 @@
       "tools": [
         {
           "name": "list_plans",
-          "description": "List available billing plans and pricing tierscreate_subscription — Create a Stripe subscription for a billing plancheck_quota — Check remaining quota for the current billing periodget_usage — Get detailed usage statistics for the current period"
+          "description": "List available billing plans and pricing tierscreate_subscription \u2014 Create a Stripe subscription for a billing plancheck_quota \u2014 Check remaining quota for the current billing periodget_usage \u2014 Get detailed usage statistics for the current period"
         }
       ],
       "mcp_endpoint": "https://mcp-billing-gateway-production.up.railway.app/mcp/"
@@ -4800,7 +5002,7 @@
       "name": "Feedback Synthesis MCP",
       "slug": "feedback-synthesis-mcp",
       "category": "Data & Analytics",
-      "description": "Customer feedback intelligence MCP — synthesizes GitHub Issues, Hacker News, and App Store reviews into ranked pain clusters. Ideal for product teams and AI agents that need structured customer insights without manual data aggregation. Pay-per-call via x402 micropayments on Base network ($0.01–$0.05 per tool call).",
+      "description": "Customer feedback intelligence MCP \u2014 synthesizes GitHub Issues, Hacker News, and App Store reviews into ranked pain clusters. Ideal for product teams and AI agents that need structured customer insights without manual data aggregation. Pay-per-call via x402 micropayments on Base network ($0.01\u2013$0.05 per tool call).",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4811,7 +5013,7 @@
       "tools": [
         {
           "name": "synthesize_feedback",
-          "description": "Synthesize customer feedback from multiple sources into ranked pain clusters ($0.05)get_pain_points — Get ranked list of customer pain points for a product ($0.02)search_feedback — Search across feedback sources for specific topics ($0.01)get_sentiment_trends — Get sentiment trends over time for a product ($0.03)"
+          "description": "Synthesize customer feedback from multiple sources into ranked pain clusters ($0.05)get_pain_points \u2014 Get ranked list of customer pain points for a product ($0.02)search_feedback \u2014 Search across feedback sources for specific topics ($0.01)get_sentiment_trends \u2014 Get sentiment trends over time for a product ($0.03)"
         }
       ],
       "mcp_endpoint": "https://feedback-synthesis-mcp-production.up.railway.app"
@@ -4820,7 +5022,7 @@
       "name": "FinData MCP",
       "slug": "findata-mcp",
       "category": "Data & Analytics",
-      "description": "Financial data MCP server with 5 tools: real-time stock quotes, company fundamentals, economic indicators (GDP, unemployment, etc. via FRED), SEC EDGAR filings, and cryptocurrency prices. Uses x402 micropayments — pay per call, no subscription required. Thin client (PyPI: findata-mcp) connects to a hosted backend on Railway. Ideal for AI agents and LLMs that need structured financial data without API key management.",
+      "description": "Financial data MCP server with 5 tools: real-time stock quotes, company fundamentals, economic indicators (GDP, unemployment, etc. via FRED), SEC EDGAR filings, and cryptocurrency prices. Uses x402 micropayments \u2014 pay per call, no subscription required. Thin client (PyPI: findata-mcp) connects to a hosted backend on Railway. Ideal for AI agents and LLMs that need structured financial data without API key management.",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -4831,7 +5033,7 @@
       "tools": [
         {
           "name": "stock_quote",
-          "description": "Get real-time stock price and market datacompany_fundamentals — Get company financial ratios and fundamentalseconomic_indicator — Get macroeconomic data from FRED (GDP, unemployment, inflation, etc.)sec_filing — Search and retrieve SEC EDGAR filingscrypto_price — Get real-time cryptocurrency prices"
+          "description": "Get real-time stock price and market datacompany_fundamentals \u2014 Get company financial ratios and fundamentalseconomic_indicator \u2014 Get macroeconomic data from FRED (GDP, unemployment, inflation, etc.)sec_filing \u2014 Search and retrieve SEC EDGAR filingscrypto_price \u2014 Get real-time cryptocurrency prices"
         }
       ],
       "mcp_endpoint": "https://findata-mcp-production-1cd3.up.railway.app"
@@ -4860,7 +5062,7 @@
       "name": "AgentServices",
       "slug": "agentservices",
       "category": "Payments & Commerce",
-      "description": "Paid APIs for AI agents — crypto market data, DeFi yields, on-chain analytics, dispute resolution. x402 payments on Base. 37 endpoints, 25 paid. MCP endpoint at /mcp with 13+ tools.",
+      "description": "Paid APIs for AI agents \u2014 crypto market data, DeFi yields, on-chain analytics, dispute resolution. x402 payments on Base. 37 endpoints, 25 paid. MCP endpoint at /mcp with 13+ tools.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -4890,7 +5092,7 @@
       "tools": [
         {
           "name": "search_books",
-          "description": "Search the catalog by title or authorget_person_recommendations — Books a public figure recommends, with quotes and sourcesget_book_recommenders — Verified people who recommend a bookget_series_reading_order — Publication-order book list for a seriesget_list — Consensus best-books list for a topicget_summary — One-page book summary"
+          "description": "Search the catalog by title or authorget_person_recommendations \u2014 Books a public figure recommends, with quotes and sourcesget_book_recommenders \u2014 Verified people who recommend a bookget_series_reading_order \u2014 Publication-order book list for a seriesget_list \u2014 Consensus best-books list for a topicget_summary \u2014 One-page book summary"
         }
       ],
       "mcp_endpoint": "https://mostrecommendedbooks.com/api/mcp"
@@ -5020,7 +5222,7 @@
         },
         {
           "name": "bash",
-          "description": "Run a shell command in the app's sandbox — installs, CLIs, skill scripts, typecheck"
+          "description": "Run a shell command in the app's sandbox \u2014 installs, CLIs, skill scripts, typecheck"
         },
         {
           "name": "upload_file",
@@ -5120,11 +5322,11 @@
         },
         {
           "name": "claim_next_task",
-          "description": "Claim the next queued task assigned to you — the core AI worker loop"
+          "description": "Claim the next queued task assigned to you \u2014 the core AI worker loop"
         },
         {
           "name": "request_human_review",
-          "description": "Move a task to the «Needs Human» column with a comment"
+          "description": "Move a task to the \u00abNeeds Human\u00bb column with a comment"
         }
       ],
       "owner_user_id": 35
@@ -5144,7 +5346,7 @@
       "tools": [
         {
           "name": "search_papers",
-          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper — Look up a single paper by identifier or DOI and return its full evidence record"
+          "description": "Search scientific papers and return extracted evidence (methods, results, limitations, conflicts of interest, data availability, quality scores) linked to sourceslookup_paper \u2014 Look up a single paper by identifier or DOI and return its full evidence record"
         }
       ],
       "mcp_endpoint": "https://bgpt.pro/mcp/"
@@ -5153,7 +5355,7 @@
       "name": "Corvid",
       "slug": "corvid",
       "category": "AI & Memory",
-      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP — no install, no repo, works from any MCP client.",
+      "description": "Free, no-signup persistent memory for AI agents. One click mints a private memory space; the returned token is the credential. Agents store durable notes and get them back later via semantic recall (embeddings-based, finds by meaning not just keywords). Remote streamable-HTTP MCP \u2014 no install, no repo, works from any MCP client.",
       "official": false,
       "transport": "http",
       "icon": "globe",
@@ -5167,7 +5369,7 @@
         },
         {
           "name": "recall",
-          "description": "Semantic search over your stored memories — finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
+          "description": "Semantic search over your stored memories \u2014 finds relevant notes by meaning, not just keywords (e.g. a query about \"deployment\" surfaces a memory that says \"ships on Cloudflare Workers\"). Call this at the start of a task, or whenever you might have prior context about the user, project, or topic."
         },
         {
           "name": "list_recent",
@@ -5292,7 +5494,7 @@
       "name": "Webnode",
       "slug": "webnode",
       "category": "Design",
-      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building — list templates by language and spin up new projects.",
+      "description": "Create and manage Webnode websites from any MCP client. Hosted MCP server for AI-assisted site building \u2014 list templates by language and spin up new projects.",
       "official": true,
       "transport": "http",
       "icon": "browser",
@@ -5302,7 +5504,7 @@
       "tools": [
         {
           "name": "get_project_branches",
-          "description": "List available project templates (branches) for a language — call before create_project"
+          "description": "List available project templates (branches) for a language \u2014 call before create_project"
         },
         {
           "name": "create_project",
@@ -5570,7 +5772,7 @@
       "name": "Sourcegraph Cody",
       "slug": "sourcegraph-cody",
       "category": "Dev Tools",
-      "description": "Sourcegraph Cody MCP is instance-specific — no single public HTTPS host in the Influzer listing. Point at your Sourcegraph instance. Not a SAFE badge.",
+      "description": "Sourcegraph Cody MCP is instance-specific \u2014 no single public HTTPS host in the Influzer listing. Point at your Sourcegraph instance. Not a SAFE badge.",
       "official": false,
       "transport": "stdio",
       "icon": "code",
@@ -6927,7 +7129,7 @@
       "name": "Snowflake",
       "slug": "snowflake",
       "category": "Data & Analytics",
-      "description": "Snowflake MCP is account/instance-specific — no single public HTTPS host in the Influzer listing. Self-host or your Snowflake account URL. Not a SAFE badge.",
+      "description": "Snowflake MCP is account/instance-specific \u2014 no single public HTTPS host in the Influzer listing. Self-host or your Snowflake account URL. Not a SAFE badge.",
       "official": false,
       "transport": "stdio",
       "icon": "bar-chart",
@@ -8104,7 +8306,7 @@
       "name": "XcodeBuildMCP",
       "slug": "xcodebuildmcp",
       "category": "Dev Tools",
-      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects — builds, simulators, and Xcode workflows.",
+      "description": "MCP server and CLI providing tools for agent use when working on iOS and macOS projects \u2014 builds, simulators, and Xcode workflows.",
       "official": false,
       "transport": "stdio",
       "icon": "monitor",
@@ -8129,7 +8331,7 @@
       "name": "Influzer MCP Discovery",
       "slug": "influzer-mcp-discovery",
       "category": "Search & Web",
-      "description": "Official Influzer.ai read-only MCP server — search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
+      "description": "Official Influzer.ai read-only MCP server \u2014 search the MCP directory by capability, get server setup details, and browse topic guides from inside Claude, Cursor, or any MCP client.",
       "official": true,
       "transport": "http",
       "icon": "search",

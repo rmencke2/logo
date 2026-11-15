@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { pickTop100, TOP100_SIZE } = require('../scripts/utils/normalize');
 const { attachSetupInfo } = require('../scripts/utils/setup-info');
+const { attachPricingDisplay, normalizePricing } = require('./mcpPricing');
 const { attachBranding } = require('../utils/mcpBranding');
 const { computeQualitySignals } = require('../scripts/utils/mcp-quality');
 const { latencyBySlug } = require('./mcpProbeHistory');
@@ -110,15 +111,18 @@ function hasIndexedTools(server) {
 }
 
 function normalizeServer(s) {
+  const pricing = normalizePricing(s.pricing);
   return {
     ...s,
     slug: s.slug || s.id,
     icon: s.icon || 'boxes',
     featured: Boolean(s.featured),
+    ...(pricing ? { pricing } : {}),
   };
 }
 
 function normalizeLegacyManual(server) {
+  const pricing = normalizePricing(server.pricing);
   return normalizeServer({
     id: server.slug,
     slug: server.slug,
@@ -141,6 +145,8 @@ function normalizeLegacyManual(server) {
     mcp_endpoint_template: server.mcp_endpoint_template || null,
     deployment_url: server.mcp_endpoint || server.deployment_url,
     install_command: server.install_command,
+    owner_user_id: server.owner_user_id,
+    ...(pricing ? { pricing } : {}),
   });
 }
 
@@ -390,7 +396,7 @@ function findMcpServerBySlug(slug) {
   if (!key) return null;
   const server = loadCatalog().bySlug.get(key);
   if (!server || server.hidden) return null;
-  return attachBranding(attachQuality(attachSetupInfo(server)));
+  return attachPricingDisplay(attachBranding(attachQuality(attachSetupInfo(server))));
 }
 
 function normalizeMcpEndpoint(url) {

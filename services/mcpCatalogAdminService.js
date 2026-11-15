@@ -168,8 +168,14 @@ function upsertManualServer(server) {
   if (idx >= 0) {
     const merged = { ...manual.servers[idx], ...server };
     if (!server.hidden) delete merged.hidden;
+    // pricing: null clears; undefined (omitted) keeps previous
+    if (server.pricing === null) delete merged.pricing;
+    if (server.pricing === undefined && manual.servers[idx].pricing) {
+      merged.pricing = manual.servers[idx].pricing;
+    }
     manual.servers[idx] = merged;
   } else {
+    if (server.pricing === null) delete server.pricing;
     manual.servers.unshift(server);
   }
   writeManualFile(manual);
@@ -234,6 +240,7 @@ function reclaimHiddenSlug(slug) {
 
 function catalogServerToEditPayload(server) {
   const manual = findManualServer(server.slug);
+  const pricing = server.pricing || manual?.pricing || null;
   return {
     slug: server.slug,
     originalSlug: server.slug,
@@ -250,6 +257,11 @@ function catalogServerToEditPayload(server) {
     featured: Boolean(server.featured),
     icon: server.icon || 'globe',
     tools: server.tools || [],
+    pricing: pricing || null,
+    pricingModel: pricing?.model || '',
+    pricingSummary: pricing?.summary || '',
+    pricingStartingPrice: pricing?.starting_price || '',
+    pricingUrl: pricing?.url || '',
     inManual: Boolean(manual),
     catalogSource: manual ? 'manual' : server.source || 'catalog',
     inTop100: isInTop100(server.slug),
@@ -259,7 +271,8 @@ function catalogServerToEditPayload(server) {
 }
 
 function editBodyToManualServer(body) {
-  return submissionToManualServer(
+  const { pricingFromEditBody } = require('./mcpPricing');
+  const server = submissionToManualServer(
     { tools: [] },
     {
       serverName: body.serverName,
@@ -278,6 +291,15 @@ function editBodyToManualServer(body) {
       tools: body.tools,
     },
   );
+
+  const pricing = pricingFromEditBody(body);
+  if (pricing === null) {
+    // explicit clear — leave unset so upsert can delete
+    server.pricing = null;
+  } else if (pricing) {
+    server.pricing = pricing;
+  }
+  return server;
 }
 
 function validateManualServer(server) {

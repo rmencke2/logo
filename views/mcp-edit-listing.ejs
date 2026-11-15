@@ -87,6 +87,38 @@
         </fieldset>
 
         <fieldset class="mcp-submit-fieldset">
+          <legend>Pricing <span style="font-weight:400;color:#6b7280;">(optional)</span></legend>
+          <p class="mcp-submit-help" style="margin:0 0 12px;font-size:13px;color:#6b7280;">
+            Shown on your public listing so developers know free vs paid before they connect. Link to your official pricing page when you can.
+          </p>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field">
+              <span>Model</span>
+              <select id="editPricingModel">
+                <option value="">Not set</option>
+                <option value="free">Free</option>
+                <option value="freemium">Freemium</option>
+                <option value="paid">Paid</option>
+                <option value="usage">Usage-based</option>
+                <option value="contact">Contact for pricing</option>
+              </select>
+            </label>
+            <label class="mcp-submit-field">
+              <span>Starting price</span>
+              <input type="text" id="editPricingStartingPrice" placeholder="$9/mo" maxlength="40" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Summary</span>
+              <textarea id="editPricingSummary" rows="2" maxlength="280" placeholder="e.g. New accounts get 100 credits once; paid plans from $9/mo."></textarea>
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Pricing page URL</span>
+              <input type="url" id="editPricingUrl" placeholder="https://example.com/pricing" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
           <legend>Tools</legend>
           <label class="mcp-submit-field mcp-submit-field--wide">
             <span>Tools <em>(one per line: name — description)</em></span>

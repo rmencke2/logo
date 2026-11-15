@@ -1257,6 +1257,7 @@ ${itemsXml}
     // Approved listing lives at /mcp/agentx; registry id still linked from elsewhere
     'com-agentxhq-agentx': 'agentx',
     'com-agentxhq-agentx-mcp': 'agentx',
+    'dev-agentseo-www-agentseo-mcp': 'agentseo',
     // Approved submission slugs beat official-registry id stubs
     'com-mostrecommendedbooks-books': 'most-recommended-books',
     'com-transcriptfetch-youtube-transcripts': 'transcriptfetch',

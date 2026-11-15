@@ -58,6 +58,10 @@
       document.getElementById('editStars').value = server.stars || 0;
       document.getElementById('editOfficial').checked = Boolean(server.official);
       document.getElementById('editTools').value = toolsToText(server.tools || []);
+      document.getElementById('editPricingModel').value = server.pricingModel || '';
+      document.getElementById('editPricingSummary').value = server.pricingSummary || '';
+      document.getElementById('editPricingStartingPrice').value = server.pricingStartingPrice || '';
+      document.getElementById('editPricingUrl').value = server.pricingUrl || '';
 
       alertEl.innerHTML = `Live at <a href="${server.pageUrl}">${server.pageUrl}</a>. Changes are reviewed on save and appear immediately in the directory.`;
       alertEl.classList.add('is-success');
@@ -98,6 +102,10 @@
       stars: document.getElementById('editStars').value,
       official: document.getElementById('editOfficial').checked,
       tools,
+      pricingModel: document.getElementById('editPricingModel').value,
+      pricingSummary: document.getElementById('editPricingSummary').value.trim(),
+      pricingStartingPrice: document.getElementById('editPricingStartingPrice').value.trim(),
+      pricingUrl: document.getElementById('editPricingUrl').value.trim(),
     };
 
     btn.disabled = true;
