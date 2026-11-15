@@ -2650,7 +2650,7 @@
       "name": "NanoParse",
       "slug": "nanoparse",
       "category": "Search & Web",
-      "description": "NanoParse reads any web page for AI agents and returns clean Markdown plus Litmus trust signals - source authority, freshness, correction tracking, paywall detection, content-type classification. $0.005 per page actually read, paid in USDC on Base via x402; no account, no API key, no monthly minimum. A page that cannot be read (bot wall, consent wall, paywall, PDF) comes back with a named reason and is never charged. Hosted MCP endpoint: https://nanoparse.app/mcp",
+      "description": "NanoParse reads any web page for AI agents and returns clean Markdown plus Litmus trust signals - source authority, freshness, correction tracking, paywall detection, content-type classification. $0.002 per page actually read, paid in USDC on Base via x402; no account, no API key, no monthly minimum. A page that cannot be read (bot wall, consent wall, paywall, PDF) comes back with a named reason and is never charged. Hosted MCP endpoint: https://nanoparse.app/mcp",
       "official": true,
       "transport": "http",
       "icon": "globe",
@@ -2661,7 +2661,7 @@
       "tools": [
         {
           "name": "nanoparse_fetch",
-          "description": "Read one URL into clean Markdown with Litmus signals. Price: $0.005 per page actually read, USDC on Base via x402; failed reads are never charged."
+          "description": "Read one URL into clean Markdown with Litmus signals. Price: $0.002 per page actually read, USDC on Base via x402; failed reads are never charged."
         },
         {
           "name": "nanoparse_status",
