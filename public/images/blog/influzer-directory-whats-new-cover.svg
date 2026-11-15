@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Influzer directory update: pricing, probe, claim, and listings">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7faf9"/>
+      <stop offset="55%" stop-color="#e8f3f1"/>
+      <stop offset="100%" stop-color="#d7ebe7"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f3faf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1320" cy="160" r="220" fill="#0f766e" fill-opacity="0.06"/>
+  <circle cx="180" cy="760" r="260" fill="#0f766e" fill-opacity="0.05"/>
+
+  <!-- Main panel -->
+  <rect x="120" y="140" width="900" height="620" rx="28" fill="url(#card)" stroke="#c9e2dd" stroke-width="2"/>
+  <text x="170" y="220" font-family="Georgia, 'Times New Roman', serif" font-size="54" fill="#0b1f1c" font-weight="700">What’s new on Influzer</text>
+  <text x="170" y="280" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#3f5c57">Pricing · Probe · Claim · Listings</text>
+
+  <!-- Feature chips -->
+  <rect x="170" y="340" width="220" height="70" rx="16" fill="#0f766e"/>
+  <text x="200" y="384" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26" fill="#ffffff">$ pricing</text>
+
+  <rect x="410" y="340" width="220" height="70" rx="16" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="445" y="384" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26" fill="#0f766e">handshake</text>
+
+  <rect x="650" y="340" width="220" height="70" rx="16" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="700" y="384" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26" fill="#0f766e">claim</text>
+
+  <!-- Fake listing card -->
+  <rect x="170" y="460" width="700" height="220" rx="20" fill="#ffffff" stroke="#d5e8e4" stroke-width="2"/>
+  <text x="210" y="530" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="700" fill="#0b1f1c">Listing page</text>
+  <text x="210" y="580" font-family="ui-sans-serif, system-ui, sans-serif" font-size="24" fill="#4b635e">Paid · from $9/mo · official pricing link</text>
+  <text x="210" y="630" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#6b7f7a">Probe initialize → tools/list · edit in My listings</text>
+
+  <!-- Side stack -->
+  <rect x="1080" y="180" width="400" height="140" rx="22" fill="#0f766e"/>
+  <text x="1120" y="250" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#d7ebe7">MCP probe</text>
+  <text x="1120" y="295" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" fill="#ffffff">live_ok / auth_required</text>
+
+  <rect x="1080" y="350" width="400" height="140" rx="22" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="1120" y="420" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#0b1f1c">WebMCP catalog</text>
+  <text x="1120" y="465" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" fill="#0f766e">8,000+ sites</text>
+
+  <rect x="1080" y="520" width="400" height="140" rx="22" fill="#ffffff" stroke="#c9e2dd" stroke-width="2"/>
+  <text x="1120" y="590" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#0b1f1c">Recipes + Discovery</text>
+  <text x="1120" y="635" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#4b635e">Share stacks · search in-agent</text>
+</svg>
