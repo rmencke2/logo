@@ -242,6 +242,70 @@
   max-width: 560px;
 }
 
+.mcp-pricing {
+  margin-top: 14px;
+  max-width: 560px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--hp-border, #e5e7eb) 90%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--hp-bg, #fff) 92%, #0f766e 8%);
+}
+
+.mcp-pricing__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hp-muted2, #6b7280);
+}
+
+.mcp-pricing__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  align-items: baseline;
+}
+
+.mcp-pricing__model {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hp-text, #111);
+}
+
+.mcp-pricing__start {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 13px;
+  color: var(--hp-text, #111);
+}
+
+.mcp-pricing__summary {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--hp-muted, #4b5563);
+}
+
+.mcp-pricing__link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f766e;
+  text-decoration: none;
+}
+
+.mcp-pricing__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mcp-glance__val a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .mcp-detail-actions {
   display: flex;
   gap: 10px;

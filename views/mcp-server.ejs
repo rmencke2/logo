@@ -96,6 +96,23 @@
                 <% } %>
               </div>
               <p class="mcp-detail-desc"><%= server.description %></p>
+              <% if (server.pricing && (server.pricing.summary || server.pricing.starting_price || server.pricing.model_label)) { %>
+                <div class="mcp-pricing" aria-label="Pricing">
+                  <div class="mcp-pricing__label">Pricing</div>
+                  <% if (server.pricing.model_label || server.pricing.starting_price) { %>
+                    <div class="mcp-pricing__meta">
+                      <% if (server.pricing.model_label) { %><span class="mcp-pricing__model"><%= server.pricing.model_label %></span><% } %>
+                      <% if (server.pricing.starting_price) { %><span class="mcp-pricing__start"><%= server.pricing.starting_price %></span><% } %>
+                    </div>
+                  <% } %>
+                  <% if (server.pricing.summary) { %>
+                    <p class="mcp-pricing__summary"><%= server.pricing.summary %></p>
+                  <% } %>
+                  <% if (server.pricing.url) { %>
+                    <a class="mcp-pricing__link" href="<%= server.pricing.url %>" target="_blank" rel="noopener noreferrer">Official pricing ↗</a>
+                  <% } %>
+                </div>
+              <% } %>
               <div class="mcp-detail-actions">
                 <% if (server.install_command) { %>
                   <button type="button" class="mcp-btn-primary" data-copy-install data-copy-text="<%= server.install_command %>">Install</button>
@@ -415,6 +432,18 @@
               <span class="mcp-glance__key">Tools indexed</span>
               <span class="mcp-glance__val"><%= (server.tools && server.tools.length) || 0 %></span>
             </div>
+            <% if (server.pricing) { %>
+              <div class="mcp-glance__row">
+                <span class="mcp-glance__key">Pricing</span>
+                <span class="mcp-glance__val">
+                  <% if (server.pricing.url) { %>
+                    <a href="<%= server.pricing.url %>" target="_blank" rel="noopener noreferrer"><%= server.pricing.glance_value %></a>
+                  <% } else { %>
+                    <%= server.pricing.glance_value %>
+                  <% } %>
+                </span>
+              </div>
+            <% } %>
             <% if (server.quality) { %>
               <div class="mcp-glance__row">
                 <span class="mcp-glance__key">Surface</span>

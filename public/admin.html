@@ -822,6 +822,29 @@
           <input type="url" id="mcpEditDocsUrl" />
         </div>
         <div class="form-group">
+          <label>Pricing model (optional)</label>
+          <select id="mcpEditPricingModel">
+            <option value="">Not set</option>
+            <option value="free">Free</option>
+            <option value="freemium">Freemium</option>
+            <option value="paid">Paid</option>
+            <option value="usage">Usage-based</option>
+            <option value="contact">Contact for pricing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Starting price (optional)</label>
+          <input type="text" id="mcpEditPricingStartingPrice" placeholder="$9/mo" maxlength="40" />
+        </div>
+        <div class="form-group">
+          <label>Pricing summary (optional — shown on listing)</label>
+          <textarea id="mcpEditPricingSummary" rows="2" maxlength="280" placeholder="e.g. 100 intro credits once; plans from $9/mo."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Pricing URL (optional)</label>
+          <input type="url" id="mcpEditPricingUrl" placeholder="https://example.com/pricing" />
+        </div>
+        <div class="form-group">
           <label>Stars (estimate)</label>
           <input type="number" id="mcpEditStars" min="0" />
         </div>
@@ -2614,6 +2637,10 @@
         document.getElementById('mcpEditInstallCommand').value = server.installCommand || '';
         document.getElementById('mcpEditGithubUrl').value = server.githubUrl || '';
         document.getElementById('mcpEditDocsUrl').value = server.docsUrl || '';
+        document.getElementById('mcpEditPricingModel').value = server.pricingModel || '';
+        document.getElementById('mcpEditPricingSummary').value = server.pricingSummary || '';
+        document.getElementById('mcpEditPricingStartingPrice').value = server.pricingStartingPrice || '';
+        document.getElementById('mcpEditPricingUrl').value = server.pricingUrl || '';
         document.getElementById('mcpEditStars').value = server.stars || 0;
         document.getElementById('mcpEditIcon').value = server.icon || 'globe';
         document.getElementById('mcpEditOfficial').checked = Boolean(server.official);
@@ -2661,6 +2688,10 @@
         installCommand: document.getElementById('mcpEditInstallCommand').value.trim(),
         githubUrl: document.getElementById('mcpEditGithubUrl').value.trim(),
         docsUrl: document.getElementById('mcpEditDocsUrl').value.trim(),
+        pricingModel: document.getElementById('mcpEditPricingModel').value,
+        pricingSummary: document.getElementById('mcpEditPricingSummary').value.trim(),
+        pricingStartingPrice: document.getElementById('mcpEditPricingStartingPrice').value.trim(),
+        pricingUrl: document.getElementById('mcpEditPricingUrl').value.trim(),
         stars: document.getElementById('mcpEditStars').value,
         icon: document.getElementById('mcpEditIcon').value.trim() || 'globe',
         official: document.getElementById('mcpEditOfficial').checked,
