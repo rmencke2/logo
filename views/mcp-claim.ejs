@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/favicon-links') %>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/site-header.css" />
+    <link rel="stylesheet" href="/css/mcp-submit.css" />
+  </head>
+  <body>
+    <%- include('partials/site-header', { activeNav: 'mcp' }) %>
+    <script nonce="<%= cspNonce %>" src="/js/site-header.js" defer></script>
+
+    <main class="mcp-submit-page">
+      <header class="mcp-submit-header">
+        <p class="mcp-submit-kicker">MCP Directory</p>
+        <h1><%= pageTitle %></h1>
+        <p class="mcp-submit-lead">
+          Claim a listing that is already in the directory. A person at Influzer approves it.
+          Approval needs one check to pass: your verified email domain matches the listing’s site,
+          or you publish a one-time code on that site or in its GitHub repo.
+        </p>
+        <p class="mcp-submit-back"><a href="/mcp/my-listings">← My listings</a></p>
+      </header>
+
+      <% if (!verified) { %>
+        <div class="mcp-submit-status" role="status">Verify your email before you submit a claim. The address on this account is what we match against the listing.</div>
+      <% } %>
+
+      <form id="mcpClaimForm" class="mcp-submit-form" novalidate>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Which listing</legend>
+          <label class="mcp-submit-field">
+            <span>Slug <em>(the /mcp/… name)</em></span>
+            <input type="text" name="slug" id="claimSlug" required pattern="[a-z0-9-]+" value="<%= slug %>" />
+          </label>
+          <% if (serverName) { %>
+            <p class="mcp-submit-lead">You are claiming <strong><%= serverName %></strong>.</p>
+          <% } %>
+          <label class="mcp-submit-field">
+            <span>You are the</span>
+            <select name="relationship" id="claimRelationship" required>
+              <option value="maintainer">Maintainer</option>
+              <option value="company">Company that runs it</option>
+              <option value="author">Author</option>
+            </select>
+          </label>
+          <label class="mcp-submit-field mcp-submit-field--wide">
+            <span>How you own it <em>(required)</em></span>
+            <textarea name="note" id="claimNote" required minlength="20" rows="4" placeholder="I run nanoparse.app and the GitHub repo nanoparse-dev/nanoparse-mcp."></textarea>
+          </label>
+          <label class="mcp-submit-field">
+            <span>Your GitHub username <em>(optional)</em></span>
+            <input type="text" name="githubLogin" id="claimGithub" maxlength="39" placeholder="nanoparse-dev" />
+          </label>
+          <p class="mcp-submit-lead">Signed in as <%= email %>. That address is the one we check. A Gmail or other public mailbox cannot match a site on its own.</p>
+        </fieldset>
+        <button type="submit" class="mcp-submit-btn" id="claimSubmit" <% if (!verified) { %>disabled<% } %>>Submit claim</button>
+      </form>
+
+      <div id="claimResult" class="mcp-submit-status" role="status" hidden></div>
+    </main>
+
+    <script nonce="<%= cspNonce %>" src="/js/mcp-claim.js" defer></script>
+  </body>
+</html>

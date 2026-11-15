@@ -116,6 +116,9 @@
                   </a>
                 <% } %>
               </div>
+              <% if (!server.owner_user_id) { %>
+                <p class="mcp-detail-claim"><a href="/mcp/claim/<%= encodeURIComponent(server.slug) %>">Claim this listing</a> if you maintain it.</p>
+              <% } %>
             </div>
           </header>
 

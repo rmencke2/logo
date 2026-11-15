@@ -29,6 +29,7 @@ const {
 } = require('./mcpDirectoryService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
+const { registerMcpClaimRoutes } = require('./mcpListingClaimService');
 const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { registerMcpProbeRoutes, probeMcpUrl } = require('./mcpProbeService');
 const { registerMcpServerCheckRoutes } = require('./mcpServerCheck');
@@ -1244,6 +1245,7 @@ ${itemsXml}
   // Before /mcp/:slug — otherwise "submit" is treated as a server slug
   registerMcpSubmissionRoutes(app);
   registerMcpOwnerRoutes(app);
+  registerMcpClaimRoutes(app);
 
   const MCP_SLUG_ALIASES = {
     'xgr-network': 'xgr-mcp',

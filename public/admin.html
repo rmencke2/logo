@@ -530,6 +530,33 @@
           <div class="loading" style="color:#8e8e93;">Type at least two characters to search the catalog.</div>
         </div>
       </div>
+
+      <div class="section" style="margin-top:40px;border-top:1px solid #2a2a2a;padding-top:32px;">
+        <h2>Listing claims</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Someone says they own a published listing. Approve only when a check passed, or you already know them.
+          A pass means their verified email domain matches the site, or the one-time code is on that site or in its GitHub repo.
+          Approving sets <code>owner_user_id</code> so they can edit from My listings. It does not change the description.
+        </p>
+        <div class="search-bar">
+          <button type="button" class="btn btn-primary" data-admin-action="loadMcpClaims">Refresh</button>
+        </div>
+        <div id="mcpClaimsContainer">
+          <div class="loading">Loading claims…</div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:40px;border-top:1px solid #2a2a2a;padding-top:32px;">
+        <h2>Listing copy drift</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Weekly check of manual listings that have an https endpoint. Each one is a GET of
+          <code>/.well-known/mcp/server-card.json</code>. A row means the price or the tool text on that card
+          differs from the directory. The job does not rewrite the listing.
+        </p>
+        <div id="mcpDriftContainer">
+          <div class="loading">Loading drift report…</div>
+        </div>
+      </div>
     </div>
 
     <!-- MCP Recipes moderation Tab -->
@@ -715,6 +742,7 @@
           <textarea id="mcpTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
           <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
             <button type="button" class="btn btn-sm btn-secondary" id="mcpRefreshToolsBtn" data-admin-action="refreshMcpToolsFromLive" data-admin-args="%5B%22review%22%5D">Refresh tools from live endpoint</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-admin-action="refreshMcpCopyFromCard" data-admin-args="%5B%22review%22%5D">Check server card</button>
             <span id="mcpRefreshToolsStatus" style="font-size:12px;color:#8e8e93;"></span>
           </div>
         </div>
@@ -811,6 +839,7 @@
           <textarea id="mcpEditTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
           <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
             <button type="button" class="btn btn-sm btn-secondary" id="mcpEditRefreshToolsBtn" data-admin-action="refreshMcpToolsFromLive" data-admin-args="%5B%22edit%22%5D">Refresh tools from live endpoint</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-admin-action="refreshMcpCopyFromCard" data-admin-args="%5B%22edit%22%5D">Check server card</button>
             <span id="mcpEditRefreshToolsStatus" style="font-size:12px;color:#8e8e93;"></span>
           </div>
         </div>
@@ -993,6 +1022,8 @@
         }
         if (tabName === 'mcp') {
           loadMcpSubmissions();
+          loadMcpClaims();
+          loadMcpListingDrift();
           initMcpCatalogSearch();
         }
         if (tabName === 'recipes') loadRecipeModeration();
@@ -2017,6 +2048,168 @@
         alert(err.message || 'Could not refresh tools from live endpoint');
       } finally {
         btn.disabled = false;
+      }
+    }
+
+    async function refreshMcpCopyFromCard(mode) {
+      const isEdit = mode === 'edit';
+      const endpointEl = document.getElementById(isEdit ? 'mcpEditEndpoint' : 'mcpEndpoint');
+      const descriptionEl = document.getElementById(isEdit ? 'mcpEditDescription' : 'mcpDescription');
+      const toolsEl = document.getElementById(isEdit ? 'mcpEditTools' : 'mcpTools');
+      const statusEl = document.getElementById(isEdit ? 'mcpEditRefreshToolsStatus' : 'mcpRefreshToolsStatus');
+      const endpoint = (endpointEl?.value || '').trim();
+      if (!endpoint) {
+        alert('Set the MCP endpoint URL first.');
+        endpointEl?.focus();
+        return;
+      }
+      statusEl.textContent = 'Reading server card…';
+      statusEl.style.color = '#8e8e93';
+      try {
+        const res = await fetch('/admin/api/mcp/refresh-copy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            endpoint,
+            description: descriptionEl?.value || '',
+            tools: parseToolsText(toolsEl?.value || ''),
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Server card check failed');
+        const bits = [data.message || ''];
+        if (data.price?.changed) {
+          bits.push(
+            'Card price: ' + ((data.price.live || []).join(', ') || 'none') +
+            '. This form: ' + ((data.price.stored || []).join(', ') || 'none') + '.'
+          );
+        }
+        const toolNames = []
+          .concat(data.tools?.changed || [])
+          .concat(data.tools?.added || [])
+          .concat(data.tools?.removed || []);
+        if (toolNames.length && Array.isArray(data.tools?.live) && data.tools.live.length) {
+          bits.push('Tool text differs: ' + toolNames.join(', ') + '.');
+          if (confirm(bits.filter(Boolean).join('\n') + '\n\nReplace the tools box with the server card? The description stays until you edit it.')) {
+            toolsEl.value = toolsToText(data.tools.live);
+          }
+        }
+        if (data.liveDescription) {
+          bits.push('Card description: ' + String(data.liveDescription).slice(0, 280));
+        }
+        statusEl.textContent = bits.filter(Boolean).join(' ');
+        statusEl.style.color = data.drifted ? '#fbbf24' : '#10a37f';
+      } catch (err) {
+        statusEl.textContent = err.message || 'Server card check failed';
+        statusEl.style.color = '#ef4444';
+      }
+    }
+
+    async function loadMcpClaims() {
+      const container = document.getElementById('mcpClaimsContainer');
+      if (!container) return;
+      container.innerHTML = '<div class="loading">Loading claims…</div>';
+      try {
+        const res = await fetch('/admin/api/mcp/claims?status=pending');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to load claims');
+        const claims = data.claims || [];
+        if (!claims.length) {
+          container.innerHTML = '<div class="loading">No pending claims.</div>';
+          return;
+        }
+        let html = '<table><thead><tr><th>Listing</th><th>Account</th><th>Proof</th><th>Note</th><th></th></tr></thead><tbody>';
+        claims.forEach((claim) => {
+          const evidence = claim.evidence || {};
+          const proof = [
+            evidence.emailDomain?.pass ? 'email domain' : '',
+            evidence.siteFile?.pass ? 'site file' : '',
+            evidence.githubFile?.pass ? 'GitHub file' : '',
+          ].filter(Boolean).join(', ') || 'none yet';
+          html += `<tr>
+            <td><a href="/mcp/${escapeHtml(claim.slug)}">/mcp/${escapeHtml(claim.slug)}</a><br><span style="color:#8e8e93;">${escapeHtml(claim.relationship || '')}</span></td>
+            <td>${escapeHtml(claim.email || '')}<br><span style="color:#8e8e93;">${escapeHtml(claim.statedGithub || '')}</span></td>
+            <td>${escapeHtml(proof)}</td>
+            <td style="max-width:280px;">${escapeHtml(claim.note || '')}</td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-sm btn-primary" ${adminInvoke('approveMcpClaim', [claim.id, Boolean(evidence.anyPass)])}>Approve</button>
+              <button class="btn btn-sm btn-secondary" ${adminInvoke('rejectMcpClaim', [claim.id])}>Reject</button>
+            </td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    async function approveMcpClaim(id, anyPass) {
+      if (!anyPass && !confirm('No automatic proof passed. Approve this claim anyway?')) return;
+      const res = await fetch('/admin/api/mcp/claims/' + encodeURIComponent(id) + '/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || 'Approve failed');
+        return;
+      }
+      loadMcpClaims();
+    }
+
+    async function rejectMcpClaim(id) {
+      const note = window.prompt('Note for the rejection (optional)') || '';
+      const res = await fetch('/admin/api/mcp/claims/' + encodeURIComponent(id) + '/reject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || 'Reject failed');
+        return;
+      }
+      loadMcpClaims();
+    }
+
+    async function loadMcpListingDrift() {
+      const container = document.getElementById('mcpDriftContainer');
+      if (!container) return;
+      container.innerHTML = '<div class="loading">Loading drift report…</div>';
+      try {
+        const res = await fetch('/admin/api/mcp/listing-drift');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to load drift');
+        if (!data.generated_at) {
+          container.innerHTML = '<div class="loading">No report yet. The weekly catalog job writes it.</div>';
+          return;
+        }
+        const when = new Date(data.generated_at).toLocaleString();
+        let html = `<p style="color:#8e8e93;font-size:13px;margin-bottom:12px;">Checked ${data.checked || 0} listings on ${escapeHtml(when)}. ${data.no_card || 0} had no server card. ${(data.drift || []).length} differ.</p>`;
+        if (!(data.drift || []).length) {
+          html += '<div class="loading">No price or tool-text differences.</div>';
+          container.innerHTML = html;
+          return;
+        }
+        html += '<table><thead><tr><th>Listing</th><th>Stored price</th><th>Card price</th><th>Tools</th></tr></thead><tbody>';
+        data.drift.forEach((row) => {
+          const tools = []
+            .concat(row.tools_changed || [])
+            .concat(row.tools_added || [])
+            .concat(row.tools_removed || []);
+          html += `<tr>
+            <td><a href="/mcp/${escapeHtml(row.slug)}">${escapeHtml(row.name || row.slug)}</a></td>
+            <td>${escapeHtml((row.price?.stored || []).join(', ') || '—')}</td>
+            <td>${escapeHtml((row.price?.live || []).join(', ') || '—')}</td>
+            <td>${escapeHtml(tools.join(', ') || '—')}</td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div class="error">${escapeHtml(err.message)}</div>`;
       }
     }
 
