@@ -1244,12 +1244,42 @@ async function sendWebmcpScanReportEmail({
   }
 }
 
+async function sendMcpClaimEmail(claim) {
+  if (!isEmailConfigured()) return { success: false, reason: 'email_not_configured' };
+  ensureMcpEmailTransportReady();
+  const to = process.env.MCP_SUBMISSION_EMAIL || 'mencke@gmail.com';
+  const proof = claim.evidence?.anyPass ? 'automatic proof passed' : 'no automatic proof yet';
+  const subject = `[MCP Claim] ${claim.serverName || claim.slug} (${proof})`;
+  const lines = [
+    `Listing: https://www.influzer.ai/mcp/${claim.slug}`,
+    `Account: ${claim.name || '(no name)'} <${claim.email}>`,
+    `Relationship: ${claim.relationship}`,
+    `GitHub they typed: ${claim.statedGithub || '(none)'}`,
+    `Note: ${claim.note}`,
+    '',
+    `Email domain: ${claim.evidence?.emailDomain?.pass ? 'match' : 'no match'} (${claim.evidence?.emailDomain?.domain || ''} → ${claim.evidence?.emailDomain?.host || 'none'})`,
+    `Site file: ${claim.evidence?.siteFile?.pass ? 'found' : claim.evidence?.siteFile?.error || 'not checked'} ${claim.evidence?.siteFile?.url || ''}`,
+    `GitHub file: ${claim.evidence?.githubFile?.pass ? 'found' : claim.evidence?.githubFile?.error || 'not checked'} ${claim.evidence?.githubFile?.repo || ''}`,
+    '',
+    'Review in Admin → MCP.',
+  ];
+  return deliverEmail({
+    from: getFromAddress(),
+    to,
+    replyTo: claim.email || undefined,
+    subject,
+    text: lines.join('\n'),
+    html: `<pre style="font-family:Arial,sans-serif;white-space:pre-wrap;">${escapeHtml(lines.join('\n'))}</pre>`,
+  });
+}
+
 module.exports = {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendMcpSubmissionEmail,
   sendMcpFeedbackEmail,
   sendMcpApprovalEmail,
+  sendMcpClaimEmail,
   buildMcpApprovalEmailContent,
   sendBlogNewsletterEmail,
   sendWebmcpScanReportEmail,

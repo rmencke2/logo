@@ -249,6 +249,17 @@
   flex-wrap: wrap;
 }
 
+.mcp-detail-claim {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.mcp-detail-claim a {
+  color: var(--hp-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .mcp-btn-promote {
   border-color: #fde68a !important;
   background: #fffbeb !important;

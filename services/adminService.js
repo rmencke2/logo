@@ -6,6 +6,7 @@ const express = require('express');
 const { getDatabase } = require('../database');
 const { requireAuth } = require('../auth');
 const { registerMcpCatalogAdminRoutes } = require('./mcpCatalogAdminService');
+const { registerMcpClaimAdminRoutes } = require('./mcpListingClaimService');
 const { getMcpDiscoveryAnalytics } = require('./mcpDiscoveryAnalytics');
 
 /**
@@ -435,6 +436,7 @@ async function initializeAdminService(app) {
   });
 
   registerMcpCatalogAdminRoutes(app, requireAdmin);
+  registerMcpClaimAdminRoutes(app, requireAdmin);
 
   const { initializeMcpListingTrafficService } = require('./mcpListingTrafficService');
   await initializeMcpListingTrafficService(app, requireAdmin);

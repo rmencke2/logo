@@ -101,8 +101,34 @@ function testImagesvgManualPresent() {
   assert.ok(imagesvg.tools?.some((t) => t.name === 'imagesvg_vectorize'));
 }
 
+function testPreserveKeepsOwnerOnExistingSlug() {
+  const committedPath = path.join(ROOT, 'data', 'mcp-servers-manual.json');
+  const backup = fs.readFileSync(committedPath, 'utf8');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp-manual-owner-'));
+  try {
+    const preserved = JSON.parse(backup);
+    const row = preserved.servers.find((server) => server.slug === 'nanoparse');
+    assert.ok(row, 'nanoparse fixture');
+    row.owner_user_id = 4242;
+    row.description = 'this local description must not replace the committed one';
+    const preservedPath = path.join(tmp, 'mcp-servers-manual.json');
+    fs.writeFileSync(preservedPath, `${JSON.stringify(preserved, null, 2)}\n`);
+    const result = spawnSync('node', [path.join(ROOT, 'scripts/merge-preserved-mcp-manual.js'), preservedPath], {
+      encoding: 'utf8',
+    });
+    assert.strictEqual(result.status, 0, result.stderr || result.stdout);
+    const after = JSON.parse(fs.readFileSync(committedPath, 'utf8'));
+    const kept = after.servers.find((server) => server.slug === 'nanoparse');
+    assert.strictEqual(kept.owner_user_id, 4242);
+    assert.notStrictEqual(kept.description, row.description);
+  } finally {
+    fs.writeFileSync(committedPath, backup);
+  }
+}
+
 testMergeKeepsApprovedSlug();
 testPreserveScriptRestoresLocalOnly();
+testPreserveKeepsOwnerOnExistingSlug();
 testAgentxManualPresent();
 testImagesvgManualPresent();
 console.log('mcp manual preserve ok');

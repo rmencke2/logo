@@ -38,10 +38,15 @@ jobs:
           MCPSERVERS_MAX_PAGES: 120
           MCPSERVERS_PAGE_DELAY_MS: 250
 
+      - name: Check manual listing copy against server cards
+        continue-on-error: true
+        run: node scripts/check-listing-drift.js
+
       - name: Commit updated data
         run: |
           chmod +x scripts/ci-commit-push.sh
-          scripts/ci-commit-push.sh "chore: weekly MCP catalog refresh" \
-            data/servers-generated.json \
-            data/servers-top100.json \
-            data/last-updated.json
+          files=(data/servers-generated.json data/servers-top100.json data/last-updated.json)
+          if [[ -f data/mcp-listing-drift.json ]]; then
+            files+=(data/mcp-listing-drift.json)
+          fi
+          scripts/ci-commit-push.sh "chore: weekly MCP catalog refresh" "${files[@]}"

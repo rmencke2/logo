@@ -58,6 +58,9 @@ if [[ "${SERVER_MODE}" == 1 ]]; then
     if [[ -d data/mcp-submissions ]]; then
       cp -a data/mcp-submissions "${DEPLOY_PRESERVE_DIR}/mcp-submissions"
     fi
+    if [[ -d data/mcp-claims ]]; then
+      cp -a data/mcp-claims "${DEPLOY_PRESERVE_DIR}/mcp-claims"
+    fi
   fi
 
   echo "==> Reset to origin/${BRANCH}"
@@ -75,6 +78,17 @@ if [[ "${SERVER_MODE}" == 1 ]]; then
       base="$(basename "${f}")"
       if [[ ! -f "data/mcp-submissions/${base}" ]]; then
         cp "${f}" "data/mcp-submissions/${base}"
+      fi
+    done
+    shopt -u nullglob
+  fi
+  if [[ -d "${DEPLOY_PRESERVE_DIR}/mcp-claims" ]]; then
+    mkdir -p data/mcp-claims
+    shopt -s nullglob
+    for f in "${DEPLOY_PRESERVE_DIR}/mcp-claims"/*.json; do
+      base="$(basename "${f}")"
+      if [[ ! -f "data/mcp-claims/${base}" ]]; then
+        cp "${f}" "data/mcp-claims/${base}"
       fi
     done
     shopt -u nullglob

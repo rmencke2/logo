@@ -186,6 +186,7 @@ const RESERVED_MCP_PATHS = new Set([
   'scoreboard',
   'promote',
   'changes',
+  'claim',
 ]);
 
 function isReservedMcpPath(slug) {
