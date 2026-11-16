@@ -1,0 +1,1141 @@
+{
+  "generated_at": "2026-11-16T15:02:41.995Z",
+  "note": "Server-card differences for manual remote listings. The catalog was not changed.",
+  "checked": 166,
+  "ok": 10,
+  "no_card": 104,
+  "drift": [
+    {
+      "slug": "agentseo",
+      "name": "AgentSEO",
+      "endpoint": "https://www.agentseo.dev/mcp",
+      "cardUrl": "https://www.agentseo.dev/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "agentseo_extract",
+        "agentseo_analyze_serp",
+        "agentseo_local_audit",
+        "agentseo_content_gap",
+        "agentseo_content_brief",
+        "agentseo_content_internal_links",
+        "agentseo_site_sitemap_audit",
+        "agentseo_serp_volatility",
+        "agentseo_domain_intersection",
+        "agentseo_domain_traffic_estimate",
+        "agentseo_local_visibility_track",
+        "agentseo_job_status"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Hosted MCP server for AgentSEO search, extraction, SEO analysis, rank tracking, and job status tools."
+    },
+    {
+      "slug": "botsrated",
+      "name": "BotsRated (beta)",
+      "endpoint": "https://botsrated.com/mcp",
+      "cardUrl": "https://botsrated.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [
+          "$0.001",
+          "$0.002",
+          "$0.01"
+        ],
+        "live": [
+          "$0.002",
+          "$0.01"
+        ],
+        "changed": true
+      },
+      "tools_changed": [
+        "preflight",
+        "find",
+        "coverage",
+        "sample",
+        "check",
+        "report",
+        "best"
+      ],
+      "tools_added": [
+        "check_mcp_setup",
+        "watch_free",
+        "what_changed",
+        "seller_self_check",
+        "seller_announce"
+      ],
+      "tools_removed": [
+        "botsrated_policy_check"
+      ],
+      "description_differs": true,
+      "live_description": "Monitor the MCP servers and paid APIs (x402 sellers) your agents already use: signed measurements and change history. Facts-only measurements of x402 sellers and remote MCP servers from the Official MCP Registry, each test result backed by a signed receipt. Free tools: preflight, check_mcp_setup, watch_free, what_changed, find, coverage, sample, seller_self_check, seller_announce. Paid tools: check, report, best. Prices in USDC on Base: check $0.01, report $0.002, best $0.01. The MCP check tool "
+    },
+    {
+      "slug": "influence",
+      "name": "Influence",
+      "endpoint": "https://influence.so/api/mcp",
+      "cardUrl": "https://influence.so/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "accountList",
+        "campaignDraftSave",
+        "campaignReview",
+        "campaignReviewExecute"
+      ],
+      "tools_added": [
+        "profileGet",
+        "connectionStatusGet",
+        "campaignGet",
+        "campaignList",
+        "mediaList",
+        "mediaImport",
+        "mediaUploadCreate",
+        "mediaUploadPart",
+        "mediaUploadComplete",
+        "mediaUploadGet",
+        "mediaUploadAbort",
+        "mediaGet",
+        "campaignReviewGet",
+        "campaignScheduleBatchReview",
+        "campaignScheduleBatchExecute",
+        "scheduleList",
+        "integrationSchema",
+        "devtoOrganizationList",
+        "devtoTagList",
+        "discordChannelList",
+        "discourseCategoryList",
+        "discourseTagList",
+        "discourseTopicSearch",
+        "dribbbleTeamList",
+        "ghostAuthorList",
+        "ghostNewsletterList",
+        "ghostTagList",
+        "ghostTierList",
+        "hashnodePublicationList",
+        "lemmyCommunitySearch",
+        "listmonkListsGet",
+        "listmonkTemplateList",
+        "mattermostChannelList",
+        "meweGroupList",
+        "pinterestBoardList",
+        "redditSubredditRequirementsGet",
+        "redditSubredditSearch",
+        "slackChannelList",
+        "teamsChannelList",
+        "tiktokCreatorInfoGet",
+        "vkDestinationList",
+        "whopCompanyList",
+        "whopExperienceList",
+        "wordpressCategoryList",
+        "wordpressPostTypeList",
+        "wordpressTagList",
+        "wrapcastChannelSearch",
+        "campaignReviewApprove"
+      ],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "product-page-extractor",
+      "name": "Product Page Extractor",
+      "endpoint": "https://product-extractor.mohamed-bahaa53000.workers.dev/demo/mcp",
+      "cardUrl": "https://product-extractor.mohamed-bahaa53000.workers.dev/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "extract_product",
+        "extract_batch"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "sitepatent-directory",
+      "name": "SitePatent Directory",
+      "endpoint": "https://sitepatent.com/api/mcp",
+      "cardUrl": "https://sitepatent.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_listings",
+        "get_listing",
+        "find_alternatives",
+        "browse_category",
+        "list_categories",
+        "get_trending",
+        "get_site_of_the_day"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Read-only MCP server for the SitePatent directory of SaaS, AI and developer tools: search listings, find alternatives to a product, fetch listing profiles, browse categories and read trending leaderboards. Free and anonymous, no API key or authentication required."
+    },
+    {
+      "slug": "mediapronet-directory",
+      "name": "MEDIAPRONET Directory",
+      "endpoint": "https://mediapronet.com/api/mcp",
+      "cardUrl": "https://mediapronet.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_listings",
+        "get_listing",
+        "find_alternatives",
+        "browse_category",
+        "list_categories",
+        "get_trending",
+        "get_site_of_the_day"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Read-only MCP server for the MediaProNet directory of SaaS, AI and developer tools: search listings, find alternatives to a product, fetch listing profiles, browse categories and read trending leaderboards. Free and anonymous, no API key or authentication required."
+    },
+    {
+      "slug": "b2b-email-domain-scorer",
+      "name": "B2B Email & Domain Scorer",
+      "endpoint": "https://email-scorer.mohamed-bahaa53000.workers.dev/demo/mcp",
+      "cardUrl": "https://email-scorer.mohamed-bahaa53000.workers.dev/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "score_email",
+        "score_domain",
+        "score_batch"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "invoice-payment-id-validator",
+      "name": "Invoice & Payment ID Validator",
+      "endpoint": "https://invoice-validator.mohamed-bahaa53000.workers.dev/demo/mcp",
+      "cardUrl": "https://invoice-validator.mohamed-bahaa53000.workers.dev/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "check_invoice_payee",
+        "validate_iban",
+        "validate_bic",
+        "validate_eu_vat",
+        "validate_gb_vat",
+        "validate_ein",
+        "validate_batch"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Pay / review / hold verdict for an invoice payee: cross-checks IBAN, BIC, VAT (+ live VIES) and EIN against each other and the supplier country. Plus single-ID validators. Stateless."
+    },
+    {
+      "slug": "codetrendy-directory",
+      "name": "CodeTrendy Directory",
+      "endpoint": "https://codetrendy.com/api/mcp",
+      "cardUrl": "https://codetrendy.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_listings",
+        "get_listing",
+        "find_alternatives",
+        "browse_category",
+        "list_categories",
+        "get_trending",
+        "get_site_of_the_day"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Read-only MCP server for the CodeTrendy directory of SaaS, AI and developer tools: search listings, find alternatives to a product, fetch listing profiles, browse categories and read trending leaderboards. Free and anonymous, no API key or authentication required."
+    },
+    {
+      "slug": "curlshot",
+      "name": "CurlShot",
+      "endpoint": "https://curlshot.com/api/mcp",
+      "cardUrl": "https://curlshot.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "take_screenshot",
+        "list_devices"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Take screenshots of web pages. Paste a website address and get a screenshot of the whole page as an image or PDF. Free to try, nothing to install. For developers, one simple screenshot API."
+    },
+    {
+      "slug": "nanoparse",
+      "name": "NanoParse",
+      "endpoint": "https://nanoparse.app/mcp",
+      "cardUrl": "https://nanoparse.app/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [
+          "$0.002"
+        ],
+        "live": [
+          "$0.002"
+        ],
+        "changed": false
+      },
+      "tools_changed": [
+        "nanoparse_fetch",
+        "nanoparse_status"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "NanoParse — parse any URL into clean Markdown with Litmus source-intelligence signals. Paid per parse ($0.002 USDC on Base) with x402; no accounts, no API keys."
+    },
+    {
+      "slug": "rooms-by-aurmada",
+      "name": "Rooms by Aurmada",
+      "endpoint": "https://rooms.aurmada.com/mcp",
+      "cardUrl": "https://rooms.aurmada.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [
+          "$0.01",
+          "$500"
+        ],
+        "changed": true
+      },
+      "tools_changed": [],
+      "tools_added": [
+        "list_rooms",
+        "check_in",
+        "read_room",
+        "get_shared_context",
+        "post_message",
+        "create_room",
+        "get_invite_link",
+        "read_attachment",
+        "wait_for_messages",
+        "read_mentions",
+        "open_job",
+        "submit_deliverable",
+        "accept_job",
+        "request_revision",
+        "dispute_job",
+        "get_receipt",
+        "quote_paid_api",
+        "message_agent",
+        "live_feed",
+        "search_agents",
+        "submit_agent"
+      ],
+      "tools_removed": [
+        "check_in: pending @mentions with the thread and shared context",
+        "list_rooms: rooms your AI has a seat in",
+        "get_shared_context: context the room shared with you",
+        "post_message: reply in a room (the only tool that writes)",
+        "wait_for_messages: wait for new messages to stay live in a room"
+      ],
+      "description_differs": true,
+      "live_description": "Shared rooms where people bring their own AIs (ChatGPT, Claude, Gemini, Cursor and custom agents) to work together with shared, scoped context, plus agent jobs with signed receipts and an agent directory (search_agents, submit_agent)."
+    },
+    {
+      "slug": "hourtick",
+      "name": "Hourtick",
+      "endpoint": "https://hourtick.com/api/mcp",
+      "cardUrl": "https://hourtick.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "start_timer",
+        "stop_timer",
+        "log_time"
+      ],
+      "tools_added": [
+        "list_time_entries",
+        "get_report",
+        "get_report_pdf",
+        "get_audit_trail",
+        "report_cost",
+        "set_cost_rate",
+        "bill_agent_time_as",
+        "get_agent_outcomes",
+        "get_cost_reconciliation",
+        "get_client_ai_report",
+        "share_client_ai_report",
+        "preview_invoice",
+        "send_invoice",
+        "list_invoices",
+        "get_invoice",
+        "list_agreements",
+        "create_agreement",
+        "update_agreement",
+        "update_agreement_charge",
+        "list_tasks",
+        "get_task",
+        "create_task",
+        "update_task",
+        "comment_on_task",
+        "start_timer_on_task",
+        "chat_list_channels",
+        "chat_read",
+        "chat_post",
+        "chat_search",
+        "agent_wait_for_work",
+        "agent_get_context",
+        "agent_log",
+        "agent_ask",
+        "agent_reply",
+        "agent_fail",
+        "list_agents",
+        "create_agent",
+        "update_agent",
+        "request_agent",
+        "list_agent_requests",
+        "decide_agent_request",
+        "get_agent_activity",
+        "agent_delegate",
+        "agent_await",
+        "agent_report_usage",
+        "get_agent_session",
+        "list_notes",
+        "get_note",
+        "create_note",
+        "update_note",
+        "list_files",
+        "read_file",
+        "read_attachment",
+        "add_task_file",
+        "get_task_upload_link",
+        "add_file",
+        "log_expense",
+        "list_expenses",
+        "update_expense",
+        "delete_expense",
+        "add_expense_receipt",
+        "read_expense_receipt"
+      ],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "jithox",
+      "name": "Jithox",
+      "endpoint": "https://jithox.com/api/mcp",
+      "cardUrl": "https://jithox.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "verify_iban",
+        "check_peppol_ready",
+        "lookup_peppol_participant",
+        "check_payment_change",
+        "preflight_payment"
+      ],
+      "tools_added": [
+        "kbo_company_search",
+        "review_invoice",
+        "check_vat_list"
+      ],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Jithox's read-only checks before a payment: one preflight of the payment itself, a changed supplier bank account, an IBAN, Peppol invoice rules and receivers, EU VAT numbers in VIES and Belgian companies in the KBO. No tool on this endpoint sends, posts, pays or delivers anything. Before you pay an invoice, call preflight_payment once. No verdict (an error or 429) means: do not pay."
+    },
+    {
+      "slug": "quotebill",
+      "name": "QuoteBill",
+      "endpoint": "https://quotebill.com/mcp",
+      "cardUrl": "https://quotebill.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_templates"
+      ],
+      "tools_added": [
+        "get_template",
+        "get_tax_rule",
+        "calculate_totals",
+        "build_document",
+        "next_document",
+        "calculate_tax",
+        "convert_currency",
+        "list_contract_templates",
+        "get_contract_template",
+        "search_forms",
+        "get_form",
+        "top_templates",
+        "list_guides",
+        "list_reference"
+      ],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "removeduplicates",
+      "name": "RemoveDuplicates.org",
+      "endpoint": "https://removeduplicates.org/mcp",
+      "cardUrl": "https://removeduplicates.org/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "remove_duplicates"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Stateless duplicate removal for text lists and CSV/TSV rows with the removeduplicates.org engine. Text is processed in memory for each call and never stored."
+    },
+    {
+      "slug": "noodle-biomedical-literature-discovery-mcp",
+      "name": "Noodle Biomedical Literature Discovery MCP",
+      "endpoint": "https://noodle.helena.bio/integrations",
+      "cardUrl": "https://noodle.helena.bio/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [],
+      "tools_added": [
+        "search_biomedical_literature",
+        "get_publication_details",
+        "get_work_details",
+        "get_publication_neighborhood",
+        "get_work_neighborhood",
+        "get_corpus_summary",
+        "support_helena"
+      ],
+      "tools_removed": [
+        "search_biomedical_literature: Search public biomedical literatureget_publication_details: Retrieve a publication by PMIDget_work_details: Retrieve a work recordget_publication_neighborhood: Traverse a PMID literature neighborhoodget_work_neighborhood: Traverse a work literature neighborhoodget_corpus_summary: Inspect corpus coveragesupport_helena: Show official Helena support routes"
+      ],
+      "description_differs": true,
+      "live_description": "Search biomedical papers, inspect publication records, and traverse citation or semantic graphs."
+    },
+    {
+      "slug": "machinetranslation",
+      "name": "MachineTranslation.com MCP",
+      "endpoint": "https://www.machinetranslation.com/mcp",
+      "cardUrl": "https://www.machinetranslation.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "smart_translate"
+      ],
+      "tools_added": [
+        "list_languages"
+      ],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "transcriptfetch",
+      "name": "TranscriptFetch",
+      "endpoint": "https://transcriptfetch.com",
+      "cardUrl": "https://transcriptfetch.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "get_transcript"
+      ],
+      "tools_added": [
+        "search_videos",
+        "search_channels",
+        "list_channel_videos",
+        "list_channel_playlists",
+        "list_playlist_videos",
+        "get_credits",
+        "list_monitors",
+        "get_new_videos",
+        "create_monitor",
+        "check_monitor_now",
+        "delete_monitor"
+      ],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "TranscriptFetch is a transcript retrieval service for YouTube, TikTok and Instagram: whole channels, playlists and searches, not just one-off links."
+    },
+    {
+      "slug": "gifi",
+      "name": "Gifi",
+      "endpoint": "https://gifi.ai/mcp",
+      "cardUrl": "https://gifi.ai/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [],
+      "tools_added": [
+        "inspect",
+        "clean",
+        "rewrite",
+        "usage"
+      ],
+      "tools_removed": [
+        "inspectrewriteclean"
+      ],
+      "description_differs": true,
+      "live_description": "Inspect hidden Unicode, rewrite published statistical text watermarks from Claude or Gemini, and remove C2PA, EXIF, PDF, and Office metadata. ChatGPT marks files and audio, not words."
+    },
+    {
+      "slug": "deepsearch",
+      "name": "DeepSearch",
+      "endpoint": "https://deepsearch.app/api/mcp",
+      "cardUrl": "https://deepsearch.app/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_people"
+      ],
+      "tools_added": [
+        "build_dossier",
+        "ask_about_person",
+        "research",
+        "search_companies",
+        "build_company_dossier",
+        "reverse_image_search",
+        "lookup_vin",
+        "get_lookup_job_events",
+        "create_lookup_job",
+        "get_lookup_job",
+        "cancel_lookup_job",
+        "list_lookup_jobs"
+      ],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Research a person's public online footprint from a name, phone, email, or username. Ranked candidate people with confidence scores, then a dossier with a linked source for every detail. Public sources only."
+    },
+    {
+      "slug": "corpusiq",
+      "name": "CorpusIQ",
+      "endpoint": "https://www.corpusiq.io/?utm_source=influzer&utm_medium=directory&utm_campaign=organic-listings",
+      "cardUrl": "https://www.corpusiq.io/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "ask_corpusiq",
+        "get_connector_status"
+      ],
+      "tools_added": [
+        "resolve_connector",
+        "list_skills",
+        "invoke_skill",
+        "list_runbooks",
+        "run_runbook",
+        "list_prompts",
+        "get_prompt",
+        "list_resources",
+        "read_resource"
+      ],
+      "tools_removed": [
+        "ga4_connector",
+        "search_console_connector",
+        "google_ads_connector",
+        "stripe_connector",
+        "quickbooks_connector",
+        "shopify_dashboard",
+        "mailchimp_connector"
+      ],
+      "description_differs": true,
+      "live_description": "AI intelligence layer for business data. Gives AI assistants and AI agents governed access to live data across 40+ connected business systems through one connection, and returns source-cited answers. External-source retrieval tools are read-only and do not write back to connected systems. CorpusIQ control-plane tools are the only tools that accept writes, are separately named and annotated, and act on your CorpusIQ configuration."
+    },
+    {
+      "slug": "palisade-dmarc-agent",
+      "name": "Palisade DMARC Agent",
+      "endpoint": "https://api.palisade.email/mcp",
+      "cardUrl": "https://api.palisade.email/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [
+          "$19",
+          "$249",
+          "$29",
+          "$59",
+          "$99"
+        ],
+        "changed": true
+      },
+      "tools_changed": [
+        "get_account"
+      ],
+      "tools_added": [
+        "audit_domain",
+        "validate_spf_include",
+        "list_domains",
+        "get_domain",
+        "create_domain",
+        "update_domain",
+        "delete_domain",
+        "get_dns_records",
+        "enable_hosted_dmarc",
+        "verify_domain",
+        "get_domain_plan",
+        "get_mta_sts",
+        "enable_mta_sts",
+        "disable_mta_sts",
+        "get_spf",
+        "list_tasks",
+        "get_task",
+        "complete_task",
+        "dismiss_task",
+        "get_dmarc_summary",
+        "list_dmarc_senders",
+        "list_groups",
+        "create_group",
+        "update_group",
+        "delete_group",
+        "get_subscription",
+        "start_checkout",
+        "start_billing_portal",
+        "list_webhook_events",
+        "list_webhook_endpoints",
+        "create_webhook_endpoint",
+        "delete_webhook_endpoint",
+        "create_prospecting_report",
+        "list_prospecting_reports",
+        "get_prospecting_report",
+        "delete_prospecting_report",
+        "list_dns_connections",
+        "get_dns_connection",
+        "get_dns_connection_coverage",
+        "list_activity_log",
+        "list_activity_log_actions"
+      ],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Monitor and manage email authentication (SPF, DKIM, DMARC, MTA-STS, BIMI) for your domains."
+    },
+    {
+      "slug": "autoposting",
+      "name": "Autoposting",
+      "endpoint": "https://app.autoposting.ai/mcp",
+      "cardUrl": "https://app.autoposting.ai/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [],
+      "tools_added": [
+        "list-posts",
+        "get-post",
+        "get-post-details",
+        "create-post",
+        "update-post",
+        "delete-post",
+        "publish-post",
+        "schedule-post",
+        "list-brands",
+        "get-brand",
+        "get-brand-auth-status",
+        "create-brand",
+        "update-brand",
+        "delete-brand",
+        "list-knowledgebases",
+        "get-knowledgebase",
+        "search-knowledgebase",
+        "create-knowledgebase",
+        "ingest-document",
+        "list-agents",
+        "get-agent",
+        "create-agent",
+        "update-agent",
+        "run-agent",
+        "list-members",
+        "login",
+        "check-auth",
+        "list-organizations",
+        "set-active-organization",
+        "get-workflow-status",
+        "retry-post",
+        "subscribe",
+        "rewrite-post",
+        "score-post",
+        "delete-agent",
+        "toggle-agent",
+        "agent-runs",
+        "list-kbs",
+        "get-kb",
+        "create-kb",
+        "delete-kb",
+        "search-kb",
+        "ingest-kb",
+        "kb-docs",
+        "generate-ideas",
+        "list-ideas",
+        "enrich-idea",
+        "delete-idea",
+        "list-clips",
+        "get-clip",
+        "import-clip",
+        "render-clip",
+        "create-clip-draft",
+        "start-clip-upload",
+        "get-clip-upload-urls",
+        "complete-clip-upload",
+        "publish-clip",
+        "delete-clip",
+        "list-carousels",
+        "get-carousel",
+        "create-carousel",
+        "generate-carousel",
+        "render-carousel",
+        "draft-carousel",
+        "delete-carousel",
+        "list-webhooks",
+        "get-webhook",
+        "create-webhook",
+        "update-webhook",
+        "delete-webhook",
+        "test-webhook",
+        "billing-status",
+        "billing-credits",
+        "usage-summary",
+        "brand-auth-status",
+        "api-request",
+        "list-api-routes",
+        "delete-account-import",
+        "import-accounts",
+        "prepare-account-import"
+      ],
+      "tools_removed": [
+        "agent-runsbilling-creditsbilling-statusbrand-auth-statuscheck-authcreate-agentcreate-brandcreate-carouselcreate-kbcreate-knowledgebasecreate-postcreate-webhookdelete-agentdelete-branddelete-carouseldelete-clipdelete-ideadelete-kbdelete-postdelete-webhookdraft-carouselenrich-ideagenerate-carouselgenerate-ideasget-agentget-brandget-brand-auth-statusget-carouselget-clipget-kbget-knowledgebaseget-postget-post-detailsget-webhookget-workflow-statusimport-clipingest-documentingest-kbkb-docslist-agentslist-brandslist-carouselslist-clipslist-ideaslist-kbslist-knowledgebaseslist-memberslist-organizationslist-postslist-webhooksloginpublish-postrender-clipretry-postrewrite-postrun-agentschedule-postscore-postsearch-kbsearch-knowledgebaseset-active-organizationsubscribetest-webhooktoggle-agentupdate-agentupdate-brandupdate-postupdate-webhookusage-summary"
+      ],
+      "description_differs": false,
+      "live_description": ""
+    },
+    {
+      "slug": "pixel-agent",
+      "name": "Pixel Agent",
+      "endpoint": "https://pixel-agent.for-ai-agents.workers.dev/mcp",
+      "cardUrl": "https://pixel-agent.for-ai-agents.workers.dev/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "convert_image"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Convert images to PNG, JPEG, WebP, or AVIF through a single MCP tool."
+    },
+    {
+      "slug": "most-recommended-books",
+      "name": "Most Recommended Books",
+      "endpoint": "https://mostrecommendedbooks.com/api/mcp",
+      "cardUrl": "https://mostrecommendedbooks.com/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_books"
+      ],
+      "tools_added": [
+        "get_person_recommendations",
+        "get_book_recommenders",
+        "get_series_reading_order",
+        "get_list",
+        "get_summary"
+      ],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
+    }
+  ],
+  "errors": [
+    {
+      "slug": "youtubeapi-mcp-server",
+      "name": "YouTubeAPI.io MCP Server",
+      "endpoint": "https://youtubeapi.io/docs/youtube-transcript?utm_source=influzer&utm_medium=mcp&utm_campaign=youtubeapi",
+      "cardUrl": "https://youtubeapi.io/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "connectmachine",
+      "name": "ConnectMachine",
+      "endpoint": "https://mcp.connectmachine.ai/mcp",
+      "cardUrl": "https://mcp.connectmachine.ai/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 401"
+    },
+    {
+      "slug": "flashcrafter-growth-briefs",
+      "name": "FlashCrafter Growth Briefs",
+      "endpoint": "https://briefs.flashcrafter.ai/mcp",
+      "cardUrl": "https://briefs.flashcrafter.ai/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "bad_card"
+    },
+    {
+      "slug": "lead-gen-marketing-intelligence",
+      "name": "Lead Gen Marketing Intelligence",
+      "endpoint": "https://lead-gen-system.upapi.io/api/mcp",
+      "cardUrl": "https://lead-gen-system.upapi.io/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "memeswap-mcp",
+      "name": "MemeSwap MCP",
+      "endpoint": "https://mcp.memeswap.fun/mcp",
+      "cardUrl": "https://mcp.memeswap.fun/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 502"
+    },
+    {
+      "slug": "marketnow",
+      "name": "MarketNow",
+      "endpoint": "https://www.marketnow.site/api/mcp",
+      "cardUrl": "https://www.marketnow.site/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "upfixe-ads",
+      "name": "Upfixe Ads",
+      "endpoint": "https://app.upfixe.com/mcp",
+      "cardUrl": "https://app.upfixe.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "bad_card"
+    },
+    {
+      "slug": "lamdis-exchange",
+      "name": "Lamdis Exchange",
+      "endpoint": "https://exchange.lamdis.ai/mcp",
+      "cardUrl": "https://exchange.lamdis.ai/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "Hostname could not be resolved"
+    },
+    {
+      "slug": "doop",
+      "name": "Doop",
+      "endpoint": "https://doop.design",
+      "cardUrl": "https://doop.design/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "bad_card"
+    },
+    {
+      "slug": "truth-bear-gauge",
+      "name": "Truth Bear (GAUGE)",
+      "endpoint": "https://www.npmjs.com/package/mcp-gauge-x402",
+      "cardUrl": "https://www.npmjs.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 403"
+    },
+    {
+      "slug": "folklore-clinical-variant-interpretation-mcp",
+      "name": "Folklore Clinical Variant Interpretation MCP",
+      "endpoint": "https://folklore.helena.bio/integrations",
+      "cardUrl": "https://folklore.helena.bio/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "melaya",
+      "name": "Melaya",
+      "endpoint": "https://api.melaya.org/mcp",
+      "cardUrl": "https://api.melaya.org/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 503"
+    },
+    {
+      "slug": "gpt55-x402-model-gateway",
+      "name": "GPT55 x402 Model Gateway",
+      "endpoint": "https://gpt55.558686.xyz/mcp",
+      "cardUrl": "https://gpt55.558686.xyz/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 530"
+    },
+    {
+      "slug": "agentx",
+      "name": "AgentX",
+      "endpoint": "https://www.agentxhq.com/mcp",
+      "cardUrl": "https://www.agentxhq.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 405"
+    },
+    {
+      "slug": "reactive-resume",
+      "name": "Reactive Resume",
+      "endpoint": "https://rxresu.me/mcp",
+      "cardUrl": "https://rxresu.me/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "too_large"
+    },
+    {
+      "slug": "bgpt",
+      "name": "BGPT",
+      "endpoint": "https://bgpt.pro/mcp/",
+      "cardUrl": "https://bgpt.pro/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 403"
+    },
+    {
+      "slug": "mcp360-ai",
+      "name": "MCP360",
+      "endpoint": "https://www.npmjs.com/package/@mcp360ai/unified-gateway",
+      "cardUrl": "https://www.npmjs.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 403"
+    },
+    {
+      "slug": "gitlab",
+      "name": "GitLab",
+      "endpoint": "https://gitlab.com/api/v4/mcp",
+      "cardUrl": "https://gitlab.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "mongodb",
+      "name": "MongoDB",
+      "endpoint": "https://mcp.mongodb.com",
+      "cardUrl": "https://mcp.mongodb.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 401"
+    },
+    {
+      "slug": "motherduck",
+      "name": "MotherDuck",
+      "endpoint": "https://api.motherduck.com/mcp",
+      "cardUrl": "https://api.motherduck.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 401"
+    },
+    {
+      "slug": "monday",
+      "name": "Monday.com",
+      "endpoint": "https://mcp.monday.com/mcp",
+      "cardUrl": "https://mcp.monday.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "google-sheets",
+      "name": "Google Sheets",
+      "endpoint": "https://sheetsmcp.googleapis.com/mcp/v1",
+      "cardUrl": "https://sheetsmcp.googleapis.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 400"
+    },
+    {
+      "slug": "mercado-libre",
+      "name": "Mercado Libre",
+      "endpoint": "https://mcp.mercadolibre.com/mcp",
+      "cardUrl": "https://mcp.mercadolibre.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "mercado-pago",
+      "name": "Mercado Pago",
+      "endpoint": "https://mcp.mercadopago.com/mcp",
+      "cardUrl": "https://mcp.mercadopago.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "fetch_failed"
+    },
+    {
+      "slug": "dropbox",
+      "name": "Dropbox",
+      "endpoint": "https://mcp.dropbox.com/mcp",
+      "cardUrl": "https://mcp.dropbox.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 429"
+    },
+    {
+      "slug": "granola-mcp",
+      "name": "Granola MCP",
+      "endpoint": "https://mcp.granola.ai/mcp",
+      "cardUrl": "https://mcp.granola.ai/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 405"
+    }
+  ]
+}
