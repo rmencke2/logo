@@ -1,8 +1,61 @@
 {
-  "updated_at": "2026-11-10T14:26:10.155Z",
+  "updated_at": "2026-11-18T14:56:20.303Z",
   "note": "Handshake and tool-list changes between probes. Not a safe-to-install badge.",
   "safety_badge": null,
   "events": [
+    {
+      "at": "2026-11-18T14:56:20.256Z",
+      "slug": "influzer-mcp-discovery",
+      "kind": "handshake",
+      "from_status": "live_ok",
+      "to_status": "unreachable",
+      "tools_before": 4,
+      "tools_after": 4,
+      "tools_added": [],
+      "tools_removed": [],
+      "tools_added_count": 0,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "influzer-mcp-discovery|handshake|live_ok|unreachable|4|4|2026-11-18"
+    },
+    {
+      "at": "2026-11-18T14:27:30.015Z",
+      "slug": "alberduris-summiz",
+      "kind": "tools",
+      "from_status": "auth_required",
+      "to_status": "auth_required",
+      "tools_before": 13,
+      "tools_after": 20,
+      "tools_added": [
+        "add-to-folder",
+        "create-folder",
+        "delete-folder",
+        "list-folders",
+        "move-folder",
+        "remove-from-folder",
+        "rename-folder"
+      ],
+      "tools_removed": [],
+      "tools_added_count": 7,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "alberduris-summiz|tools|auth_required|auth_required|13|20|2026-11-18"
+    },
+    {
+      "at": "2026-11-18T14:27:21.277Z",
+      "slug": "cyanheads-calculator-mcp-server",
+      "kind": "handshake",
+      "from_status": "auth_required",
+      "to_status": "unreachable",
+      "tools_before": 1,
+      "tools_after": 1,
+      "tools_added": [],
+      "tools_removed": [],
+      "tools_added_count": 0,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "cyanheads-calculator-mcp-server|handshake|auth_required|unreachable|1|1|2026-11-18"
+    },
     {
       "at": "2026-11-10T13:42:04.168Z",
       "slug": "alberduris-summiz",
