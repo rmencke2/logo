@@ -134,6 +134,14 @@ if [[ -z "${http_code}" || "${curl_rc}" -ne 0 ]]; then
   http_code="000"
 fi
 
+# PM2 in a bad state counts as unhealthy even if a stale process still answers.
+case "${pm2_status}" in
+  errored|stopped|stopping|waiting\ restart|one-launch-status)
+    log "PM2 unhealthy status=${pm2_status} — forcing fail"
+    http_code="000"
+    ;;
+esac
+
 # Trust a live /healthz 200 over a false pm2 "missing" (common when cron PATH lacks pm2).
 if [[ "${http_code}" == "200" ]]; then
   write_fail_count 0
