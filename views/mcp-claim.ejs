@@ -21,9 +21,12 @@
         <p class="mcp-submit-kicker">MCP Directory</p>
         <h1><%= pageTitle %></h1>
         <p class="mcp-submit-lead">
-          Claim a listing that is already in the directory. A person at Influzer approves it.
-          Approval needs one check to pass: your verified email domain matches the listing’s site,
-          or you publish a one-time code on that site or in its GitHub repo.
+          Prove you control the listing’s HTTPS host and you get edit access immediately — free, no badge, no paid service.
+          Same idea as OpenAI’s domain challenge and VerifyMCP’s <code>owners.json</code>: host a small public file, we fetch it, done.
+        </p>
+        <p class="mcp-submit-lead">
+          Any one of these is enough: your verified email domain matches the site, your email is listed in
+          <code>/.well-known/owners.json</code>, or you publish the one-time proof file we give you (site or GitHub).
         </p>
         <p class="mcp-submit-back"><a href="/mcp/my-listings">← My listings</a></p>
       </header>
@@ -59,9 +62,9 @@
             <span>Your GitHub username <em>(optional)</em></span>
             <input type="text" name="githubLogin" id="claimGithub" maxlength="39" placeholder="nanoparse-dev" />
           </label>
-          <p class="mcp-submit-lead">Signed in as <%= email %>. That address is the one we check. A Gmail or other public mailbox cannot match a site on its own.</p>
+          <p class="mcp-submit-lead">Signed in as <%= email %>. That address is the one we check. A Gmail or other public mailbox cannot match a site on its own — use <code>owners.json</code> or the one-time proof file instead.</p>
         </fieldset>
-        <button type="submit" class="mcp-submit-btn" id="claimSubmit" <% if (!verified) { %>disabled<% } %>>Submit claim</button>
+        <button type="submit" class="mcp-submit-btn" id="claimSubmit" <% if (!verified) { %>disabled<% } %>>Check ownership</button>
       </form>
 
       <div id="claimResult" class="mcp-submit-status" role="status" hidden></div>

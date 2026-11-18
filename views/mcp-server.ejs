@@ -134,7 +134,7 @@
                 <% } %>
               </div>
               <% if (!server.owner_user_id) { %>
-                <p class="mcp-detail-claim"><a href="/mcp/claim/<%= encodeURIComponent(server.slug) %>">Claim this listing</a> if you maintain it.</p>
+                <p class="mcp-detail-claim"><a href="/mcp/claim/<%= encodeURIComponent(server.slug) %>">Claim this listing</a> if you maintain it — self-service via <code>owners.json</code> or a one-time proof file.</p>
               <% } %>
             </div>
           </header>

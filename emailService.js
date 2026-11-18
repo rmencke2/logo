@@ -1248,20 +1248,29 @@ async function sendMcpClaimEmail(claim) {
   if (!isEmailConfigured()) return { success: false, reason: 'email_not_configured' };
   ensureMcpEmailTransportReady();
   const to = process.env.MCP_SUBMISSION_EMAIL || 'mencke@gmail.com';
-  const proof = claim.evidence?.anyPass ? 'automatic proof passed' : 'no automatic proof yet';
+  const autoApproved = claim.status === 'approved' && claim.reviewedBy === 'system';
+  const proof = autoApproved
+    ? 'auto-approved'
+    : claim.evidence?.anyPass
+      ? 'proof passed — needs review'
+      : 'no proof yet';
   const subject = `[MCP Claim] ${claim.serverName || claim.slug} (${proof})`;
   const lines = [
     `Listing: https://www.influzer.ai/mcp/${claim.slug}`,
     `Account: ${claim.name || '(no name)'} <${claim.email}>`,
     `Relationship: ${claim.relationship}`,
+    `Status: ${claim.status}${autoApproved ? ' (self-service)' : ''}`,
     `GitHub they typed: ${claim.statedGithub || '(none)'}`,
     `Note: ${claim.note}`,
     '',
     `Email domain: ${claim.evidence?.emailDomain?.pass ? 'match' : 'no match'} (${claim.evidence?.emailDomain?.domain || ''} → ${claim.evidence?.emailDomain?.host || 'none'})`,
+    `owners.json: ${claim.evidence?.ownersFile?.pass ? 'email listed' : claim.evidence?.ownersFile?.error || 'not checked'} ${claim.evidence?.ownersFile?.url || ''}`,
     `Site file: ${claim.evidence?.siteFile?.pass ? 'found' : claim.evidence?.siteFile?.error || 'not checked'} ${claim.evidence?.siteFile?.url || ''}`,
     `GitHub file: ${claim.evidence?.githubFile?.pass ? 'found' : claim.evidence?.githubFile?.error || 'not checked'} ${claim.evidence?.githubFile?.repo || ''}`,
     '',
-    'Review in Admin → MCP.',
+    autoApproved
+      ? 'No action needed — they can edit from My listings.'
+      : 'Review in Admin → MCP Submissions → Listing claims.',
   ];
   return deliverEmail({
     from: getFromAddress(),
