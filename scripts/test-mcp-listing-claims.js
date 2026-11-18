@@ -5,9 +5,11 @@ const assert = require('assert');
 const {
   emailDomainMatch,
   bodyHasClaim,
+  bodyHasOwnerEmail,
   claimLine,
   githubRepo,
   proofUrls,
+  ownersUrls,
   decodeGithubContent,
   collectEvidence,
 } = require('../services/mcpListingClaimService');
@@ -52,6 +54,34 @@ function testClaimFileHelpers() {
   assert.deepStrictEqual(urls, ['https://nanoparse.app/.well-known/influzer-claim.txt']);
 }
 
+function testOwnersHelpers() {
+  assert.strictEqual(
+    bodyHasOwnerEmail(
+      JSON.stringify({
+        $schema: 'https://verifymcp.io/schemas/owners.json',
+        owners: ['aiagentcycle@gmail.com'],
+      }),
+      'aiagentcycle@gmail.com',
+    ),
+    true,
+  );
+  assert.strictEqual(
+    bodyHasOwnerEmail(JSON.stringify({ owners: ['other@example.com'] }), 'aiagentcycle@gmail.com'),
+    false,
+  );
+  assert.strictEqual(bodyHasOwnerEmail('not-json', 'a@b.com'), false);
+  assert.deepStrictEqual(
+    ownersUrls({
+      mcp_endpoint: 'https://mcp.aiagentcycle.com/sse',
+      docs_url: 'https://mcp.aiagentcycle.com/',
+    }),
+    [
+      'https://mcp.aiagentcycle.com/.well-known/owners.json',
+      'https://mcp.aiagentcycle.com/sse/.well-known/owners.json',
+    ],
+  );
+}
+
 function testGithubDecode() {
   const line = claimLine('deadbeef');
   const content = Buffer.from(`${line}\n`).toString('base64');
@@ -72,20 +102,54 @@ async function testCollectEvidence() {
     size: line.length,
     content: Buffer.from(line).toString('base64'),
   });
+  const ownersBody = JSON.stringify({
+    $schema: 'https://verifymcp.io/schemas/owners.json',
+    owners: ['owner@example.com'],
+  });
   const evidence = await collectEvidence(
     server,
     { email: 'owner@example.com', code },
     {
       fetchImpl: async (url) => {
         if (String(url).includes('api.github.com')) return response(200, githubBody);
+        if (String(url).includes('owners.json')) return response(200, ownersBody);
         if (String(url).includes('influzer-claim.txt')) return response(200, `${line}\n`);
         return response(404, '');
       },
     },
   );
   assert.strictEqual(evidence.emailDomain.pass, true);
+  assert.strictEqual(evidence.ownersFile.pass, true);
   assert.strictEqual(evidence.siteFile.pass, true);
   assert.strictEqual(evidence.githubFile.pass, true);
+  assert.strictEqual(evidence.anyPass, true);
+}
+
+async function testOwnersOnlyPass() {
+  const server = {
+    mcp_endpoint: 'https://mcp.aiagentcycle.com/mcp',
+  };
+  const evidence = await collectEvidence(
+    server,
+    { email: 'aiagentcycle@gmail.com', code: 'deadbeef' },
+    {
+      fetchImpl: async (url) => {
+        if (String(url).endsWith('/.well-known/owners.json') || String(url).includes('/owners.json')) {
+          return response(
+            200,
+            JSON.stringify({
+              $schema: 'https://verifymcp.io/schemas/owners.json',
+              owners: ['aiagentcycle@gmail.com'],
+            }),
+          );
+        }
+        return response(404, '');
+      },
+    },
+  );
+  assert.strictEqual(evidence.emailDomain.pass, false);
+  assert.strictEqual(evidence.ownersFile.pass, true);
+  assert.strictEqual(evidence.siteFile.pass, false);
   assert.strictEqual(evidence.anyPass, true);
 }
 
@@ -97,8 +161,10 @@ function testClaimPathIsReserved() {
 async function main() {
   testEmailDomain();
   testClaimFileHelpers();
+  testOwnersHelpers();
   testGithubDecode();
   await testCollectEvidence();
+  await testOwnersOnlyPass();
   testClaimPathIsReserved();
   console.log('mcp listing claims ok');
 }

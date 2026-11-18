@@ -534,9 +534,10 @@
       <div class="section" style="margin-top:40px;border-top:1px solid #2a2a2a;padding-top:32px;">
         <h2>Listing claims</h2>
         <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
-          Someone says they own a published listing. Approve only when a check passed, or you already know them.
-          A pass means their verified email domain matches the site, or the one-time code is on that site or in its GitHub repo.
-          Approving sets <code>owner_user_id</code> so they can edit from My listings. It does not change the description.
+          Pending claims that did not self-serve. Proof that passes (email domain, <code>/.well-known/owners.json</code>,
+          one-time claim file, or GitHub proof) auto-approves and never appears here.
+          Approve only when a check passed, or you already know them. Approving sets <code>owner_user_id</code>
+          so they can edit from My listings. It does not change the description.
         </p>
         <div class="search-bar">
           <button type="button" class="btn btn-primary" data-admin-action="loadMcpClaims">Refresh</button>
@@ -2146,6 +2147,7 @@
           const evidence = claim.evidence || {};
           const proof = [
             evidence.emailDomain?.pass ? 'email domain' : '',
+            evidence.ownersFile?.pass ? 'owners.json' : '',
             evidence.siteFile?.pass ? 'site file' : '',
             evidence.githubFile?.pass ? 'GitHub file' : '',
           ].filter(Boolean).join(', ') || 'none yet';

@@ -8,30 +8,59 @@
   function proofLines(claim) {
     const evidence = claim.evidence || {};
     const email = evidence.emailDomain || {};
+    const owners = evidence.ownersFile || {};
     const site = evidence.siteFile || {};
     const github = evidence.githubFile || {};
-    const lines = [
+    const lines = [];
+
+    if (claim.status === 'approved') {
+      lines.push('Ownership verified. You can edit this listing now.');
+      lines.push(`Open My listings: ${claim.myListingsUrl || '/mcp/my-listings'}`);
+      lines.push('');
+    }
+
+    lines.push(
       email.pass
         ? `Email domain ${email.domain} matches ${email.host}.`
         : `Email domain ${email.domain || '(none)'} does not match the listing host.`,
+      owners.pass
+        ? `Found your email in owners.json at ${owners.url}.`
+        : `owners.json not confirmed${owners.url ? ` (${owners.url})` : ''}.`,
       site.pass
-        ? `Found the code at ${site.url}.`
-        : `Site file not confirmed${site.url ? ` (${site.url})` : ''}.`,
+        ? `Found the one-time code at ${site.url}.`
+        : `One-time site file not confirmed${site.url ? ` (${site.url})` : ''}.`,
       github.pass
-        ? `Found the code in ${github.repo}.`
-        : `GitHub file not confirmed${github.repo ? ` (${github.repo})` : ''}.`,
-    ];
+        ? `Found the one-time code in ${github.repo}.`
+        : `GitHub proof file not confirmed${github.repo ? ` (${github.repo})` : ''}.`,
+    );
+
+    if (claim.status === 'approved') {
+      return lines.join('\n');
+    }
+
     if (!evidence.anyPass) {
       lines.push('');
-      lines.push(`Publish this exact line, then re-check:`);
+      lines.push('Publish one of these free, non-rendered proof files, then re-check:');
+      lines.push('');
+      lines.push('1) Preferred — permanent owners.json (lists your signed-in email):');
+      lines.push('{');
+      lines.push('  "$schema": "https://verifymcp.io/schemas/owners.json",');
+      lines.push('  "owners": ["the-email-on-this-account"]');
+      lines.push('}');
+      (claim.ownersUrls || []).forEach((url) => lines.push(`   → ${url}`));
+      lines.push('');
+      lines.push('2) One-time website file (plain text, exact line):');
       lines.push(claim.claimLine);
-      (claim.proofUrls || []).forEach((url) => lines.push(url));
+      (claim.proofUrls || []).forEach((url) => lines.push(`   → ${url}`));
       if (github.repo) {
-        lines.push(`Or commit it to ${github.repo} at .well-known/influzer-claim.txt on the default branch.`);
+        lines.push('');
+        lines.push(`3) Or commit that same line to ${github.repo} at .well-known/influzer-claim.txt on the default branch.`);
       }
+      lines.push('');
+      lines.push('No visible badge and no paid service — just the file.');
     } else {
       lines.push('');
-      lines.push('At least one check passed. Influzer still approves the claim before you can edit the listing.');
+      lines.push('Proof passed but this claim still needs a person at Influzer (usually another owner is set).');
     }
     return lines.join('\n');
   }
@@ -44,6 +73,16 @@
     pre.style.margin = '0 0 12px';
     pre.textContent = proofLines(claim);
     resultEl.appendChild(pre);
+
+    if (claim.status === 'approved') {
+      const link = document.createElement('a');
+      link.className = 'mcp-submit-btn';
+      link.href = claim.myListingsUrl || '/mcp/my-listings';
+      link.textContent = 'Go to My listings';
+      resultEl.appendChild(link);
+      return;
+    }
+
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'mcp-submit-btn';
@@ -89,6 +128,7 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Claim failed');
       show(data.claim);
+      if (data.claim.status !== 'approved') button.disabled = false;
     } catch (err) {
       resultEl.textContent = err.message || 'Claim failed';
       button.disabled = false;

@@ -1,10 +1,13 @@
 'use strict';
 
 /**
- * Claim an existing directory listing.
- * A verified account plus one of: email domain matches the listing host,
- * a secret file on that host, or the same secret in the listing's GitHub repo.
- * Approval is still a person. Nothing here overwrites listing copy.
+ * Claim an existing directory listing (self-service when proof passes).
+ * A verified account plus one of:
+ * - email domain matches the listing host
+ * - /.well-known/owners.json lists the account email (VerifyMCP / OpenAI-style)
+ * - one-time /.well-known/influzer-claim.txt on that host
+ * - the same one-time line in the listing's GitHub repo
+ * When any check passes, ownership is granted immediately. No listing copy is changed.
  */
 
 const crypto = require('crypto');
@@ -23,8 +26,10 @@ function manualApi() {
 
 const CLAIMS_DIR = path.join(__dirname, '..', 'data', 'mcp-claims');
 const CLAIM_FILE = '.well-known/influzer-claim.txt';
+const OWNERS_FILE = '.well-known/owners.json';
 const MAX_NOTE = 2000;
 const MAX_PROOF_BYTES = 4096;
+const MAX_OWNERS = 50;
 const PUBLIC_EMAIL_DOMAINS = new Set([
   'gmail.com',
   'googlemail.com',
@@ -152,23 +157,69 @@ function newClaimCode() {
   return crypto.randomBytes(16).toString('hex');
 }
 
-function proofUrls(server) {
-  const urls = [];
+function httpsListingOrigins(server) {
+  const origins = [];
   for (const raw of [server?.mcp_endpoint, server?.deployment_url, server?.docs_url]) {
     if (!raw) continue;
     try {
       const url = new URL(raw);
       if (url.protocol !== 'https:') continue;
       if (hostKey(url.hostname) === 'github.com') continue;
-      url.pathname = `/${CLAIM_FILE}`;
-      url.search = '';
-      url.hash = '';
-      urls.push(url.toString());
+      origins.push(url);
     } catch {
       /* skip */
     }
   }
+  return origins;
+}
+
+function proofUrls(server) {
+  const urls = [];
+  for (const url of httpsListingOrigins(server)) {
+    const proof = new URL(url.origin);
+    proof.pathname = `/${CLAIM_FILE}`;
+    urls.push(proof.toString());
+  }
   return [...new Set(urls)];
+}
+
+/** Host-level and path-level owners.json URLs (VerifyMCP shape). */
+function ownersUrls(server) {
+  const urls = [];
+  for (const url of httpsListingOrigins(server)) {
+    const hostLevel = new URL(url.origin);
+    hostLevel.pathname = `/${OWNERS_FILE}`;
+    urls.push(hostLevel.toString());
+
+    const basePath = url.pathname.replace(/\/+$/, '');
+    if (basePath && basePath !== '/') {
+      const pathLevel = new URL(url.origin);
+      pathLevel.pathname = `${basePath}/${OWNERS_FILE}`;
+      urls.push(pathLevel.toString());
+    }
+  }
+  return [...new Set(urls)];
+}
+
+function ownersListFromBody(body) {
+  let data;
+  try {
+    data = JSON.parse(String(body || ''));
+  } catch {
+    return null;
+  }
+  if (!data || !Array.isArray(data.owners)) return null;
+  return data.owners
+    .map((item) => String(item || '').trim().toLowerCase())
+    .filter(Boolean)
+    .slice(0, MAX_OWNERS);
+}
+
+function bodyHasOwnerEmail(body, email) {
+  const owners = ownersListFromBody(body);
+  if (!owners) return false;
+  const target = String(email || '').trim().toLowerCase();
+  return Boolean(target) && owners.includes(target);
 }
 
 function githubContentsUrl(repo) {
@@ -220,6 +271,23 @@ async function collectEvidence(server, { email, code }, opts = {}) {
   }
   if (!site.url) site.error = 'no_https_origin';
 
+  const owners = { pass: false, url: null, error: null };
+  for (const url of ownersUrls(server)) {
+    const response = await fetchProofBody(url, opts);
+    owners.url = response.url || url;
+    if (response.ok && bodyHasOwnerEmail(response.body, email)) {
+      owners.pass = true;
+      owners.error = null;
+      break;
+    }
+    if (response.ok) {
+      owners.error = ownersListFromBody(response.body) ? 'email_missing' : 'invalid_owners_json';
+    } else {
+      owners.error = response.error || `HTTP ${response.status}`;
+    }
+  }
+  if (!owners.url) owners.error = 'no_https_origin';
+
   const repo = githubRepo(server?.github_url);
   const github = { pass: false, url: null, repo: repo ? `${repo.owner}/${repo.repo}` : null, error: null };
   if (repo) {
@@ -238,9 +306,10 @@ async function collectEvidence(server, { email, code }, opts = {}) {
 
   return {
     emailDomain: emailCheck,
+    ownersFile: owners,
     siteFile: site,
     githubFile: github,
-    anyPass: Boolean(emailCheck.pass || site.pass || github.pass),
+    anyPass: Boolean(emailCheck.pass || owners.pass || site.pass || github.pass),
     checkedAt: new Date().toISOString(),
   };
 }
@@ -257,12 +326,30 @@ function publicClaim(claim) {
     code: claim.code,
     claimLine: claimLine(claim.code),
     proofUrls: claim.proofUrls || [],
+    ownersUrls: claim.ownersUrls || [],
     githubRepo: claim.evidence?.githubFile?.repo || null,
     evidence: claim.evidence || null,
     createdAt: claim.createdAt,
     updatedAt: claim.updatedAt,
     pageUrl: `/mcp/${claim.slug}`,
+    myListingsUrl: '/mcp/my-listings',
   };
+}
+
+function applyAutoApprove(claim, server) {
+  if (!claim?.evidence?.anyPass || claim.status !== 'pending') return claim;
+  const manual = manualApi().findManualServer(server.slug);
+  if (manual?.owner_user_id && Number(manual.owner_user_id) !== Number(claim.userId)) {
+    claim.evidence.autoApproveBlocked = 'another_owner';
+    return claim;
+  }
+  assignOwner(server, claim.userId);
+  claim.status = 'approved';
+  claim.reviewNote = 'Auto-approved: ownership proof passed';
+  claim.reviewedBy = 'system';
+  claim.reviewedAt = new Date().toISOString();
+  claim.updatedAt = claim.reviewedAt;
+  return claim;
 }
 
 function adminClaim(claim) {
@@ -351,7 +438,7 @@ async function createClaim(user, body, opts = {}) {
   const code = newClaimCode();
   const evidence = await collectEvidence(server, { email: user.email, code }, opts);
   const now = new Date().toISOString();
-  const claim = writeClaim({
+  let claim = {
     id: `${Date.now().toString(36)}-${crypto.randomBytes(4).toString('hex')}`,
     slug: server.slug,
     serverName: server.name,
@@ -363,11 +450,14 @@ async function createClaim(user, body, opts = {}) {
     statedGithub: input.statedGithub,
     code,
     proofUrls: proofUrls(server),
+    ownersUrls: ownersUrls(server),
     evidence,
     status: 'pending',
     createdAt: now,
     updatedAt: now,
-  });
+  };
+  claim = applyAutoApprove(claim, server);
+  claim = writeClaim(claim);
   return { claim, existing: false, server };
 }
 
@@ -397,7 +487,9 @@ async function recheckClaim(id, user, opts = {}) {
   }
   claim.evidence = await collectEvidence(server, { email: claim.email, code: claim.code }, opts);
   claim.proofUrls = proofUrls(server);
+  claim.ownersUrls = ownersUrls(server);
   claim.updatedAt = new Date().toISOString();
+  claim = applyAutoApprove(claim, server);
   return writeClaim(claim);
 }
 
@@ -627,11 +719,15 @@ function registerMcpClaimAdminRoutes(app, requireAdmin) {
 
 module.exports = {
   CLAIM_FILE,
+  OWNERS_FILE,
   claimLine,
   bodyHasClaim,
+  bodyHasOwnerEmail,
+  ownersListFromBody,
   emailDomainMatch,
   githubRepo,
   proofUrls,
+  ownersUrls,
   collectEvidence,
   decodeGithubContent,
   createClaim,
