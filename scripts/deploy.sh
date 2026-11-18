@@ -111,6 +111,12 @@ else
   git pull --ff-only origin "${BRANCH}"
 fi
 
+# Small Lightsail boxes OOM without swap when npm ci runs.
+if [[ "${SERVER_MODE}" == 1 ]] && [[ -x "${SCRIPT_DIR}/ensure-swap.sh" ]]; then
+  echo "==> Ensuring swap"
+  bash "${SCRIPT_DIR}/ensure-swap.sh" || echo "WARN: ensure-swap failed"
+fi
+
 echo "==> Installing dependencies"
 if ! command -v npm >/dev/null 2>&1; then
   echo "ERROR: npm not found."
@@ -121,46 +127,102 @@ install_deps() {
   npm install --omit=dev "$@"
 }
 
+DEPS_HASH_FILE="${PROJECT_ROOT}/.deploy-deps-hash"
+NPM_CI_TIMEOUT_S="${NPM_CI_TIMEOUT_S:-480}"
+lock_hash=""
+if [[ -f package-lock.json ]]; then
+  lock_hash="$(sha256sum package-lock.json | awk '{print $1}')"
+fi
+
+skip_npm_install=0
+if [[ "${SERVER_MODE}" == 1 ]] \
+  && [[ -n "${lock_hash}" ]] \
+  && [[ -f "${DEPS_HASH_FILE}" ]] \
+  && [[ "$(cat "${DEPS_HASH_FILE}" 2>/dev/null || true)" == "${lock_hash}" ]] \
+  && [[ -d node_modules ]] \
+  && node scripts/verify-native-deps.js >/dev/null 2>&1; then
+  skip_npm_install=1
+  echo "    skipping npm ci (package-lock unchanged + native deps OK)"
+fi
+
 npm_ci_args=(--omit=dev)
 rebuild_sqlite_from_source=0
-if [[ "${SERVER_MODE}" == 1 ]]; then
+if [[ "${SERVER_MODE}" == 1 && "${skip_npm_install}" == 0 ]]; then
   # sqlite3@6 prebuilds require GLIBC 2.38+; Debian 12 / Lightsail has 2.36.
   # Rebuild sqlite3 only after ci — global --build-from-source breaks canvas prebuilds.
   rebuild_sqlite_from_source=1
   echo "    sqlite3: will rebuild from source after npm ci (glibc 2.36 prod)"
 fi
 
-if [[ -f "package-lock.json" ]] && node -e "JSON.parse(require('fs').readFileSync('package-lock.json','utf8'))" 2>/dev/null; then
-  echo "    using npm ci (valid package-lock.json)"
-  if ! npm ci "${npm_ci_args[@]}"; then
-    echo "WARN: npm ci failed; falling back to npm install"
-    install_deps
+if [[ "${skip_npm_install}" == 0 ]]; then
+  # Free RAM before heavy install on 1GB boxes; keep downtime short.
+  if [[ "${SERVER_MODE}" == 1 ]]; then
+    echo "    stopping ${PM2_APP_NAME} during dependency install"
+    pm2 stop "${PM2_APP_NAME}" >/dev/null 2>&1 || true
   fi
-else
-  echo "    using npm install (no valid package-lock.json)"
-  install_deps
-fi
+  export npm_config_jobs="${npm_config_jobs:-1}"
+  export JOBS="${JOBS:-1}"
 
-if [[ "${rebuild_sqlite_from_source}" == 1 ]]; then
-  echo "==> Rebuilding sqlite3 from source"
-  if ! npm rebuild sqlite3 --build-from-source; then
-    echo "ERROR: sqlite3 rebuild failed (see DEPLOY_INSTRUCTIONS.md glibc section)"
+  run_with_timeout() {
+    local secs="$1"
+    shift
+    if command -v timeout >/dev/null 2>&1; then
+      timeout --signal=TERM --kill-after=30s "${secs}" "$@"
+    else
+      "$@"
+    fi
+  }
+
+  if [[ -f "package-lock.json" ]] && node -e "JSON.parse(require('fs').readFileSync('package-lock.json','utf8'))" 2>/dev/null; then
+    echo "    using npm ci (valid package-lock.json, timeout ${NPM_CI_TIMEOUT_S}s, jobs=${npm_config_jobs})"
+    if ! run_with_timeout "${NPM_CI_TIMEOUT_S}" npm ci "${npm_ci_args[@]}"; then
+      echo "WARN: npm ci failed or timed out; falling back to npm install"
+      if ! run_with_timeout "${NPM_CI_TIMEOUT_S}" install_deps; then
+        echo "ERROR: dependency install failed. App left stopped — fix node_modules before restart."
+        exit 1
+      fi
+    fi
+  else
+    echo "    using npm install (no valid package-lock.json)"
+    if ! run_with_timeout "${NPM_CI_TIMEOUT_S}" install_deps; then
+      echo "ERROR: npm install failed or timed out"
+      exit 1
+    fi
+  fi
+
+  if [[ "${rebuild_sqlite_from_source}" == 1 ]]; then
+    echo "==> Rebuilding sqlite3 from source"
+    if ! run_with_timeout 300 npm rebuild sqlite3 --build-from-source; then
+      echo "ERROR: sqlite3 rebuild failed (see DEPLOY_INSTRUCTIONS.md glibc section)"
+      exit 1
+    fi
+  fi
+
+  echo "==> Verifying native dependencies"
+  if ! node scripts/verify-native-deps.js; then
+    echo "ERROR: native dependency check failed (see sqlite3 / glibc notes in DEPLOY_INSTRUCTIONS.md)"
     exit 1
   fi
-fi
-
-echo "==> Verifying native dependencies"
-if ! node scripts/verify-native-deps.js; then
-  echo "ERROR: native dependency check failed (see sqlite3 / glibc notes in DEPLOY_INSTRUCTIONS.md)"
-  exit 1
+  if [[ -n "${lock_hash}" ]]; then
+    echo "${lock_hash}" > "${DEPS_HASH_FILE}"
+  fi
+else
+  echo "==> Native dependencies already verified"
 fi
 
 echo "==> Restarting PM2 app: ${PM2_APP_NAME}"
 if [[ -f "${PROJECT_ROOT}/ecosystem.config.cjs" ]]; then
   if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
-    pm2 delete "${PM2_APP_NAME}" >/dev/null 2>&1 || true
+    # Prefer in-place restart when deps were skipped (faster, less disruption).
+    if [[ "${skip_npm_install}" == 1 ]]; then
+      pm2 restart "${PM2_APP_NAME}" --update-env
+    else
+      pm2 delete "${PM2_APP_NAME}" >/dev/null 2>&1 || true
+      pm2 start "${PROJECT_ROOT}/ecosystem.config.cjs"
+    fi
+  else
+    pm2 start "${PROJECT_ROOT}/ecosystem.config.cjs"
   fi
-  pm2 start "${PROJECT_ROOT}/ecosystem.config.cjs"
 else
   if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
     pm2 restart "${PM2_APP_NAME}"
@@ -171,11 +233,32 @@ fi
 
 pm2 save
 
+# Confirm the process is actually answering before we call deploy done.
+if [[ "${SERVER_MODE}" == 1 ]]; then
+  echo "==> Post-deploy health check"
+  health_ok=0
+  for _ in 1 2 3 4 5 6; do
+    code="$(curl -sS -o /dev/null -w '%{http_code}' --connect-timeout 3 --max-time 5 \
+      "http://127.0.0.1:${PORT:-4000}/healthz" 2>/dev/null || echo 000)"
+    if [[ "${code}" == "200" ]]; then
+      health_ok=1
+      break
+    fi
+    sleep 2
+  done
+  if [[ "${health_ok}" != 1 ]]; then
+    echo "ERROR: /healthz did not return 200 after deploy"
+    pm2 status "${PM2_APP_NAME}" || true
+    exit 1
+  fi
+  echo "    /healthz OK"
+fi
+
 echo "==> PM2 status"
 pm2 status "${PM2_APP_NAME}"
 
 if [[ "${SERVER_MODE}" == 1 ]] && [[ -x "${SCRIPT_DIR}/install-watchdog.sh" ]]; then
-  echo "==> Ensuring health watchdog cron"
+  echo "==> Ensuring health watchdog cron + swap"
   # Default alert inbox; override with WATCHDOG_ALERT_EMAIL in the environment.
   WATCHDOG_ALERT_EMAIL="${WATCHDOG_ALERT_EMAIL:-mencke@gmail.com}" \
     "${SCRIPT_DIR}/install-watchdog.sh" || echo "WARN: watchdog install failed"
