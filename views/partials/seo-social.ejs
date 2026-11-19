@@ -8,7 +8,7 @@
   const _ogUrl = typeof ogUrl !== 'undefined' ? ogUrl : _base + '/';
 %>
 <% if (typeof noindex !== 'undefined' && noindex) { %>
-<meta name="robots" content="noindex, nofollow" />
+<meta name="robots" content="<%= typeof robotsContent !== 'undefined' && robotsContent ? robotsContent : 'noindex, nofollow' %>" />
 <% } %>
 <meta property="og:type" content="<%= _ogType %>" />
 <meta property="og:site_name" content="Influzer.ai" />

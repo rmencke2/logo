@@ -13,10 +13,24 @@ const {
   findMcpServerBySlug,
   getAllMcpServers,
   getSitemapMcpServers,
+  isSitemapEligibleMcpServer,
   getTop100McpServers,
 } = require('../services/mcpDirectoryService');
+const {
+  getWebmcpSitemapEntries,
+  getWebmcpSitemapSites,
+  isSitemapEligibleWebmcpHost,
+  WEBMCP_SITEMAP_SITE_CAP,
+  loadCatalog,
+} = require('../services/webmcpDirectoryService');
+const {
+  readKey,
+  moneyPageUrls,
+  submitIndexNow,
+  keyLocation,
+} = require('../services/indexNowService');
 
-function main() {
+async function main() {
   const robots = fs.readFileSync(path.join(__dirname, '..', 'public', 'robots.txt'), 'utf8');
   assert.match(robots, /Sitemap:\s+https:\/\/www\.influzer\.ai\/sitemap\.xml/);
   assert.match(robots, /Disallow:\s+\/api\//);
@@ -82,6 +96,13 @@ function main() {
   assert.match(staticSrc, /host === 'influzer\.ai'/);
   assert.match(staticSrc, /app\.get\('\/index\.html'/);
   assert.match(staticSrc, /getSitemapMcpServers\(\)/);
+  assert.match(staticSrc, /sitemap-core\.xml/);
+  assert.match(staticSrc, /sitemap-mcp\.xml/);
+  assert.match(staticSrc, /sitemap-webmcp\.xml/);
+  assert.match(staticSrc, /sitemapindex/);
+  assert.match(staticSrc, /isSitemapEligibleMcpServer/);
+  assert.match(staticSrc, /isSearchEngineBot/);
+  assert.match(staticSrc, /registerIndexNowRoutes/);
   assert.match(staticSrc, /favicon-generator[\s\S]*redirect\(301/);
   assert.match(staticSrc, /X-Robots-Tag.*noindex/);
   assert.match(staticSrc, /MCP listing render failed/);
@@ -91,6 +112,36 @@ function main() {
   );
   assert.match(staticSrc, /app\.get\('\/modelspend'/);
   assert.match(staticSrc, /\/modelspend['"]/);
+
+  // Thin MCP stubs stay out of the indexable set.
+  assert.equal(isSitemapEligibleMcpServer('___not-a-real-slug___'), false);
+  for (const s of getTop100McpServers().slice(0, 5)) {
+    assert.equal(isSitemapEligibleMcpServer(s.slug), true);
+  }
+
+  // WebMCP sitemap is capped so crawl budget goes to money pages.
+  const webmcpSites = getWebmcpSitemapSites();
+  const webmcpEntries = getWebmcpSitemapEntries();
+  assert.ok(webmcpSites.length <= WEBMCP_SITEMAP_SITE_CAP);
+  assert.ok(webmcpEntries.length < 1000, `webmcp sitemap too large: ${webmcpEntries.length}`);
+  assert.ok(webmcpEntries.some((e) => e.loc.endsWith('/webmcp')));
+  const catalogSites = loadCatalog().sites.length;
+  assert.ok(catalogSites > WEBMCP_SITEMAP_SITE_CAP);
+  if (webmcpSites[0]) {
+    assert.equal(isSitemapEligibleWebmcpHost(webmcpSites[0].host), true);
+  }
+
+  // IndexNow key + money-page ping payload.
+  const indexKey = readKey();
+  assert.ok(indexKey.length >= 16);
+  assert.match(keyLocation(indexKey), new RegExp(`${indexKey}\\.txt$`));
+  const money = moneyPageUrls();
+  assert.ok(money.includes('https://www.influzer.ai/'));
+  assert.ok(money.includes('https://www.influzer.ai/mcp'));
+  assert.ok(money.length >= 20);
+  const dry = await submitIndexNow(money.slice(0, 3), { dryRun: true });
+  assert.equal(dry.ok, true);
+  assert.equal(dry.dryRun, true);
 
   const modelspendTpl = fs.readFileSync(
     path.join(__dirname, '..', 'views', 'modelspend.ejs'),
@@ -112,8 +163,11 @@ function main() {
   );
 
   console.log(
-    `SEO indexing tests passed (catalog ${all.length} → sitemap MCP ${sitemapServers.length})`,
+    `SEO indexing tests passed (catalog ${all.length} → sitemap MCP ${sitemapServers.length}; webmcp sites ${webmcpSites.length}/${catalogSites})`,
   );
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
