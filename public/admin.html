@@ -376,11 +376,20 @@
         <h3>MCP Discovery (7d)</h3>
         <div class="value" id="mcpDiscoveryCalls">-</div>
       </div>
+      <div class="stat-card">
+        <h3>Visitors (24h)</h3>
+        <div class="value" id="trafficTodayVisitors">-</div>
+      </div>
+      <div class="stat-card">
+        <h3>Visitors (7d)</h3>
+        <div class="value" id="trafficWeekVisitors">-</div>
+      </div>
     </div>
 
     <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" data-tab="users">Users</button>
+      <button class="tab" data-tab="traffic">Traffic</button>
       <button class="tab" data-tab="comments">Comments</button>
       <button class="tab" data-tab="newsletter">Newsletter</button>
       <button class="tab" data-tab="abuse">Abuse Tracking</button>
@@ -402,6 +411,54 @@
         <div id="usersTableContainer">
           <div class="loading">Loading users...</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Traffic Tab -->
+    <div class="tab-content" id="trafficTab">
+      <div class="section">
+        <h2>Site traffic</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Unique visitors = distinct IPs. “Site” numbers exclude <code>/api</code>, health, robots, and admin noise.
+          UTM rows only show after you start linking with <code>?utm_source=…</code>.
+        </p>
+        <div class="search-bar">
+          <select id="trafficDays" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#fff;">
+            <option value="7">Last 7 days</option>
+            <option value="14" selected>Last 14 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+          <button type="button" class="btn btn-primary" data-admin-action="loadTraffic">Refresh</button>
+        </div>
+        <div class="stats-grid" style="margin-bottom:24px;" id="trafficStatCards">
+          <div class="stat-card"><h3>Site visitors · 24h</h3><div class="value" id="trafTodayVisitors">-</div></div>
+          <div class="stat-card"><h3>Site views · 24h</h3><div class="value" id="trafTodayViews">-</div></div>
+          <div class="stat-card"><h3>Site visitors · 7d</h3><div class="value" id="trafWeekVisitors">-</div></div>
+          <div class="stat-card"><h3>Site views · 7d</h3><div class="value" id="trafWeekViews">-</div></div>
+          <div class="stat-card"><h3>Site visitors · 30d</h3><div class="value" id="trafMonthVisitors">-</div></div>
+          <div class="stat-card"><h3>Site views · 30d</h3><div class="value" id="trafMonthViews">-</div></div>
+        </div>
+        <div id="trafficTables">
+          <div class="loading">Open this tab to load traffic…</div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:24px;">
+        <h2>UTM link builder</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 20px;">
+          Use these on LinkedIn / Reddit posts. Example:
+          <code>utm_source=linkedin&amp;utm_medium=social&amp;utm_campaign=insights-upgrade</code>
+        </p>
+        <div class="search-bar" style="flex-wrap:wrap;">
+          <input type="url" id="utmBaseUrl" value="https://www.influzer.ai/insights/whats-new-influzer-pricing-probe-claim" style="flex:2;min-width:220px;" />
+          <input type="text" id="utmSource" placeholder="utm_source (linkedin)" style="flex:1;min-width:140px;" />
+          <input type="text" id="utmMedium" placeholder="utm_medium (social)" style="flex:1;min-width:140px;" />
+          <input type="text" id="utmCampaign" placeholder="utm_campaign" style="flex:1;min-width:140px;" />
+          <input type="text" id="utmContent" placeholder="utm_content (optional)" style="flex:1;min-width:140px;" />
+          <button type="button" class="btn btn-primary" data-admin-action="buildUtmLink">Build</button>
+          <button type="button" class="btn btn-secondary" data-admin-action="copyUtmLink">Copy</button>
+        </div>
+        <pre id="utmResult" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:6px;padding:12px;color:#10a37f;white-space:pre-wrap;word-break:break-all;min-height:48px;"></pre>
       </div>
     </div>
 
@@ -1037,6 +1094,7 @@
         tab.classList.add('active');
         document.getElementById(`${tabName}Tab`).classList.add('active');
         
+        if (tabName === 'traffic') loadTraffic();
         if (tabName === 'abuse') loadAbuseRecords();
         if (tabName === 'activity') loadActivity();
         if (tabName === 'comments') loadComments();
@@ -1069,8 +1127,115 @@
         document.getElementById('blockedIPs').textContent = data.blocks.ips;
         document.getElementById('mcpDiscoveryCalls').textContent =
           data.mcpDiscovery ? data.mcpDiscovery.totalCalls : 0;
+        document.getElementById('trafficTodayVisitors').textContent =
+          data.traffic ? data.traffic.todayVisitors : 0;
+        document.getElementById('trafficWeekVisitors').textContent =
+          data.traffic ? data.traffic.weekVisitors : 0;
       } catch (err) {
         console.error('Error loading stats:', err);
+      }
+    }
+
+    function trafficTable(title, headers, rowsHtml, emptyText) {
+      if (!rowsHtml) {
+        return `<h3 style="color:#fff;font-size:16px;margin:24px 0 12px;">${title}</h3>
+          <p style="color:#8e8e93;font-size:14px;">${emptyText}</p>`;
+      }
+      return `<h3 style="color:#fff;font-size:16px;margin:24px 0 12px;">${title}</h3>
+        <table>
+          <thead><tr>${headers.map((h) => `<th>${h}</th>`).join('')}</tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>`;
+    }
+
+    async function loadTraffic() {
+      const container = document.getElementById('trafficTables');
+      const days = document.getElementById('trafficDays')?.value || '14';
+      container.innerHTML = '<div class="loading">Loading traffic…</div>';
+      try {
+        const res = await fetch(`/admin/api/traffic?days=${encodeURIComponent(days)}`);
+        if (!res.ok) throw new Error('Failed to load traffic');
+        const data = await res.json();
+
+        document.getElementById('trafTodayVisitors').textContent = data.today?.siteVisitors ?? 0;
+        document.getElementById('trafTodayViews').textContent = data.today?.siteViews ?? 0;
+        document.getElementById('trafWeekVisitors').textContent = data.week?.siteVisitors ?? 0;
+        document.getElementById('trafWeekViews').textContent = data.week?.siteViews ?? 0;
+        document.getElementById('trafMonthVisitors').textContent = data.month?.siteVisitors ?? 0;
+        document.getElementById('trafMonthViews').textContent = data.month?.siteViews ?? 0;
+
+        const dayRows = (data.byDay || []).map((row) => `
+          <tr>
+            <td>${escapeHtml(row.day || '')}</td>
+            <td>${row.visitors}</td>
+            <td>${row.views}</td>
+          </tr>`).join('');
+        const pageRows = (data.topPages || []).map((row) => `
+          <tr>
+            <td><code>${escapeHtml(row.page || '')}</code></td>
+            <td>${row.visitors}</td>
+            <td>${row.views}</td>
+          </tr>`).join('');
+        const sourceRows = (data.utm?.sources || []).map((row) => `
+          <tr>
+            <td>${escapeHtml(row.key || '')}</td>
+            <td>${row.visitors}</td>
+            <td>${row.views}</td>
+          </tr>`).join('');
+        const campaignRows = (data.utm?.campaigns || []).map((row) => `
+          <tr>
+            <td>${escapeHtml(row.key || '')}</td>
+            <td>${escapeHtml(row.source || '')}</td>
+            <td>${row.visitors}</td>
+            <td>${row.views}</td>
+          </tr>`).join('');
+        const mediumRows = (data.utm?.mediums || []).map((row) => `
+          <tr>
+            <td>${escapeHtml(row.key || '')}</td>
+            <td>${row.visitors}</td>
+            <td>${row.views}</td>
+          </tr>`).join('');
+
+        container.innerHTML =
+          trafficTable('By day (site)', ['Day', 'Visitors', 'Views'], dayRows, 'No daily traffic yet.') +
+          trafficTable('Top pages (7d site)', ['Page', 'Visitors', 'Views'], pageRows, 'No pages yet.') +
+          trafficTable('UTM sources (7d)', ['Source', 'Visitors', 'Views'], sourceRows, 'No UTM traffic yet — use the link builder below.') +
+          trafficTable('UTM campaigns (7d)', ['Campaign', 'Source', 'Visitors', 'Views'], campaignRows, 'No campaigns tagged yet.') +
+          trafficTable('UTM mediums (7d)', ['Medium', 'Visitors', 'Views'], mediumRows, 'No mediums tagged yet.');
+      } catch (err) {
+        console.error('Error loading traffic:', err);
+        container.innerHTML = `<div class="loading">Failed to load traffic: ${escapeHtml(err.message || 'error')}</div>`;
+      }
+    }
+
+    function buildUtmLink() {
+      const base = (document.getElementById('utmBaseUrl')?.value || 'https://www.influzer.ai/').trim();
+      const source = (document.getElementById('utmSource')?.value || '').trim();
+      const medium = (document.getElementById('utmMedium')?.value || '').trim();
+      const campaign = (document.getElementById('utmCampaign')?.value || '').trim();
+      const content = (document.getElementById('utmContent')?.value || '').trim();
+      try {
+        const url = new URL(base);
+        if (source) url.searchParams.set('utm_source', source);
+        if (medium) url.searchParams.set('utm_medium', medium);
+        if (campaign) url.searchParams.set('utm_campaign', campaign);
+        if (content) url.searchParams.set('utm_content', content);
+        document.getElementById('utmResult').textContent = url.toString();
+        return url.toString();
+      } catch (err) {
+        document.getElementById('utmResult').textContent = err.message || 'Invalid URL';
+        return '';
+      }
+    }
+
+    async function copyUtmLink() {
+      const link = buildUtmLink();
+      if (!link) return;
+      try {
+        await navigator.clipboard.writeText(link);
+        document.getElementById('utmResult').textContent = link + '\n\nCopied.';
+      } catch {
+        document.getElementById('utmResult').textContent = link + '\n\nCopy failed — select and copy manually.';
       }
     }
 

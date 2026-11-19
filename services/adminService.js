@@ -122,7 +122,8 @@ async function initializeAdminService(app) {
         topIPs,
         blockedUsers,
         blockedIPs,
-        mcpDiscovery
+        mcpDiscovery,
+        traffic,
       ] = await Promise.all([
         db.getUserCount(),
         db.getRecentSignups(7),
@@ -131,6 +132,9 @@ async function initializeAdminService(app) {
         db.db.all('SELECT COUNT(*) as count FROM users WHERE is_blocked = 1'),
         db.db.all('SELECT COUNT(*) as count FROM abuse_tracking WHERE blocked_until > CURRENT_TIMESTAMP'),
         getMcpDiscoveryAnalytics(7).catch(() => null),
+        require('./analyticsService')
+          .getTrafficOverview({ days: 7 })
+          .catch(() => null),
       ]);
 
       // Get activity stats
@@ -172,10 +176,31 @@ async function initializeAdminService(app) {
               uniqueIps: mcpDiscovery.uniqueIps,
             }
           : { totalCalls: 0, toolCalls: 0, uniqueIps: 0 },
+        traffic: traffic
+          ? {
+              todayVisitors: traffic.today?.siteVisitors || 0,
+              todayViews: traffic.today?.siteViews || 0,
+              weekVisitors: traffic.week?.siteVisitors || 0,
+              weekViews: traffic.week?.siteViews || 0,
+            }
+          : { todayVisitors: 0, todayViews: 0, weekVisitors: 0, weekViews: 0 },
       });
     } catch (err) {
       console.error('Error fetching admin stats:', err);
       res.status(500).json({ error: 'Failed to fetch statistics' });
+    }
+  });
+
+  // Site traffic + UTM breakdown for the Traffic admin tab
+  app.get('/admin/api/traffic', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const days = parseInt(req.query.days, 10) || 14;
+      const { getTrafficOverview } = require('./analyticsService');
+      const traffic = await getTrafficOverview({ days });
+      res.json(traffic);
+    } catch (err) {
+      console.error('Error fetching traffic overview:', err);
+      res.status(500).json({ error: 'Failed to fetch traffic' });
     }
   });
 
