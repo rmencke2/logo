@@ -1186,6 +1186,19 @@
 
     // Load dashboard stats
     async function loadStats() {
+      const loadingIds = [
+        'totalUsers',
+        'recentSignups',
+        'blockedUsers',
+        'blockedIPs',
+        'mcpDiscoveryCalls',
+        'trafficTodayVisitors',
+        'trafficWeekVisitors',
+      ];
+      loadingIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '…';
+      });
       try {
         const res = await fetch('/admin/api/stats');
         if (!res.ok) throw new Error('Failed to load stats');
@@ -1203,6 +1216,10 @@
           data.traffic ? data.traffic.weekVisitors : 0;
       } catch (err) {
         console.error('Error loading stats:', err);
+        loadingIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '!';
+        });
       }
     }
 
@@ -1220,6 +1237,7 @@
 
     function renderAudienceSplit(audience) {
       const week = audience?.week || {};
+      const daysLabel = audience?.days || 7;
       const kinds = [
         { key: 'humans', label: 'Humans' },
         { key: 'seo_bots', label: 'SEO bots' },
@@ -1241,7 +1259,7 @@
         const row = week[key] || { views: 0, visitors: 0, viewsShare: 0 };
         return `
           <div class="audience-card">
-            <h4>${label} · 7d</h4>
+            <h4>${label} · ${daysLabel}d</h4>
             <div class="big">${Number(row.views || 0).toLocaleString()}</div>
             <div class="sub">${Number(row.visitors || 0).toLocaleString()} unique IPs · ${row.viewsShare || 0}% of views</div>
           </div>`;
@@ -1253,11 +1271,11 @@
           <td>${row.views}</td>
         </tr>`).join('');
       return `
-        <h3 style="color:#fff;font-size:16px;margin:0 0 8px;">Humans vs bots vs agents (7d)</h3>
+        <h3 style="color:#fff;font-size:16px;margin:0 0 8px;">Humans vs bots vs agents (${daysLabel}d)</h3>
         <p style="color:#8e8e93;font-size:13px;margin:0 0 12px;">${escapeHtml(audience?.note || 'UA heuristics.')}</p>
         <div class="audience-chart">${bars}</div>
         <div class="audience-cards">${cards}</div>
-        ${trafficTable('Top AI / agent user-agents (7d)', ['User-agent', 'IPs', 'Views'], agentRows, 'No agent crawlers in this window.')}
+        ${trafficTable(`Top AI / agent user-agents (${daysLabel}d)`, ['User-agent', 'IPs', 'Views'], agentRows, 'No agent crawlers in this window.')}
       `;
     }
 
