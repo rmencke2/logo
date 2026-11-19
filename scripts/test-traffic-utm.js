@@ -3,6 +3,7 @@
 
 const assert = require('assert');
 const { extractUtms, normalizeUtm } = require('../services/utmHelpers');
+const { classifyUserAgent } = require('../services/trafficAudience');
 
 assert.strictEqual(normalizeUtm(' LinkedIn '), 'linkedin');
 assert.strictEqual(normalizeUtm('My Campaign'), 'my-campaign');
@@ -22,5 +23,21 @@ assert.deepStrictEqual(utms, {
   utm_content: 'comment',
   utm_term: null,
 });
+
+assert.strictEqual(
+  classifyUserAgent('Mozilla/5.0 AppleWebKit/537.36; compatible; ShapBot/0.1.0'),
+  'agents',
+);
+assert.strictEqual(
+  classifyUserAgent('Mozilla/5.0 (compatible; SemrushBot/7~bl)'),
+  'seo_bots',
+);
+assert.strictEqual(
+  classifyUserAgent(
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36',
+  ),
+  'humans',
+);
+assert.strictEqual(classifyUserAgent(''), 'seo_bots');
 
 console.log('traffic utm helpers ok');
