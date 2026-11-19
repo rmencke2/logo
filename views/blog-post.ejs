@@ -136,7 +136,7 @@
             <form id="commentForm" novalidate>
               <input type="text" name="name" id="commentName" placeholder="Your name" maxlength="60" required />
               <textarea name="comment" id="commentBody" placeholder="Share your take, question, or feedback..." maxlength="1000" required></textarea>
-              <input class="home-nl__hp" type="text" name="website" id="commentWebsite" autocomplete="off" tabindex="-1" aria-hidden="true" />
+              <input class="home-nl__hp" type="text" name="website" id="commentWebsite" autocomplete="off" tabindex="-1" hidden aria-label="Leave blank" />
               <% if (turnstileSiteKey) { %>
                 <div style="margin-bottom:10px;">
                   <div id="commentTurnstile" class="cf-turnstile" data-sitekey="<%= turnstileSiteKey %>" data-theme="light"></div>

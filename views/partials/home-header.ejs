@@ -47,18 +47,26 @@
         </div>
         <div id="siteHeaderAuthUser" class="site-header-user" hidden>
           <div class="site-header-user-menu" id="siteHeaderUserMenu">
-            <button type="button" class="site-header-user-trigger" id="siteHeaderUserTrigger" aria-haspopup="true">
+            <button
+              type="button"
+              class="site-header-user-trigger"
+              id="siteHeaderUserTrigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="siteHeaderUserPanel"
+              aria-label="Account menu"
+            >
               <span class="site-header-user-avatar" id="siteHeaderUserAvatar" aria-hidden="true">U</span>
               <span id="siteHeaderUserName">Account</span>
             </button>
-            <div class="site-header-user-panel" role="menu">
+            <div class="site-header-user-panel" id="siteHeaderUserPanel">
               <div class="site-header-user-email" id="siteHeaderUserEmail"></div>
-              <a href="/mcp/submit" role="menuitem">Submit an MCP server</a>
-              <a href="/mcp/check" role="menuitem">Check an MCP server</a>
-              <a href="/mcp/my-listings" role="menuitem">My MCP listings</a>
-              <a href="/recipes/mine" role="menuitem">My recipes</a>
-              <a href="/admin" id="siteHeaderAdminLink" role="menuitem" hidden>Admin dashboard</a>
-              <button type="button" id="siteHeaderLogoutBtn" role="menuitem">Log out</button>
+              <a href="/mcp/submit">Submit an MCP server</a>
+              <a href="/mcp/check">Check an MCP server</a>
+              <a href="/mcp/my-listings">My MCP listings</a>
+              <a href="/recipes/mine">My recipes</a>
+              <a href="/admin" id="siteHeaderAdminLink" hidden>Admin dashboard</a>
+              <button type="button" id="siteHeaderLogoutBtn">Log out</button>
             </div>
           </div>
         </div>
@@ -71,7 +79,7 @@
 <link rel="stylesheet" href="/css/site-auth.css?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" />
 <script nonce="<%= cspNonce %>" src="/js/img-fallback.js"></script>
 <script nonce="<%= cspNonce %>" src="/js/site-auth.js?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" defer></script>
-<select id="languageSelector" class="site-header-lang-hidden" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;">
+<select id="languageSelector" class="site-header-lang-hidden" hidden tabindex="-1" aria-label="Language">
   <option value="en">English</option>
   <option value="da">Dansk</option>
   <option value="sv">Svenska</option>
