@@ -1,8 +1,38 @@
 {
-  "updated_at": "2026-11-18T14:56:20.303Z",
+  "updated_at": "2026-11-19T15:13:54.646Z",
   "note": "Handshake and tool-list changes between probes. Not a safe-to-install badge.",
   "safety_badge": null,
   "events": [
+    {
+      "at": "2026-11-19T15:13:54.587Z",
+      "slug": "influzer-mcp-discovery",
+      "kind": "handshake",
+      "from_status": "unreachable",
+      "to_status": "live_ok",
+      "tools_before": 4,
+      "tools_after": 4,
+      "tools_added": [],
+      "tools_removed": [],
+      "tools_added_count": 0,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "influzer-mcp-discovery|handshake|unreachable|live_ok|4|4|2026-11-19"
+    },
+    {
+      "at": "2026-11-19T14:37:52.596Z",
+      "slug": "cyanheads-calculator-mcp-server",
+      "kind": "handshake",
+      "from_status": "unreachable",
+      "to_status": "auth_required",
+      "tools_before": 1,
+      "tools_after": 1,
+      "tools_added": [],
+      "tools_removed": [],
+      "tools_added_count": 0,
+      "tools_removed_count": 0,
+      "source": "validation",
+      "key": "cyanheads-calculator-mcp-server|handshake|unreachable|auth_required|1|1|2026-11-19"
+    },
     {
       "at": "2026-11-18T14:56:20.256Z",
       "slug": "influzer-mcp-discovery",

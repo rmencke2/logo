@@ -1,67 +1,30 @@
 {
-  "generated_at": "2026-11-18T14:56:20.256Z",
+  "generated_at": "2026-11-19T15:13:54.587Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-11-17T16:45:43.394Z",
+  "catalog_generated_at": "2026-11-18T14:56:20.382Z",
   "summary": {
     "checked": 283,
     "skipped_manual": 249,
     "skipped_no_endpoint": 14474,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 280,
-    "tools_changed": 1,
+    "unchanged": 282,
+    "tools_changed": 0,
     "newly_indexed": 0,
     "tools_lost": 0,
-    "auth_required_kept": 1,
-    "live_failed": 1,
-    "live_ok": 0,
+    "auth_required_kept": 0,
+    "live_failed": 0,
+    "live_ok": 1,
     "smithery_fallback": 14756,
     "errors": 0,
-    "tools_added_total": 7,
+    "tools_added_total": 0,
     "tools_removed_total": 0,
     "catalog_total": 15006,
     "http_endpoints": 282,
     "with_tools_before": 526,
     "with_tools_after": 526
   },
-  "changes": [
-    {
-      "slug": "alberduris-summiz",
-      "name": "Summiz",
-      "source": "smithery",
-      "validationMethod": "live_mcp+smithery_fallback",
-      "status": "tools_changed",
-      "beforeToolCount": 13,
-      "afterToolCount": 20,
-      "added": [
-        "list-folders",
-        "create-folder",
-        "rename-folder",
-        "move-folder",
-        "delete-folder",
-        "add-to-folder",
-        "remove-from-folder"
-      ],
-      "removed": [],
-      "changed": [
-        "list-digests"
-      ]
-    }
-  ],
-  "errors": [
-    {
-      "slug": "influzer-mcp-discovery",
-      "source": "manual",
-      "status": "live_failed_kept",
-      "validationMethod": "live_mcp",
-      "error": "fetch failed",
-      "liveProbe": {
-        "status": "unreachable",
-        "reason": "fetch failed",
-        "httpStatus": null,
-        "serverInfo": null
-      }
-    }
-  ]
+  "changes": [],
+  "errors": []
 }
