@@ -11,6 +11,7 @@ const {
   ensureMcpDiscoveryAnalyticsTables,
   getMcpDiscoveryAnalytics,
 } = require('./mcpDiscoveryAnalytics');
+const { normalizeUtm, extractUtms } = require('./utmHelpers');
 const nodemailer = require('nodemailer');
 const https = require('https');
 const fs = require('fs');
@@ -276,40 +277,225 @@ async function initializeAnalyticsTables(db) {
           country TEXT,
           user_agent TEXT,
           referrer TEXT,
+          utm_source TEXT,
+          utm_medium TEXT,
+          utm_campaign TEXT,
+          utm_content TEXT,
+          utm_term TEXT,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
         )
       `);
 
-      // Add country column if it doesn't exist (for existing databases)
+      // Add columns if they don't exist (for existing databases)
       db.db.run(`ALTER TABLE page_views ADD COLUMN country TEXT`, () => {});
+      db.db.run(`ALTER TABLE page_views ADD COLUMN utm_source TEXT`, () => {});
+      db.db.run(`ALTER TABLE page_views ADD COLUMN utm_medium TEXT`, () => {});
+      db.db.run(`ALTER TABLE page_views ADD COLUMN utm_campaign TEXT`, () => {});
+      db.db.run(`ALTER TABLE page_views ADD COLUMN utm_content TEXT`, () => {});
+      db.db.run(`ALTER TABLE page_views ADD COLUMN utm_term TEXT`, () => {});
 
       // Indexes for performance
       db.db.run('CREATE INDEX IF NOT EXISTS idx_service_analytics_service ON service_analytics(service_name)');
       db.db.run('CREATE INDEX IF NOT EXISTS idx_service_analytics_created ON service_analytics(created_at)');
       db.db.run('CREATE INDEX IF NOT EXISTS idx_page_views_created ON page_views(created_at)');
       db.db.run('CREATE INDEX IF NOT EXISTS idx_page_views_ip ON page_views(ip_address)');
+      db.db.run('CREATE INDEX IF NOT EXISTS idx_page_views_utm_source ON page_views(utm_source)');
+      db.db.run('CREATE INDEX IF NOT EXISTS idx_page_views_utm_campaign ON page_views(utm_campaign)');
 
       resolve();
     });
   });
 }
 
+/** Exclude APIs, health, and crawler noise from “site” traffic panels. */
+const SITE_TRAFFIC_SQL = `
+  page NOT LIKE '/api/%'
+  AND page NOT LIKE '/admin%'
+  AND page NOT LIKE '/.well-known/%'
+  AND page NOT IN ('/robots.txt', '/healthz', '/health', '/favicon.ico', '/sitemap.xml')
+`;
+
+function dbGet(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.db.get(sql, params, (err, row) => (err ? reject(err) : resolve(row || null)));
+  });
+}
+
+function dbAll(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.db.all(sql, params, (err, rows) => (err ? reject(err) : resolve(rows || [])));
+  });
+}
+
 /**
  * Log a page view
  */
-async function logPageView(page, userId, ipAddress, userAgent, referrer, country = null) {
+async function logPageView(page, userId, ipAddress, userAgent, referrer, country = null, utms = {}) {
   const db = await getDatabase();
+  const source = utms.utm_source || null;
+  const medium = utms.utm_medium || null;
+  const campaign = utms.utm_campaign || null;
+  const content = utms.utm_content || null;
+  const term = utms.utm_term || null;
   return new Promise((resolve, reject) => {
     db.db.run(
-      'INSERT INTO page_views (page, user_id, ip_address, country, user_agent, referrer) VALUES (?, ?, ?, ?, ?, ?)',
-      [page, userId, ipAddress, country, userAgent, referrer],
+      `INSERT INTO page_views
+        (page, user_id, ip_address, country, user_agent, referrer, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [page, userId, ipAddress, country, userAgent, referrer, source, medium, campaign, content, term],
       (err) => {
         if (err) reject(err);
         else resolve();
       }
     );
   });
+}
+
+/**
+ * Admin traffic overview: day/week/month + UTM breakdown from page_views.
+ */
+async function getTrafficOverview({ days = 14 } = {}) {
+  const db = await getDatabase();
+  const windowDays = Math.max(1, Math.min(90, Number(days) || 14));
+  const sinceWindow = new Date(Date.now() - windowDays * 86400000).toISOString();
+  const since1 = new Date(Date.now() - 1 * 86400000).toISOString();
+  const since7 = new Date(Date.now() - 7 * 86400000).toISOString();
+  const since30 = new Date(Date.now() - 30 * 86400000).toISOString();
+
+  async function windowStats(since) {
+    const raw = await dbGet(
+      db,
+      `SELECT COUNT(*) AS views, COUNT(DISTINCT ip_address) AS visitors
+       FROM page_views WHERE created_at > ?`,
+      [since],
+    );
+    const site = await dbGet(
+      db,
+      `SELECT COUNT(*) AS views, COUNT(DISTINCT ip_address) AS visitors
+       FROM page_views
+       WHERE created_at > ? AND (${SITE_TRAFFIC_SQL})`,
+      [since],
+    );
+    return {
+      views: Number(raw?.views) || 0,
+      visitors: Number(raw?.visitors) || 0,
+      siteViews: Number(site?.views) || 0,
+      siteVisitors: Number(site?.visitors) || 0,
+    };
+  }
+
+  const [today, week, month] = await Promise.all([
+    windowStats(since1),
+    windowStats(since7),
+    windowStats(since30),
+  ]);
+
+  const byDay = await dbAll(
+    db,
+    `SELECT date(created_at) AS day,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ? AND (${SITE_TRAFFIC_SQL})
+     GROUP BY date(created_at)
+     ORDER BY day ASC`,
+    [sinceWindow],
+  );
+
+  const topPages = await dbAll(
+    db,
+    `SELECT page,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ? AND (${SITE_TRAFFIC_SQL})
+     GROUP BY page
+     ORDER BY views DESC
+     LIMIT 20`,
+    [since7],
+  );
+
+  const utmSources = await dbAll(
+    db,
+    `SELECT COALESCE(NULLIF(utm_source, ''), '(none)') AS key,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ? AND (${SITE_TRAFFIC_SQL})
+     GROUP BY key
+     ORDER BY views DESC
+     LIMIT 25`,
+    [since7],
+  );
+
+  const utmCampaigns = await dbAll(
+    db,
+    `SELECT COALESCE(NULLIF(utm_campaign, ''), '(none)') AS key,
+            COALESCE(NULLIF(utm_source, ''), '(none)') AS source,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ?
+       AND (${SITE_TRAFFIC_SQL})
+       AND utm_campaign IS NOT NULL
+       AND utm_campaign != ''
+     GROUP BY key, source
+     ORDER BY views DESC
+     LIMIT 25`,
+    [since7],
+  );
+
+  const utmMediums = await dbAll(
+    db,
+    `SELECT COALESCE(NULLIF(utm_medium, ''), '(none)') AS key,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ?
+       AND (${SITE_TRAFFIC_SQL})
+       AND utm_medium IS NOT NULL
+       AND utm_medium != ''
+     GROUP BY key
+     ORDER BY views DESC
+     LIMIT 15`,
+    [since7],
+  );
+
+  return {
+    days: windowDays,
+    today,
+    week,
+    month,
+    byDay: byDay.map((row) => ({
+      day: row.day,
+      views: Number(row.views) || 0,
+      visitors: Number(row.visitors) || 0,
+    })),
+    topPages: topPages.map((row) => ({
+      page: row.page,
+      views: Number(row.views) || 0,
+      visitors: Number(row.visitors) || 0,
+    })),
+    utm: {
+      sources: utmSources.map((row) => ({
+        key: row.key,
+        views: Number(row.views) || 0,
+        visitors: Number(row.visitors) || 0,
+      })),
+      campaigns: utmCampaigns.map((row) => ({
+        key: row.key,
+        source: row.source,
+        views: Number(row.views) || 0,
+        visitors: Number(row.visitors) || 0,
+      })),
+      mediums: utmMediums.map((row) => ({
+        key: row.key,
+        views: Number(row.views) || 0,
+        visitors: Number(row.visitors) || 0,
+      })),
+    },
+  };
 }
 
 /**
@@ -1149,12 +1335,13 @@ function trackPageViews(app) {
         const ipAddress = getClientIp(req);
         const userAgent = req.headers['user-agent'];
         const referrer = req.headers['referer'] || req.headers['referrer'];
+        const utms = extractUtms(req.query || {});
 
         // Fire and forget - don't slow down requests
         (async () => {
           try {
             const country = await getCountryFromIP(ipAddress);
-            await logPageView(req.path, userId, ipAddress, userAgent, referrer, country);
+            await logPageView(req.path, userId, ipAddress, userAgent, referrer, country, utms);
           } catch {
             // Silently ignore
           }
@@ -1312,6 +1499,9 @@ module.exports = {
   logPageView,
   logServiceCall,
   getAnalytics,
+  getTrafficOverview,
+  extractUtms,
+  normalizeUtm,
   sendAnalyticsEmail,
   trackService,
   scheduleDailyEmail,
