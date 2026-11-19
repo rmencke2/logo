@@ -354,6 +354,38 @@ async function logPageView(page, userId, ipAddress, userAgent, referrer, country
 }
 
 /**
+ * Lightweight visitor counts for the admin header (must stay fast).
+ */
+async function getTrafficSummary() {
+  const db = await getDatabase();
+  const since1 = new Date(Date.now() - 1 * 86400000).toISOString();
+  const since7 = new Date(Date.now() - 7 * 86400000).toISOString();
+
+  async function siteWindow(since) {
+    const site = await dbGet(
+      db,
+      `SELECT COUNT(*) AS views, COUNT(DISTINCT ip_address) AS visitors
+       FROM page_views
+       WHERE created_at > ? AND (${SITE_TRAFFIC_SQL})`,
+      [since],
+    );
+    return {
+      siteViews: Number(site?.views) || 0,
+      siteVisitors: Number(site?.visitors) || 0,
+    };
+  }
+
+  const today = await siteWindow(since1);
+  const week = await siteWindow(since7);
+  return {
+    todayVisitors: today.siteVisitors,
+    todayViews: today.siteViews,
+    weekVisitors: week.siteVisitors,
+    weekViews: week.siteViews,
+  };
+}
+
+/**
  * Admin traffic overview: day/week/month + UTM breakdown from page_views.
  */
 async function getTrafficOverview({ days = 14 } = {}) {
@@ -386,11 +418,11 @@ async function getTrafficOverview({ days = 14 } = {}) {
     };
   }
 
-  const [today, week, month] = await Promise.all([
-    windowStats(since1),
-    windowStats(since7),
-    windowStats(since30),
-  ]);
+  // Sequential on purpose: sqlite3 is single-connection; parallel Promise.all
+  // just queues work and still blocks the admin request for longer.
+  const today = await windowStats(since1);
+  const week = await windowStats(since7);
+  const month = await windowStats(since30);
 
   const byDay = await dbAll(
     db,
@@ -507,11 +539,8 @@ async function getTrafficOverview({ days = 14 } = {}) {
     };
   }
 
-  const [audienceToday, audienceWeek, audienceMonth] = await Promise.all([
-    audienceSplit(since1),
-    audienceSplit(since7),
-    audienceSplit(since30),
-  ]);
+  // One audience scan for the selected window (was 3 full scans and ~20s+).
+  const audienceWindow = await audienceSplit(sinceWindow);
 
   const topAgentUas = await dbAll(
     db,
@@ -524,7 +553,7 @@ async function getTrafficOverview({ days = 14 } = {}) {
      GROUP BY userAgent
      ORDER BY views DESC
      LIMIT 12`,
-    [since7],
+    [sinceWindow],
   );
 
   return {
@@ -533,9 +562,8 @@ async function getTrafficOverview({ days = 14 } = {}) {
     week,
     month,
     audience: {
-      today: audienceToday,
-      week: audienceWeek,
-      month: audienceMonth,
+      days: windowDays,
+      week: audienceWindow,
       note:
         'UA heuristics: humans = browser-like; seo_bots = classic crawlers; agents = AI/LLM/catalog scrapers. Spoofed Chrome UAs can still land in humans.',
       topAgents: topAgentUas.map((row) => ({
@@ -1576,6 +1604,7 @@ module.exports = {
   logPageView,
   logServiceCall,
   getAnalytics,
+  getTrafficSummary,
   getTrafficOverview,
   extractUtms,
   normalizeUtm,

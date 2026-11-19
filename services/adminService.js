@@ -132,8 +132,9 @@ async function initializeAdminService(app) {
         db.db.all('SELECT COUNT(*) as count FROM users WHERE is_blocked = 1'),
         db.db.all('SELECT COUNT(*) as count FROM abuse_tracking WHERE blocked_until > CURRENT_TIMESTAMP'),
         getMcpDiscoveryAnalytics(7).catch(() => null),
+        // Keep this light — full audience split lives on /admin/api/traffic.
         require('./analyticsService')
-          .getTrafficOverview({ days: 7 })
+          .getTrafficSummary()
           .catch(() => null),
       ]);
 
@@ -176,14 +177,12 @@ async function initializeAdminService(app) {
               uniqueIps: mcpDiscovery.uniqueIps,
             }
           : { totalCalls: 0, toolCalls: 0, uniqueIps: 0 },
-        traffic: traffic
-          ? {
-              todayVisitors: traffic.today?.siteVisitors || 0,
-              todayViews: traffic.today?.siteViews || 0,
-              weekVisitors: traffic.week?.siteVisitors || 0,
-              weekViews: traffic.week?.siteViews || 0,
-            }
-          : { todayVisitors: 0, todayViews: 0, weekVisitors: 0, weekViews: 0 },
+        traffic: traffic || {
+          todayVisitors: 0,
+          todayViews: 0,
+          weekVisitors: 0,
+          weekViews: 0,
+        },
       });
     } catch (err) {
       console.error('Error fetching admin stats:', err);
