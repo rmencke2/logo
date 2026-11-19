@@ -80,7 +80,8 @@
 <link rel="stylesheet" href="/css/site-auth.css?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" />
 <% } %>
 <script nonce="<%= cspNonce %>" src="/js/img-fallback.js?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" defer></script>
-<%# Delay auth bootstrap until after load so it cannot force reflow during LCP %>
+<% if (typeof deferSiteAuthJs !== 'undefined' && deferSiteAuthJs) { %>
+<%# Homepage: delay auth until after load so it cannot force reflow during LCP %>
 <script nonce="<%= cspNonce %>">
   window.addEventListener('load', function () {
     var s = document.createElement('script');
@@ -89,6 +90,9 @@
     document.body.appendChild(s);
   }, { once: true });
 </script>
+<% } else { %>
+<script nonce="<%= cspNonce %>" src="/js/site-auth.js?v=<%= typeof assetVersion !== 'undefined' ? assetVersion : '1' %>" defer></script>
+<% } %>
 <select id="languageSelector" class="site-header-lang-hidden" hidden tabindex="-1" aria-label="Language">
   <option value="en">English</option>
   <option value="da">Dansk</option>
