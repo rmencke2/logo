@@ -9,18 +9,22 @@
     <meta name="author" content="Influzer.ai" />
     <link rel="canonical" href="https://www.influzer.ai/" />
     <link rel="alternate" type="application/rss+xml" title="Influzer.ai Insights" href="https://www.influzer.ai/insights/rss.xml" />
-    <%- include('partials/favicon-links') %>
+    <%# Skip GA in head — load after first paint (see body end). %>
+    <%- include('partials/favicon-links', { skipGa: true }) %>
+    <%- include('partials/home-critical-css') %>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <%# Non-blocking fonts + below-fold CSS (CSP forbids inline onload handlers) %>
+    <link rel="preload" as="style" href="/css/home.css?v=<%= assetVersion %>" />
+    <%# All full stylesheets async — critical CSS above paints hero without waiting (CSP: no inline onload) %>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap"
       media="print"
       data-async-css
     />
-    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
-    <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" media="print" data-async-css />
+    <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" media="print" data-async-css />
+    <link rel="stylesheet" href="/css/site-auth.css?v=<%= assetVersion %>" media="print" data-async-css />
     <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" media="print" data-async-css />
     <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" media="print" data-async-css />
     <script nonce="<%= cspNonce %>">
@@ -35,6 +39,9 @@
     </script>
     <noscript>
       <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+      <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+      <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
+      <link rel="stylesheet" href="/css/site-auth.css?v=<%= assetVersion %>" />
       <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
       <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
     </noscript>
@@ -44,7 +51,7 @@
       ogUrl: 'https://www.influzer.ai/',
       ogImage: seo.ogImage,
       ogImageAlt: featuredPost ? featuredPost.coverImageAlt : 'Influzer.ai MCP directory and AI insights',
-      skipGa: typeof skipGa !== 'undefined' ? skipGa : false,
+      skipGa: true,
     }) %>
     <script nonce="<%= cspNonce %>" type="application/ld+json">
       <%- JSON.stringify(jsonLd) %>
@@ -52,7 +59,7 @@
   </head>
   <body class="home-page">
     <a class="skip-link" href="#main">Skip to main content</a>
-    <%- include('partials/home-header') %>
+    <%- include('partials/home-header', { skipSiteAuthCss: true }) %>
     <%- include('partials/mcp-milestone-banner') %>
 
     <header class="home-hero">
@@ -245,14 +252,20 @@
               <% insightPosts.forEach(function(post) { %>
                 <a class="home-insight-card" href="/insights/<%= post.slug %>">
                   <% if (post.coverImage) { %>
-                    <img
-                      class="home-insight-card__media"
-                      src="<%= post.coverImage %>"
-                      alt="<%= post.coverImageAlt %>"
-                      width="320"
-                      height="110"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <% if (post.coverImageWebp) { %>
+                        <source type="image/webp" srcset="<%= post.coverImageWebp %>" />
+                      <% } %>
+                      <img
+                        class="home-insight-card__media"
+                        src="<%= post.coverImage %>"
+                        alt="<%= post.coverImageAlt %>"
+                        width="320"
+                        height="110"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
                   <% } else { %>
                     <div class="home-insight-card__media" aria-hidden="true"></div>
                   <% } %>
@@ -410,6 +423,7 @@
     <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
     <script nonce="<%= cspNonce %>" src="/js/home.js?v=<%= assetVersion %>" defer></script>
     <script nonce="<%= cspNonce %>" src="/js/home-newsletter.js?v=<%= assetVersion %>" defer></script>
-    <%- include('partials/influzer-webmcp-script') %>
+    <%# Homepage does not need the WebMCP client (~22KB); keep it off the critical path. %>
+    <%- include('partials/ga') %>
   </body>
 </html>

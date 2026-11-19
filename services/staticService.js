@@ -194,6 +194,33 @@ function mapPostForDisplay(post) {
   };
 }
 
+/** Prefer pre-generated *-card.webp/jpg for homepage insight thumbnails. */
+function resolveHomeCardCover(coverImage) {
+  if (!coverImage || !coverImage.startsWith('/') || !/\.(jpe?g|png)$/i.test(coverImage)) {
+    return { src: coverImage || '', webp: null };
+  }
+  const cardWebp = coverImage.replace(/\.(jpe?g|png)$/i, '-card.webp');
+  const cardJpg = coverImage.replace(/\.(jpe?g|png)$/i, '-card.jpg');
+  const publicRoot = path.join(__dirname, '..', 'public');
+  const hasWebp = fs.existsSync(path.join(publicRoot, cardWebp.replace(/^\//, '')));
+  const hasJpg = fs.existsSync(path.join(publicRoot, cardJpg.replace(/^\//, '')));
+  if (!hasWebp && !hasJpg) return { src: coverImage, webp: null };
+  return {
+    src: hasJpg ? cardJpg : coverImage,
+    webp: hasWebp ? cardWebp : null,
+  };
+}
+
+function mapPostForHome(post) {
+  const mapped = mapPostForDisplay(post);
+  const card = resolveHomeCardCover(mapped.coverImage);
+  return {
+    ...mapped,
+    coverImage: card.src || mapped.coverImage,
+    coverImageWebp: card.webp,
+  };
+}
+
 function toAbsoluteUrl(url) {
   if (!url) return `${SITE_BASE_URL}/favicon.svg`;
   if (/^https?:\/\//i.test(url)) return url;
@@ -203,11 +230,11 @@ function toAbsoluteUrl(url) {
 function getHomeBlogContent() {
   const all = getAllBlogPosts();
   const featuredRaw = all.find((post) => post.featured) || all[0] || null;
-  const featuredPost = featuredRaw ? mapPostForDisplay(featuredRaw) : null;
+  const featuredPost = featuredRaw ? mapPostForHome(featuredRaw) : null;
   const morePosts = all
     .filter((post) => !featuredPost || post.slug !== featuredPost.slug)
     .slice(0, 2)
-    .map(mapPostForDisplay);
+    .map(mapPostForHome);
   return { featuredPost, morePosts };
 }
 
