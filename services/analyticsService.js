@@ -12,6 +12,7 @@ const {
   getMcpDiscoveryAnalytics,
 } = require('./mcpDiscoveryAnalytics');
 const { normalizeUtm, extractUtms } = require('./utmHelpers');
+const { AUDIENCE_CASE_SQL } = require('./trafficAudience');
 const nodemailer = require('nodemailer');
 const https = require('https');
 const fs = require('fs');
@@ -462,11 +463,87 @@ async function getTrafficOverview({ days = 14 } = {}) {
     [since7],
   );
 
+  async function audienceSplit(since) {
+    const rows = await dbAll(
+      db,
+      `SELECT ${AUDIENCE_CASE_SQL} AS kind,
+              COUNT(*) AS views,
+              COUNT(DISTINCT ip_address) AS visitors
+       FROM page_views
+       WHERE created_at > ?
+       GROUP BY kind`,
+      [since],
+    );
+    const empty = { views: 0, visitors: 0, viewsShare: 0, visitorsShare: 0 };
+    const byKind = {
+      humans: { ...empty },
+      seo_bots: { ...empty },
+      agents: { ...empty },
+      other: { ...empty },
+    };
+    let totalViews = 0;
+    let totalVisitors = 0;
+    for (const row of rows) {
+      const kind = byKind[row.kind] ? row.kind : 'other';
+      const views = Number(row.views) || 0;
+      const visitors = Number(row.visitors) || 0;
+      byKind[kind].views += views;
+      byKind[kind].visitors += visitors;
+      totalViews += views;
+      totalVisitors += visitors;
+    }
+    for (const kind of Object.keys(byKind)) {
+      byKind[kind].viewsShare = totalViews
+        ? Math.round((byKind[kind].views / totalViews) * 1000) / 10
+        : 0;
+      byKind[kind].visitorsShare = totalVisitors
+        ? Math.round((byKind[kind].visitors / totalVisitors) * 1000) / 10
+        : 0;
+    }
+    return {
+      totalViews,
+      totalVisitors,
+      ...byKind,
+    };
+  }
+
+  const [audienceToday, audienceWeek, audienceMonth] = await Promise.all([
+    audienceSplit(since1),
+    audienceSplit(since7),
+    audienceSplit(since30),
+  ]);
+
+  const topAgentUas = await dbAll(
+    db,
+    `SELECT COALESCE(NULLIF(user_agent, ''), '(empty)') AS userAgent,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ?
+       AND (${AUDIENCE_CASE_SQL}) = 'agents'
+     GROUP BY userAgent
+     ORDER BY views DESC
+     LIMIT 12`,
+    [since7],
+  );
+
   return {
     days: windowDays,
     today,
     week,
     month,
+    audience: {
+      today: audienceToday,
+      week: audienceWeek,
+      month: audienceMonth,
+      note:
+        'UA heuristics: humans = browser-like; seo_bots = classic crawlers; agents = AI/LLM/catalog scrapers. Spoofed Chrome UAs can still land in humans.',
+      topAgents: topAgentUas.map((row) => ({
+        userAgent: String(row.userAgent || '').slice(0, 180),
+        views: Number(row.views) || 0,
+        visitors: Number(row.visitors) || 0,
+      })),
+    },
     byDay: byDay.map((row) => ({
       day: row.day,
       views: Number(row.views) || 0,
