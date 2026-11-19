@@ -47,8 +47,11 @@ async function main() {
     updated: 'October 29, 2026',
   });
   assert.match(llms, /14,159 servers listed/);
-  assert.match(llms, /https:\/\/www\.influzer\.ai\/methodology/);
-  assert.match(llms, /robots\.txt disallows \/api\//);
+  assert.match(llms, /^\s*#\s+.+/m); // Lighthouse Agentic: Markdown H1
+  assert.match(llms, /\[.+\]\(.+\)/); // Lighthouse Agentic: Markdown link
+  assert.ok(llms.length >= 50);
+  assert.match(llms, /\[Handshake methodology\]\(https:\/\/www\.influzer\.ai\/methodology\)/);
+  assert.match(llms, /\[robots\.txt\]\(https:\/\/www\.influzer\.ai\/robots\.txt\)/);
   assert.match(llms, /does not include every catalog row/);
   const bare = buildLlmsTxt({});
   assert.doesNotMatch(bare, /servers listed/);

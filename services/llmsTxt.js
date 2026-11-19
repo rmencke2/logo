@@ -1,12 +1,17 @@
 /**
  * /llms.txt body. Counts come from catalog copy. Missing counts are omitted.
+ *
+ * PageSpeed / Lighthouse Agentic Browsing requires:
+ * - a Markdown H1 (`# Title`)
+ * - at least one Markdown link `[text](url)`
+ * - 50+ characters
  */
 
 function buildLlmsTxt(copy = {}) {
   const lines = [
     '# Influzer.ai',
     '',
-    'MCP server directory. A handshake is a timed HTTPS initialize and tools/list. The verification grade is not a safety score.',
+    '> MCP server directory and WebMCP catalog for AI agents. A handshake is a timed HTTPS initialize and tools/list. The verification grade is not a safety score.',
     '',
   ];
   if (copy.countSentence) {
@@ -19,22 +24,26 @@ function buildLlmsTxt(copy = {}) {
   }
   lines.push(
     '## Pages',
-    '- https://www.influzer.ai/',
-    '- https://www.influzer.ai/mcp',
-    '- https://www.influzer.ai/mcp/all',
-    '- https://www.influzer.ai/methodology',
-    '- https://www.influzer.ai/mcp/discovery/setup',
-    '- https://www.influzer.ai/mcp/scoreboard',
-    '- https://www.influzer.ai/mcp/changes',
+    '- [Home](https://www.influzer.ai/)',
+    '- [MCP directory](https://www.influzer.ai/mcp)',
+    '- [All MCP servers](https://www.influzer.ai/mcp/all)',
+    '- [Handshake methodology](https://www.influzer.ai/methodology)',
+    '- [Discovery MCP setup](https://www.influzer.ai/mcp/discovery/setup)',
+    '- [Live handshake scoreboard](https://www.influzer.ai/mcp/scoreboard)',
+    '- [Handshake changes](https://www.influzer.ai/mcp/changes)',
+    '- [WebMCP directory](https://www.influzer.ai/webmcp)',
+    '- [MCP recipes](https://www.influzer.ai/recipes)',
+    '- [Insights](https://www.influzer.ai/insights)',
     '',
     '## Clients',
-    'Discovery MCP is read-only and does not require auth: https://www.influzer.ai/mcp/discovery',
-    'Install JSON for one listing: https://www.influzer.ai/api/v1/install/{slug}',
-    'Probe badge: https://www.influzer.ai/api/v1/probe/badge',
-    'robots.txt disallows /api/. Use the HTML pages and the Discovery setup guide instead of crawling those routes.',
+    '- [Discovery MCP endpoint](https://www.influzer.ai/mcp/discovery) — read-only, no auth',
+    '- [Discovery setup guide](https://www.influzer.ai/mcp/discovery/setup)',
+    '- Install JSON for one listing: `https://www.influzer.ai/api/v1/install/{slug}`',
+    '- Probe badge: `https://www.influzer.ai/api/v1/probe/badge`',
     '',
-    'Sitemap: https://www.influzer.ai/sitemap.xml',
-    'The sitemap includes the Top 100, listings with indexed tools, manual listings, and featured listings. It does not include every catalog row.',
+    '[robots.txt](https://www.influzer.ai/robots.txt) disallows `/api/`. Prefer the HTML pages and Discovery setup guide over crawling API routes.',
+    '',
+    '[Sitemap](https://www.influzer.ai/sitemap.xml) includes the Top 100, listings with indexed tools, manual listings, and featured listings. It does not include every catalog row.',
     '',
   );
   return lines.join('\n');

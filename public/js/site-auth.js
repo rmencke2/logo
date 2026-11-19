@@ -68,11 +68,15 @@
   }
 
   if (userTrigger && userMenu) {
+    const setMenuOpen = (open) => {
+      userMenu.classList.toggle('is-open', open);
+      userTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
     userTrigger.addEventListener('click', (e) => {
       e.stopPropagation();
-      userMenu.classList.toggle('is-open');
+      setMenuOpen(!userMenu.classList.contains('is-open'));
     });
-    document.addEventListener('click', () => userMenu.classList.remove('is-open'));
+    document.addEventListener('click', () => setMenuOpen(false));
   }
 
   if (logoutBtn) {

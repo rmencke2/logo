@@ -142,11 +142,13 @@
           <h2 class="home-section__title" id="homeCategoriesHeading">Categories</h2>
           <a class="home-section__link" href="/mcp/all">Full directory →</a>
         </div>
-        <div class="home-hero__chips" role="list">
+        <ul class="home-hero__chips">
           <% categories.forEach(function(cat) { %>
-            <button type="button" class="home-hero__chip" data-query="<%= cat %>" role="listitem"><%= cat %></button>
+            <li>
+              <button type="button" class="home-hero__chip" data-query="<%= cat %>"><%= cat %></button>
+            </li>
           <% }); %>
-        </div>
+        </ul>
       </section>
 
       <section class="home-section home-verify" aria-labelledby="homeVerifyHeading">
