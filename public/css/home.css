@@ -35,11 +35,11 @@
   --hp-accent-fg: #4338ca;
   --hp-link: #4f46e5;
   --hp-link-hover: #6366f1;
-  --hp-font: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
-  --hp-mono: 'Martian Mono', ui-monospace, monospace;
+  --hp-font: 'Bricolage Grotesque', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --hp-mono: 'Martian Mono', 'SF Mono', ui-monospace, Menlo, monospace;
 
   /* Bridge editorial SEO partials used on registry pages */
-  --font-display: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-ui: var(--hp-font);
   --font-body: var(--hp-font);
   --color-ink: var(--hp-text);
@@ -424,6 +424,8 @@ body.registry-page.site-header-active {
   letter-spacing: -0.03em;
   font-weight: 700;
   color: var(--hp-text);
+  /* Reserve space so async webfont swap does not inflate mobile CLS */
+  min-height: 2.2em;
 }
 
 .home-hero__lead {

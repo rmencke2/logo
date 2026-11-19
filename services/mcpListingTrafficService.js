@@ -16,9 +16,18 @@ const { isReservedMcpPath } = require('./mcpSubmissionService');
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const CACHE_TTL_MS = 60 * 1000;
+/** Fresh window before a background refresh is scheduled. */
+const CACHE_TTL_MS = 5 * 60 * 1000;
+/** Serve stale rankings up to this age while a refresh runs. */
+const CACHE_STALE_TTL_MS = 30 * 60 * 1000;
+/** Fresh window for homepage sponsor audience counts (heavy DISTINCT scan). */
+const AUDIENCE_TTL_MS = 10 * 60 * 1000;
+const AUDIENCE_STALE_TTL_MS = 60 * 60 * 1000;
 
 let rankingCache = { at: 0, days: 7, rows: null };
+let rankingRefresh = null;
+let audienceCache = { at: 0, days: 30, value: null };
+let audienceRefresh = null;
 
 function dbAll(db, sql, params = []) {
   return new Promise((resolve, reject) => {
@@ -96,27 +105,15 @@ async function ensureTrafficTables(db) {
   );
 }
 
-/**
- * Rank listing pages by views in the last `days` days.
- * Uses existing page_views rows written for GET /mcp/:slug.
- */
-async function getWeeklyListingRanking({ days = 7, limit = 50, useCache = true } = {}) {
-  if (
-    useCache &&
-    rankingCache.rows &&
-    rankingCache.days === days &&
-    Date.now() - rankingCache.at < CACHE_TTL_MS
-  ) {
-    return rankingCache.rows.slice(0, limit);
-  }
-
+async function computeWeeklyListingRanking(days = 7) {
   const db = await getDatabase();
   const since = sinceIso(days);
+  // Views-only for ranking: COUNT(DISTINCT ip) is much slower on multi-million row tables
+  // and unique visitors are only needed for weekly congrats emails (useCache: false path).
   const rows = await dbAll(
     db,
     `SELECT page,
-            COUNT(*) as views,
-            COUNT(DISTINCT ip_address) as unique_visitors
+            COUNT(*) as views
      FROM page_views
      WHERE created_at > ?
        AND page LIKE '/mcp/%'
@@ -138,11 +135,71 @@ async function getWeeklyListingRanking({ days = 7, limit = 50, useCache = true }
       name: server.name,
       category: server.category || '',
       views: row.views || 0,
-      unique_visitors: row.unique_visitors || 0,
+      unique_visitors: 0,
       page: row.page,
     });
   }
+  return ranked;
+}
 
+function scheduleRankingRefresh(days) {
+  if (rankingRefresh) return;
+  rankingRefresh = computeWeeklyListingRanking(days)
+    .then((ranked) => {
+      rankingCache = { at: Date.now(), days, rows: ranked };
+    })
+    .catch((err) => {
+      console.warn('Weekly listing ranking refresh failed:', err.message || err);
+    })
+    .finally(() => {
+      rankingRefresh = null;
+    });
+}
+
+/**
+ * Rank listing pages by views in the last `days` days.
+ * Uses existing page_views rows written for GET /mcp/:slug.
+ * Cached with stale-while-revalidate so homepage TTFB stays low.
+ */
+async function getWeeklyListingRanking({ days = 7, limit = 50, useCache = true } = {}) {
+  if (useCache && rankingCache.rows && rankingCache.days === days) {
+    const age = Date.now() - rankingCache.at;
+    if (age < CACHE_TTL_MS) {
+      return rankingCache.rows.slice(0, limit);
+    }
+    if (age < CACHE_STALE_TTL_MS) {
+      scheduleRankingRefresh(days);
+      return rankingCache.rows.slice(0, limit);
+    }
+  }
+
+  if (!useCache) {
+    // Admin / email paths need uniques — keep DISTINCT for the small top-N set after a views pass.
+    const ranked = await computeWeeklyListingRanking(days);
+    const db = await getDatabase();
+    const since = sinceIso(days);
+    const topPages = ranked.slice(0, Math.max(limit, 50)).map((r) => r.page);
+    if (topPages.length) {
+      const placeholders = topPages.map(() => '?').join(',');
+      const uniqRows = await dbAll(
+        db,
+        `SELECT page, COUNT(DISTINCT ip_address) AS unique_visitors
+         FROM page_views
+         WHERE created_at > ?
+           AND page IN (${placeholders})
+         GROUP BY page`,
+        [since, ...topPages],
+      );
+      const uniqMap = new Map(uniqRows.map((r) => [r.page, Number(r.unique_visitors) || 0]));
+      for (const row of ranked) {
+        row.unique_visitors = uniqMap.get(row.page) || 0;
+      }
+    }
+    rankingCache = { at: Date.now(), days, rows: ranked };
+    return ranked.slice(0, limit);
+  }
+
+  const ranked = await computeWeeklyListingRanking(days);
   rankingCache = { at: Date.now(), days, rows: ranked };
   return ranked.slice(0, limit);
 }
@@ -346,19 +403,20 @@ async function getHomeTopServersByTraffic(limit = 6, { days = 7 } = {}) {
  * Real page_views totals for the sponsor block. available is false when the
  * query cannot run — callers must hide the figures.
  */
-async function getDirectoryAudienceStats({ days = 30 } = {}) {
-  const windowDays = Math.max(1, Math.min(90, Number(days) || 30));
-  try {
-    const db = await getDatabase();
-    const since = sinceIso(windowDays);
-    const site = await dbGet(
+async function computeDirectoryAudienceStats(windowDays) {
+  const db = await getDatabase();
+  const since = sinceIso(windowDays);
+  // Two cheap COUNTs + one DISTINCT. DISTINCT is ~1s on ~800k rows — callers
+  // must use the SWR cache so homepage never pays this on the request path.
+  const [site, listings] = await Promise.all([
+    dbGet(
       db,
       `SELECT COUNT(*) AS views, COUNT(DISTINCT ip_address) AS visitors
        FROM page_views
        WHERE created_at > ?`,
       [since],
-    );
-    const listings = await dbGet(
+    ),
+    dbGet(
       db,
       `SELECT COUNT(*) AS views
        FROM page_views
@@ -366,16 +424,52 @@ async function getDirectoryAudienceStats({ days = 30 } = {}) {
          AND page LIKE '/mcp/%'
          AND page NOT LIKE '/mcp/%/%'`,
       [since],
-    );
-    return {
-      available: true,
-      days: windowDays,
-      visitors: Number(site?.visitors) || 0,
-      page_views: Number(site?.views) || 0,
-      listingViews: Number(listings?.views) || 0,
-    };
+    ),
+  ]);
+  return {
+    available: true,
+    days: windowDays,
+    visitors: Number(site?.visitors) || 0,
+    page_views: Number(site?.views) || 0,
+    listingViews: Number(listings?.views) || 0,
+  };
+}
+
+function scheduleAudienceRefresh(windowDays) {
+  if (audienceRefresh) return;
+  audienceRefresh = computeDirectoryAudienceStats(windowDays)
+    .then((value) => {
+      audienceCache = { at: Date.now(), days: windowDays, value };
+    })
+    .catch((err) => {
+      console.warn('Directory audience stats refresh failed:', err.message || err);
+    })
+    .finally(() => {
+      audienceRefresh = null;
+    });
+}
+
+async function getDirectoryAudienceStats({ days = 30 } = {}) {
+  const windowDays = Math.max(1, Math.min(90, Number(days) || 30));
+  if (audienceCache.value && audienceCache.days === windowDays) {
+    const age = Date.now() - audienceCache.at;
+    if (age < AUDIENCE_TTL_MS) {
+      return audienceCache.value;
+    }
+    if (age < AUDIENCE_STALE_TTL_MS) {
+      scheduleAudienceRefresh(windowDays);
+      return audienceCache.value;
+    }
+  }
+  try {
+    const value = await computeDirectoryAudienceStats(windowDays);
+    audienceCache = { at: Date.now(), days: windowDays, value };
+    return value;
   } catch (err) {
     console.warn('Sponsor audience stats unavailable:', err.message || err);
+    if (audienceCache.value && audienceCache.days === windowDays) {
+      return audienceCache.value;
+    }
     return {
       available: false,
       days: windowDays,
@@ -585,6 +679,7 @@ async function sendWeeklyTrafficCongrats({
 
 function clearTrafficCache() {
   rankingCache = { at: 0, days: 7, rows: null };
+  audienceCache = { at: 0, days: 30, value: null };
 }
 
 function registerMcpListingTrafficRoutes(app, requireAdmin) {
@@ -616,9 +711,21 @@ function registerMcpListingTrafficRoutes(app, requireAdmin) {
 async function initializeMcpListingTrafficService(app, requireAdmin) {
   const db = await getDatabase();
   await ensureTrafficTables(db);
+  // Composite index speeds homepage ranking / listing-view aggregates.
+  try {
+    await dbRun(
+      db,
+      'CREATE INDEX IF NOT EXISTS idx_page_views_created_page ON page_views(created_at, page)',
+    );
+  } catch (err) {
+    console.warn('page_views created+page index skipped:', err.message || err);
+  }
   if (app && requireAdmin) {
     registerMcpListingTrafficRoutes(app, requireAdmin);
   }
+  // Warm caches so the first public homepage hit is not a cold 1s+ DISTINCT scan.
+  scheduleRankingRefresh(7);
+  scheduleAudienceRefresh(30);
   console.log('✅ MCP listing traffic service initialized');
 }
 

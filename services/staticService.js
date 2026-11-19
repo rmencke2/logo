@@ -576,7 +576,22 @@ function getRelatedMcpServers(server, limit = 4) {
 }
 
 async function renderHomepage(req, res) {
-  const topServersPayload = await getHomeTopServers(6);
+  // Parallelize the three DB-backed homepage lookups. Audience stats are SWR-cached
+  // in mcpListingTrafficService — a cold DISTINCT used to add ~1s to every mobile TTFB.
+  const [topServersPayload, homeRecipes, audienceStats] = await Promise.all([
+    getHomeTopServers(6),
+    (async () => {
+      try {
+        const db = await getDatabase();
+        const listed = await listPublishedRecipes(db, { limit: 4 });
+        return listed.recipes || [];
+      } catch (err) {
+        console.error('Home recipes load failed:', err.message || err);
+        return [];
+      }
+    })(),
+    getDirectoryAudienceStats({ days: 30 }),
+  ]);
   const topServers = topServersPayload.servers;
   const heroStats = getMcpHeroStats();
   const catalogCopy = heroStats.copy;
@@ -607,17 +622,8 @@ async function renderHomepage(req, res) {
     seoContent.faqs,
     `${SITE_BASE_URL}/`,
   );
-  let homeRecipes = [];
-  try {
-    const db = await getDatabase();
-    const listed = await listPublishedRecipes(db, { limit: 4 });
-    homeRecipes = listed.recipes || [];
-  } catch (err) {
-    console.error('Home recipes load failed:', err.message || err);
-  }
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
+  const promoteOffer = getPromoteOffer();
+  res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=120');
   res.render('home', {
     heroStats,
     catalogCopy,
@@ -642,13 +648,14 @@ async function renderHomepage(req, res) {
     discoveryPromo: getDiscoveryPromo({ ref: 'home', serverCount: heroStats.totalServers }),
     milestonePromo: getMilestonePromo(heroStats.totalServers),
     scoreboard: buildScoreboard(),
-    promoteOffer: getPromoteOffer(),
+    promoteOffer,
     sponsorAudience: presentSponsorAudience({
-      ...(await getDirectoryAudienceStats({ days: 30 })),
-      slotsRemaining: getPromoteOffer().remaining,
+      ...audienceStats,
+      slotsRemaining: promoteOffer.remaining,
     }),
     sponsorRail: presentSponsorRail(),
     assetVersion: getHomeAssetVersion(),
+    skipGa: true,
   });
 }
 
@@ -815,10 +822,16 @@ function initializeStaticService(app) {
 
   // Serve static files from public directory
   app.use(express.static(publicDir, {
-    maxAge: '1d',
+    maxAge: '7d',
     etag: true,
     lastModified: true,
     index: false,
+    setHeaders(res, filePath) {
+      // Versioned CSS/JS (?v=) can be cached longer; keep HTML/json short.
+      if (/\.(?:css|js|woff2?|ttf|otf|png|jpe?g|gif|svg|webp|ico)$/i.test(filePath)) {
+        res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
+      }
+    },
   }));
 
   // Serve generated images

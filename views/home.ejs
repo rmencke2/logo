@@ -12,17 +12,39 @@
     <%- include('partials/favicon-links') %>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <%# Non-blocking fonts + below-fold CSS (CSP forbids inline onload handlers) %>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap"
+      media="print"
+      data-async-css
+    />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
-    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
-    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" media="print" data-async-css />
+    <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" media="print" data-async-css />
+    <script nonce="<%= cspNonce %>">
+      document.querySelectorAll('link[data-async-css]').forEach(function (link) {
+        function activate() {
+          link.media = 'all';
+          link.removeAttribute('data-async-css');
+        }
+        if (link.sheet) activate();
+        else link.addEventListener('load', activate, { once: true });
+      });
+    </script>
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+      <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
+      <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
+    </noscript>
     <%- include('partials/seo-social', {
       ogTitle: seo.pageTitle,
       ogDescription: seo.metaDescription,
       ogUrl: 'https://www.influzer.ai/',
       ogImage: seo.ogImage,
       ogImageAlt: featuredPost ? featuredPost.coverImageAlt : 'Influzer.ai MCP directory and AI insights',
+      skipGa: typeof skipGa !== 'undefined' ? skipGa : false,
     }) %>
     <script nonce="<%= cspNonce %>" type="application/ld+json">
       <%- JSON.stringify(jsonLd) %>

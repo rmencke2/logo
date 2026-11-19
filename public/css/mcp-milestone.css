@@ -1,6 +1,8 @@
 /* Temporary 6k MCP milestone celebration strip — loud on purpose */
 
+/* Reserve banner height early to limit mobile CLS while CSS paints */
 .mcp-milestone {
+  min-height: 140px;
   position: relative;
   overflow: hidden;
   background:
