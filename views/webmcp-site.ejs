@@ -6,7 +6,13 @@
     <title><%= title %></title>
     <meta name="description" content="<%= description %>" />
     <link rel="canonical" href="<%= canonicalUrl %>" />
-    <%- include('partials/seo-social', { ogTitle: title, ogDescription: description, ogUrl: canonicalUrl }) %>
+    <%- include('partials/seo-social', {
+      ogTitle: title,
+      ogDescription: description,
+      ogUrl: canonicalUrl,
+      noindex: typeof noindex !== 'undefined' ? noindex : false,
+      robotsContent: typeof robotsContent !== 'undefined' ? robotsContent : undefined,
+    }) %>
     <%- include('partials/favicon-links') %>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

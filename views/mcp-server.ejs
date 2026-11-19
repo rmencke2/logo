@@ -17,6 +17,7 @@
       ogUrl: server ? `https://www.influzer.ai/mcp/${server.slug}` : 'https://www.influzer.ai/mcp',
       ogType: 'website',
       noindex: typeof noindex !== 'undefined' ? noindex : !server,
+      robotsContent: typeof robotsContent !== 'undefined' ? robotsContent : undefined,
     }) %>
     <%- include('partials/favicon-links') %>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

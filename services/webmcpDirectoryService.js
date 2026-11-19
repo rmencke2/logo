@@ -27,8 +27,14 @@ const MANUAL_PATH = path.join(ROOT, 'data', 'webmcp-manual.json');
 const SELF_TOOLS_PATH = path.join(ROOT, 'data', 'influzer-webmcp-tools.json');
 
 const SITE_BASE = 'https://www.influzer.ai';
+/** Cap individual WebMCP site pages in sitemap.xml to protect crawl budget. */
+const WEBMCP_SITEMAP_SITE_CAP = Math.max(
+  50,
+  Number(process.env.WEBMCP_SITEMAP_SITE_CAP) || 250,
+);
 
 let cache = null;
+let sitemapHostSetCache = null;
 let fullSiteCache = new Map();
 const FULL_SITE_CACHE_MAX = 12;
 
@@ -45,6 +51,7 @@ function readJson(filePath, fallback) {
 function clearWebmcpCache() {
   cache = null;
   fullSiteCache = new Map();
+  sitemapHostSetCache = null;
 }
 
 function loadCatalog() {
@@ -507,6 +514,10 @@ function registerWebmcpRoutes(app) {
     const selected = req.query.tool
       ? (site.tools || []).find((t) => t.name === req.query.tool) || site.tools?.[0]
       : site.tools?.[0];
+    const indexable = isSitemapEligibleWebmcpHost(site.host);
+    if (!indexable) {
+      res.setHeader('X-Robots-Tag', 'noindex, follow');
+    }
     res.render('webmcp-site', renderLocals(req, {
       title: `${site.name} WebMCP Tools, Schemas & Agent Capabilities | Influzer.ai`,
       description: `Inspect the WebMCP tools exposed by ${site.host}, including capabilities, input schemas, implementation type, and verification status.`,
@@ -515,6 +526,8 @@ function registerWebmcpRoutes(app) {
       selectedTool: selected || null,
       related: relatedSites(site),
       scorecard: site.scorecard || null,
+      noindex: !indexable,
+      robotsContent: indexable ? undefined : 'noindex, follow',
     }));
   });
 
@@ -616,8 +629,37 @@ function expressJsonOptional() {
   return (req, res, next) => next();
 }
 
+function getWebmcpSitemapSites() {
+  const { sites } = loadCatalog();
+  return sites
+    .filter((site) => (site.tool_count || 0) > 0 || (site.tools || []).length > 0)
+    .sort((a, b) => {
+      const toolDelta = (b.tool_count || 0) - (a.tool_count || 0);
+      if (toolDelta) return toolDelta;
+      const scoreDelta = (b.score || 0) - (a.score || 0);
+      if (scoreDelta) return scoreDelta;
+      return String(a.host || '').localeCompare(String(b.host || ''));
+    })
+    .slice(0, WEBMCP_SITEMAP_SITE_CAP);
+}
+
+function getWebmcpSitemapHostSet() {
+  if (!sitemapHostSetCache) {
+    sitemapHostSetCache = new Set(
+      getWebmcpSitemapSites().map((s) => normalizeHost(s.host) || s.host),
+    );
+  }
+  return sitemapHostSetCache;
+}
+
+function isSitemapEligibleWebmcpHost(host) {
+  if (!host) return false;
+  const normalized = normalizeHost(host) || String(host).toLowerCase();
+  return getWebmcpSitemapHostSet().has(normalized);
+}
+
 function getWebmcpSitemapEntries() {
-  const { sites, categories, generatedAt } = loadCatalog();
+  const { categories, generatedAt } = loadCatalog();
   const lastmod = (generatedAt || new Date().toISOString()).slice(0, 10);
   const entries = [
     { loc: `${SITE_BASE}/webmcp`, lastmod, changefreq: 'daily', priority: '0.9' },
@@ -636,13 +678,13 @@ function getWebmcpSitemapEntries() {
       priority: '0.7',
     });
   }
-  // Only sites with tools — empty stubs inflate crawl budget / "crawled not indexed"
-  for (const s of sites.filter((site) => (site.tool_count || 0) > 0 || (site.tools || []).length > 0)) {
+  // Cap site pages — full catalog (~9k) starves crawl budget for /mcp and Insights.
+  for (const s of getWebmcpSitemapSites()) {
     entries.push({
       loc: `${SITE_BASE}/webmcp/sites/${s.host}`,
       lastmod: String(s.last_seen_at || lastmod).slice(0, 10),
       changefreq: 'weekly',
-      priority: '0.6',
+      priority: '0.55',
     });
   }
   return entries;
@@ -658,6 +700,10 @@ module.exports = {
   listTools,
   registerWebmcpRoutes,
   getWebmcpSitemapEntries,
+  getWebmcpSitemapSites,
+  getWebmcpSitemapHostSet,
+  isSitemapEligibleWebmcpHost,
+  WEBMCP_SITEMAP_SITE_CAP,
   siteSummary,
   slugifyCategory,
 };

@@ -342,6 +342,21 @@ function getSitemapMcpServers() {
   );
 }
 
+let sitemapSlugSetCache = null;
+
+function getSitemapMcpSlugSet() {
+  if (!sitemapSlugSetCache) {
+    sitemapSlugSetCache = new Set(getSitemapMcpServers().map((s) => s.slug));
+  }
+  return sitemapSlugSetCache;
+}
+
+/** True when a listing should stay indexable / in sitemap.xml. */
+function isSitemapEligibleMcpServer(slug) {
+  if (!slug) return false;
+  return getSitemapMcpSlugSet().has(String(slug));
+}
+
 function readValidationForStats() {
   if (!fs.existsSync(VALIDATION_STATE_PATH)) {
     return { validationBySlug: null, validationAvailable: false };
@@ -615,6 +630,7 @@ function clearMcpCache() {
   validationStateCache = null;
   enrichedAllCache = null;
   enrichedTop100Cache = null;
+  sitemapSlugSetCache = null;
 }
 
 function searchMcpServers({ q = '', scope = 'top', limit = 10 } = {}) {
@@ -687,6 +703,8 @@ module.exports = {
   getAllMcpServers,
   getTop100McpServers,
   getSitemapMcpServers,
+  getSitemapMcpSlugSet,
+  isSitemapEligibleMcpServer,
   getMcpCatalogTotals,
   getMcpCategories,
   findMcpServerBySlug,

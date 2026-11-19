@@ -15,6 +15,7 @@ const {
   getAllMcpServers,
   getTop100McpServers,
   getSitemapMcpServers,
+  isSitemapEligibleMcpServer,
   getMcpCategories,
   findMcpServerBySlug,
   getMcpIconEmoji,
@@ -27,6 +28,7 @@ const {
   searchMcpServers,
   isInTop100,
 } = require('./mcpDirectoryService');
+const { registerIndexNowRoutes } = require('./indexNowService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
 const { registerMcpOwnerRoutes } = require('./mcpOwnerService');
 const { registerMcpClaimRoutes } = require('./mcpListingClaimService');
@@ -658,6 +660,8 @@ function initializeStaticService(app) {
   // Set up EJS as the view engine
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '..', 'views'));
+
+  registerIndexNowRoutes(app);
 
   app.use((req, res, next) => {
     res.locals.navPath = req.path;
@@ -1296,11 +1300,20 @@ ${itemsXml}
     });
   }
 
-  function renderMcpListingPage(req, res, server, serverRecipes, assetVersion) {
+  function isSearchEngineBot(ua) {
+    return /Googlebot|Google-InspectionTool|bingbot|BingPreview|Applebot|DuckDuckBot|YandexBot|Slurp|Baiduspider/i.test(
+      String(ua || ''),
+    );
+  }
+
+  function renderMcpListingPage(req, res, server, serverRecipes, assetVersion, { noindex = false } = {}) {
     const inTop100 = isInTop100(server.slug);
     const sponsored = isSponsoredSlug(server.slug);
     // Lean offer — listing CTA only needs price / scarcity, not the full media kit.
     const promoteOffer = getPromoteOffer();
+    if (noindex) {
+      res.setHeader('X-Robots-Tag', 'noindex, follow');
+    }
     return res.render('mcp-server', {
       server,
       installSnippets: buildInstallSnippets(server),
@@ -1317,11 +1330,18 @@ ${itemsXml}
       discoveryPromo: getDiscoveryPromo(),
       assetVersion,
       navPath: req.path,
+      noindex,
+      robotsContent: noindex ? 'noindex, follow' : undefined,
     });
   }
 
   app.get('/mcp/:slug', async (req, res) => {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const bot = isSearchEngineBot(req.get('user-agent'));
+    // Bots get cacheable HTML without waiting on live handshake probes (GSC 5xx / crawl budget).
+    res.setHeader(
+      'Cache-Control',
+      bot ? 'public, max-age=900' : 'no-cache, no-store, must-revalidate',
+    );
     const alias = MCP_SLUG_ALIASES[req.params.slug];
     if (alias) {
       return res.redirect(301, `/mcp/${alias}`);
@@ -1334,11 +1354,14 @@ ${itemsXml}
     if (!catalogServer) {
       return renderMissingMcpListing(req, res, assetVersion);
     }
+    const thinListing = !isSitemapEligibleMcpServer(catalogServer.slug);
 
     // Never let handshake / snippets / recipes / EJS blow up into the global
     // JSON 500 handler — Google indexes that as "Server error (5xx)".
     try {
-      const server = await refreshListingHandshake(catalogServer, probeMcpUrl);
+      const server = await refreshListingHandshake(catalogServer, probeMcpUrl, {
+        budgetMs: bot ? 1 : undefined,
+      });
       let serverRecipes = [];
       try {
         const db = await getDatabase();
@@ -1346,11 +1369,15 @@ ${itemsXml}
       } catch (err) {
         console.error('Server recipes load failed:', err.message || err);
       }
-      return renderMcpListingPage(req, res, server, serverRecipes, assetVersion);
+      return renderMcpListingPage(req, res, server, serverRecipes, assetVersion, {
+        noindex: thinListing,
+      });
     } catch (err) {
       console.error('MCP listing render failed:', req.params.slug, err.message || err);
       try {
-        return renderMcpListingPage(req, res, catalogServer, [], assetVersion);
+        return renderMcpListingPage(req, res, catalogServer, [], assetVersion, {
+          noindex: thinListing,
+        });
       } catch (fallbackErr) {
         console.error(
           'MCP listing fallback failed:',
@@ -1486,12 +1513,33 @@ ${itemsXml}
     res.sendFile(path.join(__dirname, '..', 'public', 'robots.txt'));
   });
 
-  // Serve sitemap.xml
-  app.get('/sitemap.xml', async (req, res) => {
+  function todayIsoDate() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function renderUrlset(urls) {
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls
+  .map(
+    (url) => `  <url>
+    <loc>${escapeXml(url.loc)}</loc>
+    <lastmod>${escapeXml(url.lastmod)}</lastmod>
+    <changefreq>${escapeXml(url.changefreq)}</changefreq>
+    <priority>${escapeXml(url.priority)}</priority>
+  </url>`,
+  )
+  .join('\n')}
+</urlset>`;
+  }
+
+  async function buildCoreSitemapUrls() {
     const posts = getAllBlogPosts();
     const newsItems = getAllNewsItems();
-    const latestPostDate = posts.length ? posts[0].date : new Date().toISOString().slice(0, 10);
+    const latestPostDate = posts.length ? posts[0].date : todayIsoDate();
     const latestNewsDate = newsItems.length ? newsItems[0].date : latestPostDate;
+    const lastUpdatedRaw = getMcpLastUpdated().iso;
+    const mcpLastMod = lastUpdatedRaw ? String(lastUpdatedRaw).slice(0, 10) : latestPostDate;
     const staticUrls = [
       { loc: `${SITE_BASE_URL}/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '1.0' },
       { loc: `${SITE_BASE_URL}/video-converter`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
@@ -1500,11 +1548,11 @@ ${itemsXml}
       { loc: `${SITE_BASE_URL}/meme-generator`, lastmod: '2025-01-16', changefreq: 'monthly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/insights`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/news`, lastmod: latestNewsDate, changefreq: 'daily', priority: '0.88' },
-      { loc: `${SITE_BASE_URL}/mcp`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.9' },
-      { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: '2026-06-03', changefreq: 'weekly', priority: '0.85' },
-      { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: '2026-10-29', changefreq: 'weekly', priority: '0.8' },
-      { loc: `${SITE_BASE_URL}/methodology`, lastmod: '2026-10-29', changefreq: 'monthly', priority: '0.7' },
-      { loc: `${SITE_BASE_URL}/llms.txt`, lastmod: '2026-10-29', changefreq: 'weekly', priority: '0.4' },
+      { loc: `${SITE_BASE_URL}/mcp`, lastmod: mcpLastMod, changefreq: 'weekly', priority: '0.9' },
+      { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: mcpLastMod, changefreq: 'weekly', priority: '0.85' },
+      { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
+      { loc: `${SITE_BASE_URL}/methodology`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },
+      { loc: `${SITE_BASE_URL}/llms.txt`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.4' },
       { loc: `${SITE_BASE_URL}/mcp/topics`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.82' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/setup`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp/discovery/starters`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.86' },
@@ -1535,21 +1583,12 @@ ${itemsXml}
       changefreq: 'weekly',
       priority: '0.65',
     }));
-    const lastUpdatedRaw = getMcpLastUpdated().iso;
-    const mcpLastMod = lastUpdatedRaw ? String(lastUpdatedRaw).slice(0, 10) : '2026-06-03';
-    const mcpUrls = getSitemapMcpServers().map((s) => ({
-      loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
-      lastmod: mcpLastMod,
-      changefreq: 'monthly',
-      priority: '0.6',
-    }));
     const topicUrls = getTopicSummaries().map((t) => ({
       loc: `${SITE_BASE_URL}/mcp/topics/${t.slug}`,
       lastmod: latestPostDate,
       changefreq: 'weekly',
       priority: '0.75',
     }));
-    const webmcpUrls = getWebmcpSitemapEntries();
     let recipeUrls = [];
     try {
       const db = await getDatabase();
@@ -1557,31 +1596,60 @@ ${itemsXml}
     } catch (err) {
       console.error('Sitemap recipes load failed:', err.message || err);
     }
-    const allUrls = [
-      ...staticUrls,
-      ...postUrls,
-      ...newsUrls,
-      ...topicUrls,
-      ...mcpUrls,
-      ...webmcpUrls,
-      ...recipeUrls,
-    ];
+    return [...staticUrls, ...postUrls, ...newsUrls, ...topicUrls, ...recipeUrls];
+  }
+
+  function buildMcpSitemapUrls() {
+    const lastUpdatedRaw = getMcpLastUpdated().iso;
+    const mcpLastMod = lastUpdatedRaw ? String(lastUpdatedRaw).slice(0, 10) : todayIsoDate();
+    return getSitemapMcpServers().map((s) => ({
+      loc: `${SITE_BASE_URL}/mcp/${s.slug}`,
+      lastmod: mcpLastMod,
+      changefreq: 'monthly',
+      priority: '0.6',
+    }));
+  }
+
+  // Sitemap index — split so Google can prioritize core / MCP over WebMCP.
+  app.get('/sitemap.xml', (req, res) => {
+    const lastmod = todayIsoDate();
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls
-  .map(
-    (url) => `  <url>
-    <loc>${escapeXml(url.loc)}</loc>
-    <lastmod>${escapeXml(url.lastmod)}</lastmod>
-    <changefreq>${escapeXml(url.changefreq)}</changefreq>
-    <priority>${escapeXml(url.priority)}</priority>
-  </url>`,
-  )
-  .join('\n')}
-</urlset>`;
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${SITE_BASE_URL}/sitemap-core.xml</loc>
+    <lastmod>${lastmod}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${SITE_BASE_URL}/sitemap-mcp.xml</loc>
+    <lastmod>${lastmod}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${SITE_BASE_URL}/sitemap-webmcp.xml</loc>
+    <lastmod>${lastmod}</lastmod>
+  </sitemap>
+</sitemapindex>`;
     res.type('application/xml');
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
     res.send(xml);
+  });
+
+  app.get('/sitemap-core.xml', async (req, res) => {
+    const urls = await buildCoreSitemapUrls();
+    res.type('application/xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(renderUrlset(urls));
+  });
+
+  app.get('/sitemap-mcp.xml', (req, res) => {
+    res.type('application/xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(renderUrlset(buildMcpSitemapUrls()));
+  });
+
+  app.get('/sitemap-webmcp.xml', (req, res) => {
+    res.type('application/xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(renderUrlset(getWebmcpSitemapEntries()));
   });
 
 
