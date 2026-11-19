@@ -332,6 +332,254 @@ function starterRecipes() {
         },
       ],
     },
+    {
+      slugHint: 'research-a-topic-with-exa-and-memory',
+      title: 'Research a topic with Exa and Memory',
+      summary:
+        'Influzer starter recipe: use Exa to find high-signal sources on a topic, then store durable findings in Memory so the next chat starts from what you already learned.',
+      use_case: 'Research',
+      server_slugs: requireServers(['exa', 'memory']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code'],
+      prerequisites:
+        '- Exa remote MCP access (OAuth / API key as required by Exa)\n- Memory MCP installed locally (`@modelcontextprotocol/server-memory`)\n- A clear research question (audience, geography, time window)',
+      permissions:
+        'Exa searches the public web. Memory writes local persistent entities — store summaries and source URLs, never API keys or private customer data.',
+      expected_result:
+        'A short brief with cited sources, plus Memory entities you can reuse in a follow-up chat.',
+      sample_output:
+        '## Brief: agentic browser automation MCPs (2026)\nTop sources: …\nConsensus: …\nOpen questions: …\n\nMemory: entity “BrowserMcpResearch” with links to 5 sources.',
+      troubleshooting:
+        '- Exa auth errors: reconnect `https://mcp.exa.ai/mcp` and complete OAuth / key setup in the client\n- Memory is stdio/local — ChatGPT’s remote-only path will not run it\n- If results feel generic, constrain Exa to a date window or site class (docs, GitHub, papers)',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Exa (remote) and Memory (local)',
+          body: 'Add Exa as a remote MCP at `https://mcp.exa.ai/mcp` and complete any auth Exa requires. Add Memory as a local/stdio MCP in Cursor or Claude Desktop.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example Cursor config',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "exa": {
+      "url": "https://mcp.exa.ai/mcp"
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Search, cite, remember',
+          language: 'markdown',
+          body: 'Using Exa, research: “best remote MCP servers for website scraping and browser automation in 2026”.\nReturn 5–8 sources with title, URL, and one-line why it matters.\nWrite a 10–15 sentence brief with consensus vs disagreement.\nStore a Memory entity for this research thread (no secrets) including the source URLs.',
+        },
+      ],
+    },
+    {
+      slugHint: 'implement-ui-from-figma-with-context7',
+      title: 'Implement UI from Figma with Figma and Context7',
+      summary:
+        'Influzer starter recipe: read a Figma frame for layout and tokens, then use Context7 for current framework docs so the agent implements against the real component API — not training-data guesses.',
+      use_case: 'Engineering',
+      server_slugs: requireServers(['figma', 'context7']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code', 'ChatGPT'],
+      prerequisites:
+        '- Figma remote MCP access and a file you can open\n- Context7 remote MCP access\n- Agreement on framework (e.g. React + Tailwind) and target file paths',
+      permissions:
+        'Figma OAuth reads design files you authorize. Context7 reads public library docs. Do not paste design-system secrets or private tokens into prompts.',
+      expected_result:
+        'A component outline mapped to Figma layers, plus starter code that cites Context7 for the framework APIs used.',
+      sample_output:
+        'Frame “Pricing / Desktop” → sections Hero, Plans, FAQ.\nTokens: spacing 8/16/24, accent #0F766E.\nProposed `PricingCard.tsx` using Tailwind `grid` / `gap-6` per current docs…',
+      troubleshooting:
+        '- Figma tools missing: reconnect `https://mcp.figma.com/mcp` and re-authorize the file\n- Wrong frame: paste the Figma node URL / node id in the prompt\n- Context7 misses a library: use the canonical package name (`react`, `tailwindcss`, `next`)',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Figma and Context7',
+          body: 'Add Figma (`https://mcp.figma.com/mcp`) and Context7 (`https://mcp.context7.com/mcp`) as remote MCPs. Complete Figma OAuth and open the design file you intend to implement.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example dual-server mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Read the frame, then code against current docs',
+          language: 'markdown',
+          body: '1) Using Figma MCP, inspect the selected frame (or the node URL I paste) and list sections, key text, spacing, and colors.\n2) Using Context7, fetch current React + Tailwind docs relevant to layout and responsive grids.\n3) Propose a component tree and implement the first section in TypeScript/React. Prefer Context7 for API shapes; prefer Figma for visual structure. Do not invent design tokens that are not in the file.',
+        },
+      ],
+    },
+    {
+      slugHint: 'triage-a-sentry-error-with-context7',
+      title: 'Triage a Sentry error with Sentry and Context7',
+      summary:
+        'Influzer starter recipe: pull a recent Sentry issue, map the stack to the likely code path, then check current library docs with Context7 before proposing a fix.',
+      use_case: 'Engineering',
+      server_slugs: requireServers(['sentry', 'context7']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code', 'ChatGPT'],
+      prerequisites:
+        '- Sentry remote MCP access to an org/project you own\n- Context7 remote MCP access\n- Local repo open in the client when you want code-level fixes',
+      permissions:
+        'Sentry OAuth can expose error payloads and PII depending on your project settings — scrub before sharing externally. Context7 is read-only docs lookup.',
+      expected_result:
+        'A triage note: issue summary, suspected root cause, Context7-backed API notes, and a minimal proposed fix.',
+      sample_output:
+        'Issue: TypeError on /checkout (24 events / 6h)\nSuspect: null `session.customer` after Stripe redirect\nContext7 (stripe): PaymentIntent status handling…\nProposed fix: guard + redirect to /login when customer is missing.',
+      troubleshooting:
+        '- Sentry auth loop: remove and re-add `https://mcp.sentry.dev/mcp`\n- Wrong project: name the org/project in the prompt\n- Never paste production DSN secrets into chat — configure them in Sentry / client settings',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Sentry and Context7',
+          body: 'Add Sentry at `https://mcp.sentry.dev/mcp` and complete OAuth for your org. Add Context7 at `https://mcp.context7.com/mcp`.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example dual-server mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Triage, then verify against current docs',
+          language: 'markdown',
+          body: 'Using Sentry, fetch the most frequent unresolved issue from the last 24 hours in my primary project.\nSummarize title, culprit, event count, and the top stack frames (scrub PII).\nIf a third-party library appears in the stack, use Context7 for that library’s current error-handling docs.\nPropose a minimal fix and a regression test idea. Do not deploy anything.',
+        },
+      ],
+    },
+    {
+      slugHint: 'plan-the-week-with-calendar-and-notion',
+      title: 'Plan the week with Google Calendar and Notion',
+      summary:
+        'Influzer starter recipe: read the next seven days from Google Calendar, pull priorities from a Notion database, and draft a realistic weekly plan you can paste back into Notion.',
+      use_case: 'Productivity',
+      server_slugs: requireServers(['google-calendar', 'notion']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'ChatGPT'],
+      prerequisites:
+        '- Google Calendar remote MCP with access to the calendars you care about\n- Notion remote MCP with access to a tasks/projects database\n- Agreement on working hours and which Notion database is source of truth',
+      permissions:
+        'Both connectors can read (and potentially write) personal productivity data after OAuth. Start read-only: ask the agent to draft the plan before creating or editing Notion pages.',
+      expected_result:
+        'A day-by-day plan that respects existing meetings and surfaces the top Notion priorities that still fit.',
+      sample_output:
+        '## Week plan\nMon: deep work 9–12 on Launch checklist (Notion); standup 10:30…\nRisks: Thu is meeting-heavy — move writing block to Tue AM.',
+      troubleshooting:
+        '- Calendar empty: confirm the correct Google account and calendar are authorized\n- Notion misses pages: share the database with the Notion integration / re-authorize `https://mcp.notion.com/mcp`\n- Refuse bulk deletes or mass reschedules unless you explicitly ask',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Google Calendar and Notion',
+          body: 'Add Google Calendar (`https://calendarmcp.googleapis.com/mcp/v1`) and Notion (`https://mcp.notion.com/mcp`) as remote MCPs. Complete OAuth for both and confirm the agent can list upcoming events and query your tasks database.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example dual-server mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "google-calendar": {
+      "url": "https://calendarmcp.googleapis.com/mcp/v1"
+    },
+    "notion": {
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Read calendars and Notion, then draft the plan',
+          language: 'markdown',
+          body: 'Using Google Calendar, list my events for the next 7 days.\nUsing Notion, list open tasks/priorities from my main tasks database (ask me for the database name if unclear).\nDraft a realistic weekly plan that protects 2 deep-work blocks on lighter days.\nDo not create or edit Notion pages or calendar events until I approve the draft.',
+        },
+      ],
+    },
+    {
+      slugHint: 'explore-a-supabase-project-before-writing-sql',
+      title: 'Explore a Supabase project before writing SQL',
+      summary:
+        'Influzer starter recipe: connect the Supabase MCP, inspect projects/tables first, then ask for read-only SQL with an explanation — before any writes or schema changes.',
+      use_case: 'Data & Analytics',
+      server_slugs: requireServers(['supabase']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code', 'ChatGPT'],
+      prerequisites:
+        '- Supabase remote MCP access to an org/project you own\n- Prefer a read-only mindset (and restricted roles) while exploring\n- Know which project/ref is safe to inspect',
+      permissions:
+        'Supabase MCP can expose schema and run SQL depending on granted scopes. Keep production writes off until you review the query. Never paste service-role keys into chat.',
+      expected_result:
+        'A table/column overview and a proposed read-only query with an explanation — no destructive statements.',
+      sample_output:
+        'Project: acme-prod\nTables: profiles, subscriptions, events\nSuggested SELECT: daily active users last 14 days grouped by plan…',
+      troubleshooting:
+        '- Auth errors: reconnect `https://mcp.supabase.com/mcp` and re-authorize the org\n- Wrong project: name the project ref in the prompt\n- If the agent proposes DROP/UPDATE: stop and tighten the prompt to SELECT-only',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Supabase MCP',
+          body: 'Add the Supabase remote MCP at `https://mcp.supabase.com/mcp` and complete OAuth for the org that owns the project you want to inspect.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Schema first, then SELECT-only SQL',
+          language: 'markdown',
+          body: 'Using Supabase MCP, list my projects and inspect the schema for the primary app project (tables + key columns).\nThen propose a read-only SQL query to answer: “How many new signups per day for the last 14 days?”\nExplain the query before running any SELECT. Do not run INSERT/UPDATE/DELETE/DROP or change RLS policies.',
+        },
+      ],
+    },
   ];
 }
 
