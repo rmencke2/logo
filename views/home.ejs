@@ -23,7 +23,8 @@
       data-async-css
     />
     <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" media="print" data-async-css />
-    <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" media="print" data-async-css />
+    <%# Milestone sits above the hero — blocking load (~5KB) prevents the CLS that fails Agentic 3/3 %>
+    <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
     <link rel="stylesheet" href="/css/site-auth.css?v=<%= assetVersion %>" media="print" data-async-css />
     <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" media="print" data-async-css />
     <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" media="print" data-async-css />
@@ -40,7 +41,6 @@
     <noscript>
       <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
       <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
-      <link rel="stylesheet" href="/css/mcp-milestone.css?v=<%= assetVersion %>" />
       <link rel="stylesheet" href="/css/site-auth.css?v=<%= assetVersion %>" />
       <link rel="stylesheet" href="/css/mcp-sponsor.css?v=<%= assetVersion %>" />
       <link rel="stylesheet" href="/css/recipes.css?v=<%= assetVersion %>" />
@@ -58,6 +58,14 @@
     </script>
   </head>
   <body class="home-page">
+    <%# Apply saved theme before first paint — deferred registry.js caused CLS on dark-mode revisits %>
+    <script nonce="<%= cspNonce %>">
+      try {
+        if (localStorage.getItem('influzer-home-theme') === 'dark') {
+          document.body.classList.add('dark');
+        }
+      } catch (e) {}
+    </script>
     <a class="skip-link" href="#main">Skip to main content</a>
     <%- include('partials/home-header', { skipSiteAuthCss: true, deferSiteAuthJs: true }) %>
     <%- include('partials/mcp-milestone-banner') %>

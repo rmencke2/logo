@@ -12,8 +12,9 @@
   const THEME_KEY = 'influzer-home-theme';
   let themeAnimTimer = null;
 
+  // Theme class may already be set by an inline boot script (avoids CLS).
   try {
-    if (localStorage.getItem(THEME_KEY) === 'dark') {
+    if (body.classList.contains('dark') || localStorage.getItem(THEME_KEY) === 'dark') {
       body.classList.add('dark');
       if (themeBtn) themeBtn.textContent = '☀';
     }

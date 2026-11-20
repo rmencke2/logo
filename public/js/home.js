@@ -2,8 +2,10 @@
  * Homepage registry interactions:
  * - live filter of top-server rows
  * - category chips
- * - server count-up (DOM-only)
  * Theme/nav live in registry.js
+ *
+ * Do not animate hero stats (e.g. reset to "0" then count up) — that CLS
+ * alone fails PageSpeed Agentic Browsing (needs CLS &lt; ~0.1).
  */
 (function () {
   const body = document.body;
@@ -14,7 +16,6 @@
   const rows = Array.from(document.querySelectorAll('.home-server-row'));
   const emptyEl = document.getElementById('homeServerEmpty');
   const emptyQuery = document.getElementById('homeEmptyQuery');
-  const countEl = document.getElementById('homeServerCount');
   const defaultHeading = 'Top servers this week';
 
   function filterServers(query) {
@@ -51,22 +52,6 @@
       filterServers(q);
     });
   });
-
-  // Count-up: write textContent in rAF only — never drive via framework state.
-  if (countEl) {
-    const target = Number(countEl.getAttribute('data-target') || countEl.textContent.replace(/,/g, '')) || 0;
-    const dur = 1400;
-    const start = performance.now();
-    const fmt = (n) => n.toLocaleString('en-US');
-    countEl.textContent = '0';
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - t, 3);
-      countEl.textContent = fmt(Math.round(target * eased));
-      if (t < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
 
   // Sync footer language selector with hidden i18n select if present
   const footerLang = document.getElementById('homeLanguageSelector');

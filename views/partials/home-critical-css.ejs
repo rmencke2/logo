@@ -32,14 +32,8 @@
 .home-nav__menu-bars{display:flex;flex-direction:column;gap:3px}
 .home-nav__menu-bars span{display:block;width:16px;height:2px;background:currentColor}
 .site-header-lang-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;border:0!important}
-.mcp-milestone{min-height:140px;background:var(--hp-accent-tint);border-bottom:1px solid var(--hp-border);color:var(--hp-text)}
-.mcp-milestone__inner{max-width:1200px;margin:0 auto;padding:20px 32px;display:grid;gap:14px}
-.mcp-milestone__eyebrow{margin:0;font-family:var(--hp-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--hp-accent-fg)}
-.mcp-milestone__headline{margin:4px 0 0;font-size:1.25rem;font-weight:700;line-height:1.2}
-.mcp-milestone__blurb{margin:8px 0 0;color:var(--hp-muted);font-size:14px;line-height:1.5}
-.mcp-milestone__actions{display:flex;flex-wrap:wrap;gap:8px}
-.mcp-milestone__btn{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:8px;border:1px solid var(--hp-border2);background:var(--hp-card);color:var(--hp-text);font-weight:600;font-size:13.5px;text-decoration:none}
-.mcp-milestone__btn--primary{background:var(--hp-accent);border-color:var(--hp-accent);color:#fff}
+<%# Milestone final look is in mcp-milestone.css (blocking). Keep only a height lock here. %>
+.mcp-milestone{min-height:140px}
 .home-hero{background:linear-gradient(180deg,var(--hp-bg) 0%,var(--hp-bg2) 100%);border-bottom:1px solid var(--hp-border)}
 .home-hero__inner{max-width:1200px;margin:0 auto;padding:76px 32px 56px;text-align:center}
 .home-hero__eyebrow{margin:0 0 16px;font-family:var(--hp-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--hp-accent)}
@@ -49,9 +43,13 @@
 .home-hero__cta-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:10px;border:1.5px solid var(--hp-border2);background:var(--hp-card);color:var(--hp-text);font-family:var(--hp-font);font-size:14.5px;font-weight:600;text-decoration:none}
 .home-hero__cta-btn--primary{background:var(--hp-text);border-color:var(--hp-text);color:var(--hp-card)}
 .home-hero__cta-btn--ghost{background:transparent}
-.home-hero__stats{display:flex;gap:12px 22px;justify-content:center;margin-top:8px;font-family:var(--hp-mono);font-size:13px;color:var(--hp-muted);flex-wrap:wrap}
-.home-hero__stats b{color:var(--hp-text);font-size:17px}
-.home-hero__stat{display:inline-flex;gap:6px;align-items:baseline}
+.home-hero__stats{display:flex;gap:12px 22px;justify-content:center;margin-top:8px;margin-bottom:4px;font-family:var(--hp-mono);font-size:13px;color:var(--hp-muted);flex-wrap:wrap;min-height:28px}
+.home-hero__stats b{color:var(--hp-text);font-size:17px;font-variant-numeric:tabular-nums}
+.home-hero__stat{display:inline-flex;gap:6px;align-items:baseline;max-width:100%}
+.home-hero__search{max-width:660px;margin:8px auto 18px;display:flex;gap:8px;align-items:stretch}
+.home-hero__search input{flex:1;min-width:0;min-height:44px;padding:0 14px;border-radius:10px;border:1.5px solid var(--hp-border2);background:var(--hp-card);color:var(--hp-text);font:inherit}
+.home-hero__search button{min-height:44px;padding:0 16px;border-radius:10px;border:1.5px solid var(--hp-text);background:var(--hp-text);color:var(--hp-card);font:inherit;font-weight:600;cursor:pointer}
+.home-hero__list{margin:0;font-size:13.5px;color:var(--hp-muted)}
 @media (max-width:900px){
   .home-nav__links,.home-nav__subscribe{display:none}
   .home-nav__menu-btn{display:inline-flex}
