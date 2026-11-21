@@ -12,6 +12,8 @@ const { abuseProtectionMiddleware, logUsage } = require('../abuseProtection');
 const { trackService } = require('./analyticsService');
 const { sanitizeLogoIcon } = require('../utils/svgSanitize');
 const { clientErrorPayload } = require('../utils/safeError');
+const { computeLogoLayout, contrastRatio } = require('../utils/logoLayout');
+const { hasIcon, iconMarkup } = require('../utils/icons');
 
 // Font category mapping
 const fontCategories = {
@@ -152,8 +154,14 @@ function initializeLogoService(app) {
           bgColor,
         } = req.body;
 
+        // A known icon name is drawn as vector paths from our own table, so it never
+        // reaches the markup as user text. Anything else is legacy emoji and goes
+        // through the sanitiser.
         let icon = null;
-        if (rawIcon) {
+        const vectorIcon = !!rawIcon && hasIcon(rawIcon);
+        if (vectorIcon) {
+          icon = rawIcon;
+        } else if (rawIcon) {
           try {
             icon = sanitizeLogoIcon(rawIcon);
           } catch (iconErr) {
@@ -189,104 +197,44 @@ function initializeLogoService(app) {
         console.log(`✅ Font loaded: ${fontPath}`);
         const textToSVG = TextToSVG.loadSync(fontPath);
 
-        // Calculate text metrics
+        // Measure text, then lay everything out around it
         const mainTextSize = 120;
-        const taglineSize = tagline ? 60 : 0;
-        const mainMetrics = textToSVG.getMetrics(name, { fontSize: mainTextSize });
-        const taglineMetrics = tagline
-          ? textToSVG.getMetrics(tagline, { fontSize: taglineSize })
-          : { width: 0, height: 0 };
+        const taglineSize = 60;
+        const main = textToSVG.getMetrics(name, { fontSize: mainTextSize });
+        const tag = tagline ? textToSVG.getMetrics(tagline, { fontSize: taglineSize }) : null;
+        const iconSize = icon ? 100 : 0;
 
-        // Icon dimensions
-        const iconSize = icon ? 80 : 0;
-        const iconSpacing = icon && layout !== 'none' ? 20 : 0;
-
-        // Calculate dimensions based on layout
-        let width, height, textX, textY, taglineX, taglineY, iconX, iconY;
-
-        if (layout === 'left' && icon) {
-          width = Math.max(mainMetrics.width, taglineMetrics.width) + iconSize + iconSpacing + 100;
-          height = Math.max(mainMetrics.height + (tagline ? taglineMetrics.height + 20 : 0), iconSize) + 100;
-          iconX = 50;
-          iconY = height / 2;
-          textX = iconSize + iconSpacing + 50;
-          textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
-          taglineX = textX;
-          taglineY = textY + mainMetrics.height + 20;
-        } else if (layout === 'top' && icon) {
-          width = Math.max(mainMetrics.width, taglineMetrics.width, iconSize) + 100;
-          height = mainMetrics.height + (tagline ? taglineMetrics.height + 20 : 0) + iconSize + iconSpacing + 100;
-          iconX = width / 2;
-          iconY = 50 + iconSize / 2;
-          textX = width / 2;
-          textY = iconSize + iconSpacing + 50 + mainMetrics.height / 2;
-          taglineX = width / 2;
-          taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
-        } else {
-          width = Math.max(mainMetrics.width, taglineMetrics.width) + 100;
-          height = mainMetrics.height + (tagline ? taglineMetrics.height + 20 : 0) + 100;
-          textX = width / 2;
-          textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
-          taglineX = width / 2;
-          taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
-          iconX = 0;
-          iconY = 0;
-        }
-
-        // Adjust for shape (ensure square dimensions for circle/square shapes)
-        if (shape === 'circle' || shape === 'square') {
-          const maxDim = Math.max(width, height);
-          width = maxDim;
-          height = maxDim;
-          
-          // Re-center all content for circular/square shapes
-          if (layout === 'left' && icon) {
-            iconY = height / 2;
-            textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
-            taglineY = textY + mainMetrics.height + 20;
-          } else if (layout === 'top' && icon) {
-            iconX = width / 2;
-            iconY = 50 + iconSize / 2;
-            textX = width / 2;
-            textY = iconSize + iconSpacing + 50 + mainMetrics.height / 2;
-            taglineX = width / 2;
-            taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
-          } else {
-            textX = width / 2;
-            textY = height / 2 - (tagline ? taglineMetrics.height / 2 + 10 : 0);
-            taglineX = width / 2;
-            taglineY = textY + mainMetrics.height / 2 + taglineMetrics.height / 2 + 20;
-            iconX = width / 2;
-            iconY = height / 2;
-          }
-        }
+        const geo = computeLogoLayout({ main, tagline: tag, iconSize, layout, shape });
+        const { width, height } = geo;
 
         console.log(`📏 Dimensions: width=${width}, height=${height}`);
 
         // Generate text paths
         const mainTextPath = textToSVG.getPath(name, {
-          x: textX,
-          y: textY,
+          x: geo.name.x,
+          y: geo.name.y,
           fontSize: mainTextSize,
-          anchor: 'center middle',
+          anchor: geo.name.anchor,
           attributes: { fill: fontColor },
         });
 
         let taglinePath = '';
-        if (tagline) {
+        if (tagline && geo.tagline) {
           taglinePath = textToSVG.getPath(tagline, {
-            x: taglineX,
-            y: taglineY,
+            x: geo.tagline.x,
+            y: geo.tagline.y,
             fontSize: taglineSize,
-            anchor: 'center middle',
+            anchor: geo.tagline.anchor,
             attributes: { fill: fontColor, opacity: '0.8' },
           });
         }
 
-        // Generate icon (using emoji as text)
+        // Icon: vector paths in the text colour, or legacy (already sanitised) emoji text
         let iconPath = '';
-        if (icon && layout !== 'none') {
-          iconPath = `<text x="${iconX}" y="${iconY}" font-size="${iconSize}" text-anchor="middle" dominant-baseline="middle" fill="${fontColor}">${icon}</text>`;
+        if (icon && geo.icon) {
+          iconPath = vectorIcon
+            ? iconMarkup(icon, geo.icon.x, geo.icon.y, iconSize, fontColor)
+            : `<text x="${geo.icon.x}" y="${geo.icon.y}" font-size="${iconSize}" text-anchor="middle" dominant-baseline="middle" fill="${fontColor}">${icon}</text>`;
         }
 
         // Generate shape background
@@ -322,11 +270,18 @@ function initializeLogoService(app) {
         // Log usage
         await logUsage(req, '/generate-logo');
 
+        // Low contrast is reported, not silently corrected: the colours are the user's choice.
+        const warnings = [];
+        if (shape !== 'none' && contrastRatio(fontColor, bgColor) < 3) {
+          warnings.push('Text and background colours have low contrast and may be hard to read.');
+        }
+
         // Return paths to client
         res.json({
           svgPath: `/generated_img/${safeName}.svg`,
           pngPath: `/generated_img/${safeName}.png`,
           usageLimits: req.usageLimits,
+          ...(warnings.length ? { warnings } : {}),
         });
       } catch (err) {
         console.error('❌ Error generating logo:', err);

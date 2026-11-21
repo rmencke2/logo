@@ -385,22 +385,22 @@
       businessTypeSelect.addEventListener('change', () => {
         const businessType = businessTypeSelect.value;
         const iconSuggestions = {
-          bakery: '🍰',
-          hairdresser: '💇',
-          plumber: '🔧',
-          electrician: '⚡',
-          restaurant: '☕',
-          fitness: '🏋️',
-          photography: '📸',
-          consulting: '💼',
-          retail: '🛍️',
-          cleaning: '✨',
-          landscaping: '🌿',
-          automotive: '🚗',
-          'real-estate': '🏠',
-          tech: '💻',
-          healthcare: '💚',
-          education: '📚',
+          bakery: 'cake',
+          hairdresser: 'scissors',
+          plumber: 'wrench',
+          electrician: 'zap',
+          restaurant: 'coffee',
+          fitness: 'dumbbell',
+          photography: 'camera',
+          consulting: 'briefcase',
+          retail: 'shopping-bag',
+          cleaning: 'sparkles',
+          landscaping: 'leaf',
+          automotive: 'car',
+          'real-estate': 'house',
+          tech: 'laptop',
+          healthcare: 'heart-pulse',
+          education: 'book-open',
         };
         
         if (iconSuggestions[businessType] && !iconInput.value) {
