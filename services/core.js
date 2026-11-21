@@ -75,7 +75,9 @@ async function initializeCore(app) {
         p === '/health' ||
         p === '/healthz' ||
         p === '/robots.txt' ||
-        p === '/sitemap.xml'
+        p === '/sitemap.xml' ||
+        // PSI Agentic Browsing fails hard on HTTP 429 for /llms.txt
+        p === '/llms.txt'
       ) {
         return true;
       }

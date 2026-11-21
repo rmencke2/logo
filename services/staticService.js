@@ -194,6 +194,33 @@ function mapPostForDisplay(post) {
   };
 }
 
+/** Prefer pre-generated *-card.webp/jpg for homepage insight thumbnails. */
+function resolveHomeCardCover(coverImage) {
+  if (!coverImage || !coverImage.startsWith('/') || !/\.(jpe?g|png)$/i.test(coverImage)) {
+    return { src: coverImage || '', webp: null };
+  }
+  const cardWebp = coverImage.replace(/\.(jpe?g|png)$/i, '-card.webp');
+  const cardJpg = coverImage.replace(/\.(jpe?g|png)$/i, '-card.jpg');
+  const publicRoot = path.join(__dirname, '..', 'public');
+  const hasWebp = fs.existsSync(path.join(publicRoot, cardWebp.replace(/^\//, '')));
+  const hasJpg = fs.existsSync(path.join(publicRoot, cardJpg.replace(/^\//, '')));
+  if (!hasWebp && !hasJpg) return { src: coverImage, webp: null };
+  return {
+    src: hasJpg ? cardJpg : coverImage,
+    webp: hasWebp ? cardWebp : null,
+  };
+}
+
+function mapPostForHome(post) {
+  const mapped = mapPostForDisplay(post);
+  const card = resolveHomeCardCover(mapped.coverImage);
+  return {
+    ...mapped,
+    coverImage: card.src || mapped.coverImage,
+    coverImageWebp: card.webp,
+  };
+}
+
 function toAbsoluteUrl(url) {
   if (!url) return `${SITE_BASE_URL}/favicon.svg`;
   if (/^https?:\/\//i.test(url)) return url;
@@ -203,11 +230,11 @@ function toAbsoluteUrl(url) {
 function getHomeBlogContent() {
   const all = getAllBlogPosts();
   const featuredRaw = all.find((post) => post.featured) || all[0] || null;
-  const featuredPost = featuredRaw ? mapPostForDisplay(featuredRaw) : null;
+  const featuredPost = featuredRaw ? mapPostForHome(featuredRaw) : null;
   const morePosts = all
     .filter((post) => !featuredPost || post.slug !== featuredPost.slug)
     .slice(0, 2)
-    .map(mapPostForDisplay);
+    .map(mapPostForHome);
   return { featuredPost, morePosts };
 }
 
@@ -576,7 +603,22 @@ function getRelatedMcpServers(server, limit = 4) {
 }
 
 async function renderHomepage(req, res) {
-  const topServersPayload = await getHomeTopServers(6);
+  // Parallelize the three DB-backed homepage lookups. Audience stats are SWR-cached
+  // in mcpListingTrafficService — a cold DISTINCT used to add ~1s to every mobile TTFB.
+  const [topServersPayload, homeRecipes, audienceStats] = await Promise.all([
+    getHomeTopServers(6),
+    (async () => {
+      try {
+        const db = await getDatabase();
+        const listed = await listPublishedRecipes(db, { limit: 4 });
+        return listed.recipes || [];
+      } catch (err) {
+        console.error('Home recipes load failed:', err.message || err);
+        return [];
+      }
+    })(),
+    getDirectoryAudienceStats({ days: 30 }),
+  ]);
   const topServers = topServersPayload.servers;
   const heroStats = getMcpHeroStats();
   const catalogCopy = heroStats.copy;
@@ -607,17 +649,8 @@ async function renderHomepage(req, res) {
     seoContent.faqs,
     `${SITE_BASE_URL}/`,
   );
-  let homeRecipes = [];
-  try {
-    const db = await getDatabase();
-    const listed = await listPublishedRecipes(db, { limit: 4 });
-    homeRecipes = listed.recipes || [];
-  } catch (err) {
-    console.error('Home recipes load failed:', err.message || err);
-  }
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
+  const promoteOffer = getPromoteOffer();
+  res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=120');
   res.render('home', {
     heroStats,
     catalogCopy,
@@ -642,13 +675,14 @@ async function renderHomepage(req, res) {
     discoveryPromo: getDiscoveryPromo({ ref: 'home', serverCount: heroStats.totalServers }),
     milestonePromo: getMilestonePromo(heroStats.totalServers),
     scoreboard: buildScoreboard(),
-    promoteOffer: getPromoteOffer(),
+    promoteOffer,
     sponsorAudience: presentSponsorAudience({
-      ...(await getDirectoryAudienceStats({ days: 30 })),
-      slotsRemaining: getPromoteOffer().remaining,
+      ...audienceStats,
+      slotsRemaining: promoteOffer.remaining,
     }),
     sponsorRail: presentSponsorRail(),
     assetVersion: getHomeAssetVersion(),
+    skipGa: true,
   });
 }
 
@@ -815,10 +849,16 @@ function initializeStaticService(app) {
 
   // Serve static files from public directory
   app.use(express.static(publicDir, {
-    maxAge: '1d',
+    maxAge: '7d',
     etag: true,
     lastModified: true,
     index: false,
+    setHeaders(res, filePath) {
+      // Versioned CSS/JS (?v=) can be cached longer; keep HTML/json short.
+      if (/\.(?:css|js|woff2?|ttf|otf|png|jpe?g|gif|svg|webp|ico)$/i.test(filePath)) {
+        res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
+      }
+    },
   }));
 
   // Serve generated images
