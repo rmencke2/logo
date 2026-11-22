@@ -429,7 +429,47 @@ function starterRecipes() {
           block_type: 'prompt',
           title: 'Read the frame, then code against current docs',
           language: 'markdown',
-          body: '1) Using Figma MCP, inspect the selected frame (or the node URL I paste) and list sections, key text, spacing, and colors.\n2) Using Context7, fetch current React + Tailwind docs relevant to layout and responsive grids.\n3) Propose a component tree and implement the first section in TypeScript/React. Prefer Context7 for API shapes; prefer Figma for visual structure. Do not invent design tokens that are not in the file.',
+          body: '1) Using Figma MCP, inspect the selected frame (or the node URL I paste) and list sections, key text, spacing, and colors.\n2) Using Context7, fetch current React + Tailwind docs relevant to layout and responsive grids.\n3) Propose a component tree and implement the first section in TypeScript/React, starting from the React snippet in this recipe.\nPrefer Context7 for API shapes; prefer Figma for visual structure. Do not invent design tokens that are not in the file.',
+        },
+        {
+          block_type: 'instruction',
+          title: 'Starter snippet (React)',
+          body: 'Skeleton only — replace labels, spacing, and colors from the Figma frame. Prefer Context7 for current React/Tailwind APIs.',
+        },
+        {
+          block_type: 'code',
+          title: 'React — section starter',
+          language: 'tsx',
+          body: `type PricingCardProps = {
+  title: string;
+  priceLabel: string;
+  features: string[];
+  ctaLabel?: string;
+};
+
+export function PricingCard({
+  title,
+  priceLabel,
+  features,
+  ctaLabel = 'Get started',
+}: PricingCardProps) {
+  return (
+    <article className="flex flex-col gap-4 rounded-2xl border border-zinc-200 p-6">
+      <header>
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="mt-1 text-3xl font-bold tracking-tight">{priceLabel}</p>
+      </header>
+      <ul className="flex flex-col gap-2 text-sm text-zinc-600">
+        {features.map((feature) => (
+          <li key={feature}>{feature}</li>
+        ))}
+      </ul>
+      <button type="button" className="mt-auto rounded-xl bg-zinc-900 px-4 py-2 text-sm text-white">
+        {ctaLabel}
+      </button>
+    </article>
+  );
+}`,
         },
       ],
     },
@@ -626,7 +666,66 @@ function starterRecipes() {
           block_type: 'prompt',
           title: 'Docs first, then a test-mode PaymentIntent',
           language: 'markdown',
-          body: 'Using Context7, fetch the current Stripe docs for creating a PaymentIntent (server SDK + client confirm).\nUsing Stripe MCP in **test mode only**, list whether any products/prices already exist that fit a $20 one-time checkout (do not create live charges).\nThen implement a minimal server route that creates a PaymentIntent and returns `client_secret`, plus the client confirm steps.\nDo not use live secret keys, do not disable webhooks guidance, and do not invent PCI-sensitive shortcuts.',
+          body: 'Using Context7, fetch the current Stripe docs for creating a PaymentIntent (server SDK + client confirm).\nUsing Stripe MCP in **test mode only**, list whether any products/prices already exist that fit a $20 one-time checkout (do not create live charges).\nStart from the Node / Python / PHP snippets in this recipe, then adapt them to my stack.\nPrefer Context7 over the snippets if the API shape differs.\nDo not use live secret keys, do not disable webhooks guidance, and do not invent PCI-sensitive shortcuts.',
+        },
+        {
+          block_type: 'instruction',
+          title: 'Starter snippets (test mode)',
+          body: 'Use these as copy-paste starting points for a $20.00 USD PaymentIntent. Replace `YOUR_STRIPE_SECRET_KEY` via env only. Confirm the final SDK calls with Context7 before shipping.',
+        },
+        {
+          block_type: 'code',
+          title: 'Node — create PaymentIntent',
+          language: 'javascript',
+          body: `// npm i stripe
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // sk_test_...
+
+export async function createCheckoutIntent() {
+  const intent = await stripe.paymentIntents.create({
+    amount: 2000, // $20.00
+    currency: 'usd',
+    automatic_payment_methods: { enabled: true },
+  });
+  return { clientSecret: intent.client_secret };
+}`,
+        },
+        {
+          block_type: 'code',
+          title: 'Python — create PaymentIntent',
+          language: 'python',
+          body: `# pip install stripe
+import os
+import stripe
+
+stripe.api_key = os.environ["STRIPE_SECRET_KEY"]  # sk_test_...
+
+def create_checkout_intent():
+    intent = stripe.PaymentIntent.create(
+        amount=2000,  # $20.00
+        currency="usd",
+        automatic_payment_methods={"enabled": True},
+    )
+    return {"client_secret": intent.client_secret}`,
+        },
+        {
+          block_type: 'code',
+          title: 'PHP — create PaymentIntent',
+          language: 'php',
+          body: `<?php
+// composer require stripe/stripe-php
+require 'vendor/autoload.php';
+
+$stripe = new \\Stripe\\StripeClient(getenv('STRIPE_SECRET_KEY')); // sk_test_...
+
+$intent = $stripe->paymentIntents->create([
+  'amount' => 2000, // $20.00
+  'currency' => 'usd',
+  'automatic_payment_methods' => ['enabled' => true],
+]);
+
+return ['client_secret' => $intent->client_secret];`,
         },
         {
           block_type: 'instruction',
