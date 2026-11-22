@@ -30,6 +30,7 @@
         <p class="dir-hero__lead">
           Export a filtered Top 100 pack from Influzer handshake facts —
           Cursor <code>mcpServers</code> JSON, CSV, or Markdown.
+          Live OK and auth-required stay separate; tool-description usability is scored separately from the handshake.
           <strong>Not a safe-to-install badge.</strong>
           <%= pack.order_caption %>
           Read <a href="/insights/policy-before-plugins-mcp-allowlist">Policy before plugins</a>
@@ -43,7 +44,7 @@
             <b><%= (pack.filters.status || []).join(' · ') || 'live_ok' %></b><span>Status filter</span>
           </div>
           <div class="board-stat">
-            <b><%= pack.filters.host %></b><span>Host filter</span>
+            <b><%= pack.filters.max_tools == null ? 'any' : ('≤' + pack.filters.max_tools) %></b><span>Tool-count cap</span>
           </div>
         </div>
       </div>
@@ -70,9 +71,9 @@
           <label class="allowlist-field">
             <span>Handshake status</span>
             <select name="status" id="allowlistStatus">
-              <option value="live_ok,auth_required"<%= statusFilter === 'live_ok,auth_required' ? ' selected' : '' %>>Live OK + auth gate</option>
               <option value="live_ok"<%= statusFilter === 'live_ok' ? ' selected' : '' %>>Live OK only</option>
               <option value="auth_required"<%= statusFilter === 'auth_required' ? ' selected' : '' %>>Auth gate only</option>
+              <option value="live_ok,auth_required"<%= statusFilter === 'live_ok,auth_required' ? ' selected' : '' %>>Live OK + auth gate (combined)</option>
             </select>
           </label>
           <label class="allowlist-field">
@@ -81,6 +82,23 @@
               <option value="fixed"<%= hostFilter === 'fixed' ? ' selected' : '' %>>Fixed HTTPS remotes</option>
               <option value="any"<%= hostFilter === 'any' ? ' selected' : '' %>>Any host kind</option>
             </select>
+          </label>
+          <label class="allowlist-field">
+            <span>Max tools</span>
+            <select name="max_tools" id="allowlistMaxTools">
+              <option value="any"<%= maxToolsFilter === 'any' ? ' selected' : '' %>>Any tool count</option>
+              <option value="8"<%= maxToolsFilter === '8' ? ' selected' : '' %>>≤ 8 tools</option>
+              <option value="15"<%= maxToolsFilter === '15' ? ' selected' : '' %>>≤ 15 tools</option>
+              <option value="30"<%= maxToolsFilter === '30' ? ' selected' : '' %>>≤ 30 tools</option>
+              <option value="50"<%= maxToolsFilter === '50' ? ' selected' : '' %>>≤ 50 tools</option>
+            </select>
+          </label>
+          <label class="allowlist-field allowlist-field--check">
+            <span>Descriptions</span>
+            <label class="allowlist-check">
+              <input type="checkbox" name="usable_only" value="1" id="allowlistUsableOnly"<%= usableOnlyFilter ? ' checked' : '' %> />
+              Usable tool descriptions only
+            </label>
           </label>
           <button type="submit" class="allowlist-submit">Refresh pack</button>
         </form>
@@ -91,7 +109,7 @@
           <button type="button" class="allowlist-btn" data-download="cursor">Download mcp.allowlist.json</button>
           <button type="button" class="allowlist-btn" data-download="csv">Download CSV</button>
           <button type="button" class="allowlist-btn" data-download="md">Download Markdown</button>
-          <a class="allowlist-btn allowlist-btn--ghost" href="/api/v1/mcp/allowlist?status=<%= encodeURIComponent(statusFilter) %>&amp;host=<%= encodeURIComponent(hostFilter) %>">API</a>
+          <a class="allowlist-btn allowlist-btn--ghost" href="/api/v1/mcp/allowlist?status=<%= encodeURIComponent(statusFilter) %>&amp;host=<%= encodeURIComponent(hostFilter) %>&amp;max_tools=<%= encodeURIComponent(maxToolsFilter) %><%= usableOnlyFilter ? '&amp;usable_only=1' : '' %>">API</a>
         </div>
         <p class="allowlist-status" id="allowlistStatusMsg" role="status" aria-live="polite"></p>
       </section>
@@ -105,13 +123,14 @@
               <th scope="col">Status</th>
               <th scope="col">Grade</th>
               <th scope="col">Tools</th>
+              <th scope="col">Desc</th>
               <th scope="col">Remote</th>
             </tr>
           </thead>
           <tbody>
             <% if (!pack.servers.length) { %>
               <tr>
-                <td colspan="6">No servers match these filters. Try Live OK + auth gate, or open the <a href="/mcp/scoreboard">scoreboard</a>.</td>
+                <td colspan="7">No servers match these filters. Try Auth gate only, raise the tool-count cap, or open the <a href="/mcp/scoreboard">scoreboard</a>.</td>
               </tr>
             <% } %>
             <% pack.servers.forEach(function(row, index) { %>
@@ -124,6 +143,11 @@
                 <td><span class="board-pill board-pill--<%= row.live_status %>"><%= row.live_status_label %></span></td>
                 <td><%= row.verification_grade_letter || '—' %></td>
                 <td><%= row.tool_count %></td>
+                <td>
+                  <span class="allowlist-desc<%= row.tool_desc_usable ? ' is-usable' : ' is-weak' %>" title="<%= (row.tool_desc_flags || []).join(', ') || row.tool_desc_label %>">
+                    <%= row.tool_desc_score == null ? '—' : row.tool_desc_score %>
+                  </span>
+                </td>
                 <td class="allowlist-remote">
                   <% if (row.remote_url) { %>
                     <code><%= row.remote_url.replace(/^https:\/\//i, '') %></code>

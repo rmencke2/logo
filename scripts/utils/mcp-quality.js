@@ -130,12 +130,141 @@ function resolveDemowareTier(server, liveStatus, toolCount) {
   return 'unverified';
 }
 
-/**
- * @param {object} server
- * @param {object|null|undefined} [validationEntry]
- * @returns {object}
- */
 const GRADE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Cheap tool-description usability signals from catalog tools only.
+ * Separates "server answered tools/list" from "agents can tell tools apart".
+ * Not a safety score.
+ * @param {Array<{name?: string, description?: string}>|null|undefined} tools
+ * @returns {{
+ *   tool_count: number,
+ *   empty_desc_count: number,
+ *   empty_desc_ratio: number,
+ *   duplicate_name_count: number,
+ *   near_identical_desc_pairs: number,
+ *   tool_desc_score: number,
+ *   tool_desc_usable: boolean,
+ *   tool_desc_flags: string[],
+ *   tool_desc_label: string,
+ * }}
+ */
+function scoreToolDescriptionUsability(tools) {
+  const list = Array.isArray(tools) ? tools : [];
+  const toolCount = list.length;
+  const flags = [];
+
+  if (toolCount === 0) {
+    return {
+      tool_count: 0,
+      empty_desc_count: 0,
+      empty_desc_ratio: 0,
+      duplicate_name_count: 0,
+      near_identical_desc_pairs: 0,
+      tool_desc_score: 0,
+      tool_desc_usable: false,
+      tool_desc_flags: ['no_tools'],
+      tool_desc_label: 'No tools indexed',
+    };
+  }
+
+  const normalizedNames = list.map((t) =>
+    String(t?.name || '')
+      .trim()
+      .toLowerCase(),
+  );
+  const nameCounts = new Map();
+  for (const name of normalizedNames) {
+    if (!name) continue;
+    nameCounts.set(name, (nameCounts.get(name) || 0) + 1);
+  }
+  let duplicateNameCount = 0;
+  for (const count of nameCounts.values()) {
+    if (count > 1) duplicateNameCount += count - 1;
+  }
+  if (duplicateNameCount > 0) flags.push('duplicate_names');
+
+  const descriptions = list.map((t) => String(t?.description || '').trim());
+  let emptyDescCount = 0;
+  for (const desc of descriptions) {
+    if (!desc) emptyDescCount += 1;
+  }
+  const emptyDescRatio = emptyDescCount / toolCount;
+  if (emptyDescCount > 0) flags.push('empty_descriptions');
+
+  const normalizeDesc = (desc) =>
+    desc
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const tokenSet = (desc) => {
+    const tokens = normalizeDesc(desc)
+      .split(' ')
+      .filter((t) => t.length >= 3);
+    return new Set(tokens);
+  };
+
+  const jaccard = (a, b) => {
+    if (!a.size || !b.size) return 0;
+    let inter = 0;
+    for (const t of a) if (b.has(t)) inter += 1;
+    const union = a.size + b.size - inter;
+    return union ? inter / union : 0;
+  };
+
+  let nearIdenticalPairs = 0;
+  const nonempty = descriptions
+    .map((d, i) => ({ i, raw: d, norm: normalizeDesc(d) }))
+    .filter((d) => d.norm.length >= 12);
+  for (let i = 0; i < nonempty.length; i += 1) {
+    const left = nonempty[i];
+    const leftTokens = tokenSet(left.raw);
+    const leftPrefix = left.norm.slice(0, 80);
+    for (let j = i + 1; j < nonempty.length; j += 1) {
+      const right = nonempty[j];
+      if (left.norm === right.norm) {
+        nearIdenticalPairs += 1;
+        continue;
+      }
+      const rightPrefix = right.norm.slice(0, 80);
+      if (leftPrefix && leftPrefix === rightPrefix) {
+        nearIdenticalPairs += 1;
+        continue;
+      }
+      if (jaccard(leftTokens, tokenSet(right.raw)) >= 0.85) {
+        nearIdenticalPairs += 1;
+      }
+    }
+  }
+  if (nearIdenticalPairs > 0) flags.push('near_identical_descriptions');
+
+  // Start at 100; penalize empty / duplicate / near-identical descriptions.
+  let score = 100;
+  score -= Math.round(emptyDescRatio * 55);
+  score -= Math.min(25, duplicateNameCount * 12);
+  score -= Math.min(20, nearIdenticalPairs * 8);
+  score = Math.max(0, Math.min(100, score));
+
+  const usable = score >= 70 && emptyDescRatio <= 0.25 && duplicateNameCount === 0;
+  let label = 'Usable descriptions';
+  if (!toolCount) label = 'No tools indexed';
+  else if (score < 40) label = 'Weak descriptions';
+  else if (!usable) label = 'Mixed descriptions';
+
+  return {
+    tool_count: toolCount,
+    empty_desc_count: emptyDescCount,
+    empty_desc_ratio: Math.round(emptyDescRatio * 1000) / 1000,
+    duplicate_name_count: duplicateNameCount,
+    near_identical_desc_pairs: nearIdenticalPairs,
+    tool_desc_score: score,
+    tool_desc_usable: usable,
+    tool_desc_flags: flags,
+    tool_desc_label: label,
+  };
+}
 
 /**
  * Verification grade from stored signals only. Not a safety score.
@@ -206,6 +335,7 @@ function computeQualitySignals(server, validationEntry = null) {
     toolCount,
     probedAt,
   });
+  const toolDesc = scoreToolDescriptionUsability(server.tools);
 
   const badges = [];
   // Primary: demoware / tools honesty
@@ -240,6 +370,14 @@ function computeQualitySignals(server, validationEntry = null) {
     tools_source_label: TOOLS_SOURCE_LABELS[toolsSource],
     tools_indexed: toolCount > 0,
     tool_count: toolCount,
+    tool_desc_score: toolDesc.tool_desc_score,
+    tool_desc_usable: toolDesc.tool_desc_usable,
+    tool_desc_label: toolDesc.tool_desc_label,
+    tool_desc_flags: toolDesc.tool_desc_flags,
+    empty_desc_count: toolDesc.empty_desc_count,
+    empty_desc_ratio: toolDesc.empty_desc_ratio,
+    duplicate_name_count: toolDesc.duplicate_name_count,
+    near_identical_desc_pairs: toolDesc.near_identical_desc_pairs,
     demoware_tier: demowareTier,
     demoware_tier_label: DEMOWARE_TIER_LABELS[demowareTier],
     probed_at: probedAt,
@@ -254,7 +392,7 @@ function computeQualitySignals(server, validationEntry = null) {
     note:
       demowareTier === 'unverified' || demowareTier === 'thin'
         ? 'Listing facts only — handshake the live tools/list before you connect.'
-        : 'Observable catalog + probe facts — not a safe-to-install badge.',
+        : 'Observable catalog + probe facts — not a safe-to-install badge. Handshake ≠ usable tool descriptions.',
   };
 }
 
@@ -303,6 +441,7 @@ function summarizeQuality(quality) {
 module.exports = {
   computeQualitySignals,
   computeVerificationGrade,
+  scoreToolDescriptionUsability,
   resolveLiveStatus,
   qualityRankBoost,
   summarizeQuality,

@@ -5,6 +5,7 @@ const {
   computeQualitySignals,
   qualityRankBoost,
   summarizeQuality,
+  scoreToolDescriptionUsability,
 } = require('./utils/mcp-quality');
 
 function main() {
@@ -32,9 +33,19 @@ function main() {
   assert.equal(ready.auth_gate, 'none_detected');
   assert.equal(ready.tools_source, 'live');
   assert.equal(ready.safety_badge, null);
+  assert.ok(typeof ready.tool_desc_score === 'number');
+  assert.equal(ready.tool_desc_usable, true);
   assert.ok(ready.badges.some((b) => b.label === 'Ready surface'));
   assert.ok(ready.badges.some((b) => b.label === 'Live OK'));
   assert.ok(qualityRankBoost(ready) > 0);
+
+  const weakTools = scoreToolDescriptionUsability([
+    { name: 'x', description: '' },
+    { name: 'x', description: '' },
+  ]);
+  assert.ok(weakTools.tool_desc_flags.includes('empty_descriptions'));
+  assert.ok(weakTools.tool_desc_flags.includes('duplicate_names'));
+  assert.equal(weakTools.tool_desc_usable, false);
 
   const auth = computeQualitySignals(
     {

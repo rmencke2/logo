@@ -3,6 +3,7 @@
 /**
  * MCP allowlist / policy pack export.
  * Observable handshake facts for a filtered Top 100 subset — never a SAFE badge.
+ * Handshake (live_ok / auth_required) stays separate from tool-description usability.
  */
 
 const fs = require('fs');
@@ -18,8 +19,8 @@ const { LIVE_STATUS_LABELS } = require('../scripts/utils/mcp-quality');
 const { LIST_ORDER } = require('./mcpListOrder');
 
 const SITE_BASE = 'https://www.influzer.ai';
-/** Practical starter pack: remotes that answered the handshake (live or auth). */
-const DEFAULT_STATUSES = ['live_ok', 'auth_required'];
+/** Default: live_ok only — auth_required is a separate, lower-confidence tier. */
+const DEFAULT_STATUSES = ['live_ok'];
 const ALLOWED_STATUSES = new Set([
   'live_ok',
   'auth_required',
@@ -30,6 +31,7 @@ const ALLOWED_STATUSES = new Set([
 
 const DISCLAIMER =
   'Policy pack from Influzer handshake facts (initialize + tools/list). ' +
+  'Answering ≠ usable tool descriptions. Auth-required remotes hide tools behind a gate. ' +
   'Not a safe-to-install badge. Review auth, tools, and blast radius before enabling.';
 
 function parseStatusFilter(raw) {
@@ -54,6 +56,19 @@ function parseTier(raw) {
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
   return parts.length ? [...new Set(parts)] : null;
+}
+
+function parseMaxTools(raw) {
+  if (raw == null || raw === '' || String(raw).toLowerCase() === 'any') return null;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return Math.min(100, Math.max(1, Math.floor(n)));
+}
+
+function parseUsableOnly(raw) {
+  if (raw == null || raw === '') return false;
+  const value = String(raw).trim().toLowerCase();
+  return value === '1' || value === 'true' || value === 'yes' || value === 'usable';
 }
 
 function allowlistRow(server) {
@@ -82,6 +97,11 @@ function allowlistRow(server) {
     verification_grade: quality.verification_grade ?? null,
     verification_grade_letter: quality.verification_grade_letter || null,
     tool_count: quality.tool_count || (server.tools || []).length || 0,
+    tool_desc_score: quality.tool_desc_score ?? null,
+    tool_desc_usable: Boolean(quality.tool_desc_usable),
+    tool_desc_label: quality.tool_desc_label || '',
+    tool_desc_flags: Array.isArray(quality.tool_desc_flags) ? quality.tool_desc_flags : [],
+    empty_desc_count: quality.empty_desc_count ?? 0,
     probed_at: quality.probed_at || null,
     page_url: pageUrl,
     install_api: installApi,
@@ -96,6 +116,8 @@ function buildAllowlistPack(options = {}) {
   const statuses = parseStatusFilter(options.status);
   const host = parseHostFilter(options.host);
   const tiers = parseTier(options.tier);
+  const maxTools = parseMaxTools(options.max_tools ?? options.maxTools);
+  const usableOnly = parseUsableOnly(options.usable_only ?? options.usableOnly);
   const limit = Math.min(100, Math.max(1, Number(options.limit) || 100));
 
   const servers = getTop100McpServers();
@@ -106,6 +128,8 @@ function buildAllowlistPack(options = {}) {
     if (!statuses.includes(row.live_status)) continue;
     if (host !== 'any' && row.host_kind !== host) continue;
     if (tiers && !tiers.includes(String(row.demoware_tier || '').toLowerCase())) continue;
+    if (maxTools != null && row.tool_count > maxTools) continue;
+    if (usableOnly && !row.tool_desc_usable) continue;
     // Cursor merge only makes sense for fixed HTTPS remotes by default.
     if (host === 'fixed' && !row.remote_url) continue;
     rows.push(row);
@@ -121,13 +145,15 @@ function buildAllowlistPack(options = {}) {
   return {
     ok: true,
     generated_at: new Date().toISOString(),
-    version: 1,
+    version: 2,
     kind: 'influzer_mcp_allowlist',
     filters: {
       scope: 'top100',
       status: statuses,
       host,
       tier: tiers,
+      max_tools: maxTools,
+      usable_only: usableOnly,
       limit,
     },
     total: rows.length,
@@ -152,6 +178,9 @@ function formatAllowlistCsv(pack) {
     'demoware_tier',
     'verification_grade_letter',
     'tool_count',
+    'tool_desc_score',
+    'tool_desc_usable',
+    'tool_desc_flags',
     'page_url',
     'install_api',
     'badge_url',
@@ -173,6 +202,9 @@ function formatAllowlistCsv(pack) {
         row.demoware_tier,
         row.verification_grade_letter || '',
         row.tool_count,
+        row.tool_desc_score ?? '',
+        row.tool_desc_usable ? 'true' : 'false',
+        (row.tool_desc_flags || []).join('|'),
         row.page_url,
         row.install_api,
         row.badge_url,
@@ -195,18 +227,20 @@ function formatAllowlistMarkdown(pack) {
     `> ${DISCLAIMER}`,
     '',
     `- Generated: ${pack.generated_at}`,
-    `- Filters: status=${(pack.filters.status || []).join(',')}; host=${pack.filters.host}`,
+    `- Filters: status=${(pack.filters.status || []).join(',')}; host=${pack.filters.host}` +
+      `${pack.filters.max_tools != null ? `; max_tools=${pack.filters.max_tools}` : ''}` +
+      `${pack.filters.usable_only ? '; usable_only=true' : ''}`,
     `- Servers: ${pack.total}`,
     `- Source: ${pack.page_url}`,
     '',
-    '| Server | Status | Grade | Tools | Remote |',
-    '| --- | --- | --- | ---: | --- |',
+    '| Server | Status | Grade | Tools | Desc score | Remote |',
+    '| --- | --- | --- | ---: | ---: | --- |',
   ];
   for (const row of pack.servers || []) {
     const name = `[${row.name}](${row.page_url})`;
     const remote = row.remote_url ? `\`${row.remote_url}\`` : '—';
     lines.push(
-      `| ${name} | ${row.live_status_label} | ${row.verification_grade_letter || '—'} | ${row.tool_count} | ${remote} |`,
+      `| ${name} | ${row.live_status_label} | ${row.verification_grade_letter || '—'} | ${row.tool_count} | ${row.tool_desc_score ?? '—'} | ${remote} |`,
     );
   }
   lines.push(
@@ -237,35 +271,39 @@ function allowlistAssetVersion() {
   }
 }
 
+function packQueryFromRequest(req) {
+  return {
+    status: req.query.status,
+    host: req.query.host,
+    tier: req.query.tier,
+    max_tools: req.query.max_tools,
+    usable_only: req.query.usable_only,
+    limit: req.query.limit,
+  };
+}
+
 function registerMcpAllowlistRoutes(app) {
   app.get('/mcp/allowlist', (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
-    const pack = buildAllowlistPack({
-      status: req.query.status,
-      host: req.query.host,
-      tier: req.query.tier,
-      limit: req.query.limit,
-    });
+    const pack = buildAllowlistPack(packQueryFromRequest(req));
     res.render('mcp-allowlist', {
       pageTitle: 'MCP allowlist / policy pack',
       metaDescription:
-        'Export a Top 100 MCP allowlist from Influzer handshake facts — Cursor mcpServers JSON, CSV, or Markdown. Not a safe-to-install badge.',
+        'Export a Top 100 MCP allowlist from Influzer handshake facts — Cursor mcpServers JSON, CSV, or Markdown. Live OK and auth-required stay separate. Not a safe-to-install badge.',
       canonicalUrl: `${SITE_BASE}/mcp/allowlist`,
       pack,
       statusFilter: (pack.filters.status || []).join(','),
       hostFilter: pack.filters.host,
+      maxToolsFilter:
+        pack.filters.max_tools == null ? 'any' : String(pack.filters.max_tools),
+      usableOnlyFilter: Boolean(pack.filters.usable_only),
       assetVersion: allowlistAssetVersion(),
       navPath: req.path,
     });
   });
 
   app.get('/api/v1/mcp/allowlist', (req, res) => {
-    const pack = buildAllowlistPack({
-      status: req.query.status,
-      host: req.query.host,
-      tier: req.query.tier,
-      limit: req.query.limit,
-    });
+    const pack = buildAllowlistPack(packQueryFromRequest(req));
     const format = String(req.query.format || 'json').trim().toLowerCase();
     res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
     res.setHeader('Access-Control-Allow-Origin', '*');
