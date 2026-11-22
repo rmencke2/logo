@@ -65,6 +65,36 @@
   font-weight: 500;
 }
 
+.allowlist-field--check {
+  min-width: 220px;
+}
+
+.allowlist-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--hp-text, #16181d);
+}
+
+.allowlist-desc {
+  font-family: var(--hp-mono, ui-monospace, monospace);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.allowlist-desc.is-usable {
+  color: #0f766e;
+}
+
+.allowlist-desc.is-weak {
+  color: #9a3412;
+}
+
 .allowlist-submit,
 .allowlist-btn {
   display: inline-flex;

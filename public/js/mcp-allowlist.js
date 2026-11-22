@@ -18,9 +18,16 @@
   }
 
   function queryString() {
-    const status = encodeURIComponent((pack.filters && pack.filters.status || []).join(',') || 'live_ok');
-    const host = encodeURIComponent((pack.filters && pack.filters.host) || 'fixed');
-    return `status=${status}&host=${host}`;
+    const filters = pack.filters || {};
+    const status = encodeURIComponent((filters.status || []).join(',') || 'live_ok');
+    const host = encodeURIComponent(filters.host || 'fixed');
+    const maxTools =
+      filters.max_tools == null || filters.max_tools === ''
+        ? 'any'
+        : String(filters.max_tools);
+    let q = `status=${status}&host=${host}&max_tools=${encodeURIComponent(maxTools)}`;
+    if (filters.usable_only) q += '&usable_only=1';
+    return q;
   }
 
   function packJson() {
