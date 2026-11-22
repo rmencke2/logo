@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Anthropic IPO context: Claude stacks still need MCP allowlists">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f7f4"/>
+      <stop offset="50%" stop-color="#eef2ea"/>
+      <stop offset="100%" stop-color="#e3e9df"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f4f7f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1380" cy="120" r="240" fill="#1f3d2b" fill-opacity="0.06"/>
+  <circle cx="120" cy="780" r="280" fill="#1f3d2b" fill-opacity="0.05"/>
+
+  <rect x="110" y="150" width="980" height="600" rx="28" fill="url(#panel)" stroke="#d5ddd0" stroke-width="2"/>
+  <text x="160" y="240" font-family="Georgia, 'Times New Roman', serif" font-size="52" fill="#142218" font-weight="700">Anthropic is public</text>
+  <text x="160" y="310" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" fill="#4a5a4f">Your Claude stack still needs an allowlist</text>
+
+  <rect x="160" y="370" width="160" height="64" rx="14" fill="#1f3d2b"/>
+  <text x="205" y="412" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="28" fill="#ffffff">ANT</text>
+
+  <rect x="340" y="370" width="280" height="64" rx="14" fill="#ffffff" stroke="#1f3d2b" stroke-width="2"/>
+  <text x="380" y="412" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26" fill="#1f3d2b">Nasdaq · Nov 2026</text>
+
+  <rect x="160" y="480" width="820" height="200" rx="20" fill="#ffffff" stroke="#d8e0d2" stroke-width="2"/>
+  <text x="200" y="545" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" fill="#142218">Operating checklist</text>
+  <text x="200" y="595" font-family="ui-sans-serif, system-ui, sans-serif" font-size="24" fill="#4a5a4f">Allowlist · handshake · spend · IdP revoke</text>
+  <text x="200" y="645" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#6b7a70">Policy before plugins — still the order after IPO</text>
+
+  <rect x="1140" y="200" width="360" height="160" rx="22" fill="#1f3d2b"/>
+  <text x="1180" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#dce6d8">MCP allowlist</text>
+  <text x="1180" y="320" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#a8bba8">merge into mcp.json</text>
+
+  <rect x="1140" y="400" width="360" height="160" rx="22" fill="#ffffff" stroke="#1f3d2b" stroke-width="2"/>
+  <text x="1180" y="470" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#1f3d2b">Probe first</text>
+  <text x="1180" y="520" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#4a5a4f">initialize → tools/list</text>
+
+  <rect x="1140" y="600" width="360" height="120" rx="22" fill="#ffffff" stroke="#c9d4c4" stroke-width="2"/>
+  <text x="1180" y="670" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" fill="#1f3d2b">Not a SAFE badge</text>
+</svg>
