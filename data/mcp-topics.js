@@ -304,6 +304,7 @@ function getMcpTopicSeoContent(topic, matchCount) {
       {
         title: 'Learn MCP',
         links: [
+          { href: '/insights/get-started-with-mcp-servers', label: 'Get started with MCP servers', desc: 'One server, a tool list, and a first prompt' },
           { href: '/insights/what-is-model-context-protocol', label: 'What is MCP?', desc: 'Architecture, examples, MCP vs RAG' },
           { href: '/insights/how-to-set-up-your-first-mcp-servers-in-cursor', label: 'First MCP setup', desc: 'Practical Cursor starter guide' },
         ],
@@ -317,7 +318,7 @@ function getMcpTopicsIndexSeoContent() {
     introTitle: 'MCP topic guides',
     introParagraphs: [
       'Focused guides for high-intent MCP workflows — browser automation, web scraping, RAG, PDF, OpenAPI, and coding-agent stacks. Each hub matches servers from our catalog by capability and indexed tools.',
-      'New to MCP? Read <a href="/insights/what-is-model-context-protocol">What is the Model Context Protocol?</a> then browse the <a href="/mcp">Top 100 directory</a>.',
+      'New to MCP? Start with <a href="/insights/get-started-with-mcp-servers">Get started with MCP servers</a>, then read <a href="/insights/what-is-model-context-protocol">What is the Model Context Protocol?</a> and browse the <a href="/mcp">Top 100 directory</a>.',
     ],
     faqs: [
       {

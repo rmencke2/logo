@@ -149,6 +149,7 @@ function registerMcpDiscoveryRoutes(app) {
         },
       },
       docs: 'https://www.influzer.ai/insights/what-is-model-context-protocol',
+      getting_started: 'https://www.influzer.ai/insights/get-started-with-mcp-servers',
       setup_guide: MCP_DISCOVERY_SETUP,
       directory: 'https://www.influzer.ai/mcp',
       probe_api: 'https://www.influzer.ai/api/v1/probe',
