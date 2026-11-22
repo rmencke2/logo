@@ -164,6 +164,7 @@ async function postMcpMessage(endpoint, payload, opts = {}) {
       body,
       messages,
       authError,
+      wwwAuthenticate: res.headers.get('www-authenticate') || null,
       rawError: !res.ok && body ? body.slice(0, 500) : null,
     };
   } catch (err) {
@@ -221,6 +222,7 @@ async function probeLiveMcpTools(endpoint, opts = {}) {
       reason: initRes.rawError || 'Authentication required',
       tools: [],
       httpStatus: initRes.status,
+      wwwAuthenticate: initRes.wwwAuthenticate || null,
     };
   }
   if (!initRes.ok) {
@@ -260,6 +262,7 @@ async function probeLiveMcpTools(endpoint, opts = {}) {
       reason: toolsRes.rawError || 'Authentication required',
       tools: [],
       httpStatus: toolsRes.status,
+      wwwAuthenticate: toolsRes.wwwAuthenticate || null,
       serverInfo: initReply.result.serverInfo,
     };
   }

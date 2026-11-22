@@ -20,6 +20,11 @@ const {
 } = require('../scripts/utils/mcp-live-client');
 const { assertSafePublicUrl } = require('./webmcp/ssrf');
 const { scanListingText, sanitizeTools } = require('./mcpSourceSafety');
+const { redactSubmission } = require('./mcpSubmissionService');
+const {
+  probeEndpointForTools,
+  DEFAULT_ACCOUNTS_PATH,
+} = require('../scripts/utils/mcp-probe-auth');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -477,7 +482,6 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     try {
       const sub = readSubmissionFile(req.params.id);
       if (!sub) return res.status(404).json({ error: 'Submission not found' });
-      const { filePath, ...payload } = sub;
       const preview = submissionToManualServer(sub, {});
       const sourceSafety =
         sub.sourceSafety && Array.isArray(sub.sourceSafety.findings)
@@ -489,7 +493,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
               tools: preview.tools || sub.tools,
             });
       res.json({
-        submission: payload,
+        submission: redactSubmission(sub),
         preview,
         sourceSafety,
         categories: [...getMcpCategories(), 'Other'],
@@ -582,6 +586,26 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     }
   });
 
+  app.get('/admin/api/mcp/submissions/:id/test-credential', requireAuth, requireAdmin, (req, res) => {
+    try {
+      const sub = readSubmissionFile(req.params.id);
+      if (!sub) return res.status(404).json({ error: 'Submission not found' });
+      const account = sub.testAccount;
+      if (!account?.secret) return res.status(404).json({ error: 'No test credential on this submission' });
+      res.set('Cache-Control', 'no-store');
+      res.json({
+        kind: account.kind || '',
+        label: account.label || '',
+        loginUrl: account.loginUrl || '',
+        notes: account.notes || '',
+        secret: account.secret,
+      });
+    } catch (err) {
+      console.error('MCP test credential error:', err);
+      res.status(500).json({ error: 'Failed to load test credential' });
+    }
+  });
+
   app.post('/admin/api/mcp/probe-tools', requireAuth, requireAdmin, async (req, res) => {
     try {
       const endpoint = String(req.body?.endpoint || '').trim();
@@ -603,10 +627,30 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
         });
       }
 
+      const submissionId = String(req.body?.submissionId || '').trim();
+      let submission = null;
+      if (submissionId) {
+        submission = readSubmissionFile(submissionId);
+        if (!submission) return res.status(404).json({ error: 'Submission not found' });
+      }
+
       const probeOpts = {
         timeoutMs: Number(process.env.MCP_ADMIN_PROBE_TIMEOUT_MS) || 20000,
       };
-      const live = await fetchLiveMcpTools(safeEndpoint, probeOpts);
+      const allowHttp = process.env.NODE_ENV !== 'production';
+      const probed = await probeEndpointForTools({
+        endpoint: safeEndpoint,
+        submission,
+        timeoutMs: probeOpts.timeoutMs,
+        accountsPath: DEFAULT_ACCOUNTS_PATH,
+        fetchLive: (url, opts) => fetchLiveMcpTools(url, opts),
+        assertUrl: async (url) => {
+          const safe = await assertSafePublicUrl(url, { allowHttp });
+          return safe.href;
+        },
+      });
+      const live = probed.live;
+      const authAttempt = probed.authAttempt;
 
       if (live.status === 'ok' || live.status === 'ok_empty') {
         const tools = sanitizeTools(live.tools || []);
@@ -623,6 +667,7 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
           serverInfo: live.serverInfo || null,
           endpoint: safeEndpoint,
           sourceSafety,
+          authAttempt,
           message:
             (live.status === 'ok_empty'
               ? 'Endpoint responded but returned 0 tools.'
@@ -632,16 +677,18 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
 
       const statusCode =
         live.status === 'auth_required' ? 401 : live.status === 'unreachable' ? 502 : 400;
+      const authNote = authAttempt?.reason ? ` ${authAttempt.reason}` : '';
       const payload = {
         error:
-          live.reason ||
-          (live.status === 'auth_required'
-            ? 'Endpoint requires authentication — paste tools manually or use a public URL.'
-            : `Could not load tools (${live.status})`),
+          (live.reason ||
+            (live.status === 'auth_required'
+              ? 'Endpoint requires authentication — paste tools manually or use a public URL.'
+              : `Could not load tools (${live.status})`)) + authNote,
         status: live.status,
         tools: [],
         endpoint: safeEndpoint,
         httpStatus: live.httpStatus || null,
+        authAttempt,
       };
 
       const guessed = suggestApiMcpUrl(safeEndpoint);

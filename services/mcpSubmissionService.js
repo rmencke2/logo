@@ -141,6 +141,13 @@ function validateSubmission(body) {
     errors.push('Add at least one tool (one tool name per line).');
   }
 
+  const testAccount = readTestAccount(body, errors, {
+    description,
+    setupInstructions,
+    additionalNotes,
+    tools: body.tools,
+  });
+
   let stars = '';
   if (starsRaw) {
     const n = parseInt(starsRaw, 10);
@@ -168,6 +175,93 @@ function validateSubmission(body) {
       official,
       tools,
       toolsFormatted: formatToolsForEmail(tools),
+      testAccount,
+    },
+  };
+}
+
+const TEST_ACCOUNT_KINDS = new Set(['bearer', 'login']);
+
+function readTestAccount(body, errors, publicFields) {
+  const kind = cleanText(body.test_account_kind, 20).toLowerCase();
+  const label = cleanText(body.test_account_label, 254);
+  const secret = cleanText(body.test_account_secret, 2048);
+  const loginUrl = cleanText(body.test_account_login_url, 500);
+  const notes = cleanText(body.test_account_notes, 500);
+  const consent = body.test_account_consent === true || body.test_account_consent === '1' || body.test_account_consent === 1;
+
+  if (!kind && !secret && !label && !loginUrl && !notes) return null;
+  if (kind && !TEST_ACCOUNT_KINDS.has(kind)) {
+    errors.push('Test account type must be a bearer token or a username and password.');
+  }
+  if ((kind || label || loginUrl || notes) && !secret) {
+    errors.push('Add the test credential, or leave the test account blank.');
+  }
+  if (secret && !TEST_ACCOUNT_KINDS.has(kind)) {
+    errors.push('Choose bearer token or username and password when you include a test credential.');
+  }
+  if (secret && secret.length < 8) {
+    errors.push('Test credential must be at least 8 characters.');
+  }
+  if (secret && !consent) {
+    errors.push('Confirm that this test credential may be used only to call initialize and tools/list.');
+  }
+  if (kind === 'login' && secret && !label) {
+    errors.push('A login test account needs a username or email.');
+  }
+  if (loginUrl && !isValidUrl(loginUrl)) {
+    errors.push('Test account login URL must be a valid http(s) link.');
+  }
+  if (loginUrl && !/^https:\/\//i.test(loginUrl)) {
+    errors.push('Test account login URL must use https.');
+  }
+  if (secret && secret.length >= 8) {
+    const leaked = ['description', 'setupInstructions', 'additionalNotes', 'tools'].some((key) =>
+      String(publicFields[key] || '').includes(secret),
+    );
+    if (leaked || (notes && notes.includes(secret))) {
+      errors.push('Keep the test credential in the secret field only.');
+    }
+  }
+  if (errors.length) return null;
+  if (!secret) return null;
+  return { kind, label, secret, loginUrl, notes, consent: true };
+}
+
+function testAccountSummary(testAccount) {
+  if (!testAccount?.secret) return 'None';
+  const kind = testAccount.kind === 'login' ? 'username and password' : 'bearer token';
+  const label = testAccount.label ? ` for ${testAccount.label}` : '';
+  return `Stored with the submission (${kind}${label}). Not included in this email.`;
+}
+
+function submissionNotification(data) {
+  const notification = { ...data };
+  notification.testAccountSummary = testAccountSummary(data.testAccount);
+  delete notification.testAccount;
+  return notification;
+}
+
+function bearerFromSubmission(sub) {
+  const account = sub?.testAccount;
+  if (!account || account.kind !== 'bearer' || account.consent !== true) return null;
+  const secret = String(account.secret || '').trim();
+  if (!secret || secret.length > 2048 || secret.length < 8 || /[\r\n\0]/.test(secret)) return null;
+  return secret;
+}
+
+function redactSubmission(sub) {
+  if (!sub) return sub;
+  const { testAccount, ...rest } = sub;
+  delete rest.filePath;
+  return {
+    ...rest,
+    testAccount: {
+      provided: Boolean(testAccount?.secret),
+      kind: testAccount?.kind || '',
+      label: testAccount?.label || '',
+      loginUrl: testAccount?.loginUrl || '',
+      notes: testAccount?.notes || '',
     },
   };
 }
@@ -274,7 +368,7 @@ function registerMcpSubmissionRoutes(app) {
       }
 
       try {
-        await sendMcpSubmissionEmail(payload);
+        await sendMcpSubmissionEmail(submissionNotification(payload));
       } catch (emailError) {
         console.error('MCP submission saved but email failed:', emailError.message);
         return res.status(500).json({
@@ -317,6 +411,9 @@ module.exports = {
   isReservedMcpPath,
   checkMcpSubmitRateLimit,
   validateSubmission,
+  submissionNotification,
+  bearerFromSubmission,
+  redactSubmission,
   MCP_SUBMIT_ENDPOINT,
   RATE_LIMIT_PER_HOUR,
   RATE_LIMIT_WINDOW_MS,
