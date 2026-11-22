@@ -1,0 +1,158 @@
+/* MCP allowlist / policy pack — extends scoreboard + directory chrome */
+
+.allowlist-shell {
+  padding-bottom: 64px;
+}
+
+.allowlist-panel,
+.allowlist-preview {
+  margin: 0 0 28px;
+  padding: 22px 24px;
+  border: 1px solid var(--hp-border, #e6e4dd);
+  border-radius: 14px;
+  background: var(--hp-card, #fff);
+}
+
+.allowlist-panel__head,
+.allowlist-preview__head {
+  margin-bottom: 16px;
+}
+
+.allowlist-panel__title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.allowlist-panel__note {
+  margin: 0;
+  color: var(--hp-muted, #4b4e57);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.allowlist-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.allowlist-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hp-muted2, #6d707a);
+}
+
+.allowlist-field select {
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--hp-border2, #dddbd3);
+  background: var(--hp-bg, #fafaf8);
+  color: var(--hp-text, #16181d);
+  font: inherit;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.allowlist-submit,
+.allowlist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--hp-border2, #dddbd3);
+  background: var(--hp-card, #fff);
+  color: var(--hp-text, #16181d);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.allowlist-submit,
+.allowlist-btn--primary {
+  background: var(--hp-text, #16181d);
+  border-color: var(--hp-text, #16181d);
+  color: var(--hp-card, #fff);
+}
+
+.allowlist-btn--ghost {
+  background: transparent;
+}
+
+.allowlist-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.allowlist-status {
+  min-height: 1.25em;
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--hp-muted, #4b4e57);
+}
+
+.allowlist-slug {
+  margin-top: 2px;
+  font-family: var(--hp-mono, ui-monospace, monospace);
+  font-size: 11px;
+  color: var(--hp-faint, #9a9ca3);
+}
+
+.allowlist-remote code {
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.allowlist-code {
+  margin: 0;
+  padding: 16px 18px;
+  overflow: auto;
+  max-height: 420px;
+  border-radius: 10px;
+  border: 1px solid var(--hp-border, #e6e4dd);
+  background: var(--hp-surface, #f4f3ee);
+  font-family: var(--hp-mono, ui-monospace, monospace);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--hp-text, #16181d);
+}
+
+.registry-page.dark .allowlist-panel,
+.registry-page.dark .allowlist-preview {
+  background: var(--hp-card);
+  border-color: var(--hp-border);
+}
+
+.registry-page.dark .allowlist-field select,
+.registry-page.dark .allowlist-code {
+  background: var(--hp-surface);
+  border-color: var(--hp-border);
+  color: var(--hp-text);
+}
+
+@media (max-width: 720px) {
+  .allowlist-panel,
+  .allowlist-preview {
+    padding: 18px 16px;
+  }
+
+  .allowlist-field {
+    min-width: 100%;
+  }
+}

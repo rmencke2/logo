@@ -184,6 +184,7 @@ const RESERVED_MCP_PATHS = new Set([
   'install',
   'skill',
   'scoreboard',
+  'allowlist',
   'promote',
   'changes',
   'claim',

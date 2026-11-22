@@ -36,6 +36,7 @@ const { registerMcpDiscoveryRoutes } = require('./mcpDiscoveryMcpService');
 const { registerMcpProbeRoutes, probeMcpUrl } = require('./mcpProbeService');
 const { registerMcpServerCheckRoutes } = require('./mcpServerCheck');
 const { registerMcpScoreboardRoutes, buildScoreboard } = require('./mcpScoreboardService');
+const { registerMcpAllowlistRoutes } = require('./mcpAllowlistService');
 const { registerMcpHandshakeDiffRoutes } = require('./mcpHandshakeDiffService');
 const { getPromoteOffer, presentSponsorRail, isSponsoredSlug } = require('./mcpPromoteService');
 const { refreshListingHandshake } = require('./mcpHandshakeOverlay');
@@ -1066,6 +1067,7 @@ ${itemsXml}
   registerMcpServerCheckRoutes(app);
   registerMcpInstallRoutes(app);
   registerMcpScoreboardRoutes(app);
+  registerMcpAllowlistRoutes(app);
   registerMcpHandshakeDiffRoutes(app);
 
   app.get('/mcp/all', (req, res) => {
@@ -1560,6 +1562,7 @@ ${urls
       { loc: `${SITE_BASE_URL}/mcp/probe`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.84' },
       { loc: `${SITE_BASE_URL}/mcp/check`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.84' },
       { loc: `${SITE_BASE_URL}/mcp/scoreboard`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.88' },
+      { loc: `${SITE_BASE_URL}/mcp/allowlist`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/mcp/changes`, lastmod: latestPostDate, changefreq: 'daily', priority: '0.86' },
       { loc: `${SITE_BASE_URL}/mcp/promote`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/mcp/promote/terms`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.55' },
