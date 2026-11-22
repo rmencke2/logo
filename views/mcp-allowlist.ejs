@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title><%= pageTitle %> — Influzer.ai</title>
+    <meta name="description" content="<%= metaDescription %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <%- include('partials/seo-social', {
+      ogTitle: pageTitle + ' — Influzer.ai',
+      ogDescription: metaDescription,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-scoreboard.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-allowlist.css?v=<%= assetVersion %>" />
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+
+    <header class="dir-hero">
+      <div class="dir-hero__inner">
+        <p class="dir-hero__eyebrow">Policy before plugins</p>
+        <h1 class="dir-hero__title">MCP allowlist / policy pack</h1>
+        <p class="dir-hero__lead">
+          Export a filtered Top 100 pack from Influzer handshake facts —
+          Cursor <code>mcpServers</code> JSON, CSV, or Markdown.
+          <strong>Not a safe-to-install badge.</strong>
+          <%= pack.order_caption %>
+          Read <a href="/insights/policy-before-plugins-mcp-allowlist">Policy before plugins</a>
+          or <a href="/methodology">how we verify</a>.
+        </p>
+        <div class="board-stats" aria-label="Pack summary">
+          <div class="board-stat is-active">
+            <b><%= pack.total %></b><span>In this pack</span>
+          </div>
+          <div class="board-stat board-stat--ok">
+            <b><%= (pack.filters.status || []).join(' · ') || 'live_ok' %></b><span>Status filter</span>
+          </div>
+          <div class="board-stat">
+            <b><%= pack.filters.host %></b><span>Host filter</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dir-shell board-shell allowlist-shell" id="main">
+      <div class="dir-controls">
+        <nav class="dir-tabs" aria-label="Directory scope">
+          <a href="/mcp">Top 100</a>
+          <a href="/mcp/scoreboard">Scoreboard</a>
+          <a href="/mcp/allowlist" class="is-active">Allowlist</a>
+          <a href="/mcp/changes">Changes</a>
+          <a href="/mcp/all">Full directory</a>
+        </nav>
+      </div>
+
+      <section class="allowlist-panel" aria-labelledby="allowlistFiltersHeading">
+        <div class="allowlist-panel__head">
+          <h2 class="allowlist-panel__title" id="allowlistFiltersHeading">Build a pack</h2>
+          <p class="allowlist-panel__note"><%= pack.note %></p>
+        </div>
+
+        <form class="allowlist-filters" id="allowlistFilters" method="get" action="/mcp/allowlist">
+          <label class="allowlist-field">
+            <span>Handshake status</span>
+            <select name="status" id="allowlistStatus">
+              <option value="live_ok,auth_required"<%= statusFilter === 'live_ok,auth_required' ? ' selected' : '' %>>Live OK + auth gate</option>
+              <option value="live_ok"<%= statusFilter === 'live_ok' ? ' selected' : '' %>>Live OK only</option>
+              <option value="auth_required"<%= statusFilter === 'auth_required' ? ' selected' : '' %>>Auth gate only</option>
+            </select>
+          </label>
+          <label class="allowlist-field">
+            <span>Host</span>
+            <select name="host" id="allowlistHost">
+              <option value="fixed"<%= hostFilter === 'fixed' ? ' selected' : '' %>>Fixed HTTPS remotes</option>
+              <option value="any"<%= hostFilter === 'any' ? ' selected' : '' %>>Any host kind</option>
+            </select>
+          </label>
+          <button type="submit" class="allowlist-submit">Refresh pack</button>
+        </form>
+
+        <div class="allowlist-actions" role="group" aria-label="Export actions">
+          <button type="button" class="allowlist-btn allowlist-btn--primary" data-copy="cursor">Copy Cursor JSON</button>
+          <button type="button" class="allowlist-btn" data-copy="json">Copy full pack JSON</button>
+          <button type="button" class="allowlist-btn" data-download="cursor">Download mcp.allowlist.json</button>
+          <button type="button" class="allowlist-btn" data-download="csv">Download CSV</button>
+          <button type="button" class="allowlist-btn" data-download="md">Download Markdown</button>
+          <a class="allowlist-btn allowlist-btn--ghost" href="/api/v1/mcp/allowlist?status=<%= encodeURIComponent(statusFilter) %>&amp;host=<%= encodeURIComponent(hostFilter) %>">API</a>
+        </div>
+        <p class="allowlist-status" id="allowlistStatusMsg" role="status" aria-live="polite"></p>
+      </section>
+
+      <div class="board-table-wrap">
+        <table class="board-table" id="allowlistBoard">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Server</th>
+              <th scope="col">Status</th>
+              <th scope="col">Grade</th>
+              <th scope="col">Tools</th>
+              <th scope="col">Remote</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (!pack.servers.length) { %>
+              <tr>
+                <td colspan="6">No servers match these filters. Try Live OK + auth gate, or open the <a href="/mcp/scoreboard">scoreboard</a>.</td>
+              </tr>
+            <% } %>
+            <% pack.servers.forEach(function(row, index) { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td>
+                  <a href="/mcp/<%= row.slug %>"><%= row.name %></a>
+                  <div class="allowlist-slug"><%= row.slug %></div>
+                </td>
+                <td><span class="board-pill board-pill--<%= row.live_status %>"><%= row.live_status_label %></span></td>
+                <td><%= row.verification_grade_letter || '—' %></td>
+                <td><%= row.tool_count %></td>
+                <td class="allowlist-remote">
+                  <% if (row.remote_url) { %>
+                    <code><%= row.remote_url.replace(/^https:\/\//i, '') %></code>
+                  <% } else { %>
+                    <span><%= row.host_label %></span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <section class="allowlist-preview" aria-labelledby="allowlistPreviewHeading">
+        <div class="allowlist-preview__head">
+          <h2 class="allowlist-panel__title" id="allowlistPreviewHeading">Cursor <code>mcpServers</code> preview</h2>
+          <p class="allowlist-panel__note">Merge into <code>.cursor/mcp.json</code>. Do not overwrite unrelated keys.</p>
+        </div>
+        <pre class="allowlist-code" id="allowlistCursorPreview"><%= JSON.stringify(pack.cursor, null, 2) %></pre>
+      </section>
+    </main>
+
+    <%- include('partials/registry-footer') %>
+    <script nonce="<%= cspNonce %>" src="/js/registry.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" src="/js/mcp-allowlist.js?v=<%= assetVersion %>" defer></script>
+    <script nonce="<%= cspNonce %>" type="application/json" id="allowlistPackData"><%- JSON.stringify(pack).replace(/</g, '\\u003c') %></script>
+  </body>
+</html>
