@@ -580,6 +580,260 @@ function starterRecipes() {
         },
       ],
     },
+    {
+      slugHint: 'implement-a-stripe-paymentintent-with-context7',
+      title: 'Implement a Stripe PaymentIntent with Context7',
+      summary:
+        'Influzer starter recipe: use Stripe MCP for account/product context, then pull current Stripe API docs via Context7 before writing PaymentIntent code — test mode only.',
+      use_case: 'Engineering',
+      server_slugs: requireServers(['stripe', 'context7']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code', 'ChatGPT'],
+      prerequisites:
+        '- Stripe remote MCP authorized for a **test-mode** account you own\n- Context7 remote MCP access\n- Never paste live secret keys into chat — configure OAuth / client secrets in MCP settings',
+      permissions:
+        'Stripe MCP can read and mutate payment objects depending on scopes. Stay in test mode. Context7 is read-only docs lookup. This is not a PCI or security approval.',
+      expected_result:
+        'A minimal PaymentIntent create flow (server-side) grounded in current Stripe docs, plus the client confirm steps — with test-mode caveats called out.',
+      sample_output:
+        'Context7 (stripe-node): paymentIntents.create({ amount, currency, automatic_payment_methods })\nProposed route: POST /api/checkout/intent → returns client_secret\nTest card: use Stripe test PANs only; do not charge live customers from this recipe.',
+      troubleshooting:
+        '- Auth / empty tools: re-add `https://mcp.stripe.com` and complete OAuth for the test account\n- Wrong API shape: prefer Context7 over training memory for Stripe SDK versions\n- If the agent suggests live keys or skipping webhooks: stop and tighten the prompt',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Stripe and Context7',
+          body: 'Add Stripe at `https://mcp.stripe.com` (test-mode account) and Context7 at `https://mcp.context7.com/mcp`. Confirm tools appear before asking for payment code.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example dual-server mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "stripe": {
+      "url": "https://mcp.stripe.com"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Docs first, then a test-mode PaymentIntent',
+          language: 'markdown',
+          body: 'Using Context7, fetch the current Stripe docs for creating a PaymentIntent (server SDK + client confirm).\nUsing Stripe MCP in **test mode only**, list whether any products/prices already exist that fit a $20 one-time checkout (do not create live charges).\nThen implement a minimal server route that creates a PaymentIntent and returns `client_secret`, plus the client confirm steps.\nDo not use live secret keys, do not disable webhooks guidance, and do not invent PCI-sensitive shortcuts.',
+        },
+        {
+          block_type: 'instruction',
+          title: 'Keep secrets out of the thread',
+          body: 'Put Stripe secrets in MCP / env config. Reject prompts that ask you to paste `sk_live` or production customer PII into chat.',
+        },
+      ],
+    },
+    {
+      slugHint: 'debug-a-staging-page-with-chrome-devtools-mcp',
+      title: 'Debug a staging page with Chrome DevTools MCP',
+      summary:
+        'Influzer starter recipe: open a staging URL in Chrome DevTools MCP, capture console errors and failed network requests, and return a short triage note — without touching production sessions.',
+      use_case: 'DevOps',
+      server_slugs: requireServers(['chrome-devtools-mcp']),
+      compatible_clients: ['Cursor', 'Claude Code', 'Claude Desktop'],
+      prerequisites:
+        '- Local Chrome + `chrome-devtools-mcp` via npx\n- A staging URL you own or have permission to inspect\n- Prefer a fresh browser profile — do not attach to your personal logged-in Chrome session',
+      permissions:
+        'DevTools MCP can see page content, cookies, and network for the controlled browser. Treat it like giving the agent your browser. Use staging only; avoid `--autoConnect` to personal profiles with banking or admin sessions.',
+      expected_result:
+        'A triage note: top console errors, failed requests (status + URL), and a hypothesized root cause with a next debug step.',
+      sample_output:
+        'FAIL — 1 console error, 2 failed XHRs\nconsole: TypeError: Cannot read properties of null (reading `id`) @ checkout.js:142\nnetwork: POST /api/cart 500; GET /api/me 401\nHypothesis: session cookie missing on staging subdomain — check SameSite + domain.',
+      troubleshooting:
+        '- Browser does not launch: ensure `npx -y chrome-devtools-mcp@latest` works in a terminal\n- Empty console: hard-reload after navigate; confirm the page actually errors\n- Stdio only — not usable from ChatGPT’s remote-only MCP path',
+      source_repo_url: 'https://github.com/ChromeDevTools/chrome-devtools-mcp',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Install Chrome DevTools MCP locally',
+          body: 'Add the official Chrome DevTools MCP (`chrome-devtools-mcp`) to Cursor or Claude Code. Use a dedicated/staging profile — do not connect the agent to your everyday logged-in Chrome.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example stdio mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Capture console + network on staging',
+          language: 'markdown',
+          body: 'Using Chrome DevTools MCP, open https://staging.example.com/checkout (replace with my staging URL).\n1) Wait for the page to settle\n2) List console errors/warnings\n3) List failed network requests (status >= 400) with method + URL\n4) Summarize the most likely root cause and one concrete next check\nDo not submit payments, do not change account settings, and do not use production URLs.',
+        },
+      ],
+    },
+    {
+      slugHint: 'triage-open-gitlab-merge-requests',
+      title: 'Triage open GitLab merge requests',
+      summary:
+        'Influzer starter recipe: connect the official GitLab MCP, list open MRs for a project you own, and draft a review triage note — without merging or approving anything.',
+      use_case: 'Engineering',
+      server_slugs: requireServers(['gitlab']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code', 'ChatGPT'],
+      prerequisites:
+        '- GitLab.com (or self-managed) MCP at `/api/v4/mcp` with OAuth to projects you can read\n- Know the project path (e.g. `group/app`)\n- Agreement that the agent will not merge, approve, or push',
+      permissions:
+        'GitLab OAuth can expose source code, issues, and MRs in authorized projects. Start read-only: ask for a triage summary before any write actions. Not a security audit.',
+      expected_result:
+        'A ranked list of open MRs with age, author, risk notes, and a suggested review order — no merges.',
+      sample_output:
+        'Open MRs (3):\n1. !142 auth: fix session refresh (2d, @dev) — touches auth middleware; review first\n2. !140 docs: changelog (5d) — low risk\n3. !138 feat: billing UI (9d) — large diff; needs Context7/Stripe pass separately',
+      troubleshooting:
+        '- Auth loop: remove and re-add `https://gitlab.com/api/v4/mcp` (or your self-managed `/api/v4/mcp`)\n- Wrong project: put the full `group/project` path in the prompt\n- If the agent offers to merge: stop and restate read-only',
+      source_repo_url: 'https://docs.gitlab.com/user/model_context_protocol/mcp_server/',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect GitLab MCP',
+          body: 'Add the official GitLab MCP (`https://gitlab.com/api/v4/mcp` on GitLab.com, or `/api/v4/mcp` on self-managed) and complete OAuth for the projects you want to inspect.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example mcp.json (GitLab.com)',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "gitlab": {
+      "url": "https://gitlab.com/api/v4/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Read-only MR triage',
+          language: 'markdown',
+          body: 'Using GitLab MCP, list open merge requests for project `YOUR_GROUP/YOUR_PROJECT` (replace with mine).\nFor each MR: title, IID, author, age, labels, and a one-line risk note (auth/billing/migrations = higher risk).\nPropose a review order. Do not approve, merge, comment, or push unless I explicitly ask afterward.',
+        },
+      ],
+    },
+    {
+      slugHint: 'inspect-redis-keys-before-mutating',
+      title: 'Inspect Redis keys before mutating',
+      summary:
+        'Influzer starter recipe: connect Redis MCP to a non-production instance, survey key patterns and TTLs first, then ask for a safe read — before any SET/DEL/FLUSH.',
+      use_case: 'Data & Analytics',
+      server_slugs: requireServers(['redis']),
+      compatible_clients: ['Cursor', 'Claude Code', 'Claude Desktop'],
+      prerequisites:
+        '- Redis reachable from your machine (prefer local/staging)\n- `uvx` available for `redis-mcp-server`\n- Connection URL only in MCP config — never in the chat\n- Prefer a read-limited Redis ACL user',
+      permissions:
+        'Redis MCP can read and write keys depending on the ACL. Point it at staging. Never run FLUSHALL/FLUSHDB. Secrets and session tokens in Redis are sensitive — do not dump values into public channels.',
+      expected_result:
+        'A keyspace overview (patterns + sample TTLs) and a proposed read-only inspection plan — no destructive commands.',
+      sample_output:
+        'Patterns: session:*, cache:product:*, lock:checkout:*\nsession:* ~12k keys, TTL ~1800s\nNext: GET one `cache:product:*` sample; do not DEL or FLUSH.',
+      troubleshooting:
+        '- `uvx` missing: install uv, or follow https://github.com/redis/mcp-redis install docs\n- Connection refused: check host/port/TLS (`rediss://`) and ACL user\n- Stdio only — not usable from ChatGPT’s remote-only MCP path',
+      source_repo_url: 'https://github.com/redis/mcp-redis',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Add Redis MCP with a placeholder URL',
+          body: 'Install the official Redis MCP (`redis-mcp-server` via `uvx`). Put the real Redis URL only in local MCP config or env. Use a staging instance and a restricted ACL when possible.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example stdio config (placeholder URL)',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "redis": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "redis-mcp-server@latest",
+        "redis-mcp-server",
+        "--url",
+        "redis://127.0.0.1:6379/0"
+      ]
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Survey keys, then read-only checks',
+          language: 'markdown',
+          body: 'Using Redis MCP against my staging instance, summarize the main key patterns (e.g. session:*, cache:*) and typical TTLs.\nThen propose a read-only plan to inspect one cache key and one session key metadata (type + TTL) without printing secrets.\nDo not run SET/DEL/FLUSHALL/FLUSHDB or overwrite keys unless I explicitly approve afterward.',
+        },
+      ],
+    },
+    {
+      slugHint: 'check-deploy-health-with-datadog-and-sentry',
+      title: 'Check deploy health with Datadog and Sentry',
+      summary:
+        'Influzer starter recipe: after a release, pull Datadog signals and recent Sentry issues for the same service window and draft a go/no-go health note — without changing monitors or resolving issues.',
+      use_case: 'DevOps',
+      server_slugs: requireServers(['datadog', 'sentry']),
+      compatible_clients: ['Cursor', 'Claude Desktop', 'Claude Code', 'ChatGPT'],
+      prerequisites:
+        '- Datadog remote MCP (`https://mcp.datadoghq.com/v1/mcp`) authorized for the env you care about\n- Sentry remote MCP (`https://mcp.sentry.dev/mcp`) authorized for the matching project\n- Know the service name + deploy time window',
+      permissions:
+        'Both connectors can expose production telemetry and sometimes PII in error payloads. Scrub before sharing externally. Do not mute monitors, delete dashboards, or bulk-resolve issues from this recipe.',
+      expected_result:
+        'A short post-deploy health note: error-rate / latency signals from Datadog, top new Sentry issues, and a clear go / watch / rollback recommendation.',
+      sample_output:
+        'Window: last 30m since deploy `abc123`\nDatadog: p95 latency +12% vs prior hour; 5xx steady\nSentry: 1 new issue (TypeError on /checkout) — 18 events\nRecommendation: WATCH — fix checkout null guard; no rollback yet.',
+      troubleshooting:
+        '- Datadog auth: re-add `https://mcp.datadoghq.com/v1/mcp` (OAuth or API keys per Datadog docs)\n- Sentry auth: re-add `https://mcp.sentry.dev/mcp`\n- Wrong service: name the Datadog service + Sentry project explicitly in the prompt',
+      source_repo_url: '',
+      author_reports_tested: false,
+      last_tested_at: null,
+      blocks: [
+        {
+          block_type: 'instruction',
+          title: 'Connect Datadog and Sentry',
+          body: 'Add Datadog at `https://mcp.datadoghq.com/v1/mcp` and Sentry at `https://mcp.sentry.dev/mcp`. Complete auth for the org/env that received the deploy.',
+        },
+        {
+          block_type: 'config',
+          title: 'Example dual-server mcp.json',
+          language: 'json',
+          body: `{
+  "mcpServers": {
+    "datadog": {
+      "url": "https://mcp.datadoghq.com/v1/mcp"
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    }
+  }
+}`,
+        },
+        {
+          block_type: 'prompt',
+          title: 'Post-deploy go / watch / rollback',
+          language: 'markdown',
+          body: 'We deployed service `YOUR_SERVICE` about 30 minutes ago (replace with mine).\nUsing Datadog, summarize error rate, p95 latency, and any obvious anomalies vs the prior hour for that service.\nUsing Sentry, list new or spiking unresolved issues in the same window (scrub PII).\nReturn a go / watch / rollback recommendation with the top 3 evidence bullets. Do not mute monitors, delete dashboards, or resolve issues.',
+        },
+      ],
+    },
   ];
 }
 
