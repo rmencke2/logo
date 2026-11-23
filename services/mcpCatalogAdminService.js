@@ -20,7 +20,7 @@ const {
 } = require('../scripts/utils/mcp-live-client');
 const { assertSafePublicUrl } = require('./webmcp/ssrf');
 const { scanListingText, sanitizeTools } = require('./mcpSourceSafety');
-const { redactSubmission } = require('./mcpSubmissionService');
+const { redactSubmission, testAccountListFields } = require('./mcpSubmissionService');
 const {
   probeEndpointForTools,
   DEFAULT_ACCOUNTS_PATH,
@@ -86,6 +86,7 @@ function listSubmissions({ status } = {}) {
         reviewStatus: full.reviewStatus || 'pending',
         approvedSlug: full.approvedSlug || null,
         toolCount: Array.isArray(full.tools) ? full.tools.length : 0,
+        ...testAccountListFields(full.testAccount),
         reviewNote: full.reviewNote || null,
         feedbackSentAt: full.feedbackSentAt || null,
         sourceSafetyHigh: Number(full.sourceSafety?.highCount || 0),

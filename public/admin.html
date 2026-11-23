@@ -812,6 +812,7 @@
   <div class="modal" id="mcpReviewModal">
     <div class="modal-content modal-content--wide">
       <h3>Review MCP submission</h3>
+      <div id="mcpTestAccountBanner" style="margin:0 0 12px;font-size:14px;color:#8e8e93;">No test account on this submission.</div>
       <div id="mcpReviewAlert"></div>
       <form id="mcpReviewForm" data-admin-submit="handleMcpApprove">
         <input type="hidden" id="mcpReviewId" />
@@ -2291,6 +2292,12 @@
       return `<span class="badge ${safeClass}">${escapeHtml(raw)}</span>`;
     }
 
+    function mcpTestAccountCell(row) {
+      if (!row.testAccountProvided) return '<span style="color:#8e8e93;">None</span>';
+      const label = row.testAccountKind === 'login' ? 'Login' : 'Bearer';
+      return `<span style="color:#10a37f;font-weight:600;">${label}</span>`;
+    }
+
     function toolsToText(tools) {
       if (!Array.isArray(tools)) return '';
       return tools
@@ -2636,8 +2643,10 @@
           container.innerHTML = '<div class="loading">No submissions in this filter.</div>';
           return;
         }
-        let html = `<table><thead><tr>
-          <th>Submitted</th><th>Server</th><th>Category</th><th>From</th><th>Tools</th><th>Status</th><th>Source scan</th><th></th>
+        const withAccount = data.submissions.filter((row) => row.testAccountProvided).length;
+        let html = `<p style="margin:0 0 12px;font-size:13px;color:#8e8e93;">${withAccount} of ${data.submissions.length} include a test account. The secret stays off this list.</p>`;
+        html += `<table><thead><tr>
+          <th>Submitted</th><th>Server</th><th>Category</th><th>From</th><th>Tools</th><th>Test account</th><th>Status</th><th>Source scan</th><th></th>
         </tr></thead><tbody>`;
         for (const row of data.submissions) {
           const date = row.submittedAt ? new Date(row.submittedAt).toLocaleString() : '—';
@@ -2655,6 +2664,7 @@
             <td>${escapeHtml(row.category || '')}</td>
             <td>${escapeHtml(row.submitterName || row.submitterEmail || '')}</td>
             <td>${row.toolCount || 0}</td>
+            <td>${mcpTestAccountCell(row)}</td>
             <td>${mcpStatusBadge(row.reviewStatus)}</td>
             <td>${scanCell}</td>
             <td><button class="btn btn-sm btn-secondary" ${adminInvoke('openMcpReview', [row.id])}>Review</button></td>
@@ -2700,6 +2710,7 @@
         document.getElementById('mcpSubmitterMeta').textContent =
           `${sub.submitterName || ''} · ${sub.submitterEmail || ''} · ${sub.submittedAt || ''}`;
         const account = sub.testAccount || {};
+        const accountBanner = document.getElementById('mcpTestAccountBanner');
         const accountNote = document.getElementById('mcpTestAccountNote');
         const revealBtn = document.getElementById('mcpRevealTestAccountBtn');
         const secretEl = document.getElementById('mcpTestAccountSecret');
@@ -2710,11 +2721,24 @@
         if (account.provided) {
           const kindLabel = account.kind === 'login' ? 'username and password' : 'bearer token';
           const who = account.label ? ` for ${account.label}` : '';
+          const summary = `Test ${kindLabel} stored${who}.`;
+          if (accountBanner) {
+            accountBanner.textContent = summary;
+            accountBanner.style.color = '#10a37f';
+            accountBanner.style.fontWeight = '600';
+          }
           accountNote.textContent =
-            `Test ${kindLabel} stored${who}. It is not in the catalog. Refresh tools sends a stored bearer token from the server. A password is not used to log into a website.`;
+            `${summary} It is not in the catalog. Refresh tools sends a stored bearer token from the server. A password is not used to log into a website.`;
+          accountNote.style.color = '#10a37f';
           if (revealBtn) revealBtn.hidden = false;
         } else {
+          if (accountBanner) {
+            accountBanner.textContent = 'No test account on this submission.';
+            accountBanner.style.color = '#8e8e93';
+            accountBanner.style.fontWeight = '400';
+          }
           accountNote.textContent = 'No test account on this submission.';
+          accountNote.style.color = '#8e8e93';
           if (revealBtn) revealBtn.hidden = true;
         }
         const thinTools = (preview.tools || sub.tools || []).filter(
