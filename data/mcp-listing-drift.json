@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-16T15:02:41.995Z",
+  "generated_at": "2026-11-23T17:22:49.614Z",
   "note": "Server-card differences for manual remote listings. The catalog was not changed.",
-  "checked": 166,
+  "checked": 167,
   "ok": 10,
-  "no_card": 104,
+  "no_card": 105,
   "drift": [
     {
       "slug": "agentseo",
@@ -63,9 +63,11 @@
         "best"
       ],
       "tools_added": [
+        "start_upgrade",
         "check_mcp_setup",
         "watch_free",
         "what_changed",
+        "history",
         "seller_self_check",
         "seller_announce"
       ],
@@ -73,7 +75,7 @@
         "botsrated_policy_check"
       ],
       "description_differs": true,
-      "live_description": "Monitor the MCP servers and paid APIs (x402 sellers) your agents already use: signed measurements and change history. Facts-only measurements of x402 sellers and remote MCP servers from the Official MCP Registry, each test result backed by a signed receipt. Free tools: preflight, check_mcp_setup, watch_free, what_changed, find, coverage, sample, seller_self_check, seller_announce. Paid tools: check, report, best. Prices in USDC on Base: check $0.01, report $0.002, best $0.01. The MCP check tool "
+      "live_description": "Monitor the MCP servers and paid APIs (x402 sellers) your agents already use: signed measurements and change history. Facts-only measurements of x402 sellers and remote MCP servers from the Official MCP Registry, each test result backed by a signed receipt. Free tools: start_upgrade, preflight, check_mcp_setup, watch_free, what_changed, find, coverage, sample, history, seller_self_check, seller_announce. Paid tools: check, report, best. Prices in USDC on Base: check $0.01, report $0.002, best $0"
     },
     {
       "slug": "influence",
@@ -147,26 +149,6 @@
       "live_description": ""
     },
     {
-      "slug": "product-page-extractor",
-      "name": "Product Page Extractor",
-      "endpoint": "https://product-extractor.mohamed-bahaa53000.workers.dev/demo/mcp",
-      "cardUrl": "https://product-extractor.mohamed-bahaa53000.workers.dev/.well-known/mcp/server-card.json",
-      "kind": "drift",
-      "price": {
-        "stored": [],
-        "live": [],
-        "changed": false
-      },
-      "tools_changed": [
-        "extract_product",
-        "extract_batch"
-      ],
-      "tools_added": [],
-      "tools_removed": [],
-      "description_differs": false,
-      "live_description": ""
-    },
-    {
       "slug": "sitepatent-directory",
       "name": "SitePatent Directory",
       "endpoint": "https://sitepatent.com/api/mcp",
@@ -215,6 +197,26 @@
       "tools_removed": [],
       "description_differs": true,
       "live_description": "Read-only MCP server for the MediaProNet directory of SaaS, AI and developer tools: search listings, find alternatives to a product, fetch listing profiles, browse categories and read trending leaderboards. Free and anonymous, no API key or authentication required."
+    },
+    {
+      "slug": "product-page-extractor",
+      "name": "Product Page Extractor",
+      "endpoint": "https://product-extractor.mohamed-bahaa53000.workers.dev/demo/mcp",
+      "cardUrl": "https://product-extractor.mohamed-bahaa53000.workers.dev/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "extract_product",
+        "extract_batch"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": false,
+      "live_description": ""
     },
     {
       "slug": "b2b-email-domain-scorer",
@@ -308,30 +310,6 @@
       "live_description": "Take screenshots of web pages. Paste a website address and get a screenshot of the whole page as an image or PDF. Free to try, nothing to install. For developers, one simple screenshot API."
     },
     {
-      "slug": "nanoparse",
-      "name": "NanoParse",
-      "endpoint": "https://nanoparse.app/mcp",
-      "cardUrl": "https://nanoparse.app/.well-known/mcp/server-card.json",
-      "kind": "drift",
-      "price": {
-        "stored": [
-          "$0.002"
-        ],
-        "live": [
-          "$0.002"
-        ],
-        "changed": false
-      },
-      "tools_changed": [
-        "nanoparse_fetch",
-        "nanoparse_status"
-      ],
-      "tools_added": [],
-      "tools_removed": [],
-      "description_differs": true,
-      "live_description": "NanoParse — parse any URL into clean Markdown with Litmus source-intelligence signals. Paid per parse ($0.002 USDC on Base) with x402; no accounts, no API keys."
-    },
-    {
       "slug": "rooms-by-aurmada",
       "name": "Rooms by Aurmada",
       "endpoint": "https://rooms.aurmada.com/mcp",
@@ -378,6 +356,30 @@
       ],
       "description_differs": true,
       "live_description": "Shared rooms where people bring their own AIs (ChatGPT, Claude, Gemini, Cursor and custom agents) to work together with shared, scoped context, plus agent jobs with signed receipts and an agent directory (search_agents, submit_agent)."
+    },
+    {
+      "slug": "nanoparse",
+      "name": "NanoParse",
+      "endpoint": "https://nanoparse.app/mcp",
+      "cardUrl": "https://nanoparse.app/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [
+          "$0.002"
+        ],
+        "live": [
+          "$0.002"
+        ],
+        "changed": false
+      },
+      "tools_changed": [
+        "nanoparse_fetch",
+        "nanoparse_status"
+      ],
+      "tools_added": [],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "NanoParse — parse any URL into clean Markdown with Litmus source-intelligence signals. Paid per parse ($0.002 USDC on Base) with x402; no accounts, no API keys."
     },
     {
       "slug": "hourtick",
@@ -482,13 +484,31 @@
         "preflight_payment"
       ],
       "tools_added": [
+        "jithox_task",
+        "find_jithox_tool",
+        "describe_jithox_tool",
+        "call_jithox_tool",
         "kbo_company_search",
         "review_invoice",
-        "check_vat_list"
+        "check_vat_list",
+        "check_duplicate_invoice",
+        "review_agent_team",
+        "design_agent_team",
+        "request_security_review",
+        "validate_invoice",
+        "search_eprel_products",
+        "get_eprel_product_record",
+        "get_eprel_energy_label_data",
+        "compare_eprel_product_metrics",
+        "prepare_energy_label_preflight_receipt",
+        "agent_action_preflight",
+        "verify_company_registration",
+        "find_company_registration",
+        "check_registration_number_format"
       ],
       "tools_removed": [],
       "description_differs": true,
-      "live_description": "Jithox's read-only checks before a payment: one preflight of the payment itself, a changed supplier bank account, an IBAN, Peppol invoice rules and receivers, EU VAT numbers in VIES and Belgian companies in the KBO. No tool on this endpoint sends, posts, pays or delivers anything. Before you pay an invoice, call preflight_payment once. No verdict (an error or 429) means: do not pay."
+      "live_description": "Read-only checks for payments, invoices, VAT and company records, EU sanctions, imports, energy labels, and agent action preflights. Nothing sends, pays, files, or changes an external system."
     },
     {
       "slug": "quotebill",
@@ -542,6 +562,37 @@
       "tools_removed": [],
       "description_differs": true,
       "live_description": "Stateless duplicate removal for text lists and CSV/TSV rows with the removeduplicates.org engine. Text is processed in memory for each call and never stored."
+    },
+    {
+      "slug": "folklore-clinical-variant-interpretation-mcp",
+      "name": "Folklore Clinical Variant Interpretation MCP",
+      "endpoint": "https://folklore.helena.bio/integrations",
+      "cardUrl": "https://folklore.helena.bio/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [],
+      "tools_added": [
+        "classify_germline_variant",
+        "search_variant_literature",
+        "get_publication_details",
+        "search_literature_corpus",
+        "support_helena",
+        "get_gene_disease_associations",
+        "search_disease_genes",
+        "resolve_gene",
+        "get_gene_profile",
+        "get_gene_section",
+        "search_gene_literature"
+      ],
+      "tools_removed": [
+        "search_variant_evidence: Search public evidence for supported germline variantssearch_variant_literature: Find literature linked to a supported variantget_publication_details: Retrieve a publication recordsearch_literature_corpus: Search the biomedical literature corpussupport_helena: Show official Helena support routes"
+      ],
+      "description_differs": true,
+      "live_description": "Germline ACMG/AMP classification, genes, disease associations, literature and API-key case analysis."
     },
     {
       "slug": "noodle-biomedical-literature-discovery-mcp",
@@ -623,6 +674,39 @@
       "live_description": "TranscriptFetch is a transcript retrieval service for YouTube, TikTok and Instagram: whole channels, playlists and searches, not just one-off links."
     },
     {
+      "slug": "deepsearch",
+      "name": "DeepSearch",
+      "endpoint": "https://deepsearch.app/api/mcp",
+      "cardUrl": "https://deepsearch.app/.well-known/mcp/server-card.json",
+      "kind": "drift",
+      "price": {
+        "stored": [],
+        "live": [],
+        "changed": false
+      },
+      "tools_changed": [
+        "search_people"
+      ],
+      "tools_added": [
+        "build_dossier",
+        "ask_about_person",
+        "research",
+        "search_companies",
+        "build_company_dossier",
+        "reverse_image_search",
+        "lookup_vin",
+        "lookup_address",
+        "get_lookup_job_events",
+        "create_lookup_job",
+        "get_lookup_job",
+        "cancel_lookup_job",
+        "list_lookup_jobs"
+      ],
+      "tools_removed": [],
+      "description_differs": true,
+      "live_description": "Research a person's public online footprint from a name, phone, email, or username. Ranked candidate people with confidence scores, then a dossier with a linked source for every detail. Public sources only."
+    },
+    {
       "slug": "gifi",
       "name": "Gifi",
       "endpoint": "https://gifi.ai/mcp",
@@ -645,38 +729,6 @@
       ],
       "description_differs": true,
       "live_description": "Inspect hidden Unicode, rewrite published statistical text watermarks from Claude or Gemini, and remove C2PA, EXIF, PDF, and Office metadata. ChatGPT marks files and audio, not words."
-    },
-    {
-      "slug": "deepsearch",
-      "name": "DeepSearch",
-      "endpoint": "https://deepsearch.app/api/mcp",
-      "cardUrl": "https://deepsearch.app/.well-known/mcp/server-card.json",
-      "kind": "drift",
-      "price": {
-        "stored": [],
-        "live": [],
-        "changed": false
-      },
-      "tools_changed": [
-        "search_people"
-      ],
-      "tools_added": [
-        "build_dossier",
-        "ask_about_person",
-        "research",
-        "search_companies",
-        "build_company_dossier",
-        "reverse_image_search",
-        "lookup_vin",
-        "get_lookup_job_events",
-        "create_lookup_job",
-        "get_lookup_job",
-        "cancel_lookup_job",
-        "list_lookup_jobs"
-      ],
-      "tools_removed": [],
-      "description_differs": true,
-      "live_description": "Research a person's public online footprint from a name, phone, email, or username. Ranked candidate people with confidence scores, then a dossier with a linked source for every detail. Public sources only."
     },
     {
       "slug": "corpusiq",
@@ -983,7 +1035,7 @@
       "endpoint": "https://app.upfixe.com/mcp",
       "cardUrl": "https://app.upfixe.com/.well-known/mcp/server-card.json",
       "kind": "error",
-      "error": "bad_card"
+      "error": "fetch_failed"
     },
     {
       "slug": "lamdis-exchange",
@@ -1010,14 +1062,6 @@
       "error": "HTTP 403"
     },
     {
-      "slug": "folklore-clinical-variant-interpretation-mcp",
-      "name": "Folklore Clinical Variant Interpretation MCP",
-      "endpoint": "https://folklore.helena.bio/integrations",
-      "cardUrl": "https://folklore.helena.bio/.well-known/mcp/server-card.json",
-      "kind": "error",
-      "error": "fetch_failed"
-    },
-    {
       "slug": "melaya",
       "name": "Melaya",
       "endpoint": "https://api.melaya.org/mcp",
@@ -1034,20 +1078,20 @@
       "error": "HTTP 530"
     },
     {
-      "slug": "agentx",
-      "name": "AgentX",
-      "endpoint": "https://www.agentxhq.com/mcp",
-      "cardUrl": "https://www.agentxhq.com/.well-known/mcp/server-card.json",
-      "kind": "error",
-      "error": "HTTP 405"
-    },
-    {
       "slug": "reactive-resume",
       "name": "Reactive Resume",
       "endpoint": "https://rxresu.me/mcp",
       "cardUrl": "https://rxresu.me/.well-known/mcp/server-card.json",
       "kind": "error",
       "error": "too_large"
+    },
+    {
+      "slug": "agentx",
+      "name": "AgentX",
+      "endpoint": "https://www.agentxhq.com/mcp",
+      "cardUrl": "https://www.agentxhq.com/.well-known/mcp/server-card.json",
+      "kind": "error",
+      "error": "HTTP 405"
     },
     {
       "slug": "bgpt",
