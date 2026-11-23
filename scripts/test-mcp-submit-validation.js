@@ -6,6 +6,7 @@ const {
   submissionNotification,
   redactSubmission,
   bearerFromSubmission,
+  testAccountListFields,
 } = require('../services/mcpSubmissionService');
 
 function validBody(overrides = {}) {
@@ -69,6 +70,19 @@ function main() {
   assert.equal(redacted.filePath, undefined);
   assert.equal(redacted.testAccount.provided, true);
   assert.equal(redacted.testAccount.kind, 'bearer');
+
+  const listed = testAccountListFields(withToken.data.testAccount);
+  assert.equal(listed.testAccountProvided, true);
+  assert.equal(listed.testAccountKind, 'bearer');
+  assert.equal(JSON.stringify(listed).includes(secret), false);
+  assert.deepEqual(testAccountListFields(null), {
+    testAccountProvided: false,
+    testAccountKind: '',
+  });
+  assert.equal(
+    testAccountListFields({ kind: 'login', secret: 'read-only-pass' }).testAccountKind,
+    'login',
+  );
 
   const noConsent = validateSubmission(
     validBody({ test_account_kind: 'bearer', test_account_secret: secret }),

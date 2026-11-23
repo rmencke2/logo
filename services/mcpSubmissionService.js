@@ -266,6 +266,15 @@ function redactSubmission(sub) {
   };
 }
 
+/** List-row flag. Never includes the secret. */
+function testAccountListFields(testAccount) {
+  const provided = Boolean(testAccount?.secret);
+  return {
+    testAccountProvided: provided,
+    testAccountKind: provided ? (testAccount.kind === 'login' ? 'login' : 'bearer') : '',
+  };
+}
+
 /** Reserved MCP path segments — must not be handled as server slugs */
 const RESERVED_MCP_PATHS = new Set([
   'submit',
@@ -414,6 +423,7 @@ module.exports = {
   submissionNotification,
   bearerFromSubmission,
   redactSubmission,
+  testAccountListFields,
   MCP_SUBMIT_ENDPOINT,
   RATE_LIMIT_PER_HOUR,
   RATE_LIMIT_WINDOW_MS,
