@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-11-21T14:10:03.793Z",
+  "generated_at": "2026-11-22T14:05:25.064Z",
   "count": 100,
-  "total_catalog": 15007,
+  "total_catalog": 15015,
   "top100_slugs": [
     "influzer-mcp-discovery",
     "macaly-cloud",
     "firecrawl",
+    "github",
     "postgres",
     "google-drive",
     "memory",
@@ -20,18 +21,27 @@
     "google-mcp-servers",
     "railway-mcp",
     "cal-com-mcp",
+    "codebase-memory-mcp",
+    "playwright-mcp",
     "reactive-resume",
     "googlesheets",
+    "mcp-for-blender",
     "brave",
     "pipeworx-gateway",
     "henry-ships-sparkforge",
     "adamamer20-paper-search-mcp-openai",
+    "serena",
     "bouch-uk-due-diligence",
     "theagenttimes-news",
     "pubmed",
+    "n8n-mcp",
     "fenglucc-ko-financial-data",
+    "mcp-toolbox",
     "jordan-s648-polymarketscan",
     "oobe-protocol-sap-mcp",
+    "xiaohongshu-mcp",
+    "unity-mcp",
+    "omniget",
     "onesignal-onesignal",
     "emblemai-emblem-mcp",
     "creativelead-unclick",
@@ -92,17 +102,7 @@
     "gmail",
     "exa",
     "bigquery",
-    "aident-loadout",
-    "airtable",
-    "alishahi-insurance-quote-requests",
-    "asana",
-    "aws",
-    "canva",
-    "confluence",
-    "datadog",
-    "dropbox",
-    "fba-prep-finder",
-    "figma"
+    "aident-loadout"
   ],
   "servers": [
     {
@@ -136,7 +136,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "search",
       "mcp_endpoint": "https://www.influzer.ai/mcp/discovery",
       "mcp_endpoint_template": null,
@@ -230,7 +230,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "cloud-code",
       "mcp_endpoint": "https://www.macaly.com/api/cloud/mcp",
       "mcp_endpoint_template": null,
@@ -265,11 +265,58 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "flame",
       "mcp_endpoint": "https://mcp.firecrawl.dev/v2/mcp",
       "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.firecrawl.dev/v2/mcp"
+    },
+    {
+      "id": "github",
+      "slug": "github",
+      "name": "GitHub",
+      "description": "Official GitHub MCP Server — repos, issues, PRs, Actions, code search, and security alerts. Remote HTTPS at https://api.githubcopilot.com/mcp/ (auth required) or local via Docker/stdio. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_repositories",
+          "description": "Search GitHub repositories"
+        },
+        {
+          "name": "get_file_contents",
+          "description": "Read file contents from a repo"
+        },
+        {
+          "name": "create_issue",
+          "description": "Open a new issue"
+        },
+        {
+          "name": "create_pull_request",
+          "description": "Create a pull request"
+        },
+        {
+          "name": "list_commits",
+          "description": "List commits on a branch"
+        },
+        {
+          "name": "list_issues",
+          "description": "List issues for a repository"
+        }
+      ],
+      "github_url": "https://github.com/github/github-mcp-server",
+      "docs_url": "https://github.com/github/github-mcp-server",
+      "install_command": "claude mcp add --transport http github https://api.githubcopilot.com/mcp/",
+      "stars": 34669,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "github",
+      "mcp_endpoint": "https://api.githubcopilot.com/mcp/",
+      "mcp_endpoint_template": null,
+      "deployment_url": "https://api.githubcopilot.com/mcp/"
     },
     {
       "id": "postgres",
@@ -299,7 +346,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "database",
       "mcp_endpoint_template": null
     },
@@ -332,7 +379,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "hard-drive",
       "mcp_endpoint": "https://drivemcp.googleapis.com/mcp/v1",
       "mcp_endpoint_template": null,
@@ -366,7 +413,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "brain",
       "mcp_endpoint_template": null
     },
@@ -403,7 +450,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "layout-list",
       "mcp_endpoint": "https://mcp.linear.app/mcp",
       "mcp_endpoint_template": null,
@@ -434,7 +481,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "book-open",
       "mcp_endpoint": "https://mcp.context7.com/mcp",
       "mcp_endpoint_template": null,
@@ -469,7 +516,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "credit-card",
       "mcp_endpoint": "https://mcp.stripe.com",
       "mcp_endpoint_template": null,
@@ -504,7 +551,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "shield-alert",
       "mcp_endpoint": "https://mcp.sentry.dev/mcp",
       "mcp_endpoint_template": null,
@@ -539,7 +586,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "file-text",
       "mcp_endpoint": "https://mcp.notion.com/mcp",
       "mcp_endpoint_template": null,
@@ -572,7 +619,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "monitor-play",
       "mcp_endpoint_template": null
     },
@@ -611,7 +658,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "monitor",
       "mcp_endpoint_template": null
     },
@@ -651,7 +698,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "message-square",
       "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
       "mcp_endpoint_template": null,
@@ -690,7 +737,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "cloud",
       "mcp_endpoint": "https://cloudcli.googleapis.com/mcp",
       "mcp_endpoint_template": null,
@@ -728,7 +775,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "cloud",
       "mcp_endpoint": "https://mcp.railway.com",
       "mcp_endpoint_template": null,
@@ -761,11 +808,83 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "calendar",
       "mcp_endpoint": "https://mcp.cal.com/mcp",
       "mcp_endpoint_template": null,
       "deployment_url": "https://mcp.cal.com/mcp"
+    },
+    {
+      "id": "codebase-memory-mcp",
+      "slug": "codebase-memory-mcp",
+      "name": "Codebase Memory",
+      "description": "DeusData Codebase Memory MCP — persistent semantic memory over a codebase for coding agents. Not a SAFE badge.",
+      "category": "AI & Memory",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "remember",
+          "description": "Store a codebase memory"
+        },
+        {
+          "name": "recall",
+          "description": "Recall relevant memories"
+        },
+        {
+          "name": "search_memory",
+          "description": "Search stored memories"
+        }
+      ],
+      "github_url": "https://github.com/DeusData/codebase-memory-mcp",
+      "stars": 49000,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "brain",
+      "mcp_endpoint_template": null
+    },
+    {
+      "id": "playwright-mcp",
+      "slug": "playwright-mcp",
+      "name": "Playwright MCP (Microsoft)",
+      "description": "Official Microsoft Playwright MCP server (@playwright/mcp) for browser automation via the accessibility tree — navigate, snapshot, click, and type from coding agents. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "browser_navigate",
+          "description": "Navigate to a URL"
+        },
+        {
+          "name": "browser_snapshot",
+          "description": "Capture accessibility snapshot"
+        },
+        {
+          "name": "browser_click",
+          "description": "Click an element"
+        },
+        {
+          "name": "browser_type",
+          "description": "Type into an element"
+        },
+        {
+          "name": "browser_take_screenshot",
+          "description": "Capture a screenshot"
+        }
+      ],
+      "github_url": "https://github.com/microsoft/playwright-mcp",
+      "docs_url": "https://www.npmjs.com/package/@playwright/mcp",
+      "install_command": "claude mcp add playwright npx @playwright/mcp@latest",
+      "stars": 40004,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "monitor-play",
+      "mcp_endpoint_template": null
     },
     {
       "id": "reactive-resume",
@@ -787,7 +906,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://rxresu.me/mcp",
       "mcp_endpoint_template": null,
@@ -873,9 +992,46 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/googlesheets",
-      "tools_validated_at": "2026-11-22T13:31:18.732Z",
+      "tools_validated_at": "2026-11-23T16:20:39.404Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "mcp-for-blender",
+      "slug": "mcp-for-blender",
+      "name": "MCP for Blender",
+      "description": "Community Blender MCP (mcp-for-blender / blender-mcp) — prompt-assisted 3D modeling and scene control from LLM clients. Not affiliated with the Blender Foundation. Not a SAFE badge.",
+      "category": "Design",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "get_scene_info",
+          "description": "Inspect the current Blender scene"
+        },
+        {
+          "name": "execute_blender_code",
+          "description": "Run Python in Blender"
+        },
+        {
+          "name": "create_object",
+          "description": "Create scene objects"
+        },
+        {
+          "name": "get_object_info",
+          "description": "Describe a selected object"
+        }
+      ],
+      "github_url": "https://github.com/ahujasid/blender-mcp",
+      "docs_url": "https://www.mcp-for-blender.com/",
+      "install_command": "claude mcp add blender uvx mcp-for-blender",
+      "stars": 35358,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "box",
+      "mcp_endpoint_template": null
     },
     {
       "id": "brave",
@@ -937,7 +1093,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/brave",
-      "tools_validated_at": "2026-11-22T13:31:17.184Z",
+      "tools_validated_at": "2026-11-23T16:20:38.211Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1169,7 +1325,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pipeworx/gateway",
-      "tools_validated_at": "2026-11-22T13:31:17.560Z",
+      "tools_validated_at": "2026-11-23T16:20:39.596Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1333,7 +1489,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/henry-ships/sparkforge",
-      "tools_validated_at": "2026-11-22T13:31:17.131Z",
+      "tools_validated_at": "2026-11-23T16:20:38.192Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1466,9 +1622,45 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/adamamer20/paper-search-mcp-openai",
-      "tools_validated_at": "2026-11-22T13:31:17.616Z",
+      "tools_validated_at": "2026-11-23T16:20:39.767Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "serena",
+      "slug": "serena",
+      "name": "Serena",
+      "description": "Serena — semantic code retrieval, editing, and refactoring toolkit for coding agents (LSP-backed “IDE for your agent”). Stdio MCP. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "find_symbol",
+          "description": "Find symbols via language server"
+        },
+        {
+          "name": "get_symbols_overview",
+          "description": "Overview of symbols in a file"
+        },
+        {
+          "name": "replace_symbol_body",
+          "description": "Edit a symbol body"
+        },
+        {
+          "name": "search_for_pattern",
+          "description": "Search code patterns"
+        }
+      ],
+      "github_url": "https://github.com/oraios/serena",
+      "docs_url": "https://oraios.github.io/serena",
+      "stars": 31607,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "code",
+      "mcp_endpoint_template": null
     },
     {
       "id": "bouch-uk-due-diligence",
@@ -1562,7 +1754,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/bouch/uk-due-diligence",
-      "tools_validated_at": "2026-11-22T13:31:17.132Z",
+      "tools_validated_at": "2026-11-23T16:20:38.913Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1666,7 +1858,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/theagenttimes/news",
-      "tools_validated_at": "2026-11-22T13:31:18.412Z",
+      "tools_validated_at": "2026-11-23T16:20:40.027Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -1726,9 +1918,46 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/pubmed",
-      "tools_validated_at": "2026-11-22T13:31:18.461Z",
+      "tools_validated_at": "2026-11-23T16:20:40.063Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "n8n-mcp",
+      "slug": "n8n-mcp",
+      "name": "n8n-MCP",
+      "description": "Community n8n-MCP (czlonkowski) — let Claude, ChatGPT, Cursor, and other agents debug, edit, validate, test, and build n8n workflows. Distinct from n8n’s per-instance MCP endpoint. Not a SAFE badge.",
+      "category": "Automation",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "list_nodes",
+          "description": "List available n8n nodes"
+        },
+        {
+          "name": "get_node_info",
+          "description": "Get node documentation and schema"
+        },
+        {
+          "name": "validate_workflow",
+          "description": "Validate a workflow JSON"
+        },
+        {
+          "name": "search_templates",
+          "description": "Search workflow templates"
+        }
+      ],
+      "github_url": "https://github.com/czlonkowski/n8n-mcp",
+      "docs_url": "https://www.n8n-mcp.com/",
+      "install_command": "npx n8n-mcp",
+      "stars": 23294,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "boxes",
+      "mcp_endpoint_template": null
     },
     {
       "id": "fenglucc-ko-financial-data",
@@ -1854,9 +2083,42 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/fenglucc/ko-financial-data",
-      "tools_validated_at": "2026-11-22T13:31:18.789Z",
+      "tools_validated_at": "2026-11-23T16:20:40.957Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "mcp-toolbox",
+      "slug": "mcp-toolbox",
+      "name": "MCP Toolbox for Databases",
+      "description": "Google MCP Toolbox for Databases (googleapis/genai-toolbox) — open-source MCP server that connects agents to databases with configurable tools. Not a SAFE badge.",
+      "category": "Databases",
+      "official": true,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "execute_sql",
+          "description": "Run a SQL statement against a configured source"
+        },
+        {
+          "name": "list_tables",
+          "description": "List tables for a database source"
+        },
+        {
+          "name": "describe_table",
+          "description": "Describe table schema"
+        }
+      ],
+      "github_url": "https://github.com/googleapis/genai-toolbox",
+      "docs_url": "https://mcp-toolbox.dev/documentation/introduction/",
+      "install_command": "npx @toolbox-sdk/server --config tools.yaml",
+      "stars": 16930,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "database",
+      "mcp_endpoint_template": null
     },
     {
       "id": "jordan-s648-polymarketscan",
@@ -1918,7 +2180,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/jordan-s648/PolymarketScan",
-      "tools_validated_at": "2026-11-22T13:31:19.180Z",
+      "tools_validated_at": "2026-11-23T16:20:40.925Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2150,9 +2412,110 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/oobe-protocol/sap-mcp",
-      "tools_validated_at": "2026-11-22T13:31:19.608Z",
+      "tools_validated_at": "2026-11-23T16:20:41.601Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
+    },
+    {
+      "id": "xiaohongshu-mcp",
+      "slug": "xiaohongshu-mcp",
+      "name": "Xiaohongshu MCP",
+      "description": "MCP for Xiaohongshu (小红书 / RedNote) — let AI assistants access Xiaohongshu content and workflows (typically local HTTP). Not a SAFE badge.",
+      "category": "Search & Web",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_notes",
+          "description": "Search Xiaohongshu notes"
+        },
+        {
+          "name": "get_note_detail",
+          "description": "Fetch note details"
+        },
+        {
+          "name": "get_user_profile",
+          "description": "Fetch a user profile"
+        }
+      ],
+      "github_url": "https://github.com/xpzouying/xiaohongshu-mcp",
+      "docs_url": "https://www.haha.ai/xiaohongshu-mcp",
+      "stars": 17277,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "globe",
+      "mcp_endpoint_template": null
+    },
+    {
+      "id": "unity-mcp",
+      "slug": "unity-mcp",
+      "name": "Unity MCP",
+      "description": "CoplayDev Unity MCP — bridge AI assistants to the Unity Editor for assets, scenes, and scripts. Not a SAFE badge.",
+      "category": "Dev Tools",
+      "official": false,
+      "transport": "stdio",
+      "tools": [
+        {
+          "name": "manage_scene",
+          "description": "Create or modify Unity scenes"
+        },
+        {
+          "name": "manage_asset",
+          "description": "Manage project assets"
+        },
+        {
+          "name": "execute_menu_item",
+          "description": "Run Unity menu commands"
+        },
+        {
+          "name": "read_console",
+          "description": "Read Unity console logs"
+        }
+      ],
+      "github_url": "https://github.com/CoplayDev/unity-mcp",
+      "docs_url": "https://coplaydev.github.io/unity-mcp/",
+      "stars": 16122,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "box",
+      "mcp_endpoint_template": null
+    },
+    {
+      "id": "omniget",
+      "slug": "omniget",
+      "name": "OmniGet",
+      "description": "OmniGet — local MCP that lets Claude Code, Codex, Cursor, and Gemini CLI use your computer and logged-in accounts (chats, feeds, browsers). Runs locally; treat as high blast-radius. Not a SAFE badge.",
+      "category": "Automation",
+      "official": false,
+      "transport": "http",
+      "tools": [
+        {
+          "name": "browse",
+          "description": "Interact with local browser sessions"
+        },
+        {
+          "name": "read_feed",
+          "description": "Read feeds and inboxes the user can access"
+        },
+        {
+          "name": "run_local_action",
+          "description": "Perform an approved local automation action"
+        }
+      ],
+      "github_url": "https://github.com/tonhowtf/omniget",
+      "docs_url": "https://getomniget.com/",
+      "install_command": "claude mcp add --transport http --scope project omniget http://127.0.0.1:47720/mcp",
+      "stars": 14553,
+      "source": "manual",
+      "featured": true,
+      "hidden": false,
+      "last_updated": "2026-11-23",
+      "icon": "monitor",
+      "mcp_endpoint_template": null
     },
     {
       "id": "onesignal-onesignal",
@@ -2318,7 +2681,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/onesignal/onesignal",
-      "tools_validated_at": "2026-11-22T13:31:19.902Z",
+      "tools_validated_at": "2026-11-23T16:20:42.008Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2550,7 +2913,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/emblemai/emblem-mcp",
-      "tools_validated_at": "2026-11-22T13:31:19.514Z",
+      "tools_validated_at": "2026-11-23T16:20:41.278Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2782,7 +3145,7 @@
         }
       ],
       "setup_summary": "1. Open https://smithery.ai/servers/creativelead/unclick",
-      "tools_validated_at": "2026-11-22T13:31:19.637Z",
+      "tools_validated_at": "2026-11-23T16:20:42.373Z",
       "tools_validation_method": "live_mcp+smithery_fallback",
       "featured": true
     },
@@ -2982,7 +3345,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://www.agentseo.dev/mcp",
       "mcp_endpoint_template": null,
@@ -3170,7 +3533,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.connectmachine.ai/mcp",
       "mcp_endpoint_template": null,
@@ -3316,7 +3679,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -3436,7 +3799,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.brandlio.io/api/mcp",
       "mcp_endpoint_template": null,
@@ -3546,7 +3909,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://app.rhinorank.io/mcp",
       "mcp_endpoint_template": null,
@@ -3656,7 +4019,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://app.screenweaver.ai/api/mcp",
       "mcp_endpoint_template": null,
@@ -3745,7 +4108,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://passportcraft.com/api/mcp",
       "mcp_endpoint_template": null,
@@ -3831,7 +4194,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://unicum.gg/api/mcp",
       "mcp_endpoint_template": null,
@@ -3917,7 +4280,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.geonode.com/mcp",
       "mcp_endpoint_template": null,
@@ -4004,7 +4367,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://api.weirapp.io/mcp",
       "mcp_endpoint_template": null,
@@ -4086,7 +4449,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.xgr.network/mcp",
       "mcp_endpoint_template": null,
@@ -4168,7 +4531,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://loopertask.com/mcp",
       "mcp_endpoint_template": null,
@@ -4202,7 +4565,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "code",
       "mcp_endpoint_template": null
     },
@@ -4526,7 +4889,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.eximagent.ai/mcp",
       "mcp_endpoint_template": null,
@@ -4602,7 +4965,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://www.agentxhq.com/mcp",
       "mcp_endpoint_template": null,
@@ -4675,7 +5038,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.argorant.com/mcp",
       "mcp_endpoint_template": null,
@@ -4745,7 +5108,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://twitterapi.io",
       "mcp_endpoint_template": null,
@@ -4810,7 +5173,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://api.neume.io/v1/mcp",
       "mcp_endpoint_template": null,
@@ -4872,7 +5235,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.aiagentcycle.com/mcp",
       "mcp_endpoint_template": null,
@@ -4933,7 +5296,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://api.vidmoat.com/api/mcp",
       "mcp_endpoint_template": null,
@@ -4991,7 +5354,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://www.marketnow.site/api/mcp",
       "mcp_endpoint_template": null,
@@ -5049,7 +5412,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://www.corpusiq.io/?utm_source=influzer&utm_medium=directory&utm_campaign=organic-listings",
       "mcp_endpoint_template": null,
@@ -5107,7 +5470,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -5163,7 +5526,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://data.whimbrelresearch.com",
       "mcp_endpoint_template": null,
@@ -5189,7 +5552,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://doop.design",
       "mcp_endpoint_template": null,
@@ -5218,7 +5581,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "browser",
       "mcp_endpoint": "https://mcp.webnode.com/_mcp",
       "mcp_endpoint_template": null,
@@ -5252,7 +5615,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "message-square",
       "mcp_endpoint": "https://mcp.granola.ai/mcp",
       "mcp_endpoint_template": null,
@@ -5306,7 +5669,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://botsrated.com/mcp",
       "mcp_endpoint_template": null,
@@ -5360,7 +5723,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://callmemcp.com/mcp",
       "mcp_endpoint_template": null,
@@ -5414,7 +5777,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://api.llmpulse.ai/api/v1/mcp",
       "mcp_endpoint_template": null,
@@ -5468,7 +5831,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -5519,7 +5882,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -5550,7 +5913,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "activity",
       "mcp_endpoint_template": null
     },
@@ -5597,7 +5960,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://codetrendy.com/api/mcp",
       "mcp_endpoint_template": null,
@@ -5646,7 +6009,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mediapronet.com/api/mcp",
       "mcp_endpoint_template": null,
@@ -5695,7 +6058,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://sitepatent.com/api/mcp",
       "mcp_endpoint_template": null,
@@ -5745,7 +6108,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -5776,7 +6139,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "image",
       "mcp_endpoint_template": null
     },
@@ -5819,7 +6182,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://api.vellm.app/mcp",
       "mcp_endpoint_template": null,
@@ -5864,7 +6227,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://mcp.wordsintomusic.com/mcp",
       "mcp_endpoint_template": null,
@@ -5905,7 +6268,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://arvow.com/mcp",
       "mcp_endpoint_template": null,
@@ -5946,7 +6309,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://extensiondash.com/mcp",
       "mcp_endpoint_template": null,
@@ -5988,7 +6351,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -6027,7 +6390,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -6066,7 +6429,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://rooms.aurmada.com/mcp",
       "mcp_endpoint_template": null,
@@ -6104,7 +6467,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://arcmira.com/docs/mcp-server",
       "mcp_endpoint_template": null,
@@ -6140,7 +6503,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://cassette.gg/mcp",
       "mcp_endpoint_template": null,
@@ -6179,7 +6542,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "terminal",
       "mcp_endpoint": "https://mcp.desktopcommander.app/mcp",
       "mcp_endpoint_template": null,
@@ -6218,7 +6581,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "gitlab",
       "mcp_endpoint": "https://gitlab.com/api/v4/mcp",
       "mcp_endpoint_template": null,
@@ -6255,7 +6618,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://influence.so/api/mcp",
       "mcp_endpoint_template": null,
@@ -6293,7 +6656,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -6329,7 +6692,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "cloud-code",
       "mcp_endpoint": "https://mcp.replit.com/server/mcp",
       "mcp_endpoint_template": null,
@@ -6367,7 +6730,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint_template": null
     },
@@ -6402,7 +6765,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://youtubeapi.io/docs/youtube-transcript?utm_source=influzer&utm_medium=mcp&utm_campaign=youtubeapi",
       "mcp_endpoint_template": null,
@@ -6437,7 +6800,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "mail",
       "mcp_endpoint": "https://gmailmcp.googleapis.com/mcp/v1",
       "mcp_endpoint_template": null,
@@ -6472,7 +6835,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "search",
       "mcp_endpoint": "https://mcp.exa.ai/mcp",
       "mcp_endpoint_template": null,
@@ -6506,7 +6869,7 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "bar-chart",
       "mcp_endpoint": "https://bigquery.googleapis.com/mcp",
       "mcp_endpoint_template": null,
@@ -6540,351 +6903,11 @@
       "source": "manual",
       "featured": true,
       "hidden": false,
-      "last_updated": "2026-11-22",
+      "last_updated": "2026-11-23",
       "icon": "globe",
       "mcp_endpoint": "https://loadout.aident.ai/mcp",
       "mcp_endpoint_template": null,
       "deployment_url": "https://loadout.aident.ai/mcp"
-    },
-    {
-      "id": "airtable",
-      "slug": "airtable",
-      "name": "Airtable",
-      "description": "Official Airtable remote MCP at https://mcp.airtable.com/mcp. OAuth (DCR) or PAT. Not a SAFE badge.",
-      "category": "Data & Analytics",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "list_records",
-          "description": "List records in a table"
-        },
-        {
-          "name": "create_record",
-          "description": "Create a new record"
-        },
-        {
-          "name": "update_record",
-          "description": "Update record fields"
-        }
-      ],
-      "docs_url": "https://airtable.com/developers/agents/mcp/getting-started",
-      "install_command": "claude mcp add airtable --transport http https://mcp.airtable.com/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "bar-chart",
-      "mcp_endpoint": "https://mcp.airtable.com/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.airtable.com/mcp"
-    },
-    {
-      "id": "alishahi-insurance-quote-requests",
-      "slug": "alishahi-insurance-quote-requests",
-      "name": "Alishahi Insurance Quote Requests",
-      "description": "Lets AI assistants list coverages, gather quote details, and send a consented insurance quote request to licensed independent broker Alishahi Insurance (Beverly Hills, CA). Hosted, no auth.",
-      "category": "Other",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "list_coverages",
-          "description": "Lists the insurance coverages quoted"
-        },
-        {
-          "name": "get_quote_questions",
-          "description": "Questions to ask for one coverage"
-        },
-        {
-          "name": "submit_quote_request",
-          "description": "Sends a consented quote request to Sam Alishahi, a licensed broker, who follows up"
-        }
-      ],
-      "docs_url": "https://alishahiinsurance.com/ai-assistants",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "globe",
-      "mcp_endpoint": "https://alishahiinsurance.com/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://alishahiinsurance.com/mcp"
-    },
-    {
-      "id": "asana",
-      "slug": "asana",
-      "name": "Asana",
-      "description": "Official Asana remote MCP at https://mcp.asana.com/v2/mcp over Streamable HTTP. OAuth. SSE /sse is deprecated. Not a SAFE badge.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "list_tasks",
-          "description": "List tasks in a project"
-        },
-        {
-          "name": "create_task",
-          "description": "Create a new task"
-        },
-        {
-          "name": "update_task",
-          "description": "Update task status"
-        }
-      ],
-      "docs_url": "https://developers.asana.com/docs/using-asanas-mcp-server",
-      "install_command": "claude mcp add asana --transport http https://mcp.asana.com/v2/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "layout-list",
-      "mcp_endpoint": "https://mcp.asana.com/v2/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.asana.com/v2/mcp"
-    },
-    {
-      "id": "aws",
-      "slug": "aws",
-      "name": "AWS",
-      "description": "Managed AWS MCP Server at https://aws-mcp.us-east-1.api.aws/mcp (also us-west-2, eu-west-1, and other regions). OAuth 2.1 or SigV4. Not a SAFE badge.",
-      "category": "Cloud & Infra",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "list_s3_buckets",
-          "description": "List S3 buckets"
-        },
-        {
-          "name": "describe_ec2_instances",
-          "description": "Describe EC2 instances"
-        },
-        {
-          "name": "invoke_lambda",
-          "description": "Invoke a Lambda function"
-        }
-      ],
-      "github_url": "https://github.com/awslabs/mcp",
-      "docs_url": "https://docs.aws.amazon.com/agent-toolkit/latest/userguide/getting-started-aws-mcp-server.md",
-      "install_command": "claude mcp add aws --transport http https://aws-mcp.us-east-1.api.aws/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "cloud",
-      "mcp_endpoint": "https://aws-mcp.us-east-1.api.aws/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://aws-mcp.us-east-1.api.aws/mcp"
-    },
-    {
-      "id": "canva",
-      "slug": "canva",
-      "name": "Canva",
-      "description": "Canva remote MCP at https://mcp.canva.com/mcp over Streamable HTTP. OAuth per-user. Handshake is 401 without a token. Not a SAFE badge.",
-      "category": "Design",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "create_design",
-          "description": "Create a new design from template"
-        },
-        {
-          "name": "export_design",
-          "description": "Export design assets"
-        },
-        {
-          "name": "list_templates",
-          "description": "Browse design templates"
-        }
-      ],
-      "docs_url": "https://www.canva.dev/docs",
-      "install_command": "claude mcp add canva --transport http https://mcp.canva.com/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "image",
-      "mcp_endpoint": "https://mcp.canva.com/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.canva.com/mcp"
-    },
-    {
-      "id": "confluence",
-      "slug": "confluence",
-      "name": "Confluence",
-      "description": "Atlassian Rovo MCP (Confluence, Jira, Bitbucket) at https://mcp.atlassian.com/v2/mcp. OAuth 2.1 or API token. Same host as the atlassian-mcp listing. Not a SAFE badge.",
-      "category": "Communication",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "search_pages",
-          "description": "Search Confluence pages"
-        },
-        {
-          "name": "get_page",
-          "description": "Get page content"
-        },
-        {
-          "name": "create_page",
-          "description": "Create a wiki page"
-        }
-      ],
-      "docs_url": "https://www.atlassian.com/platform/remote-mcp-server",
-      "install_command": "claude mcp add confluence --transport http https://mcp.atlassian.com/v2/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "file-text",
-      "mcp_endpoint": "https://mcp.atlassian.com/v2/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.atlassian.com/v2/mcp"
-    },
-    {
-      "id": "datadog",
-      "slug": "datadog",
-      "name": "Datadog",
-      "description": "Official Datadog remote MCP at https://mcp.datadoghq.com/v1/mcp. OAuth or API keys. Not a SAFE badge.",
-      "category": "Security & Monitoring",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "query_metrics",
-          "description": "Query timeseries metrics"
-        },
-        {
-          "name": "search_logs",
-          "description": "Search log indexes"
-        },
-        {
-          "name": "list_monitors",
-          "description": "List configured monitors"
-        }
-      ],
-      "github_url": "https://github.com/GeLi2001/datadog-mcp-server",
-      "docs_url": "https://docs.datadoghq.com/bits_ai/mcp_server/setup/",
-      "install_command": "claude mcp add datadog --transport http https://mcp.datadoghq.com/v1/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "activity",
-      "mcp_endpoint": "https://mcp.datadoghq.com/v1/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.datadoghq.com/v1/mcp"
-    },
-    {
-      "id": "dropbox",
-      "slug": "dropbox",
-      "name": "Dropbox",
-      "description": "Official Dropbox remote MCP at https://mcp.dropbox.com/mcp. Dropbox OAuth. Not a SAFE badge.",
-      "category": "Files & Docs",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "list_folder",
-          "description": "List folder contents"
-        },
-        {
-          "name": "download_file",
-          "description": "Download a file"
-        },
-        {
-          "name": "upload_file",
-          "description": "Upload a file"
-        }
-      ],
-      "docs_url": "https://help.dropbox.com/integrations/connect-dropbox-mcp-server",
-      "install_command": "claude mcp add dropbox --transport http https://mcp.dropbox.com/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "hard-drive",
-      "mcp_endpoint": "https://mcp.dropbox.com/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.dropbox.com/mcp"
-    },
-    {
-      "id": "fba-prep-finder",
-      "slug": "fba-prep-finder",
-      "name": "FBA Prep Finder",
-      "description": "FBA Prep Finder is a verified directory of Amazon FBA prep centers in the United States. Sellers tell us what they ship and we match them with prep centers that fit, free for the seller. We publish buying guides and tool recommendations for Amazon sellers.Our free, read-only remote MCP server (https://fbaprepfinder.com/api/mcp/, Streamable HTTP, no sign-in) lets an assistant search 463 verified FBA prep centers, 358 of them in the US, with others in the UK, Germany and Canada. Filter by state, country, operator type, hazmat capability or sales-tax-free location, and read the date each center was last verified.",
-      "category": "Payments & Commerce",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "search_prep_centers: find and filter verified FBA prep centers by name, US state, country, operator type, hazmat capability or sales-tax-free location.",
-          "description": ""
-        },
-        {
-          "name": "get_prep_center: the full verified record for one center, by slug.",
-          "description": ""
-        },
-        {
-          "name": "get_directory_summary: published counts by country and operator type, and how many centers are currently verified.",
-          "description": ""
-        }
-      ],
-      "docs_url": "https://fbaprepfinder.com/llms.txt",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "globe",
-      "mcp_endpoint": "https://fbaprepfinder.com/api/mcp/",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://fbaprepfinder.com/api/mcp/"
-    },
-    {
-      "id": "figma",
-      "slug": "figma",
-      "name": "Figma",
-      "description": "Official Figma remote MCP for Dev Mode design context over Streamable HTTP. OAuth. Not a SAFE badge.",
-      "category": "Design",
-      "official": true,
-      "transport": "http",
-      "tools": [
-        {
-          "name": "get_file",
-          "description": "Fetch Figma file metadata and structure"
-        },
-        {
-          "name": "get_node",
-          "description": "Get details for a specific node"
-        },
-        {
-          "name": "export_asset",
-          "description": "Export images or SVGs from nodes"
-        }
-      ],
-      "github_url": "https://github.com/GLips/Figma-Context-MCP",
-      "install_command": "claude mcp add figma --transport http https://mcp.figma.com/mcp",
-      "stars": 0,
-      "source": "manual",
-      "featured": true,
-      "hidden": false,
-      "last_updated": "2026-11-22",
-      "icon": "figma",
-      "mcp_endpoint": "https://mcp.figma.com/mcp",
-      "mcp_endpoint_template": null,
-      "deployment_url": "https://mcp.figma.com/mcp"
     }
   ]
 }

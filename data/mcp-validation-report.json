@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-11-22T14:05:24.928Z",
+  "generated_at": "2026-11-23T17:19:25.131Z",
   "mode": "apply",
   "validation": "live_mcp_tools_list",
-  "catalog_generated_at": "2026-11-21T14:10:03.793Z",
+  "catalog_generated_at": "2026-11-22T14:05:25.064Z",
   "summary": {
     "checked": 283,
     "skipped_manual": 249,
     "skipped_no_endpoint": 14474,
     "skipped_stdio": 0,
     "skipped_other": 0,
-    "unchanged": 282,
-    "tools_changed": 0,
+    "unchanged": 281,
+    "tools_changed": 1,
     "newly_indexed": 0,
     "tools_lost": 0,
     "auth_required_kept": 0,
@@ -25,6 +25,21 @@
     "with_tools_before": 526,
     "with_tools_after": 526
   },
-  "changes": [],
+  "changes": [
+    {
+      "slug": "alberduris-summiz",
+      "name": "Summiz",
+      "source": "smithery",
+      "validationMethod": "live_mcp+smithery_fallback",
+      "status": "tools_changed",
+      "beforeToolCount": 20,
+      "afterToolCount": 20,
+      "added": [],
+      "removed": [],
+      "changed": [
+        "create-summary"
+      ]
+    }
+  ],
   "errors": []
 }
