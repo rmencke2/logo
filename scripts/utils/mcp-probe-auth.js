@@ -3,15 +3,15 @@
 /**
  * Reviewer-only auth for an MCP handshake.
  *
- * Two paths, both optional:
+ * Three paths, all optional:
  * 1. A bearer token the submitter stored on the submission. It is sent only
  *    to the endpoint already cleared by the SSRF check. It is never returned
  *    to the browser.
  * 2. OAuth 2.0 Dynamic Client Registration (RFC 7591) when the 401 advertises
  *    resource metadata and the authorization server publishes a
- *    registration_endpoint. The contact is MCP_PROBE_ACCOUNT_EMAIL. This
- *    registers an OAuth client. It does not fill in a website signup form
- *    and it does not create a user account.
+ *    registration_endpoint. The contact is MCP_PROBE_ACCOUNT_EMAIL.
+ * 3. A same-host email signup with no captcha. The probe mailbox confirms
+ *    that signup over IMAP. The Gmail app password stays in the environment.
  *
  * client_secret and access_token stay in this process. A gitignored file may
  * keep the client so a later probe can retry client_credentials without
@@ -128,6 +128,7 @@ function writeStoredClient(filePath, endpoint, row) {
     store = {};
   }
   store[endpoint] = {
+    ...(store[endpoint] || {}),
     client_id: String(row.client_id).slice(0, 200),
     client_secret: String(row.client_secret).slice(0, 2048),
     token_endpoint: String(row.token_endpoint).slice(0, 500),
@@ -387,6 +388,7 @@ async function probeEndpointForTools({
   assertUrl,
   email,
   fetchImpl,
+  trySignup,
 } = {}) {
   if (typeof fetchLive !== 'function') {
     throw new Error('probeEndpointForTools requires fetchLive');
@@ -491,6 +493,29 @@ async function probeEndpointForTools({
     live = await fetchLive(endpoint, { timeoutMs, bearerToken: accessToken });
     if (live.status === 'ok' || live.status === 'ok_empty') {
       notes.push('tools/list succeeded with that client.');
+    }
+  }
+
+  const listedAfterAuth = live && (live.status === 'ok' || live.status === 'ok_empty');
+  if (!listedAfterAuth && !submission?.testAccount?.secret) {
+    const signupFn = trySignup || require('./mcp-probe-signup').tryProbeSignup;
+    const signup = await signupFn({
+      endpoint,
+      wwwAuthenticate: live.wwwAuthenticate,
+      loginUrl: submission?.testAccount?.loginUrl,
+      accountsPath,
+      fetchImpl,
+      assertUrl,
+      email,
+      timeoutMs,
+    });
+    if (signup?.reason) notes.push(signup.reason);
+    if (signup?.accessToken) {
+      accessToken = signup.accessToken;
+      live = await fetchLive(endpoint, { timeoutMs, bearerToken: accessToken });
+      if (live.status === 'ok' || live.status === 'ok_empty') {
+        notes.push('tools/list succeeded after signup.');
+      }
     }
   }
 

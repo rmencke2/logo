@@ -152,7 +152,7 @@
         <fieldset class="mcp-submit-fieldset">
           <legend>Test account</legend>
           <p class="mcp-submit-hint">Optional. Auth-gated servers hide <code>tools/list</code> until there is a credential. A read-only test account lets us call <code>initialize</code> and <code>tools/list</code>. Do not send a production admin password. The credential stays with the submission: it is not emailed and it is not published in the catalog.</p>
-          <p class="mcp-submit-hint">If you cannot share one, a reviewer can still try OAuth dynamic client registration when the server advertises it. That registers a client with a mailbox we operate. It does not create a user by filling in a signup form.</p>
+          <p class="mcp-submit-hint">If you cannot share one, a reviewer can try OAuth client registration when the server advertises it. When the server publishes an email signup with no captcha, the reviewer can also sign up the probe mailbox and open the verification message from that inbox.</p>
           <div class="mcp-submit-grid">
             <label class="mcp-submit-field mcp-submit-field--wide">
               <span>Credential type</span>

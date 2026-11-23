@@ -25,6 +25,7 @@ const {
   probeEndpointForTools,
   DEFAULT_ACCOUNTS_PATH,
 } = require('../scripts/utils/mcp-probe-auth');
+const { probeMailboxStatus, readProbeInbox } = require('../scripts/utils/mcp-probe-mailbox');
 
 const SUBMISSIONS_DIR = path.join(__dirname, '..', 'data', 'mcp-submissions');
 const MANUAL_PATH = path.join(__dirname, '..', 'data', 'mcp-servers-manual.json');
@@ -583,6 +584,33 @@ function registerMcpCatalogAdminRoutes(app, requireAdmin) {
     } catch (err) {
       console.error('MCP dismiss error:', err);
       res.status(400).json({ error: err.message || 'Failed to dismiss submission' });
+    }
+  });
+
+  app.get('/admin/api/mcp/probe-mailbox', requireAuth, requireAdmin, (req, res) => {
+    const status = probeMailboxStatus();
+    res.set('Cache-Control', 'no-store');
+    res.json({ configured: status.configured, email: status.email });
+  });
+
+  app.post('/admin/api/mcp/probe-mailbox/check', requireAuth, requireAdmin, async (req, res) => {
+    const status = probeMailboxStatus();
+    if (!status.configured) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Set MCP_PROBE_ACCOUNT_EMAIL and MCP_PROBE_GMAIL_APP_PASSWORD on the server.',
+      });
+    }
+    try {
+      await readProbeInbox({
+        email: status.email,
+        password: process.env.MCP_PROBE_GMAIL_APP_PASSWORD,
+        since: new Date(),
+      });
+      res.set('Cache-Control', 'no-store');
+      res.json({ ok: true, email: status.email });
+    } catch (err) {
+      res.status(400).json({ ok: false, error: err.message || 'Probe mailbox check failed' });
     }
   });
 

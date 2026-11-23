@@ -885,6 +885,10 @@
             <button type="button" class="btn btn-sm btn-secondary" id="mcpRevealTestAccountBtn" hidden data-admin-action="revealMcpTestAccount">Show stored test credential</button>
           </div>
           <pre id="mcpTestAccountSecret" hidden style="margin-top:8px;background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;font-size:12px;"></pre>
+          <div id="mcpProbeMailboxNote" style="margin-top:8px;color:#8e8e93;font-size:13px;"></div>
+          <div style="margin-top:8px;">
+            <button type="button" class="btn btn-sm btn-secondary" data-admin-action="checkMcpProbeMailbox">Check probe mailbox</button>
+          </div>
         </div>
         <div class="form-group">
           <label>Setup instructions (read-only)</label>
@@ -2716,6 +2720,7 @@
         const thinTools = (preview.tools || sub.tools || []).filter(
           (tool) => String(tool.description || '').trim().length < 40,
         );
+        loadMcpProbeMailbox();
         if (thinTools.length) {
           document.getElementById('mcpRefreshToolsStatus').textContent =
             `${thinTools.length} tool description(s) are short. Useful ones say what the tool does and when an agent should pick it over another.`;
@@ -2840,6 +2845,33 @@
         alert(err.message);
       } finally {
         btn.disabled = false;
+      }
+    }
+
+    async function loadMcpProbeMailbox() {
+      const note = document.getElementById('mcpProbeMailboxNote');
+      if (!note) return;
+      try {
+        const res = await fetch('/admin/api/mcp/probe-mailbox', { headers: { Accept: 'application/json' } });
+        const data = await res.json();
+        note.textContent = data.configured
+          ? `Probe mailbox ${data.email} is configured. Refresh tools can sign that address up when the server has an email form and no captcha.`
+          : 'Probe mailbox is not configured. Set MCP_PROBE_ACCOUNT_EMAIL and a Google App Password in MCP_PROBE_GMAIL_APP_PASSWORD on the server.';
+      } catch {
+        note.textContent = 'Probe mailbox status is unavailable.';
+      }
+    }
+
+    async function checkMcpProbeMailbox() {
+      const note = document.getElementById('mcpProbeMailboxNote');
+      if (note) note.textContent = 'Checking the probe mailbox…';
+      try {
+        const res = await fetch('/admin/api/mcp/probe-mailbox/check', { method: 'POST', headers: { Accept: 'application/json' } });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Probe mailbox check failed');
+        if (note) note.textContent = `Probe mailbox ${data.email} accepted the login.`;
+      } catch (err) {
+        if (note) note.textContent = err.message || 'Probe mailbox check failed';
       }
     }
 
