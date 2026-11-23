@@ -4,7 +4,7 @@
       <p class="setup-lead">
         Influzer.ai is an MCP server directory, a WebMCP catalog, recipes, insights, a read-only Discovery MCP server, and a set of free creative tools. This policy explains what we collect when you use those services and how to reach us.
       </p>
-      <p class="legal-meta">Effective 24 October 2026 · <a href="/support">Contact</a> · <a href="/cookie">Cookies</a> · <a href="/terms">Terms</a></p>
+      <p class="legal-meta">Effective 22 November 2026 · <a href="/support">Contact</a> · <a href="/cookie">Cookies</a> · <a href="/terms">Terms</a></p>
 
       <section class="legal-block">
         <h2>1. Who we are</h2>
@@ -19,7 +19,7 @@
         <ul>
           <li><strong>Account.</strong> Email, name, and a password hash if you register with email. If you sign in with Google, or with Facebook when that option is shown, we store the provider id, email, name, and profile picture the provider sends.</li>
           <li><strong>Newsletter.</strong> Email address, the page you signed up from, and an unsubscribe token.</li>
-          <li><strong>MCP listing.</strong> Your name, email, and the server details you submit. Submitting also adds that email to the newsletter unless you unsubscribe.</li>
+          <li><strong>MCP listing.</strong> Your name, email, and the server details you submit. You can also include an optional test credential (a bearer token, or a username and password) so we can call that server’s tool list. We store it with the submission. We do not publish it in the catalog and we do not include it in the review email. Submitting also adds that email to the newsletter unless you unsubscribe.</li>
           <li><strong>WebMCP scan.</strong> The URL you ask us to scan and the email you give for the report.</li>
           <li><strong>Comments.</strong> The display name and comment you post on an insight. Comments are reviewed before they appear.</li>
           <li><strong>Sponsored placement.</strong> Name, email, company, and listing URL. Checkout is handled by Stripe. We do not store your card number.</li>
@@ -32,7 +32,7 @@
         <ul>
           <li><strong>Page views.</strong> Path, IP address, country looked up from that IP, browser user agent, referrer, and your account id if you are signed in.</li>
           <li><strong>Discovery MCP</strong> (<code>https://www.influzer.ai/mcp/discovery</code>). We log the JSON-RPC method, tool name, whether the call succeeded, duration, IP address, user agent, and a client name such as Claude or Cursor. We do not store the search text you send to a tool.</li>
-          <li><strong>Handshake probe.</strong> When a remote MCP URL is checked, we store the URL and the result (reachable, auth required, or unreachable, plus tool counts). We do not store credentials for that server.</li>
+          <li><strong>Handshake probe.</strong> When a remote MCP URL is checked, we store the URL and the result (reachable, auth required, or unreachable, plus tool counts). The public probe does not use a credential. A reviewer probe may use a test credential you submitted with a listing, or register an OAuth client when that server advertises dynamic client registration. The client contact is a mailbox we operate. That registration does not fill in a website signup form. Credentials from either path are not written into the catalog.</li>
           <li><strong>Server logs.</strong> Request method, path, status, and duration.</li>
           <li><strong>Google Analytics</strong> on pages that load our analytics tag, including this one. The logo generator also loads Google AdSense.</li>
         </ul>

@@ -112,6 +112,34 @@
 
     if (!tools.length) fail('tools', 'Add at least one tool (one tool name per line).');
 
+    const testKind = String(fd.get('test_account_kind') || '').trim();
+    const testLabel = String(fd.get('test_account_label') || '').trim();
+    const testSecret = String(fd.get('test_account_secret') || '').trim();
+    const testLogin = String(fd.get('test_account_login_url') || '').trim();
+    const testNotes = String(fd.get('test_account_notes') || '').trim();
+    const testConsent = fd.get('test_account_consent') === '1';
+    if (testKind || testSecret || testLabel || testLogin || testNotes) {
+      if (testKind !== 'bearer' && testKind !== 'login') {
+        fail('test_account_kind', 'Choose bearer token or username and password when you include a test credential.');
+      }
+      if (!testSecret) fail('test_account_secret', 'Add the test credential, or leave the test account blank.');
+      if (testSecret && testSecret.length < 8) {
+        fail('test_account_secret', 'Test credential must be at least 8 characters.');
+      }
+      if (testSecret && !testConsent) {
+        fail('test_account_consent', 'Confirm that this test credential may be used only to call initialize and tools/list.');
+      }
+      if (testKind === 'login' && testSecret && !testLabel) {
+        fail('test_account_label', 'A login test account needs a username or email.');
+      }
+      if (testLogin && !isValidHttpUrl(testLogin)) {
+        fail('test_account_login_url', 'Test account login URL must be a valid http(s) link.');
+      }
+      if (testLogin && !/^https:\/\//i.test(testLogin)) {
+        fail('test_account_login_url', 'Test account login URL must use https.');
+      }
+    }
+
     return { ok: errors.length === 0, errors, firstInvalid };
   }
 
@@ -165,6 +193,12 @@
       stars: fd.get('stars'),
       official: fd.get('official') === '1',
       website: fd.get('website'),
+      test_account_kind: fd.get('test_account_kind'),
+      test_account_label: fd.get('test_account_label'),
+      test_account_secret: fd.get('test_account_secret'),
+      test_account_login_url: fd.get('test_account_login_url'),
+      test_account_notes: fd.get('test_account_notes'),
+      test_account_consent: fd.get('test_account_consent') === '1',
     };
 
     btn.disabled = true;

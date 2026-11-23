@@ -50,8 +50,11 @@ Dockerfile*
 *.sqlite
 *.sqlite3
 
-# MCP submission form payloads (may contain emails)
+# MCP submission form payloads (may contain emails and test credentials)
 data/mcp-submissions/*.json
+
+# OAuth clients registered while probing auth-gated MCP servers
+data/mcp-probe-accounts.json
 data/mcp-claims/*.json
 data/mcp-promote-requests.json
 

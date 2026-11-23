@@ -1,7 +1,12 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const { validateSubmission } = require('../services/mcpSubmissionService');
+const {
+  validateSubmission,
+  submissionNotification,
+  redactSubmission,
+  bearerFromSubmission,
+} = require('../services/mcpSubmissionService');
 
 function validBody(overrides = {}) {
   return {
@@ -38,6 +43,70 @@ function main() {
 
   const invalidUrl = validateSubmission(validBody({ github_url: 'not-a-url' }));
   assert.ok(invalidUrl.errors?.some((e) => /GitHub URL must be a valid/i.test(e)));
+
+  assert.equal(ok.data.testAccount, null);
+
+  const secret = 'super-secret-token-xyz';
+  const withToken = validateSubmission(
+    validBody({
+      test_account_kind: 'bearer',
+      test_account_secret: secret,
+      test_account_consent: true,
+      test_account_notes: 'Reads one demo workspace.',
+    }),
+  );
+  assert.ok(!withToken.errors, 'optional bearer test account should be accepted');
+  assert.equal(withToken.data.testAccount.secret, secret);
+  assert.equal(bearerFromSubmission(withToken.data), secret);
+
+  const notification = submissionNotification(withToken.data);
+  assert.equal(JSON.stringify(notification).includes(secret), false);
+  assert.match(notification.testAccountSummary, /bearer token/);
+  assert.match(notification.testAccountSummary, /Not included in this email/);
+
+  const redacted = redactSubmission({ ...withToken.data, filePath: '/tmp/secret.json' });
+  assert.equal(JSON.stringify(redacted).includes(secret), false);
+  assert.equal(redacted.filePath, undefined);
+  assert.equal(redacted.testAccount.provided, true);
+  assert.equal(redacted.testAccount.kind, 'bearer');
+
+  const noConsent = validateSubmission(
+    validBody({ test_account_kind: 'bearer', test_account_secret: secret }),
+  );
+  assert.ok(noConsent.errors?.some((e) => /initialize and tools\/list/i.test(e)));
+
+  const login = validateSubmission(
+    validBody({
+      test_account_kind: 'login',
+      test_account_label: 'reviewer@example.com',
+      test_account_secret: 'read-only-pass',
+      test_account_login_url: 'https://example.com/login',
+      test_account_consent: true,
+    }),
+  );
+  assert.ok(!login.errors);
+  assert.equal(bearerFromSubmission(login.data), null);
+
+  const httpLogin = validateSubmission(
+    validBody({
+      test_account_kind: 'login',
+      test_account_label: 'reviewer@example.com',
+      test_account_secret: 'read-only-pass',
+      test_account_login_url: 'http://example.com/login',
+      test_account_consent: true,
+    }),
+  );
+  assert.ok(httpLogin.errors?.some((e) => /https/i.test(e)));
+
+  const leaked = validateSubmission(
+    validBody({
+      description: `A server that lists repositories. Token ${secret} is in the description.`,
+      test_account_kind: 'bearer',
+      test_account_secret: secret,
+      test_account_consent: true,
+    }),
+  );
+  assert.ok(leaked.errors?.some((e) => /secret field only/i.test(e)));
 
   console.log('MCP submit validation tests passed');
 }

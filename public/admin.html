@@ -866,7 +866,7 @@
           <label><input type="checkbox" id="mcpPinTop100" /> Pin to Top 100</label>
         </div>
         <div class="form-group">
-          <label>Tools (one per line: <code>tool_name — description</code>)</label>
+          <label>Tools (one per line: <code>tool_name — what it does, and when an agent should pick it</code>)</label>
           <textarea id="mcpTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
           <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
             <button type="button" class="btn btn-sm btn-secondary" id="mcpRefreshToolsBtn" data-admin-action="refreshMcpToolsFromLive" data-admin-args="%5B%22review%22%5D">Refresh tools from live endpoint</button>
@@ -877,6 +877,14 @@
         <div class="form-group">
           <label>Submitter</label>
           <div id="mcpSubmitterMeta" style="color:#8e8e93;font-size:13px;"></div>
+        </div>
+        <div class="form-group">
+          <label>Test account</label>
+          <div id="mcpTestAccountNote" style="color:#8e8e93;font-size:13px;">No test account on this submission.</div>
+          <div style="margin-top:8px;">
+            <button type="button" class="btn btn-sm btn-secondary" id="mcpRevealTestAccountBtn" hidden data-admin-action="revealMcpTestAccount">Show stored test credential</button>
+          </div>
+          <pre id="mcpTestAccountSecret" hidden style="margin-top:8px;background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;font-size:12px;"></pre>
         </div>
         <div class="form-group">
           <label>Setup instructions (read-only)</label>
@@ -986,7 +994,7 @@
           <label><input type="checkbox" id="mcpEditPinTop100" /> Pin to Top 100</label>
         </div>
         <div class="form-group">
-          <label>Tools (one per line: <code>tool_name — description</code>)</label>
+          <label>Tools (one per line: <code>tool_name — what it does, and when an agent should pick it</code>)</label>
           <textarea id="mcpEditTools" required style="min-height:140px;font-family:monospace;font-size:12px;"></textarea>
           <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
             <button type="button" class="btn btn-sm btn-secondary" id="mcpEditRefreshToolsBtn" data-admin-action="refreshMcpToolsFromLive" data-admin-args="%5B%22edit%22%5D">Refresh tools from live endpoint</button>
@@ -2343,10 +2351,11 @@
       statusEl.textContent = 'Probing endpoint…';
       statusEl.style.color = '#8e8e93';
       try {
+        const submissionId = mode === 'review' ? (document.getElementById('mcpReviewId')?.value || '') : '';
         const res = await fetch('/admin/api/mcp/probe-tools', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ endpoint }),
+          body: JSON.stringify({ endpoint, submissionId: submissionId || undefined }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -2360,7 +2369,8 @@
           throw new Error(data.error || 'Probe failed');
         }
         toolsEl.value = toolsToText(data.tools || []);
-        statusEl.textContent = data.message || `Loaded ${data.toolCount || 0} tool(s).`;
+        const authNote = data.authAttempt?.reason ? ` ${data.authAttempt.reason}` : '';
+        statusEl.textContent = (data.message || `Loaded ${data.toolCount || 0} tool(s).`) + authNote;
         statusEl.style.color = '#10a37f';
         if (!(data.tools || []).length) {
           statusEl.style.color = '#fbbf24';
@@ -2685,6 +2695,32 @@
         document.getElementById('mcpRefreshToolsStatus').textContent = '';
         document.getElementById('mcpSubmitterMeta').textContent =
           `${sub.submitterName || ''} · ${sub.submitterEmail || ''} · ${sub.submittedAt || ''}`;
+        const account = sub.testAccount || {};
+        const accountNote = document.getElementById('mcpTestAccountNote');
+        const revealBtn = document.getElementById('mcpRevealTestAccountBtn');
+        const secretEl = document.getElementById('mcpTestAccountSecret');
+        if (secretEl) {
+          secretEl.hidden = true;
+          secretEl.textContent = '';
+        }
+        if (account.provided) {
+          const kindLabel = account.kind === 'login' ? 'username and password' : 'bearer token';
+          const who = account.label ? ` for ${account.label}` : '';
+          accountNote.textContent =
+            `Test ${kindLabel} stored${who}. It is not in the catalog. Refresh tools sends a stored bearer token from the server. A password is not used to log into a website.`;
+          if (revealBtn) revealBtn.hidden = false;
+        } else {
+          accountNote.textContent = 'No test account on this submission.';
+          if (revealBtn) revealBtn.hidden = true;
+        }
+        const thinTools = (preview.tools || sub.tools || []).filter(
+          (tool) => String(tool.description || '').trim().length < 40,
+        );
+        if (thinTools.length) {
+          document.getElementById('mcpRefreshToolsStatus').textContent =
+            `${thinTools.length} tool description(s) are short. Useful ones say what the tool does and when an agent should pick it over another.`;
+          document.getElementById('mcpRefreshToolsStatus').style.color = '#fbbf24';
+        }
         document.getElementById('mcpSetupNotes').textContent =
           [sub.setupInstructions, sub.additionalNotes].filter(Boolean).join('\n\n') || '(none)';
 
@@ -2807,14 +2843,33 @@
       }
     }
 
+    async function revealMcpTestAccount() {
+      const id = document.getElementById('mcpReviewId').value;
+      const secretEl = document.getElementById('mcpTestAccountSecret');
+      if (!id || !secretEl) return;
+      try {
+        const res = await fetch(`/admin/api/mcp/submissions/${encodeURIComponent(id)}/test-credential`, {
+          headers: { Accept: 'application/json' },
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Could not load the test credential');
+        const lines = [data.label, data.loginUrl, data.notes, data.secret].filter(Boolean);
+        secretEl.hidden = false;
+        secretEl.textContent = lines.join('\n');
+      } catch (err) {
+        alert(err.message || 'Could not load the test credential');
+      }
+    }
+
     function fillMcpMissingToolsTemplate() {
       const el = document.getElementById('mcpFeedbackNote');
       if (!el) return;
       el.value =
         "Thanks for the submission — we need your MCP tool list before we can approve it.\n\n" +
-        'Please reply to this email with at least one tool (name + short description), one per line, e.g.:\n\n' +
-        'search_docs — Search project documentation\n' +
-        'run_query — Execute a read-only SQL query\n\n' +
+        'Please reply to this email with at least one tool, one per line. Say what it does and when an agent should pick it over another tool, e.g.:\n\n' +
+        'search_docs — Search project documentation. Use this when the agent needs a page before reading it.\n' +
+        'run_query — Execute a read-only SQL query. Use this when the agent already knows the table.\n\n' +
+        'If the server requires a login, a read-only test account (bearer token, or username and password) lets us call tools/list. Do not send a production admin password.\n\n' +
         "We'll update your existing submission and publish once that's in place.";
     }
 

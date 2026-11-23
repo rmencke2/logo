@@ -136,7 +136,8 @@
           <legend>Tools &amp; setup</legend>
           <label class="mcp-submit-field mcp-submit-field--wide">
             <span>Tools <em>(required — at least one, one per line)</em></span>
-            <textarea name="tools" required rows="8" maxlength="20000" placeholder="read_file — Read file contents&#10;write_file — Create or overwrite a file&#10;list_directory — List files in a folder"></textarea>
+            <p class="mcp-submit-hint">Each line should say what the tool does and when an agent should pick it over another tool.</p>
+            <textarea name="tools" required rows="8" maxlength="20000" placeholder="search_files — Search file contents. Use this when the agent needs a path before opening a file.&#10;read_file — Read one file. Use this after search_files, not to scan a whole tree."></textarea>
           </label>
           <label class="mcp-submit-field mcp-submit-field--wide">
             <span>Setup instructions</span>
@@ -146,6 +147,42 @@
             <span>Anything else we should know?</span>
             <textarea name="additional_notes" rows="3" maxlength="8000"></textarea>
           </label>
+        </fieldset>
+
+        <fieldset class="mcp-submit-fieldset">
+          <legend>Test account</legend>
+          <p class="mcp-submit-hint">Optional. Auth-gated servers hide <code>tools/list</code> until there is a credential. A read-only test account lets us call <code>initialize</code> and <code>tools/list</code>. Do not send a production admin password. The credential stays with the submission: it is not emailed and it is not published in the catalog.</p>
+          <p class="mcp-submit-hint">If you cannot share one, a reviewer can still try OAuth dynamic client registration when the server advertises it. That registers a client with a mailbox we operate. It does not create a user by filling in a signup form.</p>
+          <div class="mcp-submit-grid">
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Credential type</span>
+              <select name="test_account_kind">
+                <option value="">No test account</option>
+                <option value="bearer">Bearer token that can call tools/list</option>
+                <option value="login">Username and password for a test user</option>
+              </select>
+            </label>
+            <label class="mcp-submit-field">
+              <span>Username or email</span>
+              <input type="text" name="test_account_label" maxlength="254" autocomplete="off" placeholder="Needed for a login. Optional for a bearer token." />
+            </label>
+            <label class="mcp-submit-field">
+              <span>Token or password</span>
+              <input type="password" name="test_account_secret" maxlength="2048" autocomplete="new-password" placeholder="Read-only credential" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>Login URL</span>
+              <input type="url" name="test_account_login_url" maxlength="500" placeholder="https://example.com/login" />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--wide">
+              <span>What this account can do</span>
+              <input type="text" name="test_account_notes" maxlength="500" autocomplete="off" placeholder="Header name, or which project the token can read. Do not repeat the secret." />
+            </label>
+            <label class="mcp-submit-field mcp-submit-field--check mcp-submit-field--wide">
+              <input type="checkbox" name="test_account_consent" value="1" />
+              <span>This credential is for testing only. Influzer may use it to call initialize and tools/list.</span>
+            </label>
+          </div>
         </fieldset>
 
         <input type="text" name="website" class="mcp-submit-hp" tabindex="-1" autocomplete="off" hidden aria-label="Leave blank" />

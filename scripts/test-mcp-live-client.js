@@ -36,6 +36,7 @@ async function main() {
     assert.equal(gated.status, 'auth_required');
     assert.equal(gated.httpStatus, 401);
     assert.match(String(gated.reason), /Unauthorized/i);
+    assert.match(String(gated.wwwAuthenticate), /resource_metadata=/);
   } finally {
     global.fetch = originalFetch;
   }

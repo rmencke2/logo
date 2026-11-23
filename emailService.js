@@ -364,6 +364,7 @@ async function sendMcpSubmissionEmail(submission) {
               ${formatSubmissionField('Description', submission.description)}
               ${formatSubmissionField('Setup instructions', submission.setupInstructions)}
               ${formatSubmissionField('Additional notes', submission.additionalNotes)}
+              ${formatSubmissionField('Test account', submission.testAccountSummary || 'None')}
             </table>
             <h3 style="margin:24px 0 8px;font-size:15px;">Tools</h3>
             <pre style="background:#f5f5f5;padding:12px;border-radius:8px;overflow:auto;font-size:13px;white-space:pre-wrap;">${escapeHtml(toolsBlock)}</pre>
@@ -397,6 +398,9 @@ async function sendMcpSubmissionEmail(submission) {
       '',
       'Notes:',
       submission.additionalNotes || '(none)',
+      '',
+      'Test account:',
+      submission.testAccountSummary || 'None',
       '',
       `IP: ${submission.ip}`,
       `At: ${submission.submittedAt}`,
