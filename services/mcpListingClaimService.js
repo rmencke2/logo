@@ -634,7 +634,7 @@ function registerMcpClaimRoutes(app) {
 
 function registerMcpClaimAdminRoutes(app, requireAdmin) {
   const { requireAuth } = require('../auth');
-  const { readServerCard, diffListingCopy } = require('./mcpListingCopy');
+  const { readPublisherCopy, diffListingCopy } = require('./mcpListingCopy');
   const DRIFT_PATH = path.join(__dirname, '..', 'data', 'mcp-listing-drift.json');
 
   app.get('/admin/api/mcp/claims', requireAuth, requireAdmin, (req, res) => {
@@ -694,7 +694,10 @@ function registerMcpClaimAdminRoutes(app, requireAdmin) {
       description: String(req.body?.description || ''),
       tools: Array.isArray(req.body?.tools) ? req.body.tools : [],
     };
-    const card = await readServerCard(endpoint);
+    const card = await readPublisherCopy({
+      endpoint,
+      githubUrl: String(req.body?.githubUrl || req.body?.docsUrl || '').trim(),
+    });
     if (!card.ok) {
       return res.status(502).json({
         error: card.error || 'No server card at /.well-known/mcp/server-card.json',
@@ -702,17 +705,22 @@ function registerMcpClaimAdminRoutes(app, requireAdmin) {
       });
     }
     const diff = diffListingCopy(stored, card.card);
+    const compared = diff.drifted
+      ? 'The published copy disagrees with this form. Listing copy is unchanged until you save.'
+      : 'Tool text and prices match this form. The intro is left as written.';
+    const sourceNote = card.source === 'github-server-json'
+      ? `No server card at ${card.wellKnownUrl}. Compared server.json from the GitHub repo. `
+      : '';
     res.json({
       success: true,
+      source: card.source,
       cardUrl: card.cardUrl,
       liveDescription: diff.liveDescription,
       price: diff.price,
       tools: diff.tools,
       descriptionDiffers: diff.descriptionDiffers,
       drifted: diff.drifted,
-      message: diff.drifted
-        ? 'The server card disagrees with this form. Listing copy is unchanged until you save.'
-        : 'Tool text and prices on the server card match this form. The intro is left as written.',
+      message: sourceNote + compared,
     });
   });
 }

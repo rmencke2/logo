@@ -8,6 +8,9 @@ const {
   diffListingCopy,
   driftFromCard,
   serverCardUrl,
+  githubRepoServerJsonUrl,
+  fetchLimited,
+  readPublisherCopy,
 } = require('../services/mcpListingCopy');
 const { remoteManuals } = require('./check-listing-drift');
 
@@ -92,10 +95,79 @@ function testRemoteManualFilter() {
   assert.deepStrictEqual(rows.map((row) => row.slug), ['a']);
 }
 
-testPriceTokens();
-testServerCardUrl();
-testNanoParsePriceDrift();
-testMatchingCardIsNotDrift();
-testMissingCard();
-testRemoteManualFilter();
-console.log('mcp listing copy ok');
+function testGithubServerJsonUrl() {
+  assert.strictEqual(
+    githubRepoServerJsonUrl('https://github.com/TaplioOfficial/taplio-linkedin-mcp#readme'),
+    'https://raw.githubusercontent.com/TaplioOfficial/taplio-linkedin-mcp/HEAD/server.json',
+  );
+  assert.strictEqual(githubRepoServerJsonUrl('https://taplio.com/'), null);
+  assert.strictEqual(githubRepoServerJsonUrl('https://github.com/only-owner'), null);
+}
+
+function jsonResponse(status, body, location) {
+  const text = typeof body === 'string' ? body : JSON.stringify(body);
+  return {
+    status,
+    ok: status >= 200 && status < 300,
+    headers: { get: (name) => (String(name).toLowerCase() === 'location' ? location || null : null) },
+    arrayBuffer: async () => Buffer.from(text),
+  };
+}
+
+async function testRedirectDoesNotThrow() {
+  const seen = [];
+  const result = await fetchLimited('https://example.com/start', {
+    fetchImpl: async (url) => {
+      seen.push(String(url));
+      if (seen.length === 1) return jsonResponse(302, '', 'https://example.com/landed.json');
+      return jsonResponse(200, { description: 'Landed.', tools: [{ name: 'ping', description: 'pong' }] });
+    },
+  });
+  assert.strictEqual(result.ok, true);
+  assert.strictEqual(seen.length, 2);
+  assert.ok(result.body.includes('Landed'));
+}
+
+async function testGithubFallbackWhenCardIsMissing() {
+  const result = await readPublisherCopy(
+    {
+      endpoint: 'https://mcp.taplio.com/',
+      githubUrl: 'https://github.com/TaplioOfficial/taplio-linkedin-mcp#readme',
+    },
+    {
+      fetchImpl: async (url) => {
+        const href = String(url);
+        if (href.includes('server-card.json')) return jsonResponse(404, 'missing');
+        if (href.includes('/HEAD/server.json')) {
+          return jsonResponse(200, {
+            description: 'Write, schedule and analyze LinkedIn posts.',
+            tools: [],
+          });
+        }
+        return jsonResponse(500, 'unexpected');
+      },
+    },
+  );
+  assert.strictEqual(result.ok, true);
+  assert.strictEqual(result.source, 'github-server-json');
+  assert.match(result.card.description, /LinkedIn posts/);
+  assert.match(result.wellKnownUrl, /server-card\.json$/);
+}
+
+async function main() {
+  testPriceTokens();
+  testServerCardUrl();
+  testNanoParsePriceDrift();
+  testMatchingCardIsNotDrift();
+  testMissingCard();
+  testRemoteManualFilter();
+  testGithubServerJsonUrl();
+  await testRedirectDoesNotThrow();
+  await testGithubFallbackWhenCardIsMissing();
+  console.log('mcp listing copy ok');
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

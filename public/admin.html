@@ -2592,11 +2592,15 @@
       statusEl.textContent = 'Reading server card…';
       statusEl.style.color = '#8e8e93';
       try {
+        const githubEl = document.getElementById(isEdit ? 'mcpEditGithubUrl' : 'mcpGithubUrl');
+        const docsEl = document.getElementById(isEdit ? 'mcpEditDocsUrl' : 'mcpDocsUrl');
         const res = await fetch('/admin/api/mcp/refresh-copy', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             endpoint,
+            githubUrl: (githubEl?.value || '').trim(),
+            docsUrl: (docsEl?.value || '').trim(),
             description: descriptionEl?.value || '',
             tools: parseToolsText(toolsEl?.value || ''),
           }),

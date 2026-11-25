@@ -126,7 +126,25 @@ function diffListingCopy(stored, live) {
   };
 }
 
-async function fetchLimited(url, { fetchImpl, timeoutMs, maxBytes, headers } = {}) {
+function githubRepoServerJsonUrl(githubUrl) {
+  let url;
+  try {
+    url = new URL(String(githubUrl || '').trim());
+  } catch {
+    return null;
+  }
+  const host = url.hostname.toLowerCase();
+  if (url.protocol !== 'https:' || (host !== 'github.com' && host !== 'www.github.com')) return null;
+  const parts = url.pathname.split('/').filter(Boolean);
+  if (parts.length < 2) return null;
+  const owner = parts[0];
+  const repo = parts[1].replace(/\.git$/, '');
+  if (!/^[\w.-]+$/.test(owner) || !/^[\w.-]+$/.test(repo)) return null;
+  return `https://raw.githubusercontent.com/${owner}/${repo}/HEAD/server.json`;
+}
+
+async function fetchLimited(url, opts = {}) {
+  const { fetchImpl, timeoutMs, maxBytes, headers } = opts;
   const doFetch = fetchImpl || fetch;
   const timeout = timeoutMs || DEFAULT_TIMEOUT_MS;
   const ctrl = new AbortController();
@@ -184,6 +202,33 @@ async function readServerCard(endpoint, opts = {}) {
 
   const response = await fetchLimited(cardUrl, opts);
   if (!response.ok) {
+    const missing = response.status === 404;
+    return {
+      ok: false,
+      status: response.status,
+      error: missing
+        ? `No server card published at ${cardUrl}`
+        : (response.error || `HTTP ${response.status}`),
+      cardUrl,
+    };
+  }
+  try {
+    return { ok: true, status: response.status, cardUrl, card: parseServerCard(response.body) };
+  } catch (err) {
+    return { ok: false, status: response.status, error: err.code || err.message, cardUrl };
+  }
+}
+
+async function readJsonDocument(targetUrl, opts = {}) {
+  let cardUrl = targetUrl;
+  try {
+    const safe = await assertSafePublicUrl(targetUrl, { allowHttp: false });
+    cardUrl = safe.href;
+  } catch (err) {
+    return { ok: false, error: err.message || 'URL is not allowed', cardUrl };
+  }
+  const response = await fetchLimited(cardUrl, opts);
+  if (!response.ok) {
     return {
       ok: false,
       status: response.status,
@@ -196,6 +241,29 @@ async function readServerCard(endpoint, opts = {}) {
   } catch (err) {
     return { ok: false, status: response.status, error: err.code || err.message, cardUrl };
   }
+}
+
+/**
+ * Well-known server card first. Many publishers, including registry servers,
+ * never host that file and instead publish server.json on GitHub.
+ */
+async function readPublisherCopy({ endpoint, githubUrl } = {}, opts = {}) {
+  const card = await readServerCard(endpoint, opts);
+  if (card.ok) return { ...card, source: 'well-known' };
+  const missing = card.status === 404 || card.error === 'empty_card';
+  const repoJson = githubRepoServerJsonUrl(githubUrl);
+  if (missing && repoJson) {
+    const repo = await readJsonDocument(repoJson, opts);
+    if (repo.ok) {
+      return {
+        ...repo,
+        source: 'github-server-json',
+        wellKnownUrl: card.cardUrl || null,
+        wellKnownStatus: card.status || 0,
+      };
+    }
+  }
+  return card;
 }
 
 function driftFromCard(server, cardResult) {
@@ -232,4 +300,6 @@ module.exports = {
   driftFromCard,
   fetchLimited,
   readServerCard,
+  githubRepoServerJsonUrl,
+  readPublisherCopy,
 };
