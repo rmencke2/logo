@@ -36,6 +36,7 @@ function buildLlmsTxt(copy = {}) {
     '- [MCP recipes](https://www.influzer.ai/recipes)',
     '- [Insights](https://www.influzer.ai/insights)',
     '- [Get started with MCP servers](https://www.influzer.ai/insights/get-started-with-mcp-servers)',
+    '- [Earn links to an MCP directory](https://www.influzer.ai/insights/earn-links-to-an-mcp-directory)',
     '',
     '## Clients',
     '- [Discovery MCP endpoint](https://www.influzer.ai/mcp/discovery) — read-only, no auth',
