@@ -100,6 +100,63 @@
       font-size: 12px;
       text-align: right;
     }
+    .traffic-chart {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 16px 16px 8px;
+      margin: 4px 0 28px;
+    }
+    .traffic-chart__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .traffic-chart__head h2 {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .traffic-chart__head span {
+      color: #8e8e93;
+      font-size: 13px;
+    }
+    .traffic-chart svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .traffic-chart__legend {
+      display: flex;
+      gap: 16px;
+      color: #8e8e93;
+      font-size: 12px;
+      margin: 4px 0 8px;
+    }
+    .traffic-chart__swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: -1px;
+    }
+    .sub-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ececec;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .sub-check input {
+      width: 16px;
+      height: 16px;
+      accent-color: #10a37f;
+    }
     .audience-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -453,6 +510,17 @@
       </div>
     </div>
 
+    <section class="traffic-chart" id="trafficChart" aria-label="Daily site visitors">
+      <div class="traffic-chart__head">
+        <h2>Site visitors</h2>
+        <span id="trafficChartCaption">Last 14 days</span>
+      </div>
+      <div class="traffic-chart__legend">
+        <span><i class="traffic-chart__swatch" style="background:#10a37f;"></i>Unique visitors per day. Hover a bar for page views.</span>
+      </div>
+      <div id="trafficChartPlot"><div class="loading">Loading traffic…</div></div>
+    </section>
+
     <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" data-tab="users">Users</button>
@@ -505,6 +573,13 @@
           <div class="stat-card"><h3>Site visitors · 30d</h3><div class="value" id="trafMonthVisitors">-</div></div>
           <div class="stat-card"><h3>Site views · 30d</h3><div class="value" id="trafMonthViews">-</div></div>
         </div>
+        <section class="traffic-chart" aria-label="Daily site visitors for the selected range">
+          <div class="traffic-chart__head">
+            <h2>Visitors by day</h2>
+            <span>Same range as the menu above</span>
+          </div>
+          <div id="trafficChartDetail"></div>
+        </section>
         <div id="trafficAudience" style="margin-bottom:28px;">
           <div class="loading">Audience split loads with traffic…</div>
         </div>
@@ -586,7 +661,11 @@
       </div>
       <div class="section">
         <h2>Newsletter Subscribers</h2>
+        <p style="color:#8e8e93;font-size:14px;margin:-8px 0 16px;">
+          Uncheck a subscriber to stop newsletter mail. Check it again to put them back on the list.
+        </p>
         <div class="search-bar">
+          <input type="search" id="newsletterSearch" placeholder="Search email, e.g. support@thesmartoken.com">
           <input type="number" id="newsletterLimit" min="1" max="1000" value="500" placeholder="Limit (max 1000)">
           <button type="button" class="btn btn-primary" data-admin-action="loadNewsletterSubscribers">Refresh</button>
           <button type="button" class="btn btn-secondary" data-admin-action="exportNewsletterCsv">Export CSV</button>
@@ -1071,7 +1150,7 @@
       const el = event.target && event.target.closest && event.target.closest('[data-admin-change]');
       if (!el) return;
       const fn = window[el.getAttribute('data-admin-change')];
-      if (typeof fn === 'function') fn();
+      if (typeof fn === 'function') fn(el);
     });
     let currentUserId = null;
     let currentUserEmail = null;
@@ -1227,6 +1306,11 @@
           data.traffic ? data.traffic.todayVisitors : 0;
         document.getElementById('trafficWeekVisitors').textContent =
           data.traffic ? data.traffic.weekVisitors : 0;
+        renderTrafficChart(
+          document.getElementById('trafficChartPlot'),
+          data.traffic?.byDay || [],
+          14,
+        );
       } catch (err) {
         console.error('Error loading stats:', err);
         loadingIds.forEach((id) => {
@@ -1234,6 +1318,63 @@
           if (el) el.textContent = '!';
         });
       }
+    }
+
+    function trafficDaySeries(rows, days) {
+      const map = new Map((rows || []).map((row) => [String(row.day || '').slice(0, 10), row]));
+      const today = new Date();
+      const series = [];
+      for (let i = days - 1; i >= 0; i -= 1) {
+        const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+        const key = d.toISOString().slice(0, 10);
+        const row = map.get(key) || {};
+        series.push({
+          day: key,
+          visitors: Number(row.visitors) || 0,
+          views: Number(row.views) || 0,
+        });
+      }
+      return series;
+    }
+
+    function renderTrafficChart(el, rows, days) {
+      if (!el) return;
+      const series = trafficDaySeries(rows, days);
+      const maxVisitors = Math.max(1, ...series.map((row) => row.visitors));
+      const w = 720;
+      const h = 200;
+      const padL = 44;
+      const padR = 12;
+      const padT = 16;
+      const padB = 32;
+      const innerW = w - padL - padR;
+      const innerH = h - padT - padB;
+      const slot = innerW / series.length;
+      const barW = Math.max(3, slot * 0.42);
+      const yTicks = [maxVisitors, Math.round(maxVisitors / 2), 0];
+      const grid = yTicks.map((tick) => {
+        const y = padT + innerH - (tick / maxVisitors) * innerH;
+        return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${w - padR}" y2="${y.toFixed(1)}" stroke="#2a2a2a" />
+          <text x="${padL - 8}" y="${(y + 4).toFixed(1)}" fill="#8e8e93" font-size="11" text-anchor="end">${tick.toLocaleString()}</text>`;
+      }).join('');
+      const bars = series.map((row, i) => {
+        const bh = (row.visitors / maxVisitors) * innerH;
+        const x = padL + i * slot + (slot - barW) / 2;
+        const y = padT + innerH - bh;
+        const label = `${row.day}: ${row.visitors.toLocaleString()} visitors, ${row.views.toLocaleString()} views`;
+        return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(bh, row.visitors ? 2 : 0).toFixed(1)}" rx="3" fill="#10a37f"><title>${escapeHtml(label)}</title></rect>`;
+      }).join('');
+      const labels = series.map((row, i) => {
+        if (i !== 0 && i !== series.length - 1 && i !== Math.floor(series.length / 2)) return '';
+        const x = padL + i * slot + slot / 2;
+        const text = row.day.slice(5);
+        return `<text x="${x.toFixed(1)}" y="${h - 8}" fill="#8e8e93" font-size="11" text-anchor="middle">${text}</text>`;
+      }).join('');
+      el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Unique site visitors by day">
+        ${grid}
+        ${bars}
+        ${labels}
+      </svg>`;
     }
 
     function trafficTable(title, headers, rowsHtml, emptyText) {
@@ -1311,6 +1452,8 @@
         document.getElementById('trafMonthViews').textContent = data.month?.siteViews ?? 0;
 
         if (audienceEl) audienceEl.innerHTML = renderAudienceSplit(data.audience || {});
+        const dayCount = Math.max(1, parseInt(days, 10) || 14);
+        renderTrafficChart(document.getElementById('trafficChartDetail'), data.byDay || [], dayCount);
 
         const dayRows = (data.byDay || []).map((row) => `
           <tr>
@@ -1809,7 +1952,10 @@
       try {
         const limit = parseInt(document.getElementById('newsletterLimit').value, 10) || 500;
         const safeLimit = Math.max(1, Math.min(1000, limit));
-        const res = await fetch(`/admin/api/newsletter/subscribers?limit=${safeLimit}`);
+        const search = document.getElementById('newsletterSearch')?.value || '';
+        const params = new URLSearchParams({ limit: String(safeLimit) });
+        if (search.trim()) params.set('search', search.trim());
+        const res = await fetch(`/admin/api/newsletter/subscribers?${params.toString()}`);
         if (!res.ok) throw new Error('Failed to load subscribers');
         const data = await res.json();
         const subscribers = data.subscribers || [];
@@ -1827,18 +1973,27 @@
                 <th>Email</th>
                 <th>Source</th>
                 <th>Status</th>
+                <th>Mail</th>
                 <th>Subscribed</th>
               </tr>
             </thead>
             <tbody>
         `;
         subscribers.forEach((subscriber) => {
+          const active = (subscriber.status || 'active') === 'active';
+          const email = escapeHtml(subscriber.email);
           html += `
             <tr>
               <td>${subscriber.id}</td>
-              <td>${escapeHtml(subscriber.email)}</td>
+              <td>${email}</td>
               <td>${escapeHtml(subscriber.source || 'site')}</td>
-              <td>${escapeHtml(subscriber.status || 'active')}</td>
+              <td data-sub-status>${escapeHtml(subscriber.status || 'active')}</td>
+              <td>
+                <label class="sub-check">
+                  <input type="checkbox" data-admin-change="toggleNewsletterSubscriber" data-email="${email}" ${active ? 'checked' : ''} />
+                  Subscribed
+                </label>
+              </td>
               <td>${new Date(subscriber.created_at).toLocaleString()}</td>
             </tr>
           `;
@@ -1847,6 +2002,29 @@
         container.innerHTML = html;
       } catch (err) {
         container.innerHTML = `<div class="error">Error: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    async function toggleNewsletterSubscriber(el) {
+      const email = el?.getAttribute('data-email') || '';
+      const active = Boolean(el?.checked);
+      const status = active ? 'active' : 'unsubscribed';
+      el.disabled = true;
+      try {
+        const res = await fetch('/admin/api/newsletter/subscribers/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, status }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Could not update this subscriber');
+        const cell = el.closest('tr')?.querySelector('[data-sub-status]');
+        if (cell) cell.textContent = data.status || status;
+      } catch (err) {
+        el.checked = !active;
+        alert(err.message);
+      } finally {
+        el.disabled = false;
       }
     }
 

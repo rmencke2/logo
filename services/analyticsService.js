@@ -377,11 +377,28 @@ async function getTrafficSummary() {
 
   const today = await siteWindow(since1);
   const week = await siteWindow(since7);
+  const since14 = new Date(Date.now() - 14 * 86400000).toISOString();
+  const byDay = await dbAll(
+    db,
+    `SELECT date(created_at) AS day,
+            COUNT(*) AS views,
+            COUNT(DISTINCT ip_address) AS visitors
+     FROM page_views
+     WHERE created_at > ? AND (${SITE_TRAFFIC_SQL})
+     GROUP BY date(created_at)
+     ORDER BY day ASC`,
+    [since14],
+  );
   return {
     todayVisitors: today.siteVisitors,
     todayViews: today.siteViews,
     weekVisitors: week.siteVisitors,
     weekViews: week.siteViews,
+    byDay: byDay.map((row) => ({
+      day: row.day,
+      views: Number(row.views) || 0,
+      visitors: Number(row.visitors) || 0,
+    })),
   };
 }
 

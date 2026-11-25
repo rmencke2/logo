@@ -245,9 +245,21 @@ async function ensureSubscriberToken(subscriber) {
   return token;
 }
 
-async function listSubscribers(limit = 200) {
+async function listSubscribers(limit = 200, search = '') {
   const db = await getDatabase();
   const cappedLimit = Math.max(1, Math.min(1000, Number(limit) || 200));
+  const q = sanitizeEmail(search).replace(/[%_\\]/g, '');
+  if (q) {
+    return getDbAll(
+      db,
+      `SELECT id, email, source, status, created_at
+       FROM newsletter_subscribers
+       WHERE email LIKE ?
+       ORDER BY created_at DESC
+       LIMIT ?`,
+      [`%${q}%`, cappedLimit],
+    );
+  }
   return getDbAll(
     db,
     `SELECT id, email, source, status, created_at
@@ -256,6 +268,38 @@ async function listSubscribers(limit = 200) {
      LIMIT ?`,
     [cappedLimit],
   );
+}
+
+async function setSubscriberStatus(email, status) {
+  const clean = sanitizeEmail(email);
+  if (!isValidEmail(clean)) {
+    return { success: false, reason: 'invalid_email' };
+  }
+  if (status !== 'active' && status !== 'unsubscribed') {
+    return { success: false, reason: 'invalid_status' };
+  }
+  const db = await getDatabase();
+  const row = await getDbRow(
+    db,
+    'SELECT id, email, status FROM newsletter_subscribers WHERE email = ?',
+    [clean],
+  );
+  if (!row) {
+    return { success: false, reason: 'not_found' };
+  }
+  if (row.status !== status) {
+    await runDb(
+      db,
+      'UPDATE newsletter_subscribers SET status = ? WHERE id = ?',
+      [status, row.id],
+    );
+  }
+  return {
+    success: true,
+    email: row.email,
+    status,
+    already: row.status === status,
+  };
 }
 
 async function listActiveSubscribers() {
@@ -693,9 +737,27 @@ async function initializeNewsletterService(app) {
   app.get('/admin/api/newsletter/subscribers', requireAuth, requireAdmin, async (req, res) => {
     try {
       const limit = parseInt(req.query.limit, 10) || 200;
-      const subscribers = await listSubscribers(limit);
+      const search = String(req.query.search || '');
+      const subscribers = await listSubscribers(limit, search);
       const activeCount = await countActiveSubscribers();
       res.json({ subscribers, activeCount });
+    } catch (error) {
+      res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
+    }
+  });
+
+  app.post('/admin/api/newsletter/subscribers/status', requireAuth, requireAdmin, async (req, res) => {
+    try {
+      const email = String(req.body?.email || '');
+      const status = String(req.body?.status || '');
+      const result = await setSubscriberStatus(email, status);
+      if (!result.success && result.reason === 'not_found') {
+        return res.status(404).json({ error: 'That email is not on the newsletter list.' });
+      }
+      if (!result.success) {
+        return res.status(400).json({ error: 'Enter a valid subscriber email and status.' });
+      }
+      res.json(result);
     } catch (error) {
       res.status(500).json({ error: clientErrorMessage(error, 'Request failed') });
     }
@@ -808,5 +870,6 @@ module.exports = {
   subscribeToNewsletter,
   countActiveSubscribers,
   listActiveSubscribers,
+  setSubscriberStatus,
   isEligibleNewsletterEmail,
 };
