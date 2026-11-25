@@ -279,6 +279,7 @@ function testAccountListFields(testAccount) {
 const RESERVED_MCP_PATHS = new Set([
   'submit',
   'all',
+  'browse',
   'my-listings',
   'topics',
   'discovery',

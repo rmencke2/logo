@@ -327,19 +327,47 @@ function getTop100McpServers() {
 }
 
 /**
- * Servers worth putting in sitemap.xml.
- * Full catalog (~13k) floods crawl budget and drives "Crawled - currently not indexed".
- * Prefer Top 100, indexed-tool listings, curated manual entries, and featured servers.
+ * Every public listing belongs in the sitemap.
+ * Search and answer engines can only cite a page they are allowed to fetch.
+ * Hidden rows are already removed by getAllMcpServers().
  */
 function getSitemapMcpServers() {
-  const topSlugs = new Set(getTop100McpServers().map((s) => s.slug));
-  return getAllMcpServers().filter(
-    (s) =>
-      topSlugs.has(s.slug) ||
-      hasIndexedTools(s) ||
-      s.source === 'manual' ||
-      Boolean(s.featured),
-  );
+  return getAllMcpServers();
+}
+
+const MCP_BROWSE_PAGE_SIZE = 200;
+
+function mcpBrowsePath(page) {
+  const n = Number(page) || 1;
+  return n <= 1 ? '/mcp/browse' : `/mcp/browse/${n}`;
+}
+
+function getMcpBrowseMeta() {
+  const total = getAllMcpServers().length;
+  const pages = Math.max(1, Math.ceil(total / MCP_BROWSE_PAGE_SIZE));
+  return { total, pages, pageSize: MCP_BROWSE_PAGE_SIZE };
+}
+
+/** Server-rendered link index. Non-JS crawlers never see the directory grid. */
+function getMcpBrowsePage(page) {
+  const meta = getMcpBrowseMeta();
+  const p = Number(page);
+  if (!Number.isInteger(p) || p < 1 || p > meta.pages) return null;
+  const start = (p - 1) * meta.pageSize;
+  const servers = getAllMcpServers().slice(start, start + meta.pageSize).map((s) => {
+    const blurb = String(s.description || '').replace(/\s+/g, ' ').trim().slice(0, 140);
+    return {
+      href: `/mcp/${s.slug}`,
+      name: s.name,
+      detail: [s.category, blurb].filter(Boolean).join(' — '),
+    };
+  });
+  return { ...meta, page: p, servers };
+}
+
+function getMcpBrowsePaths() {
+  const { pages } = getMcpBrowseMeta();
+  return Array.from({ length: pages }, (_, i) => mcpBrowsePath(i + 1));
 }
 
 let sitemapSlugSetCache = null;
@@ -705,6 +733,11 @@ module.exports = {
   getSitemapMcpServers,
   getSitemapMcpSlugSet,
   isSitemapEligibleMcpServer,
+  MCP_BROWSE_PAGE_SIZE,
+  mcpBrowsePath,
+  getMcpBrowseMeta,
+  getMcpBrowsePage,
+  getMcpBrowsePaths,
   getMcpCatalogTotals,
   getMcpCategories,
   findMcpServerBySlug,

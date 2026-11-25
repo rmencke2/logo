@@ -27,6 +27,9 @@ const {
   getMcpHeroStats,
   searchMcpServers,
   isInTop100,
+  mcpBrowsePath,
+  getMcpBrowsePage,
+  getMcpBrowsePaths,
 } = require('./mcpDirectoryService');
 const { registerIndexNowRoutes } = require('./indexNowService');
 const { registerMcpSubmissionRoutes, isReservedMcpPath } = require('./mcpSubmissionService');
@@ -50,7 +53,7 @@ const { getHomeSeoContent, getMcpSeoContent, appendFaqToJsonLd } = require('../d
 const { describeCatalogStats, formatExactCount } = require('./mcpCatalogStats');
 const { getMcpTopicBySlug, getMcpTopicSeoContent, getMcpTopicsIndexSeoContent } = require('../data/mcp-topics');
 const { getServersForTopic, getTopicSummaries } = require('./mcpTopicService');
-const { getWebmcpSitemapEntries } = require('./webmcpDirectoryService');
+const { getWebmcpSitemapEntries, getWebmcpBrowsePaths } = require('./webmcpDirectoryService');
 const { attachBranding } = require('../utils/mcpBranding');
 const { getAllNewsItems, findNewsItemBySlug, formatNewsDate } = require('./newsService');
 const { getDisplayArticles } = require('./otherNewsService');
@@ -1070,6 +1073,40 @@ ${itemsXml}
   registerMcpAllowlistRoutes(app);
   registerMcpHandshakeDiffRoutes(app);
 
+  function renderMcpBrowse(req, res, page) {
+    const browse = getMcpBrowsePage(page);
+    if (!browse) return res.status(404).render('404', { title: 'Page Not Found' });
+    const path = mcpBrowsePath(browse.page);
+    res.render('crawl-index', {
+      title: browse.page === 1
+        ? 'All MCP server listings | Influzer.ai'
+        : `All MCP server listings, page ${browse.page} | Influzer.ai`,
+      description: 'Every public MCP server listing on Influzer.ai, linked so search and answer engines can fetch the page.',
+      canonicalUrl: `${SITE_BASE_URL}${path}`,
+      heading: 'All MCP server listings',
+      lead: 'Influzer.ai publishes a page for every MCP server in the directory. This index links those pages so search engines and answer engines can fetch them.',
+      page: browse.page,
+      pages: browse.pages,
+      total: browse.total,
+      items: browse.servers,
+      prevHref: browse.page > 1 ? mcpBrowsePath(browse.page - 1) : '',
+      nextHref: browse.page < browse.pages ? mcpBrowsePath(browse.page + 1) : '',
+      indexHref: '/mcp/all',
+      indexLabel: 'Full MCP directory',
+      unitLabel: 'listings',
+      assetVersion: getHomeAssetVersion(),
+      navPath: req.path,
+    });
+  }
+
+  app.get('/mcp/browse', (req, res) => renderMcpBrowse(req, res, 1));
+  app.get('/mcp/browse/:page', (req, res) => {
+    if (req.params.page === '1') return res.redirect(301, '/mcp/browse');
+    const page = Number(req.params.page);
+    if (!Number.isInteger(page)) return res.status(404).render('404', { title: 'Page Not Found' });
+    return renderMcpBrowse(req, res, page);
+  });
+
   app.get('/mcp/all', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const totals = getMcpCatalogTotals();
@@ -1552,6 +1589,18 @@ ${urls
       { loc: `${SITE_BASE_URL}/news`, lastmod: latestNewsDate, changefreq: 'daily', priority: '0.88' },
       { loc: `${SITE_BASE_URL}/mcp`, lastmod: mcpLastMod, changefreq: 'weekly', priority: '0.9' },
       { loc: `${SITE_BASE_URL}/mcp/all`, lastmod: mcpLastMod, changefreq: 'weekly', priority: '0.85' },
+      ...getMcpBrowsePaths().map((browsePath) => ({
+        loc: `${SITE_BASE_URL}${browsePath}`,
+        lastmod: mcpLastMod,
+        changefreq: 'weekly',
+        priority: '0.5',
+      })),
+      ...getWebmcpBrowsePaths().map((browsePath) => ({
+        loc: `${SITE_BASE_URL}${browsePath}`,
+        lastmod: mcpLastMod,
+        changefreq: 'weekly',
+        priority: '0.5',
+      })),
       { loc: `${SITE_BASE_URL}/mcp/submit`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
       { loc: `${SITE_BASE_URL}/methodology`, lastmod: latestPostDate, changefreq: 'monthly', priority: '0.7' },
       { loc: `${SITE_BASE_URL}/llms.txt`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.4' },

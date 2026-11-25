@@ -27,11 +27,19 @@ const MANUAL_PATH = path.join(ROOT, 'data', 'webmcp-manual.json');
 const SELF_TOOLS_PATH = path.join(ROOT, 'data', 'influzer-webmcp-tools.json');
 
 const SITE_BASE = 'https://www.influzer.ai';
-/** Cap individual WebMCP site pages in sitemap.xml to protect crawl budget. */
-const WEBMCP_SITEMAP_SITE_CAP = Math.max(
-  50,
-  Number(process.env.WEBMCP_SITEMAP_SITE_CAP) || 250,
-);
+/**
+ * Optional throttle. Unset, empty, or 0 means every public site.
+ * A positive WEBMCP_SITEMAP_SITE_CAP still slices the sitemap.
+ */
+function webmcpSitemapSiteCap() {
+  const raw = process.env.WEBMCP_SITEMAP_SITE_CAP;
+  if (raw == null || String(raw).trim() === '' || String(raw).trim() === '0') return Infinity;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? n : Infinity;
+}
+
+const WEBMCP_SITEMAP_SITE_CAP = webmcpSitemapSiteCap();
+const WEBMCP_BROWSE_PAGE_SIZE = 200;
 
 let cache = null;
 let sitemapHostSetCache = null;
@@ -317,6 +325,38 @@ function registerWebmcpRoutes(app) {
     categories: loadCatalog().categories,
     assetVersion: process.env.ASSET_VERSION || Date.now().toString(36),
     ...extra,
+  });
+
+  function renderBrowse(req, res, page) {
+    const browse = getWebmcpBrowsePage(page);
+    if (!browse) return res.status(404).render('404', { title: 'Page Not Found' });
+    const path = webmcpBrowsePath(browse.page);
+    res.render('crawl-index', renderLocals(req, {
+      title: browse.page === 1
+        ? 'All WebMCP sites | Influzer.ai'
+        : `All WebMCP sites, page ${browse.page} | Influzer.ai`,
+      description: 'Every public WebMCP site on Influzer.ai, linked so search and answer engines can fetch the page.',
+      canonicalUrl: `${SITE_BASE}${path}`,
+      heading: 'All WebMCP sites',
+      lead: 'Influzer.ai publishes a page for every WebMCP site in the catalog. This index links those pages so search engines and answer engines can fetch them.',
+      page: browse.page,
+      pages: browse.pages,
+      total: browse.total,
+      items: browse.sites,
+      prevHref: browse.page > 1 ? webmcpBrowsePath(browse.page - 1) : '',
+      nextHref: browse.page < browse.pages ? webmcpBrowsePath(browse.page + 1) : '',
+      indexHref: '/webmcp',
+      indexLabel: 'WebMCP directory',
+      unitLabel: 'sites',
+    }));
+  }
+
+  app.get('/webmcp/browse', (req, res) => renderBrowse(req, res, 1));
+  app.get('/webmcp/browse/:page', (req, res) => {
+    if (req.params.page === '1') return res.redirect(301, '/webmcp/browse');
+    const page = Number(req.params.page);
+    if (!Number.isInteger(page)) return res.status(404).render('404', { title: 'Page Not Found' });
+    return renderBrowse(req, res, page);
   });
 
   app.get('/webmcp', (req, res) => {
@@ -631,16 +671,50 @@ function expressJsonOptional() {
 
 function getWebmcpSitemapSites() {
   const { sites } = loadCatalog();
-  return sites
-    .filter((site) => (site.tool_count || 0) > 0 || (site.tools || []).length > 0)
+  const sorted = sites
+    .filter((site) => site && site.host)
     .sort((a, b) => {
       const toolDelta = (b.tool_count || 0) - (a.tool_count || 0);
       if (toolDelta) return toolDelta;
       const scoreDelta = (b.score || 0) - (a.score || 0);
       if (scoreDelta) return scoreDelta;
       return String(a.host || '').localeCompare(String(b.host || ''));
-    })
-    .slice(0, WEBMCP_SITEMAP_SITE_CAP);
+    });
+  const cap = webmcpSitemapSiteCap();
+  return Number.isFinite(cap) ? sorted.slice(0, cap) : sorted;
+}
+
+function webmcpBrowsePath(page) {
+  const n = Number(page) || 1;
+  return n <= 1 ? '/webmcp/browse' : `/webmcp/browse/${n}`;
+}
+
+function getWebmcpBrowseMeta() {
+  const total = getWebmcpSitemapSites().length;
+  const pages = Math.max(1, Math.ceil(total / WEBMCP_BROWSE_PAGE_SIZE));
+  return { total, pages, pageSize: WEBMCP_BROWSE_PAGE_SIZE };
+}
+
+function getWebmcpBrowsePage(page) {
+  const meta = getWebmcpBrowseMeta();
+  const p = Number(page);
+  if (!Number.isInteger(p) || p < 1 || p > meta.pages) return null;
+  const start = (p - 1) * meta.pageSize;
+  const sites = getWebmcpSitemapSites().slice(start, start + meta.pageSize).map((site) => {
+    const blurb = String(site.description || '').replace(/\s+/g, ' ').trim().slice(0, 140);
+    const tools = site.tool_count || (site.tools || []).length || 0;
+    return {
+      href: `/webmcp/sites/${site.host}`,
+      name: site.name || site.host,
+      detail: [`${tools} tools`, site.category, blurb].filter(Boolean).join(' — '),
+    };
+  });
+  return { ...meta, page: p, sites };
+}
+
+function getWebmcpBrowsePaths() {
+  const { pages } = getWebmcpBrowseMeta();
+  return Array.from({ length: pages }, (_, i) => webmcpBrowsePath(i + 1));
 }
 
 function getWebmcpSitemapHostSet() {
@@ -678,7 +752,6 @@ function getWebmcpSitemapEntries() {
       priority: '0.7',
     });
   }
-  // Cap site pages — full catalog (~9k) starves crawl budget for /mcp and Insights.
   for (const s of getWebmcpSitemapSites()) {
     entries.push({
       loc: `${SITE_BASE}/webmcp/sites/${s.host}`,
@@ -704,6 +777,12 @@ module.exports = {
   getWebmcpSitemapHostSet,
   isSitemapEligibleWebmcpHost,
   WEBMCP_SITEMAP_SITE_CAP,
+  webmcpSitemapSiteCap,
+  WEBMCP_BROWSE_PAGE_SIZE,
+  webmcpBrowsePath,
+  getWebmcpBrowseMeta,
+  getWebmcpBrowsePage,
+  getWebmcpBrowsePaths,
   siteSummary,
   slugifyCategory,
 };

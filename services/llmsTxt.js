@@ -36,7 +36,10 @@ function buildLlmsTxt(copy = {}) {
     '- [MCP recipes](https://www.influzer.ai/recipes)',
     '- [Insights](https://www.influzer.ai/insights)',
     '- [Get started with MCP servers](https://www.influzer.ai/insights/get-started-with-mcp-servers)',
-    '- [Earn links to an MCP directory](https://www.influzer.ai/insights/earn-links-to-an-mcp-directory)',
+    '- [All MCP listings](https://www.influzer.ai/mcp/browse)',
+    '- [All WebMCP sites](https://www.influzer.ai/webmcp/browse)',
+    '- [MCP sitemap](https://www.influzer.ai/sitemap-mcp.xml)',
+    '- [WebMCP sitemap](https://www.influzer.ai/sitemap-webmcp.xml)',
     '',
     '## Clients',
     '- [Discovery MCP endpoint](https://www.influzer.ai/mcp/discovery) — read-only, no auth',
@@ -47,7 +50,7 @@ function buildLlmsTxt(copy = {}) {
     '',
     '[robots.txt](https://www.influzer.ai/robots.txt) disallows `/api/`. Prefer the HTML pages and Discovery setup guide over crawling API routes.',
     '',
-    '[Sitemap](https://www.influzer.ai/sitemap.xml) includes the Top 100, listings with indexed tools, manual listings, and featured listings. It does not include every catalog row.',
+    '[Sitemap](https://www.influzer.ai/sitemap.xml) includes every public MCP listing and every public WebMCP site, plus insights, news, and topic pages. Crawl `/mcp/browse` and `/webmcp/browse` for the same URLs as HTML links.',
     '',
   );
   return lines.join('\n');

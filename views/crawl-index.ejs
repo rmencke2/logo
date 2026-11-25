@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <% if (prevHref) { %><link rel="prev" href="<%= prevHref %>" /><% } %>
+    <% if (nextHref) { %><link rel="next" href="<%= nextHref %>" /><% } %>
+    <%- include('partials/seo-social', {
+      ogTitle: title,
+      ogDescription: description,
+      ogUrl: canonicalUrl,
+    }) %>
+    <%- include('partials/favicon-links') %>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css?v=<%= assetVersion %>" />
+    <link rel="stylesheet" href="/css/mcp-directory-page.css?v=<%= assetVersion %>" />
+    <script nonce="<%= cspNonce %>" type="application/ld+json">
+      <%- JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: heading,
+        numberOfItems: items.length,
+        itemListElement: items.map(function(item, index) {
+          return {
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.name,
+            url: 'https://www.influzer.ai' + item.href,
+          };
+        }),
+      }).replace(/</g, '\\u003c') %>
+    </script>
+  </head>
+  <body class="registry-page">
+    <%- include('partials/home-header') %>
+    <main class="dir-shell" id="main" style="max-width:820px;padding:2rem 1.25rem 4rem;">
+      <p class="dir-hero__eyebrow"><a href="<%= indexHref %>"><%= indexLabel %></a></p>
+      <h1 class="dir-hero__title"><%= heading %></h1>
+      <p class="dir-hero__lead"><%= lead %></p>
+      <p><%= total.toLocaleString('en-US') %> <%= unitLabel %> · page <%= page %> of <%= pages %></p>
+      <ul>
+        <% items.forEach(function(item) { %>
+          <li>
+            <a href="<%= item.href %>"><%= item.name %></a><% if (item.detail) { %> — <%= item.detail %><% } %>
+          </li>
+        <% }) %>
+      </ul>
+      <nav aria-label="Pagination" style="display:flex;gap:16px;margin-top:24px;">
+        <% if (prevHref) { %><a href="<%= prevHref %>">Previous</a><% } %>
+        <% if (nextHref) { %><a href="<%= nextHref %>">Next</a><% } %>
+      </nav>
+    </main>
+    <%- include('partials/registry-footer') %>
+  </body>
+</html>

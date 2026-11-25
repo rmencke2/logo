@@ -39,6 +39,10 @@ async function main() {
   assert.match(robots, /Allow:\s+\/mcp\/discovery\/setup/);
   assert.match(robots, /Allow:\s+\/mcp\/discovery\/starters/);
   assert.match(robots, /LLM crawlers/);
+  assert.match(robots, /User-agent:\s+GPTBot/);
+  assert.match(robots, /User-agent:\s+ClaudeBot/);
+  assert.match(robots, /User-agent:\s+PerplexityBot/);
+  assert.match(robots, /User-agent:\s+Google-Extended/);
   assert.match(robots, /Disallow:\s+\/api\//);
 
   const { buildLlmsTxt } = require('../services/llmsTxt');
@@ -52,7 +56,9 @@ async function main() {
   assert.ok(llms.length >= 50);
   assert.match(llms, /\[Handshake methodology\]\(https:\/\/www\.influzer\.ai\/methodology\)/);
   assert.match(llms, /\[robots\.txt\]\(https:\/\/www\.influzer\.ai\/robots\.txt\)/);
-  assert.match(llms, /does not include every catalog row/);
+  assert.match(llms, /every public MCP listing and every public WebMCP site/);
+  assert.match(llms, /\/mcp\/browse/);
+  assert.match(llms, /\/webmcp\/browse/);
   const bare = buildLlmsTxt({});
   assert.doesNotMatch(bare, /servers listed/);
   assert.doesNotMatch(bare, /\d{4,}/);
@@ -62,24 +68,26 @@ async function main() {
   const top = getTop100McpServers();
 
   assert.ok(all.length > 1000, 'expected full catalog loaded');
-  assert.ok(
-    sitemapServers.length < all.length,
-    `sitemap set (${sitemapServers.length}) should be smaller than full catalog (${all.length})`,
+  assert.equal(
+    sitemapServers.length,
+    all.length,
+    `sitemap set (${sitemapServers.length}) should include every public server (${all.length})`,
   );
   assert.ok(
     sitemapServers.length >= top.length,
     'sitemap should include at least Top 100',
   );
-  assert.ok(
-    sitemapServers.every(
-      (s) =>
-        (s.tools || []).length > 0 ||
-        s.source === 'manual' ||
-        s.featured ||
-        top.some((t) => t.slug === s.slug),
-    ),
-    'every sitemap server should be top100, tooled, manual, or featured',
+  const topSlugs = new Set(top.map((s) => s.slug));
+  const longTail = all.find(
+    (s) =>
+      !(s.tools || []).length &&
+      s.source !== 'manual' &&
+      !s.featured &&
+      !topSlugs.has(s.slug),
   );
+  if (longTail) {
+    assert.equal(isSitemapEligibleMcpServer(longTail.slug), true);
+  }
 
   // Soft-404 MCP template should pass noindex via seo-social
   const mcpServerTpl = fs.readFileSync(
@@ -116,23 +124,36 @@ async function main() {
   assert.match(staticSrc, /app\.get\('\/modelspend'/);
   assert.match(staticSrc, /\/modelspend['"]/);
 
-  // Thin MCP stubs stay out of the indexable set.
+  // Unknown slugs stay out. Every real public listing stays in.
   assert.equal(isSitemapEligibleMcpServer('___not-a-real-slug___'), false);
   for (const s of getTop100McpServers().slice(0, 5)) {
     assert.equal(isSitemapEligibleMcpServer(s.slug), true);
   }
 
-  // WebMCP sitemap is capped so crawl budget goes to money pages.
+  // Every public WebMCP site is in the sitemap unless an explicit cap is set.
   const webmcpSites = getWebmcpSitemapSites();
   const webmcpEntries = getWebmcpSitemapEntries();
-  assert.ok(webmcpSites.length <= WEBMCP_SITEMAP_SITE_CAP);
-  assert.ok(webmcpEntries.length < 1000, `webmcp sitemap too large: ${webmcpEntries.length}`);
+  const catalogSites = loadCatalog().sites.filter((s) => s && s.host).length;
+  if (!Number.isFinite(WEBMCP_SITEMAP_SITE_CAP)) {
+    assert.equal(webmcpSites.length, catalogSites);
+  } else {
+    assert.ok(webmcpSites.length <= WEBMCP_SITEMAP_SITE_CAP);
+  }
+  assert.ok(webmcpEntries.length > webmcpSites.length);
   assert.ok(webmcpEntries.some((e) => e.loc.endsWith('/webmcp')));
-  const catalogSites = loadCatalog().sites.length;
-  assert.ok(catalogSites > WEBMCP_SITEMAP_SITE_CAP);
   if (webmcpSites[0]) {
     assert.equal(isSitemapEligibleWebmcpHost(webmcpSites[0].host), true);
   }
+  const { getMcpBrowsePage, getMcpBrowsePaths } = require('../services/mcpDirectoryService');
+  const { getWebmcpBrowsePage, getWebmcpBrowsePaths } = require('../services/webmcpDirectoryService');
+  const mcpBrowse = getMcpBrowsePage(1);
+  assert.ok(mcpBrowse && mcpBrowse.servers.length > 0);
+  assert.equal(getMcpBrowsePage(mcpBrowse.pages + 1), null);
+  assert.equal(getMcpBrowsePaths().length, mcpBrowse.pages);
+  assert.ok(getMcpBrowsePaths()[0] === '/mcp/browse');
+  const webBrowse = getWebmcpBrowsePage(1);
+  assert.ok(webBrowse && webBrowse.sites.length > 0);
+  assert.equal(getWebmcpBrowsePaths().length, webBrowse.pages);
 
   // IndexNow key + money-page ping payload.
   const indexKey = readKey();

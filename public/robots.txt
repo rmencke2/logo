@@ -1,10 +1,23 @@
-# User-agent: * covers search engines and LLM crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot).
-# Do not add a bot-specific group that only says Allow: / — that group would not inherit the Disallow rules below.
+# One group for search engines and LLM crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot).
+# Named user-agents share these rules. A separate group that only says Allow: / would drop the Disallow lines.
 # /api/ stays disallowed. Install and probe URLs are linked from HTML; /llms.txt describes them.
 User-agent: *
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: Amazonbot
 Allow: /
 
-# Sitemap index (core + MCP + capped WebMCP)
+# Sitemap index (core + every public MCP listing + every public WebMCP site)
 Sitemap: https://www.influzer.ai/sitemap.xml
 
 # Disallow admin, private, and non-HTML surfaces
@@ -21,4 +34,3 @@ Disallow: /preview/
 Disallow: /mcp/discovery
 Allow: /mcp/discovery/setup
 Allow: /mcp/discovery/starters
-

@@ -63,6 +63,11 @@ function moneyPageUrls() {
     `${SITE_BASE}/methodology`,
     `${SITE_BASE}/modelspend`,
     `${SITE_BASE}/llms.txt`,
+    `${SITE_BASE}/mcp/browse`,
+    `${SITE_BASE}/webmcp/browse`,
+    `${SITE_BASE}/sitemap.xml`,
+    `${SITE_BASE}/sitemap-mcp.xml`,
+    `${SITE_BASE}/sitemap-webmcp.xml`,
   ];
   for (const s of getTop100McpServers().slice(0, 40)) {
     urls.push(`${SITE_BASE}/mcp/${s.slug}`);
